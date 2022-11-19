@@ -9,33 +9,32 @@ using Roslynator.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeGeneration.CSharp
-{
-    public static class RefactoringIdentifiersGenerator
-    {
-        public static CompilationUnitSyntax Generate(IEnumerable<RefactoringMetadata> refactorings, bool obsolete, IComparer<string> comparer)
-        {
-            return CompilationUnit(
-                UsingDirectives("System"),
-                NamespaceDeclaration(
-                    "Roslynator.CSharp.Refactorings",
-                    ClassDeclaration(
-                        Modifiers.Public_Static_Partial(),
-                        "RefactoringIdentifiers",
-                        refactorings
-                            .Where(f => f.IsObsolete == obsolete)
-                            .OrderBy(f => f.Identifier, comparer)
-                            .Select(f =>
-                            {
-                                FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                                    Modifiers.Public_Const(),
-                                    PredefinedStringType(),
-                                    f.Identifier,
-                                    AddExpression(IdentifierName("Prefix"), StringLiteralExpression(f.Id.Substring(RefactoringIdentifiers.Prefix.Length))));
+namespace Roslynator.CodeGeneration.CSharp;
 
-                                return fieldDeclaration.AddObsoleteAttributeIf(f.IsObsolete);
-                            })
-                            .ToSyntaxList<MemberDeclarationSyntax>())));
-        }
+public static class RefactoringIdentifiersGenerator
+{
+    public static CompilationUnitSyntax Generate(IEnumerable<RefactoringMetadata> refactorings, bool obsolete, IComparer<string> comparer)
+    {
+        return CompilationUnit(
+            UsingDirectives("System"),
+            NamespaceDeclaration(
+                "Roslynator.CSharp.Refactorings",
+                ClassDeclaration(
+                    Modifiers.Public_Static_Partial(),
+                    "RefactoringIdentifiers",
+                    refactorings
+                        .Where(f => f.IsObsolete == obsolete)
+                        .OrderBy(f => f.Identifier, comparer)
+                        .Select(f =>
+                        {
+                            FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
+                                Modifiers.Public_Const(),
+                                PredefinedStringType(),
+                                f.Identifier,
+                                AddExpression(IdentifierName("Prefix"), StringLiteralExpression(f.Id.Substring(RefactoringIdentifiers.Prefix.Length))));
+
+                            return fieldDeclaration.AddObsoleteAttributeIf(f.IsObsolete);
+                        })
+                        .ToSyntaxList<MemberDeclarationSyntax>())));
     }
 }

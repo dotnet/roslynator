@@ -12,67 +12,66 @@ using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AttributeCodeFixProvider))]
+[Shared]
+public sealed class AttributeCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AttributeCodeFixProvider))]
-    [Shared]
-    public sealed class AttributeCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName,
-                    DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName,
+                DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeSyntax attribute))
+            return;
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        switch (diagnostic.Id)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            case DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName:
+            case DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Specify name",
+                        ct => SpecifyNameAsync(document, attribute, ct),
+                        GetEquivalenceKey(diagnostic));
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeSyntax attribute))
-                return;
-
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName:
-                case DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Specify name",
-                            ct => SpecifyNameAsync(document, attribute, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-            }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
+    }
 
-        private static Task<Document> SpecifyNameAsync(
-            Document document,
-            AttributeSyntax attribute,
-            CancellationToken cancellationToken)
-        {
-            AttributeArgumentSyntax newAttributeArgument = AttributeArgument(
-                NameEquals("Name"),
-                NameOfExpression(
-                    IdentifierName(attribute.FirstAncestor<ClassDeclarationSyntax>().Identifier.WithNavigationAnnotation())));
+    private static Task<Document> SpecifyNameAsync(
+        Document document,
+        AttributeSyntax attribute,
+        CancellationToken cancellationToken)
+    {
+        AttributeArgumentSyntax newAttributeArgument = AttributeArgument(
+            NameEquals("Name"),
+            NameOfExpression(
+                IdentifierName(attribute.FirstAncestor<ClassDeclarationSyntax>().Identifier.WithNavigationAnnotation())));
 
-            AttributeArgumentListSyntax argumentList = attribute.ArgumentList;
+        AttributeArgumentListSyntax argumentList = attribute.ArgumentList;
 
-            SeparatedSyntaxList<AttributeArgumentSyntax> arguments = argumentList.Arguments.Add(newAttributeArgument);
+        SeparatedSyntaxList<AttributeArgumentSyntax> arguments = argumentList.Arguments.Add(newAttributeArgument);
 
-            AttributeArgumentListSyntax newArgumentList = argumentList.WithArguments(arguments);
+        AttributeArgumentListSyntax newArgumentList = argumentList.WithArguments(arguments);
 
-            AttributeSyntax newAttribute = attribute.WithArgumentList(newArgumentList);
+        AttributeSyntax newAttribute = attribute.WithArgumentList(newArgumentList);
 
-            return document.ReplaceNodeAsync(attribute, newAttribute, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(attribute, newAttribute, cancellationToken);
     }
 }

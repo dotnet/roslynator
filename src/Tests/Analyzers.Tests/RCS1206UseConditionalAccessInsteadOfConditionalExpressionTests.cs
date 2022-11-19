@@ -6,23 +6,23 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
+namespace Roslynator.CSharp.Analysis.Tests;
+
+public class RCS1206UseConditionalAccessInsteadOfConditionalExpressionTests : AbstractCSharpDiagnosticVerifier<SimplifyNullCheckAnalyzer, ConditionalExpressionCodeFixProvider>
 {
-    public class RCS1206UseConditionalAccessInsteadOfConditionalExpressionTests : AbstractCSharpDiagnosticVerifier<SimplifyNullCheckAnalyzer, ConditionalExpressionCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseConditionalAccessInsteadOfConditionalExpression;
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    [InlineData("(x != null) ? x.ToString() : null", "x?.ToString()")]
+    [InlineData("(x != null) ? x.ToString() : default", "x?.ToString()")]
+    [InlineData("(x != null) ? x.ToString() : default(string)", "x?.ToString()")]
+
+    [InlineData("(x == null) ? null : x.ToString()", "x?.ToString()")]
+    [InlineData("(x == null) ? default : x.ToString()", "x?.ToString()")]
+    [InlineData("(x == null) ? default(string) : x.ToString()", "x?.ToString()")]
+    public async Task Test_ReferenceTypeToReferenceType(string source, string expected)
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseConditionalAccessInsteadOfConditionalExpression;
-
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        [InlineData("(x != null) ? x.ToString() : null", "x?.ToString()")]
-        [InlineData("(x != null) ? x.ToString() : default", "x?.ToString()")]
-        [InlineData("(x != null) ? x.ToString() : default(string)", "x?.ToString()")]
-
-        [InlineData("(x == null) ? null : x.ToString()", "x?.ToString()")]
-        [InlineData("(x == null) ? default : x.ToString()", "x?.ToString()")]
-        [InlineData("(x == null) ? default(string) : x.ToString()", "x?.ToString()")]
-        public async Task Test_ReferenceTypeToReferenceType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync(@"
 class Foo
 {
     void M()
@@ -33,19 +33,19 @@ class Foo
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        [InlineData("(x != null) ? x.Value : 0", "(x?.Value) ?? 0")]
-        [InlineData("(x != null) ? x.Value : default", "(x?.Value) ?? default")]
-        [InlineData("(x != null) ? x.Value : default(int)", "(x?.Value) ?? default(int)")]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    [InlineData("(x != null) ? x.Value : 0", "(x?.Value) ?? 0")]
+    [InlineData("(x != null) ? x.Value : default", "(x?.Value) ?? default")]
+    [InlineData("(x != null) ? x.Value : default(int)", "(x?.Value) ?? default(int)")]
 
-        [InlineData("(x == null) ? 0 : x.Value", "(x?.Value) ?? 0")]
-        [InlineData("(x == null) ? default : x.Value", "(x?.Value) ?? default")]
-        [InlineData("(x == null) ? default(int) : x.Value", "(x?.Value) ?? default(int)")]
-        public async Task Test_ReferenceTypeToValueType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [InlineData("(x == null) ? 0 : x.Value", "(x?.Value) ?? 0")]
+    [InlineData("(x == null) ? default : x.Value", "(x?.Value) ?? default")]
+    [InlineData("(x == null) ? default(int) : x.Value", "(x?.Value) ?? default(int)")]
+    public async Task Test_ReferenceTypeToValueType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class Foo
 {
     void M()
@@ -58,19 +58,19 @@ class Foo
     public int Value { get; }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        [InlineData("(x != null) ? x.Value : null", "x?.Value")]
-        [InlineData("(x != null) ? x.Value : default", "x?.Value")]
-        [InlineData("(x != null) ? x.Value : default(int?)", "x?.Value")]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    [InlineData("(x != null) ? x.Value : null", "x?.Value")]
+    [InlineData("(x != null) ? x.Value : default", "x?.Value")]
+    [InlineData("(x != null) ? x.Value : default(int?)", "x?.Value")]
 
-        [InlineData("(x == null) ? null : x.Value", "x?.Value")]
-        [InlineData("(x == null) ? default : x.Value", "x?.Value")]
-        [InlineData("(x == null) ? default(int?) : x.Value", "x?.Value")]
-        public async Task Test_ReferenceTypeToNullableType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [InlineData("(x == null) ? null : x.Value", "x?.Value")]
+    [InlineData("(x == null) ? default : x.Value", "x?.Value")]
+    [InlineData("(x == null) ? default(int?) : x.Value", "x?.Value")]
+    public async Task Test_ReferenceTypeToNullableType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class Foo
 {
     void M()
@@ -83,16 +83,16 @@ class Foo
     public int? Value { get; }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        [InlineData("(ni != null) ? ni.Value.ToString() : null", "ni?.ToString()")]
-        [InlineData("(ni == null) ? null : ni.Value.ToString()", "ni?.ToString()")]
-        [InlineData("(ni.HasValue) ? ni.Value.ToString() : null", "ni?.ToString()")]
-        [InlineData("(!ni.HasValue) ? null : ni.Value.ToString()", "ni?.ToString()")]
-        public async Task Test_NullableTypeToReferenceType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    [InlineData("(ni != null) ? ni.Value.ToString() : null", "ni?.ToString()")]
+    [InlineData("(ni == null) ? null : ni.Value.ToString()", "ni?.ToString()")]
+    [InlineData("(ni.HasValue) ? ni.Value.ToString() : null", "ni?.ToString()")]
+    [InlineData("(!ni.HasValue) ? null : ni.Value.ToString()", "ni?.ToString()")]
+    public async Task Test_NullableTypeToReferenceType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -103,16 +103,16 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        [InlineData("(ni != null) ? ni.Value.GetHashCode() : 0", "(ni?.GetHashCode()) ?? 0")]
-        [InlineData("(ni == null) ? 0 : ni.Value.GetHashCode()", "(ni?.GetHashCode()) ?? 0")]
-        [InlineData("(ni.HasValue) ? ni.Value.GetHashCode() : 0", "(ni?.GetHashCode()) ?? 0")]
-        [InlineData("(!ni.HasValue) ? 0 : ni.Value.GetHashCode()", "(ni?.GetHashCode()) ?? 0")]
-        public async Task Test_NullableTypeToValueType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    [InlineData("(ni != null) ? ni.Value.GetHashCode() : 0", "(ni?.GetHashCode()) ?? 0")]
+    [InlineData("(ni == null) ? 0 : ni.Value.GetHashCode()", "(ni?.GetHashCode()) ?? 0")]
+    [InlineData("(ni.HasValue) ? ni.Value.GetHashCode() : 0", "(ni?.GetHashCode()) ?? 0")]
+    [InlineData("(!ni.HasValue) ? 0 : ni.Value.GetHashCode()", "(ni?.GetHashCode()) ?? 0")]
+    public async Task Test_NullableTypeToValueType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -123,12 +123,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        public async Task Test_NullableTypeToNullableType_HasValue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task Test_NullableTypeToNullableType_HasValue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 struct C
 {
     void M(C? x)
@@ -149,12 +149,12 @@ struct C
     int M2() => 0;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        public async Task Test_NullableTypeToNullableType_NotHasValue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task Test_NullableTypeToNullableType_NotHasValue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 struct C
 {
     void M(C? x)
@@ -175,12 +175,12 @@ struct C
     int M2() => 0;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        public async Task Test_NullableTypeToNullableType_WithCastExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task Test_NullableTypeToNullableType_WithCastExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -205,12 +205,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        public async Task Test_StructAndDefaultOfNullable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task Test_StructAndDefaultOfNullable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -239,12 +239,12 @@ class C
     int M2() => default;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        public async Task Test_DefaultOfNullableAndStruct()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task Test_DefaultOfNullableAndStruct()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -273,12 +273,12 @@ class C
     int M2() => default;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 
 class Foo
 {
@@ -319,12 +319,12 @@ class Foo
     public int Value { get; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        public async Task TestNoDiagnostic_LanguageVersion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task TestNoDiagnostic_LanguageVersion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class Foo
 {
     void M()
@@ -335,12 +335,12 @@ class Foo
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp5);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        public async Task TestNoDiagnostic_ExpressionTree()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task TestNoDiagnostic_ExpressionTree()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq.Expressions;
 
@@ -356,6 +356,5 @@ class C
     }
 }
 ");
-        }
     }
 }

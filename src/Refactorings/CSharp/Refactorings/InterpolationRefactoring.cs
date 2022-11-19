@@ -3,20 +3,19 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InterpolationRefactoring
 {
-    internal static class InterpolationRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, InterpolationSyntax interpolation)
     {
-        public static void ComputeRefactorings(RefactoringContext context, InterpolationSyntax interpolation)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveInterpolation)
+            && context.Span.IsContainedInSpan(interpolation.OpenBraceToken, interpolation.CloseBraceToken))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveInterpolation)
-                && context.Span.IsContainedInSpan(interpolation.OpenBraceToken, interpolation.CloseBraceToken))
-            {
-                context.RegisterRefactoring(
-                    "Remove interpolation",
-                    ct => context.Document.RemoveNodeAsync(interpolation, SyntaxRemoveOptions.KeepUnbalancedDirectives, ct),
-                    RefactoringDescriptors.RemoveInterpolation);
-            }
+            context.RegisterRefactoring(
+                "Remove interpolation",
+                ct => context.Document.RemoveNodeAsync(interpolation, SyntaxRemoveOptions.KeepUnbalancedDirectives, ct),
+                RefactoringDescriptors.RemoveInterpolation);
         }
     }
 }

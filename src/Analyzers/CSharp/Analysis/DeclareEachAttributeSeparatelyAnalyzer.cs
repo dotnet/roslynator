@@ -7,42 +7,41 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class DeclareEachAttributeSeparatelyAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DeclareEachAttributeSeparatelyAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.DeclareEachAttributeSeparately);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.DeclareEachAttributeSeparately);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAttributeList(f), SyntaxKind.AttributeList);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeAttributeList(f), SyntaxKind.AttributeList);
+    }
 
-        private static void AnalyzeAttributeList(SyntaxNodeAnalysisContext context)
-        {
-            var attributeList = (AttributeListSyntax)context.Node;
+    private static void AnalyzeAttributeList(SyntaxNodeAnalysisContext context)
+    {
+        var attributeList = (AttributeListSyntax)context.Node;
 
-            if (IsFixable(attributeList))
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DeclareEachAttributeSeparately, attributeList);
-        }
+        if (IsFixable(attributeList))
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DeclareEachAttributeSeparately, attributeList);
+    }
 
-        public static bool IsFixable(AttributeListSyntax attributeList)
-        {
-            return attributeList.Attributes.Count > 1;
-        }
+    public static bool IsFixable(AttributeListSyntax attributeList)
+    {
+        return attributeList.Attributes.Count > 1;
     }
 }

@@ -8,75 +8,74 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
+namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations;
+
+internal static class SortEnumMemberDeclarationsRefactoring
 {
-    internal static class SortEnumMemberDeclarationsRefactoring
+    public static async Task ComputeRefactoringAsync(
+        RefactoringContext context,
+        EnumDeclarationSyntax enumDeclaration,
+        SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selectedMembers)
     {
-        public static async Task ComputeRefactoringAsync(
-            RefactoringContext context,
-            EnumDeclarationSyntax enumDeclaration,
-            SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selectedMembers)
+        if (!selectedMembers.IsSorted(EnumMemberDeclarationNameComparer.Instance))
         {
-            if (!selectedMembers.IsSorted(EnumMemberDeclarationNameComparer.Instance))
+            context.RegisterRefactoring(
+                "Sort enum members by name",
+                ct => SortByNameAsync(context.Document, enumDeclaration, selectedMembers, ct),
+                RefactoringDescriptors.SortMemberDeclarations);
+        }
+
+        if (selectedMembers.Any(f => f.EqualsValue?.Value != null))
+        {
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            if (!EnumMemberDeclarationValueComparer.IsSorted(selectedMembers, semanticModel, context.CancellationToken))
             {
                 context.RegisterRefactoring(
-                    "Sort enum members by name",
-                    ct => SortByNameAsync(context.Document, enumDeclaration, selectedMembers, ct),
+                    "Sort enum members by value",
+                    ct => SortByValueAsync(context.Document, enumDeclaration, selectedMembers, ct),
                     RefactoringDescriptors.SortMemberDeclarations);
             }
-
-            if (selectedMembers.Any(f => f.EqualsValue?.Value != null))
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                if (!EnumMemberDeclarationValueComparer.IsSorted(selectedMembers, semanticModel, context.CancellationToken))
-                {
-                    context.RegisterRefactoring(
-                        "Sort enum members by value",
-                        ct => SortByValueAsync(context.Document, enumDeclaration, selectedMembers, ct),
-                        RefactoringDescriptors.SortMemberDeclarations);
-                }
-            }
         }
+    }
 
-        private static Task<Document> SortByNameAsync(
-            Document document,
-            EnumDeclarationSyntax enumDeclaration,
-            SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selectedMembers,
-            CancellationToken cancellationToken)
-        {
-            IEnumerable<EnumMemberDeclarationSyntax> sorted = selectedMembers.OrderBy(f => f, EnumMemberDeclarationNameComparer.Instance);
+    private static Task<Document> SortByNameAsync(
+        Document document,
+        EnumDeclarationSyntax enumDeclaration,
+        SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selectedMembers,
+        CancellationToken cancellationToken)
+    {
+        IEnumerable<EnumMemberDeclarationSyntax> sorted = selectedMembers.OrderBy(f => f, EnumMemberDeclarationNameComparer.Instance);
 
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = enumDeclaration
-                .Members
-                .ReplaceRange(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = enumDeclaration
+            .Members
+            .ReplaceRange(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
 
-            MemberDeclarationSyntax newNode = enumDeclaration.WithMembers(newMembers);
+        MemberDeclarationSyntax newNode = enumDeclaration.WithMembers(newMembers);
 
-            return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
+    }
 
-        private static async Task<Document> SortByValueAsync(
-            Document document,
-            EnumDeclarationSyntax enumDeclaration,
-            SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selectedMembers,
-            CancellationToken cancellationToken)
-        {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+    private static async Task<Document> SortByValueAsync(
+        Document document,
+        EnumDeclarationSyntax enumDeclaration,
+        SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selectedMembers,
+        CancellationToken cancellationToken)
+    {
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            SpecialType enumSpecialType = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken).EnumUnderlyingType.SpecialType;
+        SpecialType enumSpecialType = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken).EnumUnderlyingType.SpecialType;
 
-            var comparer = new EnumMemberDeclarationValueComparer(EnumValueComparer.GetInstance(enumSpecialType), semanticModel, cancellationToken);
+        var comparer = new EnumMemberDeclarationValueComparer(EnumValueComparer.GetInstance(enumSpecialType), semanticModel, cancellationToken);
 
-            IEnumerable<EnumMemberDeclarationSyntax> sorted = selectedMembers.OrderBy(f => f, comparer);
+        IEnumerable<EnumMemberDeclarationSyntax> sorted = selectedMembers.OrderBy(f => f, comparer);
 
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = enumDeclaration
-                .Members
-                .ReplaceRange(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = enumDeclaration
+            .Members
+            .ReplaceRange(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
 
-            MemberDeclarationSyntax newNode = enumDeclaration.WithMembers(newMembers);
+        MemberDeclarationSyntax newNode = enumDeclaration.WithMembers(newMembers);
 
-            return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
-        }
+        return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
     }
 }

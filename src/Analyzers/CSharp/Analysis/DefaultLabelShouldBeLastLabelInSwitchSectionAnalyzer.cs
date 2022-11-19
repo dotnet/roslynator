@@ -8,61 +8,60 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class DefaultLabelShouldBeLastLabelInSwitchSectionAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DefaultLabelShouldBeLastLabelInSwitchSectionAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.DefaultLabelShouldBeLastLabelInSwitchSection);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.DefaultLabelShouldBeLastLabelInSwitchSection);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeSwitchSection(f), SyntaxKind.SwitchSection);
+    }
+
+    private static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
+    {
+        var switchSection = (SwitchSectionSyntax)context.Node;
+
+        SyntaxList<SwitchLabelSyntax> labels = switchSection.Labels;
+
+        int count = labels.Count;
+
+        if (count <= 1)
+            return;
+
+        SwitchLabelSyntax lastLabel = labels.Last();
+
+        for (int i = 0; i < count - 1; i++)
         {
-            base.Initialize(context);
+            SwitchLabelSyntax label = labels[i];
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSwitchSection(f), SyntaxKind.SwitchSection);
-        }
-
-        private static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
-        {
-            var switchSection = (SwitchSectionSyntax)context.Node;
-
-            SyntaxList<SwitchLabelSyntax> labels = switchSection.Labels;
-
-            int count = labels.Count;
-
-            if (count <= 1)
-                return;
-
-            SwitchLabelSyntax lastLabel = labels.Last();
-
-            for (int i = 0; i < count - 1; i++)
+            if (label.Kind() == SyntaxKind.DefaultSwitchLabel)
             {
-                SwitchLabelSyntax label = labels[i];
+                TextSpan span = TextSpan.FromBounds(label.Span.End, lastLabel.SpanStart);
 
-                if (label.Kind() == SyntaxKind.DefaultSwitchLabel)
+                if (!switchSection.ContainsDirectives(span))
                 {
-                    TextSpan span = TextSpan.FromBounds(label.Span.End, lastLabel.SpanStart);
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.DefaultLabelShouldBeLastLabelInSwitchSection,
+                        label);
 
-                    if (!switchSection.ContainsDirectives(span))
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.DefaultLabelShouldBeLastLabelInSwitchSection,
-                            label);
-
-                        break;
-                    }
+                    break;
                 }
             }
         }

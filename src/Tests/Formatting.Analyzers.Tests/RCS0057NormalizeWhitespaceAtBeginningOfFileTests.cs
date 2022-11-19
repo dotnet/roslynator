@@ -6,38 +6,38 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
+namespace Roslynator.Formatting.CSharp.Tests;
+
+public class RCS0057NormalizeWhitespaceAtBeginningOfFileTests : AbstractCSharpDiagnosticVerifier<NormalizeWhitespaceAtBeginningOfFileAnalyzer, CompilationUnitCodeFixProvider>
 {
-    public class RCS0057NormalizeWhitespaceAtBeginningOfFileTests : AbstractCSharpDiagnosticVerifier<NormalizeWhitespaceAtBeginningOfFileAnalyzer, CompilationUnitCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    public async Task Test()
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile;
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"[||]
+        await VerifyDiagnosticAndFixAsync(@"[||]
 class C
 {
 }", @"class C
 {
 }");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
-        public async Task Test_TrailingWhitespace()
-        {
-            await VerifyDiagnosticAndFixAsync(@"[||] 
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    public async Task Test_TrailingWhitespace()
+    {
+        await VerifyDiagnosticAndFixAsync(@"[||] 
 class C
 {
 }", @"class C
 {
 }");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
-        public async Task Test_TrailingMany()
-        {
-            await VerifyDiagnosticAndFixAsync(@"[||] 
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    public async Task Test_TrailingMany()
+    {
+        await VerifyDiagnosticAndFixAsync(@"[||] 
 
   
 class C
@@ -45,12 +45,12 @@ class C
 }", @"class C
 {
 }");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
-        public async Task Test_SingleLineComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"[||]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    public async Task Test_SingleLineComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"[||]
 //x
 class C
 {
@@ -58,12 +58,12 @@ class C
 class C
 {
 }");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
-        public async Task Test_MultiLineComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"[||]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    public async Task Test_MultiLineComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"[||]
 /** x **/
 class C
 {
@@ -71,12 +71,12 @@ class C
 class C
 {
 }");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
-        public async Task Test_Directive()
-        {
-            await VerifyDiagnosticAndFixAsync(@"[||]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    public async Task Test_Directive()
+    {
+        await VerifyDiagnosticAndFixAsync(@"[||]
 #region
 class C
 {
@@ -86,16 +86,15 @@ class C
 {
 }
 #endregion");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
-        public async Task Test_WhitespaceOnly()
-        {
-            await VerifyDiagnosticAndFixAsync(@"[||] class C
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile)]
+    public async Task Test_WhitespaceOnly()
+    {
+        await VerifyDiagnosticAndFixAsync(@"[||] class C
 {
 }", @"class C
 {
 }");
-        }
     }
 }

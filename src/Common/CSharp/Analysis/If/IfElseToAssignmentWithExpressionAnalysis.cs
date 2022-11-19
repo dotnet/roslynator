@@ -3,28 +3,27 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.If
+namespace Roslynator.CSharp.Analysis.If;
+
+internal sealed class IfElseToAssignmentWithExpressionAnalysis : IfAnalysis
 {
-    internal sealed class IfElseToAssignmentWithExpressionAnalysis : IfAnalysis
+    public IfElseToAssignmentWithExpressionAnalysis(
+        IfStatementSyntax ifStatement,
+        ExpressionStatementSyntax expressionStatement,
+        SemanticModel semanticModel) : base(ifStatement, semanticModel)
     {
-        public IfElseToAssignmentWithExpressionAnalysis(
-            IfStatementSyntax ifStatement,
-            ExpressionStatementSyntax expressionStatement,
-            SemanticModel semanticModel) : base(ifStatement, semanticModel)
-        {
-            ExpressionStatement = expressionStatement;
-        }
-
-        public override IfAnalysisKind Kind
-        {
-            get { return IfAnalysisKind.IfElseToAssignmentWithExpression; }
-        }
-
-        public override string Title
-        {
-            get { return "Convert 'if' to assignment"; }
-        }
-
-        public ExpressionStatementSyntax ExpressionStatement { get; }
+        ExpressionStatement = expressionStatement;
     }
+
+    public override IfAnalysisKind Kind
+    {
+        get { return IfAnalysisKind.IfElseToAssignmentWithExpression; }
+    }
+
+    public override string Title
+    {
+        get { return "Convert 'if' to assignment"; }
+    }
+
+    public ExpressionStatementSyntax ExpressionStatement { get; }
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0119NameIsNotValidInGivenContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<SimpleNameCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CS0119NameIsNotValidInGivenContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<SimpleNameCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -32,6 +32,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

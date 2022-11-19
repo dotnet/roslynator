@@ -8,86 +8,85 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf
+namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf;
+
+internal abstract class ConvertReturnToIfRefactoring<TStatement> where TStatement : StatementSyntax
 {
-    internal abstract class ConvertReturnToIfRefactoring<TStatement> where TStatement : StatementSyntax
+    protected abstract ExpressionSyntax GetExpression(TStatement statement);
+
+    protected abstract TStatement SetExpression(TStatement statement, ExpressionSyntax expression);
+
+    protected abstract string GetTitle(TStatement statement);
+
+    public async Task ComputeRefactoringAsync(RefactoringContext context, TStatement statement)
     {
-        protected abstract ExpressionSyntax GetExpression(TStatement statement);
+        ExpressionSyntax expression = GetExpression(statement);
 
-        protected abstract TStatement SetExpression(TStatement statement, ExpressionSyntax expression);
+        if (expression == null)
+            return;
 
-        protected abstract string GetTitle(TStatement statement);
+        if (CSharpFacts.IsBooleanLiteralExpression(expression.Kind()))
+            return;
 
-        public async Task ComputeRefactoringAsync(RefactoringContext context, TStatement statement)
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        if (semanticModel
+            .GetTypeInfo(expression, context.CancellationToken)
+            .ConvertedType?
+            .SpecialType == SpecialType.System_Boolean)
         {
-            ExpressionSyntax expression = GetExpression(statement);
+            context.ThrowIfCancellationRequested();
 
-            if (expression == null)
-                return;
+            context.RegisterRefactoring(
+                GetTitle(statement),
+                ct => RefactorAsync(context.Document, statement, expression, ct),
+                RefactoringDescriptors.ConvertReturnStatementToIf);
+        }
+    }
 
-            if (CSharpFacts.IsBooleanLiteralExpression(expression.Kind()))
-                return;
+    private Task<Document> RefactorAsync(
+        Document document,
+        TStatement statement,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        IfStatementSyntax ifStatement = CreateIfStatement(statement, expression)
+            .WithTriviaFrom(statement)
+            .WithFormatterAnnotation();
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+        cancellationToken.ThrowIfCancellationRequested();
 
-            if (semanticModel
-                .GetTypeInfo(expression, context.CancellationToken)
-                .ConvertedType?
-                .SpecialType == SpecialType.System_Boolean)
+        return document.ReplaceNodeAsync(statement, ifStatement, cancellationToken);
+    }
+
+    private IfStatementSyntax CreateIfStatement(TStatement statement, ExpressionSyntax expression)
+    {
+        if (expression.IsKind(SyntaxKind.LogicalOrExpression))
+        {
+            var binaryExpression = (BinaryExpressionSyntax)expression;
+
+            ExpressionSyntax left = binaryExpression.Left;
+
+            if (left?.IsKind(SyntaxKind.LogicalOrExpression) == false)
             {
-                context.ThrowIfCancellationRequested();
+                ExpressionSyntax right = binaryExpression.Right;
 
-                context.RegisterRefactoring(
-                    GetTitle(statement),
-                    ct => RefactorAsync(context.Document, statement, expression, ct),
-                    RefactoringDescriptors.ConvertReturnStatementToIf);
+                if (right != null)
+                    return CreateIfStatement(statement, left, TrueLiteralExpression(), right.WithoutTrivia());
             }
         }
 
-        private Task<Document> RefactorAsync(
-            Document document,
-            TStatement statement,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
-        {
-            IfStatementSyntax ifStatement = CreateIfStatement(statement, expression)
-                .WithTriviaFrom(statement)
-                .WithFormatterAnnotation();
+        return CreateIfStatement(statement, expression, TrueLiteralExpression(), FalseLiteralExpression());
+    }
 
-            cancellationToken.ThrowIfCancellationRequested();
+    private IfStatementSyntax CreateIfStatement(TStatement statement, ExpressionSyntax condition, ExpressionSyntax left, ExpressionSyntax right)
+    {
+        statement = statement.WithoutLeadingTrivia();
 
-            return document.ReplaceNodeAsync(statement, ifStatement, cancellationToken);
-        }
-
-        private IfStatementSyntax CreateIfStatement(TStatement statement, ExpressionSyntax expression)
-        {
-            if (expression.IsKind(SyntaxKind.LogicalOrExpression))
-            {
-                var binaryExpression = (BinaryExpressionSyntax)expression;
-
-                ExpressionSyntax left = binaryExpression.Left;
-
-                if (left?.IsKind(SyntaxKind.LogicalOrExpression) == false)
-                {
-                    ExpressionSyntax right = binaryExpression.Right;
-
-                    if (right != null)
-                        return CreateIfStatement(statement, left, TrueLiteralExpression(), right.WithoutTrivia());
-                }
-            }
-
-            return CreateIfStatement(statement, expression, TrueLiteralExpression(), FalseLiteralExpression());
-        }
-
-        private IfStatementSyntax CreateIfStatement(TStatement statement, ExpressionSyntax condition, ExpressionSyntax left, ExpressionSyntax right)
-        {
-            statement = statement.WithoutLeadingTrivia();
-
-            return IfStatement(
-                condition,
-                Block(SetExpression(statement, left)),
-                ElseClause(
-                    Block(SetExpression(statement, right))));
-        }
+        return IfStatement(
+            condition,
+            Block(SetExpression(statement, left)),
+            ElseClause(
+                Block(SetExpression(statement, right))));
     }
 }

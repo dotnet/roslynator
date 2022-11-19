@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1103ConvertIfToAssignmentTests : AbstractCSharpDiagnosticVerifier<IfStatementAnalyzer, IfStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertIfToAssignment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
-        public async Task Test_InvertCondition()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1103ConvertIfToAssignmentTests : AbstractCSharpDiagnosticVerifier<IfStatementAnalyzer, IfStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertIfToAssignment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
+    public async Task Test_InvertCondition()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -47,12 +47,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
-        public async Task TestNoDiagnostic_ContainsComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
+    public async Task TestNoDiagnostic_ContainsComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -71,12 +71,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
-        public async Task TestNoDiagnostic_ContainsDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
+    public async Task TestNoDiagnostic_ContainsDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -96,6 +96,5 @@ class C
     }
 }
 ");
-        }
     }
 }

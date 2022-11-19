@@ -10,39 +10,38 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBracesCodeFixProvider))]
+[Shared]
+public sealed class AddBracesCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBracesCodeFixProvider))]
-    [Shared]
-    public sealed class AddBracesCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines,
-                    DiagnosticIdentifiers.AddBraces,
-                    DiagnosticIdentifiers.AddBracesToIfElse);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines,
+                DiagnosticIdentifiers.AddBraces,
+                DiagnosticIdentifiers.AddBracesToIfElse);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            CodeAction codeAction = CodeAction.Create(
+                "Add braces",
+                ct => AddBracesRefactoring.RefactorAsync(context.Document, statement, ct),
+                GetEquivalenceKey(diagnostic));
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Add braces",
-                    ct => AddBracesRefactoring.RefactorAsync(context.Document, statement, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

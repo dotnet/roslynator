@@ -35,6 +35,9 @@ roslynator_use_var_instead_of_implicit_object_creation = true
 roslynator_infinite_loop_style = while
 roslynator_doc_comment_summary_style = multi_line
 roslynator_enum_flag_value_style = shift_operator
+roslynator_blank_line_after_file_scoped_namespace_declaration = true
+
+csharp_style_namespace_declarations = file_scoped:suggestion
 
 dotnet_diagnostic.RCS0001.severity = suggestion
 dotnet_diagnostic.RCS0003.severity = suggestion
@@ -75,6 +78,7 @@ dotnet_diagnostic.RCS0055.severity = suggestion
 dotnet_diagnostic.RCS0057.severity = suggestion
 dotnet_diagnostic.RCS0058.severity = suggestion
 dotnet_diagnostic.RCS0059.severity = suggestion
+dotnet_diagnostic.RCS0060.severity = suggestion
 dotnet_diagnostic.RCS1002.severity = silent
 dotnet_diagnostic.RCS1006.severity = suggestion
 dotnet_diagnostic.RCS1008.severity = suggestion

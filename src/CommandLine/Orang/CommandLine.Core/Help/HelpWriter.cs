@@ -4,220 +4,219 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace Roslynator.CommandLine.Help
+namespace Roslynator.CommandLine.Help;
+
+public abstract class HelpWriter
 {
-    public abstract class HelpWriter
+    protected HelpWriter(HelpWriterOptions options = null)
     {
-        protected HelpWriter(HelpWriterOptions options = null)
+        Options = options ?? HelpWriterOptions.Default;
+    }
+
+    public HelpWriterOptions Options { get; }
+
+    public virtual void WriteCommand(CommandHelp commandHelp)
+    {
+        WriteStartCommand(commandHelp);
+
+        ImmutableArray<ArgumentItem> arguments = commandHelp.Arguments;
+
+        if (arguments.Any())
         {
-            Options = options ?? HelpWriterOptions.Default;
+            WriteStartArguments(commandHelp);
+            WriteArguments(arguments);
+            WriteEndArguments(commandHelp);
         }
-
-        public HelpWriterOptions Options { get; }
-
-        public virtual void WriteCommand(CommandHelp commandHelp)
-        {
-            WriteStartCommand(commandHelp);
-
-            ImmutableArray<ArgumentItem> arguments = commandHelp.Arguments;
-
-            if (arguments.Any())
-            {
-                WriteStartArguments(commandHelp);
-                WriteArguments(arguments);
-                WriteEndArguments(commandHelp);
-            }
-            else if (Options.Filter != null
-                && commandHelp.Command.Arguments.Any())
-            {
-                WriteLine();
-                WriteLine("No argument found");
-            }
-
-            ImmutableArray<OptionItem> options = commandHelp.Options;
-
-            if (options.Any())
-            {
-                WriteStartOptions(commandHelp);
-                WriteOptions(options);
-                WriteEndOptions(commandHelp);
-            }
-            else if (Options.Filter != null
-                && commandHelp.Command.Options.Any())
-            {
-                WriteLine();
-                WriteLine("No option found");
-            }
-
-            WriteEndCommand(commandHelp);
-        }
-
-        public virtual void WriteStartCommand(CommandHelp commandHelp)
-        {
-        }
-
-        public virtual void WriteEndCommand(CommandHelp commandHelp)
-        {
-        }
-
-        private void WriteOptions(ImmutableArray<OptionItem> options)
-        {
-            foreach (OptionItem option in options)
-            {
-                Write(Options.Indent);
-                WriteTextLine(option);
-            }
-        }
-
-        public virtual void WriteStartOptions(CommandHelp commandHelp)
+        else if (Options.Filter != null
+            && commandHelp.Command.Arguments.Any())
         {
             WriteLine();
-            WriteHeading("Options");
+            WriteLine("No argument found");
         }
 
-        public virtual void WriteEndOptions(CommandHelp commandHelp)
+        ImmutableArray<OptionItem> options = commandHelp.Options;
+
+        if (options.Any())
         {
+            WriteStartOptions(commandHelp);
+            WriteOptions(options);
+            WriteEndOptions(commandHelp);
         }
-
-        private void WriteArguments(ImmutableArray<ArgumentItem> arguments)
-        {
-            foreach (ArgumentItem argument in arguments)
-            {
-                Write(Options.Indent);
-                WriteTextLine(argument);
-            }
-        }
-
-        public virtual void WriteStartArguments(CommandHelp commandHelp)
+        else if (Options.Filter != null
+            && commandHelp.Command.Options.Any())
         {
             WriteLine();
-            WriteHeading("Arguments");
+            WriteLine("No option found");
         }
 
-        public virtual void WriteEndArguments(CommandHelp commandHelp)
-        {
-        }
+        WriteEndCommand(commandHelp);
+    }
 
-        public virtual void WriteCommands(CommandsHelp commandsHelp)
+    public virtual void WriteStartCommand(CommandHelp commandHelp)
+    {
+    }
+
+    public virtual void WriteEndCommand(CommandHelp commandHelp)
+    {
+    }
+
+    private void WriteOptions(ImmutableArray<OptionItem> options)
+    {
+        foreach (OptionItem option in options)
         {
-            if (commandsHelp.Commands.Any())
+            Write(Options.Indent);
+            WriteTextLine(option);
+        }
+    }
+
+    public virtual void WriteStartOptions(CommandHelp commandHelp)
+    {
+        WriteLine();
+        WriteHeading("Options");
+    }
+
+    public virtual void WriteEndOptions(CommandHelp commandHelp)
+    {
+    }
+
+    private void WriteArguments(ImmutableArray<ArgumentItem> arguments)
+    {
+        foreach (ArgumentItem argument in arguments)
+        {
+            Write(Options.Indent);
+            WriteTextLine(argument);
+        }
+    }
+
+    public virtual void WriteStartArguments(CommandHelp commandHelp)
+    {
+        WriteLine();
+        WriteHeading("Arguments");
+    }
+
+    public virtual void WriteEndArguments(CommandHelp commandHelp)
+    {
+    }
+
+    public virtual void WriteCommands(CommandsHelp commandsHelp)
+    {
+        if (commandsHelp.Commands.Any())
+        {
+            WriteStartCommands(commandsHelp);
+
+            int width = commandsHelp.Commands.Max(f => f.Command.Name.Length) + 1;
+
+            foreach (CommandItem command in commandsHelp.Commands)
             {
-                WriteStartCommands(commandsHelp);
-
-                int width = commandsHelp.Commands.Max(f => f.Command.Name.Length) + 1;
-
-                foreach (CommandItem command in commandsHelp.Commands)
-                {
-                    Write(Options.Indent);
-                    WriteTextLine(command);
-                }
-
-                WriteEndCommands(commandsHelp);
+                Write(Options.Indent);
+                WriteTextLine(command);
             }
-            else if (Options.Filter != null)
+
+            WriteEndCommands(commandsHelp);
+        }
+        else if (Options.Filter != null)
+        {
+            WriteLine("No command found");
+        }
+    }
+
+    public virtual void WriteStartCommands(CommandsHelp commandsHelp)
+    {
+        WriteHeading("Commands");
+    }
+
+    public virtual void WriteEndCommands(CommandsHelp commandsHelp)
+    {
+    }
+
+    public void WriteValues(IEnumerable<OptionValueList> optionValues)
+    {
+        using (IEnumerator<OptionValueList> en = optionValues.GetEnumerator())
+        {
+            if (en.MoveNext())
             {
-                WriteLine("No command found");
-            }
-        }
+                WriteStartValues();
 
-        public virtual void WriteStartCommands(CommandsHelp commandsHelp)
-        {
-            WriteHeading("Commands");
-        }
-
-        public virtual void WriteEndCommands(CommandsHelp commandsHelp)
-        {
-        }
-
-        public void WriteValues(IEnumerable<OptionValueList> optionValues)
-        {
-            using (IEnumerator<OptionValueList> en = optionValues.GetEnumerator())
-            {
-                if (en.MoveNext())
+                while (true)
                 {
-                    WriteStartValues();
+                    WriteTextLine(en.Current.MetaValue);
+                    WriteValues(en.Current.Values);
 
-                    while (true)
-                    {
-                        WriteTextLine(en.Current.MetaValue);
-                        WriteValues(en.Current.Values);
-
-                        if (en.MoveNext())
-                        {
-                            WriteLine();
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    WriteEndValues();
-
-                    ImmutableArray<string> expressions = HelpProvider.GetExpressionItems(optionValues);
-
-                    if (!expressions.IsEmpty)
+                    if (en.MoveNext())
                     {
                         WriteLine();
-                        WriteLine("Expression syntax:");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
-                        foreach (string expression in expressions)
-                        {
-                            Write(Options.Indent);
-                            WriteLine(expression);
-                        }
+                WriteEndValues();
+
+                ImmutableArray<string> expressions = HelpProvider.GetExpressionItems(optionValues);
+
+                if (!expressions.IsEmpty)
+                {
+                    WriteLine();
+                    WriteLine("Expression syntax:");
+
+                    foreach (string expression in expressions)
+                    {
+                        Write(Options.Indent);
+                        WriteLine(expression);
                     }
                 }
             }
         }
+    }
 
-        private void WriteValues(ImmutableArray<OptionValueItem> values)
+    private void WriteValues(ImmutableArray<OptionValueItem> values)
+    {
+        foreach (OptionValueItem value in values)
         {
-            foreach (OptionValueItem value in values)
-            {
-                Write(Options.Indent);
+            Write(Options.Indent);
 
-                string text = TextHelpers.Indent(value.Text, Options.Indent);
+            string text = TextHelpers.Indent(value.Text, Options.Indent);
 
-                WriteTextLine(new HelpItem(text, ""));
-            }
+            WriteTextLine(new HelpItem(text, ""));
         }
+    }
 
-        public virtual void WriteStartValues()
-        {
-            WriteLine();
-            WriteHeading("Values");
-        }
+    public virtual void WriteStartValues()
+    {
+        WriteLine();
+        WriteHeading("Values");
+    }
 
-        public virtual void WriteEndValues()
-        {
-        }
+    public virtual void WriteEndValues()
+    {
+    }
 
-        protected void WriteHeading(string value)
-        {
-            Write(value);
-            WriteLine(":");
-        }
+    protected void WriteHeading(string value)
+    {
+        Write(value);
+        WriteLine(":");
+    }
 
-        protected void WriteSpaces(int count)
-        {
-            for (int i = 0; i < count; i++)
-                Write(' ');
-        }
+    protected void WriteSpaces(int count)
+    {
+        for (int i = 0; i < count; i++)
+            Write(' ');
+    }
 
-        protected abstract void Write(char value);
+    protected abstract void Write(char value);
 
-        protected abstract void Write(string value);
+    protected abstract void Write(string value);
 
-        protected abstract void WriteLine();
+    protected abstract void WriteLine();
 
-        protected abstract void WriteLine(string value);
+    protected abstract void WriteLine(string value);
 
-        protected abstract void WriteTextLine(HelpItem helpItem);
+    protected abstract void WriteTextLine(HelpItem helpItem);
 
-        public void WriteTextLine(string value)
-        {
-            WriteTextLine(new HelpItem(value, ""));
-        }
+    public void WriteTextLine(string value)
+    {
+        WriteTextLine(new HelpItem(value, ""));
     }
 }

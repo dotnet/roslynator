@@ -7,28 +7,27 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class CodeFixContextExtensions
 {
-    internal static class CodeFixContextExtensions
+    public static Task<SyntaxNode> GetSyntaxRootAsync(this CodeFixContext context)
     {
-        public static Task<SyntaxNode> GetSyntaxRootAsync(this CodeFixContext context)
-        {
-            return context.Document.GetSyntaxRootAsync(context.CancellationToken);
-        }
+        return context.Document.GetSyntaxRootAsync(context.CancellationToken);
+    }
 
-        public static Task<SemanticModel> GetSemanticModelAsync(this CodeFixContext context)
-        {
-            return context.Document.GetSemanticModelAsync(context.CancellationToken);
-        }
+    public static Task<SemanticModel> GetSemanticModelAsync(this CodeFixContext context)
+    {
+        return context.Document.GetSemanticModelAsync(context.CancellationToken);
+    }
 
-        public static Project Project(this CodeFixContext context)
-        {
-            return context.Document.Project;
-        }
+    public static Project Project(this CodeFixContext context)
+    {
+        return context.Document.Project;
+    }
 
-        public static Solution Solution(this CodeFixContext context)
-        {
-            return context.Document.Solution();
-        }
+    public static Solution Solution(this CodeFixContext context)
+    {
+        return context.Document.Solution();
     }
 }

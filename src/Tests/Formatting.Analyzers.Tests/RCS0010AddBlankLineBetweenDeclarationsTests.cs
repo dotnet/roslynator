@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0010AddBlankLineBetweenDeclarationsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenDeclarationsAnalyzer, BlankLineBetweenDeclarationsCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenDeclarations;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task Test_MemberDeclaration_FirstIsMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0010AddBlankLineBetweenDeclarationsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenDeclarationsAnalyzer, BlankLineBetweenDeclarationsCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenDeclarations;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task Test_MemberDeclaration_FirstIsMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -33,12 +33,12 @@ class C
     string P { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task Test_MemberDeclaration_SecondIsMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task Test_MemberDeclaration_SecondIsMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P { get; set; }[||]
@@ -56,12 +56,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task Test_MemberDeclaration_BothAreMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task Test_MemberDeclaration_BothAreMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M1()
@@ -83,12 +83,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task Test_EnumMemberDeclaration_FirstIsMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task Test_EnumMemberDeclaration_FirstIsMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 enum E
@@ -108,12 +108,12 @@ enum E
     B = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task Test_EnumMemberDeclaration_SecondIsMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task Test_EnumMemberDeclaration_SecondIsMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 enum E
@@ -133,12 +133,12 @@ enum E
     B = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task Test_EnumMemberDeclaration_BothAreMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task Test_EnumMemberDeclaration_BothAreMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 enum E
@@ -160,36 +160,36 @@ enum E
     B = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task TestNoDiagnostic_MemberDeclaration_SingleLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task TestNoDiagnostic_MemberDeclaration_SingleLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P1 { get; set; }
     string P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task TestNoDiagnostic_EnumMemberDeclaration_SingleLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task TestNoDiagnostic_EnumMemberDeclaration_SingleLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 enum E
 {
     A = 0,
     B = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task TestNoDiagnostic_MemberDeclaration_DocumentationComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task TestNoDiagnostic_MemberDeclaration_DocumentationComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M1()
@@ -203,12 +203,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task TestNoDiagnostic_EnumMemberDeclaration_DocumentationComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task TestNoDiagnostic_EnumMemberDeclaration_DocumentationComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 enum E
 {
     A = 0,
@@ -218,16 +218,15 @@ enum E
     B = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
-        public async Task TestNoDiagnostic_GlobalStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
+    public async Task TestNoDiagnostic_GlobalStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 var s = """";
 s = s
     .ToString();
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
-        }
     }
 }

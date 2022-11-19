@@ -5,49 +5,48 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
+namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement;
+
+internal sealed class RemoveRedundantYieldBreakStatementAnalysis : RemoveRedundantStatementAnalysis<YieldStatementSyntax>
 {
-    internal sealed class RemoveRedundantYieldBreakStatementAnalysis : RemoveRedundantStatementAnalysis<YieldStatementSyntax>
+    public static RemoveRedundantYieldBreakStatementAnalysis Instance { get; } = new();
+
+    private RemoveRedundantYieldBreakStatementAnalysis()
     {
-        public static RemoveRedundantYieldBreakStatementAnalysis Instance { get; } = new();
+    }
 
-        private RemoveRedundantYieldBreakStatementAnalysis()
+    protected override bool IsFixable(StatementSyntax statement, StatementSyntax containingStatement, BlockSyntax block, SyntaxKind parentKind)
+    {
+        if (!parentKind.Is(
+            SyntaxKind.MethodDeclaration,
+            SyntaxKind.LocalFunctionStatement))
         {
+            return false;
         }
 
-        protected override bool IsFixable(StatementSyntax statement, StatementSyntax containingStatement, BlockSyntax block, SyntaxKind parentKind)
+        SyntaxList<StatementSyntax> statements = block.Statements;
+
+        if (object.ReferenceEquals(statements.SingleOrDefault(ignoreLocalFunctions: true, shouldThrow: false), containingStatement))
+            return false;
+
+        ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
+
+        var success = false;
+
+        int index = statements.IndexOf(containingStatement);
+
+        for (int i = 0; i < index; i++)
         {
-            if (!parentKind.Is(
-                SyntaxKind.MethodDeclaration,
-                SyntaxKind.LocalFunctionStatement))
-            {
-                return false;
-            }
+            walker.VisitStatement(statements[i]);
 
-            SyntaxList<StatementSyntax> statements = block.Statements;
+            success = walker.YieldStatement != null;
 
-            if (object.ReferenceEquals(statements.SingleOrDefault(ignoreLocalFunctions: true, shouldThrow: false), containingStatement))
-                return false;
-
-            ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
-
-            var success = false;
-
-            int index = statements.IndexOf(containingStatement);
-
-            for (int i = 0; i < index; i++)
-            {
-                walker.VisitStatement(statements[i]);
-
-                success = walker.YieldStatement != null;
-
-                if (success)
-                    break;
-            }
-
-            ContainsYieldWalker.Free(walker);
-
-            return success;
+            if (success)
+                break;
         }
+
+        ContainsYieldWalker.Free(walker);
+
+        return success;
     }
 }

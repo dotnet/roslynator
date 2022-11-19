@@ -5,105 +5,104 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.InlineDefinition
+namespace Roslynator.CSharp.Refactorings.InlineDefinition;
+
+internal class InlineRewriter : CSharpSyntaxRewriter
 {
-    internal class InlineRewriter : CSharpSyntaxRewriter
+    private readonly Dictionary<SyntaxNode, object> _replacementMap;
+
+    public InlineRewriter(Dictionary<SyntaxNode, object> replacementMap)
     {
-        private readonly Dictionary<SyntaxNode, object> _replacementMap;
+        _replacementMap = replacementMap;
+    }
 
-        public InlineRewriter(Dictionary<SyntaxNode, object> replacementMap)
+    public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
+    {
+        if (_replacementMap.TryGetValue(node, out object newValue))
         {
-            _replacementMap = replacementMap;
+            var newNode = (ExpressionSyntax)newValue;
+
+            if (!newNode.IsKind(SyntaxKind.IdentifierName, SyntaxKind.PredefinedType)
+                && !node.IsParentKind(SyntaxKind.TypeArgumentList, SyntaxKind.TypeOfExpression))
+            {
+                newNode = newNode.Parenthesize();
+            }
+
+            return newNode;
         }
-
-        public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
+        else
         {
-            if (_replacementMap.TryGetValue(node, out object newValue))
-            {
-                var newNode = (ExpressionSyntax)newValue;
-
-                if (!newNode.IsKind(SyntaxKind.IdentifierName, SyntaxKind.PredefinedType)
-                    && !node.IsParentKind(SyntaxKind.TypeArgumentList, SyntaxKind.TypeOfExpression))
-                {
-                    newNode = newNode.Parenthesize();
-                }
-
-                return newNode;
-            }
-            else
-            {
-                return base.VisitIdentifierName(node);
-            }
+            return base.VisitIdentifierName(node);
         }
+    }
 
-        public override SyntaxNode VisitParameter(ParameterSyntax node)
+    public override SyntaxNode VisitParameter(ParameterSyntax node)
+    {
+        var newNode = (ParameterSyntax)base.VisitParameter(node);
+
+        if (_replacementMap.TryGetValue(node, out object newValue))
         {
-            var newNode = (ParameterSyntax)base.VisitParameter(node);
-
-            if (_replacementMap.TryGetValue(node, out object newValue))
-            {
-                return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
-            }
-            else
-            {
-                return newNode;
-            }
+            return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
         }
-
-        public override SyntaxNode VisitTypeParameter(TypeParameterSyntax node)
+        else
         {
-            var newNode = (TypeParameterSyntax)base.VisitTypeParameter(node);
-
-            if (_replacementMap.TryGetValue(node, out object newValue))
-            {
-                return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
-            }
-            else
-            {
-                return newNode;
-            }
+            return newNode;
         }
+    }
 
-        public override SyntaxNode VisitVariableDeclarator(VariableDeclaratorSyntax node)
+    public override SyntaxNode VisitTypeParameter(TypeParameterSyntax node)
+    {
+        var newNode = (TypeParameterSyntax)base.VisitTypeParameter(node);
+
+        if (_replacementMap.TryGetValue(node, out object newValue))
         {
-            var newNode = (VariableDeclaratorSyntax)base.VisitVariableDeclarator(node);
-
-            if (_replacementMap.TryGetValue(node, out object newValue))
-            {
-                return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
-            }
-            else
-            {
-                return newNode;
-            }
+            return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
         }
-
-        public override SyntaxNode VisitSingleVariableDesignation(SingleVariableDesignationSyntax node)
+        else
         {
-            var newNode = (SingleVariableDesignationSyntax)base.VisitSingleVariableDesignation(node);
-
-            if (_replacementMap.TryGetValue(node, out object newValue))
-            {
-                return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
-            }
-            else
-            {
-                return newNode;
-            }
+            return newNode;
         }
+    }
 
-        public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
+    public override SyntaxNode VisitVariableDeclarator(VariableDeclaratorSyntax node)
+    {
+        var newNode = (VariableDeclaratorSyntax)base.VisitVariableDeclarator(node);
+
+        if (_replacementMap.TryGetValue(node, out object newValue))
         {
-            var newNode = (ForEachStatementSyntax)base.VisitForEachStatement(node);
+            return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
+        }
+        else
+        {
+            return newNode;
+        }
+    }
 
-            if (_replacementMap.TryGetValue(node, out object newValue))
-            {
-                return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
-            }
-            else
-            {
-                return newNode;
-            }
+    public override SyntaxNode VisitSingleVariableDesignation(SingleVariableDesignationSyntax node)
+    {
+        var newNode = (SingleVariableDesignationSyntax)base.VisitSingleVariableDesignation(node);
+
+        if (_replacementMap.TryGetValue(node, out object newValue))
+        {
+            return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
+        }
+        else
+        {
+            return newNode;
+        }
+    }
+
+    public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
+    {
+        var newNode = (ForEachStatementSyntax)base.VisitForEachStatement(node);
+
+        if (_replacementMap.TryGetValue(node, out object newValue))
+        {
+            return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
+        }
+        else
+        {
+            return newNode;
         }
     }
 }

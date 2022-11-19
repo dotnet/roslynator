@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0120ObjectReferenceIsRequiredForNonStaticMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier<ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember)]
-        public async Task Test_MakeContainingMethodNonStatic()
-        {
-            await VerifyFixAsync(@"
+public class CS0120ObjectReferenceIsRequiredForNonStaticMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier<ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember)]
+    public async Task Test_MakeContainingMethodNonStatic()
+    {
+        await VerifyFixAsync(@"
 class A
 {
     public static void M()
@@ -34,12 +34,12 @@ class A
     public int P => 1;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.MakeMemberNonStatic));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember)]
-        public async Task TestNoFix()
-        {
-            await VerifyNoFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember)]
+    public async Task TestNoFix()
+    {
+        await VerifyNoFixAsync(@"
 class A
 {
     public void M()
@@ -53,6 +53,5 @@ class B
     public int P => 1;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

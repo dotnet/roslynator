@@ -7,16 +7,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1210ReturnCompletedTaskInsteadOfNullTests2 : AbstractCSharpDiagnosticVerifier<ReturnCompletedTaskInsteadOfNullAnalyzer, ReturnCompletedTaskInsteadOfNullCodeFixProvider2>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ReturnCompletedTaskInsteadOfNull;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
-        public async Task Test_TaskOfT_ConditionalAccess()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1210ReturnCompletedTaskInsteadOfNullTests2 : AbstractCSharpDiagnosticVerifier<ReturnCompletedTaskInsteadOfNullAnalyzer, ReturnCompletedTaskInsteadOfNullCodeFixProvider2>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ReturnCompletedTaskInsteadOfNull;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
+    public async Task Test_TaskOfT_ConditionalAccess()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -49,12 +49,12 @@ class C
     Task<C> GetAsync() => Task.FromResult(default(C));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
-        public async Task Test_Task_ConditionalAccess()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
+    public async Task Test_Task_ConditionalAccess()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -87,6 +87,5 @@ class C
     Task GetAsync() => Task.CompletedTask;
 }
 ");
-        }
     }
 }

@@ -6,56 +6,55 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class PutEnumMemberOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class PutEnumMemberOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutEnumMemberOnItsOwnLine);
+
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
+    }
+
+    private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+    {
+        var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
+
+        if (members.Count <= 1)
+            return;
+
+        int previousIndex = members[0].GetSpanStartLine();
+
+        for (int i = 1; i < members.Count; i++)
+        {
+            if (members[i].GetSpanStartLine() == previousIndex)
             {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutEnumMemberOnItsOwnLine);
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.PutEnumMemberOnItsOwnLine,
+                    Location.Create(enumDeclaration.SyntaxTree, members[i].Span.WithLength(0)));
 
-                return _supportedDiagnostics;
-            }
-        }
-
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
-        }
-
-        private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
-
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
-
-            if (members.Count <= 1)
                 return;
-
-            int previousIndex = members[0].GetSpanStartLine();
-
-            for (int i = 1; i < members.Count; i++)
-            {
-                if (members[i].GetSpanStartLine() == previousIndex)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.PutEnumMemberOnItsOwnLine,
-                        Location.Create(enumDeclaration.SyntaxTree, members[i].Span.WithLength(0)));
-
-                    return;
-                }
-
-                previousIndex = members[i].GetSpanEndLine();
             }
+
+            previousIndex = members[i].GetSpanEndLine();
         }
     }
 }

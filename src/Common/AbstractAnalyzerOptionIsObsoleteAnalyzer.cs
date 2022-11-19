@@ -3,30 +3,29 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator
+namespace Roslynator;
+
+public abstract class AbstractAnalyzerOptionIsObsoleteAnalyzer : DiagnosticAnalyzer
 {
-    public abstract class AbstractAnalyzerOptionIsObsoleteAnalyzer : DiagnosticAnalyzer
+    protected static bool TryReportObsoleteOption(
+        SyntaxTreeAnalysisContext context,
+        AnalyzerConfigOptions configOptions,
+        LegacyConfigOptionDescriptor legacyOption,
+        ConfigOptionDescriptor newOption,
+        string newValue)
     {
-        protected static bool TryReportObsoleteOption(
-            SyntaxTreeAnalysisContext context,
-            AnalyzerConfigOptions configOptions,
-            LegacyConfigOptionDescriptor legacyOption,
-            ConfigOptionDescriptor newOption,
-            string newValue)
+        if (configOptions.IsEnabled(legacyOption))
         {
-            if (configOptions.IsEnabled(legacyOption))
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    CommonDiagnosticRules.AnalyzerOptionIsObsolete,
-                    Location.None,
-                    legacyOption.Key,
-                    $", use option '{newOption.Key} = {newValue}' instead");
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                CommonDiagnosticRules.AnalyzerOptionIsObsolete,
+                Location.None,
+                legacyOption.Key,
+                $", use option '{newOption.Key} = {newValue}' instead");
 
-                return true;
-            }
-
-            return false;
+            return true;
         }
+
+        return false;
     }
 }

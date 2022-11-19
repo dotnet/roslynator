@@ -6,63 +6,62 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InvertIsExpressionRefactoring
 {
-    internal static class InvertIsExpressionRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
     {
-        public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
+        if (binaryExpression.IsKind(SyntaxKind.IsExpression))
+            ComputeRefactoringCore(context, binaryExpression);
+    }
+
+    public static void ComputeRefactoring(RefactoringContext context, IsPatternExpressionSyntax isPatternExpression)
+    {
+        ComputeRefactoringCore(context, isPatternExpression);
+    }
+
+    private static void ComputeRefactoringCore(RefactoringContext context, ExpressionSyntax expression)
+    {
+        if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression))
+            return;
+
+        SyntaxNode parent = expression.Parent;
+
+        if (parent.IsKind(SyntaxKind.ParenthesizedExpression))
         {
-            if (binaryExpression.IsKind(SyntaxKind.IsExpression))
-                ComputeRefactoringCore(context, binaryExpression);
-        }
-
-        public static void ComputeRefactoring(RefactoringContext context, IsPatternExpressionSyntax isPatternExpression)
-        {
-            ComputeRefactoringCore(context, isPatternExpression);
-        }
-
-        private static void ComputeRefactoringCore(RefactoringContext context, ExpressionSyntax expression)
-        {
-            if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression))
-                return;
-
-            SyntaxNode parent = expression.Parent;
-
-            if (parent.IsKind(SyntaxKind.ParenthesizedExpression))
+            if (parent.IsParentKind(SyntaxKind.LogicalNotExpression))
             {
-                if (parent.IsParentKind(SyntaxKind.LogicalNotExpression))
-                {
-                    RegisterRefactoring(context, (ExpressionSyntax)parent.Parent);
-                }
-                else
-                {
-                    RegisterRefactoring(context, (ExpressionSyntax)parent);
-                }
+                RegisterRefactoring(context, (ExpressionSyntax)parent.Parent);
             }
             else
             {
-                RegisterRefactoring(context, expression);
+                RegisterRefactoring(context, (ExpressionSyntax)parent);
             }
         }
-
-        private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
+        else
         {
-            context.RegisterRefactoring(
-                "Invert 'is'",
-                ct => RefactorAsync(context.Document, expression, ct),
-                RefactoringDescriptors.InvertIsExpression);
+            RegisterRefactoring(context, expression);
         }
+    }
 
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken)
-        {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+    private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
+    {
+        context.RegisterRefactoring(
+            "Invert 'is'",
+            ct => RefactorAsync(context.Document, expression, ct),
+            RefactoringDescriptors.InvertIsExpression);
+    }
 
-            ExpressionSyntax newNode = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(expression, semanticModel, cancellationToken);
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken)
+    {
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
-        }
+        ExpressionSyntax newNode = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(expression, semanticModel, cancellationToken);
+
+        return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
     }
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0206UseEnumeratorExplicitlyTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.UseEnumeratorExplicitly;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
-        public async Task TestCodeRefactoring_WithUsing()
-        {
-            await VerifyRefactoringAsync(
+public class RR0206UseEnumeratorExplicitlyTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.UseEnumeratorExplicitly;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
+    public async Task TestCodeRefactoring_WithUsing()
+    {
+        await VerifyRefactoringAsync(
 @"
 using System.Linq;
 
@@ -55,12 +55,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
-        public async Task TestCodeRefactoring_WithUsing_EmbeddedStatement()
-        {
-            await VerifyRefactoringAsync(
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
+    public async Task TestCodeRefactoring_WithUsing_EmbeddedStatement()
+    {
+        await VerifyRefactoringAsync(
 @"
 using System.Linq;
 
@@ -98,12 +98,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
-        public async Task TestCodeRefactoring_WithoutUsing()
-        {
-            await VerifyRefactoringAsync(
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
+    public async Task TestCodeRefactoring_WithoutUsing()
+    {
+        await VerifyRefactoringAsync(
 @"
 using Microsoft.CodeAnalysis;
 
@@ -137,12 +137,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
-        public async Task TestCodeRefactoring_WithoutUsing_EmbeddedStatement()
-        {
-            await VerifyRefactoringAsync(
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
+    public async Task TestCodeRefactoring_WithoutUsing_EmbeddedStatement()
+    {
+        await VerifyRefactoringAsync(
 @"
 using Microsoft.CodeAnalysis;
 
@@ -184,12 +184,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
-        public async Task TestNoCodeRefactoring_InvalidSpan()
-        {
-            await VerifyNoRefactoringAsync(
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
+    public async Task TestNoCodeRefactoring_InvalidSpan()
+    {
+        await VerifyNoRefactoringAsync(
 @"
 using System.Linq;
 
@@ -218,6 +218,5 @@ class C
     }
 }
 ", RefactoringId);
-        }
     }
 }

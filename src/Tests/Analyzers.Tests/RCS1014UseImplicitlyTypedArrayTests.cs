@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1014UseImplicitlyTypedArrayTests : AbstractCSharpDiagnosticVerifier<UseExplicitlyOrImplicitlyTypedArrayAnalyzer, UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1014UseImplicitlyTypedArrayTests : AbstractCSharpDiagnosticVerifier<UseExplicitlyOrImplicitlyTypedArrayAnalyzer, UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -32,12 +32,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
-        public async Task Test_TypeIsNotObvious()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_TypeIsNotObvious()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -58,12 +58,12 @@ class C
     string M2() => default;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
-        public async Task Test_TypeIsObvious()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_TypeIsObvious()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -80,12 +80,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
-        public async Task Test_TypesAreNotEqual()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_TypesAreNotEqual()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C : A
 {
     void M()
@@ -106,12 +106,12 @@ class B : A
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
-        public async Task Test_NestedArray()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_NestedArray()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string[][] _f = new [|string[]|][]
@@ -128,12 +128,12 @@ class C
     };
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
-        public async Task TestNoDiagnostic_TypeIsObvious()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task TestNoDiagnostic_TypeIsObvious()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -148,12 +148,12 @@ class C
     string M2() => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
-        public async Task TestNoDiagnostic_NoInitializer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task TestNoDiagnostic_NoInitializer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -162,12 +162,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
-        public async Task TestNoDiagnostic_ArrayInitializer_DerivedType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task TestNoDiagnostic_ArrayInitializer_DerivedType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -180,6 +180,5 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
-        }
     }
 }

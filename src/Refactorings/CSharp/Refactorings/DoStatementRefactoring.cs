@@ -2,20 +2,19 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class DoStatementRefactoring
 {
-    internal static class DoStatementRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, DoStatementSyntax doStatement)
     {
-        public static void ComputeRefactorings(RefactoringContext context, DoStatementSyntax doStatement)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertDoToWhile)
+            && (doStatement.DoKeyword.Span.Contains(context.Span)))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertDoToWhile)
-                && (doStatement.DoKeyword.Span.Contains(context.Span)))
-            {
-                context.RegisterRefactoring(
-                    "Convert to 'while'",
-                    ct => ConvertDoToWhileRefactoring.RefactorAsync(context.Document, doStatement, ct),
-                    RefactoringDescriptors.ConvertDoToWhile);
-            }
+            context.RegisterRefactoring(
+                "Convert to 'while'",
+                ct => ConvertDoToWhileRefactoring.RefactorAsync(context.Document, doStatement, ct),
+                RefactoringDescriptors.ConvertDoToWhile);
         }
     }
 }

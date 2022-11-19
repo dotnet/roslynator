@@ -2,15 +2,14 @@
 
 using System;
 
-namespace Roslynator.CSharp.Analysis.ReduceIfNesting
+namespace Roslynator.CSharp.Analysis.ReduceIfNesting;
+
+[Flags]
+internal enum ReduceIfNestingOptions
 {
-    [Flags]
-    internal enum ReduceIfNestingOptions
-    {
-        None = 0,
-        AllowNestedFix = 1,
-        AllowIfInsideIfElse = 1 << 1,
-        AllowLoop = 1 << 2,
-        AllowSwitchSection = 1 << 3,
-    }
+    None = 0,
+    AllowNestedFix = 1,
+    AllowIfInsideIfElse = 1 << 1,
+    AllowLoop = 1 << 2,
+    AllowSwitchSection = 1 << 3,
 }

@@ -5,16 +5,16 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RRTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddBraces;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        //[Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RRTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.AddBraces;
+
+    //[Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,13 +28,13 @@ class C
 }
 ", @"
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        //[Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
-        //[InlineData("", "")]
-        public async Task Test2(string source, string expected)
-        {
-            await VerifyRefactoringAsync(@"
+    //[Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
+    //[InlineData("", "")]
+    public async Task Test2(string source, string expected)
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,12 +47,12 @@ class C
     }
 }
 ", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        //[Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
-        public async Task TestNoRefactoring()
-        {
-            await VerifyNoRefactoringAsync(@"
+    //[Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
+    public async Task TestNoRefactoring()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +65,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

@@ -2,13 +2,12 @@
 
 using System;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+[Flags]
+internal enum WrapRewriterOptions
 {
-    [Flags]
-    internal enum WrapRewriterOptions
-    {
-        None = 0,
-        WrapArguments = 1,
-        IndentFieldInitializer = 1 << 1,
-    }
+    None = 0,
+    WrapArguments = 1,
+    IndentFieldInitializer = 1 << 1,
 }

@@ -4,41 +4,40 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.SyntaxRewriters
+namespace Roslynator.CSharp.SyntaxRewriters;
+
+internal sealed class TriviaRemover : CSharpSyntaxRewriter
 {
-    internal sealed class TriviaRemover : CSharpSyntaxRewriter
+    private TriviaRemover(TextSpan? span = null)
     {
-        private TriviaRemover(TextSpan? span = null)
+        Span = span;
+    }
+
+    private static TriviaRemover Default { get; } = new();
+
+    public TextSpan? Span { get; }
+
+    public static SyntaxTrivia Replacement { get; } = CSharpFactory.EmptyWhitespace();
+
+    public static TriviaRemover GetInstance(TextSpan? span = null)
+    {
+        if (span != null)
         {
-            Span = span;
+            return new TriviaRemover(span);
+        }
+        else
+        {
+            return Default;
+        }
+    }
+
+    public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
+    {
+        if (Span?.Contains(trivia.Span) != false)
+        {
+            return Replacement;
         }
 
-        private static TriviaRemover Default { get; } = new();
-
-        public TextSpan? Span { get; }
-
-        public static SyntaxTrivia Replacement { get; } = CSharpFactory.EmptyWhitespace();
-
-        public static TriviaRemover GetInstance(TextSpan? span = null)
-        {
-            if (span != null)
-            {
-                return new TriviaRemover(span);
-            }
-            else
-            {
-                return Default;
-            }
-        }
-
-        public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
-        {
-            if (Span?.Contains(trivia.Span) != false)
-            {
-                return Replacement;
-            }
-
-            return base.VisitTrivia(trivia);
-        }
+        return base.VisitTrivia(trivia);
     }
 }

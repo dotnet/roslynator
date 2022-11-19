@@ -6,183 +6,182 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 
-namespace Roslynator.CSharp.Syntax
+namespace Roslynator.CSharp.Syntax;
+
+/// <summary>
+/// Provides information about a local declaration statement with a single variable.
+/// </summary>
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly struct SingleLocalDeclarationStatementInfo
 {
-    /// <summary>
-    /// Provides information about a local declaration statement with a single variable.
-    /// </summary>
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct SingleLocalDeclarationStatementInfo
+    private SingleLocalDeclarationStatementInfo(
+        LocalDeclarationStatementSyntax statement,
+        VariableDeclaratorSyntax declarator)
     {
-        private SingleLocalDeclarationStatementInfo(
-            LocalDeclarationStatementSyntax statement,
-            VariableDeclaratorSyntax declarator)
-        {
-            Statement = statement;
-            Declarator = declarator;
-        }
+        Statement = statement;
+        Declarator = declarator;
+    }
 
-        /// <summary>
-        /// The local declaration statement.
-        /// </summary>
-        public LocalDeclarationStatementSyntax Statement { get; }
+    /// <summary>
+    /// The local declaration statement.
+    /// </summary>
+    public LocalDeclarationStatementSyntax Statement { get; }
 
-        /// <summary>
-        /// The variable declarator.
-        /// </summary>
-        public VariableDeclaratorSyntax Declarator { get; }
+    /// <summary>
+    /// The variable declarator.
+    /// </summary>
+    public VariableDeclaratorSyntax Declarator { get; }
 
-        /// <summary>
-        /// The variable declaration.
-        /// </summary>
-        public VariableDeclarationSyntax Declaration
-        {
-            get { return Statement?.Declaration; }
-        }
+    /// <summary>
+    /// The variable declaration.
+    /// </summary>
+    public VariableDeclarationSyntax Declaration
+    {
+        get { return Statement?.Declaration; }
+    }
 
-        /// <summary>
-        /// The variable initializer, if any.
-        /// </summary>
-        public EqualsValueClauseSyntax Initializer
-        {
-            get { return Declarator?.Initializer; }
-        }
+    /// <summary>
+    /// The variable initializer, if any.
+    /// </summary>
+    public EqualsValueClauseSyntax Initializer
+    {
+        get { return Declarator?.Initializer; }
+    }
 
-        /// <summary>
-        /// The initialized value, if any.
-        /// </summary>
-        public ExpressionSyntax Value
-        {
-            get { return Initializer?.Value; }
-        }
+    /// <summary>
+    /// The initialized value, if any.
+    /// </summary>
+    public ExpressionSyntax Value
+    {
+        get { return Initializer?.Value; }
+    }
 
-        /// <summary>
-        /// The modifier list.
-        /// </summary>
-        public SyntaxTokenList Modifiers
-        {
-            get { return Statement?.Modifiers ?? default; }
-        }
+    /// <summary>
+    /// The modifier list.
+    /// </summary>
+    public SyntaxTokenList Modifiers
+    {
+        get { return Statement?.Modifiers ?? default; }
+    }
 
-        /// <summary>
-        /// The type of a declaration.
-        /// </summary>
-        public TypeSyntax Type
-        {
-            get { return Statement?.Declaration.Type; }
-        }
+    /// <summary>
+    /// The type of a declaration.
+    /// </summary>
+    public TypeSyntax Type
+    {
+        get { return Statement?.Declaration.Type; }
+    }
 
-        /// <summary>
-        /// Variable identifier.
-        /// </summary>
-        public SyntaxToken Identifier
-        {
-            get { return Declarator?.Identifier ?? default; }
-        }
+    /// <summary>
+    /// Variable identifier.
+    /// </summary>
+    public SyntaxToken Identifier
+    {
+        get { return Declarator?.Identifier ?? default; }
+    }
 
-        /// <summary>
-        /// Variable name.
-        /// </summary>
-        public string IdentifierText
-        {
-            get { return Identifier.ValueText; }
-        }
+    /// <summary>
+    /// Variable name.
+    /// </summary>
+    public string IdentifierText
+    {
+        get { return Identifier.ValueText; }
+    }
 
-        /// <summary>
-        /// The equals token.
-        /// </summary>
-        public SyntaxToken EqualsToken
-        {
-            get { return Initializer?.EqualsToken ?? default; }
-        }
+    /// <summary>
+    /// The equals token.
+    /// </summary>
+    public SyntaxToken EqualsToken
+    {
+        get { return Initializer?.EqualsToken ?? default; }
+    }
 
-        /// <summary>
-        /// The semicolon.
-        /// </summary>
-        public SyntaxToken SemicolonToken
-        {
-            get { return Statement?.SemicolonToken ?? default; }
-        }
+    /// <summary>
+    /// The semicolon.
+    /// </summary>
+    public SyntaxToken SemicolonToken
+    {
+        get { return Statement?.SemicolonToken ?? default; }
+    }
 
-        /// <summary>
-        /// Determines whether this struct was initialized with an actual syntax.
-        /// </summary>
-        public bool Success
-        {
-            get { return Statement != null; }
-        }
+    /// <summary>
+    /// Determines whether this struct was initialized with an actual syntax.
+    /// </summary>
+    public bool Success
+    {
+        get { return Statement != null; }
+    }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return SyntaxInfoHelpers.ToDebugString(Success, this, Statement); }
-        }
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return SyntaxInfoHelpers.ToDebugString(Success, this, Statement); }
+    }
 
-        internal static SingleLocalDeclarationStatementInfo Create(
-            StatementSyntax statement,
-            bool allowMissing = false)
-        {
-            if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement))
-                return default;
+    internal static SingleLocalDeclarationStatementInfo Create(
+        StatementSyntax statement,
+        bool allowMissing = false)
+    {
+        if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement))
+            return default;
 
-            return Create((LocalDeclarationStatementSyntax)statement, allowMissing);
-        }
+        return Create((LocalDeclarationStatementSyntax)statement, allowMissing);
+    }
 
-        internal static SingleLocalDeclarationStatementInfo Create(
-            LocalDeclarationStatementSyntax localDeclarationStatement,
-            bool allowMissing = false)
-        {
-            VariableDeclarationSyntax variableDeclaration = localDeclarationStatement?.Declaration;
+    internal static SingleLocalDeclarationStatementInfo Create(
+        LocalDeclarationStatementSyntax localDeclarationStatement,
+        bool allowMissing = false)
+    {
+        VariableDeclarationSyntax variableDeclaration = localDeclarationStatement?.Declaration;
 
-            if (!Check(variableDeclaration, allowMissing))
-                return default;
+        if (!Check(variableDeclaration, allowMissing))
+            return default;
 
-            VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
+        VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
 
-            if (!Check(variableDeclarator, allowMissing))
-                return default;
+        if (!Check(variableDeclarator, allowMissing))
+            return default;
 
-            return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclarator);
-        }
+        return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclarator);
+    }
 
-        internal static SingleLocalDeclarationStatementInfo Create(
-            VariableDeclarationSyntax variableDeclaration,
-            bool allowMissing = false)
-        {
-            if (!Check(variableDeclaration, allowMissing))
-                return default;
+    internal static SingleLocalDeclarationStatementInfo Create(
+        VariableDeclarationSyntax variableDeclaration,
+        bool allowMissing = false)
+    {
+        if (!Check(variableDeclaration, allowMissing))
+            return default;
 
-            if (variableDeclaration.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
-                return default;
+        if (variableDeclaration.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
+            return default;
 
-            VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
+        VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
 
-            if (!Check(variableDeclarator, allowMissing))
-                return default;
+        if (!Check(variableDeclarator, allowMissing))
+            return default;
 
-            return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclarator);
-        }
+        return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclarator);
+    }
 
-        internal static SingleLocalDeclarationStatementInfo Create(ExpressionSyntax value)
-        {
-            SyntaxNode node = value?.WalkUpParentheses().Parent;
+    internal static SingleLocalDeclarationStatementInfo Create(ExpressionSyntax value)
+    {
+        SyntaxNode node = value?.WalkUpParentheses().Parent;
 
-            if (!node.IsKind(SyntaxKind.EqualsValueClause))
-                return default;
+        if (!node.IsKind(SyntaxKind.EqualsValueClause))
+            return default;
 
-            if (node.Parent is not VariableDeclaratorSyntax declarator)
-                return default;
+        if (node.Parent is not VariableDeclaratorSyntax declarator)
+            return default;
 
-            if (declarator.Parent is not VariableDeclarationSyntax declaration)
-                return default;
+        if (declarator.Parent is not VariableDeclarationSyntax declaration)
+            return default;
 
-            if (declaration.Variables.Count != 1)
-                return default;
+        if (declaration.Variables.Count != 1)
+            return default;
 
-            if (declaration.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
-                return default;
+        if (declaration.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
+            return default;
 
-            return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, declarator);
-        }
+        return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, declarator);
     }
 }

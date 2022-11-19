@@ -7,146 +7,145 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal class WordList
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal class WordList
+    public static StringComparison DefaultComparison { get; } = StringComparison.InvariantCultureIgnoreCase;
+
+    public static StringComparer DefaultComparer { get; } = StringComparerUtility.FromComparison(DefaultComparison);
+
+    public static WordList Default { get; } = new(null, DefaultComparison);
+
+    public static WordList CaseSensitive { get; } = new(
+        null,
+        StringComparison.InvariantCulture);
+
+    public WordList(IEnumerable<string> values, StringComparison? comparison = null)
+        : this(values, ImmutableArray<WordSequence>.Empty, comparison)
     {
-        public static StringComparison DefaultComparison { get; } = StringComparison.InvariantCultureIgnoreCase;
+    }
 
-        public static StringComparer DefaultComparer { get; } = StringComparerUtility.FromComparison(DefaultComparison);
+    public WordList(
+        IEnumerable<string> values,
+        IEnumerable<WordSequence> sequences,
+        StringComparison? comparison = null)
+    {
+        Comparer = StringComparerUtility.FromComparison(comparison ?? DefaultComparison);
+        Comparison = comparison ?? DefaultComparison;
 
-        public static WordList Default { get; } = new(null, DefaultComparison);
+        Values = values?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
 
-        public static WordList CaseSensitive { get; } = new(
-            null,
-            StringComparison.InvariantCulture);
+        Sequences = sequences?
+            .GroupBy(f => f.First, Comparer)
+            .ToImmutableDictionary(f => f.Key, f => f.ToImmutableArray(), Comparer)
+            ?? ImmutableDictionary<string, ImmutableArray<WordSequence>>.Empty;
+    }
 
-        public WordList(IEnumerable<string> values, StringComparison? comparison = null)
-            : this(values, ImmutableArray<WordSequence>.Empty, comparison)
+    public ImmutableHashSet<string> Values { get; }
+
+    public ImmutableDictionary<string, ImmutableArray<WordSequence>> Sequences { get; }
+
+    public StringComparison Comparison { get; }
+
+    public StringComparer Comparer { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"Words = {Values.Count}  Sequences = {Sequences.Sum(f => f.Value.Length)}";
+
+    public WordList Intersect(WordList wordList, params WordList[] additionalWordLists)
+    {
+        IEnumerable<string> intersect = Values.Intersect(wordList.Values, Comparer);
+
+        if (additionalWordLists?.Length > 0)
         {
+            intersect = intersect
+                .Intersect(additionalWordLists.SelectMany(f => f.Values), Comparer);
         }
 
-        public WordList(
-            IEnumerable<string> values,
-            IEnumerable<WordSequence> sequences,
-            StringComparison? comparison = null)
+        return WithValues(intersect);
+    }
+
+    public WordList Except(WordList wordList, params WordList[] additionalWordLists)
+    {
+        IEnumerable<string> except = Values.Except(wordList.Values, Comparer);
+
+        if (additionalWordLists?.Length > 0)
         {
-            Comparer = StringComparerUtility.FromComparison(comparison ?? DefaultComparison);
-            Comparison = comparison ?? DefaultComparison;
-
-            Values = values?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
-
-            Sequences = sequences?
-                .GroupBy(f => f.First, Comparer)
-                .ToImmutableDictionary(f => f.Key, f => f.ToImmutableArray(), Comparer)
-                ?? ImmutableDictionary<string, ImmutableArray<WordSequence>>.Empty;
+            except = except
+                .Except(additionalWordLists.SelectMany(f => f.Values), Comparer);
         }
 
-        public ImmutableHashSet<string> Values { get; }
+        return WithValues(except);
+    }
 
-        public ImmutableDictionary<string, ImmutableArray<WordSequence>> Sequences { get; }
+    public bool Contains(string value)
+    {
+        return Values.Contains(value);
+    }
 
-        public StringComparison Comparison { get; }
+    public WordList AddValue(string value)
+    {
+        return new WordList(Values.Add(value), Comparison);
+    }
 
-        public StringComparer Comparer { get; }
+    public WordList AddValues(IEnumerable<string> values)
+    {
+        values = Values.Concat(values).Distinct(Comparer);
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"Words = {Values.Count}  Sequences = {Sequences.Sum(f => f.Value.Length)}";
+        return new WordList(values, Comparison);
+    }
 
-        public WordList Intersect(WordList wordList, params WordList[] additionalWordLists)
+    public WordList AddValues(WordList wordList, params WordList[] additionalWordLists)
+    {
+        IEnumerable<string> concat = Values.Concat(wordList.Values);
+
+        if (additionalWordLists?.Length > 0)
+            concat = concat.Concat(additionalWordLists.SelectMany(f => f.Values));
+
+        return WithValues(concat.Distinct(Comparer));
+    }
+
+    public WordList WithValues(IEnumerable<string> values)
+    {
+        return new WordList(values, Comparison);
+    }
+
+    public static void Save(
+        string path,
+        WordList wordList)
+    {
+        Save(path, wordList.Values, wordList.Comparer);
+    }
+
+    public static void Save(
+        string path,
+        IEnumerable<string> values,
+        StringComparer comparer,
+        bool merge = false)
+    {
+        if (merge
+            && File.Exists(path))
         {
-            IEnumerable<string> intersect = Values.Intersect(wordList.Values, Comparer);
+            WordListLoaderResult result = WordListLoader.LoadFile(path);
 
-            if (additionalWordLists?.Length > 0)
-            {
-                intersect = intersect
-                    .Intersect(additionalWordLists.SelectMany(f => f.Values), Comparer);
-            }
-
-            return WithValues(intersect);
+            values = values.Concat(result.List.Values).Concat(result.CaseSensitiveList.Values);
         }
 
-        public WordList Except(WordList wordList, params WordList[] additionalWordLists)
-        {
-            IEnumerable<string> except = Values.Except(wordList.Values, Comparer);
+        values = values
+            .Where(f => !string.IsNullOrWhiteSpace(f))
+            .Select(f => f.Trim())
+            .Distinct(comparer)
+            .OrderBy(f => f, comparer);
 
-            if (additionalWordLists?.Length > 0)
-            {
-                except = except
-                    .Except(additionalWordLists.SelectMany(f => f.Values), Comparer);
-            }
+        Debug.WriteLine($"Saving '{path}'");
 
-            return WithValues(except);
-        }
+        File.WriteAllText(path, string.Join(Environment.NewLine, values));
+    }
 
-        public bool Contains(string value)
-        {
-            return Values.Contains(value);
-        }
-
-        public WordList AddValue(string value)
-        {
-            return new WordList(Values.Add(value), Comparison);
-        }
-
-        public WordList AddValues(IEnumerable<string> values)
-        {
-            values = Values.Concat(values).Distinct(Comparer);
-
-            return new WordList(values, Comparison);
-        }
-
-        public WordList AddValues(WordList wordList, params WordList[] additionalWordLists)
-        {
-            IEnumerable<string> concat = Values.Concat(wordList.Values);
-
-            if (additionalWordLists?.Length > 0)
-                concat = concat.Concat(additionalWordLists.SelectMany(f => f.Values));
-
-            return WithValues(concat.Distinct(Comparer));
-        }
-
-        public WordList WithValues(IEnumerable<string> values)
-        {
-            return new WordList(values, Comparison);
-        }
-
-        public static void Save(
-            string path,
-            WordList wordList)
-        {
-            Save(path, wordList.Values, wordList.Comparer);
-        }
-
-        public static void Save(
-            string path,
-            IEnumerable<string> values,
-            StringComparer comparer,
-            bool merge = false)
-        {
-            if (merge
-                && File.Exists(path))
-            {
-                WordListLoaderResult result = WordListLoader.LoadFile(path);
-
-                values = values.Concat(result.List.Values).Concat(result.CaseSensitiveList.Values);
-            }
-
-            values = values
-                .Where(f => !string.IsNullOrWhiteSpace(f))
-                .Select(f => f.Trim())
-                .Distinct(comparer)
-                .OrderBy(f => f, comparer);
-
-            Debug.WriteLine($"Saving '{path}'");
-
-            File.WriteAllText(path, string.Join(Environment.NewLine, values));
-        }
-
-        public void Save(string path)
-        {
-            Save(path ?? throw new ArgumentException("", nameof(path)), this);
-        }
+    public void Save(string path)
+    {
+        Save(path ?? throw new ArgumentException("", nameof(path)), this);
     }
 }

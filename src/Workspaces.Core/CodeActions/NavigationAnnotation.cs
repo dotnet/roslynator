@@ -4,12 +4,11 @@ using Microsoft.CodeAnalysis;
 
 #pragma warning disable RCS1102
 
-namespace Roslynator.CodeActions
-{
-    internal class NavigationAnnotation
-    {
-        public const string Kind = "CodeAction_Navigation";
+namespace Roslynator.CodeActions;
 
-        public static SyntaxAnnotation Annotation { get; } = new(Kind);
-    }
+internal class NavigationAnnotation
+{
+    public const string Kind = "CodeAction_Navigation";
+
+    public static SyntaxAnnotation Annotation { get; } = new(Kind);
 }

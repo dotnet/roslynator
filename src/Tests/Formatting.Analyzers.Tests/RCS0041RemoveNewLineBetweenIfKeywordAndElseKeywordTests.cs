@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0041RemoveNewLineBetweenIfKeywordAndElseKeywordTests : AbstractCSharpDiagnosticVerifier<RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer, SyntaxTriviaCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0041RemoveNewLineBetweenIfKeywordAndElseKeywordTests : AbstractCSharpDiagnosticVerifier<RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer, SyntaxTriviaCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -47,12 +47,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
-        public async Task Test_EmptyLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
+    public async Task Test_EmptyLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -85,12 +85,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -106,12 +106,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
-        public async Task TestNoDiagnostic_Comment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword)]
+    public async Task TestNoDiagnostic_Comment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -128,6 +128,5 @@ class C
     }
 }
 ");
-        }
     }
 }

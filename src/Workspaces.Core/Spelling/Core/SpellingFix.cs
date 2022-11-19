@@ -4,36 +4,35 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct SpellingFix : IEquatable<SpellingFix>
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct SpellingFix : IEquatable<SpellingFix>
+    public SpellingFix(string value, SpellingFixKind kind)
     {
-        public SpellingFix(string value, SpellingFixKind kind)
-        {
-            Value = value;
-            Kind = kind;
-        }
-
-        public string Value { get; }
-
-        public SpellingFixKind Kind { get; }
-
-        public bool IsDefault => Value == null;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Kind}  {Value}";
-
-        public SpellingFix WithValue(string value) => new(value, Kind);
-
-        public override bool Equals(object obj) => obj is SpellingFix fix && Equals(fix);
-
-        public bool Equals(SpellingFix other) => Value == other.Value;
-
-        public override int GetHashCode() => EqualityComparer<string>.Default.GetHashCode(Value);
-
-        public static bool operator ==(SpellingFix left, SpellingFix right) => left.Equals(right);
-
-        public static bool operator !=(SpellingFix left, SpellingFix right) => !(left == right);
+        Value = value;
+        Kind = kind;
     }
+
+    public string Value { get; }
+
+    public SpellingFixKind Kind { get; }
+
+    public bool IsDefault => Value == null;
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Kind}  {Value}";
+
+    public SpellingFix WithValue(string value) => new(value, Kind);
+
+    public override bool Equals(object obj) => obj is SpellingFix fix && Equals(fix);
+
+    public bool Equals(SpellingFix other) => Value == other.Value;
+
+    public override int GetHashCode() => EqualityComparer<string>.Default.GetHashCode(Value);
+
+    public static bool operator ==(SpellingFix left, SpellingFix right) => left.Equals(right);
+
+    public static bool operator !=(SpellingFix left, SpellingFix right) => !(left == right);
 }

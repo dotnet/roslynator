@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS8625_CannotConvertNullLiteralToNonNullableReferenceTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<UseNullForgivingOperatorCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
-        public async Task Test_Property_Null()
-        {
-            await VerifyFixAsync(@"
+public class CS8625_CannotConvertNullLiteralToNonNullableReferenceTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<UseNullForgivingOperatorCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
+    public async Task Test_Property_Null()
+    {
+        await VerifyFixAsync(@"
 #nullable enable
 
 class C
@@ -28,12 +28,12 @@ class C
     public string P { get; set; } = null!;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
-        public async Task Test_Property_DefaultLiteral()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
+    public async Task Test_Property_DefaultLiteral()
+    {
+        await VerifyFixAsync(@"
 #nullable enable
 
 class C
@@ -48,12 +48,12 @@ class C
     public string P { get; set; } = default!;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
-        public async Task Test_Property_DefaultExpression()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
+    public async Task Test_Property_DefaultExpression()
+    {
+        await VerifyFixAsync(@"
 #nullable enable
 
 class C
@@ -68,12 +68,12 @@ class C
     public string P { get; set; } = default(string)!;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
-        public async Task Test_Field()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
+    public async Task Test_Field()
+    {
+        await VerifyFixAsync(@"
 #nullable enable
 
 class C
@@ -88,12 +88,12 @@ class C
     private string F = null!;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
-        public async Task Test_Field_DefaultLiteral()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
+    public async Task Test_Field_DefaultLiteral()
+    {
+        await VerifyFixAsync(@"
 #nullable enable
 
 class C
@@ -108,12 +108,12 @@ class C
     private string F = default!;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
-        public async Task Test_Field_DefaultExpression()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
+    public async Task Test_Field_DefaultExpression()
+    {
+        await VerifyFixAsync(@"
 #nullable enable
 
 class C
@@ -128,12 +128,12 @@ class C
     private string F = default(string)!;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
-        public async Task TestNoDiagnostic_Parameter()
-        {
-            await VerifyNoFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
+    public async Task TestNoDiagnostic_Parameter()
+    {
+        await VerifyNoFixAsync(@"
 #nullable enable
 
 class C
@@ -143,6 +143,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

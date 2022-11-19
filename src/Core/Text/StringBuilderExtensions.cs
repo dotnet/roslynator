@@ -2,13 +2,12 @@
 
 using System.Text;
 
-namespace Roslynator.Text
+namespace Roslynator.Text;
+
+internal static class StringBuilderExtensions
 {
-    internal static class StringBuilderExtensions
+    public static StringBuilder Replace(this StringBuilder sb, string oldValue, string newValue, int startIndex)
     {
-        public static StringBuilder Replace(this StringBuilder sb, string oldValue, string newValue, int startIndex)
-        {
-            return sb.Replace(oldValue, newValue, startIndex, sb.Length - startIndex);
-        }
+        return sb.Replace(oldValue, newValue, startIndex, sb.Length - startIndex);
     }
 }

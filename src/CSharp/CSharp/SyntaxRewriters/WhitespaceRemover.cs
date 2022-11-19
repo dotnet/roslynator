@@ -4,42 +4,41 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.SyntaxRewriters
+namespace Roslynator.CSharp.SyntaxRewriters;
+
+internal sealed class WhitespaceRemover : CSharpSyntaxRewriter
 {
-    internal sealed class WhitespaceRemover : CSharpSyntaxRewriter
+    private WhitespaceRemover(TextSpan? span = null)
     {
-        private WhitespaceRemover(TextSpan? span = null)
+        Span = span;
+    }
+
+    private static WhitespaceRemover Default { get; } = new();
+
+    public TextSpan? Span { get; }
+
+    public static SyntaxTrivia Replacement { get; } = CSharpFactory.EmptyWhitespace();
+
+    public static WhitespaceRemover GetInstance(TextSpan? span = null)
+    {
+        if (span != null)
         {
-            Span = span;
+            return new WhitespaceRemover(span);
+        }
+        else
+        {
+            return Default;
+        }
+    }
+
+    public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
+    {
+        if (trivia.IsWhitespaceOrEndOfLineTrivia()
+            && (Span?.Contains(trivia.Span) != false))
+        {
+            return Replacement;
         }
 
-        private static WhitespaceRemover Default { get; } = new();
-
-        public TextSpan? Span { get; }
-
-        public static SyntaxTrivia Replacement { get; } = CSharpFactory.EmptyWhitespace();
-
-        public static WhitespaceRemover GetInstance(TextSpan? span = null)
-        {
-            if (span != null)
-            {
-                return new WhitespaceRemover(span);
-            }
-            else
-            {
-                return Default;
-            }
-        }
-
-        public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
-        {
-            if (trivia.IsWhitespaceOrEndOfLineTrivia()
-                && (Span?.Contains(trivia.Span) != false))
-            {
-                return Replacement;
-            }
-
-            return base.VisitTrivia(trivia);
-        }
+        return base.VisitTrivia(trivia);
     }
 }

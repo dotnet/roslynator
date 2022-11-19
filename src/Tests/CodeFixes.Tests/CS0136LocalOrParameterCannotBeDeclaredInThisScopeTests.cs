@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0136LocalOrParameterCannotBeDeclaredInThisScopeTests : AbstractCSharpCompilerDiagnosticFixVerifier<VariableDeclarationCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter)]
-        public async Task Test_ReplaceVariableDeclarationWithAssignment()
-        {
-            await VerifyFixAsync(@"
+public class CS0136LocalOrParameterCannotBeDeclaredInThisScopeTests : AbstractCSharpCompilerDiagnosticFixVerifier<VariableDeclarationCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter)]
+    public async Task Test_ReplaceVariableDeclarationWithAssignment()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -42,12 +42,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter)]
-        public async Task TestNoFix()
-        {
-            await VerifyNoFixAsync(
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter)]
+    public async Task TestNoFix()
+    {
+        await VerifyNoFixAsync(
 @"
 class C
 {
@@ -62,6 +62,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

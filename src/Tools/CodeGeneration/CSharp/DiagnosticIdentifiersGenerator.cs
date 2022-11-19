@@ -8,52 +8,51 @@ using Roslynator.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+public static class DiagnosticIdentifiersGenerator
 {
-    public static class DiagnosticIdentifiersGenerator
+    public static CompilationUnitSyntax Generate(
+        IEnumerable<AnalyzerMetadata> analyzers,
+        bool obsolete,
+        IComparer<string> comparer,
+        string @namespace,
+        string className)
     {
-        public static CompilationUnitSyntax Generate(
-            IEnumerable<AnalyzerMetadata> analyzers,
-            bool obsolete,
-            IComparer<string> comparer,
-            string @namespace,
-            string className)
-        {
-            return CompilationUnit(
-                UsingDirectives("System"),
-                NamespaceDeclaration(
-                    @namespace,
-                    ClassDeclaration(
-                        Modifiers.Public_Static_Partial(),
-                        className,
-                        analyzers
-                            .Where(f => f.IsObsolete == obsolete)
-                            .OrderBy(f => f.Id, comparer)
-                            .SelectMany(f => CreateMembers(f))
-                            .ToSyntaxList<MemberDeclarationSyntax>())));
-        }
+        return CompilationUnit(
+            UsingDirectives("System"),
+            NamespaceDeclaration(
+                @namespace,
+                ClassDeclaration(
+                    Modifiers.Public_Static_Partial(),
+                    className,
+                    analyzers
+                        .Where(f => f.IsObsolete == obsolete)
+                        .OrderBy(f => f.Id, comparer)
+                        .SelectMany(f => CreateMembers(f))
+                        .ToSyntaxList<MemberDeclarationSyntax>())));
+    }
 
-        private static IEnumerable<FieldDeclarationSyntax> CreateMembers(AnalyzerMetadata analyzer)
-        {
-            string id = analyzer.Id;
-            string identifier = analyzer.Identifier;
+    private static IEnumerable<FieldDeclarationSyntax> CreateMembers(AnalyzerMetadata analyzer)
+    {
+        string id = analyzer.Id;
+        string identifier = analyzer.Identifier;
 
-            if (id != null)
-                yield return CreateMember(id, identifier, analyzer.IsObsolete);
-        }
+        if (id != null)
+            yield return CreateMember(id, identifier, analyzer.IsObsolete);
+    }
 
-        private static FieldDeclarationSyntax CreateMember(string id, string identifier, bool isObsolete)
-        {
-            FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                Modifiers.Public_Const(),
-                PredefinedStringType(),
-                identifier,
-                StringLiteralExpression(id));
+    private static FieldDeclarationSyntax CreateMember(string id, string identifier, bool isObsolete)
+    {
+        FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
+            Modifiers.Public_Const(),
+            PredefinedStringType(),
+            identifier,
+            StringLiteralExpression(id));
 
-            if (isObsolete)
-                fieldDeclaration = fieldDeclaration.AddObsoleteAttributeIf(isObsolete, error: true);
+        if (isObsolete)
+            fieldDeclaration = fieldDeclaration.AddObsoleteAttributeIf(isObsolete, error: true);
 
-            return fieldDeclaration;
-        }
+        return fieldDeclaration;
     }
 }

@@ -6,23 +6,23 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1246UseElementAccessTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, OptimizeLinqMethodCallCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseElementAccess;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        [InlineData("((List<object>)x).[|First()|]", "((List<object>)x)[0]")]
-        [InlineData("((IList<object>)x).[|First()|]", "((IList<object>)x)[0]")]
-        [InlineData("((IReadOnlyList<object>)x).[|First()|]", "((IReadOnlyList<object>)x)[0]")]
-        [InlineData("((Collection<object>)x).[|First()|]", "((Collection<object>)x)[0]")]
-        [InlineData("((ImmutableArray<object>)x).[|First()|]", "((ImmutableArray<object>)x)[0]")]
-        [InlineData("((object[])x).[|First()|]", "((object[])x)[0]")]
-        [InlineData("((string)x).[|First()|]", "((string)x)[0]")]
-        public async Task Test_UseElementAccessInsteadOfFirst(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1246UseElementAccessTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, OptimizeLinqMethodCallCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseElementAccess;
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [InlineData("((List<object>)x).[|First()|]", "((List<object>)x)[0]")]
+    [InlineData("((IList<object>)x).[|First()|]", "((IList<object>)x)[0]")]
+    [InlineData("((IReadOnlyList<object>)x).[|First()|]", "((IReadOnlyList<object>)x)[0]")]
+    [InlineData("((Collection<object>)x).[|First()|]", "((Collection<object>)x)[0]")]
+    [InlineData("((ImmutableArray<object>)x).[|First()|]", "((ImmutableArray<object>)x)[0]")]
+    [InlineData("((object[])x).[|First()|]", "((object[])x)[0]")]
+    [InlineData("((string)x).[|First()|]", "((string)x)[0]")]
+    public async Task Test_UseElementAccessInsteadOfFirst(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -38,19 +38,19 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        [InlineData("((List<object>)x).[|ElementAt(1)|]", "((List<object>)x)[1]")]
-        [InlineData("((IList<object>)x).[|ElementAt(1)|]", "((IList<object>)x)[1]")]
-        [InlineData("((IReadOnlyList<object>)x).[|ElementAt(1)|]", "((IReadOnlyList<object>)x)[1]")]
-        [InlineData("((Collection<object>)x).[|ElementAt(1)|]", "((Collection<object>)x)[1]")]
-        [InlineData("((ImmutableArray<object>)x).[|ElementAt(1)|]", "((ImmutableArray<object>)x)[1]")]
-        [InlineData("((object[])x).[|ElementAt(1)|]", "((object[])x)[1]")]
-        [InlineData("((string)x).[|ElementAt(1)|]", "((string)x)[1]")]
-        public async Task Test_UseElementAccessInsteadOfElementAt(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [InlineData("((List<object>)x).[|ElementAt(1)|]", "((List<object>)x)[1]")]
+    [InlineData("((IList<object>)x).[|ElementAt(1)|]", "((IList<object>)x)[1]")]
+    [InlineData("((IReadOnlyList<object>)x).[|ElementAt(1)|]", "((IReadOnlyList<object>)x)[1]")]
+    [InlineData("((Collection<object>)x).[|ElementAt(1)|]", "((Collection<object>)x)[1]")]
+    [InlineData("((ImmutableArray<object>)x).[|ElementAt(1)|]", "((ImmutableArray<object>)x)[1]")]
+    [InlineData("((object[])x).[|ElementAt(1)|]", "((object[])x)[1]")]
+    [InlineData("((string)x).[|ElementAt(1)|]", "((string)x)[1]")]
+    public async Task Test_UseElementAccessInsteadOfElementAt(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -66,12 +66,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -92,12 +92,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_UseElementAccessInsteadOfFirst()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_UseElementAccessInsteadOfFirst()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -118,12 +118,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_UseElementAccessOnElementAccess()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_UseElementAccessOnElementAccess()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 using System.Collections.Generic;
 
@@ -140,12 +140,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_UseElementAccess_ExpressionStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_UseElementAccess_ExpressionStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 using System.Collections.Generic;
 
@@ -160,12 +160,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt_InfiniteRecursion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt_InfiniteRecursion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -182,6 +182,5 @@ class C : IReadOnlyList<int>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 ");
-        }
     }
 }

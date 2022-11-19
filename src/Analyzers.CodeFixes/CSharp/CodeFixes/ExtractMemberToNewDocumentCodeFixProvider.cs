@@ -10,38 +10,37 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ExtractMemberToNewDocumentCodeFixProvider))]
+[Shared]
+public sealed class ExtractMemberToNewDocumentCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ExtractMemberToNewDocumentCodeFixProvider))]
-    [Shared]
-    public sealed class ExtractMemberToNewDocumentCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEachTypeInSeparateFile); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEachTypeInSeparateFile); }
+    }
 
-        public override FixAllProvider GetFixAllProvider()
-        {
-            return null;
-        }
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return null;
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out MemberDeclarationSyntax memberDeclaration))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out MemberDeclarationSyntax memberDeclaration))
+            return;
 
-            string name = CSharpUtility.GetIdentifier(memberDeclaration).ValueText;
-            string title = ExtractTypeDeclarationToNewDocumentRefactoring.GetTitle(name);
+        string name = CSharpUtility.GetIdentifier(memberDeclaration).ValueText;
+        string title = ExtractTypeDeclarationToNewDocumentRefactoring.GetTitle(name);
 
-            CodeAction codeAction = CodeAction.Create(
-                title,
-                ct => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachTypeInSeparateFile));
+        CodeAction codeAction = CodeAction.Create(
+            title,
+            ct => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachTypeInSeparateFile));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

@@ -2,18 +2,17 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.Documentation
-{
-    internal class ParamElementInfo : ElementInfo<ParameterSyntax>
-    {
-        public ParamElementInfo(ParameterSyntax node, int insertIndex, NewLinePosition newLinePosition)
-            : base(node, insertIndex, newLinePosition)
-        {
-        }
+namespace Roslynator.CSharp.Analysis.Documentation;
 
-        public override string Name
-        {
-            get { return Node.Identifier.ValueText; }
-        }
+internal class ParamElementInfo : ElementInfo<ParameterSyntax>
+{
+    public ParamElementInfo(ParameterSyntax node, int insertIndex, NewLinePosition newLinePosition)
+        : base(node, insertIndex, newLinePosition)
+    {
+    }
+
+    public override string Name
+    {
+        get { return Node.Identifier.ValueText; }
     }
 }

@@ -7,70 +7,69 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AddComparisonWithBooleanLiteralRefactoring
 {
-    internal static class AddComparisonWithBooleanLiteralRefactoring
+    public static bool IsCondition(ExpressionSyntax expression)
     {
-        public static bool IsCondition(ExpressionSyntax expression)
-        {
-            SyntaxNode parent = expression.Parent;
+        SyntaxNode parent = expression.Parent;
 
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.IfStatement:
-                    return ((IfStatementSyntax)parent).Condition == expression;
-                case SyntaxKind.DoStatement:
-                    return ((DoStatementSyntax)parent).Condition == expression;
-                case SyntaxKind.WhileStatement:
-                    return ((WhileStatementSyntax)parent).Condition == expression;
-                case SyntaxKind.ForStatement:
-                    return ((ForStatementSyntax)parent).Condition == expression;
-                case SyntaxKind.ConditionalExpression:
-                    return ((ConditionalExpressionSyntax)parent).Condition == expression;
-                default:
-                    return false;
-            }
+        switch (parent?.Kind())
+        {
+            case SyntaxKind.IfStatement:
+                return ((IfStatementSyntax)parent).Condition == expression;
+            case SyntaxKind.DoStatement:
+                return ((DoStatementSyntax)parent).Condition == expression;
+            case SyntaxKind.WhileStatement:
+                return ((WhileStatementSyntax)parent).Condition == expression;
+            case SyntaxKind.ForStatement:
+                return ((ForStatementSyntax)parent).Condition == expression;
+            case SyntaxKind.ConditionalExpression:
+                return ((ConditionalExpressionSyntax)parent).Condition == expression;
+            default:
+                return false;
         }
+    }
 
-        public static string GetEquivalenceKey(ExpressionSyntax expression)
+    public static string GetEquivalenceKey(ExpressionSyntax expression)
+    {
+        return (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "False" : "True";
+    }
+
+    public static string GetTitle(ExpressionSyntax expression)
+    {
+        return (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "Replace '!' with ' == false'" : "Add ' == true'";
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        ExpressionSyntax newNode = CreateNewExpression(expression)
+            .WithTriviaFrom(expression)
+            .Parenthesize()
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
+    }
+
+    private static BinaryExpressionSyntax CreateNewExpression(ExpressionSyntax expression)
+    {
+        if (expression.Kind() == SyntaxKind.LogicalNotExpression)
         {
-            return (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "False" : "True";
+            var logicalNot = (PrefixUnaryExpressionSyntax)expression;
+
+            return EqualsExpression(
+                logicalNot.Operand.WithoutTrivia(),
+                FalseLiteralExpression());
         }
-
-        public static string GetTitle(ExpressionSyntax expression)
+        else
         {
-            return (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "Replace '!' with ' == false'" : "Add ' == true'";
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
-        {
-            ExpressionSyntax newNode = CreateNewExpression(expression)
-                .WithTriviaFrom(expression)
-                .Parenthesize()
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
-        }
-
-        private static BinaryExpressionSyntax CreateNewExpression(ExpressionSyntax expression)
-        {
-            if (expression.Kind() == SyntaxKind.LogicalNotExpression)
-            {
-                var logicalNot = (PrefixUnaryExpressionSyntax)expression;
-
-                return EqualsExpression(
-                    logicalNot.Operand.WithoutTrivia(),
-                    FalseLiteralExpression());
-            }
-            else
-            {
-                return EqualsExpression(
-                    expression.WithoutTrivia(),
-                    TrueLiteralExpression());
-            }
+            return EqualsExpression(
+                expression.WithoutTrivia(),
+                TrueLiteralExpression());
         }
     }
 }

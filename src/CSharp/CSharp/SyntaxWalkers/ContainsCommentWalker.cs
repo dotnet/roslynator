@@ -5,77 +5,76 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.SyntaxWalkers
+namespace Roslynator.CSharp.SyntaxWalkers;
+
+internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
 {
-    internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
+    [ThreadStatic]
+    private static ContainsCommentWalker _cachedInstance;
+
+    public ContainsCommentWalker(TextSpan span)
+        : base(SyntaxWalkerDepth.Trivia)
     {
-        [ThreadStatic]
-        private static ContainsCommentWalker _cachedInstance;
+        Span = span;
+    }
 
-        public ContainsCommentWalker(TextSpan span)
-            : base(SyntaxWalkerDepth.Trivia)
+    public bool Result { get; set; }
+
+    public TextSpan Span { get; set; }
+
+    public override void VisitTrivia(SyntaxTrivia trivia)
+    {
+        if (IsInSpan(trivia.Span)
+            && CSharpFacts.IsCommentTrivia(trivia.Kind()))
         {
-            Span = span;
+            Result = true;
         }
 
-        public bool Result { get; set; }
+        base.VisitTrivia(trivia);
+    }
 
-        public TextSpan Span { get; set; }
+    private bool IsInSpan(TextSpan span)
+    {
+        return Span.OverlapsWith(span)
+            || (span.Length == 0 && Span.IntersectsWith(span));
+    }
 
-        public override void VisitTrivia(SyntaxTrivia trivia)
+    public static bool ContainsComment(SyntaxNode node)
+    {
+        return ContainsComment(node, node.FullSpan);
+    }
+
+    public static bool ContainsComment(SyntaxNode node, TextSpan span)
+    {
+        ContainsCommentWalker walker = GetInstance(span);
+
+        walker.Visit(node);
+
+        bool result = walker.Result;
+
+        Free(walker);
+
+        return result;
+    }
+
+    public static ContainsCommentWalker GetInstance(TextSpan span)
+    {
+        ContainsCommentWalker walker = _cachedInstance;
+
+        if (walker != null)
         {
-            if (IsInSpan(trivia.Span)
-                && CSharpFacts.IsCommentTrivia(trivia.Kind()))
-            {
-                Result = true;
-            }
+            _cachedInstance = null;
+            walker.Result = false;
+            walker.Span = span;
 
-            base.VisitTrivia(trivia);
+            return walker;
         }
 
-        private bool IsInSpan(TextSpan span)
-        {
-            return Span.OverlapsWith(span)
-                || (span.Length == 0 && Span.IntersectsWith(span));
-        }
+        return new ContainsCommentWalker(span);
+    }
 
-        public static bool ContainsComment(SyntaxNode node)
-        {
-            return ContainsComment(node, node.FullSpan);
-        }
-
-        public static bool ContainsComment(SyntaxNode node, TextSpan span)
-        {
-            ContainsCommentWalker walker = GetInstance(span);
-
-            walker.Visit(node);
-
-            bool result = walker.Result;
-
-            Free(walker);
-
-            return result;
-        }
-
-        public static ContainsCommentWalker GetInstance(TextSpan span)
-        {
-            ContainsCommentWalker walker = _cachedInstance;
-
-            if (walker != null)
-            {
-                _cachedInstance = null;
-                walker.Result = false;
-                walker.Span = span;
-
-                return walker;
-            }
-
-            return new ContainsCommentWalker(span);
-        }
-
-        public static void Free(ContainsCommentWalker walker)
-        {
-            _cachedInstance = walker;
-        }
+    public static void Free(ContainsCommentWalker walker)
+    {
+        _cachedInstance = walker;
     }
 }

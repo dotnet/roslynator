@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0103NameDoesNotExistInCurrentContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<IdentifierNameCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CS0103NameDoesNotExistInCurrentContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<IdentifierNameCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M(out string x)
@@ -30,12 +30,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "string"));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext)]
-        public async Task Test_NullableReferenceType()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext)]
+    public async Task Test_NullableReferenceType()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M(out string? x)
@@ -52,6 +52,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "string?"), options: WellKnownCSharpTestOptions.Default_NullableReferenceTypes);
-        }
     }
 }

@@ -9,91 +9,124 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(
-                        ref _supportedDiagnostics,
-                        DiagnosticRules.PutAutoAccessorsOnSingleLine,
-                        DiagnosticRules.PutFullAccessorOnItsOwnLine);
-                }
+                Immutable.InterlockedInitialize(
+                    ref _supportedDiagnostics,
+                    DiagnosticRules.PutAutoAccessorsOnSingleLine,
+                    DiagnosticRules.PutFullAccessorOnItsOwnLine);
+            }
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.AccessorList);
+    }
+
+    private static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
+    {
+        var accessorList = (AccessorListSyntax)context.Node;
+
+        SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
+
+        if (accessors.Any(f => f.BodyOrExpressionBody() != null))
+        {
+            if (DiagnosticRules.PutFullAccessorOnItsOwnLine.IsEffective(context))
+            {
+                SyntaxToken token = accessorList.OpenBraceToken;
+
+                foreach (AccessorDeclarationSyntax accessor in accessors)
+                {
+                    if (accessor.BodyOrExpressionBody() != null
+                        && accessor.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(token.Span.End, accessor.SpanStart)))
+                    {
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
+                            DiagnosticRules.PutFullAccessorOnItsOwnLine,
+                            Location.Create(accessor.SyntaxTree, new TextSpan(accessor.SpanStart, 0)));
+
+                        break;
+                    }
+
+                    token = accessor.Body?.CloseBraceToken ?? accessor.SemicolonToken;
+
+                    if (!token.Equals(accessor.GetLastToken()))
+                        break;
+                }
             }
         }
-
-        public override void Initialize(AnalysisContext context)
+        else if (DiagnosticRules.PutAutoAccessorsOnSingleLine.IsEffective(context))
         {
-            base.Initialize(context);
+            SyntaxNode parent = accessorList.Parent;
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.AccessorList);
-        }
-
-        private static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
-        {
-            var accessorList = (AccessorListSyntax)context.Node;
-
-            SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
-
-            if (accessors.Any(f => f.BodyOrExpressionBody() != null))
+            switch (parent?.Kind())
             {
-                if (DiagnosticRules.PutFullAccessorOnItsOwnLine.IsEffective(context))
-                {
-                    SyntaxToken token = accessorList.OpenBraceToken;
-
-                    foreach (AccessorDeclarationSyntax accessor in accessors)
+                case SyntaxKind.PropertyDeclaration:
                     {
-                        if (accessor.BodyOrExpressionBody() != null
-                            && accessor.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(token.Span.End, accessor.SpanStart)))
+                        if (accessors.All(f => !f.AttributeLists.Any())
+                            && !accessorList.IsSingleLine(includeExteriorTrivia: false))
                         {
-                            DiagnosticHelpers.ReportDiagnostic(
-                                context,
-                                DiagnosticRules.PutFullAccessorOnItsOwnLine,
-                                Location.Create(accessor.SyntaxTree, new TextSpan(accessor.SpanStart, 0)));
+                            var propertyDeclaration = (PropertyDeclarationSyntax)parent;
+                            SyntaxToken identifier = propertyDeclaration.Identifier;
 
-                            break;
+                            if (!identifier.IsMissing)
+                            {
+                                SyntaxToken closeBrace = accessorList.CloseBraceToken;
+
+                                if (!closeBrace.IsMissing)
+                                {
+                                    TextSpan span = TextSpan.FromBounds(identifier.Span.End, closeBrace.SpanStart);
+
+                                    if (propertyDeclaration
+                                        .DescendantTrivia(span)
+                                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                    {
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
+                                    }
+                                }
+                            }
                         }
 
-                        token = accessor.Body?.CloseBraceToken ?? accessor.SemicolonToken;
-
-                        if (!token.Equals(accessor.GetLastToken()))
-                            break;
+                        break;
                     }
-                }
-            }
-            else if (DiagnosticRules.PutAutoAccessorsOnSingleLine.IsEffective(context))
-            {
-                SyntaxNode parent = accessorList.Parent;
-
-                switch (parent?.Kind())
-                {
-                    case SyntaxKind.PropertyDeclaration:
+                case SyntaxKind.IndexerDeclaration:
+                    {
+                        if (accessors.All(f => !f.AttributeLists.Any())
+                            && !accessorList.IsSingleLine(includeExteriorTrivia: false))
                         {
-                            if (accessors.All(f => !f.AttributeLists.Any())
-                                && !accessorList.IsSingleLine(includeExteriorTrivia: false))
-                            {
-                                var propertyDeclaration = (PropertyDeclarationSyntax)parent;
-                                SyntaxToken identifier = propertyDeclaration.Identifier;
+                            var indexerDeclaration = (IndexerDeclarationSyntax)parent;
 
-                                if (!identifier.IsMissing)
+                            BracketedParameterListSyntax parameterList = indexerDeclaration.ParameterList;
+
+                            if (parameterList != null)
+                            {
+                                SyntaxToken closeBracket = parameterList.CloseBracketToken;
+
+                                if (!closeBracket.IsMissing)
                                 {
                                     SyntaxToken closeBrace = accessorList.CloseBraceToken;
 
                                     if (!closeBrace.IsMissing)
                                     {
-                                        TextSpan span = TextSpan.FromBounds(identifier.Span.End, closeBrace.SpanStart);
+                                        TextSpan span = TextSpan.FromBounds(closeBracket.Span.End, closeBrace.SpanStart);
 
-                                        if (propertyDeclaration
+                                        if (indexerDeclaration
                                             .DescendantTrivia(span)
                                             .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                         {
@@ -102,44 +135,10 @@ namespace Roslynator.Formatting.CSharp
                                     }
                                 }
                             }
-
-                            break;
                         }
-                    case SyntaxKind.IndexerDeclaration:
-                        {
-                            if (accessors.All(f => !f.AttributeLists.Any())
-                                && !accessorList.IsSingleLine(includeExteriorTrivia: false))
-                            {
-                                var indexerDeclaration = (IndexerDeclarationSyntax)parent;
 
-                                BracketedParameterListSyntax parameterList = indexerDeclaration.ParameterList;
-
-                                if (parameterList != null)
-                                {
-                                    SyntaxToken closeBracket = parameterList.CloseBracketToken;
-
-                                    if (!closeBracket.IsMissing)
-                                    {
-                                        SyntaxToken closeBrace = accessorList.CloseBraceToken;
-
-                                        if (!closeBrace.IsMissing)
-                                        {
-                                            TextSpan span = TextSpan.FromBounds(closeBracket.Span.End, closeBrace.SpanStart);
-
-                                            if (indexerDeclaration
-                                                .DescendantTrivia(span)
-                                                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                                            {
-                                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            break;
-                        }
-                }
+                        break;
+                    }
             }
         }
     }

@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0030AddNewLineBeforeEmbeddedStatementTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeEmbeddedStatementAnalyzer, StatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeEmbeddedStatement;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_If()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0030AddNewLineBeforeEmbeddedStatementTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeEmbeddedStatementAnalyzer, StatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeEmbeddedStatement;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_If()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -37,12 +37,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_Else()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_Else()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -68,12 +68,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_ForEach()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_ForEach()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -101,12 +101,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_ForEachVariable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_ForEachVariable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -134,12 +134,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_For()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_For()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -167,12 +167,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_Using()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_Using()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -198,12 +198,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_While()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_While()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -225,12 +225,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_Do()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_Do()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -254,12 +254,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_Lock()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_Lock()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -281,12 +281,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task Test_Fixed()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task Test_Fixed()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -314,12 +314,12 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task TestNoDiagnostic_EmbeddedStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task TestNoDiagnostic_EmbeddedStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -365,12 +365,12 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
-        public async Task TestNoDiagnostic_Block()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement)]
+    public async Task TestNoDiagnostic_Block()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -436,6 +436,5 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(true));
-        }
     }
 }

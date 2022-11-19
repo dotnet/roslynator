@@ -11,116 +11,115 @@ using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class TestExtensions
 {
-    internal static class TestExtensions
+    public static async Task<SyntaxNode> GetSyntaxRootAsync(
+        this Document document,
+        bool simplify,
+        bool format,
+        CancellationToken cancellationToken = default)
     {
-        public static async Task<SyntaxNode> GetSyntaxRootAsync(
-            this Document document,
-            bool simplify,
-            bool format,
-            CancellationToken cancellationToken = default)
+        if (simplify)
+            document = await Simplifier.ReduceAsync(document, Simplifier.Annotation, cancellationToken: cancellationToken);
+
+        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+
+        if (format)
+            root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace);
+
+        return root;
+    }
+
+    public static LinePositionSpan ToLinePositionSpan(this TextSpan span, string s)
+    {
+        if (s == null)
+            throw new ArgumentNullException(nameof(s));
+
+        int length = s.Length;
+
+        if (span.Start + span.Length > length)
+            throw new ArgumentOutOfRangeException(nameof(span), span, "");
+
+        LinePosition start = LinePosition.Zero;
+
+        start = GetLinePosition(0, span.Start);
+
+        LinePosition end = GetLinePosition(span.Start, span.End);
+
+        return new LinePositionSpan(start, end);
+
+        LinePosition GetLinePosition(int startIndex, int endIndex)
         {
-            if (simplify)
-                document = await Simplifier.ReduceAsync(document, Simplifier.Annotation, cancellationToken: cancellationToken);
+            int i = endIndex - 1;
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
-
-            if (format)
-                root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace);
-
-            return root;
-        }
-
-        public static LinePositionSpan ToLinePositionSpan(this TextSpan span, string s)
-        {
-            if (s == null)
-                throw new ArgumentNullException(nameof(s));
-
-            int length = s.Length;
-
-            if (span.Start + span.Length > length)
-                throw new ArgumentOutOfRangeException(nameof(span), span, "");
-
-            LinePosition start = LinePosition.Zero;
-
-            start = GetLinePosition(0, span.Start);
-
-            LinePosition end = GetLinePosition(span.Start, span.End);
-
-            return new LinePositionSpan(start, end);
-
-            LinePosition GetLinePosition(int startIndex, int endIndex)
+            while (i >= startIndex)
             {
-                int i = endIndex - 1;
-
-                while (i >= startIndex)
+                if (s[i] == '\r'
+                    || s[i] == '\n')
                 {
-                    if (s[i] == '\r'
-                        || s[i] == '\n')
+                    int character = endIndex - i - 1;
+
+                    int line = start.Line;
+
+                    while (i >= startIndex)
                     {
-                        int character = endIndex - i - 1;
-
-                        int line = start.Line;
-
-                        while (i >= startIndex)
+                        switch (s[i])
                         {
-                            switch (s[i])
-                            {
-                                case '\n':
+                            case '\n':
+                                {
+                                    if (i == startIndex
+                                        && i > 0
+                                        && s[i - 1] == '\r')
                                     {
-                                        if (i == startIndex
-                                            && i > 0
-                                            && s[i - 1] == '\r')
-                                        {
-                                            throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
-                                        }
-
-                                        if (i > startIndex
-                                            && s[i - 1] == '\r')
-                                        {
-                                            i--;
-                                        }
-
-                                        line++;
-                                        break;
+                                        throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
                                     }
-                                case '\r':
+
+                                    if (i > startIndex
+                                        && s[i - 1] == '\r')
                                     {
-                                        if (i == endIndex - 1
-                                            && i < length - 1
-                                            && s[i + 1] == '\n')
-                                        {
-                                            throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
-                                        }
-
-                                        line++;
-                                        break;
+                                        i--;
                                     }
-                            }
 
-                            i--;
+                                    line++;
+                                    break;
+                                }
+                            case '\r':
+                                {
+                                    if (i == endIndex - 1
+                                        && i < length - 1
+                                        && s[i + 1] == '\n')
+                                    {
+                                        throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
+                                    }
+
+                                    line++;
+                                    break;
+                                }
                         }
 
-                        return new LinePosition(line, character);
+                        i--;
                     }
 
-                    i--;
+                    return new LinePosition(line, character);
                 }
 
-                return new LinePosition(start.Line, start.Character + endIndex - startIndex);
+                i--;
             }
+
+            return new LinePosition(start.Line, start.Character + endIndex - startIndex);
         }
+    }
 
-        public static CompilationOptions EnsureDiagnosticEnabled(this CompilationOptions compilationOptions, DiagnosticDescriptor descriptor)
-        {
-            ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions = compilationOptions.SpecificDiagnosticOptions;
+    public static CompilationOptions EnsureDiagnosticEnabled(this CompilationOptions compilationOptions, DiagnosticDescriptor descriptor)
+    {
+        ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions = compilationOptions.SpecificDiagnosticOptions;
 
-            specificDiagnosticOptions = specificDiagnosticOptions.SetItem(
-                descriptor.Id,
-                descriptor.DefaultSeverity.ToReportDiagnostic());
+        specificDiagnosticOptions = specificDiagnosticOptions.SetItem(
+            descriptor.Id,
+            descriptor.DefaultSeverity.ToReportDiagnostic());
 
-            return compilationOptions.WithSpecificDiagnosticOptions(specificDiagnosticOptions);
-        }
+        return compilationOptions.WithSpecificDiagnosticOptions(specificDiagnosticOptions);
     }
 }

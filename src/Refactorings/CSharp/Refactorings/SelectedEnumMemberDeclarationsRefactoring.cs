@@ -5,30 +5,29 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.SortMemberDeclarations;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class SelectedEnumMemberDeclarationsRefactoring
 {
-    internal static class SelectedEnumMemberDeclarationsRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, EnumDeclarationSyntax enumDeclaration)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, EnumDeclarationSyntax enumDeclaration)
+        if (!SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax>.TryCreate(enumDeclaration.Members, context.Span, out SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selection))
+            return;
+
+        if (selection.Count > 1)
         {
-            if (!SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax>.TryCreate(enumDeclaration.Members, context.Span, out SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selection))
-                return;
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations))
+                await SortEnumMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, enumDeclaration, selection).ConfigureAwait(false);
 
-            if (selection.Count > 1)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateCombinedEnumMember))
             {
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations))
-                    await SortEnumMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, enumDeclaration, selection).ConfigureAwait(false);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateCombinedEnumMember))
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    GenerateCombinedEnumMemberRefactoring.ComputeRefactoring(context, enumDeclaration, selection, semanticModel);
-                }
+                GenerateCombinedEnumMemberRefactoring.ComputeRefactoring(context, enumDeclaration, selection, semanticModel);
             }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveEnumMemberValue))
-                RemoveEnumMemberValueRefactoring.ComputeRefactoring(context, enumDeclaration, selection);
         }
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveEnumMemberValue))
+            RemoveEnumMemberValueRefactoring.ComputeRefactoring(context, enumDeclaration, selection);
     }
 }

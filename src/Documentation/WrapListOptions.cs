@@ -2,15 +2,14 @@
 
 using System;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+[Flags]
+internal enum WrapListOptions
 {
-    [Flags]
-    internal enum WrapListOptions
-    {
-        None = 0,
-        Attributes = 1,
-        Parameters = 1 << 1,
-        BaseTypes = 1 << 2,
-        Constraints = 1 << 3,
-    }
+    None = 0,
+    Attributes = 1,
+    Parameters = 1 << 1,
+    BaseTypes = 1 << 2,
+    Constraints = 1 << 3,
 }

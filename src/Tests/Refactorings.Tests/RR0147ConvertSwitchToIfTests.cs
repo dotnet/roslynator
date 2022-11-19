@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0147ConvertSwitchToIfTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertSwitchToIf;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchToIf)]
-        public async Task Test_WhenClause()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0147ConvertSwitchToIfTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertSwitchToIf;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchToIf)]
+    public async Task Test_WhenClause()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M()
@@ -53,12 +53,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchToIf)]
-        public async Task TestNoRefactoring()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchToIf)]
+    public async Task TestNoRefactoring()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System;
 
 class C
@@ -77,6 +77,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

@@ -11,53 +11,52 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemovePartialModifierFromTypeWithSinglePartCodeFixProvider))]
+[Shared]
+public sealed class RemovePartialModifierFromTypeWithSinglePartCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemovePartialModifierFromTypeWithSinglePartCodeFixProvider))]
-    [Shared]
-    public sealed class RemovePartialModifierFromTypeWithSinglePartCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeDeclarationSyntax typeDeclaration))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeDeclarationSyntax typeDeclaration))
+            return;
 
-            Diagnostic diagnostic = context.Diagnostics[0];
-            Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
 
-            CodeAction codeAction = CodeAction.Create(
-                ModifiersCodeFixRegistrator.GetRemoveModifierTitle(SyntaxKind.PartialKeyword),
-                ct =>
+        CodeAction codeAction = CodeAction.Create(
+            ModifiersCodeFixRegistrator.GetRemoveModifierTitle(SyntaxKind.PartialKeyword),
+            ct =>
+            {
+                TypeDeclarationSyntax newTypeDeclaration = typeDeclaration.ReplaceNodes(
+                    typeDeclaration.Members.OfType<MethodDeclarationSyntax>().Where(f => f.Modifiers.Contains(SyntaxKind.PartialKeyword) && f.BodyOrExpressionBody() != null),
+                    (f, _) => f.RemoveModifier(SyntaxKind.PartialKeyword));
+
+                int count = newTypeDeclaration.Members.Count;
+
+                for (int i = count - 1; i >= 0; i--)
                 {
-                    TypeDeclarationSyntax newTypeDeclaration = typeDeclaration.ReplaceNodes(
-                        typeDeclaration.Members.OfType<MethodDeclarationSyntax>().Where(f => f.Modifiers.Contains(SyntaxKind.PartialKeyword) && f.BodyOrExpressionBody() != null),
-                        (f, _) => f.RemoveModifier(SyntaxKind.PartialKeyword));
-
-                    int count = newTypeDeclaration.Members.Count;
-
-                    for (int i = count - 1; i >= 0; i--)
+                    if (newTypeDeclaration.Members[i] is MethodDeclarationSyntax method
+                        && method.Modifiers.Contains(SyntaxKind.PartialKeyword))
                     {
-                        if (newTypeDeclaration.Members[i] is MethodDeclarationSyntax method
-                            && method.Modifiers.Contains(SyntaxKind.PartialKeyword))
-                        {
-                            newTypeDeclaration = SyntaxRefactorings.RemoveMember(newTypeDeclaration, method);
-                        }
+                        newTypeDeclaration = SyntaxRefactorings.RemoveMember(newTypeDeclaration, method);
                     }
+                }
 
-                    newTypeDeclaration = newTypeDeclaration.RemoveModifier(SyntaxKind.PartialKeyword);
+                newTypeDeclaration = newTypeDeclaration.RemoveModifier(SyntaxKind.PartialKeyword);
 
-                    return document.ReplaceNodeAsync(typeDeclaration, newTypeDeclaration, ct);
-                },
-                GetEquivalenceKey(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart));
+                return document.ReplaceNodeAsync(typeDeclaration, newTypeDeclaration, ct);
+            },
+            GetEquivalenceKey(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

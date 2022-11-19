@@ -3,35 +3,34 @@
 using System;
 using System.Collections.Generic;
 
-namespace Roslynator.Collections
+namespace Roslynator.Collections;
+
+internal class ReadOnlyList<T> : ReadOnlyCollection<T>, IList<T>, IReadOnlyList<T>
 {
-    internal class ReadOnlyList<T> : ReadOnlyCollection<T>, IList<T>, IReadOnlyList<T>
+    new public static readonly ReadOnlyList<T> Instance = new();
+
+    protected ReadOnlyList()
     {
-        new public static readonly ReadOnlyList<T> Instance = new();
+    }
 
-        protected ReadOnlyList()
-        {
-        }
+    public int IndexOf(T item)
+    {
+        return -1;
+    }
 
-        public int IndexOf(T item)
-        {
-            return -1;
-        }
+    public void Insert(int index, T item)
+    {
+        throw new NotSupportedException();
+    }
 
-        public void Insert(int index, T item)
-        {
-            throw new NotSupportedException();
-        }
+    public void RemoveAt(int index)
+    {
+        throw new NotSupportedException();
+    }
 
-        public void RemoveAt(int index)
-        {
-            throw new NotSupportedException();
-        }
-
-        public T this[int index]
-        {
-            get { throw new ArgumentOutOfRangeException(nameof(index)); }
-            set { throw new NotSupportedException(); }
-        }
+    public T this[int index]
+    {
+        get { throw new ArgumentOutOfRangeException(nameof(index)); }
+        set { throw new NotSupportedException(); }
     }
 }

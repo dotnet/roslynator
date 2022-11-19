@@ -7,58 +7,57 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class RemoveEmptyInitializerAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RemoveEmptyInitializerAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveEmptyInitializer);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveEmptyInitializer);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
+    }
 
-        private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
-        {
-            var objectCreationExpression = (ObjectCreationExpressionSyntax)context.Node;
+    private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
+    {
+        var objectCreationExpression = (ObjectCreationExpressionSyntax)context.Node;
 
-            if (objectCreationExpression.ContainsDiagnostics)
-                return;
+        if (objectCreationExpression.ContainsDiagnostics)
+            return;
 
-            TypeSyntax type = objectCreationExpression.Type;
+        TypeSyntax type = objectCreationExpression.Type;
 
-            if (type?.IsMissing != false)
-                return;
+        if (type?.IsMissing != false)
+            return;
 
-            InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
+        InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
 
-            if (initializer?.Expressions.Any() != false)
-                return;
+        if (initializer?.Expressions.Any() != false)
+            return;
 
-            if (!initializer.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace())
-                return;
+        if (!initializer.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace())
+            return;
 
-            if (!initializer.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
-                return;
+        if (!initializer.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
+            return;
 
-            if (initializer.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
-                return;
+        if (initializer.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyInitializer, initializer);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyInitializer, initializer);
     }
 }

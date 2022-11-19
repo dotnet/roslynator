@@ -11,38 +11,37 @@ using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring
 {
-    internal static class AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ForStatementSyntax forStatement,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ForStatementSyntax forStatement,
-            CancellationToken cancellationToken)
-        {
-            LiteralExpressionSyntax trueLiteral = TrueLiteralExpression();
+        LiteralExpressionSyntax trueLiteral = TrueLiteralExpression();
 
-            TextSpan span = TextSpan.FromBounds(
-                forStatement.OpenParenToken.FullSpan.End,
-                forStatement.CloseParenToken.FullSpan.Start);
+        TextSpan span = TextSpan.FromBounds(
+            forStatement.OpenParenToken.FullSpan.End,
+            forStatement.CloseParenToken.FullSpan.Start);
 
-            IEnumerable<SyntaxTrivia> trivia = forStatement.DescendantTrivia(span);
+        IEnumerable<SyntaxTrivia> trivia = forStatement.DescendantTrivia(span);
 
-            if (!trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                trueLiteral = trueLiteral.WithTrailingTrivia(trivia);
+        if (!trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            trueLiteral = trueLiteral.WithTrailingTrivia(trivia);
 
-            WhileStatementSyntax whileStatement = WhileStatement(
-                Token(SyntaxKind.WhileKeyword).WithTriviaFrom(forStatement.ForKeyword),
-                forStatement.OpenParenToken,
-                trueLiteral,
-                forStatement.CloseParenToken,
-                forStatement.Statement);
+        WhileStatementSyntax whileStatement = WhileStatement(
+            Token(SyntaxKind.WhileKeyword).WithTriviaFrom(forStatement.ForKeyword),
+            forStatement.OpenParenToken,
+            trueLiteral,
+            forStatement.CloseParenToken,
+            forStatement.Statement);
 
-            whileStatement = whileStatement
-                .WithTriviaFrom(forStatement)
-                .WithFormatterAnnotation();
+        whileStatement = whileStatement
+            .WithTriviaFrom(forStatement)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(forStatement, whileStatement, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(forStatement, whileStatement, cancellationToken);
     }
 }

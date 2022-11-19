@@ -3,17 +3,16 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class BlockRefactoring
 {
-    internal static class BlockRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, BlockSyntax block)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, BlockSyntax block)
+        if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context)
+            && StatementListSelection.TryCreate(block, context.Span, out StatementListSelection selectedStatements))
         {
-            if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context)
-                && StatementListSelection.TryCreate(block, context.Span, out StatementListSelection selectedStatements))
-            {
-                await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
-            }
+            await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
         }
     }
 }

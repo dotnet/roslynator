@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS1061TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFoundTests : AbstractCSharpCompilerDiagnosticFixVerifier<TypeDoesNotContainDefinitionCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
-        public async Task Test_RemoveAwaitKeyword()
-        {
-            await VerifyFixAsync(@"
+public class CS1061TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFoundTests : AbstractCSharpCompilerDiagnosticFixVerifier<TypeDoesNotContainDefinitionCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+    public async Task Test_RemoveAwaitKeyword()
+    {
+        await VerifyFixAsync(@"
 using System.Threading.Tasks;
 
 #pragma warning disable CS1998
@@ -58,12 +58,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
-        public async Task Test_LengthToCount()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+    public async Task Test_LengthToCount()
+    {
+        await VerifyFixAsync(@"
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -98,12 +98,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
-        public async Task Test_LengthToCount_ConditionalAccess()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+    public async Task Test_LengthToCount_ConditionalAccess()
+    {
+        await VerifyFixAsync(@"
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -138,12 +138,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
-        public async Task Test_ReplaceInvocationWithMemberAccess()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+    public async Task Test_ReplaceInvocationWithMemberAccess()
+    {
+        await VerifyFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -166,12 +166,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
-        public async Task Test_ReplaceMemberAccessWithInvocation()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+    public async Task Test_ReplaceMemberAccessWithInvocation()
+    {
+        await VerifyFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -194,12 +194,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
-        public async Task TestNoFix_ConditionalAccess()
-        {
-            await VerifyNoFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+    public async Task TestNoFix_ConditionalAccess()
+    {
+        await VerifyNoFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -208,12 +208,12 @@ class C
     object M() => new List<string>()?.OrderBy(e => e).Value
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
-        public async Task TestNoFix_ConditionalAccess2()
-        {
-            await VerifyNoFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+    public async Task TestNoFix_ConditionalAccess2()
+    {
+        await VerifyNoFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -222,6 +222,5 @@ class C
     object M() => new List<string>()?.OrderBy(e => e).GetValue()
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

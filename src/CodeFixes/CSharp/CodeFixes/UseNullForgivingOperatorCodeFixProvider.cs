@@ -11,67 +11,66 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseNullForgivingOperatorCodeFixProvider))]
+[Shared]
+public sealed class UseNullForgivingOperatorCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseNullForgivingOperatorCodeFixProvider))]
-    [Shared]
-    public sealed class UseNullForgivingOperatorCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindNode(
+            root,
+            context.Span,
+            out ExpressionSyntax expression))
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        SyntaxDebug.Assert(expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression), expression);
+
+        if (!expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression))
+            return;
+
+        if (expression.IsKind(SyntaxKind.NullLiteralExpression)
+            && expression.IsParentKind(SyntaxKind.EqualsValueClause)
+            && expression.Parent.IsParentKind(SyntaxKind.Parameter))
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            return;
+        }
 
-            if (!TryFindNode(
-                root,
-                context.Span,
-                out ExpressionSyntax expression))
-            {
-                return;
-            }
+        Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
 
-            SyntaxDebug.Assert(expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression), expression);
-
-            if (!expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression))
-                return;
-
-            if (expression.IsKind(SyntaxKind.NullLiteralExpression)
-                && expression.IsParentKind(SyntaxKind.EqualsValueClause)
-                && expression.Parent.IsParentKind(SyntaxKind.Parameter))
-            {
-                return;
-            }
-
-            Diagnostic diagnostic = context.Diagnostics[0];
-            Document document = context.Document;
-
-            switch (diagnostic.Id)
-            {
-                case CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator, context.Document, root.SyntaxTree))
-                            break;
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use null-forgiving operator",
-                            ct =>
-                            {
-                                PostfixUnaryExpressionSyntax newExpression = SuppressNullableWarningExpression(expression.WithoutTrivia())
-                                    .WithTriviaFrom(expression);
-
-                                return document.ReplaceNodeAsync(expression, newExpression, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-
+        switch (diagnostic.Id)
+        {
+            case CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType:
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator, context.Document, root.SyntaxTree))
                         break;
-                    }
-            }
+
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use null-forgiving operator",
+                        ct =>
+                        {
+                            PostfixUnaryExpressionSyntax newExpression = SuppressNullableWarningExpression(expression.WithoutTrivia())
+                                .WithTriviaFrom(expression);
+
+                            return document.ReplaceNodeAsync(expression, newExpression, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+
+                    break;
+                }
         }
     }
 }

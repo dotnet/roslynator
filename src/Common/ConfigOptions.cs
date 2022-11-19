@@ -6,83 +6,82 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Configuration;
 
-namespace Roslynator
+namespace Roslynator;
+
+public static partial class ConfigOptions
 {
-    public static partial class ConfigOptions
+    private static readonly ImmutableDictionary<string, string> _requiredOptions = GetRequiredOptions().ToImmutableDictionary(f => f.Key, f => f.Value);
+
+    public static string GetRequiredOptions(DiagnosticDescriptor descriptor)
     {
-        private static readonly ImmutableDictionary<string, string> _requiredOptions = GetRequiredOptions().ToImmutableDictionary(f => f.Key, f => f.Value);
+        Debug.Assert(_requiredOptions.ContainsKey(descriptor.Id), descriptor.Id);
 
-        public static string GetRequiredOptions(DiagnosticDescriptor descriptor)
+        return _requiredOptions.GetValueOrDefault(descriptor.Id);
+    }
+
+    private static string JoinOptionKeys(params string[] values)
+    {
+        return string.Join(" or ", values);
+    }
+
+    public static bool TryGetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, out string value, string defaultValue = null)
+    {
+        if (configOptions.TryGetValue(option.Key, out string rawValue))
         {
-            Debug.Assert(_requiredOptions.ContainsKey(descriptor.Id), descriptor.Id);
-
-            return _requiredOptions.GetValueOrDefault(descriptor.Id);
+            value = rawValue;
+            return true;
         }
 
-        private static string JoinOptionKeys(params string[] values)
+        value = defaultValue
+            ?? CodeAnalysisConfig.Instance.EditorConfig.Options.GetValueOrDefault(option.Key)
+            ?? option.DefaultValue;
+
+        return value != null;
+    }
+
+    public static string GetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, string defaultValue = null)
+    {
+        if (configOptions.TryGetValue(option.Key, out string value))
+            return value;
+
+        return defaultValue
+            ?? CodeAnalysisConfig.Instance.EditorConfig.Options.GetValueOrDefault(option.Key)
+            ?? option.DefaultValue;
+    }
+
+    public static bool TryGetValueAsBool(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, out bool value, bool? defaultValue = null)
+    {
+        if (configOptions.TryGetValue(option.Key, out string rawValue)
+            && bool.TryParse(rawValue, out bool boolValue))
         {
-            return string.Join(" or ", values);
+            value = boolValue;
+            return true;
         }
 
-        public static bool TryGetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, out string value, string defaultValue = null)
+        bool? maybeValue = defaultValue
+            ?? CodeAnalysisConfig.Instance.GetOptionAsBool(option.Key)
+            ?? option.DefaultValueAsBool;
+
+        if (maybeValue != null)
         {
-            if (configOptions.TryGetValue(option.Key, out string rawValue))
-            {
-                value = rawValue;
-                return true;
-            }
-
-            value = defaultValue
-                ?? CodeAnalysisConfig.Instance.EditorConfig.Options.GetValueOrDefault(option.Key)
-                ?? option.DefaultValue;
-
-            return value != null;
+            value = maybeValue.Value;
+            return true;
         }
 
-        public static string GetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, string defaultValue = null)
-        {
-            if (configOptions.TryGetValue(option.Key, out string value))
-                return value;
+        value = false;
+        return false;
+    }
 
-            return defaultValue
-                ?? CodeAnalysisConfig.Instance.EditorConfig.Options.GetValueOrDefault(option.Key)
-                ?? option.DefaultValue;
+    public static bool? GetValueAsBool(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, bool? defaultValue = null)
+    {
+        if (configOptions.TryGetValue(option.Key, out string rawValue)
+            && bool.TryParse(rawValue, out bool boolValue))
+        {
+            return boolValue;
         }
 
-        public static bool TryGetValueAsBool(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, out bool value, bool? defaultValue = null)
-        {
-            if (configOptions.TryGetValue(option.Key, out string rawValue)
-                && bool.TryParse(rawValue, out bool boolValue))
-            {
-                value = boolValue;
-                return true;
-            }
-
-            bool? maybeValue = defaultValue
-                ?? CodeAnalysisConfig.Instance.GetOptionAsBool(option.Key)
-                ?? option.DefaultValueAsBool;
-
-            if (maybeValue != null)
-            {
-                value = maybeValue.Value;
-                return true;
-            }
-
-            value = false;
-            return false;
-        }
-
-        public static bool? GetValueAsBool(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, bool? defaultValue = null)
-        {
-            if (configOptions.TryGetValue(option.Key, out string rawValue)
-                && bool.TryParse(rawValue, out bool boolValue))
-            {
-                return boolValue;
-            }
-
-            return defaultValue
-                ?? CodeAnalysisConfig.Instance.GetOptionAsBool(option.Key)
-                ?? option.DefaultValueAsBool;
-        }
+        return defaultValue
+            ?? CodeAnalysisConfig.Instance.GetOptionAsBool(option.Key)
+            ?? option.DefaultValueAsBool;
     }
 }

@@ -3,54 +3,53 @@
 using System;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.Testing.Text
+namespace Roslynator.Testing.Text;
+
+internal readonly struct LinePositionInfo : IEquatable<LinePositionInfo>
 {
-    internal readonly struct LinePositionInfo : IEquatable<LinePositionInfo>
+    public LinePositionInfo(int index, int lineIndex, int columnIndex)
     {
-        public LinePositionInfo(int index, int lineIndex, int columnIndex)
-        {
-            Index = index;
-            LineIndex = lineIndex;
-            ColumnIndex = columnIndex;
-        }
+        Index = index;
+        LineIndex = lineIndex;
+        ColumnIndex = columnIndex;
+    }
 
-        public int Index { get; }
+    public int Index { get; }
 
-        public int LineIndex { get; }
+    public int LineIndex { get; }
 
-        public int ColumnIndex { get; }
+    public int ColumnIndex { get; }
 
-        public LinePosition LinePosition
-        {
-            get { return new LinePosition(LineIndex, ColumnIndex); }
-        }
+    public LinePosition LinePosition
+    {
+        get { return new LinePosition(LineIndex, ColumnIndex); }
+    }
 
-        public override bool Equals(object obj)
-        {
-            return obj is LinePositionInfo other
-                && Equals(other);
-        }
+    public override bool Equals(object obj)
+    {
+        return obj is LinePositionInfo other
+            && Equals(other);
+    }
 
-        public bool Equals(LinePositionInfo other)
-        {
-            return Index == other.Index
-                && LineIndex == other.LineIndex
-                && ColumnIndex == other.ColumnIndex;
-        }
+    public bool Equals(LinePositionInfo other)
+    {
+        return Index == other.Index
+            && LineIndex == other.LineIndex
+            && ColumnIndex == other.ColumnIndex;
+    }
 
-        public override int GetHashCode()
-        {
-            return Hash.Combine(Index, Hash.Combine(LineIndex, ColumnIndex));
-        }
+    public override int GetHashCode()
+    {
+        return Hash.Combine(Index, Hash.Combine(LineIndex, ColumnIndex));
+    }
 
-        public static bool operator ==(in LinePositionInfo info1, in LinePositionInfo info2)
-        {
-            return info1.Equals(info2);
-        }
+    public static bool operator ==(in LinePositionInfo info1, in LinePositionInfo info2)
+    {
+        return info1.Equals(info2);
+    }
 
-        public static bool operator !=(in LinePositionInfo info1, in LinePositionInfo info2)
-        {
-            return !(info1 == info2);
-        }
+    public static bool operator !=(in LinePositionInfo info1, in LinePositionInfo info2)
+    {
+        return !(info1 == info2);
     }
 }

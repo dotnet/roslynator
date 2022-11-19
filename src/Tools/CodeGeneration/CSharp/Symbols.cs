@@ -10,186 +10,185 @@ using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp;
 using static Roslynator.CodeGeneration.CSharp.RuntimeMetadataReference;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+internal static partial class Symbols
 {
-    internal static partial class Symbols
+    private static Compilation _compilation;
+
+    private static ImmutableArray<IMethodSymbol> _visitMethods;
+    private static ImmutableArray<INamedTypeSymbol> _syntaxSymbols;
+    private static readonly ImmutableDictionary<ITypeSymbol, IMethodSymbol> _typeSymbolMethodSymbolMap = VisitMethodSymbols.ToImmutableDictionary(f => f.Parameters.Single().Type);
+
+    private static INamedTypeSymbol _csharpSyntaxWalkerSymbol;
+    private static INamedTypeSymbol _syntaxNodeSymbol;
+    private static INamedTypeSymbol _syntaxListSymbol;
+    private static INamedTypeSymbol _separatedSyntaxListSymbol;
+    private static INamedTypeSymbol _syntaxTokenSymbol;
+    private static INamedTypeSymbol _syntaxTokenListSymbol;
+
+    public static INamedTypeSymbol CSharpSyntaxWalkerSymbol => _csharpSyntaxWalkerSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxWalker");
+    public static INamedTypeSymbol SyntaxNodeSymbol => _syntaxNodeSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
+    public static INamedTypeSymbol SyntaxListSymbol => _syntaxListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxList`1");
+    public static INamedTypeSymbol SeparatedSyntaxListSymbol => _separatedSyntaxListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SeparatedSyntaxList`1");
+    public static INamedTypeSymbol SyntaxTokenSymbol => _syntaxTokenSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxToken");
+    public static INamedTypeSymbol SyntaxTokenListSymbol => _syntaxTokenListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxTokenList");
+
+    public static ImmutableArray<IMethodSymbol> VisitMethodSymbols
     {
-        private static Compilation _compilation;
-
-        private static ImmutableArray<IMethodSymbol> _visitMethods;
-        private static ImmutableArray<INamedTypeSymbol> _syntaxSymbols;
-        private static readonly ImmutableDictionary<ITypeSymbol, IMethodSymbol> _typeSymbolMethodSymbolMap = VisitMethodSymbols.ToImmutableDictionary(f => f.Parameters.Single().Type);
-
-        private static INamedTypeSymbol _csharpSyntaxWalkerSymbol;
-        private static INamedTypeSymbol _syntaxNodeSymbol;
-        private static INamedTypeSymbol _syntaxListSymbol;
-        private static INamedTypeSymbol _separatedSyntaxListSymbol;
-        private static INamedTypeSymbol _syntaxTokenSymbol;
-        private static INamedTypeSymbol _syntaxTokenListSymbol;
-
-        public static INamedTypeSymbol CSharpSyntaxWalkerSymbol => _csharpSyntaxWalkerSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxWalker");
-        public static INamedTypeSymbol SyntaxNodeSymbol => _syntaxNodeSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
-        public static INamedTypeSymbol SyntaxListSymbol => _syntaxListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxList`1");
-        public static INamedTypeSymbol SeparatedSyntaxListSymbol => _separatedSyntaxListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SeparatedSyntaxList`1");
-        public static INamedTypeSymbol SyntaxTokenSymbol => _syntaxTokenSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxToken");
-        public static INamedTypeSymbol SyntaxTokenListSymbol => _syntaxTokenListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxTokenList");
-
-        public static ImmutableArray<IMethodSymbol> VisitMethodSymbols
+        get
         {
-            get
+            if (_visitMethods.IsDefault)
             {
-                if (_visitMethods.IsDefault)
+                _visitMethods = CSharpSyntaxWalkerSymbol
+                    .BaseType
+                    .GetMembers()
+                    .Where(f => f.Kind == SymbolKind.Method
+                        && f.DeclaredAccessibility == Accessibility.Public
+                        && f.IsVirtual
+                        && f.Name.Length > 5
+                        && f.Name.StartsWith("Visit", StringComparison.Ordinal))
+                    .OrderBy(f => f.Name)
+                    .Cast<IMethodSymbol>()
+                    .ToImmutableArray();
+
+                Debug.Assert(_visitMethods.All(f => f.Parameters.SingleOrDefault(shouldThrow: false).Type.EqualsOrInheritsFrom(SyntaxNodeSymbol)));
+            }
+
+            return _visitMethods;
+        }
+    }
+
+    public static ImmutableArray<INamedTypeSymbol> SyntaxSymbols
+    {
+        get
+        {
+            if (_syntaxSymbols.IsDefault)
+            {
+                _syntaxSymbols = Compilation
+                    .GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax")
+                    .ContainingNamespace
+                    .GetTypeMembers()
+                    .Where(f => f.TypeKind == TypeKind.Class && f.InheritsFrom(SyntaxNodeSymbol))
+                    .OrderBy(f => f.Name)
+                    .ToImmutableArray();
+            }
+
+            return _syntaxSymbols;
+        }
+    }
+
+    internal static Compilation Compilation
+    {
+        get
+        {
+            return _compilation ??= CSharpCompilation.Create(
+                assemblyName: "Temp",
+                syntaxTrees: null,
+                references: new MetadataReference[]
                 {
-                    _visitMethods = CSharpSyntaxWalkerSymbol
-                        .BaseType
-                        .GetMembers()
-                        .Where(f => f.Kind == SymbolKind.Method
-                            && f.DeclaredAccessibility == Accessibility.Public
-                            && f.IsVirtual
-                            && f.Name.Length > 5
-                            && f.Name.StartsWith("Visit", StringComparison.Ordinal))
-                        .OrderBy(f => f.Name)
-                        .Cast<IMethodSymbol>()
-                        .ToImmutableArray();
+                    CorLibReference,
+                    CreateFromAssemblyName("Microsoft.CodeAnalysis.dll"),
+                    CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll")
+                });
+        }
+    }
 
-                    Debug.Assert(_visitMethods.All(f => f.Parameters.SingleOrDefault(shouldThrow: false).Type.EqualsOrInheritsFrom(SyntaxNodeSymbol)));
-                }
+    public static IMethodSymbol FindVisitMethod(ITypeSymbol typeSymbol)
+    {
+        return (_typeSymbolMethodSymbolMap.TryGetValue(typeSymbol, out IMethodSymbol methodSymbol))
+            ? methodSymbol
+            : null;
+    }
 
-                return _visitMethods;
+    public static IEnumerable<IPropertySymbol> GetPropertySymbols(
+        ITypeSymbol typeSymbol,
+        string name = null,
+        bool skipObsolete = true)
+    {
+        foreach (ISymbol symbol in (name != null)
+            ? typeSymbol.GetMembers(name)
+            : typeSymbol.GetMembers())
+        {
+            if (symbol.Kind != SymbolKind.Property)
+                continue;
+
+            if (symbol.DeclaredAccessibility != Accessibility.Public)
+                continue;
+
+            if (skipObsolete && symbol.HasAttribute(MetadataNames.System_ObsoleteAttribute))
+                continue;
+
+            var propertySymbol = (IPropertySymbol)symbol;
+
+            if (propertySymbol.IsIndexer)
+                continue;
+
+            yield return propertySymbol;
+        }
+    }
+
+    public static IPropertySymbol FindListPropertySymbol(IPropertySymbol propertySymbol)
+    {
+        string propertyName = propertySymbol.Name;
+
+        string name = GetListPropertyName();
+
+        foreach (IPropertySymbol symbol in GetPropertySymbols(propertySymbol.Type, name))
+        {
+            if (SymbolEqualityComparer.Default.Equals(symbol.Type.OriginalDefinition, SyntaxListSymbol)
+                || SymbolEqualityComparer.Default.Equals(symbol.Type.OriginalDefinition, SeparatedSyntaxListSymbol))
+            {
+                return symbol;
             }
         }
 
-        public static ImmutableArray<INamedTypeSymbol> SyntaxSymbols
-        {
-            get
-            {
-                if (_syntaxSymbols.IsDefault)
-                {
-                    _syntaxSymbols = Compilation
-                        .GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax")
-                        .ContainingNamespace
-                        .GetTypeMembers()
-                        .Where(f => f.TypeKind == TypeKind.Class && f.InheritsFrom(SyntaxNodeSymbol))
-                        .OrderBy(f => f.Name)
-                        .ToImmutableArray();
-                }
+        return null;
 
-                return _syntaxSymbols;
+        string GetListPropertyName()
+        {
+            switch (propertyName)
+            {
+                case "TypeArgumentList":
+                    return "Arguments";
+                case "TypeParameterList":
+                    return "Parameters";
+                default:
+                    return propertyName.Remove(propertyName.Length - 4) + "s";
             }
         }
+    }
 
-        internal static Compilation Compilation
+    public static bool IsSyntaxTypeSymbol(ITypeSymbol typeSymbol)
+    {
+        if (SymbolEqualityComparer.Default.Equals(typeSymbol, SyntaxTokenListSymbol))
+            return true;
+
+        if (SymbolEqualityComparer.Default.Equals(typeSymbol, SyntaxTokenSymbol))
+            return true;
+
+        ITypeSymbol originalDefinition = typeSymbol.OriginalDefinition;
+
+        if (SymbolEqualityComparer.Default.Equals(originalDefinition, SyntaxListSymbol))
+            return true;
+
+        if (SymbolEqualityComparer.Default.Equals(originalDefinition, SeparatedSyntaxListSymbol))
+            return true;
+
+        if (typeSymbol.EqualsOrInheritsFrom(SyntaxNodeSymbol))
+            return true;
+
+        return false;
+    }
+
+    public static IEnumerable<INamedTypeSymbol> GetDerivedTypes(INamedTypeSymbol syntaxSymbol, Func<INamedTypeSymbol, bool> predicate = null)
+    {
+        foreach (INamedTypeSymbol symbol in SyntaxSymbols)
         {
-            get
+            if (symbol.InheritsFrom(syntaxSymbol)
+                && predicate?.Invoke(symbol) != false)
             {
-                return _compilation ??= CSharpCompilation.Create(
-                    assemblyName: "Temp",
-                    syntaxTrees: null,
-                    references: new MetadataReference[]
-                    {
-                        CorLibReference,
-                        CreateFromAssemblyName("Microsoft.CodeAnalysis.dll"),
-                        CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll")
-                    });
-            }
-        }
-
-        public static IMethodSymbol FindVisitMethod(ITypeSymbol typeSymbol)
-        {
-            return (_typeSymbolMethodSymbolMap.TryGetValue(typeSymbol, out IMethodSymbol methodSymbol))
-                ? methodSymbol
-                : null;
-        }
-
-        public static IEnumerable<IPropertySymbol> GetPropertySymbols(
-            ITypeSymbol typeSymbol,
-            string name = null,
-            bool skipObsolete = true)
-        {
-            foreach (ISymbol symbol in (name != null)
-                ? typeSymbol.GetMembers(name)
-                : typeSymbol.GetMembers())
-            {
-                if (symbol.Kind != SymbolKind.Property)
-                    continue;
-
-                if (symbol.DeclaredAccessibility != Accessibility.Public)
-                    continue;
-
-                if (skipObsolete && symbol.HasAttribute(MetadataNames.System_ObsoleteAttribute))
-                    continue;
-
-                var propertySymbol = (IPropertySymbol)symbol;
-
-                if (propertySymbol.IsIndexer)
-                    continue;
-
-                yield return propertySymbol;
-            }
-        }
-
-        public static IPropertySymbol FindListPropertySymbol(IPropertySymbol propertySymbol)
-        {
-            string propertyName = propertySymbol.Name;
-
-            string name = GetListPropertyName();
-
-            foreach (IPropertySymbol symbol in GetPropertySymbols(propertySymbol.Type, name))
-            {
-                if (SymbolEqualityComparer.Default.Equals(symbol.Type.OriginalDefinition, SyntaxListSymbol)
-                    || SymbolEqualityComparer.Default.Equals(symbol.Type.OriginalDefinition, SeparatedSyntaxListSymbol))
-                {
-                    return symbol;
-                }
-            }
-
-            return null;
-
-            string GetListPropertyName()
-            {
-                switch (propertyName)
-                {
-                    case "TypeArgumentList":
-                        return "Arguments";
-                    case "TypeParameterList":
-                        return "Parameters";
-                    default:
-                        return propertyName.Remove(propertyName.Length - 4) + "s";
-                }
-            }
-        }
-
-        public static bool IsSyntaxTypeSymbol(ITypeSymbol typeSymbol)
-        {
-            if (SymbolEqualityComparer.Default.Equals(typeSymbol, SyntaxTokenListSymbol))
-                return true;
-
-            if (SymbolEqualityComparer.Default.Equals(typeSymbol, SyntaxTokenSymbol))
-                return true;
-
-            ITypeSymbol originalDefinition = typeSymbol.OriginalDefinition;
-
-            if (SymbolEqualityComparer.Default.Equals(originalDefinition, SyntaxListSymbol))
-                return true;
-
-            if (SymbolEqualityComparer.Default.Equals(originalDefinition, SeparatedSyntaxListSymbol))
-                return true;
-
-            if (typeSymbol.EqualsOrInheritsFrom(SyntaxNodeSymbol))
-                return true;
-
-            return false;
-        }
-
-        public static IEnumerable<INamedTypeSymbol> GetDerivedTypes(INamedTypeSymbol syntaxSymbol, Func<INamedTypeSymbol, bool> predicate = null)
-        {
-            foreach (INamedTypeSymbol symbol in SyntaxSymbols)
-            {
-                if (symbol.InheritsFrom(syntaxSymbol)
-                    && predicate?.Invoke(symbol) != false)
-                {
-                    yield return symbol;
-                }
+                yield return symbol;
             }
         }
     }

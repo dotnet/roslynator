@@ -5,51 +5,50 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct NodeSymbolInfo
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct NodeSymbolInfo
+    public NodeSymbolInfo(string name, SyntaxNode node, ISymbol symbol = null)
     {
-        public NodeSymbolInfo(string name, SyntaxNode node, ISymbol symbol = null)
+        Name = name;
+        Node = node;
+        Symbol = symbol;
+    }
+
+    public string Name { get; }
+
+    public SyntaxNode Node { get; }
+
+    public ISymbol Symbol { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return $"{Node.Kind()} {Name}"; }
+    }
+
+    internal bool CanBeInDebuggerDisplayAttribute
+    {
+        get
         {
-            Name = name;
-            Node = node;
-            Symbol = symbol;
-        }
-
-        public string Name { get; }
-
-        public SyntaxNode Node { get; }
-
-        public ISymbol Symbol { get; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return $"{Node.Kind()} {Name}"; }
-        }
-
-        internal bool CanBeInDebuggerDisplayAttribute
-        {
-            get
+            switch (Node.Kind())
             {
-                switch (Node.Kind())
-                {
-                    case SyntaxKind.PropertyDeclaration:
-                    case SyntaxKind.FieldDeclaration:
-                        {
-                            return true;
-                        }
-                    case SyntaxKind.MethodDeclaration:
-                        {
-                            var methodDeclaration = (MethodDeclarationSyntax)Node;
+                case SyntaxKind.PropertyDeclaration:
+                case SyntaxKind.FieldDeclaration:
+                    {
+                        return true;
+                    }
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        var methodDeclaration = (MethodDeclarationSyntax)Node;
 
-                            return methodDeclaration.ParameterList?.Parameters.Count == 0;
-                        }
-                }
-
-                return false;
+                        return methodDeclaration.ParameterList?.Parameters.Count == 0;
+                    }
             }
+
+            return false;
         }
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0027PlaceNewLineAfterOrBeforeBinaryOperatorTests : AbstractCSharpDiagnosticVerifier<PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer, BinaryExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
-        public async Task Test_BeforeInsteadOfAfter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0027PlaceNewLineAfterOrBeforeBinaryOperatorTests : AbstractCSharpDiagnosticVerifier<PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer, BinaryExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
+    public async Task Test_BeforeInsteadOfAfter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -48,12 +48,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "before"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
-        public async Task Test_AfterInsteadOfBefore()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
+    public async Task Test_AfterInsteadOfBefore()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -86,12 +86,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "after"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
-        public async Task TestNoDiagnostic_BeforeInsteadOfAfter()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
+    public async Task TestNoDiagnostic_BeforeInsteadOfAfter()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -108,12 +108,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "before"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
-        public async Task TestNoDiagnostic_BeforeInsteadOfAfter_SingleLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
+    public async Task TestNoDiagnostic_BeforeInsteadOfAfter_SingleLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -128,12 +128,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "before"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
-        public async Task TestNoDiagnostic_AfterInsteadOfBefore()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
+    public async Task TestNoDiagnostic_AfterInsteadOfBefore()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -150,12 +150,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "after"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
-        public async Task TestNoDiagnostic_AfterInsteadOfBefore_SingleLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator)]
+    public async Task TestNoDiagnostic_AfterInsteadOfBefore_SingleLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -170,6 +170,5 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "after"));
-        }
     }
 }

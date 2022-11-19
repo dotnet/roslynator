@@ -5,29 +5,28 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
+namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName;
+
+internal class RemoveParameterNameRewriter : CSharpSyntaxRewriter
 {
-    internal class RemoveParameterNameRewriter : CSharpSyntaxRewriter
+    private readonly ImmutableArray<ArgumentSyntax> _arguments;
+
+    public RemoveParameterNameRewriter(ImmutableArray<ArgumentSyntax> arguments)
     {
-        private readonly ImmutableArray<ArgumentSyntax> _arguments;
+        _arguments = arguments;
+    }
 
-        public RemoveParameterNameRewriter(ImmutableArray<ArgumentSyntax> arguments)
+    public override SyntaxNode VisitArgument(ArgumentSyntax node)
+    {
+        if (_arguments.Contains(node))
         {
-            _arguments = arguments;
+            return node
+                .WithNameColon(null)
+                .WithTriviaFrom(node);
         }
-
-        public override SyntaxNode VisitArgument(ArgumentSyntax node)
+        else
         {
-            if (_arguments.Contains(node))
-            {
-                return node
-                    .WithNameColon(null)
-                    .WithTriviaFrom(node);
-            }
-            else
-            {
-                return base.VisitArgument(node);
-            }
+            return base.VisitArgument(node);
         }
     }
 }

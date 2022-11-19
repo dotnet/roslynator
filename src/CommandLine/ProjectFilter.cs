@@ -6,80 +6,79 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal readonly struct ProjectFilter
 {
-    internal readonly struct ProjectFilter
+    public ProjectFilter(
+        IEnumerable<string> names,
+        IEnumerable<string> ignoredNames,
+        string language)
     {
-        public ProjectFilter(
-            IEnumerable<string> names,
-            IEnumerable<string> ignoredNames,
-            string language)
+        if (names?.Any() == true
+            && ignoredNames?.Any() == true)
         {
-            if (names?.Any() == true
-                && ignoredNames?.Any() == true)
-            {
-                throw new ArgumentException($"Cannot specify both '{nameof(names)}' and '{nameof(ignoredNames)}'.", nameof(names));
-            }
-
-            Names = names?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
-            IgnoredNames = ignoredNames?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
-            Language = language;
+            throw new ArgumentException($"Cannot specify both '{nameof(names)}' and '{nameof(ignoredNames)}'.", nameof(names));
         }
 
-        public ImmutableHashSet<ProjectName> Names { get; }
+        Names = names?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
+        IgnoredNames = ignoredNames?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
+        Language = language;
+    }
 
-        public ImmutableHashSet<ProjectName> IgnoredNames { get; }
+    public ImmutableHashSet<ProjectName> Names { get; }
 
-        public string Language { get; }
+    public ImmutableHashSet<ProjectName> IgnoredNames { get; }
 
-        public bool IsDefault
+    public string Language { get; }
+
+    public bool IsDefault
+    {
+        get
         {
-            get
-            {
-                return Names == null
-                    && IgnoredNames == null
-                    && Language == null;
-            }
+            return Names == null
+                && IgnoredNames == null
+                && Language == null;
+        }
+    }
+
+    public bool IsMatch(Project project)
+    {
+        if (Language != null
+            && Language != project.Language)
+        {
+            return false;
         }
 
-        public bool IsMatch(Project project)
+        if (Names?.Count > 0)
+            return IsMatch(project.Name, Names);
+
+        if (IgnoredNames?.Count > 0)
+            return !IsMatch(project.Name, IgnoredNames);
+
+        return true;
+    }
+
+    private static bool IsMatch(string name, ImmutableHashSet<ProjectName> projectNames)
+    {
+        ProjectName projectName = ProjectName.Create(name);
+
+        foreach (ProjectName projectName2 in projectNames)
         {
-            if (Language != null
-                && Language != project.Language)
+            if (projectName2.Moniker != null)
             {
-                return false;
-            }
-
-            if (Names?.Count > 0)
-                return IsMatch(project.Name, Names);
-
-            if (IgnoredNames?.Count > 0)
-                return !IsMatch(project.Name, IgnoredNames);
-
-            return true;
-        }
-
-        private static bool IsMatch(string name, ImmutableHashSet<ProjectName> projectNames)
-        {
-            ProjectName projectName = ProjectName.Create(name);
-
-            foreach (ProjectName projectName2 in projectNames)
-            {
-                if (projectName2.Moniker != null)
-                {
-                    if (projectName.Moniker != null
-                        && string.Equals(projectName.Name, projectName2.Name, StringComparison.Ordinal))
-                    {
-                        return true;
-                    }
-                }
-                else if (string.Equals(projectName.NameWithoutMoniker, projectName2.NameWithoutMoniker, StringComparison.Ordinal))
+                if (projectName.Moniker != null
+                    && string.Equals(projectName.Name, projectName2.Name, StringComparison.Ordinal))
                 {
                     return true;
                 }
             }
-
-            return false;
+            else if (string.Equals(projectName.NameWithoutMoniker, projectName2.NameWithoutMoniker, StringComparison.Ordinal))
+            {
+                return true;
+            }
         }
+
+        return false;
     }
 }

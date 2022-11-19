@@ -6,121 +6,120 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
 using static Roslynator.DiagnosticHelpers;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+public static class FixDocumentationCommentTagAnalysis
 {
-    public static class FixDocumentationCommentTagAnalysis
+    public static void Analyze(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
+        if (elementInfo.IsEmptyElement)
+            return;
+
+        var element = (XmlElementSyntax)elementInfo.Element;
+
+        foreach (XmlNodeSyntax node in element.Content)
         {
-            if (elementInfo.IsEmptyElement)
-                return;
+            XmlElementInfo elementInfo2 = SyntaxInfo.XmlElementInfo(node);
 
-            var element = (XmlElementSyntax)elementInfo.Element;
-
-            foreach (XmlNodeSyntax node in element.Content)
+            if (elementInfo2.Success)
             {
-                XmlElementInfo elementInfo2 = SyntaxInfo.XmlElementInfo(node);
-
-                if (elementInfo2.Success)
+                switch (elementInfo2.GetTag())
                 {
-                    switch (elementInfo2.GetTag())
-                    {
-                        case XmlTag.C:
-                            {
-                                AnalyzeCElement(context, elementInfo2);
-                                break;
-                            }
-                        case XmlTag.Code:
-                            {
-                                AnalyzeCodeElement(context, elementInfo2);
-                                break;
-                            }
-                        case XmlTag.List:
-                            {
-                                AnalyzeList(context, elementInfo2);
-                                break;
-                            }
-                        case XmlTag.Para:
-                        case XmlTag.ParamRef:
-                        case XmlTag.See:
-                        case XmlTag.TypeParamRef:
-                            {
-                                Analyze(context, elementInfo2);
-                                break;
-                            }
-                    }
+                    case XmlTag.C:
+                        {
+                            AnalyzeCElement(context, elementInfo2);
+                            break;
+                        }
+                    case XmlTag.Code:
+                        {
+                            AnalyzeCodeElement(context, elementInfo2);
+                            break;
+                        }
+                    case XmlTag.List:
+                        {
+                            AnalyzeList(context, elementInfo2);
+                            break;
+                        }
+                    case XmlTag.Para:
+                    case XmlTag.ParamRef:
+                    case XmlTag.See:
+                    case XmlTag.TypeParamRef:
+                        {
+                            Analyze(context, elementInfo2);
+                            break;
+                        }
                 }
             }
         }
+    }
 
-        private static void AnalyzeList(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
+    private static void AnalyzeList(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
+    {
+        if (elementInfo.IsEmptyElement)
+            return;
+
+        var element = (XmlElementSyntax)elementInfo.Element;
+
+        foreach (XmlNodeSyntax node in element.Content)
         {
-            if (elementInfo.IsEmptyElement)
-                return;
+            XmlElementInfo elementInfo2 = SyntaxInfo.XmlElementInfo(node);
 
-            var element = (XmlElementSyntax)elementInfo.Element;
+            if (!elementInfo2.Success)
+                continue;
 
-            foreach (XmlNodeSyntax node in element.Content)
+            if (elementInfo2.IsEmptyElement)
+                continue;
+
+            if (!elementInfo2.HasLocalName("listheader", "item"))
+                continue;
+
+            var element2 = (XmlElementSyntax)elementInfo2.Element;
+
+            foreach (XmlNodeSyntax node2 in element2.Content)
             {
-                XmlElementInfo elementInfo2 = SyntaxInfo.XmlElementInfo(node);
+                XmlElementInfo elementInfo3 = SyntaxInfo.XmlElementInfo(node2);
 
-                if (!elementInfo2.Success)
+                if (!elementInfo3.Success)
                     continue;
 
-                if (elementInfo2.IsEmptyElement)
+                if (elementInfo3.IsEmptyElement)
                     continue;
 
-                if (!elementInfo2.HasLocalName("listheader", "item"))
-                    continue;
-
-                var element2 = (XmlElementSyntax)elementInfo2.Element;
-
-                foreach (XmlNodeSyntax node2 in element2.Content)
-                {
-                    XmlElementInfo elementInfo3 = SyntaxInfo.XmlElementInfo(node2);
-
-                    if (!elementInfo3.Success)
-                        continue;
-
-                    if (elementInfo3.IsEmptyElement)
-                        continue;
-
-                    if (elementInfo3.HasLocalName("term", "description"))
-                        Analyze(context, elementInfo3);
-                }
+                if (elementInfo3.HasLocalName("term", "description"))
+                    Analyze(context, elementInfo3);
             }
         }
+    }
 
-        private static void AnalyzeCElement(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
-        {
-            if (elementInfo.IsEmptyElement)
-                return;
+    private static void AnalyzeCElement(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
+    {
+        if (elementInfo.IsEmptyElement)
+            return;
 
-            var element = (XmlElementSyntax)elementInfo.Element;
+        var element = (XmlElementSyntax)elementInfo.Element;
 
-            SyntaxList<XmlNodeSyntax> content = element.Content;
+        SyntaxList<XmlNodeSyntax> content = element.Content;
 
-            if (!content.Any())
-                return;
+        if (!content.Any())
+            return;
 
-            if (context.Node.SyntaxTree.IsMultiLineSpan(content.FullSpan))
-                ReportDiagnostic(context, DiagnosticRules.FixDocumentationCommentTag, elementInfo.Element);
-        }
+        if (context.Node.SyntaxTree.IsMultiLineSpan(content.FullSpan))
+            ReportDiagnostic(context, DiagnosticRules.FixDocumentationCommentTag, elementInfo.Element);
+    }
 
-        private static void AnalyzeCodeElement(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
-        {
-            if (elementInfo.IsEmptyElement)
-                return;
+    private static void AnalyzeCodeElement(SyntaxNodeAnalysisContext context, XmlElementInfo elementInfo)
+    {
+        if (elementInfo.IsEmptyElement)
+            return;
 
-            var element = (XmlElementSyntax)elementInfo.Element;
+        var element = (XmlElementSyntax)elementInfo.Element;
 
-            SyntaxList<XmlNodeSyntax> content = element.Content;
+        SyntaxList<XmlNodeSyntax> content = element.Content;
 
-            if (!content.Any())
-                return;
+        if (!content.Any())
+            return;
 
-            if (context.Node.SyntaxTree.IsSingleLineSpan(content.FullSpan))
-                ReportDiagnostic(context, DiagnosticRules.FixDocumentationCommentTag, elementInfo.Element);
-        }
+        if (context.Node.SyntaxTree.IsSingleLineSpan(content.FullSpan))
+            ReportDiagnostic(context, DiagnosticRules.FixDocumentationCommentTag, elementInfo.Element);
     }
 }

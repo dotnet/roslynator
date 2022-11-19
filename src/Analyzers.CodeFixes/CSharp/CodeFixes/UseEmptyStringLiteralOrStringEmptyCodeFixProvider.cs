@@ -12,87 +12,86 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseEmptyStringLiteralOrStringEmptyCodeFixProvider))]
+[Shared]
+public sealed class UseEmptyStringLiteralOrStringEmptyCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseEmptyStringLiteralOrStringEmptyCodeFixProvider))]
-    [Shared]
-    public sealed class UseEmptyStringLiteralOrStringEmptyCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression)))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        switch (node.Kind())
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            case SyntaxKind.SimpleMemberAccessExpression:
+                {
+                    var memberAccessExpression = (MemberAccessExpressionSyntax)node;
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                predicate: f => f.IsKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression)))
-            {
-                return;
-            }
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use empty string literal",
+                        ct => UseEmptyStringLiteralInsteadOfStringEmptyAsync(document, memberAccessExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            case SyntaxKind.StringLiteralExpression:
+            case SyntaxKind.InterpolatedStringExpression:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use 'string.Empty'",
+                        ct => UseStringEmptyInsteadOfEmptyStringLiteralAsync(document, (ExpressionSyntax)node, ct),
+                        GetEquivalenceKey(diagnostic));
 
-            switch (node.Kind())
-            {
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        var memberAccessExpression = (MemberAccessExpressionSyntax)node;
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use empty string literal",
-                            ct => UseEmptyStringLiteralInsteadOfStringEmptyAsync(document, memberAccessExpression, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case SyntaxKind.StringLiteralExpression:
-                case SyntaxKind.InterpolatedStringExpression:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use 'string.Empty'",
-                            ct => UseStringEmptyInsteadOfEmptyStringLiteralAsync(document, (ExpressionSyntax)node, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                default:
-                    {
-                        throw new InvalidOperationException();
-                    }
-            }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            default:
+                {
+                    throw new InvalidOperationException();
+                }
         }
+    }
 
-        private static Task<Document> UseEmptyStringLiteralInsteadOfStringEmptyAsync(
-            Document document,
-            MemberAccessExpressionSyntax memberAccessExpression,
-            CancellationToken cancellationToken = default)
-        {
-            LiteralExpressionSyntax newNode = CSharpFactory.StringLiteralExpression("").WithTriviaFrom(memberAccessExpression);
+    private static Task<Document> UseEmptyStringLiteralInsteadOfStringEmptyAsync(
+        Document document,
+        MemberAccessExpressionSyntax memberAccessExpression,
+        CancellationToken cancellationToken = default)
+    {
+        LiteralExpressionSyntax newNode = CSharpFactory.StringLiteralExpression("").WithTriviaFrom(memberAccessExpression);
 
-            return document.ReplaceNodeAsync(memberAccessExpression, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(memberAccessExpression, newNode, cancellationToken);
+    }
 
-        private static Task<Document> UseStringEmptyInsteadOfEmptyStringLiteralAsync(
-            Document document,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
-        {
-            MemberAccessExpressionSyntax memberAccessExpression = CSharpFactory.SimpleMemberAccessExpression(
-                CSharpTypeFactory.StringType(),
-                SyntaxFactory.IdentifierName("Empty"));
+    private static Task<Document> UseStringEmptyInsteadOfEmptyStringLiteralAsync(
+        Document document,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        MemberAccessExpressionSyntax memberAccessExpression = CSharpFactory.SimpleMemberAccessExpression(
+            CSharpTypeFactory.StringType(),
+            SyntaxFactory.IdentifierName("Empty"));
 
-            memberAccessExpression = memberAccessExpression.WithTriviaFrom(expression);
+        memberAccessExpression = memberAccessExpression.WithTriviaFrom(expression);
 
-            return document.ReplaceNodeAsync(expression, memberAccessExpression, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(expression, memberAccessExpression, cancellationToken);
     }
 }

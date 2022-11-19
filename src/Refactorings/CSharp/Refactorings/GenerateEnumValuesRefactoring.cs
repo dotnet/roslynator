@@ -10,124 +10,123 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class GenerateEnumValuesRefactoring
 {
-    internal static class GenerateEnumValuesRefactoring
+    internal static readonly string StartFromHighestExistingValueEquivalenceKey = EquivalenceKey.Create(RefactoringDescriptors.GenerateEnumValues, "StartFromHighestExistingValue");
+
+    public static void ComputeRefactoring(
+        RefactoringContext context,
+        EnumDeclarationSyntax enumDeclaration,
+        SemanticModel semanticModel)
     {
-        internal static readonly string StartFromHighestExistingValueEquivalenceKey = EquivalenceKey.Create(RefactoringDescriptors.GenerateEnumValues, "StartFromHighestExistingValue");
+        INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
 
-        public static void ComputeRefactoring(
-            RefactoringContext context,
-            EnumDeclarationSyntax enumDeclaration,
-            SemanticModel semanticModel)
+        if (enumSymbol?.HasAttribute(MetadataNames.System_FlagsAttribute) != true)
+            return;
+
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
+
+        if (!members.Any(f => f.EqualsValue == null))
+            return;
+
+        ImmutableArray<ulong> values = GetExplicitValues(enumDeclaration, semanticModel, context.CancellationToken);
+
+        Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values);
+
+        if (!optional.HasValue)
+            return;
+
+        if (!ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
+            return;
+
+        Document document = context.Document;
+
+        context.RegisterRefactoring(
+            "Declare explicit values",
+            ct => RefactorAsync(document, enumDeclaration, enumSymbol, values, startFromHighestExistingValue: false, cancellationToken: ct),
+            RefactoringDescriptors.GenerateEnumValues);
+
+        if (members.Any(f => f.EqualsValue != null))
         {
-            INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
+            Optional<ulong> optional2 = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values, startFromHighestExistingValue: true);
 
-            if (enumSymbol?.HasAttribute(MetadataNames.System_FlagsAttribute) != true)
-                return;
-
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
-
-            if (!members.Any(f => f.EqualsValue == null))
-                return;
-
-            ImmutableArray<ulong> values = GetExplicitValues(enumDeclaration, semanticModel, context.CancellationToken);
-
-            Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values);
-
-            if (!optional.HasValue)
-                return;
-
-            if (!ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
-                return;
-
-            Document document = context.Document;
-
-            context.RegisterRefactoring(
-                "Declare explicit values",
-                ct => RefactorAsync(document, enumDeclaration, enumSymbol, values, startFromHighestExistingValue: false, cancellationToken: ct),
-                RefactoringDescriptors.GenerateEnumValues);
-
-            if (members.Any(f => f.EqualsValue != null))
+            if (optional2.HasValue
+                && optional.Value != optional2.Value)
             {
-                Optional<ulong> optional2 = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values, startFromHighestExistingValue: true);
+                context.RegisterRefactoring(
+                    $"Declare explicit values (starting from {optional2.Value})",
+                    ct => RefactorAsync(document, enumDeclaration, enumSymbol, values, startFromHighestExistingValue: true, cancellationToken: ct),
+                    RefactoringDescriptors.GenerateEnumValues,
+                    "StartFromHighestExistingValue");
+            }
+        }
+    }
 
-                if (optional2.HasValue
-                    && optional.Value != optional2.Value)
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        EnumDeclarationSyntax enumDeclaration,
+        INamedTypeSymbol enumSymbol,
+        ImmutableArray<ulong> values,
+        bool startFromHighestExistingValue,
+        CancellationToken cancellationToken)
+    {
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
+
+        List<ulong> valuesList = values.ToList();
+
+        for (int i = 0; i < members.Count; i++)
+        {
+            if (members[i].EqualsValue == null)
+            {
+                Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(valuesList, startFromHighestExistingValue);
+
+                if (optional.HasValue
+                    && ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
                 {
-                    context.RegisterRefactoring(
-                        $"Declare explicit values (starting from {optional2.Value})",
-                        ct => RefactorAsync(document, enumDeclaration, enumSymbol, values, startFromHighestExistingValue: true, cancellationToken: ct),
-                        RefactoringDescriptors.GenerateEnumValues,
-                        "StartFromHighestExistingValue");
+                    valuesList.Add(optional.Value);
+
+                    EqualsValueClauseSyntax equalsValue = EqualsValueClause(
+                        Token(TriviaList(ElasticSpace), SyntaxKind.EqualsToken, TriviaList(ElasticSpace)),
+                        CSharpFactory.NumericLiteralExpression(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType));
+
+                    EnumMemberDeclarationSyntax newMember = members[i].WithEqualsValue(equalsValue);
+
+                    members = members.ReplaceAt(i, newMember);
+                }
+                else
+                {
+                    break;
                 }
             }
         }
 
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            EnumDeclarationSyntax enumDeclaration,
-            INamedTypeSymbol enumSymbol,
-            ImmutableArray<ulong> values,
-            bool startFromHighestExistingValue,
-            CancellationToken cancellationToken)
+        EnumDeclarationSyntax newNode = enumDeclaration.WithMembers(members);
+
+        return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static ImmutableArray<ulong> GetExplicitValues(
+        EnumDeclarationSyntax enumDeclaration,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        ImmutableArray<ulong>.Builder values = ImmutableArray.CreateBuilder<ulong>();
+
+        foreach (EnumMemberDeclarationSyntax member in enumDeclaration.Members)
         {
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
+            ExpressionSyntax value = member.EqualsValue?.Value;
 
-            List<ulong> valuesList = values.ToList();
-
-            for (int i = 0; i < members.Count; i++)
+            if (value != null)
             {
-                if (members[i].EqualsValue == null)
-                {
-                    Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(valuesList, startFromHighestExistingValue);
+                IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
 
-                    if (optional.HasValue
-                        && ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
-                    {
-                        valuesList.Add(optional.Value);
-
-                        EqualsValueClauseSyntax equalsValue = EqualsValueClause(
-                            Token(TriviaList(ElasticSpace), SyntaxKind.EqualsToken, TriviaList(ElasticSpace)),
-                            CSharpFactory.NumericLiteralExpression(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType));
-
-                        EnumMemberDeclarationSyntax newMember = members[i].WithEqualsValue(equalsValue);
-
-                        members = members.ReplaceAt(i, newMember);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+                if (fieldSymbol?.HasConstantValue == true)
+                    values.Add(SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType));
             }
-
-            EnumDeclarationSyntax newNode = enumDeclaration.WithMembers(members);
-
-            return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static ImmutableArray<ulong> GetExplicitValues(
-            EnumDeclarationSyntax enumDeclaration,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ImmutableArray<ulong>.Builder values = ImmutableArray.CreateBuilder<ulong>();
-
-            foreach (EnumMemberDeclarationSyntax member in enumDeclaration.Members)
-            {
-                ExpressionSyntax value = member.EqualsValue?.Value;
-
-                if (value != null)
-                {
-                    IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
-
-                    if (fieldSymbol?.HasConstantValue == true)
-                        values.Add(SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType));
-                }
-            }
-
-            return values.ToImmutableArray();
-        }
+        return values.ToImmutableArray();
     }
 }

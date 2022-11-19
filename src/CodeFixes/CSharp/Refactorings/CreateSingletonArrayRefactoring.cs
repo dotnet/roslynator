@@ -7,26 +7,25 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class CreateSingletonArrayRefactoring
 {
-    internal static class CreateSingletonArrayRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ExpressionSyntax expression,
+        ITypeSymbol elementType,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ExpressionSyntax expression,
-            ITypeSymbol elementType,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ArrayCreationExpressionSyntax newNode = ArrayCreationExpression(
-                ArrayType(elementType.ToMinimalTypeSyntax(semanticModel, expression.SpanStart), SingletonList(ArrayRankSpecifier())),
-                ArrayInitializerExpression(SingletonSeparatedList(expression.WithoutTrivia())));
+        ArrayCreationExpressionSyntax newNode = ArrayCreationExpression(
+            ArrayType(elementType.ToMinimalTypeSyntax(semanticModel, expression.SpanStart), SingletonList(ArrayRankSpecifier())),
+            ArrayInitializerExpression(SingletonSeparatedList(expression.WithoutTrivia())));
 
-            newNode = newNode
-                .WithTriviaFrom(expression)
-                .WithFormatterAnnotation();
+        newNode = newNode
+            .WithTriviaFrom(expression)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
     }
 }

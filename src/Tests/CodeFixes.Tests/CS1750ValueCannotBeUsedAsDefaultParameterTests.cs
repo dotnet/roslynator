@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS1750ValueCannotBeUsedAsDefaultParameterTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1750_ValueCannotBeUsedAsDefaultParameter;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1750_ValueCannotBeUsedAsDefaultParameter)]
-        public async Task Test_ChangeParameterType()
-        {
-            await VerifyFixAsync(@"
+public class CS1750ValueCannotBeUsedAsDefaultParameterTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1750_ValueCannotBeUsedAsDefaultParameter;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1750_ValueCannotBeUsedAsDefaultParameter)]
+    public async Task Test_ChangeParameterType()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M(string p = 0)
@@ -28,6 +28,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

@@ -8,16 +8,16 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCSTests : AbstractCSharpDiagnosticVerifier<NamedTypeSymbolAnalyzer, AttributeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePropertySyntaxNodeSpanStart;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCSTests : AbstractCSharpDiagnosticVerifier<NamedTypeSymbolAnalyzer, AttributeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePropertySyntaxNodeSpanStart;
+
+    //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,13 +34,13 @@ class C
 }
 ", @"
 ");
-        }
+    }
 
-        //[Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
-        //[InlineData("", "")]
-        public async Task Test2(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    //[Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
+    //[InlineData("", "")]
+    public async Task Test2(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,12 +56,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,13 +77,13 @@ class C
     }
 }
 ");
-        }
+    }
 
-        //[Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
-        //[InlineData("")]
-        public async Task TestNoDiagnostic2(string source)
-        {
-            await VerifyNoDiagnosticAsync(@"
+    //[Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
+    //[InlineData("")]
+    public async Task TestNoDiagnostic2(string source)
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,6 +99,5 @@ class C
     }
 }
 ", source);
-        }
     }
 }

@@ -7,29 +7,28 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseIsOperatorInsteadOfAsOperatorRefactoring
 {
-    internal static class UseIsOperatorInsteadOfAsOperatorRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        SyntaxNode node,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            SyntaxNode node,
-            CancellationToken cancellationToken)
-        {
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(node);
+        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(node);
 
-            AsExpressionInfo asExpressionInfo = SyntaxInfo.AsExpressionInfo(nullCheck.Expression);
+        AsExpressionInfo asExpressionInfo = SyntaxInfo.AsExpressionInfo(nullCheck.Expression);
 
-            ExpressionSyntax newNode = IsExpression(asExpressionInfo.Expression, asExpressionInfo.Type);
+        ExpressionSyntax newNode = IsExpression(asExpressionInfo.Expression, asExpressionInfo.Type);
 
-            if (nullCheck.IsCheckingNull)
-                newNode = LogicalNotExpression(newNode.WithoutTrivia().Parenthesize()).WithTriviaFrom(newNode);
+        if (nullCheck.IsCheckingNull)
+            newNode = LogicalNotExpression(newNode.WithoutTrivia().Parenthesize()).WithTriviaFrom(newNode);
 
-            newNode = newNode
-                .Parenthesize()
-                .WithFormatterAnnotation();
+        newNode = newNode
+            .Parenthesize()
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(node, newNode, cancellationToken);
     }
 }

@@ -2,14 +2,13 @@
 
 using System;
 
-namespace Roslynator
+namespace Roslynator;
+
+[Flags]
+internal enum SymbolDefinitionSortOptions
 {
-    [Flags]
-    internal enum SymbolDefinitionSortOptions
-    {
-        None = 0,
-        SystemFirst = 1,
-        OmitContainingNamespace = 1 << 1,
-        OmitContainingType = 1 << 2,
-    }
+    None = 0,
+    SystemFirst = 1,
+    OmitContainingNamespace = 1 << 1,
+    OmitContainingType = 1 << 2,
 }

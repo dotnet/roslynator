@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0065IntroduceAndInitializePropertyTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.IntroduceAndInitializeProperty;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.IntroduceAndInitializeProperty)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0065IntroduceAndInitializePropertyTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.IntroduceAndInitializeProperty;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.IntroduceAndInitializeProperty)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public C(string [||]p = null)
@@ -31,12 +31,12 @@ class C
     public string P { get; }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.IntroduceAndInitializeProperty)]
-        public async Task Test_MultipleParameters()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.IntroduceAndInitializeProperty)]
+    public async Task Test_MultipleParameters()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -64,12 +64,12 @@ class C
     public string P2 { get; }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.IntroduceAndInitializeProperty)]
-        public async Task TestNoRefactoring_ParameterPassedToInitializer()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.IntroduceAndInitializeProperty)]
+    public async Task TestNoRefactoring_ParameterPassedToInitializer()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     public C(object [||]p1, object p2)
@@ -82,6 +82,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

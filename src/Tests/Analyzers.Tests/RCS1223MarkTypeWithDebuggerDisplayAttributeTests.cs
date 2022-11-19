@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpDiagnosticVerifier<MarkTypeWithDebuggerDisplayAttributeAnalyzer, MarkTypeWithDebuggerDisplayAttributeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task Test_PublicClass()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpDiagnosticVerifier<MarkTypeWithDebuggerDisplayAttributeAnalyzer, MarkTypeWithDebuggerDisplayAttributeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task Test_PublicClass()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Diagnostics;
 
 public class [|C|]
@@ -37,12 +37,12 @@ public class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task Test_PublicClassWithDocComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task Test_PublicClassWithDocComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Diagnostics;
 
 /// <summary></summary>
@@ -66,12 +66,12 @@ public class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task Test_PublicClassWithAttribute()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task Test_PublicClassWithAttribute()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Diagnostics;
 
@@ -97,12 +97,12 @@ public class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task Test_PublicClassWithDocCommentAndAttribute()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task Test_PublicClassWithDocCommentAndAttribute()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Diagnostics;
 
@@ -134,12 +134,12 @@ public class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task Test_PublicStructWithDocCommentAndAttribute()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task Test_PublicStructWithDocCommentAndAttribute()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Diagnostics;
 
@@ -171,12 +171,12 @@ public struct C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task TestNoDiagnostic_ClassWithDebuggerDisplayAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task TestNoDiagnostic_ClassWithDebuggerDisplayAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 
 [DebuggerDisplay("""")]
@@ -184,12 +184,12 @@ public class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task TestNoDiagnostic_ClassWithDebuggerDisplayAttributeOnBaseClass()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task TestNoDiagnostic_ClassWithDebuggerDisplayAttributeOnBaseClass()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 
 [DebuggerDisplay("""")]
@@ -201,32 +201,32 @@ public class C : B
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task TestNoDiagnostic_StaticClass()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task TestNoDiagnostic_StaticClass()
+    {
+        await VerifyNoDiagnosticAsync(@"
 static class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task TestNoDiagnostic_Interface()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task TestNoDiagnostic_Interface()
+    {
+        await VerifyNoDiagnosticAsync(@"
 public interface IC
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task TestNoDiagnostic_NonPubliclyVisibleType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task TestNoDiagnostic_NonPubliclyVisibleType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 
 [DebuggerDisplay("""")]
@@ -255,12 +255,12 @@ internal class IC
     protected class FooProtected { }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task TestNoDiagnostic_NonPubliclyVisibleType_PrivateProtected()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task TestNoDiagnostic_NonPubliclyVisibleType_PrivateProtected()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 
 [DebuggerDisplay("""")]
@@ -274,18 +274,17 @@ public class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
-        public async Task TestNoDiagnostic_AbstractClass()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task TestNoDiagnostic_AbstractClass()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 
 public abstract class C
 {
 }
 ");
-        }
     }
 }

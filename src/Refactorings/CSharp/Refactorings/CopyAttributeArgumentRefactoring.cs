@@ -5,61 +5,60 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class CopyAttributeArgumentRefactoring
 {
-    internal static class CopyAttributeArgumentRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, AttributeArgumentListSyntax argumentList)
     {
-        public static void ComputeRefactoring(RefactoringContext context, AttributeArgumentListSyntax argumentList)
+        if (!context.Span.IsEmpty)
+            return;
+
+        AttributeArgumentSyntax argument = GetArgument(context, argumentList);
+
+        if (argument == null)
+            return;
+
+        context.RegisterRefactoring(
+            "Copy argument",
+            ct => RefactorAsync(context.Document, argument, ct),
+            RefactoringDescriptors.CopyArgument);
+    }
+
+    private static AttributeArgumentSyntax GetArgument(RefactoringContext context, AttributeArgumentListSyntax argumentList)
+    {
+        SeparatedSyntaxList<AttributeArgumentSyntax> arguments = argumentList.Arguments;
+
+        foreach (AttributeArgumentSyntax argument in arguments)
         {
-            if (!context.Span.IsEmpty)
-                return;
-
-            AttributeArgumentSyntax argument = GetArgument(context, argumentList);
-
-            if (argument == null)
-                return;
-
-            context.RegisterRefactoring(
-                "Copy argument",
-                ct => RefactorAsync(context.Document, argument, ct),
-                RefactoringDescriptors.CopyArgument);
-        }
-
-        private static AttributeArgumentSyntax GetArgument(RefactoringContext context, AttributeArgumentListSyntax argumentList)
-        {
-            SeparatedSyntaxList<AttributeArgumentSyntax> arguments = argumentList.Arguments;
-
-            foreach (AttributeArgumentSyntax argument in arguments)
+            if (argument.IsMissing
+                && context.Span.Contains(argument.Span))
             {
-                if (argument.IsMissing
-                    && context.Span.Contains(argument.Span))
-                {
-                    int index = arguments.IndexOf(argument);
+                int index = arguments.IndexOf(argument);
 
-                    if (index > 0
-                        && !arguments[index - 1].IsMissing)
-                    {
-                        return argument;
-                    }
+                if (index > 0
+                    && !arguments[index - 1].IsMissing)
+                {
+                    return argument;
                 }
             }
-
-            return null;
         }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            AttributeArgumentSyntax argument,
-            CancellationToken cancellationToken = default)
-        {
-            var argumentList = (AttributeArgumentListSyntax)argument.Parent;
+        return null;
+    }
 
-            int index = argumentList.Arguments.IndexOf(argument);
+    public static Task<Document> RefactorAsync(
+        Document document,
+        AttributeArgumentSyntax argument,
+        CancellationToken cancellationToken = default)
+    {
+        var argumentList = (AttributeArgumentListSyntax)argument.Parent;
 
-            AttributeArgumentSyntax previousArgument = argumentList.Arguments[index - 1]
-                .WithTriviaFrom(argument);
+        int index = argumentList.Arguments.IndexOf(argument);
 
-            return document.ReplaceNodeAsync(argument, previousArgument, cancellationToken);
-        }
+        AttributeArgumentSyntax previousArgument = argumentList.Arguments[index - 1]
+            .WithTriviaFrom(argument);
+
+        return document.ReplaceNodeAsync(argument, previousArgument, cancellationToken);
     }
 }

@@ -6,66 +6,65 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
+namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName;
+
+internal static class AddArgumentNameRefactoring
 {
-    internal static class AddArgumentNameRefactoring
+    public static void ComputeRefactoring(
+        RefactoringContext context,
+        ArgumentListSyntax argumentList,
+        SeparatedSyntaxListSelection<ArgumentSyntax> selection,
+        SemanticModel semanticModel)
     {
-        public static void ComputeRefactoring(
-            RefactoringContext context,
-            ArgumentListSyntax argumentList,
-            SeparatedSyntaxListSelection<ArgumentSyntax> selection,
-            SemanticModel semanticModel)
-        {
-            if (!CanRefactor(selection, semanticModel, context.CancellationToken))
-                return;
+        if (!CanRefactor(selection, semanticModel, context.CancellationToken))
+            return;
 
-            context.RegisterRefactoring(
-                "Add argument name",
-                ct => RefactorAsync(context.Document, argumentList, selection, ct),
-                RefactoringDescriptors.AddArgumentName);
-        }
+        context.RegisterRefactoring(
+            "Add argument name",
+            ct => RefactorAsync(context.Document, argumentList, selection, ct),
+            RefactoringDescriptors.AddArgumentName);
+    }
 
-        private static bool CanRefactor(
-            SeparatedSyntaxListSelection<ArgumentSyntax> selection,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+    private static bool CanRefactor(
+        SeparatedSyntaxListSelection<ArgumentSyntax> selection,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        for (int i = 0; i < selection.Count; i++)
         {
-            for (int i = 0; i < selection.Count; i++)
+            ArgumentSyntax argument = selection[i];
+
+            NameColonSyntax nameColon = argument.NameColon;
+
+            if (nameColon?.IsMissing != false)
             {
-                ArgumentSyntax argument = selection[i];
+                IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(
+                    argument,
+                    allowParams: false,
+                    cancellationToken: cancellationToken);
 
-                NameColonSyntax nameColon = argument.NameColon;
-
-                if (nameColon?.IsMissing != false)
-                {
-                    IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(
-                        argument,
-                        allowParams: false,
-                        cancellationToken: cancellationToken);
-
-                    if (parameterSymbol != null)
-                        return true;
-                }
+                if (parameterSymbol != null)
+                    return true;
             }
-
-            return false;
         }
 
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            ArgumentListSyntax argumentList,
-            SeparatedSyntaxListSelection<ArgumentSyntax> selection,
-            CancellationToken cancellationToken = default)
-        {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        return false;
+    }
 
-            var rewriter = new AddParameterNameRewriter(selection.ToImmutableArray(), semanticModel);
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        ArgumentListSyntax argumentList,
+        SeparatedSyntaxListSelection<ArgumentSyntax> selection,
+        CancellationToken cancellationToken = default)
+    {
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newNode = rewriter
-                .Visit(argumentList)
-                .WithFormatterAnnotation();
+        var rewriter = new AddParameterNameRewriter(selection.ToImmutableArray(), semanticModel);
 
-            return await document.ReplaceNodeAsync(argumentList, newNode, cancellationToken).ConfigureAwait(false);
-        }
+        SyntaxNode newNode = rewriter
+            .Visit(argumentList)
+            .WithFormatterAnnotation();
+
+        return await document.ReplaceNodeAsync(argumentList, newNode, cancellationToken).ConfigureAwait(false);
     }
 }

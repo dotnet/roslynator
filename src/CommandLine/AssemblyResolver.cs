@@ -6,89 +6,88 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using static Roslynator.Logger;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal static class AssemblyResolver
 {
-    internal static class AssemblyResolver
+    static AssemblyResolver()
     {
-        static AssemblyResolver()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => CurrentDomain_AssemblyResolve(sender, args);
-        }
+        AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => CurrentDomain_AssemblyResolve(sender, args);
+    }
 
-        internal static void Register()
-        {
-        }
+    internal static void Register()
+    {
+    }
 
-        [SuppressMessage("Redundancy", "RCS1163:Unused parameter.")]
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            var assemblyName = new AssemblyName(args.Name);
+    [SuppressMessage("Redundancy", "RCS1163:Unused parameter.")]
+    private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+    {
+        var assemblyName = new AssemblyName(args.Name);
 
-            if (assemblyName.Name.EndsWith(".resources"))
-                return null;
-
-            WriteLine($"Resolve assembly '{args.Name}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
-
-            switch (assemblyName.Name)
-            {
-                case "Microsoft.CodeAnalysis":
-                case "Microsoft.CodeAnalysis.CSharp":
-                case "Microsoft.CodeAnalysis.CSharp.Workspaces":
-                case "Microsoft.CodeAnalysis.VisualBasic":
-                case "Microsoft.CodeAnalysis.VisualBasic.Workspaces":
-                case "Microsoft.CodeAnalysis.Workspaces":
-                case "System.Collections.Immutable":
-                case "System.Composition.AttributedModel":
-                case "System.Composition.Convention":
-                case "System.Composition.Hosting":
-                case "System.Composition.Runtime":
-                case "System.Composition.TypedParts":
-                    {
-                        Assembly assembly = FindLoadedAssembly();
-
-                        if (assembly != null)
-                            return assembly;
-
-                        break;
-                    }
-            }
-
-            Debug.Assert(
-                (!assemblyName.Name.StartsWith("Microsoft.")
-                    || assemblyName.Name.StartsWith("Microsoft.VisualStudio.")
-                    || string.Equals(assemblyName.Name, "Microsoft.DiaSymReader", StringComparison.Ordinal)
-                    || assemblyName.Name.EndsWith(".Analyzers"))
-                    && !assemblyName.Name.StartsWith("System."),
-                assemblyName.ToString());
-
-            WriteLine($"Unable to resolve assembly '{assemblyName}'.", ConsoleColors.DarkGray, Verbosity.Diagnostic);
-
+        if (assemblyName.Name.EndsWith(".resources"))
             return null;
 
-            Assembly FindLoadedAssembly()
-            {
-                Assembly result = null;
+        WriteLine($"Resolve assembly '{args.Name}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
-                foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+        switch (assemblyName.Name)
+        {
+            case "Microsoft.CodeAnalysis":
+            case "Microsoft.CodeAnalysis.CSharp":
+            case "Microsoft.CodeAnalysis.CSharp.Workspaces":
+            case "Microsoft.CodeAnalysis.VisualBasic":
+            case "Microsoft.CodeAnalysis.VisualBasic.Workspaces":
+            case "Microsoft.CodeAnalysis.Workspaces":
+            case "System.Collections.Immutable":
+            case "System.Composition.AttributedModel":
+            case "System.Composition.Convention":
+            case "System.Composition.Hosting":
+            case "System.Composition.Runtime":
+            case "System.Composition.TypedParts":
                 {
-                    AssemblyName an = assembly.GetName();
+                    Assembly assembly = FindLoadedAssembly();
 
-                    if (assemblyName.Name == an.Name
-                        && assemblyName.Version <= an.Version)
+                    if (assembly != null)
+                        return assembly;
+
+                    break;
+                }
+        }
+
+        Debug.Assert(
+            (!assemblyName.Name.StartsWith("Microsoft.")
+                || assemblyName.Name.StartsWith("Microsoft.VisualStudio.")
+                || string.Equals(assemblyName.Name, "Microsoft.DiaSymReader", StringComparison.Ordinal)
+                || assemblyName.Name.EndsWith(".Analyzers"))
+                && !assemblyName.Name.StartsWith("System."),
+            assemblyName.ToString());
+
+        WriteLine($"Unable to resolve assembly '{assemblyName}'.", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+
+        return null;
+
+        Assembly FindLoadedAssembly()
+        {
+            Assembly result = null;
+
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                AssemblyName an = assembly.GetName();
+
+                if (assemblyName.Name == an.Name
+                    && assemblyName.Version <= an.Version)
+                {
+                    if (result == null)
                     {
-                        if (result == null)
-                        {
-                            result = assembly;
-                        }
-                        else if (result.GetName().Version < an.Version)
-                        {
-                            result = assembly;
-                        }
+                        result = assembly;
+                    }
+                    else if (result.GetName().Version < an.Version)
+                    {
+                        result = assembly;
                     }
                 }
-
-                return result;
             }
+
+            return result;
         }
     }
 }

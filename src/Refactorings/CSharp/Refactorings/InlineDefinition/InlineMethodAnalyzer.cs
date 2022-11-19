@@ -9,114 +9,131 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings.InlineDefinition
+namespace Roslynator.CSharp.Refactorings.InlineDefinition;
+
+internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol>
 {
-    internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol>
+    public static InlineMethodAnalyzer Instance { get; } = new();
+
+    protected override bool ValidateNode(InvocationExpressionSyntax node, TextSpan span)
     {
-        public static InlineMethodAnalyzer Instance { get; } = new();
+        ExpressionSyntax expression = node.Expression;
 
-        protected override bool ValidateNode(InvocationExpressionSyntax node, TextSpan span)
+        if (expression == null)
+            return false;
+
+        ArgumentListSyntax argumentList = node.ArgumentList;
+
+        if (argumentList == null)
+            return false;
+
+        if (expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
         {
-            ExpressionSyntax expression = node.Expression;
-
-            if (expression == null)
-                return false;
-
-            ArgumentListSyntax argumentList = node.ArgumentList;
-
-            if (argumentList == null)
-                return false;
-
-            if (expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
-            {
-                return ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(span) == true;
-            }
-            else
-            {
-                return expression.Span.Contains(span);
-            }
+            return ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(span) == true;
         }
-
-        protected override IMethodSymbol GetMemberSymbol(
-            InvocationExpressionSyntax node,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        else
         {
-            if (semanticModel.GetSymbol(node, cancellationToken) is not IMethodSymbol methodSymbol)
-                return null;
+            return expression.Span.Contains(span);
+        }
+    }
 
-            if (methodSymbol.Language != LanguageNames.CSharp)
-                return null;
+    protected override IMethodSymbol GetMemberSymbol(
+        InvocationExpressionSyntax node,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        if (semanticModel.GetSymbol(node, cancellationToken) is not IMethodSymbol methodSymbol)
+            return null;
 
-            MethodKind methodKind = methodSymbol.MethodKind;
+        if (methodSymbol.Language != LanguageNames.CSharp)
+            return null;
 
-            if (methodKind == MethodKind.Ordinary)
+        MethodKind methodKind = methodSymbol.MethodKind;
+
+        if (methodKind == MethodKind.Ordinary)
+        {
+            if (methodSymbol.IsStatic)
+                return methodSymbol;
+
+            INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(node.SpanStart, cancellationToken);
+
+            if (SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, enclosingType))
             {
-                if (methodSymbol.IsStatic)
-                    return methodSymbol;
+                ExpressionSyntax expression = node.Expression;
 
-                INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(node.SpanStart, cancellationToken);
-
-                if (SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, enclosingType))
+                if (!expression.IsKind(SyntaxKind.MemberBindingExpression))
                 {
-                    ExpressionSyntax expression = node.Expression;
-
-                    if (!expression.IsKind(SyntaxKind.MemberBindingExpression))
+                    if (!expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+                        || ((MemberAccessExpressionSyntax)expression).Expression.IsKind(SyntaxKind.ThisExpression))
                     {
-                        if (!expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
-                            || ((MemberAccessExpressionSyntax)expression).Expression.IsKind(SyntaxKind.ThisExpression))
-                        {
-                            return methodSymbol;
-                        }
+                        return methodSymbol;
                     }
                 }
             }
-            else if (methodKind == MethodKind.ReducedExtension
-                && node.Expression?.Kind() == SyntaxKind.SimpleMemberAccessExpression)
-            {
-                return methodSymbol;
-            }
-
-            return null;
+        }
+        else if (methodKind == MethodKind.ReducedExtension
+            && node.Expression?.Kind() == SyntaxKind.SimpleMemberAccessExpression)
+        {
+            return methodSymbol;
         }
 
-        protected override async Task<MethodDeclarationSyntax> GetMemberDeclarationAsync(
-            IMethodSymbol symbol,
-            CancellationToken cancellationToken)
+        return null;
+    }
+
+    protected override async Task<MethodDeclarationSyntax> GetMemberDeclarationAsync(
+        IMethodSymbol symbol,
+        CancellationToken cancellationToken)
+    {
+        foreach (SyntaxReference reference in symbol.DeclaringSyntaxReferences)
         {
-            foreach (SyntaxReference reference in symbol.DeclaringSyntaxReferences)
+            SyntaxNode node = await reference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
+
+            if ((node is MethodDeclarationSyntax methodDeclaration)
+                && methodDeclaration.BodyOrExpressionBody() != null)
             {
-                SyntaxNode node = await reference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
-
-                if ((node is MethodDeclarationSyntax methodDeclaration)
-                    && methodDeclaration.BodyOrExpressionBody() != null)
-                {
-                    return methodDeclaration;
-                }
+                return methodDeclaration;
             }
-
-            return null;
         }
 
-        protected override ImmutableArray<ParameterInfo> GetParameterInfos(
-            InvocationExpressionSyntax node,
-            IMethodSymbol symbol)
+        return null;
+    }
+
+    protected override ImmutableArray<ParameterInfo> GetParameterInfos(
+        InvocationExpressionSyntax node,
+        IMethodSymbol symbol)
+    {
+        bool isReduced = symbol.MethodKind == MethodKind.ReducedExtension;
+
+        ImmutableArray<IParameterSymbol> parameters = symbol.Parameters;
+
+        List<ParameterInfo> parameterInfos = null;
+
+        SeparatedSyntaxList<ArgumentSyntax> arguments = node.ArgumentList.Arguments;
+
+        foreach (ArgumentSyntax argument in arguments)
         {
-            bool isReduced = symbol.MethodKind == MethodKind.ReducedExtension;
+            IParameterSymbol parameterSymbol = DetermineParameterHelper.DetermineParameter(argument, arguments, parameters);
 
-            ImmutableArray<IParameterSymbol> parameters = symbol.Parameters;
-
-            List<ParameterInfo> parameterInfos = null;
-
-            SeparatedSyntaxList<ArgumentSyntax> arguments = node.ArgumentList.Arguments;
-
-            foreach (ArgumentSyntax argument in arguments)
+            if (parameterSymbol != null)
             {
-                IParameterSymbol parameterSymbol = DetermineParameterHelper.DetermineParameter(argument, arguments, parameters);
+                var parameterInfo = new ParameterInfo(parameterSymbol, argument.Expression);
 
-                if (parameterSymbol != null)
+                (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
+            }
+            else
+            {
+                return default;
+            }
+        }
+
+        foreach (IParameterSymbol parameterSymbol in parameters)
+        {
+            if (parameterInfos == null
+                || parameterInfos.FindIndex(f => SymbolEqualityComparer.Default.Equals(f.ParameterSymbol, parameterSymbol)) == -1)
+            {
+                if (parameterSymbol.HasExplicitDefaultValue)
                 {
-                    var parameterInfo = new ParameterInfo(parameterSymbol, argument.Expression);
+                    var parameterInfo = new ParameterInfo(parameterSymbol, null);
 
                     (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
                 }
@@ -125,92 +142,74 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                     return default;
                 }
             }
+        }
 
-            foreach (IParameterSymbol parameterSymbol in parameters)
+        if (isReduced)
+        {
+            var memberAccess = (MemberAccessExpressionSyntax)node.Expression;
+
+            ExpressionSyntax expression = memberAccess.Expression;
+
+            SyntaxNode nodeIncludingConditionalAccess = node.WalkUp(f => f.IsKind(SyntaxKind.ConditionalAccessExpression));
+
+            if (nodeIncludingConditionalAccess != node)
             {
-                if (parameterInfos == null
-                    || parameterInfos.FindIndex(f => SymbolEqualityComparer.Default.Equals(f.ParameterSymbol, parameterSymbol)) == -1)
-                {
-                    if (parameterSymbol.HasExplicitDefaultValue)
-                    {
-                        var parameterInfo = new ParameterInfo(parameterSymbol, null);
-
-                        (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
-                    }
-                    else
-                    {
-                        return default;
-                    }
-                }
+                int startIndex = expression.Span.End - nodeIncludingConditionalAccess.SpanStart;
+                expression = SyntaxFactory.ParseExpression(nodeIncludingConditionalAccess.ToString().Remove(startIndex));
             }
 
-            if (isReduced)
-            {
-                var memberAccess = (MemberAccessExpressionSyntax)node.Expression;
+            var parameterInfo = new ParameterInfo(symbol.ReducedFrom.Parameters[0], expression.TrimTrivia(), isThis: true);
 
-                ExpressionSyntax expression = memberAccess.Expression;
-
-                SyntaxNode nodeIncludingConditionalAccess = node.WalkUp(f => f.IsKind(SyntaxKind.ConditionalAccessExpression));
-
-                if (nodeIncludingConditionalAccess != node)
-                {
-                    int startIndex = expression.Span.End - nodeIncludingConditionalAccess.SpanStart;
-                    expression = SyntaxFactory.ParseExpression(nodeIncludingConditionalAccess.ToString().Remove(startIndex));
-                }
-
-                var parameterInfo = new ParameterInfo(symbol.ReducedFrom.Parameters[0], expression.TrimTrivia(), isThis: true);
-
-                (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
-            }
-
-            return (parameterInfos != null)
-                ? parameterInfos.ToImmutableArray()
-                : ImmutableArray<ParameterInfo>.Empty;
+            (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
         }
 
-        protected override (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(MethodDeclarationSyntax declaration)
+        return (parameterInfos != null)
+            ? parameterInfos.ToImmutableArray()
+            : ImmutableArray<ParameterInfo>.Empty;
+    }
+
+    protected override (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(MethodDeclarationSyntax declaration)
+    {
+        BlockSyntax body = declaration.Body;
+
+        if (body == null)
+            return (declaration.ExpressionBody?.Expression, default(SyntaxList<StatementSyntax>));
+
+        SyntaxList<StatementSyntax> statements = body.Statements;
+
+        if (!statements.Any())
+            return (null, default(SyntaxList<StatementSyntax>));
+
+        switch (statements.SingleOrDefault(shouldThrow: false))
         {
-            BlockSyntax body = declaration.Body;
-
-            if (body == null)
-                return (declaration.ExpressionBody?.Expression, default(SyntaxList<StatementSyntax>));
-
-            SyntaxList<StatementSyntax> statements = body.Statements;
-
-            if (!statements.Any())
-                return (null, default(SyntaxList<StatementSyntax>));
-
-            switch (statements.SingleOrDefault(shouldThrow: false))
-            {
-                case ReturnStatementSyntax returnStatement:
-                    return (returnStatement.Expression, default(SyntaxList<StatementSyntax>));
-                case ExpressionStatementSyntax expressionStatement:
-                    return (expressionStatement.Expression, default(SyntaxList<StatementSyntax>));
-            }
-
-            if (!declaration.ReturnsVoid())
-                return (null, default(SyntaxList<StatementSyntax>));
-
-            return (null, statements);
+            case ReturnStatementSyntax returnStatement:
+                return (returnStatement.Expression, default(SyntaxList<StatementSyntax>));
+            case ExpressionStatementSyntax expressionStatement:
+                return (expressionStatement.Expression, default(SyntaxList<StatementSyntax>));
         }
 
-        protected override InlineRefactoring<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol> CreateRefactoring(
-            Document document,
-            SyntaxNode node,
-            INamedTypeSymbol nodeEnclosingType,
-            IMethodSymbol symbol,
-            MethodDeclarationSyntax declaration,
-            ImmutableArray<ParameterInfo> parameterInfos,
-            SemanticModel nodeSemanticModel,
-            SemanticModel declarationSemanticModel,
-            CancellationToken cancellationToken)
-        {
-            return new InlineMethodRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
-        }
+        if (!declaration.ReturnsVoid())
+            return (null, default(SyntaxList<StatementSyntax>));
 
-        protected override RefactoringDescriptor GetDescriptor()
-        {
-            return RefactoringDescriptors.InlineMethod;
-        }
+        return (null, statements);
+    }
+
+    protected override InlineRefactoring<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol> CreateRefactoring(
+        Document document,
+        SyntaxNode node,
+        INamedTypeSymbol nodeEnclosingType,
+        IMethodSymbol symbol,
+        MethodDeclarationSyntax declaration,
+        ImmutableArray<ParameterInfo> parameterInfos,
+        SemanticModel nodeSemanticModel,
+        SemanticModel declarationSemanticModel,
+        CancellationToken cancellationToken)
+    {
+        return new InlineMethodRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
+    }
+
+    protected override RefactoringDescriptor GetDescriptor()
+    {
+        return RefactoringDescriptors.InlineMethod;
     }
 }

@@ -10,43 +10,42 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring
 {
-    internal static class UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        InvocationExpressionSyntax invocation,
+        string propertyName,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InvocationExpressionSyntax invocation,
-            string propertyName,
-            CancellationToken cancellationToken = default)
+        var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+        memberAccess = memberAccess
+            .WithName(IdentifierName(propertyName).WithTriviaFrom(memberAccess.Name))
+            .AppendToTrailingTrivia(invocation.ArgumentList.DescendantTrivia(invocation.ArgumentList.Span).Where(f => !f.IsWhitespaceOrEndOfLineTrivia()));
+
+        if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
         {
-            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+            var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
 
-            memberAccess = memberAccess
-                .WithName(IdentifierName(propertyName).WithTriviaFrom(memberAccess.Name))
-                .AppendToTrailingTrivia(invocation.ArgumentList.DescendantTrivia(invocation.ArgumentList.Span).Where(f => !f.IsWhitespaceOrEndOfLineTrivia()));
+            IEnumerable<SyntaxTrivia> leadingTrivia = logicalNot.GetLeadingTrivia()
+                .Concat(logicalNot.OperatorToken.TrailingTrivia.Where(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+                .Concat(logicalNot.Operand.GetLeadingTrivia().Where(f => !f.IsWhitespaceOrEndOfLineTrivia()));
 
-            if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
-            {
-                var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
+            BinaryExpressionSyntax newNode = EqualsExpression(memberAccess, NumericLiteralExpression(0))
+                .WithLeadingTrivia(leadingTrivia)
+                .WithTrailingTrivia(logicalNot.GetTrailingTrivia());
 
-                IEnumerable<SyntaxTrivia> leadingTrivia = logicalNot.GetLeadingTrivia()
-                    .Concat(logicalNot.OperatorToken.TrailingTrivia.Where(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                    .Concat(logicalNot.Operand.GetLeadingTrivia().Where(f => !f.IsWhitespaceOrEndOfLineTrivia()));
+            return document.ReplaceNodeAsync(invocation.Parent, newNode, cancellationToken);
+        }
+        else
+        {
+            BinaryExpressionSyntax newNode = GreaterThanExpression(memberAccess, NumericLiteralExpression(0))
+                .WithTriviaFrom(invocation);
 
-                BinaryExpressionSyntax newNode = EqualsExpression(memberAccess, NumericLiteralExpression(0))
-                    .WithLeadingTrivia(leadingTrivia)
-                    .WithTrailingTrivia(logicalNot.GetTrailingTrivia());
-
-                return document.ReplaceNodeAsync(invocation.Parent, newNode, cancellationToken);
-            }
-            else
-            {
-                BinaryExpressionSyntax newNode = GreaterThanExpression(memberAccess, NumericLiteralExpression(0))
-                    .WithTriviaFrom(invocation);
-
-                return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
-            }
+            return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
         }
     }
 }

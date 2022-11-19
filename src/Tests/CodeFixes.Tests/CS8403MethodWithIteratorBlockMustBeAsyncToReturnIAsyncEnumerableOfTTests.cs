@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS8403MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfTTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT)]
-        public async Task Test_Method()
-        {
-            await VerifyFixAsync(@"
+public class CS8403MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfTTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT)]
+    public async Task Test_Method()
+    {
+        await VerifyFixAsync(@"
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,12 +36,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.AddAsyncModifier));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT)]
-        public async Task Test_LocalFunction()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT)]
+    public async Task Test_LocalFunction()
+    {
+        await VerifyFixAsync(@"
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -70,6 +70,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.AddAsyncModifier));
-        }
     }
 }

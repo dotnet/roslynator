@@ -11,80 +11,79 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Documentation
+namespace Roslynator.CSharp.Documentation;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal static class DocumentationCommentTriviaFactory
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal static class DocumentationCommentTriviaFactory
+    private static readonly Regex _commentedEmptyLineRegex = new(@"^///\s*(\r?\n|$)", RegexOptions.Multiline);
+
+    public static SyntaxTrivia Parse(string xml, SemanticModel semanticModel, int position)
     {
-        private static readonly Regex _commentedEmptyLineRegex = new(@"^///\s*(\r?\n|$)", RegexOptions.Multiline);
+        string triviaText = AddSlashes(xml.TrimEnd());
 
-        public static SyntaxTrivia Parse(string xml, SemanticModel semanticModel, int position)
+        SyntaxTrivia trivia = ParseLeadingTrivia(triviaText).Single();
+
+        var commentTrivia = (DocumentationCommentTriviaSyntax)trivia.GetStructure();
+
+        var rewriter = new DocumentationCommentTriviaRewriter(position, semanticModel);
+
+        // Remove T: from cref attribute and replace `1 with {T}
+        commentTrivia = (DocumentationCommentTriviaSyntax)rewriter.VisitDocumentationCommentTrivia(commentTrivia);
+
+        // Remove <filterpriority> element
+        commentTrivia = RemoveFilterPriorityElement(commentTrivia);
+
+        string text = commentTrivia.ToFullString();
+
+        // Remove /// from empty lines
+        text = _commentedEmptyLineRegex.Replace(text, "");
+
+        return ParseLeadingTrivia(text).Single();
+    }
+
+    private static DocumentationCommentTriviaSyntax RemoveFilterPriorityElement(DocumentationCommentTriviaSyntax commentTrivia)
+    {
+        SyntaxList<XmlNodeSyntax> content = commentTrivia.Content;
+
+        for (int i = content.Count - 1; i >= 0; i--)
         {
-            string triviaText = AddSlashes(xml.TrimEnd());
+            XmlNodeSyntax xmlNode = content[i];
 
-            SyntaxTrivia trivia = ParseLeadingTrivia(triviaText).Single();
-
-            var commentTrivia = (DocumentationCommentTriviaSyntax)trivia.GetStructure();
-
-            var rewriter = new DocumentationCommentTriviaRewriter(position, semanticModel);
-
-            // Remove T: from cref attribute and replace `1 with {T}
-            commentTrivia = (DocumentationCommentTriviaSyntax)rewriter.VisitDocumentationCommentTrivia(commentTrivia);
-
-            // Remove <filterpriority> element
-            commentTrivia = RemoveFilterPriorityElement(commentTrivia);
-
-            string text = commentTrivia.ToFullString();
-
-            // Remove /// from empty lines
-            text = _commentedEmptyLineRegex.Replace(text, "");
-
-            return ParseLeadingTrivia(text).Single();
+            if (xmlNode is XmlElementSyntax xmlElement
+                && xmlElement.IsLocalName("filterpriority", StringComparison.OrdinalIgnoreCase))
+            {
+                content = content.RemoveAt(i);
+            }
         }
 
-        private static DocumentationCommentTriviaSyntax RemoveFilterPriorityElement(DocumentationCommentTriviaSyntax commentTrivia)
+        return commentTrivia.WithContent(content);
+    }
+
+    private static string AddSlashes(string innerXml)
+    {
+        StringBuilder sb = StringBuilderCache.GetInstance();
+
+        string indent = null;
+
+        using (var sr = new StringReader(innerXml))
         {
-            SyntaxList<XmlNodeSyntax> content = commentTrivia.Content;
+            string s;
 
-            for (int i = content.Count - 1; i >= 0; i--)
+            while ((s = sr.ReadLine()) != null)
             {
-                XmlNodeSyntax xmlNode = content[i];
-
-                if (xmlNode is XmlElementSyntax xmlElement
-                    && xmlElement.IsLocalName("filterpriority", StringComparison.OrdinalIgnoreCase))
+                if (s.Length > 0)
                 {
-                    content = content.RemoveAt(i);
+                    indent ??= Regex.Match(s, "^ *").Value;
+
+                    sb.Append("/// ");
+                    s = Regex.Replace(s, $"^{indent}", "");
+
+                    sb.AppendLine(s);
                 }
             }
-
-            return commentTrivia.WithContent(content);
         }
 
-        private static string AddSlashes(string innerXml)
-        {
-            StringBuilder sb = StringBuilderCache.GetInstance();
-
-            string indent = null;
-
-            using (var sr = new StringReader(innerXml))
-            {
-                string s;
-
-                while ((s = sr.ReadLine()) != null)
-                {
-                    if (s.Length > 0)
-                    {
-                        indent ??= Regex.Match(s, "^ *").Value;
-
-                        sb.Append("/// ");
-                        s = Regex.Replace(s, $"^{indent}", "");
-
-                        sb.AppendLine(s);
-                    }
-                }
-            }
-
-            return StringBuilderCache.GetStringAndFree(sb);
-        }
+        return StringBuilderCache.GetStringAndFree(sb);
     }
 }

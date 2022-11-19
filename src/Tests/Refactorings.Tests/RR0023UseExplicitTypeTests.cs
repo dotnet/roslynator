@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0023UseExplicitTypeTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.UseExplicitType;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseExplicitType)]
-        public async Task Test_NamespaceConflict()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0023UseExplicitTypeTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.UseExplicitType;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseExplicitType)]
+    public async Task Test_NamespaceConflict()
+    {
+        await VerifyRefactoringAsync(@"
 using B;
 
 #pragma warning disable IDE0008
@@ -56,6 +56,5 @@ namespace B
     {
     }
 }", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

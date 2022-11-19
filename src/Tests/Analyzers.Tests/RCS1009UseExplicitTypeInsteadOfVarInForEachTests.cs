@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1009UseExplicitTypeInsteadOfVarInForEachTests : AbstractCSharpDiagnosticVerifier<UseExplicitTypeInsteadOfVarInForEachAnalyzer, UseExplicitTypeInsteadOfVarInForEachCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExplicitTypeInsteadOfVarInForEach;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
-        public async Task TestDiagnostic()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1009UseExplicitTypeInsteadOfVarInForEachTests : AbstractCSharpDiagnosticVerifier<UseExplicitTypeInsteadOfVarInForEachAnalyzer, UseExplicitTypeInsteadOfVarInForEachCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExplicitTypeInsteadOfVarInForEach;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    public async Task TestDiagnostic()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -46,12 +46,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
-        public async Task TestDiagnostic_Tuple_DeclarationExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    public async Task TestDiagnostic_Tuple_DeclarationExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -80,12 +80,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
-        public async Task TestDiagnostic_TupleExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    public async Task TestDiagnostic_TupleExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -114,12 +114,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
-        public async Task TestDiagnostic_TupleExpression_AllVar()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    public async Task TestDiagnostic_TupleExpression_AllVar()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -148,12 +148,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -168,6 +168,5 @@ class C
         }
     }
 }");
-        }
     }
 }
