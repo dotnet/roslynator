@@ -37,8 +37,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                 DiagnosticIdentifiers.ConvertIfToAssignment,
                 DiagnosticIdentifiers.ReduceIfNesting,
                 DiagnosticIdentifiers.UseExceptionFilter,
-                DiagnosticIdentifiers.SimplifyArgumentNullCheck,
-                DiagnosticIdentifiers.InvalidArgumentNullCheck);
+                DiagnosticIdentifiers.SimplifyArgumentNullCheck);
         }
     }
 
@@ -117,16 +116,6 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
-                        }
-                    case DiagnosticIdentifiers.InvalidArgumentNullCheck:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove null check",
-                                ct => context.Document.RemoveStatementAsync(ifStatement, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
                     }
                 case DiagnosticIdentifiers.SimplifyArgumentNullCheck:
                     {

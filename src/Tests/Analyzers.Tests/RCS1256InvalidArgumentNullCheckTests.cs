@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1256InvalidArgumentNullCheckTests : AbstractCSharpDiagnosticVerifier<InvalidArgumentNullCheckAnalyzer, IfStatementCodeFixProvider>
+public class RCS1256InvalidArgumentNullCheckTests : AbstractCSharpDiagnosticVerifier<InvalidArgumentNullCheckAnalyzer, InvalidArgumentNullCheckCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InvalidArgumentNullCheck;
 
@@ -22,10 +22,10 @@ class C
 {
     void M(string p = null)
     {
-        [|if (p == null)
+        [|if|] (p == null)
         {
             throw new ArgumentNullException(nameof(p));
-        }|]
+        }
 
         M(p);
     }
@@ -56,10 +56,72 @@ class C
 {
     void M(string? p)
     {
-        [|if (p == null)
+        [|if|] (p == null)
         {
             throw new ArgumentNullException(nameof(p));
-        }|]
+        }
+
+        M(p);
+    }
+}
+", @"
+using System;
+
+#nullable enable
+
+class C
+{
+    void M(string? p)
+    {
+
+        M(p);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
+    public async Task Test_Method_OptionalParameter_ThrowIfNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M(string p = null)
+    {
+        [|ArgumentNullException.ThrowIfNull(p);|]
+
+        M(p);
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M(string p = null)
+    {
+
+        M(p);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
+    public async Task Test_Method_NullableReferenceTypeParameter_ThrowIfNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+#nullable enable
+
+class C
+{
+    void M(string? p)
+    {
+        [|ArgumentNullException.ThrowIfNull(p);|]
 
         M(p);
     }
@@ -90,10 +152,10 @@ class C
 {
     C(string p = null)
     {
-        [|if (p == null)
+        [|if|] (p == null)
         {
             throw new ArgumentNullException(nameof(p));
-        }|]
+        }
 
         string x = null;
     }
@@ -124,10 +186,10 @@ class C
 {
     C(string? p)
     {
-        [|if (p == null)
+        [|if|] (p == null)
         {
             throw new ArgumentNullException(nameof(p));
-        }|]
+        }
 
         string x = """";
     }

@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis;
 
@@ -80,34 +79,27 @@ public sealed class InvalidArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
 
         foreach (StatementSyntax statement in statements)
         {
-            if (statement is not IfStatementSyntax ifStatement
-                || !ifStatement.IsSimpleIf()
-                || ifStatement.SingleNonBlockStatementOrDefault() is not ThrowStatementSyntax throwStatement)
-            {
-                break;
-            }
+            ArgumentNullCheckAnalysis nullCheck = ArgumentNullCheckAnalysis.Create(statement, context.SemanticModel, context.CancellationToken);
 
-            if (throwStatement.Expression.IsKind(SyntaxKind.ObjectCreationExpression)
-                && !ifStatement.SpanContainsDirectives())
+            if (nullCheck.Success)
             {
-                NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, context.SemanticModel, NullCheckStyles.CheckingNull);
+                ParameterSyntax parameter = FindParameter(nullCheck.Name);
 
-                if (nullCheck.Success)
+                if (parameter is not null)
                 {
-                    ParameterSyntax parameter = FindParameter(nullCheck.Expression);
-
-                    if (parameter is not null)
+                    if (parameter.Default?.Value.IsKind(
+                        SyntaxKind.NullLiteralExpression,
+                        SyntaxKind.DefaultLiteralExpression,
+                        SyntaxKind.DefaultExpression) == true
+                        || IsNullableReferenceType(context, parameter))
                     {
-                        if (parameter.Default?.Value.IsKind(
-                            SyntaxKind.NullLiteralExpression,
-                            SyntaxKind.DefaultLiteralExpression,
-                            SyntaxKind.DefaultExpression) == true
-                            || IsNullableReferenceType(context, parameter))
+                        if (statement is IfStatementSyntax ifStatement)
                         {
-                            ITypeSymbol exceptionSymbol = context.SemanticModel.GetTypeSymbol(throwStatement.Expression, context.CancellationToken);
-
-                            if (exceptionSymbol.HasMetadataName(MetadataNames.System_ArgumentNullException))
-                                context.ReportDiagnostic(DiagnosticRules.InvalidArgumentNullCheck, ifStatement);
+                            context.ReportDiagnostic(DiagnosticRules.InvalidArgumentNullCheck, ifStatement.IfKeyword);
+                        }
+                        else
+                        {
+                            context.ReportDiagnostic(DiagnosticRules.InvalidArgumentNullCheck, statement);
                         }
                     }
                 }
@@ -132,16 +124,12 @@ public sealed class InvalidArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
             return false;
         }
 
-        ParameterSyntax FindParameter(ExpressionSyntax expression)
+        ParameterSyntax FindParameter(string name)
         {
-            if (expression is IdentifierNameSyntax identifierName)
+            for (int i = 0; i <= lastIndex; i++)
             {
-                string identifierText = identifierName.Identifier.ValueText;
-                for (int i = 0; i <= lastIndex; i++)
-                {
-                    if (parameters[i].Identifier.ValueText == identifierText)
-                        return parameters[i];
-                }
+                if (parameters[i].Identifier.ValueText == name)
+                    return parameters[i];
             }
 
             return null;
