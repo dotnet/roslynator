@@ -3,21 +3,20 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal readonly struct DocumentReferenceInfo
 {
-    internal readonly struct DocumentReferenceInfo
+    public DocumentReferenceInfo(Document document, SyntaxNode root, ImmutableArray<SyntaxNode> references)
     {
-        public DocumentReferenceInfo(Document document, SyntaxNode root, ImmutableArray<SyntaxNode> references)
-        {
-            Document = document;
-            Root = root;
-            References = references;
-        }
-
-        public Document Document { get; }
-
-        public SyntaxNode Root { get; }
-
-        public ImmutableArray<SyntaxNode> References { get; }
+        Document = document;
+        Root = root;
+        References = references;
     }
+
+    public Document Document { get; }
+
+    public SyntaxNode Root { get; }
+
+    public ImmutableArray<SyntaxNode> References { get; }
 }

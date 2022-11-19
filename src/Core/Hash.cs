@@ -4,188 +4,187 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Roslynator
+namespace Roslynator;
+
+//http://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+
+internal static class Hash
 {
-    //http://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
+    public const int OffsetBasis = unchecked((int)2166136261);
 
-    internal static class Hash
+    public const int Prime = 16777619;
+
+    public static int Create(int value)
     {
-        public const int OffsetBasis = unchecked((int)2166136261);
+        return Combine(value, OffsetBasis);
+    }
 
-        public const int Prime = 16777619;
+    public static int Create(bool value)
+    {
+        return (value) ? 1 : 0;
+    }
 
-        public static int Create(int value)
+    public static int Create<T>(T value) where T : class
+    {
+        return Combine(value, OffsetBasis);
+    }
+
+    public static int Combine(int value, int hash)
+    {
+        return unchecked((hash * Prime) + value);
+    }
+
+    public static int Combine(bool value, int hash)
+    {
+        return Combine(hash, (value) ? 1 : 0);
+    }
+
+    public static int Combine<T>(T value, int hash) where T : class
+    {
+        hash = unchecked(hash * Prime);
+
+        return (value is not null) ? unchecked(hash + value.GetHashCode()) : hash;
+    }
+
+    public static int CombineValues<T>(IEnumerable<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
+    {
+        if (values is null)
+            return 0;
+
+        if (comparer is null)
+            comparer = EqualityComparer<T>.Default;
+
+        int hash = 0;
+
+        int count = 0;
+        foreach (T value in values)
         {
-            return Combine(value, OffsetBasis);
+            if (count >= maxItemsToHash)
+                break;
+
+            if (!comparer.Equals(value, default(T)))
+                hash = Combine(comparer.GetHashCode(value), hash);
+
+            count++;
         }
 
-        public static int Create(bool value)
+        return hash;
+    }
+
+    public static int CombineValues<T>(T[] values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
+    {
+        if (values is null)
+            return 0;
+
+        if (comparer is null)
+            comparer = EqualityComparer<T>.Default;
+
+        int hash = 0;
+
+        int maxSize = Math.Min(maxItemsToHash, values.Length);
+
+        for (int i = 0; i < maxSize; i++)
         {
-            return (value) ? 1 : 0;
+            T value = values[i];
+
+            if (!comparer.Equals(value, default(T)))
+                hash = Combine(comparer.GetHashCode(value), hash);
         }
 
-        public static int Create<T>(T value) where T : class
+        return hash;
+    }
+
+    public static int CombineValues<T>(ImmutableArray<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
+    {
+        if (values.IsDefaultOrEmpty)
+            return 0;
+
+        if (comparer is null)
+            comparer = EqualityComparer<T>.Default;
+
+        int hash = 0;
+
+        int maxSize = Math.Min(maxItemsToHash, values.Length);
+
+        for (int i = 0; i < maxSize; i++)
         {
-            return Combine(value, OffsetBasis);
+            T value = values[i];
+
+            if (!comparer.Equals(value, default(T)))
+                hash = Combine(comparer.GetHashCode(value), hash);
         }
 
-        public static int Combine(int value, int hash)
+        return hash;
+    }
+
+    public static int CombineValues(
+        IEnumerable<string> values,
+        StringComparer stringComparer,
+        int maxItemsToHash = int.MaxValue)
+    {
+        if (values is null)
+            return 0;
+
+        int hash = 0;
+
+        int count = 0;
+        foreach (string value in values)
         {
-            return unchecked((hash * Prime) + value);
+            if (count >= maxItemsToHash)
+                break;
+
+            if (value is not null)
+                hash = Combine(stringComparer.GetHashCode(value), hash);
+
+            count++;
         }
 
-        public static int Combine(bool value, int hash)
+        return hash;
+    }
+
+    public static int CombineValues(
+        string[] values,
+        StringComparer stringComparer,
+        int maxItemsToHash = int.MaxValue)
+    {
+        if (values is null)
+            return 0;
+
+        int hash = 0;
+
+        int maxSize = Math.Min(maxItemsToHash, values.Length);
+
+        for (int i = 0; i < maxSize; i++)
         {
-            return Combine(hash, (value) ? 1 : 0);
+            string value = values[i];
+
+            if (value is not null)
+                hash = Combine(stringComparer.GetHashCode(values[i]), hash);
         }
 
-        public static int Combine<T>(T value, int hash) where T : class
-        {
-            hash = unchecked(hash * Prime);
+        return hash;
+    }
 
-            return (value != null) ? unchecked(hash + value.GetHashCode()) : hash;
+    public static int CombineValues(
+        ImmutableArray<string> values,
+        StringComparer stringComparer,
+        int maxItemsToHash = int.MaxValue)
+    {
+        if (values.IsDefaultOrEmpty)
+            return 0;
+
+        int hash = 0;
+
+        int maxSize = Math.Min(maxItemsToHash, values.Length);
+
+        for (int i = 0; i < maxSize; i++)
+        {
+            string value = values[i];
+
+            if (value is not null)
+                hash = Combine(stringComparer.GetHashCode(value), hash);
         }
 
-        public static int CombineValues<T>(IEnumerable<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
-        {
-            if (values == null)
-                return 0;
-
-            if (comparer == null)
-                comparer = EqualityComparer<T>.Default;
-
-            int hash = 0;
-
-            int count = 0;
-            foreach (T value in values)
-            {
-                if (count >= maxItemsToHash)
-                    break;
-
-                if (!comparer.Equals(value, default(T)))
-                    hash = Combine(comparer.GetHashCode(value), hash);
-
-                count++;
-            }
-
-            return hash;
-        }
-
-        public static int CombineValues<T>(T[] values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
-        {
-            if (values == null)
-                return 0;
-
-            if (comparer == null)
-                comparer = EqualityComparer<T>.Default;
-
-            int hash = 0;
-
-            int maxSize = Math.Min(maxItemsToHash, values.Length);
-
-            for (int i = 0; i < maxSize; i++)
-            {
-                T value = values[i];
-
-                if (!comparer.Equals(value, default(T)))
-                    hash = Combine(comparer.GetHashCode(value), hash);
-            }
-
-            return hash;
-        }
-
-        public static int CombineValues<T>(ImmutableArray<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
-        {
-            if (values.IsDefaultOrEmpty)
-                return 0;
-
-            if (comparer == null)
-                comparer = EqualityComparer<T>.Default;
-
-            int hash = 0;
-
-            int maxSize = Math.Min(maxItemsToHash, values.Length);
-
-            for (int i = 0; i < maxSize; i++)
-            {
-                T value = values[i];
-
-                if (!comparer.Equals(value, default(T)))
-                    hash = Combine(comparer.GetHashCode(value), hash);
-            }
-
-            return hash;
-        }
-
-        public static int CombineValues(
-            IEnumerable<string> values,
-            StringComparer stringComparer,
-            int maxItemsToHash = int.MaxValue)
-        {
-            if (values == null)
-                return 0;
-
-            int hash = 0;
-
-            int count = 0;
-            foreach (string value in values)
-            {
-                if (count >= maxItemsToHash)
-                    break;
-
-                if (value != null)
-                    hash = Combine(stringComparer.GetHashCode(value), hash);
-
-                count++;
-            }
-
-            return hash;
-        }
-
-        public static int CombineValues(
-            string[] values,
-            StringComparer stringComparer,
-            int maxItemsToHash = int.MaxValue)
-        {
-            if (values == null)
-                return 0;
-
-            int hash = 0;
-
-            int maxSize = Math.Min(maxItemsToHash, values.Length);
-
-            for (int i = 0; i < maxSize; i++)
-            {
-                string value = values[i];
-
-                if (value != null)
-                    hash = Combine(stringComparer.GetHashCode(values[i]), hash);
-            }
-
-            return hash;
-        }
-
-        public static int CombineValues(
-            ImmutableArray<string> values,
-            StringComparer stringComparer,
-            int maxItemsToHash = int.MaxValue)
-        {
-            if (values.IsDefaultOrEmpty)
-                return 0;
-
-            int hash = 0;
-
-            int maxSize = Math.Min(maxItemsToHash, values.Length);
-
-            for (int i = 0; i < maxSize; i++)
-            {
-                string value = values[i];
-
-                if (value != null)
-                    hash = Combine(stringComparer.GetHashCode(value), hash);
-            }
-
-            return hash;
-        }
+        return hash;
     }
 }

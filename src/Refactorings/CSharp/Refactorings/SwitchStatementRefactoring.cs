@@ -4,32 +4,31 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class SwitchStatementRefactoring
 {
-    internal static class SwitchStatementRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, SwitchStatementSyntax switchStatement)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SwitchStatementSyntax switchStatement)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.AddMissingCasesToSwitchStatement))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddMissingCasesToSwitchStatement))
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                AddMissingCasesToSwitchStatementRefactoring.ComputeRefactoring(context, switchStatement, semanticModel);
-            }
-
-            SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertSwitchToIf))
-            {
-                if (context.Span.IsEmptyAndContainedInSpan(switchStatement.SwitchKeyword)
-                    || context.Span.IsBetweenSpans(switchStatement))
-                {
-                    ConvertSwitchToIfRefactoring.ComputeRefactoring(context, switchStatement);
-                }
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopySwitchSection))
-                CopySwitchSectionRefactoring.ComputeRefactoring(context, switchStatement);
+            AddMissingCasesToSwitchStatementRefactoring.ComputeRefactoring(context, switchStatement, semanticModel);
         }
+
+        SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertSwitchToIf))
+        {
+            if (context.Span.IsEmptyAndContainedInSpan(switchStatement.SwitchKeyword)
+                || context.Span.IsBetweenSpans(switchStatement))
+            {
+                ConvertSwitchToIfRefactoring.ComputeRefactoring(context, switchStatement);
+            }
+        }
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.CopySwitchSection))
+            CopySwitchSectionRefactoring.ComputeRefactoring(context, switchStatement);
     }
 }

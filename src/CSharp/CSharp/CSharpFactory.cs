@@ -366,7 +366,7 @@ namespace Roslynator.CSharp
 
         internal static ClassDeclarationSyntax ClassDeclaration(StructDeclarationSyntax structDeclaration)
         {
-            if (structDeclaration == null)
+            if (structDeclaration is null)
                 throw new ArgumentNullException(nameof(structDeclaration));
 
             SyntaxToken keyword = structDeclaration.Keyword;
@@ -404,7 +404,7 @@ namespace Roslynator.CSharp
 
         internal static StructDeclarationSyntax StructDeclaration(ClassDeclarationSyntax classDeclaration)
         {
-            if (classDeclaration == null)
+            if (classDeclaration is null)
                 throw new ArgumentNullException(nameof(classDeclaration));
 
             SyntaxToken keyword = classDeclaration.Keyword;
@@ -520,7 +520,7 @@ namespace Roslynator.CSharp
                 modifiers,
                 type,
                 identifier,
-                (value != null) ? EqualsValueClause(value) : default);
+                (value is not null) ? EqualsValueClause(value) : default);
         }
 
         public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
@@ -751,8 +751,8 @@ namespace Roslynator.CSharp
                 identifier,
                 accessorList,
                 default(ArrowExpressionClauseSyntax),
-                (value != null) ? EqualsValueClause(value) : default,
-                (value != null) ? SemicolonToken() : default);
+                (value is not null) ? EqualsValueClause(value) : default,
+                (value is not null) ? SemicolonToken() : default);
         }
 
         public static PropertyDeclarationSyntax PropertyDeclaration(
@@ -984,7 +984,7 @@ namespace Roslynator.CSharp
 
         public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
         {
-            VariableDeclaratorSyntax variableDeclarator = (value != null)
+            VariableDeclaratorSyntax variableDeclarator = (value is not null)
                 ? VariableDeclarator(identifier, EqualsValueClause(value))
                 : SyntaxFactory.VariableDeclarator(identifier);
 
@@ -1651,7 +1651,7 @@ namespace Roslynator.CSharp
 
         public static LiteralExpressionSyntax LiteralExpression(object value)
         {
-            if (value == null)
+            if (value is null)
                 return NullLiteralExpression();
 
             if (value is string stringValue)
@@ -1850,7 +1850,7 @@ namespace Roslynator.CSharp
 
         public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
         {
-            if (value != null)
+            if (value is not null)
             {
                 return VariableDeclaration(type, identifier, EqualsValueClause(value));
             }
@@ -1925,7 +1925,7 @@ namespace Roslynator.CSharp
 
         public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax @default = null)
         {
-            if (@default != null)
+            if (@default is not null)
             {
                 return Parameter(type, identifier, EqualsValueClause(@default));
             }

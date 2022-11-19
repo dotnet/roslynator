@@ -6,63 +6,62 @@ using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis.VisualBasic;
 using Roslynator.CodeMetrics;
 
-namespace Roslynator.VisualBasic.CodeMetrics
+namespace Roslynator.VisualBasic.CodeMetrics;
+
+internal abstract class VisualBasicLinesWalker : VisualBasicSyntaxWalker
 {
-    internal abstract class VisualBasicLinesWalker : VisualBasicSyntaxWalker
+    public int CommentLineCount { get; set; }
+
+    public int PreprocessorDirectiveLineCount { get; set; }
+
+    public TextLineCollection Lines { get; }
+
+    public CodeMetricsOptions Options { get; }
+
+    public CancellationToken CancellationToken { get; }
+
+    protected VisualBasicLinesWalker(TextLineCollection lines, CodeMetricsOptions options, CancellationToken cancellationToken)
+        : base(SyntaxWalkerDepth.Trivia)
     {
-        public int CommentLineCount { get; set; }
+        Lines = lines;
+        Options = options;
+        CancellationToken = cancellationToken;
+    }
 
-        public int PreprocessorDirectiveLineCount { get; set; }
-
-        public TextLineCollection Lines { get; }
-
-        public CodeMetricsOptions Options { get; }
-
-        public CancellationToken CancellationToken { get; }
-
-        protected VisualBasicLinesWalker(TextLineCollection lines, CodeMetricsOptions options, CancellationToken cancellationToken)
-            : base(SyntaxWalkerDepth.Trivia)
+    public override void VisitTrivia(SyntaxTrivia trivia)
+    {
+        if (trivia.IsDirective)
         {
-            Lines = lines;
-            Options = options;
-            CancellationToken = cancellationToken;
+            if (!Options.IncludePreprocessorDirectives)
+            {
+                PreprocessorDirectiveLineCount++;
+            }
+        }
+        else if (!Options.IncludeComments)
+        {
+            switch (trivia.Kind())
+            {
+                case SyntaxKind.CommentTrivia:
+                    {
+                        TextSpan span = trivia.Span;
+
+                        TextLine line = Lines.GetLineFromPosition(span.Start);
+
+                        if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
+                        {
+                            CommentLineCount++;
+                        }
+
+                        break;
+                    }
+                case SyntaxKind.DocumentationCommentTrivia:
+                    {
+                        CommentLineCount += Lines.GetLineCount(trivia.Span) - 1;
+                        break;
+                    }
+            }
         }
 
-        public override void VisitTrivia(SyntaxTrivia trivia)
-        {
-            if (trivia.IsDirective)
-            {
-                if (!Options.IncludePreprocessorDirectives)
-                {
-                    PreprocessorDirectiveLineCount++;
-                }
-            }
-            else if (!Options.IncludeComments)
-            {
-                switch (trivia.Kind())
-                {
-                    case SyntaxKind.CommentTrivia:
-                        {
-                            TextSpan span = trivia.Span;
-
-                            TextLine line = Lines.GetLineFromPosition(span.Start);
-
-                            if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
-                            {
-                                CommentLineCount++;
-                            }
-
-                            break;
-                        }
-                    case SyntaxKind.DocumentationCommentTrivia:
-                        {
-                            CommentLineCount += Lines.GetLineCount(trivia.Span) - 1;
-                            break;
-                        }
-                }
-            }
-
-            base.VisitTrivia(trivia);
-        }
+        base.VisitTrivia(trivia);
     }
 }

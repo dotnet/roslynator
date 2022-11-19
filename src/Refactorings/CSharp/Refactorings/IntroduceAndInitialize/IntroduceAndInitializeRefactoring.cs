@@ -11,187 +11,186 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
+namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
+
+internal abstract class IntroduceAndInitializeRefactoring
 {
-    internal abstract class IntroduceAndInitializeRefactoring
+    protected IntroduceAndInitializeRefactoring(IntroduceAndInitializeInfo info)
     {
-        protected IntroduceAndInitializeRefactoring(IntroduceAndInitializeInfo info)
+        Infos = ImmutableArray.Create(info);
+    }
+
+    protected IntroduceAndInitializeRefactoring(IEnumerable<IntroduceAndInitializeInfo> infos)
+    {
+        Infos = infos.ToImmutableArray();
+    }
+
+    public ImmutableArray<IntroduceAndInitializeInfo> Infos { get; }
+
+    public IntroduceAndInitializeInfo FirstInfo
+    {
+        get { return Infos[0]; }
+    }
+
+    public ConstructorDeclarationSyntax Constructor
+    {
+        get { return FirstInfo.Parameter.Parent?.Parent as ConstructorDeclarationSyntax; }
+    }
+
+    protected abstract int GetDeclarationIndex(SyntaxList<MemberDeclarationSyntax> members);
+
+    protected abstract string GetTitle();
+
+    protected abstract RefactoringDescriptor GetDescriptor();
+
+    public static void ComputeRefactoring(RefactoringContext context, ParameterSyntax parameter)
+    {
+        if (!parameter.Identifier.Span.Contains(context.Span))
+            return;
+
+        if (!IsValid(parameter))
+            return;
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeProperty))
         {
-            Infos = ImmutableArray.Create(info);
+            var propertyInfo = new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6);
+            var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfo);
+            refactoring.RegisterRefactoring(context);
         }
 
-        protected IntroduceAndInitializeRefactoring(IEnumerable<IntroduceAndInitializeInfo> infos)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeField))
         {
-            Infos = infos.ToImmutableArray();
+            var fieldInfo = new IntroduceAndInitializeFieldInfo(parameter, context.PrefixFieldIdentifierWithUnderscore);
+            var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfo);
+            refactoring.RegisterRefactoring(context);
+        }
+    }
+
+    public static void ComputeRefactoring(RefactoringContext context, ParameterListSyntax parameterList)
+    {
+        if (!SeparatedSyntaxListSelection<ParameterSyntax>.TryCreate(parameterList.Parameters, context.Span, out SeparatedSyntaxListSelection<ParameterSyntax> selection))
+            return;
+
+        ImmutableArray<ParameterSyntax> parameters = selection
+            .Where(f => IsValid(f))
+            .ToImmutableArray();
+
+        if (!parameters.Any())
+            return;
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeProperty))
+        {
+            IEnumerable<IntroduceAndInitializePropertyInfo> propertyInfos = parameters
+                .Select(parameter => new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6));
+
+            var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfos);
+            refactoring.RegisterRefactoring(context);
         }
 
-        public ImmutableArray<IntroduceAndInitializeInfo> Infos { get; }
-
-        public IntroduceAndInitializeInfo FirstInfo
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeField))
         {
-            get { return Infos[0]; }
+            IEnumerable<IntroduceAndInitializeFieldInfo> fieldInfos = parameters
+                .Select(parameter => new IntroduceAndInitializeFieldInfo(parameter, context.PrefixFieldIdentifierWithUnderscore));
+
+            var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfos);
+            refactoring.RegisterRefactoring(context);
         }
+    }
 
-        public ConstructorDeclarationSyntax Constructor
+    private void RegisterRefactoring(RefactoringContext context)
+    {
+        context.RegisterRefactoring(
+            GetTitle(),
+            ct => RefactorAsync(context.Document, ct),
+            GetDescriptor());
+    }
+
+    protected string GetNames()
+    {
+        return string.Join(", ", Infos.Select(f => $"'{f.Name}'"));
+    }
+
+    private async Task<Document> RefactorAsync(
+        Document document,
+        CancellationToken cancellationToken = default)
+    {
+        ConstructorDeclarationSyntax constructor = Constructor;
+
+        MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(constructor.Parent);
+
+        SyntaxList<MemberDeclarationSyntax> members = info.Members;
+
+        SyntaxList<MemberDeclarationSyntax> newMembers = members.Replace(
+            constructor,
+            constructor.AddBodyStatements(CreateAssignments().ToArray()));
+
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        newMembers = newMembers.InsertRange(
+            GetDeclarationIndex(members),
+            CreateDeclarations(constructor, semanticModel, cancellationToken));
+
+        return await document.ReplaceMembersAsync(info, newMembers, cancellationToken).ConfigureAwait(false);
+    }
+
+    private IEnumerable<ExpressionStatementSyntax> CreateAssignments()
+    {
+        return Infos
+            .Select(f => f.CreateAssignment());
+    }
+
+    private IEnumerable<MemberDeclarationSyntax> CreateDeclarations(ConstructorDeclarationSyntax constructor, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(constructor, cancellationToken);
+
+        if (methodSymbol is not null)
         {
-            get { return FirstInfo.Parameter.Parent?.Parent as ConstructorDeclarationSyntax; }
-        }
+            INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
-        protected abstract int GetDeclarationIndex(SyntaxList<MemberDeclarationSyntax> members);
-
-        protected abstract string GetTitle();
-
-        protected abstract RefactoringDescriptor GetDescriptor();
-
-        public static void ComputeRefactoring(RefactoringContext context, ParameterSyntax parameter)
-        {
-            if (!parameter.Identifier.Span.Contains(context.Span))
-                return;
-
-            if (!IsValid(parameter))
-                return;
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeProperty))
+            if (containingType is not null)
             {
-                var propertyInfo = new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6);
-                var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfo);
-                refactoring.RegisterRefactoring(context);
+                ImmutableArray<ISymbol> members = containingType.GetMembers();
+
+                return Infos
+                    .Where(f => NameGenerator.IsUniqueName(f.Name, members, isCaseSensitive: true))
+                    .Select(f => f.CreateDeclaration());
             }
+        }
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeField))
+        return Infos.Select(f => f.CreateDeclaration());
+    }
+
+    private static bool IsValid(ParameterSyntax parameter)
+    {
+        if (parameter.Type is null)
+            return false;
+
+        if (parameter.Identifier.IsMissing)
+            return false;
+
+        if (!parameter.IsParentKind(SyntaxKind.ParameterList))
+            return false;
+
+        if (parameter.Parent.Parent is not ConstructorDeclarationSyntax constructorDeclaration)
+            return false;
+
+        if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+            return false;
+
+        ArgumentListSyntax argumentList = constructorDeclaration.Initializer?.ArgumentList;
+
+        if (argumentList is not null)
+        {
+            foreach (ArgumentSyntax argument in argumentList.Arguments)
             {
-                var fieldInfo = new IntroduceAndInitializeFieldInfo(parameter, context.PrefixFieldIdentifierWithUnderscore);
-                var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfo);
-                refactoring.RegisterRefactoring(context);
-            }
-        }
-
-        public static void ComputeRefactoring(RefactoringContext context, ParameterListSyntax parameterList)
-        {
-            if (!SeparatedSyntaxListSelection<ParameterSyntax>.TryCreate(parameterList.Parameters, context.Span, out SeparatedSyntaxListSelection<ParameterSyntax> selection))
-                return;
-
-            ImmutableArray<ParameterSyntax> parameters = selection
-                .Where(f => IsValid(f))
-                .ToImmutableArray();
-
-            if (!parameters.Any())
-                return;
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeProperty))
-            {
-                IEnumerable<IntroduceAndInitializePropertyInfo> propertyInfos = parameters
-                    .Select(parameter => new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6));
-
-                var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfos);
-                refactoring.RegisterRefactoring(context);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeField))
-            {
-                IEnumerable<IntroduceAndInitializeFieldInfo> fieldInfos = parameters
-                    .Select(parameter => new IntroduceAndInitializeFieldInfo(parameter, context.PrefixFieldIdentifierWithUnderscore));
-
-                var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfos);
-                refactoring.RegisterRefactoring(context);
-            }
-        }
-
-        private void RegisterRefactoring(RefactoringContext context)
-        {
-            context.RegisterRefactoring(
-                GetTitle(),
-                ct => RefactorAsync(context.Document, ct),
-                GetDescriptor());
-        }
-
-        protected string GetNames()
-        {
-            return string.Join(", ", Infos.Select(f => $"'{f.Name}'"));
-        }
-
-        private async Task<Document> RefactorAsync(
-            Document document,
-            CancellationToken cancellationToken = default)
-        {
-            ConstructorDeclarationSyntax constructor = Constructor;
-
-            MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(constructor.Parent);
-
-            SyntaxList<MemberDeclarationSyntax> members = info.Members;
-
-            SyntaxList<MemberDeclarationSyntax> newMembers = members.Replace(
-                constructor,
-                constructor.AddBodyStatements(CreateAssignments().ToArray()));
-
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            newMembers = newMembers.InsertRange(
-                GetDeclarationIndex(members),
-                CreateDeclarations(constructor, semanticModel, cancellationToken));
-
-            return await document.ReplaceMembersAsync(info, newMembers, cancellationToken).ConfigureAwait(false);
-        }
-
-        private IEnumerable<ExpressionStatementSyntax> CreateAssignments()
-        {
-            return Infos
-                .Select(f => f.CreateAssignment());
-        }
-
-        private IEnumerable<MemberDeclarationSyntax> CreateDeclarations(ConstructorDeclarationSyntax constructor, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(constructor, cancellationToken);
-
-            if (methodSymbol != null)
-            {
-                INamedTypeSymbol containingType = methodSymbol.ContainingType;
-
-                if (containingType != null)
+                if (argument.Expression is IdentifierNameSyntax identifierName
+                    && string.Equals(parameter.Identifier.ValueText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
                 {
-                    ImmutableArray<ISymbol> members = containingType.GetMembers();
-
-                    return Infos
-                        .Where(f => NameGenerator.IsUniqueName(f.Name, members, isCaseSensitive: true))
-                        .Select(f => f.CreateDeclaration());
+                    return false;
                 }
             }
-
-            return Infos.Select(f => f.CreateDeclaration());
         }
 
-        private static bool IsValid(ParameterSyntax parameter)
-        {
-            if (parameter.Type == null)
-                return false;
-
-            if (parameter.Identifier.IsMissing)
-                return false;
-
-            if (!parameter.IsParentKind(SyntaxKind.ParameterList))
-                return false;
-
-            if (parameter.Parent.Parent is not ConstructorDeclarationSyntax constructorDeclaration)
-                return false;
-
-            if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
-                return false;
-
-            ArgumentListSyntax argumentList = constructorDeclaration.Initializer?.ArgumentList;
-
-            if (argumentList != null)
-            {
-                foreach (ArgumentSyntax argument in argumentList.Arguments)
-                {
-                    if (argument.Expression is IdentifierNameSyntax identifierName
-                        && string.Equals(parameter.Identifier.ValueText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
+        return true;
     }
 }

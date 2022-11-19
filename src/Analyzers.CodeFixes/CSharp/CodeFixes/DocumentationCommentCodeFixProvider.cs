@@ -10,39 +10,38 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DocumentationCommentCodeFixProvider))]
+[Shared]
+public sealed class DocumentationCommentCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DocumentationCommentCodeFixProvider))]
-    [Shared]
-    public sealed class DocumentationCommentCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddSummaryElementToDocumentationComment); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out DocumentationCommentTriviaSyntax documentationComment, findInsideTrivia: true))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddSummaryElementToDocumentationComment); }
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out DocumentationCommentTriviaSyntax documentationComment, findInsideTrivia: true))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.AddSummaryElementToDocumentationComment:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add summary element",
-                                ct => AddSummaryToDocumentationCommentRefactoring.RefactorAsync(context.Document, documentationComment, ct),
-                                GetEquivalenceKey(diagnostic));
+                case DiagnosticIdentifiers.AddSummaryElementToDocumentationComment:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Add summary element",
+                            ct => AddSummaryToDocumentationCommentRefactoring.RefactorAsync(context.Document, documentationComment, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }

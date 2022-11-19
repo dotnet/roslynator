@@ -20,7 +20,7 @@ namespace Roslynator.CSharp
 
         IEnumerator<SyntaxNode> IEnumerable<SyntaxNode>.GetEnumerator()
         {
-            if (Expression != null)
+            if (Expression is not null)
                 return new EnumeratorImpl(this);
 
             return Empty.Enumerator<SyntaxNode>();
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            if (Expression != null)
+            if (Expression is not null)
                 return new EnumeratorImpl(this);
 
             return Empty.Enumerator<SyntaxNode>();
@@ -52,16 +52,16 @@ namespace Roslynator.CSharp
 
             public bool MoveNext()
             {
-                if (_current == null)
+                if (_current is null)
                 {
                     _current = _chain.Expression;
 
-                    return _current != null;
+                    return _current is not null;
                 }
 
                 ExpressionSyntax last = GetLastChild(_current);
 
-                if (last != null)
+                if (last is not null)
                 {
                     _current = last;
                 }

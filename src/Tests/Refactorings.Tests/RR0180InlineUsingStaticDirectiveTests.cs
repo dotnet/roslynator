@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0180InlineUsingStaticDirectiveTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.InlineUsingStaticDirective;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0180InlineUsingStaticDirectiveTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.InlineUsingStaticDirective;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Linq;
 using [||]static System.Linq.Enumerable;
 
@@ -43,12 +43,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
-        public async Task Test2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
+    public async Task Test2()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using [||]static System.StringComparer;
 
@@ -78,12 +78,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
-        public async Task Test_Math_Max()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
+    public async Task Test_Math_Max()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using [||]static System.Math;
 
@@ -107,6 +107,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

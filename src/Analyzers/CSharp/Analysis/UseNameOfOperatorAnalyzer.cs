@@ -107,12 +107,12 @@ namespace Roslynator.CSharp.Analysis
 
             ParameterSyntax parameter = FindMatchingParameter(parameterInfo, literalExpression.Token.ValueText);
 
-            if (parameter == null)
+            if (parameter is null)
                 return;
 
             IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
 
-            if (parameterSymbol == null)
+            if (parameterSymbol is null)
                 return;
 
             string parameterName = parameterSymbol.Name;
@@ -130,14 +130,14 @@ namespace Roslynator.CSharp.Analysis
         {
             do
             {
-                if (parameterInfo.Parameter != null)
+                if (parameterInfo.Parameter is not null)
                 {
                     ParameterSyntax parameter = parameterInfo.Parameter;
 
                     if (string.Equals(parameter.Identifier.ValueText, name, StringComparison.Ordinal))
                         return parameter;
                 }
-                else if (parameterInfo.ParameterList != null)
+                else if (parameterInfo.ParameterList is not null)
                 {
                     foreach (ParameterSyntax parameter in parameterInfo.ParameterList.Parameters)
                     {
@@ -155,7 +155,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static ParameterInfo GetNextParametersInScope(SyntaxNode node)
         {
-            for (SyntaxNode current = node.Parent; current != null; current = current.Parent)
+            for (SyntaxNode current = node.Parent; current is not null; current = current.Parent)
             {
                 ParameterInfo info = ParameterInfo.Create(current);
 
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp.Analysis
 
             PropertyDeclarationSyntax property = accessor.FirstAncestor<PropertyDeclarationSyntax>();
 
-            if (property == null)
+            if (property is null)
                 return;
 
             var literalExpression = (LiteralExpressionSyntax)expression;
@@ -187,7 +187,7 @@ namespace Roslynator.CSharp.Analysis
 
             IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
 
-            if (parameterSymbol == null)
+            if (parameterSymbol is null)
                 return;
 
             if (!string.Equals(parameterSymbol.Name, "propertyName", StringComparison.Ordinal))
@@ -252,7 +252,7 @@ namespace Roslynator.CSharp.Analysis
 
             public bool Success
             {
-                get { return Node != null; }
+                get { return Node is not null; }
             }
 
             public static ParameterInfo Create(SyntaxNode node)

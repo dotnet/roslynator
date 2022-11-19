@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var catchClause = (CatchClauseSyntax)context.Node;
 
-            if (catchClause.Filter != null)
+            if (catchClause.Filter is not null)
                 return;
 
             if (catchClause.Block.Statements.FirstOrDefault() is not IfStatementSyntax ifStatement)
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Analysis
                 }
                 finally
                 {
-                    if (walker != null)
+                    if (walker is not null)
                         UseExceptionFilterWalker.Free(walker);
                 }
 
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Analysis
         private static bool IsThrowStatementWithoutExpression(StatementSyntax statement)
         {
             return (statement is ThrowStatementSyntax throwStatement)
-                && throwStatement.Expression == null;
+                && throwStatement.Expression is null;
         }
 
         private class UseExceptionFilterWalker : CSharpSyntaxNodeWalker
@@ -144,7 +144,7 @@ namespace Roslynator.CSharp.Analysis
 
                 string xml = symbol?.GetDocumentationCommentXml(cancellationToken: CancellationToken);
 
-                if (xml != null
+                if (xml is not null
                     && _exceptionElementRegex.IsMatch(xml))
                 {
                     CanUseExceptionFilter = false;
@@ -177,10 +177,10 @@ namespace Roslynator.CSharp.Analysis
             {
                 UseExceptionFilterWalker walker = _cachedInstance;
 
-                if (walker != null)
+                if (walker is not null)
                 {
                     Debug.Assert(walker.CanUseExceptionFilter = true);
-                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.SemanticModel is null);
                     Debug.Assert(walker.CancellationToken == default);
 
                     _cachedInstance = null;

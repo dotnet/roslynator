@@ -10,30 +10,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AnonymousMethodCodeFixProvider))]
+[Shared]
+public sealed class AnonymousMethodCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AnonymousMethodCodeFixProvider))]
-    [Shared]
-    public sealed class AnonymousMethodCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AnonymousMethodExpressionSyntax anonymousMethod))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out AnonymousMethodExpressionSyntax anonymousMethod))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Use lambda expression instead of anonymous method",
-                ct => UseLambdaInsteadOfAnonymousMethodRefactoring.RefactorAsync(context.Document, anonymousMethod, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod));
+        CodeAction codeAction = CodeAction.Create(
+            "Use lambda expression instead of anonymous method",
+            ct => UseLambdaInsteadOfAnonymousMethodRefactoring.RefactorAsync(context.Document, anonymousMethod, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

@@ -45,7 +45,7 @@ namespace Roslynator.CSharp
             TypeSyntax type = null,
             SymbolDisplayFormat format = null)
         {
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             if ((options & DefaultSyntaxOptions.UseDefault) != 0)
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp
             {
                 IFieldSymbol fieldSymbol = CSharpUtility.FindEnumDefaultField((INamedTypeSymbol)typeSymbol);
 
-                if (fieldSymbol != null)
+                if (fieldSymbol is not null)
                     return SimpleMemberAccessExpression(GetTypeSyntax(), IdentifierName(fieldSymbol.Name));
 
                 return CastExpression(GetTypeSyntax(), NumericLiteralExpression(0)).WithSimplifierAnnotation();
@@ -108,7 +108,7 @@ namespace Roslynator.CSharp
             this IParameterSymbol parameterSymbol,
             SymbolDisplayFormat format = null)
         {
-            if (parameterSymbol == null)
+            if (parameterSymbol is null)
                 throw new ArgumentNullException(nameof(parameterSymbol));
 
             if (!parameterSymbol.HasExplicitDefaultValue)
@@ -120,14 +120,14 @@ namespace Roslynator.CSharp
 
             if (typeSymbol.TypeKind == TypeKind.Enum)
             {
-                if (value == null)
+                if (value is null)
                     return NullLiteralExpression();
 
                 IFieldSymbol fieldSymbol = FindFieldWithConstantValue();
 
                 TypeSyntax type = typeSymbol.ToTypeSyntax(format);
 
-                if (fieldSymbol != null)
+                if (fieldSymbol is not null)
                 {
                     return SimpleMemberAccessExpression(type, IdentifierName(fieldSymbol.Name));
                 }
@@ -137,7 +137,7 @@ namespace Roslynator.CSharp
                 }
             }
 
-            if (value == null
+            if (value is null
                 && !typeSymbol.IsReferenceTypeOrNullableType())
             {
                 return DefaultExpression(typeSymbol.ToTypeSyntax(format));

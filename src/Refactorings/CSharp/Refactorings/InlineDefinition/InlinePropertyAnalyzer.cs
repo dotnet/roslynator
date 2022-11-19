@@ -9,135 +9,134 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings.InlineDefinition
+namespace Roslynator.CSharp.Refactorings.InlineDefinition;
+
+internal class InlinePropertyAnalyzer : InlineAnalyzer<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol>
 {
-    internal class InlinePropertyAnalyzer : InlineAnalyzer<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol>
+    public static InlinePropertyAnalyzer Instance { get; } = new();
+
+    protected override bool ValidateNode(IdentifierNameSyntax node, TextSpan span)
     {
-        public static InlinePropertyAnalyzer Instance { get; } = new();
+        SyntaxNode parent = node.Parent;
 
-        protected override bool ValidateNode(IdentifierNameSyntax node, TextSpan span)
+        SyntaxKind kind = parent.Kind();
+
+        if (kind == SyntaxKind.InvocationExpression)
+            return false;
+
+        if (kind == SyntaxKind.SimpleMemberAccessExpression)
         {
-            SyntaxNode parent = node.Parent;
+            var memberAccessExpression = (MemberAccessExpressionSyntax)parent;
 
-            SyntaxKind kind = parent.Kind();
-
-            if (kind == SyntaxKind.InvocationExpression)
+            if (object.ReferenceEquals(node, memberAccessExpression.Name)
+                && memberAccessExpression.IsParentKind(SyntaxKind.InvocationExpression))
+            {
                 return false;
-
-            if (kind == SyntaxKind.SimpleMemberAccessExpression)
-            {
-                var memberAccessExpression = (MemberAccessExpressionSyntax)parent;
-
-                if (object.ReferenceEquals(node, memberAccessExpression.Name)
-                    && memberAccessExpression.IsParentKind(SyntaxKind.InvocationExpression))
-                {
-                    return false;
-                }
             }
-
-            return true;
         }
 
-        protected override IPropertySymbol GetMemberSymbol(
-            IdentifierNameSyntax node,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        return true;
+    }
+
+    protected override IPropertySymbol GetMemberSymbol(
+        IdentifierNameSyntax node,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        if (semanticModel.GetSymbol(node, cancellationToken) is not IPropertySymbol propertySymbol)
+            return null;
+
+        if (propertySymbol.Language != LanguageNames.CSharp)
+            return null;
+
+        if (propertySymbol.IsStatic)
+            return propertySymbol;
+
+        INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(node.SpanStart, cancellationToken);
+
+        if (!SymbolEqualityComparer.Default.Equals(propertySymbol.ContainingType, enclosingType))
+            return null;
+
+        if (!node.IsParentKind(SyntaxKind.MemberBindingExpression))
         {
-            if (semanticModel.GetSymbol(node, cancellationToken) is not IPropertySymbol propertySymbol)
-                return null;
-
-            if (propertySymbol.Language != LanguageNames.CSharp)
-                return null;
-
-            if (propertySymbol.IsStatic)
-                return propertySymbol;
-
-            INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(node.SpanStart, cancellationToken);
-
-            if (!SymbolEqualityComparer.Default.Equals(propertySymbol.ContainingType, enclosingType))
-                return null;
-
-            if (!node.IsParentKind(SyntaxKind.MemberBindingExpression))
+            if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
             {
-                if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-                {
-                    if (((MemberAccessExpressionSyntax)node.Parent).Expression.IsKind(SyntaxKind.ThisExpression))
-                        return propertySymbol;
-                }
-                else
-                {
+                if (((MemberAccessExpressionSyntax)node.Parent).Expression.IsKind(SyntaxKind.ThisExpression))
                     return propertySymbol;
-                }
             }
-
-            return null;
-        }
-
-        protected override async Task<PropertyDeclarationSyntax> GetMemberDeclarationAsync(IPropertySymbol symbol, CancellationToken cancellationToken)
-        {
-            SyntaxReference syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
-
-            if (syntaxReference != null)
+            else
             {
-                SyntaxNode node = await syntaxReference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
-
-                if (node is PropertyDeclarationSyntax propertyDeclaration)
-                    return propertyDeclaration;
+                return propertySymbol;
             }
-
-            return null;
         }
 
-        protected override ImmutableArray<ParameterInfo> GetParameterInfos(IdentifierNameSyntax node, IPropertySymbol symbol)
+        return null;
+    }
+
+    protected override async Task<PropertyDeclarationSyntax> GetMemberDeclarationAsync(IPropertySymbol symbol, CancellationToken cancellationToken)
+    {
+        SyntaxReference syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
+
+        if (syntaxReference is not null)
         {
-            return ImmutableArray<ParameterInfo>.Empty;
+            SyntaxNode node = await syntaxReference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
+
+            if (node is PropertyDeclarationSyntax propertyDeclaration)
+                return propertyDeclaration;
         }
 
-        protected override (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(PropertyDeclarationSyntax declaration)
-        {
-            ArrowExpressionClauseSyntax expressionBody = declaration.ExpressionBody;
+        return null;
+    }
 
-            if (expressionBody != null)
-                return (expressionBody.Expression, default(SyntaxList<StatementSyntax>));
+    protected override ImmutableArray<ParameterInfo> GetParameterInfos(IdentifierNameSyntax node, IPropertySymbol symbol)
+    {
+        return ImmutableArray<ParameterInfo>.Empty;
+    }
 
-            AccessorDeclarationSyntax accessor = declaration.AccessorList?.Accessors.SingleOrDefault(shouldThrow: false);
+    protected override (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(PropertyDeclarationSyntax declaration)
+    {
+        ArrowExpressionClauseSyntax expressionBody = declaration.ExpressionBody;
 
-            if (accessor?.IsKind(SyntaxKind.GetAccessorDeclaration) != true)
-                return (null, default(SyntaxList<StatementSyntax>));
+        if (expressionBody is not null)
+            return (expressionBody.Expression, default(SyntaxList<StatementSyntax>));
 
-            expressionBody = accessor.ExpressionBody;
+        AccessorDeclarationSyntax accessor = declaration.AccessorList?.Accessors.SingleOrDefault(shouldThrow: false);
 
-            if (expressionBody != null)
-                return (expressionBody.Expression, default(SyntaxList<StatementSyntax>));
-
-            switch (accessor.Body?.Statements.SingleOrDefault(shouldThrow: false))
-            {
-                case ReturnStatementSyntax returnStatement:
-                    return (returnStatement.Expression, default(SyntaxList<StatementSyntax>));
-                case ExpressionStatementSyntax expressionStatement:
-                    return (expressionStatement.Expression, default(SyntaxList<StatementSyntax>));
-            }
-
+        if (accessor?.IsKind(SyntaxKind.GetAccessorDeclaration) != true)
             return (null, default(SyntaxList<StatementSyntax>));
+
+        expressionBody = accessor.ExpressionBody;
+
+        if (expressionBody is not null)
+            return (expressionBody.Expression, default(SyntaxList<StatementSyntax>));
+
+        switch (accessor.Body?.Statements.SingleOrDefault(shouldThrow: false))
+        {
+            case ReturnStatementSyntax returnStatement:
+                return (returnStatement.Expression, default(SyntaxList<StatementSyntax>));
+            case ExpressionStatementSyntax expressionStatement:
+                return (expressionStatement.Expression, default(SyntaxList<StatementSyntax>));
         }
 
-        protected override InlineRefactoring<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol> CreateRefactoring(
-            Document document,
-            SyntaxNode node,
-            INamedTypeSymbol nodeEnclosingType,
-            IPropertySymbol symbol,
-            PropertyDeclarationSyntax declaration,
-            ImmutableArray<ParameterInfo> parameterInfos,
-            SemanticModel nodeSemanticModel,
-            SemanticModel declarationSemanticModel,
-            CancellationToken cancellationToken)
-        {
-            return new InlinePropertyRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
-        }
+        return (null, default(SyntaxList<StatementSyntax>));
+    }
 
-        protected override RefactoringDescriptor GetDescriptor()
-        {
-            return RefactoringDescriptors.InlineProperty;
-        }
+    protected override InlineRefactoring<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol> CreateRefactoring(
+        Document document,
+        SyntaxNode node,
+        INamedTypeSymbol nodeEnclosingType,
+        IPropertySymbol symbol,
+        PropertyDeclarationSyntax declaration,
+        ImmutableArray<ParameterInfo> parameterInfos,
+        SemanticModel nodeSemanticModel,
+        SemanticModel declarationSemanticModel,
+        CancellationToken cancellationToken)
+    {
+        return new InlinePropertyRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
+    }
+
+    protected override RefactoringDescriptor GetDescriptor()
+    {
+        return RefactoringDescriptors.InlineProperty;
     }
 }

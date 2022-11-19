@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0095RemoveBracesFromIfElseTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveBracesFromIfElse;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveBracesFromIfElse)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0095RemoveBracesFromIfElseTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveBracesFromIfElse;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveBracesFromIfElse)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -44,12 +44,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveBracesFromIfElse)]
-        public async Task Test2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveBracesFromIfElse)]
+    public async Task Test2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -80,12 +80,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveBracesFromIfElse)]
-        public async Task TestNoRefactoring_SimpleIfInsideIfWithElse()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveBracesFromIfElse)]
+    public async Task TestNoRefactoring_SimpleIfInsideIfWithElse()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -103,12 +103,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveBracesFromIfElse)]
-        public async Task TestNoRefactoring_SimpleIfInsideIfWithElse2()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveBracesFromIfElse)]
+    public async Task TestNoRefactoring_SimpleIfInsideIfWithElse2()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -126,6 +126,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

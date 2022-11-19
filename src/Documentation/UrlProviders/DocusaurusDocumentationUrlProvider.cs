@@ -2,15 +2,14 @@
 
 using System.Collections.Generic;
 
-namespace Roslynator.Documentation
-{
-    internal sealed class DocusaurusDocumentationUrlProvider : CommonDocumentationUrlProvider
-    {
-        public DocusaurusDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
-            : base(segmentProvider, externalProviders)
-        {
-        }
+namespace Roslynator.Documentation;
 
-        public override string IndexFileName => "index.md";
+internal sealed class DocusaurusDocumentationUrlProvider : CommonDocumentationUrlProvider
+{
+    public DocusaurusDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
+        : base(segmentProvider, externalProviders)
+    {
     }
+
+    public override string IndexFileName => "index.md";
 }

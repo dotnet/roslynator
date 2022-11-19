@@ -6,16 +6,16 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS9011SpecifyExportCodeFixProviderAttributeNameTests : AbstractCSharpDiagnosticVerifier<NamedTypeSymbolAnalyzer, AttributeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SpecifyExportCodeFixProviderAttributeName;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS9011SpecifyExportCodeFixProviderAttributeNameTests : AbstractCSharpDiagnosticVerifier<NamedTypeSymbolAnalyzer, AttributeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SpecifyExportCodeFixProviderAttributeName;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 
@@ -32,6 +32,5 @@ abstract class C : CodeFixProvider
 {
 }
 ");
-        }
     }
 }

@@ -22,7 +22,7 @@ namespace Roslynator
         {
             DefaultAssemblies = ImmutableArray<AnalyzerAssembly>.Empty;
 
-            if (defaultAssemblies != null)
+            if (defaultAssemblies is not null)
             {
                 foreach (AnalyzerAssembly analyzerAssembly in defaultAssemblies)
                 {

@@ -2,13 +2,12 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+internal static class UseLambdaInsteadOfAnonymousMethodAnalysis
 {
-    internal static class UseLambdaInsteadOfAnonymousMethodAnalysis
+    public static bool IsFixable(AnonymousMethodExpressionSyntax anonymousMethod)
     {
-        public static bool IsFixable(AnonymousMethodExpressionSyntax anonymousMethod)
-        {
-            return anonymousMethod.ParameterList?.IsMissing == false;
-        }
+        return anonymousMethod.ParameterList?.IsMissing == false;
     }
 }

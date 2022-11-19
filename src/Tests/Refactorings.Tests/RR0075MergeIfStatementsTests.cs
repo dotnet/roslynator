@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0075MergeIfStatementsTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.MergeIfStatements;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.MergeIfStatements)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0075MergeIfStatementsTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.MergeIfStatements;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.MergeIfStatements)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M()
@@ -63,12 +63,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.MergeIfStatements)]
-        public async Task Test_SwitchSection()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.MergeIfStatements)]
+    public async Task Test_SwitchSection()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M()
@@ -114,6 +114,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

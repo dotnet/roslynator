@@ -2,151 +2,150 @@
 
 using System;
 
-namespace Roslynator.CodeFixes
+namespace Roslynator.CodeFixes;
+
+public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, IComparable<CodeFixIdentifier>, IComparable
 {
-    public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, IComparable<CodeFixIdentifier>, IComparable
+    public const string CodeFixIdPrefix = "RCF";
+
+    public CodeFixIdentifier(string compilerDiagnosticId, string codeFixId)
     {
-        public const string CodeFixIdPrefix = "RCF";
+        if (compilerDiagnosticId?.StartsWith("CS", StringComparison.Ordinal) == false)
+            throw new ArgumentException("", nameof(compilerDiagnosticId));
 
-        public CodeFixIdentifier(string compilerDiagnosticId, string codeFixId)
+        if (codeFixId?.StartsWith(CodeFixIdPrefix, StringComparison.Ordinal) == false)
+            throw new ArgumentException("", nameof(codeFixId));
+
+        CompilerDiagnosticId = compilerDiagnosticId;
+        CodeFixId = codeFixId;
+    }
+
+    public string CompilerDiagnosticId { get; }
+
+    public string CodeFixId { get; }
+
+    public bool IsDefault
+    {
+        get { return CompilerDiagnosticId is null && CodeFixId is null; }
+    }
+
+    public static CodeFixIdentifier Parse(string text)
+    {
+        return Parse(text, shouldThrow: true);
+    }
+
+    public static bool TryParse(string text, out CodeFixIdentifier codeFixIdentifier)
+    {
+        codeFixIdentifier = Parse(text, shouldThrow: false);
+
+        return !codeFixIdentifier.IsDefault;
+    }
+
+    private static CodeFixIdentifier Parse(string text, bool shouldThrow)
+    {
+        if (text is null)
         {
-            if (compilerDiagnosticId?.StartsWith("CS", StringComparison.Ordinal) == false)
-                throw new ArgumentException("", nameof(compilerDiagnosticId));
+            if (shouldThrow)
+                throw new ArgumentNullException(nameof(text));
 
-            if (codeFixId?.StartsWith(CodeFixIdPrefix, StringComparison.Ordinal) == false)
-                throw new ArgumentException("", nameof(codeFixId));
-
-            CompilerDiagnosticId = compilerDiagnosticId;
-            CodeFixId = codeFixId;
+            return default;
         }
 
-        public string CompilerDiagnosticId { get; }
+        int index = text.IndexOf(".");
 
-        public string CodeFixId { get; }
-
-        public bool IsDefault
+        if (index == -1
+            || index == 0
+            || index == text.Length - 1)
         {
-            get { return CompilerDiagnosticId == null && CodeFixId == null; }
+            if (shouldThrow)
+                throw new ArgumentException("", nameof(text));
+
+            return default;
         }
 
-        public static CodeFixIdentifier Parse(string text)
+        if (index == -1)
         {
-            return Parse(text, shouldThrow: true);
+            if (text.StartsWith(CodeFixIdPrefix, StringComparison.Ordinal))
+                return new CodeFixIdentifier(null, text);
+
+            if (text.StartsWith("CS", StringComparison.Ordinal))
+                return new CodeFixIdentifier(text, null);
+
+            if (shouldThrow)
+                throw new ArgumentException("", nameof(text));
+
+            return default;
         }
 
-        public static bool TryParse(string text, out CodeFixIdentifier codeFixIdentifier)
-        {
-            codeFixIdentifier = Parse(text, shouldThrow: false);
+        return new CodeFixIdentifier(text.Substring(0, index), text.Substring(index + 1));
+    }
 
-            return !codeFixIdentifier.IsDefault;
-        }
+    public override bool Equals(object obj)
+    {
+        return obj is CodeFixIdentifier other
+            && Equals(other);
+    }
 
-        private static CodeFixIdentifier Parse(string text, bool shouldThrow)
+    public bool Equals(CodeFixIdentifier other)
+    {
+        return CompilerDiagnosticId == other.CompilerDiagnosticId
+            && CodeFixId == other.CodeFixId;
+    }
+
+    public override int GetHashCode()
+    {
+        return Hash.Combine(CompilerDiagnosticId, Hash.Create(CodeFixId));
+    }
+
+    public override string ToString()
+    {
+        if (CompilerDiagnosticId is not null)
         {
-            if (text == null)
+            if (CodeFixId is not null)
             {
-                if (shouldThrow)
-                    throw new ArgumentNullException(nameof(text));
-
-                return default;
+                return CompilerDiagnosticId + "." + CodeFixId;
             }
-
-            int index = text.IndexOf(".");
-
-            if (index == -1
-                || index == 0
-                || index == text.Length - 1)
+            else
             {
-                if (shouldThrow)
-                    throw new ArgumentException("", nameof(text));
-
-                return default;
+                return CompilerDiagnosticId;
             }
-
-            if (index == -1)
-            {
-                if (text.StartsWith(CodeFixIdPrefix, StringComparison.Ordinal))
-                    return new CodeFixIdentifier(null, text);
-
-                if (text.StartsWith("CS", StringComparison.Ordinal))
-                    return new CodeFixIdentifier(text, null);
-
-                if (shouldThrow)
-                    throw new ArgumentException("", nameof(text));
-
-                return default;
-            }
-
-            return new CodeFixIdentifier(text.Substring(0, index), text.Substring(index + 1));
         }
-
-        public override bool Equals(object obj)
+        else if (CodeFixId is not null)
         {
-            return obj is CodeFixIdentifier other
-                && Equals(other);
+            return CodeFixId;
         }
 
-        public bool Equals(CodeFixIdentifier other)
-        {
-            return CompilerDiagnosticId == other.CompilerDiagnosticId
-                && CodeFixId == other.CodeFixId;
-        }
+        return "";
+    }
 
-        public override int GetHashCode()
-        {
-            return Hash.Combine(CompilerDiagnosticId, Hash.Create(CodeFixId));
-        }
+    public int CompareTo(CodeFixIdentifier other)
+    {
+        int diff = StringComparer.Ordinal.Compare(CompilerDiagnosticId, other.CompilerDiagnosticId);
 
-        public override string ToString()
-        {
-            if (CompilerDiagnosticId != null)
-            {
-                if (CodeFixId != null)
-                {
-                    return CompilerDiagnosticId + "." + CodeFixId;
-                }
-                else
-                {
-                    return CompilerDiagnosticId;
-                }
-            }
-            else if (CodeFixId != null)
-            {
-                return CodeFixId;
-            }
+        if (diff != 0)
+            return diff;
 
-            return "";
-        }
+        return StringComparer.Ordinal.Compare(CodeFixId, other.CodeFixId);
+    }
 
-        public int CompareTo(CodeFixIdentifier other)
-        {
-            int diff = StringComparer.Ordinal.Compare(CompilerDiagnosticId, other.CompilerDiagnosticId);
+    public int CompareTo(object obj)
+    {
+        if (obj is null)
+            return 1;
 
-            if (diff != 0)
-                return diff;
+        if (obj is CodeFixIdentifier other)
+            return CompareTo(other);
 
-            return StringComparer.Ordinal.Compare(CodeFixId, other.CodeFixId);
-        }
+        throw new ArgumentException("", nameof(obj));
+    }
 
-        public int CompareTo(object obj)
-        {
-            if (obj == null)
-                return 1;
+    public static bool operator ==(CodeFixIdentifier left, CodeFixIdentifier right)
+    {
+        return left.Equals(right);
+    }
 
-            if (obj is CodeFixIdentifier other)
-                return CompareTo(other);
-
-            throw new ArgumentException("", nameof(obj));
-        }
-
-        public static bool operator ==(CodeFixIdentifier left, CodeFixIdentifier right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(CodeFixIdentifier left, CodeFixIdentifier right)
-        {
-            return !(left == right);
-        }
+    public static bool operator !=(CodeFixIdentifier left, CodeFixIdentifier right)
+    {
+        return !(left == right);
     }
 }

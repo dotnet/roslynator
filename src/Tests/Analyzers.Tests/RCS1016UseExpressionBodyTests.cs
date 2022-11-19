@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1016UseExpressionBodyTests : AbstractCSharpDiagnosticVerifier<UseBlockBodyOrExpressionBodyAnalyzer, UseBlockBodyOrExpressionBodyCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBlockBodyOrExpressionBody;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Constructor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1016UseExpressionBodyTests : AbstractCSharpDiagnosticVerifier<UseBlockBodyOrExpressionBodyAnalyzer, UseBlockBodyOrExpressionBodyCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBlockBodyOrExpressionBody;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Constructor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public C()
@@ -33,12 +33,12 @@ class C
     void M() { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Destructor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Destructor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     ~C()
@@ -56,12 +56,12 @@ class C
     void M() { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -75,12 +75,12 @@ class C
     string M() => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_MultilineExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_MultilineExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(object x, object y)
@@ -98,12 +98,12 @@ class C
         y);
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_MultilineExpression2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_MultilineExpression2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(object x, object y, object z)
@@ -123,12 +123,12 @@ class C
                 z);
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_VoidMethod()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_VoidMethod()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -142,12 +142,12 @@ class C
     void M() => M();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_LocalFunction()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_LocalFunction()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -167,12 +167,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_LocalFunction_MultilineExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_LocalFunction_MultilineExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(object x, object y)
@@ -200,12 +200,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_VoidLocalFunction()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_VoidLocalFunction()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -225,12 +225,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P
@@ -244,12 +244,12 @@ class C
     string P => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetter_MultilineExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetter_MultilineExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P
@@ -274,12 +274,12 @@ class C
     string M(string x, string y) => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetterAndSetter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetterAndSetter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _f;
@@ -315,12 +315,12 @@ class C
     string M(string x, string y) => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetterAndInitSetter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetterAndInitSetter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _f;
@@ -356,12 +356,12 @@ class C
     string M(string x, string y) => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression).AddAllowedCompilerDiagnosticId("CS0518"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_IndexerWithGetter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_IndexerWithGetter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string this[int index]
@@ -375,12 +375,12 @@ class C
     string this[int index] => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_IndexerWithGetterAndSetter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_IndexerWithGetterAndSetter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _f;
@@ -403,12 +403,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Operator()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Operator()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public static C operator !(C value)
@@ -422,12 +422,12 @@ class C
     public static C operator !(C value) => value;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_ConversionOperator()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_ConversionOperator()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public static explicit operator C(string value)
@@ -441,12 +441,12 @@ class C
     public static explicit operator C(string value) => new C();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Constructor_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Constructor_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public C()
@@ -464,12 +464,12 @@ class C
     void M() { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Destructor_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Destructor_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     ~C()
@@ -483,12 +483,12 @@ class C
     ~C() => throw new System.NotImplementedException();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -502,12 +502,12 @@ class C
     string M() => throw new System.NotImplementedException();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_VoidMethod_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_VoidMethod_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -521,12 +521,12 @@ class C
     void M() => throw new System.NotImplementedException();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_LocalFunction_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_LocalFunction_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -546,12 +546,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_VoidLocalFunction_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_VoidLocalFunction_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -571,12 +571,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetter_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetter_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P
@@ -590,12 +590,12 @@ class C
     string P => throw new System.NotImplementedException();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetterAndSetter_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetterAndSetter_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _f;
@@ -618,12 +618,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_IndexerWithGetter_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_IndexerWithGetter_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string this[int index]
@@ -637,12 +637,12 @@ class C
     string this[int index] => throw new System.NotImplementedException();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_IndexerWithGetterAndSetter_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_IndexerWithGetterAndSetter_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _f;
@@ -665,12 +665,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Operator_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Operator_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public static C operator !(C value)
@@ -684,12 +684,12 @@ class C
     public static C operator !(C value) => throw new System.NotImplementedException();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_ConversionOperator_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_ConversionOperator_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public static explicit operator C(string value)
@@ -703,12 +703,12 @@ class C
     public static explicit operator C(string value) => throw new System.NotImplementedException();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_MethodWithMultipleStatements()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_MethodWithMultipleStatements()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -718,12 +718,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_MethodWithLocalFunction()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_MethodWithLocalFunction()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -732,12 +732,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_VoidMethodWithNoStatements()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_VoidMethodWithNoStatements()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -745,12 +745,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_VoidMethodWithMultipleStatements()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_VoidMethodWithMultipleStatements()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -760,12 +760,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_MethodWithMultilineStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_MethodWithMultilineStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -775,12 +775,12 @@ class C
     }
 }
 ", options: Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_PropertyWithMultipleStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_PropertyWithMultipleStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P
@@ -795,12 +795,12 @@ class C
     string M() => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_PropertyInvalidStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_PropertyInvalidStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P
@@ -809,14 +809,14 @@ class C
     }
 }
 ", options: Options
-                .AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression)
-                .AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0161_NotAllCodePathsReturnValue));
-        }
+            .AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression)
+            .AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0161_NotAllCodePathsReturnValue));
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_AccessorWithAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_AccessorWithAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 
 class C
@@ -831,12 +831,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_IndexerWithMultipleStatements()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_IndexerWithMultipleStatements()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 
 class C
@@ -853,12 +853,12 @@ class C
     string M() => null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_ExpressionBody()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_ExpressionBody()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public C() => VM();
@@ -902,12 +902,12 @@ class C
     string _f;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_LanguageVersion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_LanguageVersion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -916,12 +916,12 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp5);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_PreprocessorDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_PreprocessorDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -934,6 +934,5 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp5);
-        }
     }
 }

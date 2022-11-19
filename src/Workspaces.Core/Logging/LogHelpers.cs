@@ -206,7 +206,7 @@ namespace Roslynator
                         Write(indentation, verbosity);
                         WriteLine($"  {diagnostics2.Length.ToString("n0").PadLeft(maxCountLength)} {descriptor.Id.PadRight(maxIdLength)} {descriptor.Title.ToString(formatProvider)}", verbosity);
 
-                        if (baseDirectoryPath != null)
+                        if (baseDirectoryPath is not null)
                         {
                             WriteDiagnostics(diagnostics2, baseDirectoryPath: baseDirectoryPath, formatProvider: formatProvider, indentation: indentation + "    ", verbosity: verbosity);
                         }
@@ -257,7 +257,7 @@ namespace Roslynator
                 .Distinct(DiagnosticDescriptorComparer.Id)
                 .Where(f => options.IsSupportedDiagnosticId(f.Id));
 
-            if (predicate != null)
+            if (predicate is not null)
                 descriptors = descriptors.Where(predicate);
 
             foreach (IGrouping<DiagnosticDescriptor, DiagnosticDescriptor> grouping in descriptors

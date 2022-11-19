@@ -7,19 +7,18 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class InvertBooleanLiteralRefactoring
-    {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken = default)
-        {
-            LiteralExpressionSyntax newNode = BooleanLiteralExpression(!literalExpression.IsKind(SyntaxKind.TrueLiteralExpression))
-                .WithTriviaFrom(literalExpression);
+namespace Roslynator.CSharp.Refactorings;
 
-            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
-        }
+internal static class InvertBooleanLiteralRefactoring
+{
+    public static Task<Document> RefactorAsync(
+        Document document,
+        LiteralExpressionSyntax literalExpression,
+        CancellationToken cancellationToken = default)
+    {
+        LiteralExpressionSyntax newNode = BooleanLiteralExpression(!literalExpression.IsKind(SyntaxKind.TrueLiteralExpression))
+            .WithTriviaFrom(literalExpression);
+
+        return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
     }
 }

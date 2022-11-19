@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.FindSymbols
 
                         ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-                        if (expressionBody != null)
+                        if (expressionBody is not null)
                         {
                             walker.Visit(expressionBody);
                         }
@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.FindSymbols
 
                         ExpressionSyntax expression = declarator.Initializer?.Value;
 
-                        if (expression != null)
+                        if (expression is not null)
                             walker.Visit(expression);
 
                         break;
@@ -135,7 +135,7 @@ namespace Roslynator.CSharp.FindSymbols
             {
                 ISymbol symbol = SemanticModel.GetDeclaredSymbol(node, CancellationToken);
 
-                if (symbol != null)
+                if (symbol is not null)
                 {
                     Debug.Assert(symbol.IsKind(SymbolKind.Local, SymbolKind.Method), symbol.Kind.ToString());
 

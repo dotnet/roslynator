@@ -7,114 +7,113 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 
-namespace Roslynator.CSharp.Syntax
+namespace Roslynator.CSharp.Syntax;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct HexNumericLiteralExpressionInfo
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct HexNumericLiteralExpressionInfo
+    private HexNumericLiteralExpressionInfo(LiteralExpressionSyntax literalExpression, SyntaxToken token)
     {
-        private HexNumericLiteralExpressionInfo(LiteralExpressionSyntax literalExpression, SyntaxToken token)
+        LiteralExpression = literalExpression;
+        Token = token;
+    }
+
+    public LiteralExpressionSyntax LiteralExpression { get; }
+
+    public SyntaxToken Token { get; }
+
+    public string Text
+    {
+        get { return Token.Text; }
+    }
+
+    public string ValueText
+    {
+        get { return Token.ValueText; }
+    }
+
+    public object Value
+    {
+        get { return Token.Value; }
+    }
+
+    public string GetSuffix()
+    {
+        int startIndex = 0;
+
+        for (int i = Text.Length - 1; i >= 0; i--)
         {
-            LiteralExpression = literalExpression;
-            Token = token;
-        }
+            char ch = Text[i];
 
-        public LiteralExpressionSyntax LiteralExpression { get; }
-
-        public SyntaxToken Token { get; }
-
-        public string Text
-        {
-            get { return Token.Text; }
-        }
-
-        public string ValueText
-        {
-            get { return Token.ValueText; }
-        }
-
-        public object Value
-        {
-            get { return Token.Value; }
-        }
-
-        public string GetSuffix()
-        {
-            int startIndex = 0;
-
-            for (int i = Text.Length - 1; i >= 0; i--)
+            if (ch == 'u'
+                || ch == 'U'
+                || ch == 'l'
+                || ch == 'L')
             {
-                char ch = Text[i];
-
-                if (ch == 'u'
-                    || ch == 'U'
-                    || ch == 'l'
-                    || ch == 'L')
-                {
-                    startIndex = i;
-                }
-                else
-                {
-                    break;
-                }
+                startIndex = i;
             }
-
-            return Text.Substring(startIndex);
-        }
-
-        public HexNumericLiteralSuffixKind GetSuffixKind()
-        {
-            string suffix = GetSuffix();
-
-            if (suffix == null)
-                return HexNumericLiteralSuffixKind.None;
-
-            if (string.Equals(GetSuffix(), "u", StringComparison.OrdinalIgnoreCase))
-                return HexNumericLiteralSuffixKind.UIntOrULong;
-
-            if (string.Equals(GetSuffix(), "l", StringComparison.OrdinalIgnoreCase))
-                return HexNumericLiteralSuffixKind.LongOrULong;
-
-            if (string.Equals(GetSuffix(), "ul", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(GetSuffix(), "lu", StringComparison.OrdinalIgnoreCase))
+            else
             {
-                return HexNumericLiteralSuffixKind.ULong;
+                break;
             }
-
-            return HexNumericLiteralSuffixKind.Unknown;
         }
 
-        public bool Success
+        return Text.Substring(startIndex);
+    }
+
+    public HexNumericLiteralSuffixKind GetSuffixKind()
+    {
+        string suffix = GetSuffix();
+
+        if (suffix is null)
+            return HexNumericLiteralSuffixKind.None;
+
+        if (string.Equals(GetSuffix(), "u", StringComparison.OrdinalIgnoreCase))
+            return HexNumericLiteralSuffixKind.UIntOrULong;
+
+        if (string.Equals(GetSuffix(), "l", StringComparison.OrdinalIgnoreCase))
+            return HexNumericLiteralSuffixKind.LongOrULong;
+
+        if (string.Equals(GetSuffix(), "ul", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(GetSuffix(), "lu", StringComparison.OrdinalIgnoreCase))
         {
-            get { return LiteralExpression != null; }
+            return HexNumericLiteralSuffixKind.ULong;
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return SyntaxInfoHelpers.ToDebugString(Success, this, LiteralExpression); }
-        }
+        return HexNumericLiteralSuffixKind.Unknown;
+    }
 
-        internal static HexNumericLiteralExpressionInfo Create(SyntaxNode node, bool walkDownParentheses = true)
-        {
-            return Create(Walk(node, walkDownParentheses) as LiteralExpressionSyntax);
-        }
+    public bool Success
+    {
+        get { return LiteralExpression is not null; }
+    }
 
-        internal static HexNumericLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
-        {
-            if (literalExpression == null)
-                return default;
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return SyntaxInfoHelpers.ToDebugString(Success, this, LiteralExpression); }
+    }
 
-            if (!literalExpression.IsKind(SyntaxKind.NumericLiteralExpression))
-                return default;
+    internal static HexNumericLiteralExpressionInfo Create(SyntaxNode node, bool walkDownParentheses = true)
+    {
+        return Create(Walk(node, walkDownParentheses) as LiteralExpressionSyntax);
+    }
 
-            SyntaxToken token = literalExpression.Token;
+    internal static HexNumericLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
+    {
+        if (literalExpression is null)
+            return default;
 
-            string text = token.Text;
+        if (!literalExpression.IsKind(SyntaxKind.NumericLiteralExpression))
+            return default;
 
-            if (!text.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-                return default;
+        SyntaxToken token = literalExpression.Token;
 
-            return new HexNumericLiteralExpressionInfo(literalExpression, token);
-        }
+        string text = token.Text;
+
+        if (!text.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+            return default;
+
+        return new HexNumericLiteralExpressionInfo(literalExpression, token);
     }
 }

@@ -13,96 +13,95 @@ using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AvoidBoxingOfValueTypeCodeFixProvider))]
+[Shared]
+public sealed class AvoidBoxingOfValueTypeCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AvoidBoxingOfValueTypeCodeFixProvider))]
-    [Shared]
-    public sealed class AvoidBoxingOfValueTypeCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidBoxingOfValueType); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidBoxingOfValueType); }
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.AvoidBoxingOfValueType:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
-                                    ? "Use string literal instead of character literal"
-                                    : "Call 'ToString'",
-                                ct => RefactorAsync(context.Document, expression, ct),
-                                GetEquivalenceKey(diagnostic));
+                case DiagnosticIdentifiers.AvoidBoxingOfValueType:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
+                                ? "Use string literal instead of character literal"
+                                : "Call 'ToString'",
+                            ct => RefactorAsync(context.Document, expression, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
+    }
 
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken)
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken)
+    {
+        ExpressionSyntax newNode;
+
+        if (expression.Kind() == SyntaxKind.CharacterLiteralExpression)
         {
-            ExpressionSyntax newNode;
+            var literalExpression = (LiteralExpressionSyntax)expression;
 
-            if (expression.Kind() == SyntaxKind.CharacterLiteralExpression)
+            newNode = StringLiteralExpression(literalExpression.Token.ValueText);
+        }
+        else
+        {
+            ParenthesizedExpressionSyntax newExpression = expression
+                .WithoutTrivia()
+                .Parenthesize();
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            if (ShouldAddConditionalAccess(semanticModel))
             {
-                var literalExpression = (LiteralExpressionSyntax)expression;
-
-                newNode = StringLiteralExpression(literalExpression.Token.ValueText);
+                newNode = ConditionalAccessExpression(
+                    newExpression,
+                    InvocationExpression(MemberBindingExpression(IdentifierName("ToString")), ArgumentList()));
             }
             else
             {
-                ParenthesizedExpressionSyntax newExpression = expression
-                    .WithoutTrivia()
-                    .Parenthesize();
-
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                if (ShouldAddConditionalAccess(semanticModel))
-                {
-                    newNode = ConditionalAccessExpression(
-                        newExpression,
-                        InvocationExpression(MemberBindingExpression(IdentifierName("ToString")), ArgumentList()));
-                }
-                else
-                {
-                    newNode = SimpleMemberInvocationExpression(
-                        newExpression,
-                        IdentifierName("ToString"),
-                        ArgumentList());
-                }
+                newNode = SimpleMemberInvocationExpression(
+                    newExpression,
+                    IdentifierName("ToString"),
+                    ArgumentList());
             }
+        }
 
-            newNode = newNode.WithTriviaFrom(expression);
+        newNode = newNode.WithTriviaFrom(expression);
 
-            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
+        return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
 
-            bool ShouldAddConditionalAccess(SemanticModel semanticModel)
-            {
-                if (!semanticModel.GetTypeSymbol(expression, cancellationToken).IsNullableType())
-                    return false;
+        bool ShouldAddConditionalAccess(SemanticModel semanticModel)
+        {
+            if (!semanticModel.GetTypeSymbol(expression, cancellationToken).IsNullableType())
+                return false;
 
-                if (expression is not ConditionalAccessExpressionSyntax conditionalAccess)
-                    return true;
+            if (expression is not ConditionalAccessExpressionSyntax conditionalAccess)
+                return true;
 
-                return semanticModel
-                    .GetTypeSymbol(conditionalAccess.WhenNotNull, cancellationToken)
-                    .IsNullableType();
-            }
+            return semanticModel
+                .GetTypeSymbol(conditionalAccess.WhenNotNull, cancellationToken)
+                .IsNullableType();
         }
     }
 }

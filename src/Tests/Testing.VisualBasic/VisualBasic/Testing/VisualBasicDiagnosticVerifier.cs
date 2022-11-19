@@ -4,18 +4,17 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Testing;
 
-namespace Roslynator.VisualBasic.Testing
+namespace Roslynator.VisualBasic.Testing;
+
+public abstract class VisualBasicDiagnosticVerifier<TAnalyzer, TFixProvider> : DiagnosticVerifier<TAnalyzer, TFixProvider>
+    where TAnalyzer : DiagnosticAnalyzer, new()
+    where TFixProvider : CodeFixProvider, new()
 {
-    public abstract class VisualBasicDiagnosticVerifier<TAnalyzer, TFixProvider> : DiagnosticVerifier<TAnalyzer, TFixProvider>
-        where TAnalyzer : DiagnosticAnalyzer, new()
-        where TFixProvider : CodeFixProvider, new()
+    internal VisualBasicDiagnosticVerifier(IAssert assert) : base(assert)
     {
-        internal VisualBasicDiagnosticVerifier(IAssert assert) : base(assert)
-        {
-        }
-
-        new public virtual VisualBasicTestOptions Options => VisualBasicTestOptions.Default;
-
-        protected override TestOptions CommonOptions => Options;
     }
+
+    new public virtual VisualBasicTestOptions Options => VisualBasicTestOptions.Default;
+
+    protected override TestOptions CommonOptions => Options;
 }

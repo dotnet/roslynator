@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
                                 ThrowInfo info = GetUndocumentedExceptionInfo(node, throwStatement.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
 
-                                if (info != null)
+                                if (info is not null)
                                     yield return info;
                             }
 
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                                 var throwExpression = (ThrowExpressionSyntax)node;
                                 ThrowInfo info = GetUndocumentedExceptionInfo(node, throwExpression.Expression, declaration, declarationSymbol, exceptionSymbol, semanticModel, cancellationToken);
 
-                                if (info != null)
+                                if (info is not null)
                                     yield return info;
                             }
 
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (expression == null)
+            if (expression is null)
                 return null;
 
             if (semanticModel.GetTypeSymbol(expression, cancellationToken) is not INamedTypeSymbol typeSymbol)
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
             DocumentationCommentTriviaSyntax comment = declaration.GetSingleLineDocumentationComment();
 
-            if (comment == null)
+            if (comment is null)
                 return null;
 
             if (!CanAddExceptionToComment(comment, typeSymbol, semanticModel, cancellationToken))
@@ -156,7 +156,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         {
             XmlElementStartTagSyntax startTag = xmlElement.StartTag;
 
-            return startTag != null
+            return startTag is not null
                 && ContainsException(startTag.Attributes, exceptionSymbol, semanticModel, cancellationToken);
         }
 
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
                     CrefSyntax cref = xmlCrefAttribute.Cref;
 
-                    if (cref != null
+                    if (cref is not null
                         && (semanticModel.GetSymbol(cref, cancellationToken) is INamedTypeSymbol symbol))
                     {
                         if (SymbolEqualityComparer.Default.Equals(exceptionSymbol, symbol))
@@ -354,7 +354,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
             sb.Append("\">");
 
-            if (parameterSymbol != null)
+            if (parameterSymbol is not null)
             {
                 sb.Append("<paramref name=\"");
                 sb.Append(parameterSymbol.Name);

@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
             public override SyntaxNode VisitSwitchSection(SwitchSectionSyntax node)
             {
-                if (_statementsInfo.Parent == null)
+                if (_statementsInfo.Parent is null)
                 {
                     return Rewrite(new StatementListInfo(node));
                 }
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
             public override SyntaxNode VisitBlock(BlockSyntax node)
             {
-                if (_statementsInfo.Parent == null
+                if (_statementsInfo.Parent is null
                     && node.IsParentKind(SyntaxKind.SwitchSection))
                 {
                     return Rewrite(new StatementListInfo(node));

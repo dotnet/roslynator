@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0052WrapInitializerExpressionsTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapInitializerExpressions;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
-        public async Task Test_ToMultiLine()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0052WrapInitializerExpressionsTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.WrapInitializerExpressions;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
+    public async Task Test_ToMultiLine()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string P1 { get; set; }
@@ -40,12 +40,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
-        public async Task Test_WithExpressionToMultiLine()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
+    public async Task Test_WithExpressionToMultiLine()
+    {
+        await VerifyRefactoringAsync(@"
 record C
 {
     string P1 { get; set; }
@@ -76,12 +76,12 @@ record C
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
-        public async Task Test_ToSingleLine()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
+    public async Task Test_ToSingleLine()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string P1 { get; set; }
@@ -108,12 +108,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
-        public async Task Test_WithExpressionToSingleLine()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
+    public async Task Test_WithExpressionToSingleLine()
+    {
+        await VerifyRefactoringAsync(@"
 record C
 {
     string P1 { get; set; }
@@ -144,12 +144,12 @@ record C
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
-        public async Task TestNoRefactoring_ToSingleLine_ContainsSingleLineComment()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
+    public async Task TestNoRefactoring_ToSingleLine_ContainsSingleLineComment()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     string P1 { get; set; }
@@ -165,6 +165,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

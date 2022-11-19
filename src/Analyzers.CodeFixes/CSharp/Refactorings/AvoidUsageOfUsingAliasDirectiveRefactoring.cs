@@ -6,16 +6,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.InlineAliasExpression;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AvoidUsageOfUsingAliasDirectiveRefactoring
 {
-    internal static class AvoidUsageOfUsingAliasDirectiveRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        UsingDirectiveSyntax usingDirective,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            UsingDirectiveSyntax usingDirective,
-            CancellationToken cancellationToken = default)
-        {
-            return InlineAliasExpressionRefactoring.RefactorAsync(document, usingDirective, cancellationToken);
-        }
+        return InlineAliasExpressionRefactoring.RefactorAsync(document, usingDirective, cancellationToken);
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1232OrderElementsInDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, OrderElementsInDocumentationCommentCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OrderElementsInDocumentationComment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
-        public async Task Test_Parameters()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1232OrderElementsInDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, OrderElementsInDocumentationCommentCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OrderElementsInDocumentationComment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
+    public async Task Test_Parameters()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -38,12 +38,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
-        public async Task Test_Parameters2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
+    public async Task Test_Parameters2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -66,12 +66,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
-        public async Task Test_Parameters3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
+    public async Task Test_Parameters3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -94,12 +94,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
-        public async Task Test_Parameters4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
+    public async Task Test_Parameters4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -120,12 +120,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
-        public async Task Test_TypeParameters()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
+    public async Task Test_TypeParameters()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -148,12 +148,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
-        public async Task TestNoDiagnostic_Parameters()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
+    public async Task TestNoDiagnostic_Parameters()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary></summary>
@@ -165,12 +165,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
-        public async Task TestNoDiagnostic_TypeParameters()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
+    public async Task TestNoDiagnostic_TypeParameters()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary></summary>
@@ -182,6 +182,5 @@ class C
     }
 }
 ");
-        }
     }
 }

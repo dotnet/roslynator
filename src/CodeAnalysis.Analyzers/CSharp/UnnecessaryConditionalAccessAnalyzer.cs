@@ -9,113 +9,112 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class UnnecessaryConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UnnecessaryConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(
-                        ref _supportedDiagnostics,
-                        DiagnosticRules.UnnecessaryConditionalAccess,
-                        DiagnosticRules.UnnecessaryConditionalAccessFadeOut);
-                }
-
-                return _supportedDiagnostics;
+                Immutable.InterlockedInitialize(
+                    ref _supportedDiagnostics,
+                    DiagnosticRules.UnnecessaryConditionalAccess,
+                    DiagnosticRules.UnnecessaryConditionalAccessFadeOut);
             }
+
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f), SyntaxKind.EqualsExpression);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f), SyntaxKind.EqualsExpression);
+    }
 
-        private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
-        {
-            var binaryExpression = (BinaryExpressionSyntax)context.Node;
+    private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
+    {
+        var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
-            BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
+        BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
 
-            if (!binaryExpressionInfo.Success)
-                return;
+        if (!binaryExpressionInfo.Success)
+            return;
 
-            if (binaryExpressionInfo.Right.Kind() != SyntaxKind.TrueLiteralExpression)
-                return;
+        if (binaryExpressionInfo.Right.Kind() != SyntaxKind.TrueLiteralExpression)
+            return;
 
-            ExpressionSyntax left = binaryExpressionInfo.Left;
+        ExpressionSyntax left = binaryExpressionInfo.Left;
 
-            if (left.Kind() != SyntaxKind.ConditionalAccessExpression)
-                return;
+        if (left.Kind() != SyntaxKind.ConditionalAccessExpression)
+            return;
 
-            var conditionalAccess = (ConditionalAccessExpressionSyntax)left;
+        var conditionalAccess = (ConditionalAccessExpressionSyntax)left;
 
-            ExpressionSyntax whenNotNull = conditionalAccess.WhenNotNull;
+        ExpressionSyntax whenNotNull = conditionalAccess.WhenNotNull;
 
-            if (whenNotNull.Kind() != SyntaxKind.InvocationExpression)
-                return;
+        if (whenNotNull.Kind() != SyntaxKind.InvocationExpression)
+            return;
 
-            var invocationExpression = (InvocationExpressionSyntax)whenNotNull;
+        var invocationExpression = (InvocationExpressionSyntax)whenNotNull;
 
-            if (invocationExpression.ArgumentList.Arguments.Count != 1)
-                return;
+        if (invocationExpression.ArgumentList.Arguments.Count != 1)
+            return;
 
-            ExpressionSyntax expression = invocationExpression.Expression;
+        ExpressionSyntax expression = invocationExpression.Expression;
 
-            if (expression.Kind() != SyntaxKind.MemberBindingExpression)
-                return;
+        if (expression.Kind() != SyntaxKind.MemberBindingExpression)
+            return;
 
-            var memberBindingExpression = (MemberBindingExpressionSyntax)expression;
+        var memberBindingExpression = (MemberBindingExpressionSyntax)expression;
 
-            SimpleNameSyntax name = memberBindingExpression.Name;
+        SimpleNameSyntax name = memberBindingExpression.Name;
 
-            if (name.Kind() != SyntaxKind.IdentifierName)
-                return;
+        if (name.Kind() != SyntaxKind.IdentifierName)
+            return;
 
-            var identifierName = (IdentifierNameSyntax)name;
+        var identifierName = (IdentifierNameSyntax)name;
 
-            if (!string.Equals(identifierName.Identifier.ValueText, "IsKind", StringComparison.Ordinal))
-                return;
+        if (!string.Equals(identifierName.Identifier.ValueText, "IsKind", StringComparison.Ordinal))
+            return;
 
-            ISymbol symbol = context.SemanticModel.GetSymbol(invocationExpression, context.CancellationToken);
+        ISymbol symbol = context.SemanticModel.GetSymbol(invocationExpression, context.CancellationToken);
 
-            if (symbol?.Kind != SymbolKind.Method)
-                return;
+        if (symbol?.Kind != SymbolKind.Method)
+            return;
 
-            var methodSymbol = (IMethodSymbol)symbol;
+        var methodSymbol = (IMethodSymbol)symbol;
 
-            if (methodSymbol.MethodKind != MethodKind.ReducedExtension)
-                return;
+        if (methodSymbol.MethodKind != MethodKind.ReducedExtension)
+            return;
 
-            if (methodSymbol.ReturnType.SpecialType != SpecialType.System_Boolean)
-                return;
+        if (methodSymbol.ReturnType.SpecialType != SpecialType.System_Boolean)
+            return;
 
-            if (methodSymbol.ContainingType?.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharpExtensions) != true)
-                return;
+        if (methodSymbol.ContainingType?.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharpExtensions) != true)
+            return;
 
-            ImmutableArray<IParameterSymbol> parameters = methodSymbol
-                .ReducedFrom
-                .Parameters;
+        ImmutableArray<IParameterSymbol> parameters = methodSymbol
+            .ReducedFrom
+            .Parameters;
 
-            if (parameters.Length != 2)
-                return;
+        if (parameters.Length != 2)
+            return;
 
-            if (!parameters[0].Type.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
-                return;
+        if (!parameters[0].Type.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
+            return;
 
-            if (!parameters[1].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
-                return;
+        if (!parameters[1].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryConditionalAccess, conditionalAccess.OperatorToken);
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryConditionalAccessFadeOut, binaryExpression.Right);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryConditionalAccess, conditionalAccess.OperatorToken);
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryConditionalAccessFadeOut, binaryExpression.Right);
     }
 }

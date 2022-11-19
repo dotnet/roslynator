@@ -12,92 +12,91 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(StatementCodeFixProvider))]
+[Shared]
+public sealed class StatementCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(StatementCodeFixProvider))]
-    [Shared]
-    public sealed class StatementCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddNewLineBeforeStatement,
-                    DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement,
-                    DiagnosticIdentifiers.AddNewLineAfterSwitchLabel,
-                    DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.AddNewLineBeforeStatement,
+                DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement,
+                DiagnosticIdentifiers.AddNewLineAfterSwitchLabel,
+                DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
+            return;
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        switch (diagnostic.Id)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            case DiagnosticIdentifiers.AddNewLineBeforeStatement:
+            case DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement:
+            case DiagnosticIdentifiers.AddNewLineAfterSwitchLabel:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        CodeFixTitles.AddNewLine,
+                        ct => AddNewLineBeforeStatementAsync(document, statement, ct),
+                        GetEquivalenceKey(diagnostic));
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
-                return;
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            case DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        CodeFixTitles.AddBlankLine,
+                        ct => CodeFixHelpers.AppendEndOfLineAsync(document, statement, ct),
+                        GetEquivalenceKey(diagnostic));
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.AddNewLineBeforeStatement:
-                case DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement:
-                case DiagnosticIdentifiers.AddNewLineAfterSwitchLabel:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
-                            ct => AddNewLineBeforeStatementAsync(document, statement, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddBlankLine,
-                            ct => CodeFixHelpers.AppendEndOfLineAsync(document, statement, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-            }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
+    }
 
-        private static async Task<Document> AddNewLineBeforeStatementAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken)
+    private static async Task<Document> AddNewLineBeforeStatementAsync(
+        Document document,
+        StatementSyntax statement,
+        CancellationToken cancellationToken)
+    {
+        StatementSyntax newStatement = statement
+            .PrependEndOfLineToLeadingTrivia()
+            .WithFormatterAnnotation();
+
+        if (statement.IsParentKind(SyntaxKind.Block))
         {
-            StatementSyntax newStatement = statement
-                .PrependEndOfLineToLeadingTrivia()
-                .WithFormatterAnnotation();
+            var block = (BlockSyntax)statement.Parent;
 
-            if (statement.IsParentKind(SyntaxKind.Block))
+            if (block.IsSingleLine(includeExteriorTrivia: false))
             {
-                var block = (BlockSyntax)statement.Parent;
+                BlockSyntax newBlock = block
+                    .WithCloseBraceToken(block.CloseBraceToken.AppendEndOfLineToLeadingTrivia())
+                    .WithStatements(block.Statements.Replace(statement, newStatement))
+                    .WithFormatterAnnotation();
 
-                if (block.IsSingleLine(includeExteriorTrivia: false))
-                {
-                    BlockSyntax newBlock = block
-                        .WithCloseBraceToken(block.CloseBraceToken.AppendEndOfLineToLeadingTrivia())
-                        .WithStatements(block.Statements.Replace(statement, newStatement))
-                        .WithFormatterAnnotation();
-
-                    return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
-                }
+                return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
             }
             else
             {
                 return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
             }
+        }
+        else
+        {
+            return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

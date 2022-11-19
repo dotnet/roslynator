@@ -13,90 +13,89 @@ using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Spelling;
 
-namespace Roslynator.CSharp.Spelling
+namespace Roslynator.CSharp.Spelling;
+
+[Export(typeof(ILanguageService))]
+[ExportMetadata("Language", LanguageNames.CSharp)]
+[ExportMetadata("ServiceType", "Roslynator.Spelling.ISpellingService")]
+internal partial class CSharpSpellingService : SpellingService
 {
-    [Export(typeof(ILanguageService))]
-    [ExportMetadata("Language", LanguageNames.CSharp)]
-    [ExportMetadata("ServiceType", "Roslynator.Spelling.ISpellingService")]
-    internal partial class CSharpSpellingService : SpellingService
+    public override ISyntaxFactsService SyntaxFacts => CSharpSyntaxFactsService.Instance;
+
+    public override DiagnosticAnalyzer CreateAnalyzer(
+        SpellingData spellingData,
+        SpellingFixerOptions options)
     {
-        public override ISyntaxFactsService SyntaxFacts => CSharpSyntaxFactsService.Instance;
+        return new CSharpSpellingAnalyzer(spellingData, options);
+    }
 
-        public override DiagnosticAnalyzer CreateAnalyzer(
-            SpellingData spellingData,
-            SpellingFixerOptions options)
+    public override ImmutableArray<Diagnostic> AnalyzeSpelling(
+        SyntaxNode node,
+        SpellingData spellingData,
+        SpellingFixerOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        var diagnostics = new List<Diagnostic>();
+
+        var analysisContext = new SpellingAnalysisContext(
+            diagnostic => diagnostics.Add(diagnostic),
+            spellingData,
+            options,
+            cancellationToken);
+
+        CSharpSpellingWalker walker = CSharpSpellingWalker.Create(analysisContext);
+
+        walker.Visit(node);
+
+        return diagnostics.ToImmutableArray();
+    }
+
+    public override SpellingDiagnostic CreateSpellingDiagnostic(Diagnostic diagnostic)
+    {
+        Location location = diagnostic.Location;
+        SyntaxTree syntaxTree = location.SourceTree;
+        SyntaxNode root = syntaxTree.GetRoot();
+        TextSpan span = location.SourceSpan;
+
+        string value = diagnostic.Properties["Value"];
+        int index = location.SourceSpan.Start;
+        string parent = diagnostic.Properties.GetValueOrDefault("Parent");
+
+        int parentIndex = (diagnostic.Properties.TryGetValue("ParentIndex", out string parentIndexText))
+            ? int.Parse(parentIndexText)
+            : 0;
+
+        SyntaxTrivia trivia = root.FindTrivia(span.Start, findInsideTrivia: true);
+
+        if (trivia.IsKind(
+            SyntaxKind.SingleLineCommentTrivia,
+            SyntaxKind.MultiLineCommentTrivia,
+            SyntaxKind.PreprocessingMessageTrivia))
         {
-            return new CSharpSpellingAnalyzer(spellingData, options);
+            Debug.Assert(value == trivia.ToString().Substring(span.Start - trivia.SpanStart, span.Length), value);
+
+            return new CSharpSpellingDiagnostic(diagnostic, value, index, parent, parentIndex);
         }
 
-        public override ImmutableArray<Diagnostic> AnalyzeSpelling(
-            SyntaxNode node,
-            SpellingData spellingData,
-            SpellingFixerOptions options,
-            CancellationToken cancellationToken = default)
+        SyntaxToken token = root.FindToken(span.Start, findInsideTrivia: true);
+
+        if (token.IsKind(
+            SyntaxKind.IdentifierToken,
+            SyntaxKind.XmlTextLiteralToken,
+            SyntaxKind.StringLiteralToken,
+            SyntaxKind.InterpolatedStringTextToken))
         {
-            var diagnostics = new List<Diagnostic>();
+            Debug.Assert(value == token.Text.Substring(span.Start - token.SpanStart, span.Length), value);
 
-            var analysisContext = new SpellingAnalysisContext(
-                diagnostic => diagnostics.Add(diagnostic),
-                spellingData,
-                options,
-                cancellationToken);
-
-            CSharpSpellingWalker walker = CSharpSpellingWalker.Create(analysisContext);
-
-            walker.Visit(node);
-
-            return diagnostics.ToImmutableArray();
+            return new CSharpSpellingDiagnostic(
+                diagnostic,
+                value,
+                index,
+                parent,
+                parentIndex,
+                (token.IsKind(SyntaxKind.IdentifierToken)) ? token : default);
         }
 
-        public override SpellingDiagnostic CreateSpellingDiagnostic(Diagnostic diagnostic)
-        {
-            Location location = diagnostic.Location;
-            SyntaxTree syntaxTree = location.SourceTree;
-            SyntaxNode root = syntaxTree.GetRoot();
-            TextSpan span = location.SourceSpan;
-
-            string value = diagnostic.Properties["Value"];
-            int index = location.SourceSpan.Start;
-            string parent = diagnostic.Properties.GetValueOrDefault("Parent");
-
-            int parentIndex = (diagnostic.Properties.TryGetValue("ParentIndex", out string parentIndexText))
-                ? int.Parse(parentIndexText)
-                : 0;
-
-            SyntaxTrivia trivia = root.FindTrivia(span.Start, findInsideTrivia: true);
-
-            if (trivia.IsKind(
-                SyntaxKind.SingleLineCommentTrivia,
-                SyntaxKind.MultiLineCommentTrivia,
-                SyntaxKind.PreprocessingMessageTrivia))
-            {
-                Debug.Assert(value == trivia.ToString().Substring(span.Start - trivia.SpanStart, span.Length), value);
-
-                return new CSharpSpellingDiagnostic(diagnostic, value, index, parent, parentIndex);
-            }
-
-            SyntaxToken token = root.FindToken(span.Start, findInsideTrivia: true);
-
-            if (token.IsKind(
-                SyntaxKind.IdentifierToken,
-                SyntaxKind.XmlTextLiteralToken,
-                SyntaxKind.StringLiteralToken,
-                SyntaxKind.InterpolatedStringTextToken))
-            {
-                Debug.Assert(value == token.Text.Substring(span.Start - token.SpanStart, span.Length), value);
-
-                return new CSharpSpellingDiagnostic(
-                    diagnostic,
-                    value,
-                    index,
-                    parent,
-                    parentIndex,
-                    (token.IsKind(SyntaxKind.IdentifierToken)) ? token : default);
-            }
-
-            throw new InvalidOperationException($"Unexpected syntax at {location}");
-        }
+        throw new InvalidOperationException($"Unexpected syntax at {location}");
     }
 }

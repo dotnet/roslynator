@@ -5,95 +5,94 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings.ExtractCondition
+namespace Roslynator.CSharp.Refactorings.ExtractCondition;
+
+internal abstract class ExtractConditionRefactoring<TStatement> where TStatement : StatementSyntax
 {
-    internal abstract class ExtractConditionRefactoring<TStatement> where TStatement : StatementSyntax
+    public abstract string Title { get; }
+
+    public abstract StatementSyntax GetStatement(TStatement statement);
+
+    public abstract TStatement SetStatement(TStatement statement, StatementSyntax newStatement);
+
+    protected static TStatement RemoveExpressionFromCondition(
+        TStatement statement,
+        BinaryExpressionSyntax condition,
+        ExpressionSyntax expression)
     {
-        public abstract string Title { get; }
+        return statement.ReplaceNode(
+            expression.Parent,
+            GetNewCondition(condition, expression));
+    }
 
-        public abstract StatementSyntax GetStatement(TStatement statement);
+    private static ExpressionSyntax GetNewCondition(
+        ExpressionSyntax condition,
+        ExpressionSyntax expression)
+    {
+        var binaryExpression = (BinaryExpressionSyntax)expression.Parent;
 
-        public abstract TStatement SetStatement(TStatement statement, StatementSyntax newStatement);
+        ExpressionSyntax left = binaryExpression.Left;
 
-        protected static TStatement RemoveExpressionFromCondition(
-            TStatement statement,
-            BinaryExpressionSyntax condition,
-            ExpressionSyntax expression)
+        if (expression == left)
         {
+            return binaryExpression.Right;
+        }
+        else
+        {
+            return (binaryExpression == condition)
+                ? left.TrimTrailingTrivia()
+                : left;
+        }
+    }
+
+    protected static TStatement RemoveExpressionsFromCondition(
+        TStatement statement,
+        BinaryExpressionSyntax condition,
+        in ExpressionChain expressionChain)
+    {
+        var binaryExpression = (BinaryExpressionSyntax)expressionChain.First().Parent;
+
+        return statement.ReplaceNode(
+            condition,
+            binaryExpression.Left.TrimTrailingTrivia());
+    }
+
+    protected TStatement AddNestedIf(
+        TStatement statement,
+        in ExpressionChain expressionChain)
+    {
+        ExpressionSyntax expression = ParseExpression(expressionChain.ToString());
+
+        return AddNestedIf(statement, expression);
+    }
+
+    protected TStatement AddNestedIf(
+        TStatement statement,
+        ExpressionSyntax expression)
+    {
+        StatementSyntax childStatement = GetStatement(statement);
+
+        if (childStatement.IsKind(SyntaxKind.Block))
+        {
+            var block = (BlockSyntax)childStatement;
+
+            IfStatementSyntax nestedIf = IfStatement(
+                expression.WithoutTrivia(),
+                Block(block.Statements));
+
             return statement.ReplaceNode(
-                expression.Parent,
-                GetNewCondition(condition, expression));
+                block,
+                block.WithStatements(SingletonList<StatementSyntax>(nestedIf)));
         }
-
-        private static ExpressionSyntax GetNewCondition(
-            ExpressionSyntax condition,
-            ExpressionSyntax expression)
+        else
         {
-            var binaryExpression = (BinaryExpressionSyntax)expression.Parent;
+            IfStatementSyntax nestedIf = IfStatement(
+                expression.WithoutTrivia(),
+                childStatement.WithoutTrivia());
 
-            ExpressionSyntax left = binaryExpression.Left;
+            BlockSyntax block = Block(nestedIf).WithTriviaFrom(childStatement);
 
-            if (expression == left)
-            {
-                return binaryExpression.Right;
-            }
-            else
-            {
-                return (binaryExpression == condition)
-                    ? left.TrimTrailingTrivia()
-                    : left;
-            }
-        }
-
-        protected static TStatement RemoveExpressionsFromCondition(
-            TStatement statement,
-            BinaryExpressionSyntax condition,
-            in ExpressionChain expressionChain)
-        {
-            var binaryExpression = (BinaryExpressionSyntax)expressionChain.First().Parent;
-
-            return statement.ReplaceNode(
-                condition,
-                binaryExpression.Left.TrimTrailingTrivia());
-        }
-
-        protected TStatement AddNestedIf(
-            TStatement statement,
-            in ExpressionChain expressionChain)
-        {
-            ExpressionSyntax expression = ParseExpression(expressionChain.ToString());
-
-            return AddNestedIf(statement, expression);
-        }
-
-        protected TStatement AddNestedIf(
-            TStatement statement,
-            ExpressionSyntax expression)
-        {
-            StatementSyntax childStatement = GetStatement(statement);
-
-            if (childStatement.IsKind(SyntaxKind.Block))
-            {
-                var block = (BlockSyntax)childStatement;
-
-                IfStatementSyntax nestedIf = IfStatement(
-                    expression.WithoutTrivia(),
-                    Block(block.Statements));
-
-                return statement.ReplaceNode(
-                    block,
-                    block.WithStatements(SingletonList<StatementSyntax>(nestedIf)));
-            }
-            else
-            {
-                IfStatementSyntax nestedIf = IfStatement(
-                    expression.WithoutTrivia(),
-                    childStatement.WithoutTrivia());
-
-                BlockSyntax block = Block(nestedIf).WithTriviaFrom(childStatement);
-
-                return SetStatement(statement, block);
-            }
+            return SetStatement(statement, block);
         }
     }
 }

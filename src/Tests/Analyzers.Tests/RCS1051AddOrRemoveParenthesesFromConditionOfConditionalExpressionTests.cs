@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1051AddOrRemoveParenthesesFromConditionOfConditionalExpressionTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveParenthesesFromConditionInConditionalExpressionAnalyzer, ExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
-        public async Task Test_AddParentheses()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1051AddOrRemoveParenthesesFromConditionOfConditionalExpressionTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveParenthesesFromConditionInConditionalExpressionAnalyzer, ExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    public async Task Test_AddParentheses()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -34,12 +34,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
-        public async Task Test_AddParentheses_SingleTokenExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    public async Task Test_AddParentheses_SingleTokenExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -58,12 +58,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
-        public async Task Test_RemoveParentheses()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    public async Task Test_RemoveParentheses()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -82,12 +82,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
-        public async Task Test_RemoveParentheses_SingleTokenExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    public async Task Test_RemoveParentheses_SingleTokenExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -106,12 +106,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
-        public async Task Test_RemoveParentheses_OmitWhenSingleToken()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    public async Task Test_RemoveParentheses_OmitWhenSingleToken()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -130,12 +130,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
-        public async Task TestNoDiagnostic_NoParentheses_SingleTokenExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    public async Task TestNoDiagnostic_NoParentheses_SingleTokenExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -145,12 +145,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
-        public async Task TestNoDiagnostic_Parentheses_SingleTokenExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
+    public async Task TestNoDiagnostic_Parentheses_SingleTokenExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 public class C
 {
     void M()
@@ -160,6 +160,5 @@ public class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
-        }
     }
 }

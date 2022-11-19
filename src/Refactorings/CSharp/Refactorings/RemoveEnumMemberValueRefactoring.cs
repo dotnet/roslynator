@@ -9,110 +9,109 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveEnumMemberValueRefactoring
 {
-    internal static class RemoveEnumMemberValueRefactoring
+    public static void ComputeRefactoring(
+        RefactoringContext context,
+        EnumDeclarationSyntax enumDeclaration,
+        SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selectedMembers)
     {
-        public static void ComputeRefactoring(
-            RefactoringContext context,
-            EnumDeclarationSyntax enumDeclaration,
-            SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selectedMembers)
+        int count = 0;
+
+        for (int i = 0; i < selectedMembers.Count; i++)
         {
-            int count = 0;
-
-            for (int i = 0; i < selectedMembers.Count; i++)
+            if (selectedMembers[i].EqualsValue?.Value is not null)
             {
-                if (selectedMembers[i].EqualsValue?.Value != null)
-                {
-                    count++;
+                count++;
 
-                    if (count == 2)
-                        break;
-                }
+                if (count == 2)
+                    break;
             }
-
-            if (count == 0)
-                return;
-
-            context.RegisterRefactoring(
-                (count == 1) ? "Remove enum value" : "Remove enum values",
-                ct => RefactorAsync(context.Document, enumDeclaration, selectedMembers, keepCompositeValue: false, ct),
-                RefactoringDescriptors.RemoveEnumMemberValue);
         }
 
-        public static void ComputeRefactoring(
-            RefactoringContext context,
-            EnumDeclarationSyntax enumDeclaration)
+        if (count == 0)
+            return;
+
+        context.RegisterRefactoring(
+            (count == 1) ? "Remove enum value" : "Remove enum values",
+            ct => RefactorAsync(context.Document, enumDeclaration, selectedMembers, keepCompositeValue: false, ct),
+            RefactoringDescriptors.RemoveEnumMemberValue);
+    }
+
+    public static void ComputeRefactoring(
+        RefactoringContext context,
+        EnumDeclarationSyntax enumDeclaration)
+    {
+        int count = 0;
+
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
+
+        for (int i = 0; i < members.Count; i++)
         {
-            int count = 0;
-
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
-
-            for (int i = 0; i < members.Count; i++)
+            if (members[i].EqualsValue?.Value is not null)
             {
-                if (members[i].EqualsValue?.Value != null)
-                {
-                    count++;
+                count++;
 
-                    if (count == 2)
-                        break;
-                }
+                if (count == 2)
+                    break;
             }
-
-            if (count == 0)
-                return;
-
-            context.RegisterRefactoring(
-                (count == 1) ? "Remove explicit value" : "Remove explicit values",
-                ct => RefactorAsync(context.Document, enumDeclaration, members, keepCompositeValue: true, ct),
-                RefactoringDescriptors.RemoveEnumMemberValue);
         }
 
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            EnumDeclarationSyntax enumDeclaration,
-            IEnumerable<EnumMemberDeclarationSyntax> enumMembers,
-            bool keepCompositeValue,
-            CancellationToken cancellationToken)
+        if (count == 0)
+            return;
+
+        context.RegisterRefactoring(
+            (count == 1) ? "Remove explicit value" : "Remove explicit values",
+            ct => RefactorAsync(context.Document, enumDeclaration, members, keepCompositeValue: true, ct),
+            RefactoringDescriptors.RemoveEnumMemberValue);
+    }
+
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        EnumDeclarationSyntax enumDeclaration,
+        IEnumerable<EnumMemberDeclarationSyntax> enumMembers,
+        bool keepCompositeValue,
+        CancellationToken cancellationToken)
+    {
+        SemanticModel semanticModel = null;
+
+        if (keepCompositeValue)
         {
-            SemanticModel semanticModel = null;
+            semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            if (keepCompositeValue)
+            INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken);
+
+            keepCompositeValue = enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
+        }
+
+        IEnumerable<TextChange> textChanges = enumMembers
+            .Where(enumMember =>
             {
-                semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                ExpressionSyntax expression = enumMember.EqualsValue?.Value;
 
-                INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken);
+                if (expression is null)
+                    return false;
 
-                keepCompositeValue = enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
-            }
-
-            IEnumerable<TextChange> textChanges = enumMembers
-                .Where(enumMember =>
+                if (keepCompositeValue
+                    && expression is not LiteralExpressionSyntax)
                 {
-                    ExpressionSyntax expression = enumMember.EqualsValue?.Value;
+                    IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
 
-                    if (expression == null)
+                    if (!fieldSymbol.HasConstantValue)
                         return false;
 
-                    if (keepCompositeValue
-                        && expression is not LiteralExpressionSyntax)
-                    {
-                        IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
+                    ulong value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType);
 
-                        if (!fieldSymbol.HasConstantValue)
-                            return false;
+                    if (FlagsUtility<ulong>.Instance.IsComposite(value))
+                        return false;
+                }
 
-                        ulong value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType);
+                return true;
+            })
+            .Select(f => new TextChange(TextSpan.FromBounds(f.Identifier.Span.End, f.EqualsValue.Span.End), ""));
 
-                        if (FlagsUtility<ulong>.Instance.IsComposite(value))
-                            return false;
-                    }
-
-                    return true;
-                })
-                .Select(f => new TextChange(TextSpan.FromBounds(f.Identifier.Span.End, f.EqualsValue.Span.End), ""));
-
-            return await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
-        }
+        return await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
     }
 }

@@ -11,170 +11,169 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class SplitVariableDeclarationRefactoring
 {
-    internal static class SplitVariableDeclarationRefactoring
+    public static string GetTitle(VariableDeclarationSyntax variableDeclaration)
     {
-        public static string GetTitle(VariableDeclarationSyntax variableDeclaration)
+        return $"Split {GetName()} declaration";
+
+        string GetName()
         {
-            return $"Split {GetName()} declaration";
-
-            string GetName()
-            {
-                switch (variableDeclaration.Parent?.Kind())
-                {
-                    case SyntaxKind.LocalDeclarationStatement:
-                        return "local";
-                    case SyntaxKind.FieldDeclaration:
-                        return "field";
-                    case SyntaxKind.EventFieldDeclaration:
-                        return "event";
-                }
-
-                return "variable";
-            }
-        }
-
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            VariableDeclarationSyntax variableDeclaration,
-            CancellationToken cancellationToken = default)
-        {
-            switch (variableDeclaration.Parent.Kind())
+            switch (variableDeclaration.Parent?.Kind())
             {
                 case SyntaxKind.LocalDeclarationStatement:
-                    return await SplitLocalDeclarationAsync(document, (LocalDeclarationStatementSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
+                    return "local";
                 case SyntaxKind.FieldDeclaration:
-                    return await SplitFieldDeclarationAsync(document, (FieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
+                    return "field";
                 case SyntaxKind.EventFieldDeclaration:
-                    return await SplitEventFieldDeclarationAsync(document, (EventFieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
-                default:
-                    throw new InvalidOperationException();
+                    return "event";
             }
+
+            return "variable";
         }
+    }
 
-        private static Task<Document> SplitLocalDeclarationAsync(
-            Document document,
-            LocalDeclarationStatementSyntax statement,
-            CancellationToken cancellationToken)
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        VariableDeclarationSyntax variableDeclaration,
+        CancellationToken cancellationToken = default)
+    {
+        switch (variableDeclaration.Parent.Kind())
         {
-            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
-
-            SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.ReplaceRange(
-                statement,
-                SplitLocalDeclaration(statement));
-
-            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
+            case SyntaxKind.LocalDeclarationStatement:
+                return await SplitLocalDeclarationAsync(document, (LocalDeclarationStatementSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
+            case SyntaxKind.FieldDeclaration:
+                return await SplitFieldDeclarationAsync(document, (FieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
+            case SyntaxKind.EventFieldDeclaration:
+                return await SplitEventFieldDeclarationAsync(document, (EventFieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
+            default:
+                throw new InvalidOperationException();
         }
+    }
 
-        private static Task<Document> SplitFieldDeclarationAsync(
-            Document document,
-            FieldDeclarationSyntax declaration,
-            CancellationToken cancellationToken)
+    private static Task<Document> SplitLocalDeclarationAsync(
+        Document document,
+        LocalDeclarationStatementSyntax statement,
+        CancellationToken cancellationToken)
+    {
+        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
+
+        SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.ReplaceRange(
+            statement,
+            SplitLocalDeclaration(statement));
+
+        return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
+    }
+
+    private static Task<Document> SplitFieldDeclarationAsync(
+        Document document,
+        FieldDeclarationSyntax declaration,
+        CancellationToken cancellationToken)
+    {
+        var containingMember = (TypeDeclarationSyntax)declaration.Parent;
+
+        SyntaxList<MemberDeclarationSyntax> members = containingMember.Members;
+
+        SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceRange(
+            declaration,
+            SplitFieldDeclaration(declaration));
+
+        MemberDeclarationSyntax newNode = containingMember.WithMembers(newMembers);
+
+        return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
+    }
+
+    private static Task<Document> SplitEventFieldDeclarationAsync(
+        Document document,
+        EventFieldDeclarationSyntax declaration,
+        CancellationToken cancellationToken)
+    {
+        var containingMember = (TypeDeclarationSyntax)declaration.Parent;
+
+        SyntaxList<MemberDeclarationSyntax> members = containingMember.Members;
+
+        SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceRange(
+            declaration,
+            SplitEventFieldDeclaration(declaration));
+
+        MemberDeclarationSyntax newNode = containingMember.WithMembers(newMembers);
+
+        return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
+    }
+
+    private static IEnumerable<LocalDeclarationStatementSyntax> SplitLocalDeclaration(LocalDeclarationStatementSyntax statement)
+    {
+        SeparatedSyntaxList<VariableDeclaratorSyntax> variables = statement.Declaration.Variables;
+
+        LocalDeclarationStatementSyntax statement2 = statement.WithoutTrivia();
+
+        for (int i = 0; i < variables.Count; i++)
         {
-            var containingMember = (TypeDeclarationSyntax)declaration.Parent;
+            LocalDeclarationStatementSyntax newStatement = LocalDeclarationStatement(
+                statement2.Modifiers,
+                VariableDeclaration(
+                    statement2.Declaration.Type,
+                    variables[i]));
 
-            SyntaxList<MemberDeclarationSyntax> members = containingMember.Members;
+            if (i == 0)
+                newStatement = newStatement.WithLeadingTrivia(statement.GetLeadingTrivia());
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceRange(
-                declaration,
-                SplitFieldDeclaration(declaration));
+            if (i == variables.Count - 1)
+                newStatement = newStatement.WithTrailingTrivia(statement.GetTrailingTrivia());
 
-            MemberDeclarationSyntax newNode = containingMember.WithMembers(newMembers);
-
-            return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
+            yield return newStatement.WithFormatterAnnotation();
         }
+    }
 
-        private static Task<Document> SplitEventFieldDeclarationAsync(
-            Document document,
-            EventFieldDeclarationSyntax declaration,
-            CancellationToken cancellationToken)
+    private static IEnumerable<FieldDeclarationSyntax> SplitFieldDeclaration(FieldDeclarationSyntax declaration)
+    {
+        SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Declaration.Variables;
+
+        FieldDeclarationSyntax declaration2 = declaration.WithoutTrivia();
+
+        for (int i = 0; i < variables.Count; i++)
         {
-            var containingMember = (TypeDeclarationSyntax)declaration.Parent;
+            FieldDeclarationSyntax newDeclaration = FieldDeclaration(
+                declaration2.AttributeLists,
+                declaration2.Modifiers,
+                VariableDeclaration(
+                    declaration2.Declaration.Type,
+                    variables[i]));
 
-            SyntaxList<MemberDeclarationSyntax> members = containingMember.Members;
+            if (i == 0)
+                newDeclaration = newDeclaration.WithLeadingTrivia(declaration.GetLeadingTrivia());
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceRange(
-                declaration,
-                SplitEventFieldDeclaration(declaration));
+            if (i == variables.Count - 1)
+                newDeclaration = newDeclaration.WithTrailingTrivia(declaration.GetTrailingTrivia());
 
-            MemberDeclarationSyntax newNode = containingMember.WithMembers(newMembers);
-
-            return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
+            yield return newDeclaration.WithFormatterAnnotation();
         }
+    }
 
-        private static IEnumerable<LocalDeclarationStatementSyntax> SplitLocalDeclaration(LocalDeclarationStatementSyntax statement)
+    private static IEnumerable<EventFieldDeclarationSyntax> SplitEventFieldDeclaration(EventFieldDeclarationSyntax fieldDeclaration)
+    {
+        SeparatedSyntaxList<VariableDeclaratorSyntax> variables = fieldDeclaration.Declaration.Variables;
+
+        EventFieldDeclarationSyntax fieldDeclaration2 = fieldDeclaration.WithoutTrivia();
+
+        for (int i = 0; i < variables.Count; i++)
         {
-            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = statement.Declaration.Variables;
+            EventFieldDeclarationSyntax newDeclaration = EventFieldDeclaration(
+                fieldDeclaration2.AttributeLists,
+                fieldDeclaration2.Modifiers,
+                VariableDeclaration(
+                    fieldDeclaration2.Declaration.Type,
+                    variables[i]));
 
-            LocalDeclarationStatementSyntax statement2 = statement.WithoutTrivia();
+            if (i == 0)
+                newDeclaration = newDeclaration.WithLeadingTrivia(fieldDeclaration.GetLeadingTrivia());
 
-            for (int i = 0; i < variables.Count; i++)
-            {
-                LocalDeclarationStatementSyntax newStatement = LocalDeclarationStatement(
-                    statement2.Modifiers,
-                    VariableDeclaration(
-                        statement2.Declaration.Type,
-                        variables[i]));
+            if (i == variables.Count - 1)
+                newDeclaration = newDeclaration.WithTrailingTrivia(fieldDeclaration.GetTrailingTrivia());
 
-                if (i == 0)
-                    newStatement = newStatement.WithLeadingTrivia(statement.GetLeadingTrivia());
-
-                if (i == variables.Count - 1)
-                    newStatement = newStatement.WithTrailingTrivia(statement.GetTrailingTrivia());
-
-                yield return newStatement.WithFormatterAnnotation();
-            }
-        }
-
-        private static IEnumerable<FieldDeclarationSyntax> SplitFieldDeclaration(FieldDeclarationSyntax declaration)
-        {
-            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Declaration.Variables;
-
-            FieldDeclarationSyntax declaration2 = declaration.WithoutTrivia();
-
-            for (int i = 0; i < variables.Count; i++)
-            {
-                FieldDeclarationSyntax newDeclaration = FieldDeclaration(
-                    declaration2.AttributeLists,
-                    declaration2.Modifiers,
-                    VariableDeclaration(
-                        declaration2.Declaration.Type,
-                        variables[i]));
-
-                if (i == 0)
-                    newDeclaration = newDeclaration.WithLeadingTrivia(declaration.GetLeadingTrivia());
-
-                if (i == variables.Count - 1)
-                    newDeclaration = newDeclaration.WithTrailingTrivia(declaration.GetTrailingTrivia());
-
-                yield return newDeclaration.WithFormatterAnnotation();
-            }
-        }
-
-        private static IEnumerable<EventFieldDeclarationSyntax> SplitEventFieldDeclaration(EventFieldDeclarationSyntax fieldDeclaration)
-        {
-            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = fieldDeclaration.Declaration.Variables;
-
-            EventFieldDeclarationSyntax fieldDeclaration2 = fieldDeclaration.WithoutTrivia();
-
-            for (int i = 0; i < variables.Count; i++)
-            {
-                EventFieldDeclarationSyntax newDeclaration = EventFieldDeclaration(
-                    fieldDeclaration2.AttributeLists,
-                    fieldDeclaration2.Modifiers,
-                    VariableDeclaration(
-                        fieldDeclaration2.Declaration.Type,
-                        variables[i]));
-
-                if (i == 0)
-                    newDeclaration = newDeclaration.WithLeadingTrivia(fieldDeclaration.GetLeadingTrivia());
-
-                if (i == variables.Count - 1)
-                    newDeclaration = newDeclaration.WithTrailingTrivia(fieldDeclaration.GetTrailingTrivia());
-
-                yield return newDeclaration.WithFormatterAnnotation();
-            }
+            yield return newDeclaration.WithFormatterAnnotation();
         }
     }
 }

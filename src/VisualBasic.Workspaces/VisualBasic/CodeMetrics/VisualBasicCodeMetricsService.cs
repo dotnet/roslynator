@@ -7,51 +7,50 @@ using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeMetrics;
 
-namespace Roslynator.VisualBasic.CodeMetrics
+namespace Roslynator.VisualBasic.CodeMetrics;
+
+[Export(typeof(ILanguageService))]
+[ExportMetadata("Language", LanguageNames.VisualBasic)]
+[ExportMetadata("ServiceType", "Roslynator.CodeMetrics.ICodeMetricsService")]
+internal class VisualBasicCodeMetricsService : CodeMetricsService
 {
-    [Export(typeof(ILanguageService))]
-    [ExportMetadata("Language", LanguageNames.VisualBasic)]
-    [ExportMetadata("ServiceType", "Roslynator.CodeMetrics.ICodeMetricsService")]
-    internal class VisualBasicCodeMetricsService : CodeMetricsService
+    public override ISyntaxFactsService SyntaxFacts => VisualBasicSyntaxFactsService.Instance;
+
+    public override CodeMetricsInfo CountPhysicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken)
     {
-        public override ISyntaxFactsService SyntaxFacts => VisualBasicSyntaxFactsService.Instance;
+        TextLineCollection lines = sourceText.Lines;
 
-        public override CodeMetricsInfo CountPhysicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken)
-        {
-            TextLineCollection lines = sourceText.Lines;
+        var walker = new VisualBasicPhysicalLinesWalker(lines, options, cancellationToken);
 
-            var walker = new VisualBasicPhysicalLinesWalker(lines, options, cancellationToken);
+        walker.Visit(node);
 
-            walker.Visit(node);
+        int whitespaceLineCount = (options.IncludeWhitespace) ? 0 : CountWhitespaceLines(node, sourceText);
 
-            int whitespaceLineCount = (options.IncludeWhitespace) ? 0 : CountWhitespaceLines(node, sourceText);
+        return new CodeMetricsInfo(
+            totalLineCount: lines.Count,
+            codeLineCount: lines.Count - whitespaceLineCount - walker.CommentLineCount - walker.PreprocessorDirectiveLineCount - walker.BlockBoundaryLineCount,
+            whitespaceLineCount: whitespaceLineCount,
+            commentLineCount: walker.CommentLineCount,
+            preprocessorDirectiveLineCount: walker.PreprocessorDirectiveLineCount,
+            blockBoundaryLineCount: walker.BlockBoundaryLineCount);
+    }
 
-            return new CodeMetricsInfo(
-                totalLineCount: lines.Count,
-                codeLineCount: lines.Count - whitespaceLineCount - walker.CommentLineCount - walker.PreprocessorDirectiveLineCount - walker.BlockBoundaryLineCount,
-                whitespaceLineCount: whitespaceLineCount,
-                commentLineCount: walker.CommentLineCount,
-                preprocessorDirectiveLineCount: walker.PreprocessorDirectiveLineCount,
-                blockBoundaryLineCount: walker.BlockBoundaryLineCount);
-        }
+    public override CodeMetricsInfo CountLogicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken)
+    {
+        TextLineCollection lines = sourceText.Lines;
 
-        public override CodeMetricsInfo CountLogicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken)
-        {
-            TextLineCollection lines = sourceText.Lines;
+        var walker = new VisualBasicLogicalLinesWalker(lines, options, cancellationToken);
 
-            var walker = new VisualBasicLogicalLinesWalker(lines, options, cancellationToken);
+        walker.Visit(node);
 
-            walker.Visit(node);
+        int whitespaceLineCount = (options.IncludeWhitespace) ? 0 : CountWhitespaceLines(node, sourceText);
 
-            int whitespaceLineCount = (options.IncludeWhitespace) ? 0 : CountWhitespaceLines(node, sourceText);
-
-            return new CodeMetricsInfo(
-                totalLineCount: lines.Count,
-                codeLineCount: walker.LogicalLineCount,
-                whitespaceLineCount: whitespaceLineCount,
-                commentLineCount: walker.CommentLineCount,
-                preprocessorDirectiveLineCount: walker.PreprocessorDirectiveLineCount,
-                blockBoundaryLineCount: 0);
-        }
+        return new CodeMetricsInfo(
+            totalLineCount: lines.Count,
+            codeLineCount: walker.LogicalLineCount,
+            whitespaceLineCount: whitespaceLineCount,
+            commentLineCount: walker.CommentLineCount,
+            preprocessorDirectiveLineCount: walker.PreprocessorDirectiveLineCount,
+            blockBoundaryLineCount: 0);
     }
 }

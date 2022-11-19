@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator.CSharp.Syntax
+namespace Roslynator.CSharp.Syntax;
+
+internal enum HexNumericLiteralSuffixKind
 {
-    internal enum HexNumericLiteralSuffixKind
-    {
-        None = 0,
-        UIntOrULong = 1,
-        LongOrULong = 2,
-        ULong = 3,
-        Unknown = 4,
-    }
+    None = 0,
+    UIntOrULong = 1,
+    LongOrULong = 2,
+    ULong = 3,
+    Unknown = 4,
 }

@@ -6,22 +6,21 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1110DeclareTypeInsideNamespaceTests : AbstractCSharpDiagnosticVerifier<DeclareTypeInsideNamespaceAnalyzer, DeclareTypeInsideNamespaceCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareTypeInsideNamespace;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareTypeInsideNamespace)]
-        public async Task TestNoDiagnostics()
-        {
-            await VerifyNoDiagnosticAsync(@"
+public class RCS1110DeclareTypeInsideNamespaceTests : AbstractCSharpDiagnosticVerifier<DeclareTypeInsideNamespaceAnalyzer, DeclareTypeInsideNamespaceCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareTypeInsideNamespace;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareTypeInsideNamespace)]
+    public async Task TestNoDiagnostics()
+    {
+        await VerifyNoDiagnosticAsync(@"
 namespace N;
 
 class C
 {
 }
 ");
-        }
     }
 }

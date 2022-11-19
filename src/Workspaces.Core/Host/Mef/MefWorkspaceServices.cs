@@ -27,7 +27,7 @@ namespace Roslynator.Host.Mef
         {
             get
             {
-                if (_default == null)
+                if (_default is null)
                 {
                     var services = new MefWorkspaceServices(MefHostServices.Default);
                     Interlocked.CompareExchange(ref _default, services, null);
@@ -41,7 +41,7 @@ namespace Roslynator.Host.Mef
 
         private IEnumerable<string> GetSupportedLanguages()
         {
-            if (_languages == null)
+            if (_languages is null)
             {
                 ImmutableArray<string> languages = _mefServices.GetExports<ILanguageService, LanguageServiceMetadata>()
                     .Select(lazy => lazy.Metadata.Language)

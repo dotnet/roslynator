@@ -7,89 +7,88 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveAllStatementsRefactoring
 {
-    internal static class RemoveAllStatementsRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
     {
-        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
-        {
-            if (!CanRefactor(member, context.Span))
-                return;
+        if (!CanRefactor(member, context.Span))
+            return;
 
-            context.RegisterRefactoring(
-                "Remove all statements",
-                ct => RefactorAsync(context.Document, member, ct),
-                RefactoringDescriptors.RemoveAllStatements);
+        context.RegisterRefactoring(
+            "Remove all statements",
+            ct => RefactorAsync(context.Document, member, ct),
+            RefactoringDescriptors.RemoveAllStatements);
+    }
+
+    public static bool CanRefactor(MemberDeclarationSyntax member, TextSpan span)
+    {
+        switch (member)
+        {
+            case MethodDeclarationSyntax methodDeclaration:
+                {
+                    BlockSyntax body = methodDeclaration.Body;
+
+                    return body?.Statements.Any() == true
+                        && BraceContainsSpan(body, span);
+                }
+            case OperatorDeclarationSyntax operatorDeclaration:
+                {
+                    BlockSyntax body = operatorDeclaration.Body;
+
+                    return body?.Statements.Any() == true
+                        && BraceContainsSpan(body, span);
+                }
+            case ConversionOperatorDeclarationSyntax conversionOperatorDeclaration:
+                {
+                    BlockSyntax body = conversionOperatorDeclaration.Body;
+
+                    return body?.Statements.Any() == true
+                        && BraceContainsSpan(body, span);
+                }
+            case ConstructorDeclarationSyntax constructorDeclaration:
+                {
+                    BlockSyntax body = constructorDeclaration.Body;
+
+                    return body?.Statements.Any() == true
+                        && BraceContainsSpan(body, span);
+                }
         }
 
-        public static bool CanRefactor(MemberDeclarationSyntax member, TextSpan span)
+        return false;
+    }
+
+    private static bool BraceContainsSpan(BlockSyntax body, TextSpan span)
+    {
+        return body.OpenBraceToken.Span.Contains(span)
+            || body.CloseBraceToken.Span.Contains(span);
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        MemberDeclarationSyntax member,
+        CancellationToken cancellationToken = default)
+    {
+        MemberDeclarationSyntax newNode = RemoveAllStatements(member);
+
+        return document.ReplaceNodeAsync(member, newNode, cancellationToken);
+    }
+
+    private static MemberDeclarationSyntax RemoveAllStatements(MemberDeclarationSyntax member)
+    {
+        switch (member)
         {
-            switch (member)
-            {
-                case MethodDeclarationSyntax methodDeclaration:
-                    {
-                        BlockSyntax body = methodDeclaration.Body;
-
-                        return body?.Statements.Any() == true
-                            && BraceContainsSpan(body, span);
-                    }
-                case OperatorDeclarationSyntax operatorDeclaration:
-                    {
-                        BlockSyntax body = operatorDeclaration.Body;
-
-                        return body?.Statements.Any() == true
-                            && BraceContainsSpan(body, span);
-                    }
-                case ConversionOperatorDeclarationSyntax conversionOperatorDeclaration:
-                    {
-                        BlockSyntax body = conversionOperatorDeclaration.Body;
-
-                        return body?.Statements.Any() == true
-                            && BraceContainsSpan(body, span);
-                    }
-                case ConstructorDeclarationSyntax constructorDeclaration:
-                    {
-                        BlockSyntax body = constructorDeclaration.Body;
-
-                        return body?.Statements.Any() == true
-                            && BraceContainsSpan(body, span);
-                    }
-            }
-
-            return false;
+            case MethodDeclarationSyntax declaration:
+                return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
+            case OperatorDeclarationSyntax declaration:
+                return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
+            case ConversionOperatorDeclarationSyntax declaration:
+                return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
+            case ConstructorDeclarationSyntax declaration:
+                return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
         }
 
-        private static bool BraceContainsSpan(BlockSyntax body, TextSpan span)
-        {
-            return body.OpenBraceToken.Span.Contains(span)
-                || body.CloseBraceToken.Span.Contains(span);
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            MemberDeclarationSyntax member,
-            CancellationToken cancellationToken = default)
-        {
-            MemberDeclarationSyntax newNode = RemoveAllStatements(member);
-
-            return document.ReplaceNodeAsync(member, newNode, cancellationToken);
-        }
-
-        private static MemberDeclarationSyntax RemoveAllStatements(MemberDeclarationSyntax member)
-        {
-            switch (member)
-            {
-                case MethodDeclarationSyntax declaration:
-                    return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
-                case OperatorDeclarationSyntax declaration:
-                    return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
-                case ConversionOperatorDeclarationSyntax declaration:
-                    return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
-                case ConstructorDeclarationSyntax declaration:
-                    return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
-            }
-
-            return member;
-        }
+        return member;
     }
 }

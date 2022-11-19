@@ -2,21 +2,20 @@
 
 using DotMarkdown;
 
-namespace Roslynator.Documentation.Markdown
+namespace Roslynator.Documentation.Markdown;
+
+public class SphinxDocumentationWriter : MarkdownDocumentationWriter
 {
-    public class SphinxDocumentationWriter : MarkdownDocumentationWriter
+    public SphinxDocumentationWriter(DocumentationContext context, MarkdownWriter writer) : base(context, writer)
     {
-        public SphinxDocumentationWriter(DocumentationContext context, MarkdownWriter writer) : base(context, writer)
-        {
-        }
+    }
 
-        internal override bool IncludeLinkInClassHierarchy => false;
+    internal override bool IncludeLinkInClassHierarchy => false;
 
-        internal override bool IncludeLinkToRoot => false;
+    internal override bool IncludeLinkToRoot => false;
 
-        public override void WriteLinkTarget(string name)
-        {
-            WriteRaw($"({name})=");
-        }
+    public override void WriteLinkTarget(string name)
+    {
+        WriteRaw($"({name})=");
     }
 }

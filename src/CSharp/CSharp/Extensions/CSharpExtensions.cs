@@ -194,13 +194,13 @@ namespace Roslynator.CSharp
             ITypeSymbol destinationType,
             bool isExplicitInSource = false)
         {
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (expression == null)
+            if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            if (destinationType == null)
+            if (destinationType is null)
                 throw new ArgumentNullException(nameof(destinationType));
 
             if (destinationType.Kind == SymbolKind.ErrorType)
@@ -223,13 +223,13 @@ namespace Roslynator.CSharp
             ITypeSymbol destinationType,
             bool isExplicitInSource = false)
         {
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (expression == null)
+            if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            if (destinationType == null)
+            if (destinationType is null)
                 throw new ArgumentNullException(nameof(destinationType));
 
             if (destinationType.Kind == SymbolKind.ErrorType)
@@ -262,10 +262,10 @@ namespace Roslynator.CSharp
             bool allowCandidate = false,
             CancellationToken cancellationToken = default)
         {
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (argument == null)
+            if (argument is null)
                 throw new ArgumentNullException(nameof(argument));
 
             return DetermineParameterHelper.DetermineParameter(argument, semanticModel, allowParams, allowCandidate, cancellationToken);
@@ -287,10 +287,10 @@ namespace Roslynator.CSharp
             bool allowCandidate = false,
             CancellationToken cancellationToken = default)
         {
-            if (attributeArgument == null)
+            if (attributeArgument is null)
                 throw new ArgumentNullException(nameof(attributeArgument));
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             return DetermineParameterHelper.DetermineParameter(attributeArgument, semanticModel, allowParams, allowCandidate, cancellationToken);
@@ -309,13 +309,13 @@ namespace Roslynator.CSharp
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default)
         {
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            if (expression == null)
+            if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
             if (typeSymbol.Kind == SymbolKind.ErrorType)
@@ -337,7 +337,7 @@ namespace Roslynator.CSharp
 
                         TypeSyntax type = defaultExpression.Type;
 
-                        return type != null
+                        return type is not null
                             && SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(type, cancellationToken));
                     }
             }
@@ -536,7 +536,7 @@ namespace Roslynator.CSharp
                 Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
                 if (optional.HasValue)
-                    return optional.Value == null;
+                    return optional.Value is null;
             }
 
             return false;
@@ -558,7 +558,7 @@ namespace Roslynator.CSharp
             {
                 IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
 
-                if (reducedFrom != null)
+                if (reducedFrom is not null)
                     return new ExtensionMethodSymbolInfo(reducedFrom, methodSymbol);
 
                 return new ExtensionMethodSymbolInfo(methodSymbol, null);
@@ -583,7 +583,7 @@ namespace Roslynator.CSharp
             {
                 IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
 
-                if (reducedFrom != null)
+                if (reducedFrom is not null)
                     return new ExtensionMethodSymbolInfo(reducedFrom, methodSymbol);
             }
 
@@ -613,7 +613,7 @@ namespace Roslynator.CSharp
 
             IMethodSymbol otherSymbol = methodSymbol.PartialDefinitionPart ?? methodSymbol.PartialImplementationPart;
 
-            if (otherSymbol != null)
+            if (otherSymbol is not null)
                 return (MethodDeclarationSyntax)otherSymbol.GetSyntax(cancellationToken);
 
             return null;

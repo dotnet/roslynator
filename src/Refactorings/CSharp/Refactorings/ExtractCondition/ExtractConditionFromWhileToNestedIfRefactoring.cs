@@ -6,57 +6,56 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.ExtractCondition
+namespace Roslynator.CSharp.Refactorings.ExtractCondition;
+
+internal sealed class ExtractConditionFromWhileToNestedIfRefactoring : ExtractConditionRefactoring<WhileStatementSyntax>
 {
-    internal sealed class ExtractConditionFromWhileToNestedIfRefactoring : ExtractConditionRefactoring<WhileStatementSyntax>
+    private ExtractConditionFromWhileToNestedIfRefactoring()
     {
-        private ExtractConditionFromWhileToNestedIfRefactoring()
-        {
-        }
+    }
 
-        public static ExtractConditionFromWhileToNestedIfRefactoring Instance { get; } = new();
+    public static ExtractConditionFromWhileToNestedIfRefactoring Instance { get; } = new();
 
-        public override string Title
-        {
-            get { return "Extract condition to nested if"; }
-        }
+    public override string Title
+    {
+        get { return "Extract condition to nested if"; }
+    }
 
-        public override StatementSyntax GetStatement(WhileStatementSyntax statement)
-        {
-            return statement.Statement;
-        }
+    public override StatementSyntax GetStatement(WhileStatementSyntax statement)
+    {
+        return statement.Statement;
+    }
 
-        public override WhileStatementSyntax SetStatement(WhileStatementSyntax statement, StatementSyntax newStatement)
-        {
-            return statement.WithStatement(newStatement);
-        }
+    public override WhileStatementSyntax SetStatement(WhileStatementSyntax statement, StatementSyntax newStatement)
+    {
+        return statement.WithStatement(newStatement);
+    }
 
-        public Task<Document> RefactorAsync(
-            Document document,
-            WhileStatementSyntax whileStatement,
-            BinaryExpressionSyntax condition,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
-        {
-            WhileStatementSyntax newNode = RemoveExpressionFromCondition(whileStatement, condition, expression);
+    public Task<Document> RefactorAsync(
+        Document document,
+        WhileStatementSyntax whileStatement,
+        BinaryExpressionSyntax condition,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        WhileStatementSyntax newNode = RemoveExpressionFromCondition(whileStatement, condition, expression);
 
-            newNode = AddNestedIf(newNode, expression).WithFormatterAnnotation();
+        newNode = AddNestedIf(newNode, expression).WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken);
+    }
 
-        public Task<Document> RefactorAsync(
-            Document document,
-            WhileStatementSyntax whileStatement,
-            BinaryExpressionSyntax condition,
-            in ExpressionChain expressionChain,
-            CancellationToken cancellationToken = default)
-        {
-            WhileStatementSyntax newNode = RemoveExpressionsFromCondition(whileStatement, condition, expressionChain);
+    public Task<Document> RefactorAsync(
+        Document document,
+        WhileStatementSyntax whileStatement,
+        BinaryExpressionSyntax condition,
+        in ExpressionChain expressionChain,
+        CancellationToken cancellationToken = default)
+    {
+        WhileStatementSyntax newNode = RemoveExpressionsFromCondition(whileStatement, condition, expressionChain);
 
-            newNode = AddNestedIf(newNode, expressionChain).WithFormatterAnnotation();
+        newNode = AddNestedIf(newNode, expressionChain).WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken);
     }
 }

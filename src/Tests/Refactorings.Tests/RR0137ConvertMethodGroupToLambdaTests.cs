@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0137ConvertMethodGroupToLambdaTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertMethodGroupToLambda;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_VariableDeclaration_Action()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0137ConvertMethodGroupToLambdaTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertMethodGroupToLambda;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_VariableDeclaration_Action()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -34,12 +34,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_VariableDeclaration_Action1()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_VariableDeclaration_Action1()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -60,12 +60,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_VariableDeclaration_Action2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_VariableDeclaration_Action2()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -86,12 +86,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_VariableDeclaration_Func()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_VariableDeclaration_Func()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -114,12 +114,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_VariableDeclaration_Func2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_VariableDeclaration_Func2()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -142,12 +142,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_VariableDeclaration_Func3()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_VariableDeclaration_Func3()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -170,12 +170,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_SimpleAssignment_Action()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_SimpleAssignment_Action()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -200,12 +200,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_SimpleAssignment_Action1()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_SimpleAssignment_Action1()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -230,12 +230,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_SimpleAssignment_Action2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_SimpleAssignment_Action2()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -260,12 +260,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_SimpleAssignment_Func()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_SimpleAssignment_Func()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -294,12 +294,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_SimpleAssignment_Func1()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_SimpleAssignment_Func1()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -328,12 +328,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_SimpleAssignment_Func2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_SimpleAssignment_Func2()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -362,12 +362,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_Argument_Action()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_Argument_Action()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -392,12 +392,12 @@ class C
     void M() { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_Argument_Action1()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_Argument_Action1()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -422,12 +422,12 @@ class C
     void M2(string s) { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_Argument_Action2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_Argument_Action2()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -452,12 +452,12 @@ class C
     void M2(string s1, string s2) { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_Argument_Func()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_Argument_Func()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -482,12 +482,12 @@ class C
     string M2() => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_Argument_Func1()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_Argument_Func1()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -512,12 +512,12 @@ class C
     string M2(string s) => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
-        public async Task Test_Argument_Func2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
+    public async Task Test_Argument_Func2()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -542,6 +542,5 @@ class C
     string M2(string s1, string s2) => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

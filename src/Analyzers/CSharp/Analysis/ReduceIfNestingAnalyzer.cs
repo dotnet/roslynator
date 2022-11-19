@@ -9,49 +9,48 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analysis.ReduceIfNesting;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class ReduceIfNestingAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ReduceIfNestingAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ReduceIfNesting);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ReduceIfNesting);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
+    }
 
-        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
-        {
-            var ifStatement = (IfStatementSyntax)context.Node;
+    private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+    {
+        var ifStatement = (IfStatementSyntax)context.Node;
 
-            ReduceIfNestingAnalysisResult analysis = ReduceIfNestingAnalysis.Analyze(
-                ifStatement,
-                context.SemanticModel,
-                options: ReduceIfNestingOptions.None,
-                cancellationToken: context.CancellationToken);
+        ReduceIfNestingAnalysisResult analysis = ReduceIfNestingAnalysis.Analyze(
+            ifStatement,
+            context.SemanticModel,
+            options: ReduceIfNestingOptions.None,
+            cancellationToken: context.CancellationToken);
 
-            if (!analysis.Success)
-                return;
+        if (!analysis.Success)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.ReduceIfNesting,
-                ifStatement.IfKeyword.GetLocation(),
-                ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("JumpKind", analysis.JumpKind.ToString()) }));
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.ReduceIfNesting,
+            ifStatement.IfKeyword.GetLocation(),
+            ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("JumpKind", analysis.JumpKind.ToString()) }));
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0023FormatTypeDeclarationBracesTests : AbstractCSharpDiagnosticVerifier<FormatTypeDeclarationBracesAnalyzer, MemberDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatTypeDeclarationBraces;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0023FormatTypeDeclarationBracesTests : AbstractCSharpDiagnosticVerifier<FormatTypeDeclarationBracesAnalyzer, MemberDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatTypeDeclarationBraces;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 [|{|]}
 ", @"
@@ -23,12 +23,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
-        public async Task Test_WithWhitespace()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
+    public async Task Test_WithWhitespace()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 [|{|] }
 ", @"
@@ -36,17 +36,16 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
-        public async Task TestNoDiagnostic_EmptyLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
+    public async Task TestNoDiagnostic_EmptyLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
 
 }
 ");
-        }
     }
 }

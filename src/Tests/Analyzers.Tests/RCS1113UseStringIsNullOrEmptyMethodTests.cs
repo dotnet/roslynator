@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1113UseStringIsNullOrEmptyMethodTests : AbstractCSharpDiagnosticVerifier<UseStringIsNullOrEmptyMethodAnalyzer, BinaryExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseStringIsNullOrEmptyMethod;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
-        public async Task Test_LogicalOr()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1113UseStringIsNullOrEmptyMethodTests : AbstractCSharpDiagnosticVerifier<UseStringIsNullOrEmptyMethodAnalyzer, BinaryExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseStringIsNullOrEmptyMethod;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
+    public async Task Test_LogicalOr()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -34,12 +34,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
-        public async Task Test_LogicalAnd()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
+    public async Task Test_LogicalAnd()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -58,12 +58,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
-        public async Task TestNoDiagnostics()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
+    public async Task TestNoDiagnostics()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -98,6 +98,5 @@ class C
     }
 }
 ");
-        }
     }
 }

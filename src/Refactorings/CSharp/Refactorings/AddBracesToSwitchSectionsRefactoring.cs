@@ -10,38 +10,37 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AddBracesToSwitchSectionsRefactoring
 {
-    internal static class AddBracesToSwitchSectionsRefactoring
+    public const string Title = "Add braces to sections";
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        SwitchStatementSyntax switchStatement,
+        SwitchSectionSyntax[] sections,
+        CancellationToken cancellationToken = default)
     {
-        public const string Title = "Add braces to sections";
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            SwitchStatementSyntax switchStatement,
-            SwitchSectionSyntax[] sections,
-            CancellationToken cancellationToken = default)
-        {
-            IEnumerable<SwitchSectionSyntax> newSections = switchStatement
-                .Sections
-                .Select(section =>
+        IEnumerable<SwitchSectionSyntax> newSections = switchStatement
+            .Sections
+            .Select(section =>
+            {
+                if ((sections is null || Array.IndexOf(sections, section) != -1)
+                    && AddBracesToSwitchSectionAnalysis.CanAddBraces(section))
                 {
-                    if ((sections == null || Array.IndexOf(sections, section) != -1)
-                        && AddBracesToSwitchSectionAnalysis.CanAddBraces(section))
-                    {
-                        return section.WithStatements(SingletonList<StatementSyntax>(Block(section.Statements)));
-                    }
-                    else
-                    {
-                        return section;
-                    }
-                });
+                    return section.WithStatements(SingletonList<StatementSyntax>(Block(section.Statements)));
+                }
+                else
+                {
+                    return section;
+                }
+            });
 
-            SwitchStatementSyntax newSwitchStatement = switchStatement
-                .WithSections(List(newSections))
-                .WithFormatterAnnotation();
+        SwitchStatementSyntax newSwitchStatement = switchStatement
+            .WithSections(List(newSections))
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
     }
 }

@@ -5,55 +5,54 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct OverriddenSymbolInfo : IEquatable<OverriddenSymbolInfo>
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct OverriddenSymbolInfo : IEquatable<OverriddenSymbolInfo>
+    public OverriddenSymbolInfo(ISymbol symbol, ISymbol overriddenSymbol)
     {
-        public OverriddenSymbolInfo(ISymbol symbol, ISymbol overriddenSymbol)
-        {
-            Symbol = symbol;
-            OverriddenSymbol = overriddenSymbol;
-        }
+        Symbol = symbol;
+        OverriddenSymbol = overriddenSymbol;
+    }
 
-        public ISymbol Symbol { get; }
+    public ISymbol Symbol { get; }
 
-        public ISymbol OverriddenSymbol { get; }
+    public ISymbol OverriddenSymbol { get; }
 
-        public bool Success
-        {
-            get { return Symbol != null; }
-        }
+    public bool Success
+    {
+        get { return Symbol is not null; }
+    }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return $"{Symbol.ToDisplayString(SymbolDisplayFormats.Test)} {OverriddenSymbol.ToDisplayString(SymbolDisplayFormats.Test)}"; }
-        }
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return $"{Symbol.ToDisplayString(SymbolDisplayFormats.Test)} {OverriddenSymbol.ToDisplayString(SymbolDisplayFormats.Test)}"; }
+    }
 
-        public override bool Equals(object obj)
-        {
-            return obj is OverriddenSymbolInfo other && Equals(other);
-        }
+    public override bool Equals(object obj)
+    {
+        return obj is OverriddenSymbolInfo other && Equals(other);
+    }
 
-        public bool Equals(OverriddenSymbolInfo other)
-        {
-            return EqualityComparer<ISymbol>.Default.Equals(Symbol, other.Symbol);
-        }
+    public bool Equals(OverriddenSymbolInfo other)
+    {
+        return EqualityComparer<ISymbol>.Default.Equals(Symbol, other.Symbol);
+    }
 
-        public override int GetHashCode()
-        {
-            return Symbol?.GetHashCode() ?? 0;
-        }
+    public override int GetHashCode()
+    {
+        return Symbol?.GetHashCode() ?? 0;
+    }
 
-        public static bool operator ==(in OverriddenSymbolInfo info1, in OverriddenSymbolInfo info2)
-        {
-            return info1.Equals(info2);
-        }
+    public static bool operator ==(in OverriddenSymbolInfo info1, in OverriddenSymbolInfo info2)
+    {
+        return info1.Equals(info2);
+    }
 
-        public static bool operator !=(in OverriddenSymbolInfo info1, in OverriddenSymbolInfo info2)
-        {
-            return !(info1 == info2);
-        }
+    public static bool operator !=(in OverriddenSymbolInfo info1, in OverriddenSymbolInfo info2)
+    {
+        return !(info1 == info2);
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1186UseRegexInstanceInsteadOfStaticMethodTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, UseRegexInstanceInsteadOfStaticMethodCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseRegexInstanceInsteadOfStaticMethod;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_IsMatch1()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1186UseRegexInstanceInsteadOfStaticMethodTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, UseRegexInstanceInsteadOfStaticMethodCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseRegexInstanceInsteadOfStaticMethod;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_IsMatch1()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -51,12 +51,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_IsMatch2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_IsMatch2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -84,12 +84,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_IsMatch3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_IsMatch3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -115,12 +115,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_IsMatch4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_IsMatch4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -146,12 +146,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Match1()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Match1()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -177,12 +177,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Match2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Match2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -208,12 +208,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Matches1()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Matches1()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -239,12 +239,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Matches2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Matches2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -270,12 +270,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Split1()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Split1()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -301,12 +301,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Split2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Split2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -332,12 +332,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Replace1()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Replace1()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -367,12 +367,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Replace2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Replace2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -400,12 +400,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Replace3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Replace3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -433,12 +433,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Replace4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Replace4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -466,12 +466,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_LambdaExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_LambdaExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Text.RegularExpressions;
 
@@ -499,12 +499,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task Test_Property()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task Test_Property()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -540,12 +540,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task TestNoDiagnostic_InstanceCall()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task TestNoDiagnostic_InstanceCall()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Text.RegularExpressions;
 
@@ -569,12 +569,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task TestNoDiagnostic_PatternIsLocalConst()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task TestNoDiagnostic_PatternIsLocalConst()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -589,12 +589,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task TestNoDiagnostic_OptionsIsLocalConst()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task TestNoDiagnostic_OptionsIsLocalConst()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -609,12 +609,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
-        public async Task TestNoDiagnostic_NonConstValue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
+    public async Task TestNoDiagnostic_NonConstValue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Text.RegularExpressions;
 
@@ -638,6 +638,5 @@ class C
     }
 }
 ");
-        }
     }
 }

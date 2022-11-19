@@ -7,40 +7,39 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class CloseParenTokenRefactoring
 {
-    internal static class CloseParenTokenRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken closeParen)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken closeParen)
+        if (!closeParen.IsKind(SyntaxKind.CloseParenToken))
+            return;
+
+        if (context.IsAnyRefactoringEnabled(
+            RefactoringDescriptors.RenameParameterAccordingToTypeName,
+            RefactoringDescriptors.CheckParameterForNull,
+            RefactoringDescriptors.IntroduceAndInitializeField,
+            RefactoringDescriptors.IntroduceAndInitializeProperty)
+            && closeParen.IsParentKind(SyntaxKind.ParameterList)
+            && context.Span.Start > 0)
         {
-            if (!closeParen.IsKind(SyntaxKind.CloseParenToken))
-                return;
+            ParameterSyntax parameter = context.Root
+                .FindNode(new TextSpan(context.Span.Start - 1, 1))?
+                .FirstAncestorOrSelf<ParameterSyntax>();
 
-            if (context.IsAnyRefactoringEnabled(
-                RefactoringDescriptors.RenameParameterAccordingToTypeName,
-                RefactoringDescriptors.CheckParameterForNull,
-                RefactoringDescriptors.IntroduceAndInitializeField,
-                RefactoringDescriptors.IntroduceAndInitializeProperty)
-                && closeParen.IsParentKind(SyntaxKind.ParameterList)
-                && context.Span.Start > 0)
-            {
-                ParameterSyntax parameter = context.Root
-                    .FindNode(new TextSpan(context.Span.Start - 1, 1))?
-                    .FirstAncestorOrSelf<ParameterSyntax>();
+            if (parameter is not null)
+                await ParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
+        }
 
-                if (parameter != null)
-                    await ParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
-            }
+        if (closeParen.IsParentKind(SyntaxKind.ArgumentList))
+        {
+            ArgumentSyntax argument = ((ArgumentListSyntax)closeParen.Parent)
+                .Arguments
+                .FirstOrDefault(f => f.FullSpan.End == closeParen.FullSpan.Start);
 
-            if (closeParen.IsParentKind(SyntaxKind.ArgumentList))
-            {
-                ArgumentSyntax argument = ((ArgumentListSyntax)closeParen.Parent)
-                    .Arguments
-                    .FirstOrDefault(f => f.FullSpan.End == closeParen.FullSpan.Start);
-
-                if (argument != null)
-                    ArgumentRefactoring.ComputeRefactorings(context, argument);
-            }
+            if (argument is not null)
+                ArgumentRefactoring.ComputeRefactorings(context, argument);
         }
     }
 }

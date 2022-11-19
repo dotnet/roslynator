@@ -7,69 +7,68 @@ using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Roslynator.CodeMetrics;
 
-namespace Roslynator.VisualBasic.CodeMetrics
+namespace Roslynator.VisualBasic.CodeMetrics;
+
+internal class VisualBasicPhysicalLinesWalker : VisualBasicLinesWalker
 {
-    internal class VisualBasicPhysicalLinesWalker : VisualBasicLinesWalker
+    public int BlockBoundaryLineCount { get; set; }
+
+    public VisualBasicPhysicalLinesWalker(TextLineCollection lines, CodeMetricsOptions options, CancellationToken cancellationToken)
+        : base(lines, options, cancellationToken)
     {
-        public int BlockBoundaryLineCount { get; set; }
+    }
 
-        public VisualBasicPhysicalLinesWalker(TextLineCollection lines, CodeMetricsOptions options, CancellationToken cancellationToken)
-            : base(lines, options, cancellationToken)
+    public override void VisitEndBlockStatement(EndBlockStatementSyntax node)
+    {
+        if (Options.IgnoreBlockBoundary)
         {
-        }
+            TextSpan span = node.Span;
 
-        public override void VisitEndBlockStatement(EndBlockStatementSyntax node)
-        {
-            if (Options.IgnoreBlockBoundary)
+            TextLine line = Lines.GetLineFromPosition(span.Start);
+
+            if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
             {
-                TextSpan span = node.Span;
-
-                TextLine line = Lines.GetLineFromPosition(span.Start);
-
-                if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(line.Start, span.Start)))
+                if (Options.IncludeComments)
                 {
-                    if (Options.IncludeComments)
-                    {
-                        if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(span.End, line.End)))
-                        {
-                            BlockBoundaryLineCount += Lines.GetLineCount(span);
-                        }
-                    }
-                    else if (AnalyzeTrailingTrivia(node.GetTrailingTrivia()))
+                    if (line.IsEmptyOrWhiteSpace(TextSpan.FromBounds(span.End, line.End)))
                     {
                         BlockBoundaryLineCount += Lines.GetLineCount(span);
                     }
                 }
-            }
-
-            base.VisitEndBlockStatement(node);
-
-            static bool AnalyzeTrailingTrivia(in SyntaxTriviaList trailingTrivia)
-            {
-                SyntaxTriviaList.Enumerator en = trailingTrivia.GetEnumerator();
-
-                while (en.MoveNext())
+                else if (AnalyzeTrailingTrivia(node.GetTrailingTrivia()))
                 {
-                    switch (en.Current.Kind())
-                    {
-                        case SyntaxKind.EndOfLineTrivia:
-                        case SyntaxKind.CommentTrivia:
-                            {
-                                return true;
-                            }
-                        case SyntaxKind.WhitespaceTrivia:
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                return false;
-                            }
-                    }
+                    BlockBoundaryLineCount += Lines.GetLineCount(span);
                 }
-
-                return false;
             }
+        }
+
+        base.VisitEndBlockStatement(node);
+
+        static bool AnalyzeTrailingTrivia(in SyntaxTriviaList trailingTrivia)
+        {
+            SyntaxTriviaList.Enumerator en = trailingTrivia.GetEnumerator();
+
+            while (en.MoveNext())
+            {
+                switch (en.Current.Kind())
+                {
+                    case SyntaxKind.EndOfLineTrivia:
+                    case SyntaxKind.CommentTrivia:
+                        {
+                            return true;
+                        }
+                    case SyntaxKind.WhitespaceTrivia:
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            return false;
+                        }
+                }
+            }
+
+            return false;
         }
     }
 }

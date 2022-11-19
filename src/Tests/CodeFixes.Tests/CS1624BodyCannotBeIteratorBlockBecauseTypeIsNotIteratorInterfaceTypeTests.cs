@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
+namespace Roslynator.CSharp.CodeFixes.Tests;
+
+public class CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<MethodDeclarationOrLocalFunctionStatementCodeFixProvider>
 {
-    public class CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<MethodDeclarationOrLocalFunctionStatementCodeFixProvider>
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType;
+
+    public override CSharpTestOptions Options
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType;
+        get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType); }
+    }
 
-        public override CSharpTestOptions Options
-        {
-            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType); }
-        }
-
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
-        public async Task Test_Method_String()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
+    public async Task Test_Method_String()
+    {
+        await VerifyFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -43,12 +43,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "string"));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
-        public async Task Test_LocalFunction_String()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
+    public async Task Test_LocalFunction_String()
+    {
+        await VerifyFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -79,12 +79,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "string"));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
-        public async Task Test_Method_DateTime()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
+    public async Task Test_Method_DateTime()
+    {
+        await VerifyFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -109,12 +109,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "DateTime"));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
-        public async Task Test_LocalFunction_DateTime()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
+    public async Task Test_LocalFunction_DateTime()
+    {
+        await VerifyFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -145,12 +145,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "DateTime"));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
-        public async Task TestNoFix()
-        {
-            await VerifyNoFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
+    public async Task TestNoFix()
+    {
+        await VerifyNoFixAsync(@"
 class C
 {
     void M()
@@ -174,6 +174,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

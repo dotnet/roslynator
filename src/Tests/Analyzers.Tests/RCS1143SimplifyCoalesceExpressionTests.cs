@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1143SimplifyCoalesceExpressionTests : AbstractCSharpDiagnosticVerifier<SimplifyCoalesceExpressionAnalyzer, BinaryExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyCoalesceExpression;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyCoalesceExpression)]
-        public async Task Test_DefaultOfNullableType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1143SimplifyCoalesceExpressionTests : AbstractCSharpDiagnosticVerifier<SimplifyCoalesceExpressionAnalyzer, BinaryExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyCoalesceExpression;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyCoalesceExpression)]
+    public async Task Test_DefaultOfNullableType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -40,6 +40,5 @@ class C
     int M2() => default;
 }
 ");
-        }
     }
 }

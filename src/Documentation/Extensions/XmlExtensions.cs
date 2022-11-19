@@ -6,335 +6,334 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+internal static class XmlExtensions
 {
-    internal static class XmlExtensions
+    public static void WriteContentTo(this XElement element, DocumentationWriter writer, bool inlineOnly = false)
     {
-        public static void WriteContentTo(this XElement element, DocumentationWriter writer, bool inlineOnly = false)
+        using (IEnumerator<XNode> en = element.Nodes().GetEnumerator())
         {
-            using (IEnumerator<XNode> en = element.Nodes().GetEnumerator())
+            if (en.MoveNext())
             {
-                if (en.MoveNext())
+                XNode node;
+
+                var isFirst = true;
+                bool isLast;
+
+                do
                 {
-                    XNode node;
+                    node = en.Current;
 
-                    var isFirst = true;
-                    bool isLast;
+                    isLast = !en.MoveNext();
 
-                    do
+                    if (node is XText t)
                     {
-                        node = en.Current;
+                        string value = t.Value;
+                        value = TextUtility.RemoveLeadingTrailingNewLine(value, isFirst, isLast);
 
-                        isLast = !en.MoveNext();
+                        if (inlineOnly)
+                            value = TextUtility.ToSingleLine(value);
 
-                        if (node is XText t)
+                        writer.WriteString(value);
+                    }
+                    else if (node is XElement e)
+                    {
+                        switch (XmlTagMapper.GetTagOrDefault(e.Name.LocalName))
                         {
-                            string value = t.Value;
-                            value = TextUtility.RemoveLeadingTrailingNewLine(value, isFirst, isLast);
+                            case XmlTag.C:
+                                {
+                                    string value = e.Value;
+                                    value = TextUtility.ToSingleLine(value);
+                                    writer.WriteInlineCode(value);
+                                    break;
+                                }
+                            case XmlTag.Code:
+                                {
+                                    if (inlineOnly)
+                                        break;
 
-                            if (inlineOnly)
-                                value = TextUtility.ToSingleLine(value);
+                                    string value = e.Value;
+                                    value = TextUtility.RemoveLeadingTrailingNewLine(value);
 
-                            writer.WriteString(value);
+                                    writer.WriteCodeBlock(value);
+
+                                    break;
+                                }
+                            case XmlTag.List:
+                                {
+                                    if (inlineOnly)
+                                        break;
+
+                                    string type = e.Attribute("type")?.Value;
+
+                                    if (!string.IsNullOrEmpty(type))
+                                    {
+                                        switch (type)
+                                        {
+                                            case "bullet":
+                                                {
+                                                    WriteList(writer, e.Elements());
+                                                    break;
+                                                }
+                                            case "number":
+                                                {
+                                                    WriteList(writer, e.Elements(), isOrdered: true);
+                                                    break;
+                                                }
+                                            case "table":
+                                                {
+                                                    WriteTable(writer, e.Elements());
+                                                    break;
+                                                }
+                                            default:
+                                                {
+                                                    Debug.Fail(type);
+                                                    break;
+                                                }
+                                        }
+                                    }
+
+                                    break;
+                                }
+                            case XmlTag.Para:
+                                {
+                                    writer.WriteLine();
+                                    writer.WriteLine();
+                                    WriteContentTo(e, writer);
+                                    writer.WriteLine();
+                                    writer.WriteLine();
+                                    break;
+                                }
+                            case XmlTag.ParamRef:
+                                {
+                                    string parameterName = e.Attribute("name")?.Value;
+
+                                    if (parameterName is not null)
+                                        writer.WriteBold(parameterName);
+
+                                    break;
+                                }
+                            case XmlTag.See:
+                                {
+                                    string commentId = e.Attribute("cref")?.Value;
+
+                                    if (commentId is not null)
+                                    {
+                                        ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
+
+                                        //XTODO: repair roslyn documentation
+                                        Debug.Assert(
+                                            symbol is not null
+                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"
+                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxToken"
+                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxTrivia"
+                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxNode"
+                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxToken"
+                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxTrivia",
+                                            commentId);
+
+                                        if (symbol is not null)
+                                        {
+                                            writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                        }
+                                        else
+                                        {
+                                            writer.WriteBold(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
+                                        }
+                                    }
+
+                                    break;
+                                }
+                            case XmlTag.TypeParamRef:
+                                {
+                                    string typeParameterName = e.Attribute("name")?.Value;
+
+                                    if (typeParameterName is not null)
+                                        writer.WriteBold(typeParameterName);
+
+                                    break;
+                                }
+                            case XmlTag.Example:
+                            case XmlTag.Exception:
+                            case XmlTag.Exclude:
+                            case XmlTag.Include:
+                            case XmlTag.InheritDoc:
+                            case XmlTag.Param:
+                            case XmlTag.Permission:
+                            case XmlTag.Remarks:
+                            case XmlTag.Returns:
+                            case XmlTag.SeeAlso:
+                            case XmlTag.Summary:
+                            case XmlTag.TypeParam:
+                            case XmlTag.Value:
+                                {
+                                    break;
+                                }
+                            default:
+                                {
+                                    Debug.Fail(e.Name.LocalName);
+                                    break;
+                                }
                         }
-                        else if (node is XElement e)
+                    }
+                    else
+                    {
+                        Debug.Fail(node.NodeType.ToString());
+                    }
+
+                    isFirst = false;
+                }
+                while (!isLast);
+            }
+        }
+    }
+
+    private static void WriteList(DocumentationWriter writer, IEnumerable<XElement> elements, bool isOrdered = false)
+    {
+        int number = 1;
+
+        using (IEnumerator<XElement> en = Iterator().GetEnumerator())
+        {
+            if (en.MoveNext())
+            {
+                if (isOrdered)
+                {
+                    writer.WriteStartOrderedList();
+                }
+                else
+                {
+                    writer.WriteStartBulletList();
+                }
+
+                do
+                {
+                    WriteStartItem();
+                    WriteContentTo(en.Current, writer, inlineOnly: true);
+                    WriteEndItem();
+                }
+                while (en.MoveNext());
+
+                if (isOrdered)
+                {
+                    writer.WriteEndOrderedList();
+                }
+                else
+                {
+                    writer.WriteEndBulletList();
+                }
+            }
+        }
+
+        IEnumerable<XElement> Iterator()
+        {
+            foreach (XElement element in elements)
+            {
+                if (element.Name.LocalName == "item")
+                {
+                    using (IEnumerator<XElement> en = element.Elements().GetEnumerator())
+                    {
+                        if (en.MoveNext())
                         {
-                            switch (XmlTagMapper.GetTagOrDefault(e.Name.LocalName))
+                            XElement element2 = en.Current;
+
+                            if (element2.Name.LocalName == "description")
                             {
-                                case XmlTag.C:
-                                    {
-                                        string value = e.Value;
-                                        value = TextUtility.ToSingleLine(value);
-                                        writer.WriteInlineCode(value);
-                                        break;
-                                    }
-                                case XmlTag.Code:
-                                    {
-                                        if (inlineOnly)
-                                            break;
-
-                                        string value = e.Value;
-                                        value = TextUtility.RemoveLeadingTrailingNewLine(value);
-
-                                        writer.WriteCodeBlock(value);
-
-                                        break;
-                                    }
-                                case XmlTag.List:
-                                    {
-                                        if (inlineOnly)
-                                            break;
-
-                                        string type = e.Attribute("type")?.Value;
-
-                                        if (!string.IsNullOrEmpty(type))
-                                        {
-                                            switch (type)
-                                            {
-                                                case "bullet":
-                                                    {
-                                                        WriteList(writer, e.Elements());
-                                                        break;
-                                                    }
-                                                case "number":
-                                                    {
-                                                        WriteList(writer, e.Elements(), isOrdered: true);
-                                                        break;
-                                                    }
-                                                case "table":
-                                                    {
-                                                        WriteTable(writer, e.Elements());
-                                                        break;
-                                                    }
-                                                default:
-                                                    {
-                                                        Debug.Fail(type);
-                                                        break;
-                                                    }
-                                            }
-                                        }
-
-                                        break;
-                                    }
-                                case XmlTag.Para:
-                                    {
-                                        writer.WriteLine();
-                                        writer.WriteLine();
-                                        WriteContentTo(e, writer);
-                                        writer.WriteLine();
-                                        writer.WriteLine();
-                                        break;
-                                    }
-                                case XmlTag.ParamRef:
-                                    {
-                                        string parameterName = e.Attribute("name")?.Value;
-
-                                        if (parameterName != null)
-                                            writer.WriteBold(parameterName);
-
-                                        break;
-                                    }
-                                case XmlTag.See:
-                                    {
-                                        string commentId = e.Attribute("cref")?.Value;
-
-                                        if (commentId != null)
-                                        {
-                                            ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
-
-                                            //XTODO: repair roslyn documentation
-                                            Debug.Assert(
-                                                symbol != null
-                                                    || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"
-                                                    || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxToken"
-                                                    || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxTrivia"
-                                                    || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxNode"
-                                                    || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxToken"
-                                                    || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxTrivia",
-                                                commentId);
-
-                                            if (symbol != null)
-                                            {
-                                                writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
-                                            }
-                                            else
-                                            {
-                                                writer.WriteBold(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
-                                            }
-                                        }
-
-                                        break;
-                                    }
-                                case XmlTag.TypeParamRef:
-                                    {
-                                        string typeParameterName = e.Attribute("name")?.Value;
-
-                                        if (typeParameterName != null)
-                                            writer.WriteBold(typeParameterName);
-
-                                        break;
-                                    }
-                                case XmlTag.Example:
-                                case XmlTag.Exception:
-                                case XmlTag.Exclude:
-                                case XmlTag.Include:
-                                case XmlTag.InheritDoc:
-                                case XmlTag.Param:
-                                case XmlTag.Permission:
-                                case XmlTag.Remarks:
-                                case XmlTag.Returns:
-                                case XmlTag.SeeAlso:
-                                case XmlTag.Summary:
-                                case XmlTag.TypeParam:
-                                case XmlTag.Value:
-                                    {
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        Debug.Fail(e.Name.LocalName);
-                                        break;
-                                    }
+                                yield return element2;
                             }
                         }
                         else
                         {
-                            Debug.Fail(node.NodeType.ToString());
+                            yield return element;
                         }
-
-                        isFirst = false;
                     }
-                    while (!isLast);
                 }
             }
         }
 
-        private static void WriteList(DocumentationWriter writer, IEnumerable<XElement> elements, bool isOrdered = false)
+        void WriteStartItem()
         {
-            int number = 1;
-
-            using (IEnumerator<XElement> en = Iterator().GetEnumerator())
+            if (isOrdered)
             {
-                if (en.MoveNext())
+                writer.WriteStartOrderedItem(number);
+                number++;
+            }
+            else
+            {
+                writer.WriteStartBulletItem();
+            }
+        }
+
+        void WriteEndItem()
+        {
+            if (isOrdered)
+            {
+                writer.WriteEndOrderedItem();
+            }
+            else
+            {
+                writer.WriteEndBulletItem();
+            }
+        }
+    }
+
+    private static void WriteTable(DocumentationWriter writer, IEnumerable<XElement> elements)
+    {
+        using (IEnumerator<XElement> en = elements.GetEnumerator())
+        {
+            if (en.MoveNext())
+            {
+                XElement element = en.Current;
+
+                string name = element.Name.LocalName;
+
+                if (name == "listheader"
+                    && en.MoveNext())
                 {
-                    if (isOrdered)
+                    int columnCount = element.Elements().Count();
+
+                    writer.WriteStartTable(columnCount);
+                    writer.WriteStartTableRow();
+
+                    foreach (XElement element2 in element.Elements())
                     {
-                        writer.WriteStartOrderedList();
+                        writer.WriteStartTableCell();
+                        WriteContentTo(element2, writer, inlineOnly: true);
+                        writer.WriteEndTableCell();
                     }
-                    else
-                    {
-                        writer.WriteStartBulletList();
-                    }
+
+                    writer.WriteEndTableRow();
+                    writer.WriteTableHeaderSeparator();
 
                     do
                     {
-                        WriteStartItem();
-                        WriteContentTo(en.Current, writer, inlineOnly: true);
-                        WriteEndItem();
-                    }
-                    while (en.MoveNext());
+                        element = en.Current;
 
-                    if (isOrdered)
-                    {
-                        writer.WriteEndOrderedList();
-                    }
-                    else
-                    {
-                        writer.WriteEndBulletList();
-                    }
-                }
-            }
-
-            IEnumerable<XElement> Iterator()
-            {
-                foreach (XElement element in elements)
-                {
-                    if (element.Name.LocalName == "item")
-                    {
-                        using (IEnumerator<XElement> en = element.Elements().GetEnumerator())
-                        {
-                            if (en.MoveNext())
-                            {
-                                XElement element2 = en.Current;
-
-                                if (element2.Name.LocalName == "description")
-                                {
-                                    yield return element2;
-                                }
-                            }
-                            else
-                            {
-                                yield return element;
-                            }
-                        }
-                    }
-                }
-            }
-
-            void WriteStartItem()
-            {
-                if (isOrdered)
-                {
-                    writer.WriteStartOrderedItem(number);
-                    number++;
-                }
-                else
-                {
-                    writer.WriteStartBulletItem();
-                }
-            }
-
-            void WriteEndItem()
-            {
-                if (isOrdered)
-                {
-                    writer.WriteEndOrderedItem();
-                }
-                else
-                {
-                    writer.WriteEndBulletItem();
-                }
-            }
-        }
-
-        private static void WriteTable(DocumentationWriter writer, IEnumerable<XElement> elements)
-        {
-            using (IEnumerator<XElement> en = elements.GetEnumerator())
-            {
-                if (en.MoveNext())
-                {
-                    XElement element = en.Current;
-
-                    string name = element.Name.LocalName;
-
-                    if (name == "listheader"
-                        && en.MoveNext())
-                    {
-                        int columnCount = element.Elements().Count();
-
-                        writer.WriteStartTable(columnCount);
                         writer.WriteStartTableRow();
 
+                        int count = 0;
                         foreach (XElement element2 in element.Elements())
                         {
                             writer.WriteStartTableCell();
                             WriteContentTo(element2, writer, inlineOnly: true);
                             writer.WriteEndTableCell();
+                            count++;
+
+                            if (count == columnCount)
+                                break;
+                        }
+
+                        while (count < columnCount)
+                        {
+                            writer.WriteTableCell(null);
+                            count++;
                         }
 
                         writer.WriteEndTableRow();
-                        writer.WriteTableHeaderSeparator();
-
-                        do
-                        {
-                            element = en.Current;
-
-                            writer.WriteStartTableRow();
-
-                            int count = 0;
-                            foreach (XElement element2 in element.Elements())
-                            {
-                                writer.WriteStartTableCell();
-                                WriteContentTo(element2, writer, inlineOnly: true);
-                                writer.WriteEndTableCell();
-                                count++;
-
-                                if (count == columnCount)
-                                    break;
-                            }
-
-                            while (count < columnCount)
-                            {
-                                writer.WriteTableCell(null);
-                                count++;
-                            }
-
-                            writer.WriteEndTableRow();
-                        }
-                        while (en.MoveNext());
-
-                        writer.WriteEndTable();
                     }
+                    while (en.MoveNext());
+
+                    writer.WriteEndTable();
                 }
             }
         }

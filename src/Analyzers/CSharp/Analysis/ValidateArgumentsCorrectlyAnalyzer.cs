@@ -39,12 +39,12 @@ namespace Roslynator.CSharp.Analysis
 
             BlockSyntax body = methodDeclaration.Body;
 
-            if (body == null)
+            if (body is null)
                 return;
 
             ParameterListSyntax parameterList = methodDeclaration.ParameterList;
 
-            if (parameterList == null)
+            if (parameterList is null)
                 return;
 
             if (!parameterList.Parameters.Any())
@@ -57,7 +57,8 @@ namespace Roslynator.CSharp.Analysis
             int index = -1;
             for (int i = 0; i < statementCount; i++)
             {
-                if (ArgumentNullCheckAnalysis.IsArgumentNullCheck(statements[i], context.SemanticModel, context.CancellationToken))
+                if (IsConditionWithThrow(statements[i])
+                    || ArgumentNullCheckAnalysis.IsArgumentNullExceptionThrowIfNullCheck(statements[i], context.SemanticModel, context.CancellationToken))
                 {
                     index++;
                 }
@@ -88,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
 
             ContainsYieldWalker.Free(walker);
 
-            if (yieldStatement == null)
+            if (yieldStatement is null)
                 return;
 
             if (yieldStatement.SpanStart < statements[index].Span.End)
@@ -98,6 +99,13 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticRules.ValidateArgumentsCorrectly,
                 Location.Create(body.SyntaxTree, new TextSpan(statements[index + 1].SpanStart, 0)));
+        }
+
+        private static bool IsConditionWithThrow(StatementSyntax statement)
+        {
+            return statement is IfStatementSyntax ifStatement
+                && ifStatement.IsSimpleIf()
+                && ifStatement.SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ThrowStatement);
         }
     }
 }

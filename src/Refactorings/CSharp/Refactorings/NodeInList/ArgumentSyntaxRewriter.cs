@@ -3,21 +3,20 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.NodeInList
+namespace Roslynator.CSharp.Refactorings.NodeInList;
+
+internal class ArgumentSyntaxRewriter : NodeSyntaxRewriter<ArgumentSyntax>
 {
-    internal class ArgumentSyntaxRewriter : NodeSyntaxRewriter<ArgumentSyntax>
+    public ArgumentSyntaxRewriter(RewriterInfo<ArgumentSyntax> info)
+        : base(info)
     {
-        public ArgumentSyntaxRewriter(RewriterInfo<ArgumentSyntax> info)
-            : base(info)
-        {
-        }
+    }
 
-        public override SyntaxNode VisitArgument(ArgumentSyntax node)
-        {
-            if (node == Info.Node)
-                return Info.NewNode;
+    public override SyntaxNode VisitArgument(ArgumentSyntax node)
+    {
+        if (node == Info.Node)
+            return Info.NewNode;
 
-            return base.VisitArgument(node);
-        }
+        return base.VisitArgument(node);
     }
 }

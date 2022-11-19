@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Analysis
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             BlockSyntax body = methodDeclaration.Body;
-            if (body != null)
+            if (body is not null)
             {
                 if (body.ContainsDirectives)
                     return;
@@ -193,7 +193,7 @@ namespace Roslynator.CSharp.Analysis
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
 
             BlockSyntax body = operatorDeclaration.Body;
-            if (body != null)
+            if (body is not null)
             {
                 if (body.ContainsDirectives)
                     return;
@@ -257,7 +257,7 @@ namespace Roslynator.CSharp.Analysis
             var operatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
             BlockSyntax body = operatorDeclaration.Body;
-            if (body != null)
+            if (body is not null)
             {
                 if (body.ContainsDirectives)
                     return;
@@ -321,7 +321,7 @@ namespace Roslynator.CSharp.Analysis
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
             BlockSyntax body = constructorDeclaration.Body;
-            if (body != null)
+            if (body is not null)
             {
                 if (body.ContainsDirectives)
                     return;
@@ -385,7 +385,7 @@ namespace Roslynator.CSharp.Analysis
             var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
 
             BlockSyntax body = destructorDeclaration.Body;
-            if (body != null)
+            if (body is not null)
             {
                 if (body.ContainsDirectives)
                     return;
@@ -449,7 +449,7 @@ namespace Roslynator.CSharp.Analysis
             var localFunction = (LocalFunctionStatementSyntax)context.Node;
 
             BlockSyntax body = localFunction.Body;
-            if (body != null)
+            if (body is not null)
             {
                 if (body.ContainsDirectives)
                     return;
@@ -514,7 +514,7 @@ namespace Roslynator.CSharp.Analysis
 
             BlockSyntax body = accessor.Body;
 
-            if (body != null)
+            if (body is not null)
             {
                 AnalyzeAccessorDeclarationBlock(context, accessor, body);
             }
@@ -566,7 +566,7 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = analysis.Expression;
 
-            if (expression == null)
+            if (expression is null)
                 return;
 
             if (!style.UseExpression)

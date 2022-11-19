@@ -3,45 +3,44 @@
 using System;
 using System.Text;
 
-namespace Roslynator.Text
+namespace Roslynator.Text;
+
+internal static class StringBuilderCache
 {
-    internal static class StringBuilderCache
+    private const int MaxSize = 256;
+    private const int DefaultCapacity = 16;
+
+    [ThreadStatic]
+    private static StringBuilder _cachedInstance;
+
+    public static StringBuilder GetInstance(int capacity = DefaultCapacity)
     {
-        private const int MaxSize = 256;
-        private const int DefaultCapacity = 16;
-
-        [ThreadStatic]
-        private static StringBuilder _cachedInstance;
-
-        public static StringBuilder GetInstance(int capacity = DefaultCapacity)
+        if (capacity <= MaxSize)
         {
-            if (capacity <= MaxSize)
+            StringBuilder sb = _cachedInstance;
+
+            if (sb is not null
+                && capacity <= sb.Capacity)
             {
-                StringBuilder sb = _cachedInstance;
-
-                if (sb != null
-                    && capacity <= sb.Capacity)
-                {
-                    _cachedInstance = null;
-                    sb.Clear();
-                    return sb;
-                }
+                _cachedInstance = null;
+                sb.Clear();
+                return sb;
             }
-
-            return new StringBuilder(capacity);
         }
 
-        public static void Free(StringBuilder sb)
-        {
-            if (sb.Capacity <= MaxSize)
-                _cachedInstance = sb;
-        }
+        return new StringBuilder(capacity);
+    }
 
-        public static string GetStringAndFree(StringBuilder sb)
-        {
-            string s = sb.ToString();
-            Free(sb);
-            return s;
-        }
+    public static void Free(StringBuilder sb)
+    {
+        if (sb.Capacity <= MaxSize)
+            _cachedInstance = sb;
+    }
+
+    public static string GetStringAndFree(StringBuilder sb)
+    {
+        string s = sb.ToString();
+        Free(sb);
+        return s;
     }
 }

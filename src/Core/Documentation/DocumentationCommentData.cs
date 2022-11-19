@@ -2,27 +2,26 @@
 
 using System.Diagnostics;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct DocumentationCommentData
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct DocumentationCommentData
+    internal DocumentationCommentData(string rawXml, DocumentationCommentOrigin origin)
     {
-        internal DocumentationCommentData(string rawXml, DocumentationCommentOrigin origin)
-        {
-            RawXml = rawXml;
-            Origin = origin;
-        }
+        RawXml = rawXml;
+        Origin = origin;
+    }
 
-        public string RawXml { get; }
+    public string RawXml { get; }
 
-        public DocumentationCommentOrigin Origin { get; }
+    public DocumentationCommentOrigin Origin { get; }
 
-        public bool Success => !string.IsNullOrEmpty(RawXml);
+    public bool Success => !string.IsNullOrEmpty(RawXml);
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return (Success) ? $"{Origin} {RawXml}" : "Uninitialized"; }
-        }
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return (Success) ? $"{Origin} {RawXml}" : "Uninitialized"; }
     }
 }

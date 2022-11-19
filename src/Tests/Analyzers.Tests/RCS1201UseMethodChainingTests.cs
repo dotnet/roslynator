@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1201UseMethodChainingTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, StatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseMethodChaining;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1201UseMethodChainingTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, StatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseMethodChaining;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -52,12 +52,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
-        public async Task Test2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
+    public async Task Test2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -86,12 +86,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
-        public async Task Test_Assignment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
+    public async Task Test_Assignment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -130,12 +130,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
-        public async Task TestNoDiagnostic_ReturnTypesAreNotEqual()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
+    public async Task TestNoDiagnostic_ReturnTypesAreNotEqual()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -150,12 +150,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
-        public async Task TestNoDiagnostic_NoAssignment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
+    public async Task TestNoDiagnostic_NoAssignment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -170,12 +170,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 public class C
 {
     public C2 M()
@@ -197,6 +197,5 @@ public class C2
     }
 }
 ");
-        }
     }
 }

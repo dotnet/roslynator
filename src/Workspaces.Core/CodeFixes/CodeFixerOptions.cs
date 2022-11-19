@@ -42,7 +42,7 @@ namespace Roslynator.CodeFixes
             IgnoredCompilerDiagnosticIds = ignoredCompilerDiagnosticIds?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
             DiagnosticIdsFixableOneByOne = diagnosticIdsFixableOneByOne?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
 
-            if (diagnosticFixMap != null)
+            if (diagnosticFixMap is not null)
             {
                 DiagnosticFixMap = diagnosticFixMap
                     .GroupBy(kvp => kvp.Key)
@@ -87,7 +87,7 @@ namespace Roslynator.CodeFixes
                         using (var sr = new StringReader(FileBanner))
                         {
                             string line = null;
-                            while ((line = sr.ReadLine()) != null)
+                            while ((line = sr.ReadLine()) is not null)
                             {
                                 lines.Add(line);
                             }

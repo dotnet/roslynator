@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests;
+
+public class RR0055GenerateCombinedEnumMemberTests : AbstractCSharpRefactoringVerifier
 {
-    public class RR0055GenerateCombinedEnumMemberTests : AbstractCSharpRefactoringVerifier
+    public override string RefactoringId { get; } = RefactoringIdentifiers.GenerateCombinedEnumMember;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateCombinedEnumMember)]
+    public async Task Test()
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.GenerateCombinedEnumMember;
-
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateCombinedEnumMember)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync(@"
 using System;
 
 [Flags]
@@ -37,12 +37,12 @@ enum Foo
     BC = B | C
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateCombinedEnumMember)]
-        public async Task Test_CombinedMemberInSelection()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateCombinedEnumMember)]
+    public async Task Test_CombinedMemberInSelection()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 [Flags]
@@ -68,12 +68,12 @@ enum Foo
     BC = B | C
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateCombinedEnumMember)]
-        public async Task TestNoRefactoring_WithoutFlags()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateCombinedEnumMember)]
+    public async Task TestNoRefactoring_WithoutFlags()
+    {
+        await VerifyNoRefactoringAsync(@"
 enum Foo
 {
     A = 1,
@@ -81,6 +81,5 @@ enum Foo
     C = 3|]
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

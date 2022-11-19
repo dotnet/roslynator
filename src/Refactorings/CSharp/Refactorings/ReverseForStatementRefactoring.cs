@@ -8,57 +8,56 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ReverseForStatementRefactoring
 {
-    internal static class ReverseForStatementRefactoring
+    public static bool CanRefactor(ForStatementSyntax forStatement)
     {
-        public static bool CanRefactor(ForStatementSyntax forStatement)
-        {
-            ExpressionSyntax value = forStatement
-                .Declaration?
-                .Variables
-                .SingleOrDefault(shouldThrow: false)?
-                .Initializer?
-                .Value;
+        ExpressionSyntax value = forStatement
+            .Declaration?
+            .Variables
+            .SingleOrDefault(shouldThrow: false)?
+            .Initializer?
+            .Value;
 
-            if (value?.IsNumericLiteralExpression("0") != true)
-                return false;
+        if (value?.IsNumericLiteralExpression("0") != true)
+            return false;
 
-            if (forStatement.Condition?.Kind() != SyntaxKind.LessThanExpression)
-                return false;
+        if (forStatement.Condition?.Kind() != SyntaxKind.LessThanExpression)
+            return false;
 
-            return forStatement.Incrementors.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.PostIncrementExpression;
-        }
+        return forStatement.Incrementors.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.PostIncrementExpression;
+    }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ForStatementSyntax forStatement,
-            CancellationToken cancellationToken = default)
-        {
-            VariableDeclarationSyntax declaration = forStatement.Declaration;
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ForStatementSyntax forStatement,
+        CancellationToken cancellationToken = default)
+    {
+        VariableDeclarationSyntax declaration = forStatement.Declaration;
 
-            var incrementor = (PostfixUnaryExpressionSyntax)forStatement.Incrementors[0];
+        var incrementor = (PostfixUnaryExpressionSyntax)forStatement.Incrementors[0];
 
-            VariableDeclarationSyntax newDeclaration = declaration.ReplaceNode(
-                declaration.Variables[0].Initializer.Value,
-                SubtractExpression(
-                    ((BinaryExpressionSyntax)forStatement.Condition).Right,
-                    NumericLiteralExpression(1)));
+        VariableDeclarationSyntax newDeclaration = declaration.ReplaceNode(
+            declaration.Variables[0].Initializer.Value,
+            SubtractExpression(
+                ((BinaryExpressionSyntax)forStatement.Condition).Right,
+                NumericLiteralExpression(1)));
 
-            BinaryExpressionSyntax newCondition = GreaterThanOrEqualExpression(
-                ((BinaryExpressionSyntax)forStatement.Condition).Left,
-                NumericLiteralExpression(0));
+        BinaryExpressionSyntax newCondition = GreaterThanOrEqualExpression(
+            ((BinaryExpressionSyntax)forStatement.Condition).Left,
+            NumericLiteralExpression(0));
 
-            SeparatedSyntaxList<ExpressionSyntax> newIncrementors = forStatement.Incrementors.Replace(
-                incrementor,
-                incrementor.WithOperatorToken(Token(SyntaxKind.MinusMinusToken)));
+        SeparatedSyntaxList<ExpressionSyntax> newIncrementors = forStatement.Incrementors.Replace(
+            incrementor,
+            incrementor.WithOperatorToken(Token(SyntaxKind.MinusMinusToken)));
 
-            ForStatementSyntax newForStatement = forStatement
-                .WithDeclaration(newDeclaration)
-                .WithCondition(newCondition)
-                .WithIncrementors(newIncrementors);
+        ForStatementSyntax newForStatement = forStatement
+            .WithDeclaration(newDeclaration)
+            .WithCondition(newCondition)
+            .WithIncrementors(newIncrementors);
 
-            return document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken);
     }
 }

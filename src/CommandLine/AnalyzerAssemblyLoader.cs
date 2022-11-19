@@ -7,90 +7,89 @@ using System.Reflection;
 using System.Security;
 using static Roslynator.Logger;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal static class AnalyzerAssemblyLoader
 {
-    internal static class AnalyzerAssemblyLoader
+    public const string DefaultSearchPattern = "*.dll";
+
+    public static AnalyzerAssembly LoadFile(
+        string filePath,
+        bool loadAnalyzers = true,
+        bool loadFixers = true,
+        string language = null)
     {
-        public const string DefaultSearchPattern = "*.dll";
+        Assembly assembly = Assembly.LoadFrom(filePath);
 
-        public static AnalyzerAssembly LoadFile(
-            string filePath,
-            bool loadAnalyzers = true,
-            bool loadFixers = true,
-            string language = null)
+        return AnalyzerAssembly.Load(assembly, loadAnalyzers: loadAnalyzers, loadFixers: loadFixers, language: language);
+    }
+
+    public static IEnumerable<AnalyzerAssemblyInfo> LoadFrom(
+        string path,
+        string searchPattern = DefaultSearchPattern,
+        bool loadAnalyzers = true,
+        bool loadFixers = true,
+        string language = null)
+    {
+        if (File.Exists(path))
         {
-            Assembly assembly = Assembly.LoadFrom(filePath);
+            AnalyzerAssembly analyzerAssembly = Load(path);
 
-            return AnalyzerAssembly.Load(assembly, loadAnalyzers: loadAnalyzers, loadFixers: loadFixers, language: language);
+            if (analyzerAssembly?.IsEmpty == false)
+                yield return new AnalyzerAssemblyInfo(analyzerAssembly, path);
+        }
+        else if (Directory.Exists(path))
+        {
+            using (IEnumerator<string> en = Directory.EnumerateFiles(path, searchPattern, SearchOption.AllDirectories).GetEnumerator())
+            {
+                while (true)
+                {
+                    string filePath = null;
+                    AnalyzerAssembly analyzerAssembly = null;
+
+                    try
+                    {
+                        if (en.MoveNext())
+                        {
+                            filePath = en.Current;
+                            analyzerAssembly = Load(filePath);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    catch (Exception ex) when (ex is IOException
+                        || ex is SecurityException
+                        || ex is UnauthorizedAccessException)
+                    {
+                        WriteError(ex, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                        continue;
+                    }
+
+                    if (analyzerAssembly?.IsEmpty == false)
+                        yield return new AnalyzerAssemblyInfo(analyzerAssembly, filePath);
+                }
+            }
+        }
+        else
+        {
+            WriteLine($"File or directory not found: '{path}'", ConsoleColors.DarkGray, Verbosity.Normal);
         }
 
-        public static IEnumerable<AnalyzerAssemblyInfo> LoadFrom(
-            string path,
-            string searchPattern = DefaultSearchPattern,
-            bool loadAnalyzers = true,
-            bool loadFixers = true,
-            string language = null)
+        AnalyzerAssembly Load(string filePath)
         {
-            if (File.Exists(path))
+            try
             {
-                AnalyzerAssembly analyzerAssembly = Load(path);
-
-                if (analyzerAssembly?.IsEmpty == false)
-                    yield return new AnalyzerAssemblyInfo(analyzerAssembly, path);
+                return LoadFile(filePath, loadAnalyzers, loadFixers, language);
             }
-            else if (Directory.Exists(path))
+            catch (Exception ex) when (ex is FileLoadException
+                || ex is BadImageFormatException
+                || ex is SecurityException)
             {
-                using (IEnumerator<string> en = Directory.EnumerateFiles(path, searchPattern, SearchOption.AllDirectories).GetEnumerator())
-                {
-                    while (true)
-                    {
-                        string filePath = null;
-                        AnalyzerAssembly analyzerAssembly = null;
+                WriteLine($"Cannot load assembly '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
-                        try
-                        {
-                            if (en.MoveNext())
-                            {
-                                filePath = en.Current;
-                                analyzerAssembly = Load(filePath);
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        catch (Exception ex) when (ex is IOException
-                            || ex is SecurityException
-                            || ex is UnauthorizedAccessException)
-                        {
-                            WriteError(ex, ConsoleColor.DarkGray, Verbosity.Diagnostic);
-                            continue;
-                        }
-
-                        if (analyzerAssembly?.IsEmpty == false)
-                            yield return new AnalyzerAssemblyInfo(analyzerAssembly, filePath);
-                    }
-                }
-            }
-            else
-            {
-                WriteLine($"File or directory not found: '{path}'", ConsoleColors.DarkGray, Verbosity.Normal);
-            }
-
-            AnalyzerAssembly Load(string filePath)
-            {
-                try
-                {
-                    return LoadFile(filePath, loadAnalyzers, loadFixers, language);
-                }
-                catch (Exception ex) when (ex is FileLoadException
-                    || ex is BadImageFormatException
-                    || ex is SecurityException)
-                {
-                    WriteLine($"Cannot load assembly '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
-
-                    return null;
-                }
+                return null;
             }
         }
     }

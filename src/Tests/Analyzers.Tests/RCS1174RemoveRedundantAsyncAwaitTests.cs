@@ -6,21 +6,21 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
+namespace Roslynator.CSharp.Analysis.Tests;
+
+public class RCS1174RemoveRedundantAsyncAwaitTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantAsyncAwaitAnalyzer, RemoveRedundantAsyncAwaitCodeFixProvider>
 {
-    public class RCS1174RemoveRedundantAsyncAwaitTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantAsyncAwaitAnalyzer, RemoveRedundantAsyncAwaitCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAsyncAwait;
+
+    public override CSharpTestOptions Options
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAsyncAwait;
+        get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected); }
+    }
 
-        public override CSharpTestOptions Options
-        {
-            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected); }
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_Method_Body_ReturnAwait()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_Method_Body_ReturnAwait()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -45,12 +45,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_Method_Body_ReturnAwait_ConfigureAwait()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_Method_Body_ReturnAwait_ConfigureAwait()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -71,12 +71,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_Method_ExpressionBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_Method_ExpressionBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -91,12 +91,12 @@ class C
     Task<object> GetAsync() => GetAsync();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_LocalFunction_Body_ReturnAwait()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_LocalFunction_Body_ReturnAwait()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -123,12 +123,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_LocalFunction_ExpressionBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_LocalFunction_ExpressionBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -149,12 +149,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_SimpleLambda_Body()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_SimpleLambda_Body()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -187,12 +187,12 @@ class C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_SimpleLambda_ExpressionBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_SimpleLambda_ExpressionBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -219,12 +219,12 @@ class C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_ParenthesizedLambda_Body()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_ParenthesizedLambda_Body()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -257,12 +257,12 @@ class C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_ParenthesizedLambda_ExpressionBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_ParenthesizedLambda_ExpressionBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -289,12 +289,12 @@ class C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_AnonymousMethod()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_AnonymousMethod()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -327,12 +327,12 @@ class C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_IfElseIfReturn()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_IfElseIfReturn()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -375,12 +375,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_IfElse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_IfElse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -419,12 +419,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_SwitchWithoutDefaultSection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_SwitchWithoutDefaultSection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -473,12 +473,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task Test_SwitchWithDefaultSection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_SwitchWithDefaultSection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -531,12 +531,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_IfElse_ReturnWithoutAwait()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_IfElse_ReturnWithoutAwait()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -562,12 +562,12 @@ class C
     Task<object> GetAsync() => Task.FromResult(default(object));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_IfElse_AwaitWithoutReturn()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_IfElse_AwaitWithoutReturn()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -589,12 +589,12 @@ class C
     Task<object> GetAsync() => Task.FromResult(default(object));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_Switch_ReturnWithoutAwait()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_Switch_ReturnWithoutAwait()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -625,12 +625,12 @@ class C
     Task<object> GetAsync() => Task.FromResult(default(object));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_Switch_AwaitWithoutReturn()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_Switch_AwaitWithoutReturn()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -657,12 +657,12 @@ class C
     Task<object> GetAsync() => Task.FromResult(default(object));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_Method_ReturnWithoutAwait()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_Method_ReturnWithoutAwait()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -685,12 +685,12 @@ class C
     Task<object> GetAsync() => Task.FromResult(default(object));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_Method_AwaitWithoutReturn()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_Method_AwaitWithoutReturn()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -713,12 +713,12 @@ class C
     Task<object> GetAsync() => Task.FromResult(default(object));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_Method_ReturnsTask()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_Method_ReturnsTask()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -729,12 +729,12 @@ class C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_ReturnTypeAndAwaitTypeDoNotEqual()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_ReturnTypeAndAwaitTypeDoNotEqual()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -849,12 +849,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_AwaitContainsAwait()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_AwaitContainsAwait()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -971,12 +971,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
-        public async Task TestNoDiagnostic_UsingDeclaration()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task TestNoDiagnostic_UsingDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -995,6 +995,5 @@ class C
     }
 }
 ");
-        }
     }
 }

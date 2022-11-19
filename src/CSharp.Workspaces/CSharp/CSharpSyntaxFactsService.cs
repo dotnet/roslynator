@@ -67,7 +67,7 @@ namespace Roslynator.CSharp
             if (!identifier.IsKind(SyntaxKind.IdentifierToken))
                 return null;
 
-            if (parent == null)
+            if (parent is null)
                 return null;
 
             switch (parent.Kind())

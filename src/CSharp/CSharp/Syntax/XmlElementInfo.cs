@@ -6,145 +6,144 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Syntax
+namespace Roslynator.CSharp.Syntax;
+
+/// <summary>
+/// Provides information about a <see cref="XmlElementSyntax"/> or <see cref="XmlEmptyElementSyntax"/>.
+/// </summary>
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly struct XmlElementInfo
 {
-    /// <summary>
-    /// Provides information about a <see cref="XmlElementSyntax"/> or <see cref="XmlEmptyElementSyntax"/>.
-    /// </summary>
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct XmlElementInfo
+    private XmlElementInfo(XmlNodeSyntax element, string localName)
     {
-        private XmlElementInfo(XmlNodeSyntax element, string localName)
+        Element = element;
+        LocalName = localName;
+    }
+
+    /// <summary>
+    /// The xml element.
+    /// </summary>
+    public XmlNodeSyntax Element { get; }
+
+    /// <summary>
+    /// Local name of the element.
+    /// </summary>
+    public string LocalName { get; }
+
+    /// <summary>
+    /// Element kind.
+    /// </summary>
+    public SyntaxKind Kind
+    {
+        get { return Element?.Kind() ?? SyntaxKind.None; }
+    }
+
+    /// <summary>
+    /// Determines whether the element is <see cref="SyntaxKind.XmlEmptyElement"/>.
+    /// </summary>
+    public bool IsEmptyElement
+    {
+        get { return Kind == SyntaxKind.XmlEmptyElement; }
+    }
+
+    internal bool IsContentEmptyOrWhitespace
+    {
+        get
         {
-            Element = element;
-            LocalName = localName;
-        }
-
-        /// <summary>
-        /// The xml element.
-        /// </summary>
-        public XmlNodeSyntax Element { get; }
-
-        /// <summary>
-        /// Local name of the element.
-        /// </summary>
-        public string LocalName { get; }
-
-        /// <summary>
-        /// Element kind.
-        /// </summary>
-        public SyntaxKind Kind
-        {
-            get { return Element?.Kind() ?? SyntaxKind.None; }
-        }
-
-        /// <summary>
-        /// Determines whether the element is <see cref="SyntaxKind.XmlEmptyElement"/>.
-        /// </summary>
-        public bool IsEmptyElement
-        {
-            get { return Kind == SyntaxKind.XmlEmptyElement; }
-        }
-
-        internal bool IsContentEmptyOrWhitespace
-        {
-            get
-            {
-                if (!Success)
-                    return false;
-
-                if (IsEmptyElement)
-                    return true;
-
-                var element = (XmlElementSyntax)Element;
-
-                SyntaxList<XmlNodeSyntax> content = element.Content;
-
-                int count = content.Count;
-
-                if (count == 0)
-                    return true;
-
-                if (content.SingleOrDefault(shouldThrow: false) is XmlTextSyntax xmlText)
-                    return xmlText.TextTokens.All(f => IsWhitespaceOrNewLine(f));
-
+            if (!Success)
                 return false;
 
-                static bool IsWhitespaceOrNewLine(SyntaxToken token)
+            if (IsEmptyElement)
+                return true;
+
+            var element = (XmlElementSyntax)Element;
+
+            SyntaxList<XmlNodeSyntax> content = element.Content;
+
+            int count = content.Count;
+
+            if (count == 0)
+                return true;
+
+            if (content.SingleOrDefault(shouldThrow: false) is XmlTextSyntax xmlText)
+                return xmlText.TextTokens.All(f => IsWhitespaceOrNewLine(f));
+
+            return false;
+
+            static bool IsWhitespaceOrNewLine(SyntaxToken token)
+            {
+                switch (token.Kind())
                 {
-                    switch (token.Kind())
-                    {
-                        case SyntaxKind.XmlTextLiteralNewLineToken:
-                            return true;
-                        case SyntaxKind.XmlTextLiteralToken:
-                            return string.IsNullOrWhiteSpace(token.ValueText);
-                        default:
-                            return false;
-                    }
+                    case SyntaxKind.XmlTextLiteralNewLineToken:
+                        return true;
+                    case SyntaxKind.XmlTextLiteralToken:
+                        return string.IsNullOrWhiteSpace(token.ValueText);
+                    default:
+                        return false;
                 }
             }
         }
+    }
 
-        /// <summary>
-        /// Determines whether this struct was initialized with an actual syntax.
-        /// </summary>
-        public bool Success
+    /// <summary>
+    /// Determines whether this struct was initialized with an actual syntax.
+    /// </summary>
+    public bool Success
+    {
+        get { return Element is not null; }
+    }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return SyntaxInfoHelpers.ToDebugString(Success, this, Element); }
+    }
+
+    internal XmlTag GetTag()
+    {
+        return XmlTagMapper.GetTagOrDefault(LocalName);
+    }
+
+    internal bool HasTag(XmlTag tag)
+    {
+        return XmlTagMapper.GetTagOrDefault(LocalName) == tag;
+    }
+
+    internal static XmlElementInfo Create(XmlNodeSyntax node)
+    {
+        switch (node)
         {
-            get { return Element != null; }
+            case XmlElementSyntax element:
+                {
+                    string localName = element.StartTag?.Name?.LocalName.ValueText;
+
+                    if (localName is null)
+                        return default;
+
+                    return new XmlElementInfo(element, localName);
+                }
+            case XmlEmptyElementSyntax element:
+                {
+                    string localName = element.Name?.LocalName.ValueText;
+
+                    if (localName is null)
+                        return default;
+
+                    return new XmlElementInfo(element, localName);
+                }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return SyntaxInfoHelpers.ToDebugString(Success, this, Element); }
-        }
+        return default;
+    }
 
-        internal XmlTag GetTag()
-        {
-            return XmlTagMapper.GetTagOrDefault(LocalName);
-        }
+    internal bool HasLocalName(string localName, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+    {
+        return string.Equals(LocalName, localName, comparison);
+    }
 
-        internal bool HasTag(XmlTag tag)
-        {
-            return XmlTagMapper.GetTagOrDefault(LocalName) == tag;
-        }
-
-        internal static XmlElementInfo Create(XmlNodeSyntax node)
-        {
-            switch (node)
-            {
-                case XmlElementSyntax element:
-                    {
-                        string localName = element.StartTag?.Name?.LocalName.ValueText;
-
-                        if (localName == null)
-                            return default;
-
-                        return new XmlElementInfo(element, localName);
-                    }
-                case XmlEmptyElementSyntax element:
-                    {
-                        string localName = element.Name?.LocalName.ValueText;
-
-                        if (localName == null)
-                            return default;
-
-                        return new XmlElementInfo(element, localName);
-                    }
-            }
-
-            return default;
-        }
-
-        internal bool HasLocalName(string localName, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
-        {
-            return string.Equals(LocalName, localName, comparison);
-        }
-
-        internal bool HasLocalName(string localName1, string localName2, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
-        {
-            return HasLocalName(localName1, comparison)
-                || HasLocalName(localName2, comparison);
-        }
+    internal bool HasLocalName(string localName1, string localName2, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+    {
+        return HasLocalName(localName1, comparison)
+            || HasLocalName(localName2, comparison);
     }
 }

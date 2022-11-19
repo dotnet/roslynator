@@ -6,55 +6,54 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.SyntaxRewriters
+namespace Roslynator.CSharp.SyntaxRewriters;
+
+internal class RenameRewriter : CSharpSyntaxRewriter
 {
-    internal class RenameRewriter : CSharpSyntaxRewriter
+    private readonly string _name;
+
+    public RenameRewriter(
+        ISymbol symbol,
+        string newName,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
     {
-        private readonly string _name;
+        Symbol = symbol;
+        NewName = newName;
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
 
-        public RenameRewriter(
-            ISymbol symbol,
-            string newName,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        _name = symbol.Name;
+    }
+
+    public string NewName { get; }
+
+    public ISymbol Symbol { get; }
+
+    public SemanticModel SemanticModel { get; }
+
+    public CancellationToken CancellationToken { get; }
+
+    public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
+    {
+        if (string.Equals(node.Identifier.ValueText, _name, StringComparison.Ordinal))
         {
-            Symbol = symbol;
-            NewName = newName;
-            SemanticModel = semanticModel;
-            CancellationToken = cancellationToken;
+            ISymbol symbol = SemanticModel.GetSymbol(node, CancellationToken);
 
-            _name = symbol.Name;
+            if (SymbolEqualityComparer.Default.Equals(Symbol, symbol))
+                return Rename(node);
         }
 
-        public string NewName { get; }
+        return base.VisitIdentifierName(node);
+    }
 
-        public ISymbol Symbol { get; }
+    protected virtual SyntaxNode Rename(IdentifierNameSyntax node)
+    {
+        SyntaxToken newIdentifier = SyntaxFactory.Identifier(
+            node.Identifier.LeadingTrivia,
+            NewName,
+            node.Identifier.TrailingTrivia);
 
-        public SemanticModel SemanticModel { get; }
-
-        public CancellationToken CancellationToken { get; }
-
-        public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
-        {
-            if (string.Equals(node.Identifier.ValueText, _name, StringComparison.Ordinal))
-            {
-                ISymbol symbol = SemanticModel.GetSymbol(node, CancellationToken);
-
-                if (SymbolEqualityComparer.Default.Equals(Symbol, symbol))
-                    return Rename(node);
-            }
-
-            return base.VisitIdentifierName(node);
-        }
-
-        protected virtual SyntaxNode Rename(IdentifierNameSyntax node)
-        {
-            SyntaxToken newIdentifier = SyntaxFactory.Identifier(
-                node.Identifier.LeadingTrivia,
-                NewName,
-                node.Identifier.TrailingTrivia);
-
-            return node.WithIdentifier(newIdentifier);
-        }
+        return node.WithIdentifier(newIdentifier);
     }
 }

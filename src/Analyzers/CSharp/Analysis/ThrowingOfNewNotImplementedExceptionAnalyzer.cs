@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.NotImplementedException");
 
-                if (exceptionSymbol == null)
+                if (exceptionSymbol is null)
                     return;
 
                 startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowStatement(f, exceptionSymbol), SyntaxKind.ThrowStatement);
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis
 
             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(objectCreationExpression, context.CancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return;
 
             if (!SymbolEqualityComparer.Default.Equals(typeSymbol, exceptionSymbol))

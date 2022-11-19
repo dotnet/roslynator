@@ -48,7 +48,7 @@ namespace Roslynator.CodeFixes
 
             Assert.NotNull(node);
 
-            return node != null;
+            return node is not null;
         }
 
         protected static bool TryFindFirstDescendantOrSelf<TNode>(
@@ -66,7 +66,7 @@ namespace Roslynator.CodeFixes
 
             Assert.NotNull(node);
 
-            return node != null;
+            return node is not null;
         }
 
         protected static bool TryFindNode<TNode>(
@@ -79,8 +79,8 @@ namespace Roslynator.CodeFixes
         {
             node = root.FindNode(span, findInsideTrivia: findInsideTrivia, getInnermostNodeForTie: getInnermostNodeForTie) as TNode;
 
-            if (node != null
-                && predicate != null
+            if (node is not null
+                && predicate is not null
                 && !predicate(node))
             {
                 node = null;
@@ -88,7 +88,7 @@ namespace Roslynator.CodeFixes
 
             Assert.NotNull(node);
 
-            return node != null;
+            return node is not null;
         }
 
         protected static bool TryFindToken(
@@ -132,7 +132,7 @@ namespace Roslynator.CodeFixes
             [Conditional("DEBUG")]
             public static void NotNull<T>(T value) where T : class
             {
-                Debug.Assert(value != null, $"{nameof(value)} is null");
+                Debug.Assert(value is not null, $"{nameof(value)} is null");
             }
         }
     }

@@ -6,91 +6,90 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class MarkTypeWithDebuggerDisplayAttributeAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class MarkTypeWithDebuggerDisplayAttributeAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute);
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterCompilationStartAction(startContext =>
+        {
+            INamedTypeSymbol debuggerDisplayAttributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.Diagnostics.DebuggerDisplayAttribute");
+
+            if (debuggerDisplayAttributeSymbol is not null)
+            {
+                startContext.RegisterSymbolAction(
+                    nodeContext => AnalyzerNamedTypeSymbol(nodeContext, debuggerDisplayAttributeSymbol),
+                    SymbolKind.NamedType);
             }
+        });
+    }
+
+    public static void AnalyzerNamedTypeSymbol(SymbolAnalysisContext context, INamedTypeSymbol debuggerDisplayAttributeSymbol)
+    {
+        var typeSymbol = (INamedTypeSymbol)context.Symbol;
+
+        if (typeSymbol.IsImplicitlyDeclared)
+            return;
+
+        TypeKind typeKind = typeSymbol.TypeKind;
+
+        if (typeKind == TypeKind.Class)
+        {
+            if (typeSymbol.IsImplicitClass)
+                return;
+
+            if (typeSymbol.IsScriptClass)
+                return;
+
+            if (typeSymbol.IsStatic)
+                return;
+
+            if (typeSymbol.IsAbstract)
+                return;
+        }
+        else if (typeKind != TypeKind.Struct)
+        {
+            return;
         }
 
-        public override void Initialize(AnalysisContext context)
+        if (!typeSymbol.IsPubliclyVisible())
+            return;
+
+        if (typeSymbol.OriginalDefinition.HasAttribute(debuggerDisplayAttributeSymbol, includeBaseTypes: true))
+            return;
+
+        SyntaxToken identifier;
+
+        if (typeKind == TypeKind.Class)
         {
-            base.Initialize(context);
+            var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol debuggerDisplayAttributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.Diagnostics.DebuggerDisplayAttribute");
+            identifier = classDeclaration.Identifier;
+        }
+        else
+        {
+            var structDeclaration = (StructDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
 
-                if (debuggerDisplayAttributeSymbol != null)
-                {
-                    startContext.RegisterSymbolAction(
-                        nodeContext => AnalyzerNamedTypeSymbol(nodeContext, debuggerDisplayAttributeSymbol),
-                        SymbolKind.NamedType);
-                }
-            });
+            identifier = structDeclaration.Identifier;
         }
 
-        public static void AnalyzerNamedTypeSymbol(SymbolAnalysisContext context, INamedTypeSymbol debuggerDisplayAttributeSymbol)
-        {
-            var typeSymbol = (INamedTypeSymbol)context.Symbol;
-
-            if (typeSymbol.IsImplicitlyDeclared)
-                return;
-
-            TypeKind typeKind = typeSymbol.TypeKind;
-
-            if (typeKind == TypeKind.Class)
-            {
-                if (typeSymbol.IsImplicitClass)
-                    return;
-
-                if (typeSymbol.IsScriptClass)
-                    return;
-
-                if (typeSymbol.IsStatic)
-                    return;
-
-                if (typeSymbol.IsAbstract)
-                    return;
-            }
-            else if (typeKind != TypeKind.Struct)
-            {
-                return;
-            }
-
-            if (!typeSymbol.IsPubliclyVisible())
-                return;
-
-            if (typeSymbol.OriginalDefinition.HasAttribute(debuggerDisplayAttributeSymbol, includeBaseTypes: true))
-                return;
-
-            SyntaxToken identifier;
-
-            if (typeKind == TypeKind.Class)
-            {
-                var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
-
-                identifier = classDeclaration.Identifier;
-            }
-            else
-            {
-                var structDeclaration = (StructDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
-
-                identifier = structDeclaration.Identifier;
-            }
-
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute, identifier, identifier.ValueText);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute, identifier, identifier.ValueText);
     }
 }

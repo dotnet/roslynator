@@ -7,106 +7,105 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ChangeVariableDeclarationTypeRefactoring
 {
-    internal static class ChangeVariableDeclarationTypeRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, VariableDeclarationSyntax variableDeclaration)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, VariableDeclarationSyntax variableDeclaration)
+        TypeSyntax type = variableDeclaration.Type;
+
+        if (type?.Span.Contains(context.Span) == true
+            && context.IsAnyRefactoringEnabled(
+                RefactoringDescriptors.UseImplicitType,
+                RefactoringDescriptors.UseExplicitType,
+                RefactoringDescriptors.ChangeTypeAccordingToExpression))
         {
-            TypeSyntax type = variableDeclaration.Type;
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (type?.Span.Contains(context.Span) == true
-                && context.IsAnyRefactoringEnabled(
-                    RefactoringDescriptors.UseImplicitType,
-                    RefactoringDescriptors.UseExplicitType,
-                    RefactoringDescriptors.ChangeTypeAccordingToExpression))
+            TypeAnalysis analysis = CSharpTypeAnalysis.AnalyzeType(variableDeclaration, semanticModel, context.CancellationToken);
+
+            if (analysis.IsExplicit)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                TypeAnalysis analysis = CSharpTypeAnalysis.AnalyzeType(variableDeclaration, semanticModel, context.CancellationToken);
-
-                if (analysis.IsExplicit)
+                if (analysis.SupportsImplicit
+                    && context.IsRefactoringEnabled(RefactoringDescriptors.UseImplicitType))
                 {
-                    if (analysis.SupportsImplicit
-                        && context.IsRefactoringEnabled(RefactoringDescriptors.UseImplicitType))
-                    {
-                        context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseImplicitType)));
-                    }
-
-                    if (!variableDeclaration.ContainsDiagnostics
-                        && context.IsRefactoringEnabled(RefactoringDescriptors.ChangeTypeAccordingToExpression))
-                    {
-                        ChangeTypeAccordingToExpression(context, variableDeclaration, analysis.Symbol, semanticModel);
-                    }
+                    context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseImplicitType)));
                 }
-                else if (analysis.SupportsExplicit
-                    && context.IsRefactoringEnabled(RefactoringDescriptors.UseExplicitType))
+
+                if (!variableDeclaration.ContainsDiagnostics
+                    && context.IsRefactoringEnabled(RefactoringDescriptors.ChangeTypeAccordingToExpression))
                 {
-                    ITypeSymbol typeSymbol = analysis.Symbol;
+                    ChangeTypeAccordingToExpression(context, variableDeclaration, analysis.Symbol, semanticModel);
+                }
+            }
+            else if (analysis.SupportsExplicit
+                && context.IsRefactoringEnabled(RefactoringDescriptors.UseExplicitType))
+            {
+                ITypeSymbol typeSymbol = analysis.Symbol;
 
-                    VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
+                VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
 
-                    if (variableDeclarator?.Initializer?.Value != null)
+                if (variableDeclarator?.Initializer?.Value is not null)
+                {
+                    if (typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
                     {
-                        if (typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
+                        Func<CancellationToken, Task<Document>> createChangedDocument = DocumentRefactoringFactory.ChangeTypeAndAddAwait(
+                            context.Document,
+                            variableDeclaration,
+                            variableDeclarator,
+                            typeSymbol,
+                            semanticModel,
+                            context.CancellationToken);
+
+                        if (createChangedDocument is not null)
                         {
-                            Func<CancellationToken, Task<Document>> createChangedDocument = DocumentRefactoringFactory.ChangeTypeAndAddAwait(
-                                context.Document,
-                                variableDeclaration,
-                                variableDeclarator,
-                                typeSymbol,
-                                semanticModel,
-                                context.CancellationToken);
-
-                            if (createChangedDocument != null)
-                            {
-                                context.RegisterRefactoring(
-                                    "Use explicit type (and add 'await')",
-                                    createChangedDocument,
-                                    RefactoringDescriptors.UseExplicitType,
-                                    "AddAwait");
-                            }
+                            context.RegisterRefactoring(
+                                "Use explicit type (and add 'await')",
+                                createChangedDocument,
+                                RefactoringDescriptors.UseExplicitType,
+                                "AddAwait");
                         }
+                    }
 
-                        typeSymbol = semanticModel.GetTypeSymbol(variableDeclarator.Initializer.Value, context.CancellationToken);
+                    typeSymbol = semanticModel.GetTypeSymbol(variableDeclarator.Initializer.Value, context.CancellationToken);
 
-                        if (typeSymbol != null)
-                        {
-                            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
-                        }
+                    if (typeSymbol is not null)
+                    {
+                        context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
                     }
                 }
             }
         }
+    }
 
-        private static void ChangeTypeAccordingToExpression(
-            RefactoringContext context,
-            VariableDeclarationSyntax variableDeclaration,
-            ITypeSymbol typeSymbol,
-            SemanticModel semanticModel)
+    private static void ChangeTypeAccordingToExpression(
+        RefactoringContext context,
+        VariableDeclarationSyntax variableDeclaration,
+        ITypeSymbol typeSymbol,
+        SemanticModel semanticModel)
+    {
+        foreach (VariableDeclaratorSyntax variableDeclarator in variableDeclaration.Variables)
         {
-            foreach (VariableDeclaratorSyntax variableDeclarator in variableDeclaration.Variables)
-            {
-                ExpressionSyntax value = variableDeclarator.Initializer?.Value;
+            ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
-                if (value == null)
-                    return;
-
-                Conversion conversion = semanticModel.ClassifyConversion(value, typeSymbol);
-
-                if (conversion.IsIdentity)
-                    return;
-
-                if (!conversion.IsImplicit)
-                    return;
-            }
-
-            ITypeSymbol newTypeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables[0].Initializer.Value, context.CancellationToken);
-
-            if (newTypeSymbol == null)
+            if (value is null)
                 return;
 
-            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, variableDeclaration.Type, newTypeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.ChangeTypeAccordingToExpression)));
+            Conversion conversion = semanticModel.ClassifyConversion(value, typeSymbol);
+
+            if (conversion.IsIdentity)
+                return;
+
+            if (!conversion.IsImplicit)
+                return;
         }
+
+        ITypeSymbol newTypeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables[0].Initializer.Value, context.CancellationToken);
+
+        if (newTypeSymbol is null)
+            return;
+
+        context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, variableDeclaration.Type, newTypeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.ChangeTypeAccordingToExpression)));
     }
 }

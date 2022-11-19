@@ -7,52 +7,51 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddNewLineAfterSwitchLabelAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineAfterSwitchLabelAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineAfterSwitchLabel);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineAfterSwitchLabel);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSwitchSection(f), SyntaxKind.SwitchSection);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeSwitchSection(f), SyntaxKind.SwitchSection);
+    }
 
-        private static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
-        {
-            var switchSection = (SwitchSectionSyntax)context.Node;
+    private static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
+    {
+        var switchSection = (SwitchSectionSyntax)context.Node;
 
-            SwitchLabelSyntax label = switchSection.Labels.LastOrDefault();
+        SwitchLabelSyntax label = switchSection.Labels.LastOrDefault();
 
-            if (label == null)
-                return;
+        if (label is null)
+            return;
 
-            StatementSyntax statement = switchSection.Statements.FirstOrDefault();
+        StatementSyntax statement = switchSection.Statements.FirstOrDefault();
 
-            if (statement == null)
-                return;
+        if (statement is null)
+            return;
 
-            if (!switchSection.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(label.Span.End, statement.SpanStart)))
-                return;
+        if (!switchSection.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(label.Span.End, statement.SpanStart)))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.AddNewLineAfterSwitchLabel,
-                Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AddNewLineAfterSwitchLabel,
+            Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
     }
 }

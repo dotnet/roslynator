@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0034PutTypeParameterConstraintOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutTypeParameterConstraintOnItsOwnLineAnalyzer, TypeParameterConstraintClauseSyntaxCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutTypeParameterConstraintOnItsOwnLine;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
-        public async Task Test_Class()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0034PutTypeParameterConstraintOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutTypeParameterConstraintOnItsOwnLineAnalyzer, TypeParameterConstraintClauseSyntaxCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutTypeParameterConstraintOnItsOwnLine;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task Test_Class()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     class C<T1, T2> [||]where T1 : struct [||]where T2 : struct
@@ -32,12 +32,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
-        public async Task Test_Struct()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task Test_Struct()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     struct S<T1, T2> [||]where T1 : struct [||]where T2 : struct
@@ -54,12 +54,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
-        public async Task Test_Interface()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task Test_Interface()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     interface I<T1, T2> [||]where T1 : struct [||]where T2 : struct
@@ -76,12 +76,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
-        public async Task Test_Delegate()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task Test_Delegate()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     delegate void DelegateName<T1, T2>() [||]where T1 : struct [||]where T2 : struct;
@@ -94,12 +94,12 @@ namespace N
         where T2 : struct;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
-        public async Task Test_Method()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task Test_Method()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     class C
@@ -122,12 +122,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
-        public async Task Test_LocalFunction()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task Test_LocalFunction()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     class C
@@ -156,16 +156,15 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
-        public async Task TestNoDiagnostic_SingleConstraint()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task TestNoDiagnostic_SingleConstraint()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C<T> where T : struct
 {
 }
 ");
-        }
     }
 }

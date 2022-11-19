@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 ExpressionSyntax expression = argument.Expression;
 
-                if (expression == null)
+                if (expression is null)
                     return false;
 
                 if (expression.WalkDownParentheses() is LiteralExpressionSyntax)
@@ -62,10 +62,10 @@ namespace Roslynator.CSharp.Analysis
                 ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
                 SyntaxDebug.Assert(
-                    symbol != null || expression.WalkDownParentheses().IsKind(SyntaxKind.InterpolatedStringExpression),
+                    symbol is not null || expression.WalkDownParentheses().IsKind(SyntaxKind.InterpolatedStringExpression),
                     expression);
 
-                if (symbol == null)
+                if (symbol is null)
                     return true;
 
                 switch (symbol.Kind)
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Analysis
 
                             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-                            if (typeSymbol == null)
+                            if (typeSymbol is null)
                                 return false;
 
                             return typeSymbol.HasMetadataName(MetadataNames.System_Text_RegularExpressions_RegexOptions);

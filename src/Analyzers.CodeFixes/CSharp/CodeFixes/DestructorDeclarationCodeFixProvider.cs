@@ -10,40 +10,39 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DestructorDeclarationCodeFixProvider))]
+[Shared]
+public sealed class DestructorDeclarationCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DestructorDeclarationCodeFixProvider))]
-    [Shared]
-    public sealed class DestructorDeclarationCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyDestructor); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out DestructorDeclarationSyntax destructor))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyDestructor); }
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out DestructorDeclarationSyntax destructor))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.RemoveEmptyDestructor:
-                        {
-                            CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
-                                context.Document,
-                                destructor,
-                                title: "Remove empty destructor",
-                                equivalenceKey: GetEquivalenceKey(diagnostic));
+                case DiagnosticIdentifiers.RemoveEmptyDestructor:
+                    {
+                        CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
+                            context.Document,
+                            destructor,
+                            title: "Remove empty destructor",
+                            equivalenceKey: GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }

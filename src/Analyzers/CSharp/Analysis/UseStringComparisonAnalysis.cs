@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 ExpressionSyntax expression = arguments[1].Expression?.WalkDownParentheses();
 
-                if (expression != null)
+                if (expression is not null)
                 {
                     SyntaxKind kind = expression.Kind();
 
@@ -208,7 +208,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 ExpressionSyntax right = binaryExpression.Right?.WalkDownParentheses();
 
-                if (right != null)
+                if (right is not null)
                 {
                     SyntaxKind kind = right.Kind();
 

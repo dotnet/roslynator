@@ -121,12 +121,12 @@ namespace Roslynator.CSharp
 
                     statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
-                    if (statement == null)
+                    if (statement is null)
                         return false;
 
                     if (statement.Kind() == SyntaxKind.IfStatement
                         && block.IsParentKind(SyntaxKind.IfStatement)
-                        && ((IfStatementSyntax)block.Parent).Else != null
+                        && ((IfStatementSyntax)block.Parent).Else is not null
                         && ((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf)
                     {
                         return false;

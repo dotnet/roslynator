@@ -3,18 +3,17 @@
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public abstract class ExternalUrlProvider
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public abstract class ExternalUrlProvider
-    {
-        public abstract string Name { get; }
+    public abstract string Name { get; }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => Name;
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => Name;
 
-        public abstract DocumentationUrlInfo CreateUrl(ISymbol symbol);
+    public abstract DocumentationUrlInfo CreateUrl(ISymbol symbol);
 
-        public abstract bool CanCreateUrl(ISymbol symbol);
-    }
+    public abstract bool CanCreateUrl(ISymbol symbol);
 }

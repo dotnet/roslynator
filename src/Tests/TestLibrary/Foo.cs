@@ -17,12 +17,11 @@ using Roslynator;
 
 #pragma warning disable RCS1018, RCS1213, CA1822
 
-namespace Roslynator
+namespace Roslynator;
+
+class C
 {
-    class C
+    void M()
     {
-        void M()
-        {
-        }
     }
 }

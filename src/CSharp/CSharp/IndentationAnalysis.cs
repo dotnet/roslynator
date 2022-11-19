@@ -231,7 +231,7 @@ namespace Roslynator.CSharp
 
                 node = node.Parent;
             }
-            while (node != null);
+            while (node is not null);
 
             return default;
 
@@ -243,14 +243,14 @@ namespace Roslynator.CSharp
                     {
                         MemberDeclarationSyntax member2 = namespaceDeclaration.Members.FirstOrDefault();
 
-                        if (member2 != null)
+                        if (member2 is not null)
                             return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
                     }
                     else if (member is TypeDeclarationSyntax typeDeclaration)
                     {
                         MemberDeclarationSyntax member2 = typeDeclaration.Members.FirstOrDefault();
 
-                        if (member2 != null)
+                        if (member2 is not null)
                             return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
                     }
                     else if (member is GlobalStatementSyntax globalStatement)

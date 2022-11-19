@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests;
+
+public class RR0059AddMissingCasesToSwitchStatementTests : AbstractCSharpRefactoringVerifier
 {
-    public class RR0059AddMissingCasesToSwitchStatementTests : AbstractCSharpRefactoringVerifier
+    public override string RefactoringId { get; } = RefactoringIdentifiers.AddMissingCasesToSwitchStatement;
+
+    public override CSharpTestOptions Options
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddMissingCasesToSwitchStatement;
+        get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS1522_EmptySwitchBlock); }
+    }
 
-        public override CSharpTestOptions Options
-        {
-            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS1522_EmptySwitchBlock); }
-        }
-
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
-        public async Task Test_Empty()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
+    public async Task Test_Empty()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -64,12 +64,12 @@ class C
 }
 ",
 equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
-        public async Task Test_Default()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
+    public async Task Test_Default()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -117,12 +117,12 @@ class C
 }
 ",
 equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
-        public async Task Test2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
+    public async Task Test2()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -175,12 +175,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
-        public async Task Test_Flags()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
+    public async Task Test_Flags()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -255,12 +255,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
-        public async Task Test_TwoFieldsWithSameValue()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
+    public async Task Test_TwoFieldsWithSameValue()
+    {
+        await VerifyRefactoringAsync(@"
 enum E
 {
     A = 0,
@@ -309,12 +309,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
-        public async Task TestNoRefactoring()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
+    public async Task TestNoRefactoring()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System;
 
 class C
@@ -345,6 +345,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

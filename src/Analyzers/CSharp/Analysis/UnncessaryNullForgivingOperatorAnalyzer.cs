@@ -6,120 +6,119 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class UnncessaryNullForgivingOperatorAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UnncessaryNullForgivingOperatorAnalyzer : BaseDiagnosticAnalyzer
+    private static readonly MetadataName System_Diagnostics_CodeAnalysis_MaybeNullWhenAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute");
+    private static readonly MetadataName System_Diagnostics_CodeAnalysis_NotNullIfNotNullAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute");
+    private static readonly MetadataName System_Diagnostics_CodeAnalysis_NotNullWhenAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.NotNullWhenAttribute");
+
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static readonly MetadataName System_Diagnostics_CodeAnalysis_MaybeNullWhenAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute");
-        private static readonly MetadataName System_Diagnostics_CodeAnalysis_NotNullIfNotNullAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute");
-        private static readonly MetadataName System_Diagnostics_CodeAnalysis_NotNullWhenAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.NotNullWhenAttribute");
-
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UnnecessaryNullForgivingOperator);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UnnecessaryNullForgivingOperator);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeSuppressNullableWarningExpression(f), SyntaxKind.SuppressNullableWarningExpression);
+    }
+
+    private static void AnalyzeSuppressNullableWarningExpression(SyntaxNodeAnalysisContext context)
+    {
+        var suppressExpression = (PostfixUnaryExpressionSyntax)context.Node;
+
+        SyntaxNode node = suppressExpression.WalkUpParentheses().Parent;
+
+        if (node is ArgumentSyntax argument)
         {
-            base.Initialize(context);
+            IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(
+                argument,
+                cancellationToken: context.CancellationToken);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSuppressNullableWarningExpression(f), SyntaxKind.SuppressNullableWarningExpression);
-        }
-
-        private static void AnalyzeSuppressNullableWarningExpression(SyntaxNodeAnalysisContext context)
-        {
-            var suppressExpression = (PostfixUnaryExpressionSyntax)context.Node;
-
-            SyntaxNode node = suppressExpression.WalkUpParentheses().Parent;
-
-            if (node is ArgumentSyntax argument)
+            if (parameterSymbol?.Type.IsErrorType() == false
+                && parameterSymbol.Type.IsReferenceType
+                && parameterSymbol.Type.NullableAnnotation == NullableAnnotation.Annotated)
             {
-                IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(
-                    argument,
-                    cancellationToken: context.CancellationToken);
-
-                if (parameterSymbol?.Type.IsErrorType() == false
-                    && parameterSymbol.Type.IsReferenceType
-                    && parameterSymbol.Type.NullableAnnotation == NullableAnnotation.Annotated)
+                foreach (AttributeData attribute in parameterSymbol.GetAttributes())
                 {
-                    foreach (AttributeData attribute in parameterSymbol.GetAttributes())
+                    INamedTypeSymbol attributeClass = attribute.AttributeClass;
+
+                    if (attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_MaybeNullWhenAttribute)
+                        || attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_NotNullIfNotNullAttribute)
+                        || attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_NotNullWhenAttribute))
                     {
-                        INamedTypeSymbol attributeClass = attribute.AttributeClass;
-
-                        if (attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_MaybeNullWhenAttribute)
-                            || attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_NotNullIfNotNullAttribute)
-                            || attributeClass.HasMetadataName(System_Diagnostics_CodeAnalysis_NotNullWhenAttribute))
-                        {
-                            return;
-                        }
+                        return;
                     }
-
-                    context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
                 }
+
+                context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
             }
-            else if (node.IsKind(SyntaxKind.EqualsValueClause))
+        }
+        else if (node.IsKind(SyntaxKind.EqualsValueClause))
+        {
+            if (suppressExpression.Operand.WalkDownParentheses().IsKind(
+                SyntaxKind.NullLiteralExpression,
+                SyntaxKind.DefaultLiteralExpression,
+                SyntaxKind.DefaultExpression))
             {
-                if (suppressExpression.Operand.WalkDownParentheses().IsKind(
-                    SyntaxKind.NullLiteralExpression,
-                    SyntaxKind.DefaultLiteralExpression,
-                    SyntaxKind.DefaultExpression))
+                SyntaxNode parent = node.Parent;
+
+                if (parent.IsKind(SyntaxKind.PropertyDeclaration))
                 {
-                    SyntaxNode parent = node.Parent;
+                    var property = (PropertyDeclarationSyntax)node.Parent;
 
-                    if (parent.IsKind(SyntaxKind.PropertyDeclaration))
+                    if (IsNullableReferenceType(context, property.Type))
+                        context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, node);
+                }
+                else if (parent.IsKind(SyntaxKind.VariableDeclarator))
+                {
+                    SyntaxDebug.Assert(
+                        parent.IsParentKind(SyntaxKind.VariableDeclaration)
+                            && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.LocalDeclarationStatement),
+                        parent);
+
+                    if (parent.IsParentKind(SyntaxKind.VariableDeclaration)
+                        && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.LocalDeclarationStatement))
                     {
-                        var property = (PropertyDeclarationSyntax)node.Parent;
+                        var variableDeclaration = (VariableDeclarationSyntax)parent.Parent;
 
-                        if (IsNullableReferenceType(context, property.Type))
-                            context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, node);
-                    }
-                    else if (parent.IsKind(SyntaxKind.VariableDeclarator))
-                    {
-                        SyntaxDebug.Assert(
-                            parent.IsParentKind(SyntaxKind.VariableDeclaration)
-                                && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.LocalDeclarationStatement),
-                            parent);
-
-                        if (parent.IsParentKind(SyntaxKind.VariableDeclaration)
-                            && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.LocalDeclarationStatement))
+                        if (IsNullableReferenceType(context, variableDeclaration.Type))
                         {
-                            var variableDeclaration = (VariableDeclarationSyntax)parent.Parent;
-
-                            if (IsNullableReferenceType(context, variableDeclaration.Type))
+                            if (parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
                             {
-                                if (parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
-                                {
-                                    context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, node);
-                                }
-                                else
-                                {
-                                    context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
-                                }
+                                context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, node);
+                            }
+                            else
+                            {
+                                context.ReportDiagnostic(DiagnosticRules.UnnecessaryNullForgivingOperator, suppressExpression.OperatorToken);
                             }
                         }
                     }
                 }
             }
+        }
 
-            static bool IsNullableReferenceType(SyntaxNodeAnalysisContext context, TypeSyntax type)
-            {
-                if (!type.IsKind(SyntaxKind.NullableType))
-                    return false;
+        static bool IsNullableReferenceType(SyntaxNodeAnalysisContext context, TypeSyntax type)
+        {
+            if (!type.IsKind(SyntaxKind.NullableType))
+                return false;
 
-                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                return !typeSymbol.IsErrorType()
-                    && typeSymbol.IsReferenceType;
-            }
+            return !typeSymbol.IsErrorType()
+                && typeSymbol.IsReferenceType;
         }
     }
 }

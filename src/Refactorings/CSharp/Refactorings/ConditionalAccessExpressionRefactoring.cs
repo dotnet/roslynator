@@ -3,14 +3,13 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConditionalAccessExpressionRefactoring
 {
-    internal static class ConditionalAccessExpressionRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, ConditionalAccessExpressionSyntax conditionalAccessExpression)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ConditionalAccessExpressionSyntax conditionalAccessExpression)
-        {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapCallChain))
-                await WrapCallChainRefactoring.ComputeRefactoringsAsync(context, conditionalAccessExpression).ConfigureAwait(false);
-        }
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapCallChain))
+            await WrapCallChainRefactoring.ComputeRefactoringsAsync(context, conditionalAccessExpression).ConfigureAwait(false);
     }
 }

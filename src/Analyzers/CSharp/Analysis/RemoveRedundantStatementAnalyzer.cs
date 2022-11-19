@@ -7,70 +7,69 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analysis.RemoveRedundantStatement;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class RemoveRedundantStatementAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RemoveRedundantStatementAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveRedundantStatement);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveRedundantStatement);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeContinueStatement(f), SyntaxKind.ContinueStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeYieldBreakStatement(f), SyntaxKind.YieldBreakStatement);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeContinueStatement(f), SyntaxKind.ContinueStatement);
+        context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
+        context.RegisterSyntaxNodeAction(f => AnalyzeYieldBreakStatement(f), SyntaxKind.YieldBreakStatement);
+    }
 
-        private static void AnalyzeContinueStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.SpanContainsDirectives())
-                return;
+    private static void AnalyzeContinueStatement(SyntaxNodeAnalysisContext context)
+    {
+        if (context.Node.SpanContainsDirectives())
+            return;
 
-            var continueStatement = (ContinueStatementSyntax)context.Node;
+        var continueStatement = (ContinueStatementSyntax)context.Node;
 
-            if (!RemoveRedundantStatementAnalysis.IsFixable(continueStatement))
-                return;
+        if (!RemoveRedundantStatementAnalysis.IsFixable(continueStatement))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, continueStatement);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, continueStatement);
+    }
 
-        private static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.SpanContainsDirectives())
-                return;
+    private static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
+    {
+        if (context.Node.SpanContainsDirectives())
+            return;
 
-            var returnStatement = (ReturnStatementSyntax)context.Node;
+        var returnStatement = (ReturnStatementSyntax)context.Node;
 
-            if (!RemoveRedundantStatementAnalysis.IsFixable(returnStatement))
-                return;
+        if (!RemoveRedundantStatementAnalysis.IsFixable(returnStatement))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, returnStatement);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, returnStatement);
+    }
 
-        private static void AnalyzeYieldBreakStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.SpanContainsDirectives())
-                return;
+    private static void AnalyzeYieldBreakStatement(SyntaxNodeAnalysisContext context)
+    {
+        if (context.Node.SpanContainsDirectives())
+            return;
 
-            var yieldBreakStatement = (YieldStatementSyntax)context.Node;
+        var yieldBreakStatement = (YieldStatementSyntax)context.Node;
 
-            if (!RemoveRedundantStatementAnalysis.IsFixable(yieldBreakStatement))
-                return;
+        if (!RemoveRedundantStatementAnalysis.IsFixable(yieldBreakStatement))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, yieldBreakStatement);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, yieldBreakStatement);
     }
 }

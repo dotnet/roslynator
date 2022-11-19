@@ -18,9 +18,9 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = variableDeclaration.Type;
 
-            Debug.Assert(type != null);
+            Debug.Assert(type is not null);
 
-            if (type == null)
+            if (type is null)
                 return default;
 
             SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
@@ -35,12 +35,12 @@ namespace Roslynator.CSharp
 
             ExpressionSyntax expression = variables[0].Initializer?.Value?.WalkDownParentheses();
 
-            if (expression == null)
+            if (expression is null)
                 return default;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return default;
 
             SymbolKind kind = typeSymbol.Kind;
@@ -117,9 +117,9 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = variableDeclaration.Type;
 
-            Debug.Assert(type != null);
+            Debug.Assert(type is not null);
 
-            if (type == null)
+            if (type is null)
                 return false;
 
             if (!type.IsVar)
@@ -137,12 +137,12 @@ namespace Roslynator.CSharp
                 .Value?
                 .WalkDownParentheses();
 
-            if (expression == null)
+            if (expression is null)
                 return false;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
@@ -180,9 +180,9 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = variableDeclaration.Type;
 
-            Debug.Assert(type != null);
+            Debug.Assert(type is not null);
 
-            if (type == null)
+            if (type is null)
                 return false;
 
             if (type.IsVar)
@@ -213,7 +213,7 @@ namespace Roslynator.CSharp
                 .Value?
                 .WalkDownParentheses();
 
-            if (expression == null)
+            if (expression is null)
                 return false;
 
             if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression))
@@ -221,7 +221,7 @@ namespace Roslynator.CSharp
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
@@ -266,7 +266,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.AsExpression:
                 case SyntaxKind.DefaultExpression:
                     {
-                        return typeSymbol == null
+                        return typeSymbol is null
                             || GetEqualityComparer(includeNullability).Equals(
                                 typeSymbol,
                                 semanticModel.GetTypeSymbol(expression, cancellationToken));
@@ -280,7 +280,7 @@ namespace Roslynator.CSharp
                         if (!expressions.Any())
                             return false;
 
-                        if (typeSymbol != null)
+                        if (typeSymbol is not null)
                         {
                             var arrayTypeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, cancellationToken) as IArrayTypeSymbol;
 
@@ -307,7 +307,7 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.InvocationExpression:
                     {
-                        if (typeSymbol != null)
+                        if (typeSymbol is not null)
                         {
                             var invocationExpression = (InvocationExpressionSyntax)expression;
                             if (invocationExpression.Expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
@@ -325,7 +325,7 @@ namespace Roslynator.CSharp
                                     ISymbol symbol2 = semanticModel.GetSymbol(simpleMemberAccess.Expression, cancellationToken);
 
                                     if (SymbolEqualityComparer.Default.Equals(symbol2, typeSymbol)
-                                        && semanticModel.GetAliasInfo(simpleMemberAccess.Expression, cancellationToken) == null)
+                                        && semanticModel.GetAliasInfo(simpleMemberAccess.Expression, cancellationToken) is null)
                                     {
                                         return true;
                                     }
@@ -352,7 +352,7 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = declarationExpression.Type;
 
-            if (type == null)
+            if (type is null)
                 return default;
 
             if (declarationExpression.Designation is not SingleVariableDesignationSyntax singleVariableDesignation)
@@ -363,9 +363,9 @@ namespace Roslynator.CSharp
 
             ITypeSymbol typeSymbol = localSymbol.Type;
 
-            Debug.Assert(typeSymbol != null);
+            Debug.Assert(typeSymbol is not null);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return default;
 
             SymbolKind kind = typeSymbol.Kind;
@@ -401,9 +401,9 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = declarationExpression.Type;
 
-            Debug.Assert(type != null);
+            Debug.Assert(type is not null);
 
-            if (type == null)
+            if (type is null)
                 return false;
 
             if (!type.IsVar)
@@ -460,7 +460,7 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = declarationExpression.Type;
 
-            if (type == null)
+            if (type is null)
                 return false;
 
             if (type.IsVar)
@@ -474,9 +474,9 @@ namespace Roslynator.CSharp
 
             ITypeSymbol typeSymbol = localSymbol.Type;
 
-            Debug.Assert(typeSymbol != null);
+            Debug.Assert(typeSymbol is not null);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
@@ -558,7 +558,7 @@ namespace Roslynator.CSharp
 
             ITypeSymbol tupleTypeSymbol = semanticModel.GetTypeSymbol(tupleExpression, cancellationToken);
 
-            if (tupleTypeSymbol == null)
+            if (tupleTypeSymbol is null)
                 return false;
 
             ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
@@ -588,7 +588,7 @@ namespace Roslynator.CSharp
 
                 TypeSyntax type = declarationExpression.Type;
 
-                if (type == null)
+                if (type is null)
                     return false;
 
                 if (declarationExpression.Designation is not SingleVariableDesignationSyntax singleVariableDesignation)
@@ -599,9 +599,9 @@ namespace Roslynator.CSharp
 
                 ITypeSymbol typeSymbol = localSymbol.Type;
 
-                Debug.Assert(typeSymbol != null);
+                Debug.Assert(typeSymbol is not null);
 
-                if (typeSymbol == null)
+                if (typeSymbol is null)
                     return false;
 
                 if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
@@ -625,16 +625,16 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = forEachStatement.Type;
 
-            Debug.Assert(type != null);
+            Debug.Assert(type is not null);
 
-            if (type == null)
+            if (type is null)
                 return default;
 
             ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
             ITypeSymbol typeSymbol = info.ElementType;
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return default;
 
             SymbolKind kind = typeSymbol.Kind;
@@ -675,9 +675,9 @@ namespace Roslynator.CSharp
                     {
                         TypeSyntax type = declarationExpression.Type;
 
-                        Debug.Assert(type != null);
+                        Debug.Assert(type is not null);
 
-                        if (type == null)
+                        if (type is null)
                             return default;
 
                         SyntaxDebug.Assert(type.IsVar, type);
@@ -721,7 +721,7 @@ namespace Roslynator.CSharp
 
             ITypeSymbol typeSymbol = info.ElementType;
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return default;
 
             SymbolKind kind = typeSymbol.Kind;
@@ -751,9 +751,9 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = forEachStatement.Type;
 
-            Debug.Assert(type != null);
+            Debug.Assert(type is not null);
 
-            if (type == null)
+            if (type is null)
                 return false;
 
             if (!type.IsVar)
@@ -763,7 +763,7 @@ namespace Roslynator.CSharp
 
             ITypeSymbol typeSymbol = info.ElementType;
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
@@ -790,7 +790,7 @@ namespace Roslynator.CSharp
 
             ITypeSymbol typeSymbol = info.ElementType;
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
@@ -803,9 +803,9 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = forEachStatement.Type;
 
-            Debug.Assert(type != null);
+            Debug.Assert(type is not null);
 
-            if (type == null)
+            if (type is null)
                 return false;
 
             if (type.IsVar)
@@ -815,7 +815,7 @@ namespace Roslynator.CSharp
 
             ITypeSymbol typeSymbol = info.ElementType;
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
@@ -848,7 +848,7 @@ namespace Roslynator.CSharp
 
                 TypeSyntax type = declarationExpression.Type;
 
-                if (type == null)
+                if (type is null)
                     return false;
 
                 if (!type.IsVar)
@@ -865,7 +865,7 @@ namespace Roslynator.CSharp
 
             ITypeSymbol typeSymbol = info.ElementType;
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))

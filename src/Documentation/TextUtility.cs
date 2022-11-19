@@ -2,78 +2,77 @@
 
 using System.Text.RegularExpressions;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+internal static class TextUtility
 {
-    internal static class TextUtility
+    private static readonly Regex _newLineAndSpacesRegex = new(@"\r?\n[\s-[\r\n]]*");
+
+    public static string RemoveLeadingTrailingNewLine(
+        string s,
+        bool leadingNewLine = true,
+        bool trailingNewLine = true)
     {
-        private static readonly Regex _newLineAndSpacesRegex = new(@"\r?\n[\s-[\r\n]]*");
+        int length = s.Length;
 
-        public static string RemoveLeadingTrailingNewLine(
-            string s,
-            bool leadingNewLine = true,
-            bool trailingNewLine = true)
+        if (length == 0)
+            return s;
+
+        int startIndex = 0;
+
+        if (leadingNewLine)
         {
-            int length = s.Length;
-
-            if (length == 0)
-                return s;
-
-            int startIndex = 0;
-
-            if (leadingNewLine)
+            if (s[0] == '\n')
             {
-                if (s[0] == '\n')
-                {
-                    startIndex = 1;
-                }
-                else if (s[0] == '\r'
-                    && length > 1
-                    && s[1] == '\n')
-                {
-                    startIndex = 2;
-                }
+                startIndex = 1;
             }
+            else if (s[0] == '\r'
+                && length > 1
+                && s[1] == '\n')
+            {
+                startIndex = 2;
+            }
+        }
 
-            if (trailingNewLine
-                && s[length - 1] == '\n')
+        if (trailingNewLine
+            && s[length - 1] == '\n')
+        {
+            length--;
+
+            if (length > 0
+                && s[length - 1] == '\r')
             {
                 length--;
-
-                if (length > 0
-                    && s[length - 1] == '\r')
-                {
-                    length--;
-                }
             }
-
-            return s.Substring(startIndex, length - startIndex);
         }
 
-        public static string ToSingleLine(string s, string replacement = " ")
-        {
-            return _newLineAndSpacesRegex.Replace(s, replacement);
-        }
+        return s.Substring(startIndex, length - startIndex);
+    }
 
-        internal static string RemovePrefixFromDocumentationCommentId(string id)
+    public static string ToSingleLine(string s, string replacement = " ")
+    {
+        return _newLineAndSpacesRegex.Replace(s, replacement);
+    }
+
+    internal static string RemovePrefixFromDocumentationCommentId(string id)
+    {
+        if (id.Length > 2
+            && id[1] == ':')
         {
-            if (id.Length > 2
-                && id[1] == ':')
+            // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/processing-the-xml-file
+            switch (id[0])
             {
-                // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/processing-the-xml-file
-                switch (id[0])
-                {
-                    case 'N':
-                    case 'T':
-                    case 'F':
-                    case 'P':
-                    case 'M':
-                    case 'E':
-                    case '!':
-                        return id.Substring(2);
-                }
+                case 'N':
+                case 'T':
+                case 'F':
+                case 'P':
+                case 'M':
+                case 'E':
+                case '!':
+                    return id.Substring(2);
             }
-
-            return id;
         }
+
+        return id;
     }
 }

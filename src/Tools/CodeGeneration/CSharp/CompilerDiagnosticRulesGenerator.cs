@@ -11,106 +11,105 @@ using Roslynator.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+public static class CompilerDiagnosticRulesGenerator
 {
-    public static class CompilerDiagnosticRulesGenerator
+    public static CompilationUnitSyntax Generate(
+        IEnumerable<CompilerDiagnosticMetadata> compilerDiagnostics,
+        IComparer<string> comparer,
+        string @namespace)
     {
-        public static CompilationUnitSyntax Generate(
-            IEnumerable<CompilerDiagnosticMetadata> compilerDiagnostics,
-            IComparer<string> comparer,
-            string @namespace)
+        CompilationUnitSyntax compilationUnit = CompilationUnit(
+            UsingDirectives("Microsoft.CodeAnalysis"),
+            NamespaceDeclaration(
+                @namespace,
+                ClassDeclaration(
+                    Modifiers.Public_Static_Partial(),
+                    "CompilerDiagnosticRules",
+                    List(
+                        CreateMembers(
+                            compilerDiagnostics
+                                .OrderBy(f => f.Id, comparer))))));
+
+        compilationUnit = compilationUnit.NormalizeWhitespace();
+
+        return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
+    }
+
+    private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<CompilerDiagnosticMetadata> compilerDiagnostics)
+    {
+        foreach (CompilerDiagnosticMetadata compilerDiagnostic in compilerDiagnostics)
         {
-            CompilationUnitSyntax compilationUnit = CompilationUnit(
-                UsingDirectives("Microsoft.CodeAnalysis"),
-                NamespaceDeclaration(
-                    @namespace,
-                    ClassDeclaration(
-                        Modifiers.Public_Static_Partial(),
-                        "CompilerDiagnosticRules",
-                        List(
-                            CreateMembers(
-                                compilerDiagnostics
-                                    .OrderBy(f => f.Id, comparer))))));
-
-            compilationUnit = compilationUnit.NormalizeWhitespace();
-
-            return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
-        }
-
-        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<CompilerDiagnosticMetadata> compilerDiagnostics)
-        {
-            foreach (CompilerDiagnosticMetadata compilerDiagnostic in compilerDiagnostics)
-            {
-                FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                    Modifiers.Public_Static_ReadOnly(),
+            FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
+                Modifiers.Public_Static_ReadOnly(),
+                IdentifierName("DiagnosticDescriptor"),
+                compilerDiagnostic.Identifier,
+                ObjectCreationExpression(
                     IdentifierName("DiagnosticDescriptor"),
-                    compilerDiagnostic.Identifier,
-                    ObjectCreationExpression(
-                        IdentifierName("DiagnosticDescriptor"),
-                        ArgumentList(
-                            Argument(
-                                NameColon("id"),
-                                SimpleMemberAccessExpression(IdentifierName("CompilerDiagnosticIdentifiers"), IdentifierName($"{compilerDiagnostic.Id}_{compilerDiagnostic.Identifier}"))),
-                            Argument(
-                                NameColon("title"),
-                                StringLiteralExpression(compilerDiagnostic.Title)),
-                            Argument(
-                                NameColon("messageFormat"),
-                                StringLiteralExpression(compilerDiagnostic.MessageFormat)),
-                            Argument(
-                                NameColon("category"),
-                                StringLiteralExpression("Compiler")),
-                            Argument(
-                                NameColon("defaultSeverity"),
-                                SimpleMemberAccessExpression(IdentifierName("DiagnosticSeverity"), IdentifierName(compilerDiagnostic.Severity))),
-                            Argument(
-                                NameColon("isEnabledByDefault"),
-                                BooleanLiteralExpression(true)),
-                            Argument(
-                                NameColon("description"),
-                                NullLiteralExpression()),
-                            Argument(
-                                NameColon("helpLinkUri"),
-                                StringLiteralExpression(compilerDiagnostic.HelpUrl)),
-                            Argument(
-                                NameColon("customTags"),
-                                SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName("Compiler")))
-                            )));
+                    ArgumentList(
+                        Argument(
+                            NameColon("id"),
+                            SimpleMemberAccessExpression(IdentifierName("CompilerDiagnosticIdentifiers"), IdentifierName($"{compilerDiagnostic.Id}_{compilerDiagnostic.Identifier}"))),
+                        Argument(
+                            NameColon("title"),
+                            StringLiteralExpression(compilerDiagnostic.Title)),
+                        Argument(
+                            NameColon("messageFormat"),
+                            StringLiteralExpression(compilerDiagnostic.MessageFormat)),
+                        Argument(
+                            NameColon("category"),
+                            StringLiteralExpression("Compiler")),
+                        Argument(
+                            NameColon("defaultSeverity"),
+                            SimpleMemberAccessExpression(IdentifierName("DiagnosticSeverity"), IdentifierName(compilerDiagnostic.Severity))),
+                        Argument(
+                            NameColon("isEnabledByDefault"),
+                            BooleanLiteralExpression(true)),
+                        Argument(
+                            NameColon("description"),
+                            NullLiteralExpression()),
+                        Argument(
+                            NameColon("helpLinkUri"),
+                            StringLiteralExpression(compilerDiagnostic.HelpUrl)),
+                        Argument(
+                            NameColon("customTags"),
+                            SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName("Compiler")))
+                        )));
 
-                var settings = new DocumentationCommentGeneratorSettings(
-                    summary: new string[] { compilerDiagnostic.Id },
-                    ignoredTags: new[] { "returns", "value" },
-                    indentation: "        ",
-                    singleLineSummary: true);
+            var settings = new DocumentationCommentGeneratorSettings(
+                summary: new string[] { compilerDiagnostic.Id },
+                ignoredTags: new[] { "returns", "value" },
+                indentation: "        ",
+                singleLineSummary: true);
 
-                fieldDeclaration = fieldDeclaration.WithNewSingleLineDocumentationComment(settings);
+            fieldDeclaration = fieldDeclaration.WithNewSingleLineDocumentationComment(settings);
 
-                yield return fieldDeclaration;
-            }
+            yield return fieldDeclaration;
+        }
+    }
+
+    private class Rewriter : CSharpSyntaxRewriter
+    {
+        public static Rewriter Instance { get; } = new();
+
+        public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
+        {
+            node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
+
+            return node.AppendToTrailingTrivia(NewLine());
         }
 
-        private class Rewriter : CSharpSyntaxRewriter
+        public override SyntaxNode VisitArgument(ArgumentSyntax node)
         {
-            public static Rewriter Instance { get; } = new();
+            return node
+                .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))))
+                .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
+        }
 
-            public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
-            {
-                node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
-
-                return node.AppendToTrailingTrivia(NewLine());
-            }
-
-            public override SyntaxNode VisitArgument(ArgumentSyntax node)
-            {
-                return node
-                    .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))))
-                    .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
-            }
-
-            public override SyntaxNode VisitAttribute(AttributeSyntax node)
-            {
-                return node;
-            }
+        public override SyntaxNode VisitAttribute(AttributeSyntax node)
+        {
+            return node;
         }
     }
 }

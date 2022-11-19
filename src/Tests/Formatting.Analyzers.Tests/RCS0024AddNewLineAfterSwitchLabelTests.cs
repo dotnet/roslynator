@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0024AddNewLineAfterSwitchLabelTests : AbstractCSharpDiagnosticVerifier<AddNewLineAfterSwitchLabelAnalyzer, StatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterSwitchLabel;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0024AddNewLineAfterSwitchLabelTests : AbstractCSharpDiagnosticVerifier<AddNewLineAfterSwitchLabelAnalyzer, StatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterSwitchLabel;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void Foo()
@@ -43,12 +43,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
-        public async Task Test_MultipleLabels()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
+    public async Task Test_MultipleLabels()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void Foo()
@@ -78,12 +78,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void Foo()
@@ -98,6 +98,5 @@ class C
     }
 }
 ");
-        }
     }
 }

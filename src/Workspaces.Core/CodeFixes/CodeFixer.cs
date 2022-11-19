@@ -62,7 +62,7 @@ namespace Roslynator.CodeFixes
 
                 Project project = CurrentSolution.GetProject(projects[i]);
 
-                if (predicate == null || predicate(project))
+                if (predicate is null || predicate(project))
                 {
                     WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
@@ -453,12 +453,12 @@ namespace Roslynator.CodeFixes
                 cancellationToken)
                 .ConfigureAwait(false);
 
-            if (diagnosticFix.FixProvider2 != null)
+            if (diagnosticFix.FixProvider2 is not null)
                 return DiagnosticFixKind.MultipleFixers;
 
             CodeAction fix = diagnosticFix.CodeAction;
 
-            if (fix != null)
+            if (fix is not null)
             {
                 ImmutableArray<CodeActionOperation> operations = await fix.GetOperationsAsync(cancellationToken).ConfigureAwait(false);
 
@@ -466,7 +466,7 @@ namespace Roslynator.CodeFixes
                 {
                     operations[0].Apply(Workspace, cancellationToken);
 
-                    return (diagnostics.Length != 1 && diagnosticFix.FixProvider.GetFixAllProvider() == null)
+                    return (diagnostics.Length != 1 && diagnosticFix.FixProvider.GetFixAllProvider() is null)
                         ? DiagnosticFixKind.PartiallyFixed
                         : DiagnosticFixKind.Success;
                 }

@@ -15,88 +15,87 @@ using Roslynator.CSharp.Refactorings;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseHasFlagMethodOrBitwiseOperatorCodeFixProvider))]
+[Shared]
+public sealed class UseHasFlagMethodOrBitwiseOperatorCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseHasFlagMethodOrBitwiseOperatorCodeFixProvider))]
-    [Shared]
-    public sealed class UseHasFlagMethodOrBitwiseOperatorCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression))
+            return;
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        if (expression is InvocationExpressionSyntax invocationExpression)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator); }
+            CodeAction codeAction = CodeAction.Create(
+                ConvertHasFlagCallToBitwiseOperationRefactoring.Title,
+                ct => ConvertHasFlagCallToBitwiseOperationRefactoring.RefactorAsync(document, invocationExpression, ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+        else
+        {
+            SyntaxDebug.Assert(expression.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression), expression);
+
+            CodeAction codeAction = CodeAction.Create(
+                "Call 'HasFlag'",
+                ct => ConvertBitwiseOperationToHasFlagCallAsync(document, (BinaryExpressionSyntax)expression, ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+    }
+
+    private async Task<Document> ConvertBitwiseOperationToHasFlagCallAsync(
+        Document document,
+        BinaryExpressionSyntax equalsOrNotEquals,
+        CancellationToken cancellationToken)
+    {
+        ExpressionSyntax left = equalsOrNotEquals.Left.WalkDownParentheses();
+        ExpressionSyntax right = equalsOrNotEquals.Right.WalkDownParentheses();
+
+        BinaryExpressionSyntax bitwiseAnd;
+        ExpressionSyntax valueExpression;
+        if (left.IsKind(SyntaxKind.BitwiseAndExpression))
+        {
+            bitwiseAnd = (BinaryExpressionSyntax)left;
+            valueExpression = right;
+        }
+        else
+        {
+            bitwiseAnd = (BinaryExpressionSyntax)right;
+            valueExpression = left;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        ExpressionSyntax expression = bitwiseAnd.Left;
+        ExpressionSyntax argumentExpression = bitwiseAnd.Right;
+
+        ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
+            expression,
+            IdentifierName("HasFlag"),
+            ArgumentList(Argument(argumentExpression.WalkDownParentheses())))
+            .Parenthesize();
+
+        if (!(equalsOrNotEquals.IsKind(SyntaxKind.EqualsExpression)
+            ^ valueExpression.IsNumericLiteralExpression("0")))
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression))
-                return;
-
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            if (expression is InvocationExpressionSyntax invocationExpression)
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    ConvertHasFlagCallToBitwiseOperationRefactoring.Title,
-                    ct => ConvertHasFlagCallToBitwiseOperationRefactoring.RefactorAsync(document, invocationExpression, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
-            else
-            {
-                SyntaxDebug.Assert(expression.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression), expression);
-
-                CodeAction codeAction = CodeAction.Create(
-                    "Call 'HasFlag'",
-                    ct => ConvertBitwiseOperationToHasFlagCallAsync(document, (BinaryExpressionSyntax)expression, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
+            newExpression = LogicalNotExpression(newExpression).Parenthesize();
         }
 
-        private async Task<Document> ConvertBitwiseOperationToHasFlagCallAsync(
-            Document document,
-            BinaryExpressionSyntax equalsOrNotEquals,
-            CancellationToken cancellationToken)
-        {
-            ExpressionSyntax left = equalsOrNotEquals.Left.WalkDownParentheses();
-            ExpressionSyntax right = equalsOrNotEquals.Right.WalkDownParentheses();
+        newExpression = newExpression.WithFormatterAnnotation();
 
-            BinaryExpressionSyntax bitwiseAnd;
-            ExpressionSyntax valueExpression;
-            if (left.IsKind(SyntaxKind.BitwiseAndExpression))
-            {
-                bitwiseAnd = (BinaryExpressionSyntax)left;
-                valueExpression = right;
-            }
-            else
-            {
-                bitwiseAnd = (BinaryExpressionSyntax)right;
-                valueExpression = left;
-            }
-
-            ExpressionSyntax expression = bitwiseAnd.Left;
-            ExpressionSyntax argumentExpression = bitwiseAnd.Right;
-
-            ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
-                expression,
-                IdentifierName("HasFlag"),
-                ArgumentList(Argument(argumentExpression.WalkDownParentheses())))
-                .Parenthesize();
-
-            if (!(equalsOrNotEquals.IsKind(SyntaxKind.EqualsExpression)
-                ^ valueExpression.IsNumericLiteralExpression("0")))
-            {
-                newExpression = LogicalNotExpression(newExpression).Parenthesize();
-            }
-
-            newExpression = newExpression.WithFormatterAnnotation();
-
-            return await document.ReplaceNodeAsync(equalsOrNotEquals, newExpression, cancellationToken).ConfigureAwait(false);
-        }
+        return await document.ReplaceNodeAsync(equalsOrNotEquals, newExpression, cancellationToken).ConfigureAwait(false);
     }
 }

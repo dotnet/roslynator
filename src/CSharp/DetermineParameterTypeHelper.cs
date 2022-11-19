@@ -9,131 +9,130 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+internal static class DetermineParameterTypeHelper
 {
-    internal static class DetermineParameterTypeHelper
+    public static ImmutableArray<ITypeSymbol> DetermineParameterTypes(
+        ArgumentSyntax argument,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
     {
-        public static ImmutableArray<ITypeSymbol> DetermineParameterTypes(
-            ArgumentSyntax argument,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
+        if (argument.Parent is BaseArgumentListSyntax argumentList)
         {
-            if (argument.Parent is BaseArgumentListSyntax argumentList)
+            SyntaxNode parent = argumentList.Parent;
+
+            if (parent is not null)
             {
-                SyntaxNode parent = argumentList.Parent;
+                SymbolInfo symbolInfo = GetSymbolInfo(parent, semanticModel, cancellationToken);
 
-                if (parent != null)
+                ISymbol symbol = symbolInfo.Symbol;
+
+                if (symbol is not null)
                 {
-                    SymbolInfo symbolInfo = GetSymbolInfo(parent, semanticModel, cancellationToken);
+                    ITypeSymbol typeSymbol = DetermineParameterType(symbol, argument, argumentList);
 
-                    ISymbol symbol = symbolInfo.Symbol;
+                    if (typeSymbol?.IsErrorType() == false)
+                        return ImmutableArray.Create(typeSymbol);
+                }
+                else
+                {
+                    HashSet<ITypeSymbol> typeSymbols = null;
 
-                    if (symbol != null)
+                    foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
                     {
-                        ITypeSymbol typeSymbol = DetermineParameterType(symbol, argument, argumentList);
+                        ITypeSymbol typeSymbol = DetermineParameterType(candidateSymbol, argument, argumentList);
 
                         if (typeSymbol?.IsErrorType() == false)
-                            return ImmutableArray.Create(typeSymbol);
-                    }
-                    else
-                    {
-                        HashSet<ITypeSymbol> typeSymbols = null;
-
-                        foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
                         {
-                            ITypeSymbol typeSymbol = DetermineParameterType(candidateSymbol, argument, argumentList);
-
-                            if (typeSymbol?.IsErrorType() == false)
-                            {
-                                (typeSymbols ??= new HashSet<ITypeSymbol>()).Add(typeSymbol);
-                            }
+                            (typeSymbols ??= new HashSet<ITypeSymbol>()).Add(typeSymbol);
                         }
-
-                        if (typeSymbols != null)
-                            return typeSymbols.ToImmutableArray();
                     }
+
+                    if (typeSymbols is not null)
+                        return typeSymbols.ToImmutableArray();
                 }
             }
-
-            return ImmutableArray<ITypeSymbol>.Empty;
         }
 
-        private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            if (node is ExpressionSyntax expression)
-                return semanticModel.GetSymbolInfo(expression, cancellationToken);
+        return ImmutableArray<ITypeSymbol>.Empty;
+    }
 
-            if (node is ConstructorInitializerSyntax constructorInitializer)
-                return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
+    private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        if (node is ExpressionSyntax expression)
+            return semanticModel.GetSymbolInfo(expression, cancellationToken);
 
-            return default;
-        }
+        if (node is ConstructorInitializerSyntax constructorInitializer)
+            return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
 
-        private static ITypeSymbol DetermineParameterType(
-            ISymbol symbol,
-            ArgumentSyntax argument,
-            BaseArgumentListSyntax argumentList)
-        {
-            IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
+        return default;
+    }
 
-            if (parameterSymbol == null)
-                return null;
+    private static ITypeSymbol DetermineParameterType(
+        ISymbol symbol,
+        ArgumentSyntax argument,
+        BaseArgumentListSyntax argumentList)
+    {
+        IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
 
-            RefKind refKind = parameterSymbol.RefKind;
-
-            if (refKind == RefKind.Out)
-            {
-                if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
-                    return null;
-            }
-            else if (refKind == RefKind.Ref)
-            {
-                if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword))
-                    return null;
-            }
-
-            ITypeSymbol typeSymbol = parameterSymbol.Type;
-
-            if (parameterSymbol.IsParams
-                && typeSymbol is IArrayTypeSymbol arrayType)
-            {
-                return arrayType.ElementType;
-            }
-
-            return typeSymbol;
-        }
-
-        private static IParameterSymbol DetermineParameterSymbol(
-            ISymbol symbol,
-            ArgumentSyntax argument,
-            BaseArgumentListSyntax argumentList)
-        {
-            ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
-
-            Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
-
-            if (parameters.IsDefault)
-                return null;
-
-            string name = argument.NameColon?.Name?.Identifier.ValueText;
-
-            if (name != null)
-                return parameters.FirstOrDefault(f => f.Name == name);
-
-            int index = argumentList.Arguments.IndexOf(argument);
-
-            if (index >= 0
-                && index < parameters.Length)
-            {
-                return parameters[index];
-            }
-
-            IParameterSymbol lastParameter = parameters.LastOrDefault();
-
-            if (lastParameter?.IsParams == true)
-                return lastParameter;
-
+        if (parameterSymbol is null)
             return null;
+
+        RefKind refKind = parameterSymbol.RefKind;
+
+        if (refKind == RefKind.Out)
+        {
+            if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
+                return null;
         }
+        else if (refKind == RefKind.Ref)
+        {
+            if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword))
+                return null;
+        }
+
+        ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+        if (parameterSymbol.IsParams
+            && typeSymbol is IArrayTypeSymbol arrayType)
+        {
+            return arrayType.ElementType;
+        }
+
+        return typeSymbol;
+    }
+
+    private static IParameterSymbol DetermineParameterSymbol(
+        ISymbol symbol,
+        ArgumentSyntax argument,
+        BaseArgumentListSyntax argumentList)
+    {
+        ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
+
+        Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
+
+        if (parameters.IsDefault)
+            return null;
+
+        string name = argument.NameColon?.Name?.Identifier.ValueText;
+
+        if (name is not null)
+            return parameters.FirstOrDefault(f => f.Name == name);
+
+        int index = argumentList.Arguments.IndexOf(argument);
+
+        if (index >= 0
+            && index < parameters.Length)
+        {
+            return parameters[index];
+        }
+
+        IParameterSymbol lastParameter = parameters.LastOrDefault();
+
+        if (lastParameter?.IsParams == true)
+            return lastParameter;
+
+        return null;
     }
 }
