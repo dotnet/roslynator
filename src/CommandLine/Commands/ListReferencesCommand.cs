@@ -10,106 +10,105 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using static Roslynator.Logger;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal class ListReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
 {
-    internal class ListReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
+    public ListReferencesCommand(
+        ListReferencesCommandLineOptions options,
+        MetadataReferenceDisplay display,
+        MetadataReferenceFilter filter,
+        in ProjectFilter projectFilter) : base(projectFilter)
     {
-        public ListReferencesCommand(
-            ListReferencesCommandLineOptions options,
-            MetadataReferenceDisplay display,
-            MetadataReferenceFilter filter,
-            in ProjectFilter projectFilter) : base(projectFilter)
+        Options = options;
+        Display = display;
+        Filter = filter;
+    }
+
+    public ListReferencesCommandLineOptions Options { get; }
+
+    public MetadataReferenceDisplay Display { get; }
+
+    public MetadataReferenceFilter Filter { get; }
+
+    public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
+    {
+        AssemblyResolver.Register();
+
+        ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
+
+        int count = 0;
+
+        foreach (string display in compilations
+            .SelectMany(compilation => compilation.ExternalReferences.Select(reference => (compilation, reference)))
+            .Select(f => GetDisplay(f.compilation, f.reference))
+            .Where(f => f != null)
+            .Distinct()
+            .OrderBy(f => f, StringComparer.InvariantCulture))
         {
-            Options = options;
-            Display = display;
-            Filter = filter;
+            WriteLine(display);
+            count++;
         }
 
-        public ListReferencesCommandLineOptions Options { get; }
-
-        public MetadataReferenceDisplay Display { get; }
-
-        public MetadataReferenceFilter Filter { get; }
-
-        public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
+        if (ShouldWrite(Verbosity.Normal))
         {
-            AssemblyResolver.Register();
+            WriteLine(Verbosity.Normal);
+            WriteLine($"{count} assembl{((count == 1) ? "y" : "ies")} found", ConsoleColors.Green, Verbosity.Normal);
+        }
 
-            ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
+        return CommandResults.Success;
 
-            int count = 0;
-
-            foreach (string display in compilations
-                .SelectMany(compilation => compilation.ExternalReferences.Select(reference => (compilation, reference)))
-                .Select(f => GetDisplay(f.compilation, f.reference))
-                .Where(f => f != null)
-                .Distinct()
-                .OrderBy(f => f, StringComparer.InvariantCulture))
+        string GetDisplay(Compilation compilation, MetadataReference reference)
+        {
+            switch (reference)
             {
-                WriteLine(display);
-                count++;
-            }
+                case PortableExecutableReference portableReference:
+                    {
+                        if ((Filter & MetadataReferenceFilter.Dll) == 0)
+                            return null;
 
-            if (ShouldWrite(Verbosity.Normal))
-            {
-                WriteLine(Verbosity.Normal);
-                WriteLine($"{count} assembl{((count == 1) ? "y" : "ies")} found", ConsoleColors.Green, Verbosity.Normal);
-            }
+                        string path = portableReference.FilePath;
 
-            return CommandResults.Success;
-
-            string GetDisplay(Compilation compilation, MetadataReference reference)
-            {
-                switch (reference)
-                {
-                    case PortableExecutableReference portableReference:
+                        switch (Display)
                         {
-                            if ((Filter & MetadataReferenceFilter.Dll) == 0)
-                                return null;
+                            case MetadataReferenceDisplay.Path:
+                                {
+                                    return path;
+                                }
+                            case MetadataReferenceDisplay.FileName:
+                                {
+                                    return Path.GetFileName(path);
+                                }
+                            case MetadataReferenceDisplay.FileNameWithoutExtension:
+                                {
+                                    return Path.GetFileNameWithoutExtension(path);
+                                }
+                            case MetadataReferenceDisplay.AssemblyName:
+                                {
+                                    var assembly = (IAssemblySymbol)compilation.GetAssemblyOrModuleSymbol(reference);
 
-                            string path = portableReference.FilePath;
-
-                            switch (Display)
-                            {
-                                case MetadataReferenceDisplay.Path:
-                                    {
-                                        return path;
-                                    }
-                                case MetadataReferenceDisplay.FileName:
-                                    {
-                                        return Path.GetFileName(path);
-                                    }
-                                case MetadataReferenceDisplay.FileNameWithoutExtension:
-                                    {
-                                        return Path.GetFileNameWithoutExtension(path);
-                                    }
-                                case MetadataReferenceDisplay.AssemblyName:
-                                    {
-                                        var assembly = (IAssemblySymbol)compilation.GetAssemblyOrModuleSymbol(reference);
-
-                                        return assembly.Identity.ToString();
-                                    }
-                                default:
-                                    {
-                                        throw new InvalidOperationException();
-                                    }
-                            }
+                                    return assembly.Identity.ToString();
+                                }
+                            default:
+                                {
+                                    throw new InvalidOperationException();
+                                }
                         }
-                    case CompilationReference compilationReference:
-                        {
-                            if ((Filter & MetadataReferenceFilter.Project) == 0)
-                                return null;
+                    }
+                case CompilationReference compilationReference:
+                    {
+                        if ((Filter & MetadataReferenceFilter.Project) == 0)
+                            return null;
 
-                            return compilationReference.Display;
-                        }
-                    default:
-                        {
+                        return compilationReference.Display;
+                    }
+                default:
+                    {
 #if DEBUG
-                            WriteLine(reference.GetType().FullName, ConsoleColors.Yellow);
+                        WriteLine(reference.GetType().FullName, ConsoleColors.Yellow);
 #endif
-                            return reference.Display;
-                        }
-                }
+                        return reference.Display;
+                    }
             }
         }
     }

@@ -7,50 +7,49 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AvoidUsageOfUsingAliasDirectiveAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidUsageOfUsingAliasDirectiveAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidUsageOfUsingAliasDirective);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidUsageOfUsingAliasDirective);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeUsingDirective(f), SyntaxKind.UsingDirective);
+    }
+
+    private static void AnalyzeUsingDirective(SyntaxNodeAnalysisContext context)
+    {
+        var usingDirective = (UsingDirectiveSyntax)context.Node;
+
+        if (usingDirective.Alias == null)
+            return;
+
+        if (usingDirective.ContainsDiagnostics)
+            return;
+
+        if (usingDirective.SpanContainsDirectives())
+            return;
+
+        if (context.SemanticModel
+            .GetSymbol(usingDirective.Name, context.CancellationToken)?
+            .IsKind(SymbolKind.Namespace, SymbolKind.NamedType) == true)
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeUsingDirective(f), SyntaxKind.UsingDirective);
-        }
-
-        private static void AnalyzeUsingDirective(SyntaxNodeAnalysisContext context)
-        {
-            var usingDirective = (UsingDirectiveSyntax)context.Node;
-
-            if (usingDirective.Alias == null)
-                return;
-
-            if (usingDirective.ContainsDiagnostics)
-                return;
-
-            if (usingDirective.SpanContainsDirectives())
-                return;
-
-            if (context.SemanticModel
-                .GetSymbol(usingDirective.Name, context.CancellationToken)?
-                .IsKind(SymbolKind.Namespace, SymbolKind.NamedType) == true)
-            {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidUsageOfUsingAliasDirective, usingDirective);
-            }
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidUsageOfUsingAliasDirective, usingDirective);
         }
     }
 }

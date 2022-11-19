@@ -11,60 +11,59 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, LanguageNames.VisualBasic, Name = nameof(WhitespaceTriviaCodeFixProvider))]
+[Shared]
+public sealed class WhitespaceTriviaCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, LanguageNames.VisualBasic, Name = nameof(WhitespaceTriviaCodeFixProvider))]
-    [Shared]
-    public sealed class WhitespaceTriviaCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.RemoveTrailingWhitespace,
-                    DiagnosticIdentifiers.RemoveUnnecessaryBlankLine);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.RemoveTrailingWhitespace,
+                DiagnosticIdentifiers.RemoveUnnecessaryBlankLine);
+        }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        TextSpan span = context.Span;
+
+        if (!root.FindTrivia(span.Start).IsWhitespaceOrEndOfLineTrivia()
+            && !root.FindToken(span.Start, findInsideTrivia: true).IsKind(SyntaxKind.XmlTextLiteralToken))
+        {
+            Debug.Fail("");
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            TextSpan span = context.Span;
-
-            if (!root.FindTrivia(span.Start).IsWhitespaceOrEndOfLineTrivia()
-                && !root.FindToken(span.Start, findInsideTrivia: true).IsKind(SyntaxKind.XmlTextLiteralToken))
+            switch (diagnostic.Id)
             {
-                Debug.Fail("");
-                return;
-            }
+                case DiagnosticIdentifiers.RemoveTrailingWhitespace:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove trailing white-space",
+                            ct => context.Document.WithTextChangeAsync(span, "", ct),
+                            GetEquivalenceKey(diagnostic));
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.RemoveTrailingWhitespace:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove trailing white-space",
-                                ct => context.Document.WithTextChangeAsync(span, "", ct),
-                                GetEquivalenceKey(diagnostic));
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.RemoveUnnecessaryBlankLine:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove blank line",
+                            ct => context.Document.WithTextChangeAsync(span, "", ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.RemoveUnnecessaryBlankLine:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove blank line",
-                                ct => context.Document.WithTextChangeAsync(span, "", ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS8632AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext)]
-        public async Task Test_Method()
-        {
-            await VerifyFixAsync(@"
+public class CS8632AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext)]
+    public async Task Test_Method()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     public string? M()
@@ -30,6 +30,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0007AddBlankLineBetweenAccessorsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenAccessors;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
-        public async Task Test_FirstIsMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0007AddBlankLineBetweenAccessorsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenAccessors;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
+    public async Task Test_FirstIsMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _p;
@@ -45,12 +45,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
-        public async Task Test_SecondIsMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
+    public async Task Test_SecondIsMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _p;
@@ -80,12 +80,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
-        public async Task Test_BothAreMultiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
+    public async Task Test_BothAreMultiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _p;
@@ -121,12 +121,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
-        public async Task TestNoDiagnostic_SingleLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
+    public async Task TestNoDiagnostic_SingleLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string _p;
@@ -138,6 +138,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.Testing;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1047NonAsynchronousMethodNameShouldNotEndWithAsyncTests : AbstractCSharpDiagnosticVerifier<AsyncSuffixAnalyzer, DummyCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAsync(@"
+public class RCS1047NonAsynchronousMethodNameShouldNotEndWithAsyncTests : AbstractCSharpDiagnosticVerifier<AsyncSuffixAnalyzer, DummyCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -25,12 +25,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
-        public async Task Test_Tuple()
-        {
-            await VerifyDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    public async Task Test_Tuple()
+    {
+        await VerifyDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -41,12 +41,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
-        public async Task Test_String()
-        {
-            await VerifyDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    public async Task Test_String()
+    {
+        await VerifyDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -57,12 +57,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
-        public async Task Test_Array()
-        {
-            await VerifyDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    public async Task Test_Array()
+    {
+        await VerifyDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -73,12 +73,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
-        public async Task Test_T()
-        {
-            await VerifyDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    public async Task Test_T()
+    {
+        await VerifyDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -89,12 +89,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -130,6 +130,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -14,112 +14,142 @@ using Microsoft.CodeAnalysis.Editing;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings.InlineDefinition
+namespace Roslynator.CSharp.Refactorings.InlineDefinition;
+
+internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
+    where TNode : SyntaxNode
+    where TDeclaration : MemberDeclarationSyntax
+    where TSymbol : ISymbol
 {
-    internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
-        where TNode : SyntaxNode
-        where TDeclaration : MemberDeclarationSyntax
-        where TSymbol : ISymbol
+    protected InlineRefactoring(
+        Document document,
+        SyntaxNode node,
+        INamedTypeSymbol nodeEnclosingType,
+        TSymbol symbol,
+        TDeclaration declaration,
+        ImmutableArray<ParameterInfo> parameterInfos,
+        SemanticModel invocationSemanticModel,
+        SemanticModel declarationSemanticModel,
+        CancellationToken cancellationToken)
     {
-        protected InlineRefactoring(
-            Document document,
-            SyntaxNode node,
-            INamedTypeSymbol nodeEnclosingType,
-            TSymbol symbol,
-            TDeclaration declaration,
-            ImmutableArray<ParameterInfo> parameterInfos,
-            SemanticModel invocationSemanticModel,
-            SemanticModel declarationSemanticModel,
-            CancellationToken cancellationToken)
+        Document = document;
+        Node = node;
+        NodeEnclosingType = nodeEnclosingType;
+        Symbol = symbol;
+        Declaration = declaration;
+        ParameterInfos = parameterInfos;
+        InvocationSemanticModel = invocationSemanticModel;
+        DeclarationSemanticModel = declarationSemanticModel;
+        CancellationToken = cancellationToken;
+    }
+
+    public abstract SyntaxNode BodyOrExpressionBody { get; }
+
+    public abstract ImmutableArray<ITypeSymbol> TypeArguments { get; }
+
+    public Document Document { get; }
+
+    public SyntaxNode Node { get; }
+
+    public INamedTypeSymbol NodeEnclosingType { get; }
+
+    public TSymbol Symbol { get; }
+
+    public TDeclaration Declaration { get; }
+
+    public ImmutableArray<ParameterInfo> ParameterInfos { get; }
+
+    public SemanticModel InvocationSemanticModel { get; }
+
+    public SemanticModel DeclarationSemanticModel { get; }
+
+    public CancellationToken CancellationToken { get; }
+
+    public virtual Task<Document> InlineAsync(
+        SyntaxNode node,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        ExpressionSyntax newExpression = RewriteExpression(node, expression);
+
+        return Document.ReplaceNodeAsync(node, newExpression, cancellationToken);
+    }
+
+    public virtual async Task<Solution> InlineAndRemoveAsync(
+        SyntaxNode node,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        if (node.SyntaxTree == Declaration.SyntaxTree)
         {
-            Document = document;
-            Node = node;
-            NodeEnclosingType = nodeEnclosingType;
-            Symbol = symbol;
-            Declaration = declaration;
-            ParameterInfos = parameterInfos;
-            InvocationSemanticModel = invocationSemanticModel;
-            DeclarationSemanticModel = declarationSemanticModel;
-            CancellationToken = cancellationToken;
-        }
+            DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
 
-        public abstract SyntaxNode BodyOrExpressionBody { get; }
-
-        public abstract ImmutableArray<ITypeSymbol> TypeArguments { get; }
-
-        public Document Document { get; }
-
-        public SyntaxNode Node { get; }
-
-        public INamedTypeSymbol NodeEnclosingType { get; }
-
-        public TSymbol Symbol { get; }
-
-        public TDeclaration Declaration { get; }
-
-        public ImmutableArray<ParameterInfo> ParameterInfos { get; }
-
-        public SemanticModel InvocationSemanticModel { get; }
-
-        public SemanticModel DeclarationSemanticModel { get; }
-
-        public CancellationToken CancellationToken { get; }
-
-        public virtual Task<Document> InlineAsync(
-            SyntaxNode node,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
-        {
             ExpressionSyntax newExpression = RewriteExpression(node, expression);
 
-            return Document.ReplaceNodeAsync(node, newExpression, cancellationToken);
+            editor.ReplaceNode(node, newExpression);
+
+            editor.RemoveNode(Declaration);
+
+            return editor.GetChangedDocument().Solution();
         }
-
-        public virtual async Task<Solution> InlineAndRemoveAsync(
-            SyntaxNode node,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
+        else
         {
-            if (node.SyntaxTree == Declaration.SyntaxTree)
-            {
-                DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
+            Document newDocument = await InlineAsync(node, expression, cancellationToken).ConfigureAwait(false);
 
-                ExpressionSyntax newExpression = RewriteExpression(node, expression);
+            DocumentId documentId = Document.Solution().GetDocumentId(Declaration.SyntaxTree);
 
-                editor.ReplaceNode(node, newExpression);
+            newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(Declaration, cancellationToken).ConfigureAwait(false);
 
-                editor.RemoveNode(Declaration);
-
-                return editor.GetChangedDocument().Solution();
-            }
-            else
-            {
-                Document newDocument = await InlineAsync(node, expression, cancellationToken).ConfigureAwait(false);
-
-                DocumentId documentId = Document.Solution().GetDocumentId(Declaration.SyntaxTree);
-
-                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(Declaration, cancellationToken).ConfigureAwait(false);
-
-                return newDocument.Solution();
-            }
+            return newDocument.Solution();
         }
+    }
 
-        private ParenthesizedExpressionSyntax RewriteExpression(SyntaxNode node, ExpressionSyntax expression)
+    private ParenthesizedExpressionSyntax RewriteExpression(SyntaxNode node, ExpressionSyntax expression)
+    {
+        return RewriteNode(expression)
+            .WithTriviaFrom(node)
+            .Parenthesize()
+            .WithFormatterAnnotation();
+    }
+
+    public virtual Task<Document> InlineAsync(
+        ExpressionStatementSyntax expressionStatement,
+        SyntaxList<StatementSyntax> statements,
+        CancellationToken cancellationToken = default)
+    {
+        int count = statements.Count;
+
+        StatementSyntax[] newStatements = RewriteStatements(statements);
+
+        newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
+        newStatements[count - 1] = newStatements[count - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
+
+        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(expressionStatement);
+
+        if (statementsInfo.Success)
         {
-            return RewriteNode(expression)
-                .WithTriviaFrom(node)
-                .Parenthesize()
-                .WithFormatterAnnotation();
+            StatementListInfo newInfo = statementsInfo.WithStatements(statementsInfo.Statements.ReplaceRange(expressionStatement, newStatements));
+
+            return Document.ReplaceNodeAsync(statementsInfo.Parent, newInfo.Parent, cancellationToken);
         }
-
-        public virtual Task<Document> InlineAsync(
-            ExpressionStatementSyntax expressionStatement,
-            SyntaxList<StatementSyntax> statements,
-            CancellationToken cancellationToken = default)
+        else
         {
-            int count = statements.Count;
+            return Document.ReplaceNodeAsync(expressionStatement, Block(newStatements), cancellationToken);
+        }
+    }
+
+    public virtual async Task<Solution> InlineAndRemoveAsync(
+        ExpressionStatementSyntax expressionStatement,
+        SyntaxList<StatementSyntax> statements,
+        CancellationToken cancellationToken = default)
+    {
+        if (expressionStatement.SyntaxTree == Declaration.SyntaxTree)
+        {
+            DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
 
             StatementSyntax[] newStatements = RewriteStatements(statements);
+
+            int count = statements.Count;
 
             newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
             newStatements[count - 1] = newStatements[count - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
@@ -128,256 +158,225 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
             if (statementsInfo.Success)
             {
-                StatementListInfo newInfo = statementsInfo.WithStatements(statementsInfo.Statements.ReplaceRange(expressionStatement, newStatements));
+                StatementListInfo newStatementsInfo = statementsInfo.WithStatements(statementsInfo.Statements.ReplaceRange(expressionStatement, newStatements));
 
-                return Document.ReplaceNodeAsync(statementsInfo.Parent, newInfo.Parent, cancellationToken);
+                editor.ReplaceNode(statementsInfo.Parent, newStatementsInfo.Parent);
             }
             else
             {
-                return Document.ReplaceNodeAsync(expressionStatement, Block(newStatements), cancellationToken);
+                editor.ReplaceNode(expressionStatement, Block(newStatements));
             }
-        }
 
-        public virtual async Task<Solution> InlineAndRemoveAsync(
-            ExpressionStatementSyntax expressionStatement,
-            SyntaxList<StatementSyntax> statements,
-            CancellationToken cancellationToken = default)
+            editor.RemoveNode(Declaration);
+
+            return editor.GetChangedDocument().Solution();
+        }
+        else
         {
-            if (expressionStatement.SyntaxTree == Declaration.SyntaxTree)
+            Document newDocument = await InlineAsync(expressionStatement, statements, cancellationToken).ConfigureAwait(false);
+
+            DocumentId documentId = Document.Solution().GetDocumentId(Declaration.SyntaxTree);
+
+            newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(Declaration, cancellationToken).ConfigureAwait(false);
+
+            return newDocument.Solution();
+        }
+    }
+
+    private StatementSyntax[] RewriteStatements(SyntaxList<StatementSyntax> statements)
+    {
+        var newStatements = new StatementSyntax[statements.Count];
+
+        for (int i = 0; i < statements.Count; i++)
+            newStatements[i] = RewriteNode(statements[i]).WithFormatterAnnotation();
+
+        return newStatements;
+    }
+
+    private T RewriteNode<T>(T node) where T : SyntaxNode
+    {
+        Dictionary<ISymbol, string> symbolMap = GetSymbolsToRename();
+
+        Dictionary<SyntaxNode, object> replacementMap = GetReplacementMap(node, symbolMap);
+
+        var rewriter = new InlineRewriter(replacementMap);
+
+        return (T)rewriter.Visit(node);
+    }
+
+    private Dictionary<SyntaxNode, object> GetReplacementMap(SyntaxNode node, Dictionary<ISymbol, string> symbolMap)
+    {
+        var replacementMap = new Dictionary<SyntaxNode, object>();
+
+        foreach (SyntaxNode descendant in node.DescendantNodesAndSelf(node.Span))
+        {
+            SyntaxKind kind = descendant.Kind();
+
+            if (kind == SyntaxKind.IdentifierName)
             {
-                DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
+                var identifierName = (IdentifierNameSyntax)descendant;
 
-                StatementSyntax[] newStatements = RewriteStatements(statements);
+                ISymbol symbol = DeclarationSemanticModel.GetSymbol(identifierName, CancellationToken);
 
-                int count = statements.Count;
-
-                newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
-                newStatements[count - 1] = newStatements[count - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
-
-                StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(expressionStatement);
-
-                if (statementsInfo.Success)
+                if (symbol != null)
                 {
-                    StatementListInfo newStatementsInfo = statementsInfo.WithStatements(statementsInfo.Statements.ReplaceRange(expressionStatement, newStatements));
-
-                    editor.ReplaceNode(statementsInfo.Parent, newStatementsInfo.Parent);
-                }
-                else
-                {
-                    editor.ReplaceNode(expressionStatement, Block(newStatements));
-                }
-
-                editor.RemoveNode(Declaration);
-
-                return editor.GetChangedDocument().Solution();
-            }
-            else
-            {
-                Document newDocument = await InlineAsync(expressionStatement, statements, cancellationToken).ConfigureAwait(false);
-
-                DocumentId documentId = Document.Solution().GetDocumentId(Declaration.SyntaxTree);
-
-                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(Declaration, cancellationToken).ConfigureAwait(false);
-
-                return newDocument.Solution();
-            }
-        }
-
-        private StatementSyntax[] RewriteStatements(SyntaxList<StatementSyntax> statements)
-        {
-            var newStatements = new StatementSyntax[statements.Count];
-
-            for (int i = 0; i < statements.Count; i++)
-                newStatements[i] = RewriteNode(statements[i]).WithFormatterAnnotation();
-
-            return newStatements;
-        }
-
-        private T RewriteNode<T>(T node) where T : SyntaxNode
-        {
-            Dictionary<ISymbol, string> symbolMap = GetSymbolsToRename();
-
-            Dictionary<SyntaxNode, object> replacementMap = GetReplacementMap(node, symbolMap);
-
-            var rewriter = new InlineRewriter(replacementMap);
-
-            return (T)rewriter.Visit(node);
-        }
-
-        private Dictionary<SyntaxNode, object> GetReplacementMap(SyntaxNode node, Dictionary<ISymbol, string> symbolMap)
-        {
-            var replacementMap = new Dictionary<SyntaxNode, object>();
-
-            foreach (SyntaxNode descendant in node.DescendantNodesAndSelf(node.Span))
-            {
-                SyntaxKind kind = descendant.Kind();
-
-                if (kind == SyntaxKind.IdentifierName)
-                {
-                    var identifierName = (IdentifierNameSyntax)descendant;
-
-                    ISymbol symbol = DeclarationSemanticModel.GetSymbol(identifierName, CancellationToken);
-
-                    if (symbol != null)
+                    if (symbol is IParameterSymbol parameterSymbol)
                     {
-                        if (symbol is IParameterSymbol parameterSymbol)
+                        foreach (ParameterInfo parameterInfo in ParameterInfos)
                         {
-                            foreach (ParameterInfo parameterInfo in ParameterInfos)
+                            if (ParameterEquals(parameterInfo, parameterSymbol))
                             {
-                                if (ParameterEquals(parameterInfo, parameterSymbol))
+                                ExpressionSyntax expression = parameterInfo.Expression;
+
+                                if (expression == null
+                                    && parameterInfo.ParameterSymbol.HasExplicitDefaultValue)
                                 {
-                                    ExpressionSyntax expression = parameterInfo.Expression;
-
-                                    if (expression == null
-                                        && parameterInfo.ParameterSymbol.HasExplicitDefaultValue)
-                                    {
-                                        expression = parameterInfo.ParameterSymbol.GetDefaultValueMinimalSyntax(InvocationSemanticModel, Node.SpanStart);
-                                    }
-
-                                    replacementMap.Add(identifierName, expression);
-                                    break;
-                                }
-                            }
-                        }
-                        else if (symbol.Kind == SymbolKind.TypeParameter)
-                        {
-                            var typeParameter = (ITypeParameterSymbol)symbol;
-
-                            ImmutableArray<ITypeSymbol> typeArguments = TypeArguments;
-
-                            if (typeArguments.Length > typeParameter.Ordinal)
-                                replacementMap.Add(identifierName, typeArguments[typeParameter.Ordinal].ToMinimalTypeSyntax(DeclarationSemanticModel, identifierName.SpanStart));
-                        }
-                        else if (symbol.IsStatic
-                            && !identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.QualifiedName))
-                        {
-                            INamedTypeSymbol containingType = symbol.ContainingType;
-
-                            if (containingType != null)
-                            {
-                                if (!NodeEnclosingType
-                                    .BaseTypesAndSelf()
-                                    .Any(f => SymbolEqualityComparer.Default.Equals(f, containingType)))
-                                {
-                                    replacementMap.Add(identifierName, CSharpFactory.SimpleMemberAccessExpression(containingType.ToTypeSyntax().WithSimplifierAnnotation(), identifierName));
-                                }
-                            }
-                            else if (symbol is ITypeSymbol typeSymbol)
-                            {
-                                replacementMap.Add(identifierName, typeSymbol.ToMinimalTypeSyntax(InvocationSemanticModel, Node.SpanStart));
-                            }
-                        }
-
-                        if (symbolMap != null
-                            && symbolMap.TryGetValue(symbol, out string name))
-                        {
-                            replacementMap.Add(identifierName, IdentifierName(name));
-                        }
-                    }
-                }
-                else if (symbolMap != null)
-                {
-                    switch (kind)
-                    {
-                        case SyntaxKind.VariableDeclarator:
-                        case SyntaxKind.SingleVariableDesignation:
-                        case SyntaxKind.Parameter:
-                        case SyntaxKind.TypeParameter:
-                        case SyntaxKind.ForEachStatement:
-                        case SyntaxKind.ForEachVariableStatement:
-                            {
-                                ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, CancellationToken);
-
-                                Debug.Assert(symbol != null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
-
-                                if (symbol != null
-                                    && symbolMap.TryGetValue(symbol, out string name))
-                                {
-                                    replacementMap.Add(descendant, name);
+                                    expression = parameterInfo.ParameterSymbol.GetDefaultValueMinimalSyntax(InvocationSemanticModel, Node.SpanStart);
                                 }
 
+                                replacementMap.Add(identifierName, expression);
                                 break;
                             }
+                        }
                     }
-                }
-            }
-
-            return replacementMap;
-
-            static bool ParameterEquals(in ParameterInfo parameterInfo, IParameterSymbol parameterSymbol2)
-            {
-                IParameterSymbol parameterSymbol = parameterInfo.ParameterSymbol;
-
-                if (parameterSymbol.ContainingSymbol is IMethodSymbol methodSymbol)
-                {
-                    if (parameterInfo.IsThis
-                        || methodSymbol.MethodKind == MethodKind.ReducedExtension)
+                    else if (symbol.Kind == SymbolKind.TypeParameter)
                     {
-                        int ordinal = parameterSymbol.Ordinal;
+                        var typeParameter = (ITypeParameterSymbol)symbol;
 
-                        if (methodSymbol.MethodKind == MethodKind.ReducedExtension)
-                            ordinal++;
+                        ImmutableArray<ITypeSymbol> typeArguments = TypeArguments;
 
-                        return ordinal == parameterSymbol2.Ordinal
-                            && string.Equals(parameterSymbol.Name, parameterSymbol2.Name, StringComparison.Ordinal);
+                        if (typeArguments.Length > typeParameter.Ordinal)
+                            replacementMap.Add(identifierName, typeArguments[typeParameter.Ordinal].ToMinimalTypeSyntax(DeclarationSemanticModel, identifierName.SpanStart));
+                    }
+                    else if (symbol.IsStatic
+                        && !identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.QualifiedName))
+                    {
+                        INamedTypeSymbol containingType = symbol.ContainingType;
+
+                        if (containingType != null)
+                        {
+                            if (!NodeEnclosingType
+                                .BaseTypesAndSelf()
+                                .Any(f => SymbolEqualityComparer.Default.Equals(f, containingType)))
+                            {
+                                replacementMap.Add(identifierName, CSharpFactory.SimpleMemberAccessExpression(containingType.ToTypeSyntax().WithSimplifierAnnotation(), identifierName));
+                            }
+                        }
+                        else if (symbol is ITypeSymbol typeSymbol)
+                        {
+                            replacementMap.Add(identifierName, typeSymbol.ToMinimalTypeSyntax(InvocationSemanticModel, Node.SpanStart));
+                        }
+                    }
+
+                    if (symbolMap != null
+                        && symbolMap.TryGetValue(symbol, out string name))
+                    {
+                        replacementMap.Add(identifierName, IdentifierName(name));
                     }
                 }
+            }
+            else if (symbolMap != null)
+            {
+                switch (kind)
+                {
+                    case SyntaxKind.VariableDeclarator:
+                    case SyntaxKind.SingleVariableDesignation:
+                    case SyntaxKind.Parameter:
+                    case SyntaxKind.TypeParameter:
+                    case SyntaxKind.ForEachStatement:
+                    case SyntaxKind.ForEachVariableStatement:
+                        {
+                            ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, CancellationToken);
 
-                return SymbolEqualityComparer.Default.Equals(parameterSymbol.OriginalDefinition, parameterSymbol2);
+                            Debug.Assert(symbol != null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
+
+                            if (symbol != null
+                                && symbolMap.TryGetValue(symbol, out string name))
+                            {
+                                replacementMap.Add(descendant, name);
+                            }
+
+                            break;
+                        }
+                }
             }
         }
 
-        private Dictionary<ISymbol, string> GetSymbolsToRename()
+        return replacementMap;
+
+        static bool ParameterEquals(in ParameterInfo parameterInfo, IParameterSymbol parameterSymbol2)
         {
-            ImmutableArray<ISymbol> declarationSymbols = DeclarationSemanticModel.GetDeclaredSymbols(
-                BodyOrExpressionBody,
-                excludeAnonymousTypeProperty: true,
-                cancellationToken: CancellationToken);
+            IParameterSymbol parameterSymbol = parameterInfo.ParameterSymbol;
 
-            if (!declarationSymbols.Any())
-                return null;
-
-            declarationSymbols = declarationSymbols.RemoveAll(f => f.IsKind(SymbolKind.NamedType, SymbolKind.Field));
-
-            if (!declarationSymbols.Any())
-                return null;
-
-            int position = Node.SpanStart;
-
-            ImmutableArray<ISymbol> invocationSymbols = InvocationSemanticModel.GetSymbolsDeclaredInEnclosingSymbol(
-                position,
-                excludeAnonymousTypeProperty: true,
-                cancellationToken: CancellationToken);
-
-            invocationSymbols = invocationSymbols.AddRange(InvocationSemanticModel.LookupSymbols(position));
-
-            var reservedNames = new HashSet<string>(invocationSymbols.Select(f => f.Name));
-
-            List<ISymbol> symbols = null;
-
-            foreach (ISymbol symbol in declarationSymbols)
+            if (parameterSymbol.ContainingSymbol is IMethodSymbol methodSymbol)
             {
-                if (reservedNames.Contains(symbol.Name))
-                    (symbols ??= new List<ISymbol>()).Add(symbol);
+                if (parameterInfo.IsThis
+                    || methodSymbol.MethodKind == MethodKind.ReducedExtension)
+                {
+                    int ordinal = parameterSymbol.Ordinal;
+
+                    if (methodSymbol.MethodKind == MethodKind.ReducedExtension)
+                        ordinal++;
+
+                    return ordinal == parameterSymbol2.Ordinal
+                        && string.Equals(parameterSymbol.Name, parameterSymbol2.Name, StringComparison.Ordinal);
+                }
             }
 
-            if (symbols == null)
-                return null;
-
-            reservedNames.UnionWith(declarationSymbols.Select(f => f.Name));
-
-            var symbolMap = new Dictionary<ISymbol, string>();
-
-            foreach (ISymbol symbol in symbols)
-            {
-                string newName = NameGenerator.Default.EnsureUniqueName(symbol.Name, reservedNames);
-
-                symbolMap.Add(symbol, newName);
-
-                reservedNames.Add(newName);
-            }
-
-            return symbolMap;
+            return SymbolEqualityComparer.Default.Equals(parameterSymbol.OriginalDefinition, parameterSymbol2);
         }
+    }
+
+    private Dictionary<ISymbol, string> GetSymbolsToRename()
+    {
+        ImmutableArray<ISymbol> declarationSymbols = DeclarationSemanticModel.GetDeclaredSymbols(
+            BodyOrExpressionBody,
+            excludeAnonymousTypeProperty: true,
+            cancellationToken: CancellationToken);
+
+        if (!declarationSymbols.Any())
+            return null;
+
+        declarationSymbols = declarationSymbols.RemoveAll(f => f.IsKind(SymbolKind.NamedType, SymbolKind.Field));
+
+        if (!declarationSymbols.Any())
+            return null;
+
+        int position = Node.SpanStart;
+
+        ImmutableArray<ISymbol> invocationSymbols = InvocationSemanticModel.GetSymbolsDeclaredInEnclosingSymbol(
+            position,
+            excludeAnonymousTypeProperty: true,
+            cancellationToken: CancellationToken);
+
+        invocationSymbols = invocationSymbols.AddRange(InvocationSemanticModel.LookupSymbols(position));
+
+        var reservedNames = new HashSet<string>(invocationSymbols.Select(f => f.Name));
+
+        List<ISymbol> symbols = null;
+
+        foreach (ISymbol symbol in declarationSymbols)
+        {
+            if (reservedNames.Contains(symbol.Name))
+                (symbols ??= new List<ISymbol>()).Add(symbol);
+        }
+
+        if (symbols == null)
+            return null;
+
+        reservedNames.UnionWith(declarationSymbols.Select(f => f.Name));
+
+        var symbolMap = new Dictionary<ISymbol, string>();
+
+        foreach (ISymbol symbol in symbols)
+        {
+            string newName = NameGenerator.Default.EnsureUniqueName(symbol.Name, reservedNames);
+
+            symbolMap.Add(symbol, newName);
+
+            reservedNames.Add(newName);
+        }
+
+        return symbolMap;
     }
 }

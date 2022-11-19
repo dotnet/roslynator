@@ -8,92 +8,91 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class WhileStatementRefactoring
 {
-    internal static class WhileStatementRefactoring
+    internal static readonly string ConvertWhileToDoWithoutIfEquivalenceKey = EquivalenceKey.Create(RefactoringDescriptors.ConvertWhileToDo, "WithoutIf");
+
+    public static void ComputeRefactorings(RefactoringContext context, WhileStatementSyntax whileStatement)
     {
-        internal static readonly string ConvertWhileToDoWithoutIfEquivalenceKey = EquivalenceKey.Create(RefactoringDescriptors.ConvertWhileToDo, "WithoutIf");
+        Document document = context.Document;
+        SyntaxToken whileKeyword = whileStatement.WhileKeyword;
 
-        public static void ComputeRefactorings(RefactoringContext context, WhileStatementSyntax whileStatement)
+        bool spanIsEmptyAndContainedInWhileKeyword = context.Span.IsEmptyAndContainedInSpan(whileKeyword);
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertWhileToDo)
+            && spanIsEmptyAndContainedInWhileKeyword)
         {
-            Document document = context.Document;
-            SyntaxToken whileKeyword = whileStatement.WhileKeyword;
+            context.RegisterRefactoring(
+                "Convert to 'do'",
+                ct => ConvertWhileToDoAsync(document, whileStatement, omitIfStatement: false, ct),
+                RefactoringDescriptors.ConvertWhileToDo);
 
-            bool spanIsEmptyAndContainedInWhileKeyword = context.Span.IsEmptyAndContainedInSpan(whileKeyword);
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertWhileToDo)
-                && spanIsEmptyAndContainedInWhileKeyword)
-            {
-                context.RegisterRefactoring(
-                    "Convert to 'do'",
-                    ct => ConvertWhileToDoAsync(document, whileStatement, omitIfStatement: false, ct),
-                    RefactoringDescriptors.ConvertWhileToDo);
-
-                context.RegisterRefactoring(
-                    "Convert to 'do' (without 'if')",
-                    ct => ConvertWhileToDoAsync(document, whileStatement, omitIfStatement: true, ct),
-                    ConvertWhileToDoWithoutIfEquivalenceKey);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertWhileToFor)
-                && spanIsEmptyAndContainedInWhileKeyword)
-            {
-                context.RegisterRefactoring(
-                    ConvertWhileToForRefactoring.Title,
-                    ct => ConvertWhileToForRefactoring.RefactorAsync(document, whileStatement, ct),
-                    RefactoringDescriptors.ConvertWhileToFor);
-            }
+            context.RegisterRefactoring(
+                "Convert to 'do' (without 'if')",
+                ct => ConvertWhileToDoAsync(document, whileStatement, omitIfStatement: true, ct),
+                ConvertWhileToDoWithoutIfEquivalenceKey);
         }
 
-        private static Task<Document> ConvertWhileToDoAsync(
-            Document document,
-            WhileStatementSyntax whileStatement,
-            bool omitIfStatement = false,
-            CancellationToken cancellationToken = default)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertWhileToFor)
+            && spanIsEmptyAndContainedInWhileKeyword)
         {
-            if (omitIfStatement)
-            {
-                DoStatementSyntax doStatement = DoStatement(
-                    Token(
-                        whileStatement.WhileKeyword.LeadingTrivia,
-                        SyntaxKind.DoKeyword,
-                        whileStatement.CloseParenToken.TrailingTrivia),
-                    whileStatement.Statement.WithoutTrailingTrivia(),
-                    Token(SyntaxKind.WhileKeyword),
-                    whileStatement.OpenParenToken,
-                    whileStatement.Condition,
-                    whileStatement.CloseParenToken.WithoutTrailingTrivia(),
-                    SemicolonToken());
+            context.RegisterRefactoring(
+                ConvertWhileToForRefactoring.Title,
+                ct => ConvertWhileToForRefactoring.RefactorAsync(document, whileStatement, ct),
+                RefactoringDescriptors.ConvertWhileToFor);
+        }
+    }
 
-                doStatement = doStatement
-                    .WithTriviaFrom(whileStatement)
-                    .WithFormatterAnnotation();
+    private static Task<Document> ConvertWhileToDoAsync(
+        Document document,
+        WhileStatementSyntax whileStatement,
+        bool omitIfStatement = false,
+        CancellationToken cancellationToken = default)
+    {
+        if (omitIfStatement)
+        {
+            DoStatementSyntax doStatement = DoStatement(
+                Token(
+                    whileStatement.WhileKeyword.LeadingTrivia,
+                    SyntaxKind.DoKeyword,
+                    whileStatement.CloseParenToken.TrailingTrivia),
+                whileStatement.Statement.WithoutTrailingTrivia(),
+                Token(SyntaxKind.WhileKeyword),
+                whileStatement.OpenParenToken,
+                whileStatement.Condition,
+                whileStatement.CloseParenToken.WithoutTrailingTrivia(),
+                SemicolonToken());
 
-                return document.ReplaceNodeAsync(whileStatement, doStatement, cancellationToken);
-            }
-            else
-            {
-                DoStatementSyntax doStatement = DoStatement(
-                    Token(SyntaxKind.DoKeyword),
-                    whileStatement.Statement.WithoutTrailingTrivia(),
-                    Token(SyntaxKind.WhileKeyword),
-                    OpenParenToken(),
-                    whileStatement.Condition,
-                    CloseParenToken(),
-                    SemicolonToken());
+            doStatement = doStatement
+                .WithTriviaFrom(whileStatement)
+                .WithFormatterAnnotation();
 
-                IfStatementSyntax ifStatement = IfStatement(
-                    Token(whileStatement.WhileKeyword.LeadingTrivia, SyntaxKind.IfKeyword, TriviaList()),
-                    OpenParenToken(),
-                    whileStatement.Condition,
-                    CloseParenToken(),
-                    Block(OpenBraceToken(), doStatement, Token(TriviaList(), SyntaxKind.CloseBraceToken, whileStatement.Statement.GetTrailingTrivia())),
-                    default(ElseClauseSyntax));
+            return document.ReplaceNodeAsync(whileStatement, doStatement, cancellationToken);
+        }
+        else
+        {
+            DoStatementSyntax doStatement = DoStatement(
+                Token(SyntaxKind.DoKeyword),
+                whileStatement.Statement.WithoutTrailingTrivia(),
+                Token(SyntaxKind.WhileKeyword),
+                OpenParenToken(),
+                whileStatement.Condition,
+                CloseParenToken(),
+                SemicolonToken());
 
-                ifStatement = ifStatement.WithFormatterAnnotation();
+            IfStatementSyntax ifStatement = IfStatement(
+                Token(whileStatement.WhileKeyword.LeadingTrivia, SyntaxKind.IfKeyword, TriviaList()),
+                OpenParenToken(),
+                whileStatement.Condition,
+                CloseParenToken(),
+                Block(OpenBraceToken(), doStatement, Token(TriviaList(), SyntaxKind.CloseBraceToken, whileStatement.Statement.GetTrailingTrivia())),
+                default(ElseClauseSyntax));
 
-                return document.ReplaceNodeAsync(whileStatement, ifStatement, cancellationToken);
-            }
+            ifStatement = ifStatement.WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(whileStatement, ifStatement, cancellationToken);
         }
     }
 }

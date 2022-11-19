@@ -13,83 +13,82 @@ using Roslynator.CodeFixes;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Analysis;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddParenthesesWhenNecessaryCodeFixProvider))]
+[Shared]
+public sealed class AddParenthesesWhenNecessaryCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddParenthesesWhenNecessaryCodeFixProvider))]
-    [Shared]
-    public sealed class AddParenthesesWhenNecessaryCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddParenthesesWhenNecessary); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddParenthesesWhenNecessary); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression, predicate: f => f.IsKind(SyntaxKind.ConditionalExpression, SyntaxKind.ConditionalAccessExpression) || f is BinaryExpressionSyntax))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression, predicate: f => f.IsKind(SyntaxKind.ConditionalExpression, SyntaxKind.ConditionalAccessExpression) || f is BinaryExpressionSyntax))
+            return;
 
-            Document document = context.Document;
+        Document document = context.Document;
 
-            CodeAction codeAction = CodeAction.Create(
-                $"Parenthesize '{expression}'",
-                ct =>
+        CodeAction codeAction = CodeAction.Create(
+            $"Parenthesize '{expression}'",
+            ct =>
+            {
+                if (expression.IsKind(SyntaxKind.ConditionalAccessExpression))
                 {
-                    if (expression.IsKind(SyntaxKind.ConditionalAccessExpression))
-                    {
-                        return document.ReplaceNodeAsync(expression, expression.Parenthesize(simplifiable: false), ct);
-                    }
-                    else
-                    {
-                        return AddParenthesesAccordingToOperatorPrecedenceAsync(document, expression, ct);
-                    }
-                },
-                GetEquivalenceKey(DiagnosticIdentifiers.AddParenthesesWhenNecessary));
+                    return document.ReplaceNodeAsync(expression, expression.Parenthesize(simplifiable: false), ct);
+                }
+                else
+                {
+                    return AddParenthesesAccordingToOperatorPrecedenceAsync(document, expression, ct);
+                }
+            },
+            GetEquivalenceKey(DiagnosticIdentifiers.AddParenthesesWhenNecessary));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
+    }
+
+    private static Task<Document> AddParenthesesAccordingToOperatorPrecedenceAsync(
+        Document document,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        var newNode = (ExpressionSyntax)SyntaxRewriter.Instance.Visit(expression);
+
+        newNode = newNode.Parenthesize(simplifiable: false);
+
+        return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
+    }
+
+    private class SyntaxRewriter : CSharpSyntaxRewriter
+    {
+        private SyntaxRewriter()
+        {
         }
 
-        private static Task<Document> AddParenthesesAccordingToOperatorPrecedenceAsync(
-            Document document,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
+        public static SyntaxRewriter Instance { get; } = new();
+
+        public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
         {
-            var newNode = (ExpressionSyntax)SyntaxRewriter.Instance.Visit(expression);
+            ExpressionSyntax left = VisitExpression(node.Left);
+            ExpressionSyntax right = VisitExpression(node.Right);
 
-            newNode = newNode.Parenthesize(simplifiable: false);
-
-            return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
+            return node.Update(left, node.OperatorToken, right);
         }
 
-        private class SyntaxRewriter : CSharpSyntaxRewriter
+        private ExpressionSyntax VisitExpression(ExpressionSyntax expression)
         {
-            private SyntaxRewriter()
-            {
-            }
+            bool isFixable = AddParenthesesWhenNecessaryAnalyzer.IsFixable(expression);
 
-            public static SyntaxRewriter Instance { get; } = new();
+            expression = (ExpressionSyntax)base.Visit(expression);
 
-            public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
-            {
-                ExpressionSyntax left = VisitExpression(node.Left);
-                ExpressionSyntax right = VisitExpression(node.Right);
+            if (isFixable)
+                expression = expression.Parenthesize(simplifiable: false);
 
-                return node.Update(left, node.OperatorToken, right);
-            }
-
-            private ExpressionSyntax VisitExpression(ExpressionSyntax expression)
-            {
-                bool isFixable = AddParenthesesWhenNecessaryAnalyzer.IsFixable(expression);
-
-                expression = (ExpressionSyntax)base.Visit(expression);
-
-                if (isFixable)
-                    expression = expression.Parenthesize(simplifiable: false);
-
-                return expression;
-            }
+            return expression;
         }
     }
 }

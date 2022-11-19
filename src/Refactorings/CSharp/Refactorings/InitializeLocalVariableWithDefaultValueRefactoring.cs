@@ -8,82 +8,81 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InitializeLocalVariableWithDefaultValueRefactoring
 {
-    internal static class InitializeLocalVariableWithDefaultValueRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
+        VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+
+        if (declaration == null)
+            return;
+
+        SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
+
+        if (!variables.Any())
+            return;
+
+        VariableDeclaratorSyntax declarator = variables.FirstOrDefault(f => f.FullSpan.Contains(context.Span));
+
+        if (declarator?.Identifier.IsMissing != false)
+            return;
+
+        EqualsValueClauseSyntax initializer = declarator.Initializer;
+
+        if (initializer?.Value?.IsMissing == false)
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(declaration.Type, context.CancellationToken);
+
+        if (typeSymbol?.IsErrorType() != false)
+            return;
+
+        context.RegisterRefactoring(
+            $"Initialize '{declarator.Identifier.ValueText}' with default value",
+            ct => RefactorAsync(context.Document, localDeclaration, declarator, typeSymbol, ct),
+            RefactoringDescriptors.InitializeLocalVariableWithDefaultValue);
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        LocalDeclarationStatementSyntax localDeclaration,
+        VariableDeclaratorSyntax declarator,
+        ITypeSymbol typeSymbol,
+        CancellationToken cancellationToken = default)
+    {
+        VariableDeclaratorSyntax newDeclarator = GetNewDeclarator(localDeclaration.Declaration.Type.WithoutTrivia());
+
+        LocalDeclarationStatementSyntax newNode = localDeclaration.ReplaceNode(declarator, newDeclarator);
+
+        if (localDeclaration.SemicolonToken.IsMissing
+            && localDeclaration.Declaration.Variables.Last().Equals(declarator))
         {
-            VariableDeclarationSyntax declaration = localDeclaration.Declaration;
-
-            if (declaration == null)
-                return;
-
-            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
-
-            if (!variables.Any())
-                return;
-
-            VariableDeclaratorSyntax declarator = variables.FirstOrDefault(f => f.FullSpan.Contains(context.Span));
-
-            if (declarator?.Identifier.IsMissing != false)
-                return;
-
-            EqualsValueClauseSyntax initializer = declarator.Initializer;
-
-            if (initializer?.Value?.IsMissing == false)
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(declaration.Type, context.CancellationToken);
-
-            if (typeSymbol?.IsErrorType() != false)
-                return;
-
-            context.RegisterRefactoring(
-                $"Initialize '{declarator.Identifier.ValueText}' with default value",
-                ct => RefactorAsync(context.Document, localDeclaration, declarator, typeSymbol, ct),
-                RefactoringDescriptors.InitializeLocalVariableWithDefaultValue);
+            newNode = newNode.WithSemicolonToken(SemicolonToken().WithTrailingTrivia(newDeclarator.GetTrailingTrivia()));
         }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            LocalDeclarationStatementSyntax localDeclaration,
-            VariableDeclaratorSyntax declarator,
-            ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken = default)
+        return document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken);
+
+        VariableDeclaratorSyntax GetNewDeclarator(TypeSyntax type)
         {
-            VariableDeclaratorSyntax newDeclarator = GetNewDeclarator(localDeclaration.Declaration.Type.WithoutTrivia());
+            ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(type, document.GetDefaultSyntaxOptions());
 
-            LocalDeclarationStatementSyntax newNode = localDeclaration.ReplaceNode(declarator, newDeclarator);
+            EqualsValueClauseSyntax initializer = declarator.Initializer;
+            EqualsValueClauseSyntax newInitializer = EqualsValueClause(value);
 
-            if (localDeclaration.SemicolonToken.IsMissing
-                && localDeclaration.Declaration.Variables.Last().Equals(declarator))
+            if (initializer?.IsMissing != false)
             {
-                newNode = newNode.WithSemicolonToken(SemicolonToken().WithTrailingTrivia(newDeclarator.GetTrailingTrivia()));
+                return declarator
+                    .WithIdentifier(declarator.Identifier.WithoutTrailingTrivia())
+                    .WithInitializer(newInitializer.WithTrailingTrivia(declarator.Identifier.TrailingTrivia));
             }
-
-            return document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken);
-
-            VariableDeclaratorSyntax GetNewDeclarator(TypeSyntax type)
+            else
             {
-                ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(type, document.GetDefaultSyntaxOptions());
-
-                EqualsValueClauseSyntax initializer = declarator.Initializer;
-                EqualsValueClauseSyntax newInitializer = EqualsValueClause(value);
-
-                if (initializer?.IsMissing != false)
-                {
-                    return declarator
-                        .WithIdentifier(declarator.Identifier.WithoutTrailingTrivia())
-                        .WithInitializer(newInitializer.WithTrailingTrivia(declarator.Identifier.TrailingTrivia));
-                }
-                else
-                {
-                    return declarator
-                        .WithInitializer(newInitializer.WithTriviaFrom(initializer.EqualsToken));
-                }
+                return declarator
+                    .WithInitializer(newInitializer.WithTriviaFrom(initializer.EqualsToken));
             }
         }
     }

@@ -3,18 +3,17 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.CodeFixes
+namespace Roslynator.CodeFixes;
+
+internal readonly struct DiagnosticFixResult
 {
-    internal readonly struct DiagnosticFixResult
+    public DiagnosticFixResult(DiagnosticFixKind kind, ImmutableArray<Diagnostic> fixedDiagnostics)
     {
-        public DiagnosticFixResult(DiagnosticFixKind kind, ImmutableArray<Diagnostic> fixedDiagnostics)
-        {
-            Kind = kind;
-            FixedDiagnostics = fixedDiagnostics;
-        }
-
-        public DiagnosticFixKind Kind { get; }
-
-        public ImmutableArray<Diagnostic> FixedDiagnostics { get; }
+        Kind = kind;
+        FixedDiagnostics = fixedDiagnostics;
     }
+
+    public DiagnosticFixKind Kind { get; }
+
+    public ImmutableArray<Diagnostic> FixedDiagnostics { get; }
 }

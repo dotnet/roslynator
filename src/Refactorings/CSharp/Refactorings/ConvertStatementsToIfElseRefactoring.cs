@@ -8,124 +8,123 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConvertStatementsToIfElseRefactoring
 {
-    internal static class ConvertStatementsToIfElseRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, StatementListSelection selectedStatements)
     {
-        public static void ComputeRefactorings(RefactoringContext context, StatementListSelection selectedStatements)
+        if (selectedStatements.Count < 2)
+            return;
+
+        int ifStatementCount = 0;
+
+        for (int i = 0; i < selectedStatements.Count - 1; i++)
         {
-            if (selectedStatements.Count < 2)
-                return;
+            if (selectedStatements[i] is not IfStatementSyntax ifStatement)
+                break;
 
-            int ifStatementCount = 0;
-
-            for (int i = 0; i < selectedStatements.Count - 1; i++)
+            foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
             {
-                if (selectedStatements[i] is not IfStatementSyntax ifStatement)
-                    break;
+                if (ifOrElse.IsElse)
+                    return;
 
-                foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
+                StatementSyntax statement = ifOrElse.Statement;
+
+                if (statement is BlockSyntax block)
+                    statement = block.Statements.LastOrDefault();
+
+                if (statement == null)
+                    return;
+
+                if (!statement.IsKind(
+                    SyntaxKind.ReturnStatement,
+                    SyntaxKind.ContinueStatement,
+                    SyntaxKind.BreakStatement,
+                    SyntaxKind.ThrowStatement))
                 {
-                    if (ifOrElse.IsElse)
-                        return;
-
-                    StatementSyntax statement = ifOrElse.Statement;
-
-                    if (statement is BlockSyntax block)
-                        statement = block.Statements.LastOrDefault();
-
-                    if (statement == null)
-                        return;
-
-                    if (!statement.IsKind(
-                        SyntaxKind.ReturnStatement,
-                        SyntaxKind.ContinueStatement,
-                        SyntaxKind.BreakStatement,
-                        SyntaxKind.ThrowStatement))
-                    {
-                        return;
-                    }
+                    return;
                 }
-
-                ifStatementCount++;
             }
 
-            if (ifStatementCount == 0)
-                return;
-
-            Document document = context.Document;
-
-            context.RegisterRefactoring(
-                "Convert to if-else",
-                ct => RefactorAsync(document, selectedStatements, ifStatementCount, ct),
-                RefactoringDescriptors.ConvertStatementsToIfElse);
+            ifStatementCount++;
         }
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            StatementListSelection selectedStatements,
-            int ifStatementCount,
-            CancellationToken cancellationToken)
+        if (ifStatementCount == 0)
+            return;
+
+        Document document = context.Document;
+
+        context.RegisterRefactoring(
+            "Convert to if-else",
+            ct => RefactorAsync(document, selectedStatements, ifStatementCount, ct),
+            RefactoringDescriptors.ConvertStatementsToIfElse);
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        StatementListSelection selectedStatements,
+        int ifStatementCount,
+        CancellationToken cancellationToken)
+    {
+        IfStatementSyntax newIfStatement = null;
+
+        for (int i = ifStatementCount - 1; i >= 0; i--)
         {
-            IfStatementSyntax newIfStatement = null;
+            var ifStatement = (IfStatementSyntax)selectedStatements[i];
 
-            for (int i = ifStatementCount - 1; i >= 0; i--)
+            IfStatementSyntax lastIf = ifStatement.GetCascadeInfo().Last.AsIf();
+
+            StatementSyntax elseStatement = newIfStatement;
+
+            if (elseStatement == null)
             {
-                var ifStatement = (IfStatementSyntax)selectedStatements[i];
-
-                IfStatementSyntax lastIf = ifStatement.GetCascadeInfo().Last.AsIf();
-
-                StatementSyntax elseStatement = newIfStatement;
-
-                if (elseStatement == null)
+                if (selectedStatements.Count - ifStatementCount > 1)
                 {
-                    if (selectedStatements.Count - ifStatementCount > 1)
-                    {
-                        elseStatement = Block(selectedStatements.Skip(ifStatementCount));
-                    }
-                    else
-                    {
-                        elseStatement = selectedStatements.Last();
+                    elseStatement = Block(selectedStatements.Skip(ifStatementCount));
+                }
+                else
+                {
+                    elseStatement = selectedStatements.Last();
 
-                        if (!elseStatement.IsKind(SyntaxKind.IfStatement)
-                            && lastIf.Statement.IsKind(SyntaxKind.Block))
-                        {
-                            elseStatement = Block(elseStatement);
-                        }
+                    if (!elseStatement.IsKind(SyntaxKind.IfStatement)
+                        && lastIf.Statement.IsKind(SyntaxKind.Block))
+                    {
+                        elseStatement = Block(elseStatement);
                     }
                 }
-
-                StatementSyntax newStatement = lastIf.Statement;
-
-                if (!newStatement.IsKind(SyntaxKind.Block))
-                {
-                    if (elseStatement.IsKind(SyntaxKind.Block))
-                    {
-                        newStatement = Block(newStatement);
-                    }
-                    else if (elseStatement.IsKind(SyntaxKind.IfStatement)
-                        && ((IfStatementSyntax)elseStatement).AsCascade().All(f => f.Statement.IsKind(SyntaxKind.Block)))
-                    {
-                        newStatement = Block(newStatement);
-                    }
-                }
-
-                IfStatementSyntax newLastIf = lastIf.Update(
-                    lastIf.IfKeyword,
-                    lastIf.OpenParenToken,
-                    lastIf.Condition,
-                    lastIf.CloseParenToken,
-                    newStatement,
-                    ElseClause(elseStatement));
-
-                newIfStatement = ifStatement.ReplaceNode(lastIf, newLastIf);
             }
 
-            SyntaxList<StatementSyntax> newStatements = selectedStatements.UnderlyingList
-                .Replace(selectedStatements.First(), newIfStatement.WithFormatterAnnotation())
-                .RemoveRange(selectedStatements.FirstIndex + 1, selectedStatements.Count - 1);
+            StatementSyntax newStatement = lastIf.Statement;
 
-            return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
+            if (!newStatement.IsKind(SyntaxKind.Block))
+            {
+                if (elseStatement.IsKind(SyntaxKind.Block))
+                {
+                    newStatement = Block(newStatement);
+                }
+                else if (elseStatement.IsKind(SyntaxKind.IfStatement)
+                    && ((IfStatementSyntax)elseStatement).AsCascade().All(f => f.Statement.IsKind(SyntaxKind.Block)))
+                {
+                    newStatement = Block(newStatement);
+                }
+            }
+
+            IfStatementSyntax newLastIf = lastIf.Update(
+                lastIf.IfKeyword,
+                lastIf.OpenParenToken,
+                lastIf.Condition,
+                lastIf.CloseParenToken,
+                newStatement,
+                ElseClause(elseStatement));
+
+            newIfStatement = ifStatement.ReplaceNode(lastIf, newLastIf);
         }
+
+        SyntaxList<StatementSyntax> newStatements = selectedStatements.UnderlyingList
+            .Replace(selectedStatements.First(), newIfStatement.WithFormatterAnnotation())
+            .RemoveRange(selectedStatements.FirstIndex + 1, selectedStatements.Count - 1);
+
+        return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
     }
 }

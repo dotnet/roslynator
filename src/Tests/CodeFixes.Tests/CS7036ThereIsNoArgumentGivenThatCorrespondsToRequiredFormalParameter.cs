@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS7036ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter : AbstractCSharpCompilerDiagnosticFixVerifier<ObjectCreationExpressionCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CS7036ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter : AbstractCSharpCompilerDiagnosticFixVerifier<ObjectCreationExpressionCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 class C2
 {
     void M()
@@ -58,12 +58,12 @@ class C
     public string P2 { get; private set; }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
-        public async Task Test_NoArgumentList()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
+    public async Task Test_NoArgumentList()
+    {
+        await VerifyFixAsync(@"
 class C2
 {
     void M()
@@ -108,12 +108,12 @@ class C
     public string P2 { get; private set; }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
-        public async Task Test_NotAllProperties()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
+    public async Task Test_NotAllProperties()
+    {
+        await VerifyFixAsync(@"
 class C2
 {
     void M()
@@ -166,6 +166,5 @@ class C
     public string P3 { get; set; }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

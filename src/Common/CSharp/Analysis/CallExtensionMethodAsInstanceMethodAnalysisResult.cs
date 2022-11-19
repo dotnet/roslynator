@@ -5,61 +5,60 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+public readonly struct CallExtensionMethodAsInstanceMethodAnalysisResult : IEquatable<CallExtensionMethodAsInstanceMethodAnalysisResult>
 {
-    public readonly struct CallExtensionMethodAsInstanceMethodAnalysisResult : IEquatable<CallExtensionMethodAsInstanceMethodAnalysisResult>
+    public CallExtensionMethodAsInstanceMethodAnalysisResult(
+        InvocationExpressionSyntax invocationExpression,
+        InvocationExpressionSyntax newInvocationExpression,
+        IMethodSymbol methodSymbol)
     {
-        public CallExtensionMethodAsInstanceMethodAnalysisResult(
-            InvocationExpressionSyntax invocationExpression,
-            InvocationExpressionSyntax newInvocationExpression,
-            IMethodSymbol methodSymbol)
+        InvocationExpression = invocationExpression ?? throw new ArgumentNullException(nameof(invocationExpression));
+        NewInvocationExpression = newInvocationExpression ?? throw new ArgumentNullException(nameof(newInvocationExpression));
+        MethodSymbol = methodSymbol;
+    }
+
+    public InvocationExpressionSyntax InvocationExpression { get; }
+
+    public InvocationExpressionSyntax NewInvocationExpression { get; }
+
+    public IMethodSymbol MethodSymbol { get; }
+
+    public bool Success
+    {
+        get
         {
-            InvocationExpression = invocationExpression ?? throw new ArgumentNullException(nameof(invocationExpression));
-            NewInvocationExpression = newInvocationExpression ?? throw new ArgumentNullException(nameof(newInvocationExpression));
-            MethodSymbol = methodSymbol;
+            return InvocationExpression != null
+                && NewInvocationExpression != null;
         }
+    }
 
-        public InvocationExpressionSyntax InvocationExpression { get; }
+    public override bool Equals(object obj)
+    {
+        return obj is CallExtensionMethodAsInstanceMethodAnalysisResult other
+            && Equals(other);
+    }
 
-        public InvocationExpressionSyntax NewInvocationExpression { get; }
+    public bool Equals(CallExtensionMethodAsInstanceMethodAnalysisResult other)
+    {
+        return EqualityComparer<InvocationExpressionSyntax>.Default.Equals(InvocationExpression, other.InvocationExpression)
+            && EqualityComparer<InvocationExpressionSyntax>.Default.Equals(NewInvocationExpression, other.NewInvocationExpression)
+            && EqualityComparer<IMethodSymbol>.Default.Equals(MethodSymbol, other.MethodSymbol);
+    }
 
-        public IMethodSymbol MethodSymbol { get; }
+    public override int GetHashCode()
+    {
+        return Hash.Combine(InvocationExpression, Hash.Combine(NewInvocationExpression, Hash.Create(MethodSymbol)));
+    }
 
-        public bool Success
-        {
-            get
-            {
-                return InvocationExpression != null
-                    && NewInvocationExpression != null;
-            }
-        }
+    public static bool operator ==(in CallExtensionMethodAsInstanceMethodAnalysisResult analysis1, in CallExtensionMethodAsInstanceMethodAnalysisResult analysis2)
+    {
+        return analysis1.Equals(analysis2);
+    }
 
-        public override bool Equals(object obj)
-        {
-            return obj is CallExtensionMethodAsInstanceMethodAnalysisResult other
-                && Equals(other);
-        }
-
-        public bool Equals(CallExtensionMethodAsInstanceMethodAnalysisResult other)
-        {
-            return EqualityComparer<InvocationExpressionSyntax>.Default.Equals(InvocationExpression, other.InvocationExpression)
-                && EqualityComparer<InvocationExpressionSyntax>.Default.Equals(NewInvocationExpression, other.NewInvocationExpression)
-                && EqualityComparer<IMethodSymbol>.Default.Equals(MethodSymbol, other.MethodSymbol);
-        }
-
-        public override int GetHashCode()
-        {
-            return Hash.Combine(InvocationExpression, Hash.Combine(NewInvocationExpression, Hash.Create(MethodSymbol)));
-        }
-
-        public static bool operator ==(in CallExtensionMethodAsInstanceMethodAnalysisResult analysis1, in CallExtensionMethodAsInstanceMethodAnalysisResult analysis2)
-        {
-            return analysis1.Equals(analysis2);
-        }
-
-        public static bool operator !=(in CallExtensionMethodAsInstanceMethodAnalysisResult analysis1, in CallExtensionMethodAsInstanceMethodAnalysisResult analysis2)
-        {
-            return !(analysis1 == analysis2);
-        }
+    public static bool operator !=(in CallExtensionMethodAsInstanceMethodAnalysisResult analysis1, in CallExtensionMethodAsInstanceMethodAnalysisResult analysis2)
+    {
+        return !(analysis1 == analysis2);
     }
 }

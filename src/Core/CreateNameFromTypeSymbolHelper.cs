@@ -5,183 +5,182 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class CreateNameFromTypeSymbolHelper
 {
-    internal static class CreateNameFromTypeSymbolHelper
+    public static string CreateName(ITypeSymbol typeSymbol)
     {
-        public static string CreateName(ITypeSymbol typeSymbol)
+        if (typeSymbol == null)
+            throw new ArgumentNullException(nameof(typeSymbol));
+
+        if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
+            return null;
+
+        ITypeSymbol typeSymbol2 = ExtractFromNullableType(typeSymbol);
+
+        ITypeSymbol typeSymbol3 = ExtractFromArrayOrGenericCollection(typeSymbol2);
+
+        string name = GetName(typeSymbol3);
+
+        if (string.IsNullOrEmpty(name))
+            return null;
+
+        if (typeSymbol3.TypeKind == TypeKind.Interface
+            && name.Length > 1
+            && name[0] == 'I')
         {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
-                return null;
-
-            ITypeSymbol typeSymbol2 = ExtractFromNullableType(typeSymbol);
-
-            ITypeSymbol typeSymbol3 = ExtractFromArrayOrGenericCollection(typeSymbol2);
-
-            string name = GetName(typeSymbol3);
-
-            if (string.IsNullOrEmpty(name))
-                return null;
-
-            if (typeSymbol3.TypeKind == TypeKind.Interface
-                && name.Length > 1
-                && name[0] == 'I')
-            {
-                name = name.Substring(1);
-            }
-
-            if (name.Length >= 8
-                && name.EndsWith("Syntax", StringComparison.Ordinal)
-                && typeSymbol.EqualsOrInheritsFrom(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
-            {
-                name = name.Remove(name.Length - 6);
-            }
-
-            if (name.Length > 1
-                && UsePlural(typeSymbol2))
-            {
-                if (!StringUtility.TryRemoveSuffix(name, "Collection", out name))
-                    StringUtility.TryRemoveSuffix(name, "List", out name);
-
-                if (name.EndsWith("s", StringComparison.Ordinal) || name.EndsWith("x", StringComparison.Ordinal))
-                {
-                    name += "es";
-                }
-                else if (name.EndsWith("y", StringComparison.Ordinal))
-                {
-                    name = name.Remove(name.Length - 1) + "ies";
-                }
-                else
-                {
-                    name += "s";
-                }
-            }
-
-            return name;
+            name = name.Substring(1);
         }
 
-        private static ITypeSymbol ExtractFromNullableType(ITypeSymbol typeSymbol)
+        if (name.Length >= 8
+            && name.EndsWith("Syntax", StringComparison.Ordinal)
+            && typeSymbol.EqualsOrInheritsFrom(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
         {
-            if (typeSymbol is INamedTypeSymbol namedTypeSymbol
-                && namedTypeSymbol.IsNullableType())
-            {
-                return namedTypeSymbol.TypeArguments[0];
-            }
-
-            return typeSymbol;
+            name = name.Remove(name.Length - 6);
         }
 
-        private static ITypeSymbol ExtractFromArrayOrGenericCollection(ITypeSymbol typeSymbol)
+        if (name.Length > 1
+            && UsePlural(typeSymbol2))
         {
-            switch (typeSymbol.Kind)
+            if (!StringUtility.TryRemoveSuffix(name, "Collection", out name))
+                StringUtility.TryRemoveSuffix(name, "List", out name);
+
+            if (name.EndsWith("s", StringComparison.Ordinal) || name.EndsWith("x", StringComparison.Ordinal))
             {
-                case SymbolKind.ArrayType:
-                    {
-                        return ((IArrayTypeSymbol)typeSymbol).ElementType;
-                    }
-                case SymbolKind.NamedType:
-                    {
-                        var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
-                        ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
-
-                        if (typeArguments.Length == 1
-                            && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable, allInterfaces: true))
-                        {
-                            ITypeSymbol typeArgument = typeArguments[0];
-
-                            if (ValidateTypeArgumentName(typeArgument.Name))
-                                return typeArgument;
-                        }
-
-                        break;
-                    }
+                name += "es";
             }
-
-            return typeSymbol;
-
-            static bool ValidateTypeArgumentName(string name)
+            else if (name.EndsWith("y", StringComparison.Ordinal))
             {
-                if (name.Length <= 1)
+                name = name.Remove(name.Length - 1) + "ies";
+            }
+            else
+            {
+                name += "s";
+            }
+        }
+
+        return name;
+    }
+
+    private static ITypeSymbol ExtractFromNullableType(ITypeSymbol typeSymbol)
+    {
+        if (typeSymbol is INamedTypeSymbol namedTypeSymbol
+            && namedTypeSymbol.IsNullableType())
+        {
+            return namedTypeSymbol.TypeArguments[0];
+        }
+
+        return typeSymbol;
+    }
+
+    private static ITypeSymbol ExtractFromArrayOrGenericCollection(ITypeSymbol typeSymbol)
+    {
+        switch (typeSymbol.Kind)
+        {
+            case SymbolKind.ArrayType:
+                {
+                    return ((IArrayTypeSymbol)typeSymbol).ElementType;
+                }
+            case SymbolKind.NamedType:
+                {
+                    var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+                    ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
+
+                    if (typeArguments.Length == 1
+                        && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable, allInterfaces: true))
+                    {
+                        ITypeSymbol typeArgument = typeArguments[0];
+
+                        if (ValidateTypeArgumentName(typeArgument.Name))
+                            return typeArgument;
+                    }
+
+                    break;
+                }
+        }
+
+        return typeSymbol;
+
+        static bool ValidateTypeArgumentName(string name)
+        {
+            if (name.Length <= 1)
+                return false;
+
+            for (int i = 1; i < name.Length; i++)
+            {
+                if (char.IsDigit(name[i]))
                     return false;
-
-                for (int i = 1; i < name.Length; i++)
-                {
-                    if (char.IsDigit(name[i]))
-                        return false;
-                }
-
-                return true;
             }
+
+            return true;
+        }
+    }
+
+    private static bool UsePlural(ITypeSymbol typeSymbol)
+    {
+        switch (typeSymbol.Kind)
+        {
+            case SymbolKind.ArrayType:
+                {
+                    return true;
+                }
+            case SymbolKind.NamedType:
+                {
+                    var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                    if (namedTypeSymbol.TypeArguments.Length <= 1
+                        && !namedTypeSymbol.HasMetadataName(MetadataNames.System_Dynamic_ExpandoObject))
+                    {
+                        ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+
+                        return allInterfaces.Any(f => f.SpecialType == SpecialType.System_Collections_IEnumerable)
+                            && !allInterfaces.Any(f => f.HasMetadataName(MetadataNames.System_Collections_IDictionary));
+                    }
+
+                    break;
+                }
         }
 
-        private static bool UsePlural(ITypeSymbol typeSymbol)
+        return false;
+    }
+
+    private static string GetName(ITypeSymbol typeSymbol)
+    {
+        if (typeSymbol.Kind == SymbolKind.TypeParameter)
         {
-            switch (typeSymbol.Kind)
+            if (typeSymbol.Name.Length > 1
+                && typeSymbol.Name[0] == 'T')
             {
-                case SymbolKind.ArrayType:
-                    {
-                        return true;
-                    }
-                case SymbolKind.NamedType:
-                    {
-                        var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
-
-                        if (namedTypeSymbol.TypeArguments.Length <= 1
-                            && !namedTypeSymbol.HasMetadataName(MetadataNames.System_Dynamic_ExpandoObject))
-                        {
-                            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
-
-                            return allInterfaces.Any(f => f.SpecialType == SpecialType.System_Collections_IEnumerable)
-                                && !allInterfaces.Any(f => f.HasMetadataName(MetadataNames.System_Collections_IDictionary));
-                        }
-
-                        break;
-                    }
+                return typeSymbol.Name.Substring(1);
             }
-
-            return false;
+        }
+        else if (typeSymbol.IsAnonymousType)
+        {
+            return null;
         }
 
-        private static string GetName(ITypeSymbol typeSymbol)
+        switch (typeSymbol.SpecialType)
         {
-            if (typeSymbol.Kind == SymbolKind.TypeParameter)
-            {
-                if (typeSymbol.Name.Length > 1
-                    && typeSymbol.Name[0] == 'T')
-                {
-                    return typeSymbol.Name.Substring(1);
-                }
-            }
-            else if (typeSymbol.IsAnonymousType)
-            {
+            case SpecialType.System_Object:
+            case SpecialType.System_Boolean:
+            case SpecialType.System_Char:
+            case SpecialType.System_SByte:
+            case SpecialType.System_Byte:
+            case SpecialType.System_Int16:
+            case SpecialType.System_UInt16:
+            case SpecialType.System_Int32:
+            case SpecialType.System_UInt32:
+            case SpecialType.System_Int64:
+            case SpecialType.System_UInt64:
+            case SpecialType.System_Decimal:
+            case SpecialType.System_Single:
+            case SpecialType.System_Double:
+            case SpecialType.System_String:
+            case SpecialType.System_Void:
                 return null;
-            }
-
-            switch (typeSymbol.SpecialType)
-            {
-                case SpecialType.System_Object:
-                case SpecialType.System_Boolean:
-                case SpecialType.System_Char:
-                case SpecialType.System_SByte:
-                case SpecialType.System_Byte:
-                case SpecialType.System_Int16:
-                case SpecialType.System_UInt16:
-                case SpecialType.System_Int32:
-                case SpecialType.System_UInt32:
-                case SpecialType.System_Int64:
-                case SpecialType.System_UInt64:
-                case SpecialType.System_Decimal:
-                case SpecialType.System_Single:
-                case SpecialType.System_Double:
-                case SpecialType.System_String:
-                case SpecialType.System_Void:
-                    return null;
-            }
-
-            return typeSymbol.Name;
         }
+
+        return typeSymbol.Name;
     }
 }

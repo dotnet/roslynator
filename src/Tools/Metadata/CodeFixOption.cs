@@ -1,19 +1,18 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator.Metadata
+namespace Roslynator.Metadata;
+
+public class CodeFixOption
 {
-    public class CodeFixOption
+    public CodeFixOption(
+        string key,
+        string value)
     {
-        public CodeFixOption(
-            string key,
-            string value)
-        {
-            Key = key;
-            Value = value;
-        }
-
-        public string Key { get; }
-
-        public string Value { get; }
+        Key = key;
+        Value = value;
     }
+
+    public string Key { get; }
+
+    public string Value { get; }
 }

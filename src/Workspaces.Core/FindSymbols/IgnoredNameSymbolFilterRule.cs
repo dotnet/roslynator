@@ -4,46 +4,45 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.FindSymbols
+namespace Roslynator.FindSymbols;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal class IgnoredNameSymbolFilterRule : SymbolFilterRule
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal class IgnoredNameSymbolFilterRule : SymbolFilterRule
+    public override SymbolFilterReason Reason => SymbolFilterReason.Ignored;
+
+    public MetadataNameSet Names { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Reason} {string.Join(" ", Names.Values)}";
+
+    public IgnoredNameSymbolFilterRule(IEnumerable<MetadataName> values)
     {
-        public override SymbolFilterReason Reason => SymbolFilterReason.Ignored;
+        Names = new MetadataNameSet(values);
+    }
 
-        public MetadataNameSet Names { get; }
+    public override bool IsApplicable(ISymbol value)
+    {
+        return true;
+    }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Reason} {string.Join(" ", Names.Values)}";
+    public override bool IsMatch(ISymbol value)
+    {
+        if (Names.Contains(value.ContainingNamespace))
+            return false;
 
-        public IgnoredNameSymbolFilterRule(IEnumerable<MetadataName> values)
+        switch (value.Kind)
         {
-            Names = new MetadataNameSet(values);
+            case SymbolKind.Namespace:
+            case SymbolKind.NamedType:
+                {
+                    if (Names.Contains(value))
+                        return false;
+
+                    break;
+                }
         }
 
-        public override bool IsApplicable(ISymbol value)
-        {
-            return true;
-        }
-
-        public override bool IsMatch(ISymbol value)
-        {
-            if (Names.Contains(value.ContainingNamespace))
-                return false;
-
-            switch (value.Kind)
-            {
-                case SymbolKind.Namespace:
-                case SymbolKind.NamedType:
-                    {
-                        if (Names.Contains(value))
-                            return false;
-
-                        break;
-                    }
-            }
-
-            return true;
-        }
+        return true;
     }
 }

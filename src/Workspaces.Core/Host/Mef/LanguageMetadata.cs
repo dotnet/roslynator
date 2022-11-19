@@ -2,20 +2,19 @@
 
 using System.Collections.Generic;
 
-namespace Roslynator.Host.Mef
+namespace Roslynator.Host.Mef;
+
+internal class LanguageMetadata
 {
-    internal class LanguageMetadata
+    public string Language { get; }
+
+    public LanguageMetadata(IDictionary<string, object> data)
     {
-        public string Language { get; }
+        Language = (string)data.GetValueOrDefault("Language");
+    }
 
-        public LanguageMetadata(IDictionary<string, object> data)
-        {
-            Language = (string)data.GetValueOrDefault("Language");
-        }
-
-        public LanguageMetadata(string language)
-        {
-            Language = language;
-        }
+    public LanguageMetadata(string language)
+    {
+        Language = language;
     }
 }

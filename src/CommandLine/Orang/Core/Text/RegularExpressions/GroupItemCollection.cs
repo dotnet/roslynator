@@ -3,13 +3,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Roslynator.Text.RegularExpressions
+namespace Roslynator.Text.RegularExpressions;
+
+internal class GroupItemCollection : ReadOnlyCollection<GroupItem>
 {
-    internal class GroupItemCollection : ReadOnlyCollection<GroupItem>
+    internal GroupItemCollection(IList<GroupItem> list)
+        : base(list)
     {
-        internal GroupItemCollection(IList<GroupItem> list)
-            : base(list)
-        {
-        }
     }
 }

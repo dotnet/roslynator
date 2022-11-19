@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1139AddSummaryElementToDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, DocumentationCommentCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddSummaryElementToDocumentationComment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]
-        public async Task Test_Class()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1139AddSummaryElementToDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, DocumentationCommentCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddSummaryElementToDocumentationComment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]
+    public async Task Test_Class()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 ///[| <typeparam name=""T""></typeparam>
 |]class C<T>
 {
@@ -29,12 +29,12 @@ class C<T>
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]
-        public async Task TestNoDiagnostic_PartialClassWithContentElement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]
+    public async Task TestNoDiagnostic_PartialClassWithContentElement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// x
 /// </summary>
@@ -49,6 +49,5 @@ partial class C
 {
 }
 ");
-        }
     }
 }

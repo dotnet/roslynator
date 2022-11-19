@@ -6,132 +6,131 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.UseMethodChaining
+namespace Roslynator.CSharp.Analysis.UseMethodChaining;
+
+internal abstract class UseMethodChainingAnalysis
 {
-    internal abstract class UseMethodChainingAnalysis
+    public static MethodChainingWithoutAssignmentAnalysis WithoutAssignmentAnalysis { get; } = new();
+
+    public static MethodChainingWithAssignmentAnalysis WithAssignmentAnalysis { get; } = new();
+
+    public static bool IsFixable(
+        in SimpleMemberInvocationExpressionInfo invocationInfo,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
     {
-        public static MethodChainingWithoutAssignmentAnalysis WithoutAssignmentAnalysis { get; } = new();
+        InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-        public static MethodChainingWithAssignmentAnalysis WithAssignmentAnalysis { get; } = new();
+        SyntaxNode parent = invocationExpression.Parent;
 
-        public static bool IsFixable(
-            in SimpleMemberInvocationExpressionInfo invocationInfo,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        switch (parent?.Kind())
         {
-            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+            case SyntaxKind.ExpressionStatement:
+                {
+                    var expressionStatement = (ExpressionStatementSyntax)parent;
 
-            SyntaxNode parent = invocationExpression.Parent;
+                    if (WalkDownMethodChain(invocationInfo).Expression is not IdentifierNameSyntax identifierName)
+                        break;
 
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.ExpressionStatement:
-                    {
-                        var expressionStatement = (ExpressionStatementSyntax)parent;
+                    string name = identifierName.Identifier.ValueText;
 
-                        if (WalkDownMethodChain(invocationInfo).Expression is not IdentifierNameSyntax identifierName)
-                            break;
+                    return WithoutAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
+                }
+            case SyntaxKind.SimpleAssignmentExpression:
+                {
+                    var assignmentExpression = (AssignmentExpressionSyntax)parent;
 
-                        string name = identifierName.Identifier.ValueText;
+                    if (assignmentExpression.Left is not IdentifierNameSyntax identifierName)
+                        break;
 
-                        return WithoutAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
-                    }
-                case SyntaxKind.SimpleAssignmentExpression:
-                    {
-                        var assignmentExpression = (AssignmentExpressionSyntax)parent;
+                    if (assignmentExpression.Right != invocationExpression)
+                        break;
 
-                        if (assignmentExpression.Left is not IdentifierNameSyntax identifierName)
-                            break;
+                    if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
+                        break;
 
-                        if (assignmentExpression.Right != invocationExpression)
-                            break;
+                    string name = identifierName.Identifier.ValueText;
 
-                        if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
-                            break;
+                    if (name != (WalkDownMethodChain(invocationInfo).Expression as IdentifierNameSyntax)?.Identifier.ValueText)
+                        break;
 
-                        string name = identifierName.Identifier.ValueText;
+                    return WithAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
+                }
+        }
 
-                        if (name != (WalkDownMethodChain(invocationInfo).Expression as IdentifierNameSyntax)?.Identifier.ValueText)
-                            break;
+        return false;
+    }
 
-                        return WithAssignmentAnalysis.Analyze(invocationInfo, expressionStatement, name, semanticModel, cancellationToken);
-                    }
-            }
+    public bool Analyze(
+        in SimpleMemberInvocationExpressionInfo invocationInfo,
+        StatementSyntax statement,
+        string name,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        if (statement.SpanOrTrailingTriviaContainsDirectives())
+            return false;
 
+        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
+
+        if (!statementsInfo.Success)
+            return false;
+
+        SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
+
+        if (statements.Count == 1)
+            return false;
+
+        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
+
+        if (methodSymbol == null)
+            return false;
+
+        ITypeSymbol returnType = methodSymbol.ReturnType;
+
+        int i = statements.IndexOf(statement);
+
+        if (i != 0
+            && IsFixableStatement(statements[i - 1], name, returnType, semanticModel, cancellationToken))
+        {
             return false;
         }
 
-        public bool Analyze(
-            in SimpleMemberInvocationExpressionInfo invocationInfo,
-            StatementSyntax statement,
-            string name,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        int j = i;
+        while (j < statements.Count - 1)
         {
-            if (statement.SpanOrTrailingTriviaContainsDirectives())
-                return false;
+            if (!IsFixableStatement(statements[j + 1], name, returnType, semanticModel, cancellationToken))
+                break;
 
-            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
-
-            if (!statementsInfo.Success)
-                return false;
-
-            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
-
-            if (statements.Count == 1)
-                return false;
-
-            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
-
-            if (methodSymbol == null)
-                return false;
-
-            ITypeSymbol returnType = methodSymbol.ReturnType;
-
-            int i = statements.IndexOf(statement);
-
-            if (i != 0
-                && IsFixableStatement(statements[i - 1], name, returnType, semanticModel, cancellationToken))
-            {
-                return false;
-            }
-
-            int j = i;
-            while (j < statements.Count - 1)
-            {
-                if (!IsFixableStatement(statements[j + 1], name, returnType, semanticModel, cancellationToken))
-                    break;
-
-                j++;
-            }
-
-            return j > i;
+            j++;
         }
 
-        public abstract bool IsFixableStatement(
-            StatementSyntax statement,
-            string name,
-            ITypeSymbol typeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken);
+        return j > i;
+    }
 
-        public static SimpleMemberInvocationExpressionInfo WalkDownMethodChain(SimpleMemberInvocationExpressionInfo invocationInfo)
+    public abstract bool IsFixableStatement(
+        StatementSyntax statement,
+        string name,
+        ITypeSymbol typeSymbol,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken);
+
+    public static SimpleMemberInvocationExpressionInfo WalkDownMethodChain(SimpleMemberInvocationExpressionInfo invocationInfo)
+    {
+        while (true)
         {
-            while (true)
+            SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
+
+            if (invocationInfo2.Success)
             {
-                SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
-
-                if (invocationInfo2.Success)
-                {
-                    invocationInfo = invocationInfo2;
-                }
-                else
-                {
-                    break;
-                }
+                invocationInfo = invocationInfo2;
             }
-
-            return invocationInfo;
+            else
+            {
+                break;
+            }
         }
+
+        return invocationInfo;
     }
 }

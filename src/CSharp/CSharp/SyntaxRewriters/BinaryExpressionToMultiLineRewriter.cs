@@ -4,32 +4,31 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.SyntaxRewriters
+namespace Roslynator.CSharp.SyntaxRewriters;
+
+internal class BinaryExpressionToMultiLineRewriter : CSharpSyntaxRewriter
 {
-    internal class BinaryExpressionToMultiLineRewriter : CSharpSyntaxRewriter
+    private readonly SyntaxTriviaList _leadingTrivia;
+
+    private BinaryExpressionSyntax _previous;
+
+    public BinaryExpressionToMultiLineRewriter(SyntaxTriviaList leadingTrivia)
     {
-        private readonly SyntaxTriviaList _leadingTrivia;
+        _leadingTrivia = leadingTrivia;
+    }
 
-        private BinaryExpressionSyntax _previous;
-
-        public BinaryExpressionToMultiLineRewriter(SyntaxTriviaList leadingTrivia)
+    public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
+    {
+        if (_previous == null
+            || (_previous.Equals(node.Parent) && node.IsKind(_previous.Kind())))
         {
-            _leadingTrivia = leadingTrivia;
+            node = node
+                .WithLeft(node.Left?.TrimTrivia())
+                .WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_leadingTrivia));
+
+            _previous = node;
         }
 
-        public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
-        {
-            if (_previous == null
-                || (_previous.Equals(node.Parent) && node.IsKind(_previous.Kind())))
-            {
-                node = node
-                    .WithLeft(node.Left?.TrimTrivia())
-                    .WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_leadingTrivia));
-
-                _previous = node;
-            }
-
-            return base.VisitBinaryExpression(node);
-        }
+        return base.VisitBinaryExpression(node);
     }
 }

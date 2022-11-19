@@ -9,72 +9,71 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement);
-                }
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement);
+            }
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
+    }
+
+    private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+    {
+        var doStatement = (DoStatementSyntax)context.Node;
+
+        StatementSyntax statement = doStatement.Statement;
+
+        if (!statement.IsKind(SyntaxKind.Block))
+            return;
+
+        NewLineStyle newLineStyle = context.GetNewLineBeforeWhileInDoStatement();
+
+        if (newLineStyle == NewLineStyle.None)
+            return;
+
+        SyntaxTriviaList trailingTrivia = statement.GetTrailingTrivia();
+
+        if (!trailingTrivia.Any()
+            || trailingTrivia.SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
+        {
+            if (!doStatement.WhileKeyword.LeadingTrivia.Any()
+                && newLineStyle == NewLineStyle.Add)
+            {
+                context.ReportDiagnostic(
+                    DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
+                    Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)),
+                    "Add");
             }
         }
-
-        public override void Initialize(AnalysisContext context)
+        else if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(trailingTrivia))
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
-        }
-
-        private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
-        {
-            var doStatement = (DoStatementSyntax)context.Node;
-
-            StatementSyntax statement = doStatement.Statement;
-
-            if (!statement.IsKind(SyntaxKind.Block))
-                return;
-
-            NewLineStyle newLineStyle = context.GetNewLineBeforeWhileInDoStatement();
-
-            if (newLineStyle == NewLineStyle.None)
-                return;
-
-            SyntaxTriviaList trailingTrivia = statement.GetTrailingTrivia();
-
-            if (!trailingTrivia.Any()
-                || trailingTrivia.SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
+            if (doStatement.WhileKeyword.LeadingTrivia.IsEmptyOrWhitespace()
+                && newLineStyle == NewLineStyle.Remove)
             {
-                if (!doStatement.WhileKeyword.LeadingTrivia.Any()
-                    && newLineStyle == NewLineStyle.Add)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
-                        Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)),
-                        "Add");
-                }
-            }
-            else if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(trailingTrivia))
-            {
-                if (doStatement.WhileKeyword.LeadingTrivia.IsEmptyOrWhitespace()
-                    && newLineStyle == NewLineStyle.Remove)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
-                        Location.Create(doStatement.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)),
-                        properties: DiagnosticProperties.AnalyzerOption_Invert,
-                        "Remove");
-                }
+                context.ReportDiagnostic(
+                    DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
+                    Location.Create(doStatement.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)),
+                    properties: DiagnosticProperties.AnalyzerOption_Invert,
+                    "Remove");
             }
         }
     }

@@ -3,27 +3,26 @@
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct SimpleProjectInfo
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct SimpleProjectInfo
+    public SimpleProjectInfo(string name, string filePath)
     {
-        public SimpleProjectInfo(string name, string filePath)
-        {
-            Name = name;
-            FilePath = filePath;
-        }
+        Name = name;
+        FilePath = filePath;
+    }
 
-        public string Name { get; }
+    public string Name { get; }
 
-        public string FilePath { get; }
+    public string FilePath { get; }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Name}  {FilePath}";
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Name}  {FilePath}";
 
-        public static SimpleProjectInfo Create(Project project)
-        {
-            return new SimpleProjectInfo(project.Name, project.FilePath);
-        }
+    public static SimpleProjectInfo Create(Project project)
+    {
+        return new SimpleProjectInfo(project.Name, project.FilePath);
     }
 }

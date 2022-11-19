@@ -2,16 +2,15 @@
 
 using DotMarkdown;
 
-namespace Roslynator.Documentation.Markdown
+namespace Roslynator.Documentation.Markdown;
+
+public class GitHubDocumentationWriter : MarkdownDocumentationWriter
 {
-    public class GitHubDocumentationWriter : MarkdownDocumentationWriter
+    public GitHubDocumentationWriter(DocumentationContext context, MarkdownWriter writer) : base(context, writer)
     {
-        public GitHubDocumentationWriter(DocumentationContext context, MarkdownWriter writer) : base(context, writer)
-        {
-        }
-
-        internal override bool IncludeLinkInClassHierarchy => true;
-
-        internal override bool IncludeLinkToRoot => true;
     }
+
+    internal override bool IncludeLinkInClassHierarchy => true;
+
+    internal override bool IncludeLinkToRoot => true;
 }

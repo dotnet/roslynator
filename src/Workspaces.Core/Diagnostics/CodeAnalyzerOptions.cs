@@ -3,40 +3,39 @@
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Diagnostics
+namespace Roslynator.Diagnostics;
+
+internal class CodeAnalyzerOptions : CodeAnalysisOptions
 {
-    internal class CodeAnalyzerOptions : CodeAnalysisOptions
+    public static CodeAnalyzerOptions Default { get; } = new();
+
+    public CodeAnalyzerOptions(
+        bool ignoreAnalyzerReferences = false,
+        bool ignoreCompilerDiagnostics = false,
+        bool reportNotConfigurable = false,
+        bool reportSuppressedDiagnostics = false,
+        bool logAnalyzerExecutionTime = false,
+        bool concurrentAnalysis = true,
+        DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
+        IEnumerable<string> supportedDiagnosticIds = null,
+        IEnumerable<string> ignoredDiagnosticIds = null) : base(
+            severityLevel: severityLevel,
+            ignoreAnalyzerReferences: ignoreAnalyzerReferences,
+            concurrentAnalysis: concurrentAnalysis,
+            supportedDiagnosticIds: supportedDiagnosticIds,
+            ignoredDiagnosticIds: ignoredDiagnosticIds)
     {
-        public static CodeAnalyzerOptions Default { get; } = new();
-
-        public CodeAnalyzerOptions(
-            bool ignoreAnalyzerReferences = false,
-            bool ignoreCompilerDiagnostics = false,
-            bool reportNotConfigurable = false,
-            bool reportSuppressedDiagnostics = false,
-            bool logAnalyzerExecutionTime = false,
-            bool concurrentAnalysis = true,
-            DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
-            IEnumerable<string> supportedDiagnosticIds = null,
-            IEnumerable<string> ignoredDiagnosticIds = null) : base(
-                severityLevel: severityLevel,
-                ignoreAnalyzerReferences: ignoreAnalyzerReferences,
-                concurrentAnalysis: concurrentAnalysis,
-                supportedDiagnosticIds: supportedDiagnosticIds,
-                ignoredDiagnosticIds: ignoredDiagnosticIds)
-        {
-            IgnoreCompilerDiagnostics = ignoreCompilerDiagnostics;
-            ReportNotConfigurable = reportNotConfigurable;
-            ReportSuppressedDiagnostics = reportSuppressedDiagnostics;
-            LogAnalyzerExecutionTime = logAnalyzerExecutionTime;
-        }
-
-        public bool IgnoreCompilerDiagnostics { get; }
-
-        public bool ReportNotConfigurable { get; }
-
-        public bool ReportSuppressedDiagnostics { get; }
-
-        public bool LogAnalyzerExecutionTime { get; }
+        IgnoreCompilerDiagnostics = ignoreCompilerDiagnostics;
+        ReportNotConfigurable = reportNotConfigurable;
+        ReportSuppressedDiagnostics = reportSuppressedDiagnostics;
+        LogAnalyzerExecutionTime = logAnalyzerExecutionTime;
     }
+
+    public bool IgnoreCompilerDiagnostics { get; }
+
+    public bool ReportNotConfigurable { get; }
+
+    public bool ReportSuppressedDiagnostics { get; }
+
+    public bool LogAnalyzerExecutionTime { get; }
 }

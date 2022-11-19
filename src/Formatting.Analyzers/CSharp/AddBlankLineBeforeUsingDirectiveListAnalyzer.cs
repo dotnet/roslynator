@@ -8,77 +8,76 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeUsingDirectiveList);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeUsingDirectiveList);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
+    }
+
+    private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
+    {
+        var compilationUnit = (CompilationUnitSyntax)context.Node;
+
+        UsingDirectiveSyntax usingDirective = compilationUnit.Usings.FirstOrDefault();
+
+        if (usingDirective == null)
+            return;
+
+        SyntaxTriviaList.Reversed.Enumerator en = usingDirective.GetLeadingTrivia().Reverse().GetEnumerator();
+
+        if (en.MoveNext())
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
-        }
-
-        private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
-        {
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
-
-            UsingDirectiveSyntax usingDirective = compilationUnit.Usings.FirstOrDefault();
-
-            if (usingDirective == null)
-                return;
-
-            SyntaxTriviaList.Reversed.Enumerator en = usingDirective.GetLeadingTrivia().Reverse().GetEnumerator();
-
-            if (en.MoveNext())
+            if (en.Current.IsWhitespaceTrivia()
+                && !en.MoveNext())
             {
-                if (en.Current.IsWhitespaceTrivia()
-                    && !en.MoveNext())
-                {
-                    if (IsPrecededWithExternAliasDirective())
-                        ReportDiagnostic(usingDirective.SpanStart);
-                }
-                else if (en.Current.IsEndOfLineTrivia()
-                    && en.MoveNext()
-                    && en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                {
+                if (IsPrecededWithExternAliasDirective())
                     ReportDiagnostic(usingDirective.SpanStart);
-                }
             }
-            else if (IsPrecededWithExternAliasDirective())
+            else if (en.Current.IsEndOfLineTrivia()
+                && en.MoveNext()
+                && en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
             {
                 ReportDiagnostic(usingDirective.SpanStart);
             }
+        }
+        else if (IsPrecededWithExternAliasDirective())
+        {
+            ReportDiagnostic(usingDirective.SpanStart);
+        }
 
-            bool IsPrecededWithExternAliasDirective()
-            {
-                ExternAliasDirectiveSyntax externAliasDirective = compilationUnit.Externs.LastOrDefault();
+        bool IsPrecededWithExternAliasDirective()
+        {
+            ExternAliasDirectiveSyntax externAliasDirective = compilationUnit.Externs.LastOrDefault();
 
-                return externAliasDirective?.FullSpan.End == usingDirective.FullSpan.Start
-                    && SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(externAliasDirective.GetTrailingTrivia());
-            }
+            return externAliasDirective?.FullSpan.End == usingDirective.FullSpan.Start
+                && SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(externAliasDirective.GetTrailingTrivia());
+        }
 
-            void ReportDiagnostic(int position)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.AddBlankLineBeforeUsingDirectiveList,
-                    Location.Create(compilationUnit.SyntaxTree, new TextSpan(position, 0)));
-            }
+        void ReportDiagnostic(int position)
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.AddBlankLineBeforeUsingDirectiveList,
+                Location.Create(compilationUnit.SyntaxTree, new TextSpan(position, 0)));
         }
     }
 }

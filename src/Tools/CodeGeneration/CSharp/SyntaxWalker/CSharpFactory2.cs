@@ -7,103 +7,102 @@ using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+internal static class CSharpFactory2
 {
-    internal static class CSharpFactory2
+    public static ExpressionStatementSyntax VisitStatement(
+        string methodName,
+        string name,
+        string propertyName = null)
     {
-        public static ExpressionStatementSyntax VisitStatement(
-            string methodName,
-            string name,
-            string propertyName = null)
+        ExpressionSyntax expression = IdentifierName(name);
+
+        if (propertyName != null)
         {
-            ExpressionSyntax expression = IdentifierName(name);
-
-            if (propertyName != null)
-            {
-                expression = SimpleMemberAccessExpression(
-                    expression,
-                    IdentifierName(propertyName));
-            }
-
-            return ExpressionStatement(
-                InvocationExpression(
-                    IdentifierName(methodName),
-                    ArgumentList(
-                        Argument(
-                            expression))));
-        }
-
-        public static ForEachStatementSyntax ForEachVisitStatement(
-            string typeName,
-            string variableName,
-            ExpressionSyntax expression,
-            StatementSyntax statement,
-            bool checkShouldVisit = false)
-        {
-            return ForEachStatement(
-                IdentifierName(typeName),
-                variableName,
+            expression = SimpleMemberAccessExpression(
                 expression,
-                (checkShouldVisit)
-                    ? Block(IfNotShouldVisitReturnStatement(), statement)
-                    : Block(statement));
+                IdentifierName(propertyName));
         }
 
-        public static StatementSyntax IfNotShouldVisitReturnStatement()
+        return ExpressionStatement(
+            InvocationExpression(
+                IdentifierName(methodName),
+                ArgumentList(
+                    Argument(
+                        expression))));
+    }
+
+    public static ForEachStatementSyntax ForEachVisitStatement(
+        string typeName,
+        string variableName,
+        ExpressionSyntax expression,
+        StatementSyntax statement,
+        bool checkShouldVisit = false)
+    {
+        return ForEachStatement(
+            IdentifierName(typeName),
+            variableName,
+            expression,
+            (checkShouldVisit)
+                ? Block(IfNotShouldVisitReturnStatement(), statement)
+                : Block(statement));
+    }
+
+    public static StatementSyntax IfNotShouldVisitReturnStatement()
+    {
+        return IfStatement(LogicalNotExpression(IdentifierName("ShouldVisit")), Block(ReturnStatement()));
+    }
+
+    public static IfStatementSyntax IfNotEqualsToNullStatement(string name, StatementSyntax statement)
+    {
+        return IfStatement(
+            NotEqualsExpression(
+                IdentifierName(name),
+                NullLiteralExpression()),
+            (statement.IsKind(SyntaxKind.Block)) ? statement : Block(statement));
+    }
+
+    public static ThrowStatementSyntax ThrowNewInvalidOperationException(ExpressionSyntax expression = null)
+    {
+        ArgumentListSyntax argumentList;
+
+        if (expression != null)
         {
-            return IfStatement(LogicalNotExpression(IdentifierName("ShouldVisit")), Block(ReturnStatement()));
+            argumentList = ArgumentList(Argument(expression));
         }
-
-        public static IfStatementSyntax IfNotEqualsToNullStatement(string name, StatementSyntax statement)
+        else
         {
-            return IfStatement(
-                NotEqualsExpression(
-                    IdentifierName(name),
-                    NullLiteralExpression()),
-                (statement.IsKind(SyntaxKind.Block)) ? statement : Block(statement));
+            argumentList = ArgumentList();
         }
 
-        public static ThrowStatementSyntax ThrowNewInvalidOperationException(ExpressionSyntax expression = null)
-        {
-            ArgumentListSyntax argumentList;
+        return ThrowStatement(
+            ObjectCreationExpression(
+                IdentifierName("InvalidOperationException"), argumentList));
+    }
 
-            if (expression != null)
-            {
-                argumentList = ArgumentList(Argument(expression));
-            }
-            else
-            {
-                argumentList = ArgumentList();
-            }
+    public static ThrowStatementSyntax ThrowNewArgumentException(ExpressionSyntax messageExpression, string parameterName)
+    {
+        ArgumentListSyntax argumentList = ArgumentList(
+            Argument(messageExpression),
+            Argument(NameOfExpression(IdentifierName(parameterName))));
 
-            return ThrowStatement(
-                ObjectCreationExpression(
-                    IdentifierName("InvalidOperationException"), argumentList));
-        }
+        return ThrowStatement(
+            ObjectCreationExpression(
+                IdentifierName("ArgumentException"), argumentList));
+    }
 
-        public static ThrowStatementSyntax ThrowNewArgumentException(ExpressionSyntax messageExpression, string parameterName)
-        {
-            ArgumentListSyntax argumentList = ArgumentList(
-                Argument(messageExpression),
-                Argument(NameOfExpression(IdentifierName(parameterName))));
-
-            return ThrowStatement(
-                ObjectCreationExpression(
-                    IdentifierName("ArgumentException"), argumentList));
-        }
-
-        public static LocalDeclarationStatementSyntax LocalDeclarationStatement(
-            ITypeSymbol typeSymbol,
-            string name,
-            string parameterName,
-            string propertyName)
-        {
-            return CSharpFactory.LocalDeclarationStatement(
-                typeSymbol.ToTypeSyntax(SymbolDisplayFormats.DisplayName_WithoutNullableReferenceTypeModifier),
-                name,
-                SimpleMemberAccessExpression(
-                    IdentifierName(parameterName),
-                    IdentifierName(propertyName)));
-        }
+    public static LocalDeclarationStatementSyntax LocalDeclarationStatement(
+        ITypeSymbol typeSymbol,
+        string name,
+        string parameterName,
+        string propertyName)
+    {
+        return CSharpFactory.LocalDeclarationStatement(
+            typeSymbol.ToTypeSyntax(SymbolDisplayFormats.DisplayName_WithoutNullableReferenceTypeModifier),
+            name,
+            SimpleMemberAccessExpression(
+                IdentifierName(parameterName),
+                IdentifierName(propertyName)));
     }
 }

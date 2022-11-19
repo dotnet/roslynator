@@ -9,30 +9,29 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AttributeArgumentListCodeFixProvider))]
+[Shared]
+public sealed class AttributeArgumentListCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AttributeArgumentListCodeFixProvider))]
-    [Shared]
-    public sealed class AttributeArgumentListCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveArgumentListFromAttribute); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveArgumentListFromAttribute); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeArgumentListSyntax attributeArgumentList))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeArgumentListSyntax attributeArgumentList))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove parentheses",
-                ct => context.Document.RemoveNodeAsync(attributeArgumentList, SyntaxRemoveOptions.KeepNoTrivia, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveArgumentListFromAttribute));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove parentheses",
+            ct => context.Document.RemoveNodeAsync(attributeArgumentList, SyntaxRemoveOptions.KeepNoTrivia, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveArgumentListFromAttribute));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

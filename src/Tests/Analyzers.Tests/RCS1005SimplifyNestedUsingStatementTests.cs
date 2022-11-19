@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1005SimplifyNestedUsingStatementTests : AbstractCSharpDiagnosticVerifier<SimplifyNestedUsingStatementAnalyzer, SimplifyNestedUsingStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNestedUsingStatement;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1005SimplifyNestedUsingStatementTests : AbstractCSharpDiagnosticVerifier<SimplifyNestedUsingStatementAnalyzer, SimplifyNestedUsingStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNestedUsingStatement;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -54,12 +54,12 @@ class C
     IDisposable GetResource() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
-        public async Task Test_OpenBraceAtTheEndOfLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
+    public async Task Test_OpenBraceAtTheEndOfLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -96,12 +96,12 @@ class C
     IDisposable GetResource() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
-        public async Task TestNoDiagnostic_MultipleStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
+    public async Task TestNoDiagnostic_MultipleStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -122,12 +122,12 @@ class C
     IDisposable GetResource() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
-        public async Task TestNoDiagnostic_WithComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
+    public async Task TestNoDiagnostic_WithComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -147,6 +147,5 @@ class C
     IDisposable GetResource() => null;
 }
 ");
-        }
     }
 }

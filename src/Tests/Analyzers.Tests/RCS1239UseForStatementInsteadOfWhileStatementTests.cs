@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1239UseForStatementInsteadOfWhileStatementTests : AbstractCSharpDiagnosticVerifier<UseForStatementInsteadOfWhileStatementAnalyzer, WhileStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseForStatementInsteadOfWhileStatement;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1239UseForStatementInsteadOfWhileStatementTests : AbstractCSharpDiagnosticVerifier<UseForStatementInsteadOfWhileStatementAnalyzer, WhileStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseForStatementInsteadOfWhileStatement;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -44,12 +44,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
-        public async Task Test_ContinueStatementInsideNestedLoop()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    public async Task Test_ContinueStatementInsideNestedLoop()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -93,12 +93,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
-        public async Task TestNoDiagnostic_LocalVariableReferencedAfterWhileStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    public async Task TestNoDiagnostic_LocalVariableReferencedAfterWhileStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -116,12 +116,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
-        public async Task TestNoDiagnostic_ContainsContinueStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    public async Task TestNoDiagnostic_ContainsContinueStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -145,12 +145,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
-        public async Task TestNoDiagnostic_MultipleIncrementedVariables()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    public async Task TestNoDiagnostic_MultipleIncrementedVariables()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -168,12 +168,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
-        public async Task TestNoDiagnostic_ConditionIsTrue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+    public async Task TestNoDiagnostic_ConditionIsTrue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -187,6 +187,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1007AddBracesTests : AbstractCSharpDiagnosticVerifier<AddBracesAnalyzer, AddBracesCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBraces;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_If()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1007AddBracesTests : AbstractCSharpDiagnosticVerifier<AddBracesAnalyzer, AddBracesCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBraces;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_If()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -40,12 +40,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_IfElse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_IfElse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -80,12 +80,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_IfElseIf()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_IfElseIf()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y, bool b)
@@ -124,12 +124,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_IfElseIfElse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_IfElseIfElse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y, bool b)
@@ -180,12 +180,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_Foreach()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_Foreach()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -218,12 +218,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_ForeachTuple()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_ForeachTuple()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -248,12 +248,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_For()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_For()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -278,12 +278,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_Using()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_Using()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -308,12 +308,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_While()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_While()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -338,12 +338,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_DoWhile()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_DoWhile()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -370,12 +370,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_Lock()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_Lock()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -400,12 +400,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task Test_Fixed()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task Test_Fixed()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x, object y)
@@ -438,12 +438,12 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task TestNoDiagnostic_IfElseIf()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task TestNoDiagnostic_IfElseIf()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool b)
@@ -457,12 +457,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task TestNoDiagnostic_Using()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task TestNoDiagnostic_Using()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -473,12 +473,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
-        public async Task TestNoDiagnostic_ConsecutiveUsing()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
+    public async Task TestNoDiagnostic_ConsecutiveUsing()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -490,6 +490,5 @@ class C
     }
 }
 ");
-        }
     }
 }

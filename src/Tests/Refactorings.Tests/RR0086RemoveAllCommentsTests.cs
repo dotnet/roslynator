@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0086RemoveAllCommentsTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveAllComments;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_SingleLineComment()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0086RemoveAllCommentsTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveAllComments;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_SingleLineComment()
+    {
+        await VerifyRefactoringAsync(@"
 [|class C// x
 |]{
 }
@@ -22,12 +22,12 @@ class C
 {
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_SingleLineComment_LeadingWhitespace()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_SingleLineComment_LeadingWhitespace()
+    {
+        await VerifyRefactoringAsync(@"
 [|class C // x
 |]{
 }
@@ -36,21 +36,21 @@ class C
 {
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_SingleLineComment_NoTrailingEndOfLine()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_SingleLineComment_NoTrailingEndOfLine()
+    {
+        await VerifyRefactoringAsync(@"
 [|class C { } // x|]",
 @"
 class C { }", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_SingleLineComment_PragmaDirective()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_SingleLineComment_PragmaDirective()
+    {
+        await VerifyRefactoringAsync(@"
 [|#pragma warning disable 1 // x
 class C
 #pragma warning restore 1 // x
@@ -63,12 +63,12 @@ class C
 {
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_MultiLineComment()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_MultiLineComment()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|    /* x
@@ -85,12 +85,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_MultiLineComment_NoLeadingTrailingTrivia()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_MultiLineComment_NoLeadingTrailingTrivia()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|/* x
@@ -107,12 +107,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_MultiLineComment_NoEndOfLine()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_MultiLineComment_NoEndOfLine()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|     /* x
@@ -128,12 +128,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_SingleLineDocumentationComment()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_SingleLineDocumentationComment()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|    /// <summary>
@@ -151,12 +151,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_SingleLineDocumentationComment_NoLeadingWhitespace()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_SingleLineDocumentationComment_NoLeadingWhitespace()
+    {
+        await VerifyRefactoringAsync(@"
 [|/// <summary>
 /// x
 /// </summary>
@@ -168,12 +168,12 @@ class C
 {
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_MultiLineDocumentationComment()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_MultiLineDocumentationComment()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|    /** <summary>
@@ -191,12 +191,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_MultiLineDocumentationComment_NoLeadingTrivia()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_MultiLineDocumentationComment_NoLeadingTrivia()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|/** <summary>
@@ -214,12 +214,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_MultiLineDocumentationComment_NoTrailingEndOfLine()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_MultiLineDocumentationComment_NoTrailingEndOfLine()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|    /** <summary>
@@ -236,12 +236,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
-        public async Task Test_AllComments()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllComments)]
+    public async Task Test_AllComments()
+    {
+        await VerifyRefactoringAsync(@"
 [|/// <summary>
 /// x
 /// </summary>
@@ -278,6 +278,5 @@ class C
     // x
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

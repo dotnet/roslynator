@@ -3,22 +3,21 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.If
-{
-    internal sealed class LocalDeclarationAndIfElseToAssignmentWithConditionalExpressionAnalysis : ToAssignmentWithConditionalExpressionAnalysis<LocalDeclarationStatementSyntax>
-    {
-        internal LocalDeclarationAndIfElseToAssignmentWithConditionalExpressionAnalysis(
-            LocalDeclarationStatementSyntax statement,
-            IfStatementSyntax ifStatement,
-            ExpressionSyntax whenTrue,
-            ExpressionSyntax whenFalse,
-            SemanticModel semanticModel) : base(statement, ifStatement, whenTrue, whenFalse, semanticModel)
-        {
-        }
+namespace Roslynator.CSharp.Analysis.If;
 
-        public override IfAnalysisKind Kind
-        {
-            get { return IfAnalysisKind.LocalDeclarationAndIfElseAssignmentWithConditionalExpression; }
-        }
+internal sealed class LocalDeclarationAndIfElseToAssignmentWithConditionalExpressionAnalysis : ToAssignmentWithConditionalExpressionAnalysis<LocalDeclarationStatementSyntax>
+{
+    internal LocalDeclarationAndIfElseToAssignmentWithConditionalExpressionAnalysis(
+        LocalDeclarationStatementSyntax statement,
+        IfStatementSyntax ifStatement,
+        ExpressionSyntax whenTrue,
+        ExpressionSyntax whenFalse,
+        SemanticModel semanticModel) : base(statement, ifStatement, whenTrue, whenFalse, semanticModel)
+    {
+    }
+
+    public override IfAnalysisKind Kind
+    {
+        get { return IfAnalysisKind.LocalDeclarationAndIfElseAssignmentWithConditionalExpression; }
     }
 }

@@ -2,19 +2,18 @@
 
 using System;
 
-namespace Roslynator
+namespace Roslynator;
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+internal sealed class CommandGroupAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    internal sealed class CommandGroupAttribute : Attribute
+    public CommandGroupAttribute(string name, int ordinal)
     {
-        public CommandGroupAttribute(string name, int ordinal)
-        {
-            Name = name;
-            Ordinal = ordinal;
-        }
-
-        public string Name { get; }
-
-        public int Ordinal { get; }
+        Name = name;
+        Ordinal = ordinal;
     }
+
+    public string Name { get; }
+
+    public int Ordinal { get; }
 }

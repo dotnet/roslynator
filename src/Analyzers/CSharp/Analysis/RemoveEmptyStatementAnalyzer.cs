@@ -6,49 +6,48 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class RemoveEmptyStatementAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RemoveEmptyStatementAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveEmptyStatement);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveEmptyStatement);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeEmptyStatement(f), SyntaxKind.EmptyStatement);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeEmptyStatement(f), SyntaxKind.EmptyStatement);
+    }
 
-        private static void AnalyzeEmptyStatement(SyntaxNodeAnalysisContext context)
-        {
-            SyntaxNode emptyStatement = context.Node;
+    private static void AnalyzeEmptyStatement(SyntaxNodeAnalysisContext context)
+    {
+        SyntaxNode emptyStatement = context.Node;
 
-            SyntaxNode parent = emptyStatement.Parent;
+        SyntaxNode parent = emptyStatement.Parent;
 
-            if (parent == null)
-                return;
+        if (parent == null)
+            return;
 
-            SyntaxKind kind = parent.Kind();
+        SyntaxKind kind = parent.Kind();
 
-            if (kind == SyntaxKind.LabeledStatement)
-                return;
+        if (kind == SyntaxKind.LabeledStatement)
+            return;
 
-            if (CSharpFacts.CanHaveEmbeddedStatement(kind))
-                return;
+        if (CSharpFacts.CanHaveEmbeddedStatement(kind))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyStatement, emptyStatement);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyStatement, emptyStatement);
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1236UseExceptionFilterTests : AbstractCSharpDiagnosticVerifier<UseExceptionFilterAnalyzer, IfStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExceptionFilter;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task Test_IfThrow()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1236UseExceptionFilterTests : AbstractCSharpDiagnosticVerifier<UseExceptionFilterAnalyzer, IfStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExceptionFilter;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task Test_IfThrow()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -54,12 +54,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task Test_IfThrow_Embedded()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task Test_IfThrow_Embedded()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -96,12 +96,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task Test_IfThrowElse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task Test_IfThrowElse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -141,12 +141,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task Test_IfThrowElse_Embedded()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task Test_IfThrowElse_Embedded()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -182,12 +182,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task Test_IfThrowElseIf()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task Test_IfThrowElseIf()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -234,12 +234,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task Test_IfElseThrow()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task Test_IfElseThrow()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -279,12 +279,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task TestNoDiagnostic_HasFilter()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task TestNoDiagnostic_HasFilter()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -306,12 +306,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task TestNoDiagnostic_ConditionContainsAwait()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task TestNoDiagnostic_ConditionContainsAwait()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -334,12 +334,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task TestNoDiagnostic_BothBranchesThrow()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task TestNoDiagnostic_BothBranchesThrow()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -363,12 +363,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task TestNoDiagnostic_ContainsMethodThatCanThrow()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task TestNoDiagnostic_ContainsMethodThatCanThrow()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -388,12 +388,12 @@ class C
     bool ThrowIf(Exception ex) => throw new Exception();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task TestNoDiagnostic_ContainsMethodThatCanThrow2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task TestNoDiagnostic_ContainsMethodThatCanThrow2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -413,12 +413,12 @@ class C
     bool ThrowIf<T>(Exception ex) => throw new Exception();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task TestNoDiagnostic_ContainsMethodThatCanThrow3()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task TestNoDiagnostic_ContainsMethodThatCanThrow3()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 static class C
@@ -438,12 +438,12 @@ static class C
     static bool ThrowIf(this Exception ex) => false;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task TestNoDiagnostic_ContainsMethodThatCanThrow_XmlCommentContainsException()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task TestNoDiagnostic_ContainsMethodThatCanThrow_XmlCommentContainsException()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -468,12 +468,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
-        public async Task TestNoDiagnostic_ContainsThrowExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+    public async Task TestNoDiagnostic_ContainsThrowExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -493,6 +493,5 @@ class C
     bool M2(Exception ex) => false;
 }
 ");
-        }
     }
 }

@@ -10,32 +10,31 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBracesToIfElseCodeFixProvider))]
+[Shared]
+public sealed class AddBracesToIfElseCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBracesToIfElseCodeFixProvider))]
-    [Shared]
-    public sealed class AddBracesToIfElseCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out IfStatementSyntax ifStatement))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out IfStatementSyntax ifStatement))
+            return;
 
-            ifStatement = ifStatement.GetTopmostIf();
+        ifStatement = ifStatement.GetTopmostIf();
 
-            CodeAction codeAction = CodeAction.Create(
-                "Add braces to if-else",
-                ct => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, ifStatement, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines));
+        CodeAction codeAction = CodeAction.Create(
+            "Add braces to if-else",
+            ct => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, ifStatement, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

@@ -7,63 +7,62 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddBracesToIfElseAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddBracesToIfElseAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBracesToIfElse);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBracesToIfElse);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
+        context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
+    }
 
-        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
-        {
-            var ifStatement = (IfStatementSyntax)context.Node;
+    private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+    {
+        var ifStatement = (IfStatementSyntax)context.Node;
 
-            if (ifStatement.IsSimpleIf())
-                return;
+        if (ifStatement.IsSimpleIf())
+            return;
 
-            StatementSyntax statement = ifStatement.EmbeddedStatement();
+        StatementSyntax statement = ifStatement.EmbeddedStatement();
 
-            if (statement == null)
-                return;
+        if (statement == null)
+            return;
 
-            if (statement.ContainsDirectives)
-                return;
+        if (statement.ContainsDirectives)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElse, statement, CSharpFacts.GetTitle(ifStatement));
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElse, statement, CSharpFacts.GetTitle(ifStatement));
+    }
 
-        private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
-        {
-            var elseClause = (ElseClauseSyntax)context.Node;
+    private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+    {
+        var elseClause = (ElseClauseSyntax)context.Node;
 
-            StatementSyntax statement = elseClause.EmbeddedStatement(allowIfStatement: false);
+        StatementSyntax statement = elseClause.EmbeddedStatement(allowIfStatement: false);
 
-            if (statement == null)
-                return;
+        if (statement == null)
+            return;
 
-            if (statement.ContainsDirectives)
-                return;
+        if (statement.ContainsDirectives)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElse, statement, CSharpFacts.GetTitle(elseClause));
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElse, statement, CSharpFacts.GetTitle(elseClause));
     }
 }

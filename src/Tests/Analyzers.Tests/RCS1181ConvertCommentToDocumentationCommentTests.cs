@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1181ConvertCommentToDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<ConvertCommentToDocumentationCommentAnalyzer, MemberDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertCommentToDocumentationComment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_LeadingComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1181ConvertCommentToDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<ConvertCommentToDocumentationCommentAnalyzer, MemberDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertCommentToDocumentationComment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_LeadingComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     [|// x|]
@@ -34,12 +34,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_LeadingMultipleComments()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_LeadingMultipleComments()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     [|// x
@@ -60,12 +60,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_TrailingComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_TrailingComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M() [|// x|]
@@ -83,12 +83,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_TrailingComment2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_TrailingComment2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M<T1, T2>() where T1 : class where T2 : class [|// x|]
@@ -108,12 +108,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_TrailingComment_EnumMember()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_TrailingComment_EnumMember()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum E
 {
     A = 0 [|//x|]
@@ -127,12 +127,12 @@ enum E
     A = 0
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_TrailingComment_EnumMemberWithValueAndWithComma()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_TrailingComment_EnumMemberWithValueAndWithComma()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum E
 {
     A = 0, [|//x|]
@@ -148,12 +148,12 @@ enum E
     B = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_TrailingComment_EnumMemberWithoutValueAndWithComma()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_TrailingComment_EnumMemberWithoutValueAndWithComma()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum E
 {
     A, [|//x|]
@@ -169,12 +169,12 @@ enum E
     B
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_LeadingTodoCommentTrailingComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_LeadingTodoCommentTrailingComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     //TODO x
@@ -194,12 +194,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task TestNoDiagnostic_DocumentationComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task TestNoDiagnostic_DocumentationComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary>
@@ -210,12 +210,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task TestNoDiagnostic_DocumentationCommentAndTrailingComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task TestNoDiagnostic_DocumentationCommentAndTrailingComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary>
@@ -226,12 +226,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task TestNoDiagnostic_DocumentationComment_DocumentationModeIsEqualToNone()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task TestNoDiagnostic_DocumentationComment_DocumentationModeIsEqualToNone()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary>
@@ -242,12 +242,12 @@ class C
     }
 }
 ", options: Options.WithParseOptions(Options.ParseOptions.WithDocumentationMode(DocumentationMode.None)));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task TestNoDiagnostic_DocumentationCommentAndTrailingComment_DocumentationModeIsEqualToNone()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task TestNoDiagnostic_DocumentationCommentAndTrailingComment_DocumentationModeIsEqualToNone()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary>
@@ -258,12 +258,12 @@ class C
     }
 }
 ", options: Options.WithParseOptions(Options.ParseOptions.WithDocumentationMode(DocumentationMode.None)));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task TestNoDiagnostic_LeadingTaskListItem()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task TestNoDiagnostic_LeadingTaskListItem()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     //todo
@@ -300,12 +300,12 @@ class C
     object M11() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task TestNoDiagnostic_TrailingTaskListItem()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task TestNoDiagnostic_TrailingTaskListItem()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M1() //todo
@@ -314,12 +314,12 @@ class C
 
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task TestNoDiagnostic_LeadingTaskListItemWithNonTaskListItem()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task TestNoDiagnostic_LeadingTaskListItemWithNonTaskListItem()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     //todo
@@ -329,6 +329,5 @@ class C
     }
 }
 ");
-        }
     }
 }

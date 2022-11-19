@@ -7,220 +7,219 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveBracesRefactoring
 {
-    internal static class RemoveBracesRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
     {
-        public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
+        BlockSyntax block = null;
+
+        if (statement.IsKind(SyntaxKind.Block))
         {
-            BlockSyntax block = null;
-
-            if (statement.IsKind(SyntaxKind.Block))
-            {
-                block = (BlockSyntax)statement;
-            }
-            else if (statement.IsParentKind(SyntaxKind.Block))
-            {
-                block = (BlockSyntax)statement.Parent;
-            }
-
-            if (block != null)
-                ComputeRefactoring(context, block);
+            block = (BlockSyntax)statement;
+        }
+        else if (statement.IsParentKind(SyntaxKind.Block))
+        {
+            block = (BlockSyntax)statement.Parent;
         }
 
-        private static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
+        if (block != null)
+            ComputeRefactoring(context, block);
+    }
+
+    private static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
+    {
+        if (context.IsAnyRefactoringEnabled(
+            RefactoringDescriptors.RemoveBraces,
+            RefactoringDescriptors.RemoveBracesFromIfElse)
+            && CanRefactor(context, block))
         {
-            if (context.IsAnyRefactoringEnabled(
-                RefactoringDescriptors.RemoveBraces,
-                RefactoringDescriptors.RemoveBracesFromIfElse)
-                && CanRefactor(context, block))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveBraces))
             {
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveBraces))
+                context.RegisterRefactoring(
+                    "Remove braces",
+                    ct => RefactorAsync(context.Document, block, ct),
+                    RefactoringDescriptors.RemoveBraces);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveBracesFromIfElse))
+            {
+                IfStatementSyntax topmostIf = GetTopmostIf(block);
+
+                if (topmostIf?.Else != null
+                    && CanRefactorIfElse(block, topmostIf))
                 {
                     context.RegisterRefactoring(
-                        "Remove braces",
-                        ct => RefactorAsync(context.Document, block, ct),
-                        RefactoringDescriptors.RemoveBraces);
-                }
-
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveBracesFromIfElse))
-                {
-                    IfStatementSyntax topmostIf = GetTopmostIf(block);
-
-                    if (topmostIf?.Else != null
-                        && CanRefactorIfElse(block, topmostIf))
-                    {
-                        context.RegisterRefactoring(
-                            "Remove braces from if-else",
-                            ct =>
-                            {
-                                return RemoveBracesFromIfElseElseRefactoring.RefactorAsync(
-                                    context.Document,
-                                    topmostIf,
-                                    ct);
-                            },
-                            RefactoringDescriptors.RemoveBracesFromIfElse);
-                    }
-                }
-            }
-        }
-
-        private static bool CanRefactorIfElse(BlockSyntax selectedBlock, IfStatementSyntax topmostIf)
-        {
-            var success = false;
-
-            foreach (BlockSyntax block in GetBlockStatements(topmostIf))
-            {
-                if (block == selectedBlock)
-                    continue;
-
-                if (IsEmbeddableBlock(block))
-                {
-                    success = true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return success;
-        }
-
-        private static IEnumerable<BlockSyntax> GetBlockStatements(IfStatementSyntax ifStatement)
-        {
-            foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
-            {
-                StatementSyntax statement = ifOrElse.Statement;
-
-                if (statement?.Kind() == SyntaxKind.Block)
-                    yield return (BlockSyntax)statement;
-            }
-        }
-
-        private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
-        {
-            if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(block))
-                return false;
-
-            if (!IsEmbeddableBlock(block))
-                return false;
-
-            StatementSyntax statement = GetEmbeddedStatement(block.Statements[0]);
-
-            return statement?.FullSpan.Contains(context.Span) != true;
-        }
-
-        private static StatementSyntax GetEmbeddedStatement(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.IfStatement:
-                    return ((IfStatementSyntax)node).EmbeddedStatement();
-                case SyntaxKind.ForEachStatement:
-                case SyntaxKind.ForEachVariableStatement:
-                    return ((CommonForEachStatementSyntax)node).EmbeddedStatement();
-                case SyntaxKind.ForStatement:
-                    return ((ForStatementSyntax)node).EmbeddedStatement();
-                case SyntaxKind.WhileStatement:
-                    return ((WhileStatementSyntax)node).EmbeddedStatement();
-                case SyntaxKind.DoStatement:
-                    return ((DoStatementSyntax)node).EmbeddedStatement();
-                case SyntaxKind.LockStatement:
-                    return ((LockStatementSyntax)node).EmbeddedStatement();
-                case SyntaxKind.FixedStatement:
-                    return ((FixedStatementSyntax)node).EmbeddedStatement();
-                case SyntaxKind.UsingStatement:
-                    return ((UsingStatementSyntax)node).EmbeddedStatement();
-                case SyntaxKind.ElseClause:
-                    return ((ElseClauseSyntax)node).EmbeddedStatement();
-            }
-
-            return null;
-        }
-
-        private static IfStatementSyntax GetTopmostIf(BlockSyntax block)
-        {
-            SyntaxNode parent = block.Parent;
-
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.IfStatement:
-                    return ((IfStatementSyntax)parent).GetTopmostIf();
-                case SyntaxKind.ElseClause:
-                    return ((ElseClauseSyntax)parent).GetTopmostIf();
-                default:
-                    return null;
-            }
-        }
-
-        private static bool IsEmbeddableBlock(BlockSyntax block)
-        {
-            SyntaxNode parent = block.Parent;
-
-            if (parent != null)
-            {
-                SyntaxKind kind = parent.Kind();
-
-                if (CSharpFacts.CanHaveEmbeddedStatement(kind))
-                {
-                    StatementSyntax statement = block
-                        .Statements
-                        .SingleOrDefault(shouldThrow: false);
-
-                    if (statement != null)
-                    {
-                        switch (statement.Kind())
+                        "Remove braces from if-else",
+                        ct =>
                         {
-                            case SyntaxKind.LocalDeclarationStatement:
-                            case SyntaxKind.LabeledStatement:
-                                {
-                                    return false;
-                                }
-                            case SyntaxKind.IfStatement:
-                                {
-                                    return kind != SyntaxKind.IfStatement
-                                        || ((IfStatementSyntax)parent).Else == null
-                                        || !((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf;
-                                }
-                            default:
-                                {
-                                    return true;
-                                }
-                        }
-                    }
+                            return RemoveBracesFromIfElseElseRefactoring.RefactorAsync(
+                                context.Document,
+                                topmostIf,
+                                ct);
+                        },
+                        RefactoringDescriptors.RemoveBracesFromIfElse);
                 }
             }
-
-            return false;
         }
+    }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            BlockSyntax block,
-            CancellationToken cancellationToken = default)
+    private static bool CanRefactorIfElse(BlockSyntax selectedBlock, IfStatementSyntax topmostIf)
+    {
+        var success = false;
+
+        foreach (BlockSyntax block in GetBlockStatements(topmostIf))
         {
-            StatementSyntax statement = block.Statements[0];
+            if (block == selectedBlock)
+                continue;
 
-            if (block.IsParentKind(SyntaxKind.ElseClause)
-                && statement.IsKind(SyntaxKind.IfStatement))
+            if (IsEmbeddableBlock(block))
             {
-                var elseClause = (ElseClauseSyntax)block.Parent;
-
-                ElseClauseSyntax newElseClause = elseClause
-                    .WithStatement(statement)
-                    .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
-                    .WithFormatterAnnotation();
-
-                return document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken);
+                success = true;
             }
             else
             {
-                StatementSyntax newNode = statement.TrimLeadingTrivia()
-                    .WithFormatterAnnotation();
-
-                return document.ReplaceNodeAsync(block, newNode, cancellationToken);
+                return false;
             }
+        }
+
+        return success;
+    }
+
+    private static IEnumerable<BlockSyntax> GetBlockStatements(IfStatementSyntax ifStatement)
+    {
+        foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
+        {
+            StatementSyntax statement = ifOrElse.Statement;
+
+            if (statement?.Kind() == SyntaxKind.Block)
+                yield return (BlockSyntax)statement;
+        }
+    }
+
+    private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
+    {
+        if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(block))
+            return false;
+
+        if (!IsEmbeddableBlock(block))
+            return false;
+
+        StatementSyntax statement = GetEmbeddedStatement(block.Statements[0]);
+
+        return statement?.FullSpan.Contains(context.Span) != true;
+    }
+
+    private static StatementSyntax GetEmbeddedStatement(SyntaxNode node)
+    {
+        switch (node.Kind())
+        {
+            case SyntaxKind.IfStatement:
+                return ((IfStatementSyntax)node).EmbeddedStatement();
+            case SyntaxKind.ForEachStatement:
+            case SyntaxKind.ForEachVariableStatement:
+                return ((CommonForEachStatementSyntax)node).EmbeddedStatement();
+            case SyntaxKind.ForStatement:
+                return ((ForStatementSyntax)node).EmbeddedStatement();
+            case SyntaxKind.WhileStatement:
+                return ((WhileStatementSyntax)node).EmbeddedStatement();
+            case SyntaxKind.DoStatement:
+                return ((DoStatementSyntax)node).EmbeddedStatement();
+            case SyntaxKind.LockStatement:
+                return ((LockStatementSyntax)node).EmbeddedStatement();
+            case SyntaxKind.FixedStatement:
+                return ((FixedStatementSyntax)node).EmbeddedStatement();
+            case SyntaxKind.UsingStatement:
+                return ((UsingStatementSyntax)node).EmbeddedStatement();
+            case SyntaxKind.ElseClause:
+                return ((ElseClauseSyntax)node).EmbeddedStatement();
+        }
+
+        return null;
+    }
+
+    private static IfStatementSyntax GetTopmostIf(BlockSyntax block)
+    {
+        SyntaxNode parent = block.Parent;
+
+        switch (parent?.Kind())
+        {
+            case SyntaxKind.IfStatement:
+                return ((IfStatementSyntax)parent).GetTopmostIf();
+            case SyntaxKind.ElseClause:
+                return ((ElseClauseSyntax)parent).GetTopmostIf();
+            default:
+                return null;
+        }
+    }
+
+    private static bool IsEmbeddableBlock(BlockSyntax block)
+    {
+        SyntaxNode parent = block.Parent;
+
+        if (parent != null)
+        {
+            SyntaxKind kind = parent.Kind();
+
+            if (CSharpFacts.CanHaveEmbeddedStatement(kind))
+            {
+                StatementSyntax statement = block
+                    .Statements
+                    .SingleOrDefault(shouldThrow: false);
+
+                if (statement != null)
+                {
+                    switch (statement.Kind())
+                    {
+                        case SyntaxKind.LocalDeclarationStatement:
+                        case SyntaxKind.LabeledStatement:
+                            {
+                                return false;
+                            }
+                        case SyntaxKind.IfStatement:
+                            {
+                                return kind != SyntaxKind.IfStatement
+                                    || ((IfStatementSyntax)parent).Else == null
+                                    || !((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf;
+                            }
+                        default:
+                            {
+                                return true;
+                            }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        BlockSyntax block,
+        CancellationToken cancellationToken = default)
+    {
+        StatementSyntax statement = block.Statements[0];
+
+        if (block.IsParentKind(SyntaxKind.ElseClause)
+            && statement.IsKind(SyntaxKind.IfStatement))
+        {
+            var elseClause = (ElseClauseSyntax)block.Parent;
+
+            ElseClauseSyntax newElseClause = elseClause
+                .WithStatement(statement)
+                .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken);
+        }
+        else
+        {
+            StatementSyntax newNode = statement.TrimLeadingTrivia()
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(block, newNode, cancellationToken);
         }
     }
 }

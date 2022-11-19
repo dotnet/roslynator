@@ -5,22 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveOriginalExceptionFromThrowStatementRefactoring
 {
-    internal static class RemoveOriginalExceptionFromThrowStatementRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ThrowStatementSyntax throwStatement,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ThrowStatementSyntax throwStatement,
-            CancellationToken cancellationToken = default)
-        {
-            ExpressionSyntax expression = throwStatement.Expression;
+        ExpressionSyntax expression = throwStatement.Expression;
 
-            ThrowStatementSyntax newThrowStatement = throwStatement
-                .RemoveNode(expression)
-                .WithFormatterAnnotation();
+        ThrowStatementSyntax newThrowStatement = throwStatement
+            .RemoveNode(expression)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(throwStatement, newThrowStatement, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(throwStatement, newThrowStatement, cancellationToken);
     }
 }

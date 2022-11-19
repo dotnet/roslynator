@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS1741RefOrOutParameterCannotHaveDefaultValueTests : AbstractCSharpCompilerDiagnosticFixVerifier<ParameterCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue)]
-        public async Task Test_Out()
-        {
-            await VerifyFixAsync(@"
+public class CS1741RefOrOutParameterCannotHaveDefaultValueTests : AbstractCSharpCompilerDiagnosticFixVerifier<ParameterCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue)]
+    public async Task Test_Out()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     bool M(out string p = null)
@@ -32,12 +32,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue)]
-        public async Task Test_Ref()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue)]
+    public async Task Test_Ref()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M(ref string p = null)
@@ -54,6 +54,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

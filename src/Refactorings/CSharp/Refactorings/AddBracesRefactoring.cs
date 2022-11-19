@@ -8,91 +8,90 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AddBracesRefactoring
 {
-    internal static class AddBracesRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
     {
-        public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
+        if (context.IsAnyRefactoringEnabled(
+            RefactoringDescriptors.AddBraces,
+            RefactoringDescriptors.AddBracesToIfElse)
+            && CanRefactor(context, statement))
         {
-            if (context.IsAnyRefactoringEnabled(
-                RefactoringDescriptors.AddBraces,
-                RefactoringDescriptors.AddBracesToIfElse)
-                && CanRefactor(context, statement))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBraces))
             {
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBraces))
-                {
-                    RegisterRefactoring(context, statement);
-                }
+                RegisterRefactoring(context, statement);
+            }
 
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBracesToIfElse))
-                {
-                    IfStatementSyntax topmostIf = GetTopmostIf(statement);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBracesToIfElse))
+            {
+                IfStatementSyntax topmostIf = GetTopmostIf(statement);
 
-                    if (topmostIf?.Else != null
-                        && GetEmbeddedStatements(topmostIf).Any(f => f != statement))
-                    {
-                        context.RegisterRefactoring(
-                            "Add braces to if-else",
-                            ct => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, topmostIf, ct),
-                            RefactoringDescriptors.AddBracesToIfElse);
-                    }
+                if (topmostIf?.Else != null
+                    && GetEmbeddedStatements(topmostIf).Any(f => f != statement))
+                {
+                    context.RegisterRefactoring(
+                        "Add braces to if-else",
+                        ct => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, topmostIf, ct),
+                        RefactoringDescriptors.AddBracesToIfElse);
                 }
             }
         }
+    }
 
-        private static IEnumerable<StatementSyntax> GetEmbeddedStatements(IfStatementSyntax topmostIf)
+    private static IEnumerable<StatementSyntax> GetEmbeddedStatements(IfStatementSyntax topmostIf)
+    {
+        foreach (IfStatementOrElseClause ifOrElse in topmostIf.AsCascade())
         {
-            foreach (IfStatementOrElseClause ifOrElse in topmostIf.AsCascade())
-            {
-                StatementSyntax statement = ifOrElse.Statement;
+            StatementSyntax statement = ifOrElse.Statement;
 
-                if (statement?.IsKind(SyntaxKind.Block) == false)
-                    yield return statement;
+            if (statement?.IsKind(SyntaxKind.Block) == false)
+                yield return statement;
+        }
+    }
+
+    public static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
+    {
+        context.RegisterRefactoring(
+            "Add braces",
+            ct => RefactorAsync(context.Document, statement, ct),
+            RefactoringDescriptors.AddBraces);
+    }
+
+    private static bool CanRefactor(RefactoringContext context, StatementSyntax statement)
+    {
+        return context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(statement)
+            && statement.IsEmbedded(canBeIfInsideElse: false);
+    }
+
+    private static IfStatementSyntax GetTopmostIf(StatementSyntax statement)
+    {
+        SyntaxNode parent = statement.Parent;
+
+        if (parent != null)
+        {
+            if (parent.IsKind(SyntaxKind.ElseClause))
+            {
+                return ((ElseClauseSyntax)parent).GetTopmostIf();
+            }
+            else if (parent is IfStatementSyntax parentStatement)
+            {
+                return parentStatement.GetTopmostIf();
             }
         }
 
-        public static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
-        {
-            context.RegisterRefactoring(
-                "Add braces",
-                ct => RefactorAsync(context.Document, statement, ct),
-                RefactoringDescriptors.AddBraces);
-        }
+        return null;
+    }
 
-        private static bool CanRefactor(RefactoringContext context, StatementSyntax statement)
-        {
-            return context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(statement)
-                && statement.IsEmbedded(canBeIfInsideElse: false);
-        }
+    public static Task<Document> RefactorAsync(
+        Document document,
+        StatementSyntax statement,
+        CancellationToken cancellationToken = default)
+    {
+        BlockSyntax block = SyntaxFactory.Block(statement)
+            .WithFormatterAnnotation();
 
-        private static IfStatementSyntax GetTopmostIf(StatementSyntax statement)
-        {
-            SyntaxNode parent = statement.Parent;
-
-            if (parent != null)
-            {
-                if (parent.IsKind(SyntaxKind.ElseClause))
-                {
-                    return ((ElseClauseSyntax)parent).GetTopmostIf();
-                }
-                else if (parent is IfStatementSyntax parentStatement)
-                {
-                    return parentStatement.GetTopmostIf();
-                }
-            }
-
-            return null;
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken = default)
-        {
-            BlockSyntax block = SyntaxFactory.Block(statement)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(statement, block, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(statement, block, cancellationToken);
     }
 }

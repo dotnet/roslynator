@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1145RemoveRedundantAsOperatorTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantAsOperatorAnalyzer, BinaryExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAsOperator;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsOperator)]
-        public async Task TestNoDiagnostic_Dynamic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+public class RCS1145RemoveRedundantAsOperatorTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantAsOperatorAnalyzer, BinaryExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAsOperator;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsOperator)]
+    public async Task TestNoDiagnostic_Dynamic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -30,6 +30,5 @@ class C
     }
 }
 ");
-        }
     }
 }

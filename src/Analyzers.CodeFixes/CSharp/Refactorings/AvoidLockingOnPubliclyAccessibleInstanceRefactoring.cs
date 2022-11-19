@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AvoidLockingOnPubliclyAccessibleInstanceRefactoring
 {
-    internal static class AvoidLockingOnPubliclyAccessibleInstanceRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        LockStatementSyntax lockStatement,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            LockStatementSyntax lockStatement,
-            CancellationToken cancellationToken = default)
-        {
-            return IntroduceFieldToLockOnRefactoring.RefactorAsync(document, lockStatement, cancellationToken);
-        }
+        return IntroduceFieldToLockOnRefactoring.RefactorAsync(document, lockStatement, cancellationToken);
     }
 }

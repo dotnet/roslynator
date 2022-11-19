@@ -8,106 +8,105 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class WrapConstraintClausesRefactoring
 {
-    internal static class WrapConstraintClausesRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, TypeParameterConstraintClauseSyntax constraintClause)
     {
-        public static void ComputeRefactoring(RefactoringContext context, TypeParameterConstraintClauseSyntax constraintClause)
+        GenericInfo genericInfo = SyntaxInfo.GenericInfo(constraintClause);
+
+        if (!genericInfo.Success)
+            return;
+
+        SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = genericInfo.ConstraintClauses;
+
+        if (constraintClauses.IsSingleLine())
         {
-            GenericInfo genericInfo = SyntaxInfo.GenericInfo(constraintClause);
-
-            if (!genericInfo.Success)
-                return;
-
-            SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = genericInfo.ConstraintClauses;
-
-            if (constraintClauses.IsSingleLine())
-            {
-                if (constraintClauses.Count > 1)
-                {
-                    context.RegisterRefactoring(
-                        "Wrap constraints",
-                        ct =>
-                        {
-                            GenericInfo newInfo = WrapConstraints(genericInfo);
-
-                            return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, ct);
-                        },
-                        RefactoringDescriptors.WrapConstraintClauses);
-                }
-            }
-            else if (constraintClause.DescendantTrivia(constraintClause.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && constraintClauses[0].GetFirstToken().GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
+            if (constraintClauses.Count > 1)
             {
                 context.RegisterRefactoring(
-                    "Unwrap constraints",
+                    "Wrap constraints",
                     ct =>
                     {
-                        GenericInfo newInfo = UnwrapConstraints(genericInfo);
+                        GenericInfo newInfo = WrapConstraints(genericInfo);
 
                         return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, ct);
                     },
                     RefactoringDescriptors.WrapConstraintClauses);
             }
         }
-
-        private static GenericInfo UnwrapConstraints(in GenericInfo info)
+        else if (constraintClause.DescendantTrivia(constraintClause.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
+            && constraintClauses[0].GetFirstToken().GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
         {
-            SyntaxNode declaration = info.Node;
+            context.RegisterRefactoring(
+                "Unwrap constraints",
+                ct =>
+                {
+                    GenericInfo newInfo = UnwrapConstraints(genericInfo);
 
-            SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;
+                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, ct);
+                },
+                RefactoringDescriptors.WrapConstraintClauses);
+        }
+    }
 
-            SyntaxToken previousToken = declaration.FindToken(constraintClauses[0].FullSpan.Start - 1);
+    private static GenericInfo UnwrapConstraints(in GenericInfo info)
+    {
+        SyntaxNode declaration = info.Node;
 
-            declaration = declaration.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(TriviaList(ElasticSpace)));
+        SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;
 
-            int count = constraintClauses.Count;
+        SyntaxToken previousToken = declaration.FindToken(constraintClauses[0].FullSpan.Start - 1);
 
-            for (int i = 0; i < count; i++)
-            {
-                TypeParameterConstraintClauseSyntax constraintClause = constraintClauses[i];
+        declaration = declaration.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(TriviaList(ElasticSpace)));
 
-                TextSpan? span = null;
+        int count = constraintClauses.Count;
 
-                if (i == count - 1)
-                    span = TextSpan.FromBounds(constraintClause.FullSpan.Start, constraintClause.Span.End);
+        for (int i = 0; i < count; i++)
+        {
+            TypeParameterConstraintClauseSyntax constraintClause = constraintClauses[i];
 
-                TypeParameterConstraintClauseSyntax newNode = constraintClause
-                    .RemoveWhitespace(span)
-                    .WithFormatterAnnotation();
+            TextSpan? span = null;
 
-                constraintClauses = constraintClauses.ReplaceAt(i, newNode);
-            }
+            if (i == count - 1)
+                span = TextSpan.FromBounds(constraintClause.FullSpan.Start, constraintClause.Span.End);
 
-            return SyntaxInfo.GenericInfo(declaration).WithConstraintClauses(constraintClauses);
+            TypeParameterConstraintClauseSyntax newNode = constraintClause
+                .RemoveWhitespace(span)
+                .WithFormatterAnnotation();
+
+            constraintClauses = constraintClauses.ReplaceAt(i, newNode);
         }
 
-        private static GenericInfo WrapConstraints(in GenericInfo info)
+        return SyntaxInfo.GenericInfo(declaration).WithConstraintClauses(constraintClauses);
+    }
+
+    private static GenericInfo WrapConstraints(in GenericInfo info)
+    {
+        SyntaxNode declaration = info.Node;
+        SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;
+
+        TypeParameterConstraintClauseSyntax first = constraintClauses[0];
+
+        SyntaxToken previousToken = declaration.FindToken(first.FullSpan.Start - 1);
+
+        declaration = declaration.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(TriviaList(NewLine())));
+
+        SyntaxTrivia trivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTrivia(declaration);
+
+        int count = constraintClauses.Count;
+
+        for (int i = 0; i < count; i++)
         {
-            SyntaxNode declaration = info.Node;
-            SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;
+            TypeParameterConstraintClauseSyntax newNode = constraintClauses[i].WithLeadingTrivia(trivia);
 
-            TypeParameterConstraintClauseSyntax first = constraintClauses[0];
+            if (i < count - 1)
+                newNode = newNode.WithTrailingTrivia(NewLine());
 
-            SyntaxToken previousToken = declaration.FindToken(first.FullSpan.Start - 1);
-
-            declaration = declaration.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(TriviaList(NewLine())));
-
-            SyntaxTrivia trivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTrivia(declaration);
-
-            int count = constraintClauses.Count;
-
-            for (int i = 0; i < count; i++)
-            {
-                TypeParameterConstraintClauseSyntax newNode = constraintClauses[i].WithLeadingTrivia(trivia);
-
-                if (i < count - 1)
-                    newNode = newNode.WithTrailingTrivia(NewLine());
-
-                constraintClauses = constraintClauses.ReplaceAt(i, newNode);
-            }
-
-            return SyntaxInfo.GenericInfo(declaration).WithConstraintClauses(constraintClauses);
+            constraintClauses = constraintClauses.ReplaceAt(i, newNode);
         }
+
+        return SyntaxInfo.GenericInfo(declaration).WithConstraintClauses(constraintClauses);
     }
 }

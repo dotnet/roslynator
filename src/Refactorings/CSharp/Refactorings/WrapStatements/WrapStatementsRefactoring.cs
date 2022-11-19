@@ -8,58 +8,57 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.WrapStatements
+namespace Roslynator.CSharp.Refactorings.WrapStatements;
+
+internal abstract class WrapStatementsRefactoring<TStatement> where TStatement : StatementSyntax
 {
-    internal abstract class WrapStatementsRefactoring<TStatement> where TStatement : StatementSyntax
+    public abstract TStatement CreateStatement(ImmutableArray<StatementSyntax> statements);
+
+    public Task<Document> RefactorAsync(
+        Document document,
+        StatementListSelection selectedStatements,
+        CancellationToken cancellationToken = default)
     {
-        public abstract TStatement CreateStatement(ImmutableArray<StatementSyntax> statements);
+        StatementSyntax[] statements = selectedStatements.ToArray();
 
-        public Task<Document> RefactorAsync(
-            Document document,
-            StatementListSelection selectedStatements,
-            CancellationToken cancellationToken = default)
+        int index = selectedStatements.FirstIndex;
+
+        SyntaxTriviaList leadingTrivia = statements[0].GetLeadingTrivia();
+        SyntaxTriviaList trailingTrivia = statements[statements.Length - 1].GetTrailingTrivia();
+
+        statements[0] = statements[0].WithLeadingTrivia();
+        statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia();
+
+        SyntaxList<StatementSyntax> newStatements = selectedStatements.UnderlyingList;
+
+        int cnt = statements.Length;
+
+        while (cnt > 0)
         {
-            StatementSyntax[] statements = selectedStatements.ToArray();
-
-            int index = selectedStatements.FirstIndex;
-
-            SyntaxTriviaList leadingTrivia = statements[0].GetLeadingTrivia();
-            SyntaxTriviaList trailingTrivia = statements[statements.Length - 1].GetTrailingTrivia();
-
-            statements[0] = statements[0].WithLeadingTrivia();
-            statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia();
-
-            SyntaxList<StatementSyntax> newStatements = selectedStatements.UnderlyingList;
-
-            int cnt = statements.Length;
-
-            while (cnt > 0)
-            {
-                newStatements = newStatements.RemoveAt(index);
-                cnt--;
-            }
-
-            TStatement statement = CreateStatement(statements.ToImmutableArray());
-
-            statement = statement
-                .WithLeadingTrivia(leadingTrivia)
-                .WithTrailingTrivia(trailingTrivia)
-                .WithFormatterAnnotation();
-
-            newStatements = newStatements.Insert(index, statement);
-
-            return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
+            newStatements = newStatements.RemoveAt(index);
+            cnt--;
         }
 
-        public Task<Document> RefactorAsync(
-            Document document,
-            StatementSyntax embeddedStatement,
-            CancellationToken cancellationToken = default)
-        {
-            BlockSyntax newNode = Block(CreateStatement(ImmutableArray.Create(embeddedStatement)))
-                .WithFormatterAnnotation();
+        TStatement statement = CreateStatement(statements.ToImmutableArray());
 
-            return document.ReplaceNodeAsync(embeddedStatement, newNode, cancellationToken);
-        }
+        statement = statement
+            .WithLeadingTrivia(leadingTrivia)
+            .WithTrailingTrivia(trailingTrivia)
+            .WithFormatterAnnotation();
+
+        newStatements = newStatements.Insert(index, statement);
+
+        return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
+    }
+
+    public Task<Document> RefactorAsync(
+        Document document,
+        StatementSyntax embeddedStatement,
+        CancellationToken cancellationToken = default)
+    {
+        BlockSyntax newNode = Block(CreateStatement(ImmutableArray.Create(embeddedStatement)))
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(embeddedStatement, newNode, cancellationToken);
     }
 }

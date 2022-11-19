@@ -10,40 +10,39 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeParameterConstraintClauseSyntaxCodeFixProvider))]
+[Shared]
+public sealed class TypeParameterConstraintClauseSyntaxCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeParameterConstraintClauseSyntaxCodeFixProvider))]
-    [Shared]
-    public sealed class TypeParameterConstraintClauseSyntaxCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeParameterConstraintClauseSyntax constraintClause))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeParameterConstraintClauseSyntax constraintClause))
+            return;
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                CodeFixTitles.AddNewLine,
-                ct =>
-                {
-                    return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
-                        document,
-                        constraintClause.WhereKeyword,
-                        SyntaxTriviaAnalysis.AnalyzeIndentation(constraintClause.Parent, ct),
-                        ct);
-                },
-                GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeAction.Create(
+            CodeFixTitles.AddNewLine,
+            ct =>
+            {
+                return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
+                    document,
+                    constraintClause.WhereKeyword,
+                    SyntaxTriviaAnalysis.AnalyzeIndentation(constraintClause.Parent, ct),
+                    ct);
+            },
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

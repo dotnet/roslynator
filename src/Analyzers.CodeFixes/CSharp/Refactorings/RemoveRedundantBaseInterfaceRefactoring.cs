@@ -5,32 +5,31 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveRedundantBaseInterfaceRefactoring
 {
-    internal static class RemoveRedundantBaseInterfaceRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        BaseTypeSyntax baseType,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            BaseTypeSyntax baseType,
-            CancellationToken cancellationToken)
+        SyntaxRemoveOptions removeOptions = SyntaxRefactorings.DefaultRemoveOptions;
+
+        if (baseType.GetLeadingTrivia().All(f => f.IsWhitespaceTrivia()))
+            removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+
+        if (baseType.GetTrailingTrivia().All(f => f.IsWhitespaceTrivia()))
         {
-            SyntaxRemoveOptions removeOptions = SyntaxRefactorings.DefaultRemoveOptions;
+            var baseList = (BaseListSyntax)baseType.Parent;
 
-            if (baseType.GetLeadingTrivia().All(f => f.IsWhitespaceTrivia()))
-                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
-
-            if (baseType.GetTrailingTrivia().All(f => f.IsWhitespaceTrivia()))
+            if (baseList.Types.IsLast(baseType)
+                && !SyntaxInfo.GenericInfo(baseList.Parent).ConstraintClauses.Any())
             {
-                var baseList = (BaseListSyntax)baseType.Parent;
-
-                if (baseList.Types.IsLast(baseType)
-                    && !SyntaxInfo.GenericInfo(baseList.Parent).ConstraintClauses.Any())
-                {
-                    removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
-                }
+                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
             }
-
-            return document.RemoveNodeAsync(baseType, removeOptions, cancellationToken);
         }
+
+        return document.RemoveNodeAsync(baseType, removeOptions, cancellationToken);
     }
 }

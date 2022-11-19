@@ -3,21 +3,20 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.If
-{
-    internal abstract class ToAssignmentWithConditionalExpressionAnalysis<TStatement> : ToAssignmentWithConditionalExpressionAnalysis
-        where TStatement : StatementSyntax
-    {
-        protected ToAssignmentWithConditionalExpressionAnalysis(
-            TStatement statement,
-            IfStatementSyntax ifStatement,
-            ExpressionSyntax whenTrue,
-            ExpressionSyntax whenFalse,
-            SemanticModel semanticModel) : base(ifStatement, whenTrue, whenFalse, semanticModel)
-        {
-            Statement = statement;
-        }
+namespace Roslynator.CSharp.Analysis.If;
 
-        public TStatement Statement { get; }
+internal abstract class ToAssignmentWithConditionalExpressionAnalysis<TStatement> : ToAssignmentWithConditionalExpressionAnalysis
+    where TStatement : StatementSyntax
+{
+    protected ToAssignmentWithConditionalExpressionAnalysis(
+        TStatement statement,
+        IfStatementSyntax ifStatement,
+        ExpressionSyntax whenTrue,
+        ExpressionSyntax whenFalse,
+        SemanticModel semanticModel) : base(ifStatement, whenTrue, whenFalse, semanticModel)
+    {
+        Statement = statement;
     }
+
+    public TStatement Statement { get; }
 }

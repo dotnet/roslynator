@@ -9,93 +9,92 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class FormatBlockBracesAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class FormatBlockBracesAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(
-                        ref _supportedDiagnostics,
-                        DiagnosticRules.FormatBlockBraces,
-                        DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock);
-                }
-
-                return _supportedDiagnostics;
+                Immutable.InterlockedInitialize(
+                    ref _supportedDiagnostics,
+                    DiagnosticRules.FormatBlockBraces,
+                    DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock);
             }
+
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeBlock(f), SyntaxKind.Block);
+    }
+
+    private static void AnalyzeBlock(SyntaxNodeAnalysisContext context)
+    {
+        var block = (BlockSyntax)context.Node;
+
+        if (block.Parent is AccessorDeclarationSyntax)
+            return;
+
+        if (block.Parent is AnonymousFunctionExpressionSyntax)
+            return;
+
+        SyntaxToken openBrace = block.OpenBraceToken;
+
+        if (openBrace.IsMissing)
+            return;
+
+        if (DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock.IsEffective(context)
+            && block.SyntaxTree.IsSingleLineSpan(block.Span))
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock,
+                Location.Create(block.SyntaxTree, new TextSpan(openBrace.Span.End, 0)));
         }
 
-        public override void Initialize(AnalysisContext context)
+        BlockBracesStyle style = context.GetBlockBracesStyle();
+
+        if (style == BlockBracesStyle.None)
+            return;
+
+        if (block.SyntaxTree.IsSingleLineSpan(block.Span))
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeBlock(f), SyntaxKind.Block);
-        }
-
-        private static void AnalyzeBlock(SyntaxNodeAnalysisContext context)
-        {
-            var block = (BlockSyntax)context.Node;
-
-            if (block.Parent is AccessorDeclarationSyntax)
-                return;
-
-            if (block.Parent is AnonymousFunctionExpressionSyntax)
-                return;
-
-            SyntaxToken openBrace = block.OpenBraceToken;
-
-            if (openBrace.IsMissing)
-                return;
-
-            if (DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock.IsEffective(context)
-                && block.SyntaxTree.IsSingleLineSpan(block.Span))
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock,
-                    Location.Create(block.SyntaxTree, new TextSpan(openBrace.Span.End, 0)));
-            }
-
-            BlockBracesStyle style = context.GetBlockBracesStyle();
-
-            if (style == BlockBracesStyle.None)
-                return;
-
-            if (block.SyntaxTree.IsSingleLineSpan(block.Span))
-            {
-                if (style == BlockBracesStyle.MultiLine
-                    || !IsEmptyBlock(block))
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.FormatBlockBraces,
-                        block.OpenBraceToken,
-                        "multiple lines");
-                }
-            }
-            else if (style == BlockBracesStyle.SingleLineWhenEmpty
-                && IsEmptyBlock(block))
+            if (style == BlockBracesStyle.MultiLine
+                || !IsEmptyBlock(block))
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.FormatBlockBraces,
                     block.OpenBraceToken,
-                    "a single line");
+                    "multiple lines");
             }
         }
-
-        private static bool IsEmptyBlock(BlockSyntax block)
+        else if (style == BlockBracesStyle.SingleLineWhenEmpty
+            && IsEmptyBlock(block))
         {
-            return !block.Statements.Any()
-                && block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
-                && block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace();
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.FormatBlockBraces,
+                block.OpenBraceToken,
+                "a single line");
         }
+    }
+
+    private static bool IsEmptyBlock(BlockSyntax block)
+    {
+        return !block.Statements.Any()
+            && block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
+            && block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace();
     }
 }

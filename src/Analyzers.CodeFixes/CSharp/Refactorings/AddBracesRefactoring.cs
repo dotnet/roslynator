@@ -6,18 +6,17 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class AddBracesRefactoring
-    {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken)
-        {
-            BlockSyntax block = SyntaxFactory.Block(statement);
+namespace Roslynator.CSharp.Refactorings;
 
-            return document.ReplaceNodeAsync(statement, block, cancellationToken);
-        }
+internal static class AddBracesRefactoring
+{
+    public static Task<Document> RefactorAsync(
+        Document document,
+        StatementSyntax statement,
+        CancellationToken cancellationToken)
+    {
+        BlockSyntax block = SyntaxFactory.Block(statement);
+
+        return document.ReplaceNodeAsync(statement, block, cancellationToken);
     }
 }

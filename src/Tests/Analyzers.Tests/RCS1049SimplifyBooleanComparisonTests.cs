@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1049SimplifyBooleanComparisonTests : AbstractCSharpDiagnosticVerifier<BooleanLiteralAnalyzer, SimplifyBooleanComparisonCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyBooleanComparison;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1049SimplifyBooleanComparisonTests : AbstractCSharpDiagnosticVerifier<BooleanLiteralAnalyzer, SimplifyBooleanComparisonCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyBooleanComparison;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool x)
@@ -44,12 +44,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
-        public async Task Test2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+    public async Task Test2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool x)
@@ -78,12 +78,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
-        public async Task Test_IsTrue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+    public async Task Test_IsTrue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -102,12 +102,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
-        public async Task Test_IsFalse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+    public async Task Test_IsFalse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -126,12 +126,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
-        public async Task Test_IsNotTrue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+    public async Task Test_IsNotTrue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -150,12 +150,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
-        public async Task Test_IsNotFalse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+    public async Task Test_IsNotFalse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -174,12 +174,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
-        public async Task TestNoDiagnostic_NullableIsTrue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+    public async Task TestNoDiagnostic_NullableIsTrue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -189,6 +189,5 @@ class C
     }
 }
 ");
-        }
     }
 }

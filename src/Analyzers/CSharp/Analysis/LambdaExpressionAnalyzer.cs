@@ -6,62 +6,61 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class LambdaExpressionAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class LambdaExpressionAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(
-                        ref _supportedDiagnostics,
-                        DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody,
-                        DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBodyFadeOut);
-                }
-
-                return _supportedDiagnostics;
+                Immutable.InterlockedInitialize(
+                    ref _supportedDiagnostics,
+                    DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody,
+                    DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBodyFadeOut);
             }
+
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeLambdaExpression(f), SyntaxKind.SimpleLambdaExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeLambdaExpression(f), SyntaxKind.ParenthesizedLambdaExpression);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeLambdaExpression(f), SyntaxKind.SimpleLambdaExpression);
+        context.RegisterSyntaxNodeAction(f => AnalyzeLambdaExpression(f), SyntaxKind.ParenthesizedLambdaExpression);
+    }
 
-        private static void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (!DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody.IsEffective(context))
-                return;
+    private static void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context)
+    {
+        if (!DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody.IsEffective(context))
+            return;
 
-            var lambda = (LambdaExpressionSyntax)context.Node;
+        var lambda = (LambdaExpressionSyntax)context.Node;
 
-            if (lambda.ContainsDiagnostics)
-                return;
+        if (lambda.ContainsDiagnostics)
+            return;
 
-            if (!ConvertLambdaExpressionBodyToExpressionBodyAnalysis.IsFixable(lambda))
-                return;
+        if (!ConvertLambdaExpressionBodyToExpressionBodyAnalysis.IsFixable(lambda))
+            return;
 
-            CSharpSyntaxNode body = lambda.Body;
+        CSharpSyntaxNode body = lambda.Body;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody, body);
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody, body);
 
-            var block = (BlockSyntax)body;
+        var block = (BlockSyntax)body;
 
-            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBodyFadeOut, block);
+        CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBodyFadeOut, block);
 
-            StatementSyntax statement = block.Statements[0];
+        StatementSyntax statement = block.Statements[0];
 
-            if (statement.Kind() == SyntaxKind.ReturnStatement)
-                DiagnosticHelpers.ReportToken(context, DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBodyFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
-        }
+        if (statement.Kind() == SyntaxKind.ReturnStatement)
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBodyFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
     }
 }

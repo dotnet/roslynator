@@ -6,55 +6,54 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AvoidBoxingOfValueTypeAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidBoxingOfValueTypeAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidBoxingOfValueType);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidBoxingOfValueType);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
+    }
 
-        private static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
-        {
-            var interpolation = (InterpolationSyntax)context.Node;
+    private static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
+    {
+        var interpolation = (InterpolationSyntax)context.Node;
 
-            if (interpolation.ContainsDiagnostics)
-                return;
+        if (interpolation.ContainsDiagnostics)
+            return;
 
-            if (interpolation.AlignmentClause != null)
-                return;
+        if (interpolation.AlignmentClause != null)
+            return;
 
-            if (interpolation.FormatClause != null)
-                return;
+        if (interpolation.FormatClause != null)
+            return;
 
-            ExpressionSyntax expression = interpolation.Expression?.WalkDownParentheses();
+        ExpressionSyntax expression = interpolation.Expression?.WalkDownParentheses();
 
-            if (expression == null)
-                return;
+        if (expression == null)
+            return;
 
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
+        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-            if (typeSymbol?.IsValueType != true)
-                return;
+        if (typeSymbol?.IsValueType != true)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidBoxingOfValueType, expression);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidBoxingOfValueType, expression);
     }
 }

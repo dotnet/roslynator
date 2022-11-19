@@ -10,71 +10,70 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InitializerCodeFixProvider))]
+[Shared]
+public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InitializerCodeFixProvider))]
-    [Shared]
-    public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantCommaInInitializer); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out InitializerExpressionSyntax initializer))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantCommaInInitializer); }
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out InitializerExpressionSyntax initializer))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.RemoveRedundantCommaInInitializer:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant comma",
-                                ct =>
-                                {
-                                    ct.ThrowIfCancellationRequested();
+                case DiagnosticIdentifiers.RemoveRedundantCommaInInitializer:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove redundant comma",
+                            ct =>
+                            {
+                                ct.ThrowIfCancellationRequested();
 
-                                    InitializerExpressionSyntax newInitializer = RemoveTrailingComma(initializer);
+                                InitializerExpressionSyntax newInitializer = RemoveTrailingComma(initializer);
 
-                                    return context.Document.ReplaceNodeAsync(initializer, newInitializer, ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                                return context.Document.ReplaceNodeAsync(initializer, newInitializer, ct);
+                            },
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
+    }
 
-        private static InitializerExpressionSyntax RemoveTrailingComma(InitializerExpressionSyntax initializer)
-        {
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+    private static InitializerExpressionSyntax RemoveTrailingComma(InitializerExpressionSyntax initializer)
+    {
+        SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-            SyntaxToken trailingComma = expressions.GetTrailingSeparator();
+        SyntaxToken trailingComma = expressions.GetTrailingSeparator();
 
-            SeparatedSyntaxList<ExpressionSyntax> newExpressions = expressions.ReplaceSeparator(
-                trailingComma,
-                SyntaxFactory.MissingToken(SyntaxKind.CommaToken));
+        SeparatedSyntaxList<ExpressionSyntax> newExpressions = expressions.ReplaceSeparator(
+            trailingComma,
+            SyntaxFactory.MissingToken(SyntaxKind.CommaToken));
 
-            int lastIndex = expressions.Count - 1;
+        int lastIndex = expressions.Count - 1;
 
-            SyntaxTriviaList newTrailingTrivia = expressions[lastIndex]
-                .GetTrailingTrivia()
-                .AddRange(trailingComma.LeadingTrivia)
-                .AddRange(trailingComma.TrailingTrivia);
+        SyntaxTriviaList newTrailingTrivia = expressions[lastIndex]
+            .GetTrailingTrivia()
+            .AddRange(trailingComma.LeadingTrivia)
+            .AddRange(trailingComma.TrailingTrivia);
 
-            ExpressionSyntax newExpression = newExpressions[lastIndex].WithTrailingTrivia(newTrailingTrivia);
+        ExpressionSyntax newExpression = newExpressions[lastIndex].WithTrailingTrivia(newTrailingTrivia);
 
-            newExpressions = newExpressions.ReplaceAt(lastIndex, newExpression);
+        newExpressions = newExpressions.ReplaceAt(lastIndex, newExpression);
 
-            return initializer.WithExpressions(newExpressions);
-        }
+        return initializer.WithExpressions(newExpressions);
     }
 }

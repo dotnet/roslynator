@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1190JoinStringExpressionsTests : AbstractCSharpDiagnosticVerifier<JoinStringExpressionsAnalyzer, BinaryExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.JoinStringExpressions;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_Literal_Regular()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1190JoinStringExpressionsTests : AbstractCSharpDiagnosticVerifier<JoinStringExpressionsAnalyzer, BinaryExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.JoinStringExpressions;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_Literal_Regular()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -32,12 +32,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_Literal_Regular2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_Literal_Regular2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -54,12 +54,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_Literal_Verbatim()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_Literal_Verbatim()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -76,12 +76,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_Literal_Verbatim2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_Literal_Verbatim2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -98,12 +98,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_InterpolatedString_Regular()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_InterpolatedString_Regular()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -120,12 +120,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_InterpolatedString_Regular2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_InterpolatedString_Regular2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -142,12 +142,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_InterpolatedString_Verbatim()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_InterpolatedString_Verbatim()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -164,12 +164,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_InterpolatedString_Verbatim2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_InterpolatedString_Verbatim2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -186,12 +186,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_Verbatim_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_Verbatim_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -212,12 +212,12 @@ e"";
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task Test_InterpolatedString_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task Test_InterpolatedString_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -238,12 +238,12 @@ e"";
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task TestNoDiagnostic_Regular_Multiline()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task TestNoDiagnostic_Regular_Multiline()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s)
@@ -253,12 +253,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task TestNoDiagnostic_Verbatim_Multiline()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task TestNoDiagnostic_Verbatim_Multiline()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s)
@@ -269,12 +269,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task TestNoDiagnostic_RegularAndVerbatim()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task TestNoDiagnostic_RegularAndVerbatim()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s)
@@ -284,12 +284,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task TestNoDiagnostic_LiteralAndInterpolated()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task TestNoDiagnostic_LiteralAndInterpolated()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s)
@@ -299,12 +299,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task TestNoDiagnostic_LiteralAndInterpolated_Verbatim()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task TestNoDiagnostic_LiteralAndInterpolated_Verbatim()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s)
@@ -314,12 +314,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task TestNoDiagnostic_AddExpressionIsNotStringConcatenation()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task TestNoDiagnostic_AddExpressionIsNotStringConcatenation()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s)
@@ -330,12 +330,12 @@ class C
     public static string operator +(C left, string right) => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task TestNoDiagnostic_LiteralsMixedWithExpressions()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task TestNoDiagnostic_LiteralsMixedWithExpressions()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s1, string s2, string s3)
@@ -344,12 +344,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
-        public async Task TestNoDiagnostic_HexadecimalDigit()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+    public async Task TestNoDiagnostic_HexadecimalDigit()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text.RegularExpressions;
 class C
 {
@@ -367,6 +367,5 @@ class C
     }
 }
 ");
-        }
     }
 }

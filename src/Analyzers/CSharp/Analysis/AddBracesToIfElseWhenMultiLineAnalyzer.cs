@@ -7,53 +7,52 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddBracesToIfElseWhenMultiLineAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddBracesToIfElseWhenMultiLineAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBracesToIfElseWhenExpressionSpansOverMultipleLines);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBracesToIfElseWhenExpressionSpansOverMultipleLines);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
+    }
 
-        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
-        {
-            var ifStatement = (IfStatementSyntax)context.Node;
+    private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+    {
+        var ifStatement = (IfStatementSyntax)context.Node;
 
-            if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
-                return;
+        if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
+            return;
 
-            if (ifStatement.Else == null)
-                return;
+        if (ifStatement.Else == null)
+            return;
 
-            if (ifStatement.Else.ContainsDirectives)
-                return;
+        if (ifStatement.Else.ContainsDirectives)
+            return;
 
-            if (ifStatement.Statement.ContainsDirectives)
-                return;
+        if (ifStatement.Statement.ContainsDirectives)
+            return;
 
-            BracesAnalysis analysis = BracesAnalysis.AnalyzeBraces(ifStatement);
+        BracesAnalysis analysis = BracesAnalysis.AnalyzeBraces(ifStatement);
 
-            if (!analysis.AddBraces)
-                return;
+        if (!analysis.AddBraces)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, ifStatement);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, ifStatement);
     }
 }

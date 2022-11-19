@@ -10,457 +10,456 @@ using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Roslynator.FindSymbols;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+public sealed class DocumentationModel
 {
-    public sealed class DocumentationModel
+    private ImmutableDictionary<string, CultureInfo> _cultures = ImmutableDictionary<string, CultureInfo>.Empty;
+
+    private ImmutableDictionary<IAssemblySymbol, Compilation> _compilationMap;
+
+    private readonly Dictionary<ISymbol, SymbolDocumentationData> _symbolData;
+
+    private readonly Dictionary<IAssemblySymbol, XmlDocumentation> _xmlDocumentations;
+
+    private readonly ImmutableArray<string> _additionalXmlDocumentationPaths;
+
+    private ImmutableArray<XmlDocumentation> _additionalXmlDocumentations;
+
+    internal DocumentationModel(
+        Compilation compilation,
+        IEnumerable<IAssemblySymbol> assemblies,
+        SymbolFilterOptions filter,
+        IEnumerable<string> additionalXmlDocumentationPaths = null)
     {
-        private ImmutableDictionary<string, CultureInfo> _cultures = ImmutableDictionary<string, CultureInfo>.Empty;
+        Compilations = ImmutableArray.Create(compilation);
+        Assemblies = ImmutableArray.CreateRange(assemblies);
+        Filter = filter;
 
-        private ImmutableDictionary<IAssemblySymbol, Compilation> _compilationMap;
+        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
+        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
 
-        private readonly Dictionary<ISymbol, SymbolDocumentationData> _symbolData;
+        if (additionalXmlDocumentationPaths != null)
+            _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
+    }
 
-        private readonly Dictionary<IAssemblySymbol, XmlDocumentation> _xmlDocumentations;
+    internal DocumentationModel(
+        IEnumerable<Compilation> compilations,
+        SymbolFilterOptions filter,
+        IEnumerable<string> additionalXmlDocumentationPaths = null)
+    {
+        Compilations = compilations.ToImmutableArray();
+        Assemblies = compilations.Select(f => f.Assembly).ToImmutableArray();
+        Filter = filter;
 
-        private readonly ImmutableArray<string> _additionalXmlDocumentationPaths;
+        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
+        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
 
-        private ImmutableArray<XmlDocumentation> _additionalXmlDocumentations;
+        if (additionalXmlDocumentationPaths != null)
+            _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
+    }
 
-        internal DocumentationModel(
-            Compilation compilation,
-            IEnumerable<IAssemblySymbol> assemblies,
-            SymbolFilterOptions filter,
-            IEnumerable<string> additionalXmlDocumentationPaths = null)
+    public ImmutableArray<Compilation> Compilations { get; }
+
+    public ImmutableArray<IAssemblySymbol> Assemblies { get; }
+
+    public IEnumerable<INamedTypeSymbol> Types
+    {
+        get { return Assemblies.SelectMany(f => f.GetTypes(typeSymbol => IsVisible(typeSymbol))); }
+    }
+
+    internal SymbolFilterOptions Filter { get; }
+
+    public bool IsVisible(ISymbol symbol) => Filter.IsMatch(symbol);
+
+    public IEnumerable<INamedTypeSymbol> GetDerivedTypes(INamedTypeSymbol typeSymbol)
+    {
+        if (typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Interface)
+            && !typeSymbol.IsStatic)
         {
-            Compilations = ImmutableArray.Create(compilation);
-            Assemblies = ImmutableArray.CreateRange(assemblies);
-            Filter = filter;
-
-            _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
-            _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
-
-            if (additionalXmlDocumentationPaths != null)
-                _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
-        }
-
-        internal DocumentationModel(
-            IEnumerable<Compilation> compilations,
-            SymbolFilterOptions filter,
-            IEnumerable<string> additionalXmlDocumentationPaths = null)
-        {
-            Compilations = compilations.ToImmutableArray();
-            Assemblies = compilations.Select(f => f.Assembly).ToImmutableArray();
-            Filter = filter;
-
-            _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
-            _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
-
-            if (additionalXmlDocumentationPaths != null)
-                _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
-        }
-
-        public ImmutableArray<Compilation> Compilations { get; }
-
-        public ImmutableArray<IAssemblySymbol> Assemblies { get; }
-
-        public IEnumerable<INamedTypeSymbol> Types
-        {
-            get { return Assemblies.SelectMany(f => f.GetTypes(typeSymbol => IsVisible(typeSymbol))); }
-        }
-
-        internal SymbolFilterOptions Filter { get; }
-
-        public bool IsVisible(ISymbol symbol) => Filter.IsMatch(symbol);
-
-        public IEnumerable<INamedTypeSymbol> GetDerivedTypes(INamedTypeSymbol typeSymbol)
-        {
-            if (typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Interface)
-                && !typeSymbol.IsStatic)
+            foreach (INamedTypeSymbol symbol in Types)
             {
-                foreach (INamedTypeSymbol symbol in Types)
-                {
-                    if (SymbolEqualityComparer.Default.Equals(symbol.BaseType?.OriginalDefinition, typeSymbol))
-                        yield return symbol;
+                if (SymbolEqualityComparer.Default.Equals(symbol.BaseType?.OriginalDefinition, typeSymbol))
+                    yield return symbol;
 
-                    foreach (INamedTypeSymbol interfaceSymbol in symbol.Interfaces)
+                foreach (INamedTypeSymbol interfaceSymbol in symbol.Interfaces)
+                {
+                    if (SymbolEqualityComparer.Default.Equals(interfaceSymbol.OriginalDefinition, typeSymbol))
+                        yield return symbol;
+                }
+            }
+        }
+    }
+
+    public IEnumerable<INamedTypeSymbol> GetAllDerivedTypes(INamedTypeSymbol typeSymbol)
+    {
+        if (typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Interface)
+            && !typeSymbol.IsStatic)
+        {
+            foreach (INamedTypeSymbol symbol in Types)
+            {
+                if (symbol.InheritsFrom(typeSymbol, includeInterfaces: true))
+                    yield return symbol;
+            }
+        }
+    }
+
+    public IEnumerable<IMethodSymbol> GetExtensionMethods()
+    {
+        foreach (INamedTypeSymbol typeSymbol in Types)
+        {
+            if (typeSymbol.MightContainExtensionMethods)
+            {
+                foreach (ISymbol member in GetTypeModel(typeSymbol).Members)
+                {
+                    if (member.Kind == SymbolKind.Method
+                        && member.IsStatic
+                        && IsVisible(member))
                     {
-                        if (SymbolEqualityComparer.Default.Equals(interfaceSymbol.OriginalDefinition, typeSymbol))
-                            yield return symbol;
+                        var methodSymbol = (IMethodSymbol)member;
+
+                        if (methodSymbol.IsExtensionMethod)
+                            yield return methodSymbol;
                     }
                 }
             }
         }
+    }
 
-        public IEnumerable<INamedTypeSymbol> GetAllDerivedTypes(INamedTypeSymbol typeSymbol)
+    public IEnumerable<IMethodSymbol> GetExtensionMethods(INamedTypeSymbol typeSymbol)
+    {
+        foreach (INamedTypeSymbol symbol in Types)
         {
-            if (typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Interface)
-                && !typeSymbol.IsStatic)
+            if (symbol.MightContainExtensionMethods)
             {
-                foreach (INamedTypeSymbol symbol in Types)
+                foreach (ISymbol member in GetTypeModel(symbol).Members)
                 {
-                    if (symbol.InheritsFrom(typeSymbol, includeInterfaces: true))
-                        yield return symbol;
-                }
-            }
-        }
-
-        public IEnumerable<IMethodSymbol> GetExtensionMethods()
-        {
-            foreach (INamedTypeSymbol typeSymbol in Types)
-            {
-                if (typeSymbol.MightContainExtensionMethods)
-                {
-                    foreach (ISymbol member in GetTypeModel(typeSymbol).Members)
+                    if (member.Kind == SymbolKind.Method
+                        && member.IsStatic
+                        && IsVisible(member))
                     {
-                        if (member.Kind == SymbolKind.Method
-                            && member.IsStatic
-                            && IsVisible(member))
-                        {
-                            var methodSymbol = (IMethodSymbol)member;
+                        var methodSymbol = (IMethodSymbol)member;
 
-                            if (methodSymbol.IsExtensionMethod)
+                        if (methodSymbol.IsExtensionMethod)
+                        {
+                            ITypeSymbol typeSymbol2 = GetExtendedType(methodSymbol);
+
+                            if (SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2))
                                 yield return methodSymbol;
                         }
                     }
                 }
             }
         }
+    }
 
-        public IEnumerable<IMethodSymbol> GetExtensionMethods(INamedTypeSymbol typeSymbol)
+    public IEnumerable<INamedTypeSymbol> GetExtendedExternalTypes()
+    {
+        return Iterator().Distinct();
+
+        IEnumerable<INamedTypeSymbol> Iterator()
         {
-            foreach (INamedTypeSymbol symbol in Types)
+            foreach (IMethodSymbol methodSymbol in GetExtensionMethods())
             {
-                if (symbol.MightContainExtensionMethods)
-                {
-                    foreach (ISymbol member in GetTypeModel(symbol).Members)
-                    {
-                        if (member.Kind == SymbolKind.Method
-                            && member.IsStatic
-                            && IsVisible(member))
-                        {
-                            var methodSymbol = (IMethodSymbol)member;
+                INamedTypeSymbol typeSymbol = GetExternalSymbol(methodSymbol);
 
-                            if (methodSymbol.IsExtensionMethod)
-                            {
-                                ITypeSymbol typeSymbol2 = GetExtendedType(methodSymbol);
-
-                                if (SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2))
-                                    yield return methodSymbol;
-                            }
-                        }
-                    }
-                }
+                if (typeSymbol != null)
+                    yield return typeSymbol;
             }
         }
 
-        public IEnumerable<INamedTypeSymbol> GetExtendedExternalTypes()
+        INamedTypeSymbol GetExternalSymbol(IMethodSymbol methodSymbol)
         {
-            return Iterator().Distinct();
+            INamedTypeSymbol type = GetExtendedType(methodSymbol);
 
-            IEnumerable<INamedTypeSymbol> Iterator()
-            {
-                foreach (IMethodSymbol methodSymbol in GetExtensionMethods())
-                {
-                    INamedTypeSymbol typeSymbol = GetExternalSymbol(methodSymbol);
-
-                    if (typeSymbol != null)
-                        yield return typeSymbol;
-                }
-            }
-
-            INamedTypeSymbol GetExternalSymbol(IMethodSymbol methodSymbol)
-            {
-                INamedTypeSymbol type = GetExtendedType(methodSymbol);
-
-                if (type == null)
-                    return null;
-
-                foreach (IAssemblySymbol assembly in Assemblies)
-                {
-                    if (type.ContainingAssembly.Identity.Equals(assembly.Identity))
-                        return null;
-                }
-
-                return type;
-            }
-        }
-
-        private static INamedTypeSymbol GetExtendedType(IMethodSymbol methodSymbol)
-        {
-            ITypeSymbol type = methodSymbol.Parameters[0].Type.OriginalDefinition;
-
-            switch (type.Kind)
-            {
-                case SymbolKind.NamedType:
-                    return (INamedTypeSymbol)type;
-                case SymbolKind.TypeParameter:
-                    return GetTypeParameterConstraintClass((ITypeParameterSymbol)type);
-            }
-
-            return null;
-
-            static INamedTypeSymbol GetTypeParameterConstraintClass(ITypeParameterSymbol typeParameter)
-            {
-                foreach (ITypeSymbol constraintType in typeParameter.ConstraintTypes)
-                {
-                    if (constraintType.TypeKind == TypeKind.Class)
-                    {
-                        return (INamedTypeSymbol)constraintType;
-                    }
-                    else if (constraintType.TypeKind == TypeKind.TypeParameter)
-                    {
-                        return GetTypeParameterConstraintClass((ITypeParameterSymbol)constraintType);
-                    }
-                }
-
+            if (type == null)
                 return null;
-            }
-        }
 
-        public bool IsExternal(ISymbol symbol)
-        {
             foreach (IAssemblySymbol assembly in Assemblies)
             {
-                if (symbol.ContainingAssembly.Identity.Equals(assembly.Identity))
-                    return false;
-            }
-
-            return true;
-        }
-
-        public TypeDocumentationModel GetTypeModel(INamedTypeSymbol typeSymbol)
-        {
-            if (_symbolData.TryGetValue(typeSymbol, out SymbolDocumentationData data)
-                && data.Model != null)
-            {
-                return (TypeDocumentationModel)data.Model;
-            }
-
-            var typeModel = new TypeDocumentationModel(typeSymbol, Filter);
-
-            _symbolData[typeSymbol] = data.WithModel(typeModel);
-
-            return typeModel;
-        }
-
-        internal ISymbol GetFirstSymbolForDeclarationId(string id)
-        {
-            if (Compilations.Length == 1)
-                return DocumentationCommentId.GetFirstSymbolForDeclarationId(id, Compilations[0]);
-
-            foreach (Compilation compilation in Compilations)
-            {
-                ISymbol symbol = DocumentationCommentId.GetFirstSymbolForDeclarationId(id, compilation);
-
-                if (symbol != null)
-                    return symbol;
-            }
-
-            return null;
-        }
-
-        internal ISymbol GetFirstSymbolForReferenceId(string id)
-        {
-            if (Compilations.Length == 1)
-                return DocumentationCommentId.GetFirstSymbolForReferenceId(id, Compilations[0]);
-
-            foreach (Compilation compilation in Compilations)
-            {
-                ISymbol symbol = DocumentationCommentId.GetFirstSymbolForReferenceId(id, compilation);
-
-                if (symbol != null)
-                    return symbol;
-            }
-
-            return null;
-        }
-
-        public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string preferredCultureName = null)
-        {
-            if (_symbolData.TryGetValue(symbol, out SymbolDocumentationData data)
-                && data.XmlDocumentation != null)
-            {
-                if (object.ReferenceEquals(data.XmlDocumentation, SymbolXmlDocumentation.Default))
+                if (type.ContainingAssembly.Identity.Equals(assembly.Identity))
                     return null;
-
-                return data.XmlDocumentation;
             }
 
-            IAssemblySymbol assembly = FindAssembly();
+            return type;
+        }
+    }
 
-            if (assembly != null)
+    private static INamedTypeSymbol GetExtendedType(IMethodSymbol methodSymbol)
+    {
+        ITypeSymbol type = methodSymbol.Parameters[0].Type.OriginalDefinition;
+
+        switch (type.Kind)
+        {
+            case SymbolKind.NamedType:
+                return (INamedTypeSymbol)type;
+            case SymbolKind.TypeParameter:
+                return GetTypeParameterConstraintClass((ITypeParameterSymbol)type);
+        }
+
+        return null;
+
+        static INamedTypeSymbol GetTypeParameterConstraintClass(ITypeParameterSymbol typeParameter)
+        {
+            foreach (ITypeSymbol constraintType in typeParameter.ConstraintTypes)
             {
-                SymbolXmlDocumentation xmlDocumentation = GetXmlDocumentation(assembly, preferredCultureName)?.GetXmlDocumentation(symbol);
-
-                if (xmlDocumentation != null)
+                if (constraintType.TypeKind == TypeKind.Class)
                 {
-                    _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
-                    return xmlDocumentation;
+                    return (INamedTypeSymbol)constraintType;
                 }
-
-                CultureInfo preferredCulture = null;
-
-                if (preferredCultureName != null
-                    && !_cultures.TryGetValue(preferredCultureName, out preferredCulture))
+                else if (constraintType.TypeKind == TypeKind.TypeParameter)
                 {
-                    preferredCulture = ImmutableInterlocked.GetOrAdd(ref _cultures, preferredCultureName, f => new CultureInfo(f));
+                    return GetTypeParameterConstraintClass((ITypeParameterSymbol)constraintType);
                 }
+            }
 
-                string xml = symbol.GetDocumentationCommentXml(preferredCulture: preferredCulture, expandIncludes: true);
+            return null;
+        }
+    }
+
+    public bool IsExternal(ISymbol symbol)
+    {
+        foreach (IAssemblySymbol assembly in Assemblies)
+        {
+            if (symbol.ContainingAssembly.Identity.Equals(assembly.Identity))
+                return false;
+        }
+
+        return true;
+    }
+
+    public TypeDocumentationModel GetTypeModel(INamedTypeSymbol typeSymbol)
+    {
+        if (_symbolData.TryGetValue(typeSymbol, out SymbolDocumentationData data)
+            && data.Model != null)
+        {
+            return (TypeDocumentationModel)data.Model;
+        }
+
+        var typeModel = new TypeDocumentationModel(typeSymbol, Filter);
+
+        _symbolData[typeSymbol] = data.WithModel(typeModel);
+
+        return typeModel;
+    }
+
+    internal ISymbol GetFirstSymbolForDeclarationId(string id)
+    {
+        if (Compilations.Length == 1)
+            return DocumentationCommentId.GetFirstSymbolForDeclarationId(id, Compilations[0]);
+
+        foreach (Compilation compilation in Compilations)
+        {
+            ISymbol symbol = DocumentationCommentId.GetFirstSymbolForDeclarationId(id, compilation);
+
+            if (symbol != null)
+                return symbol;
+        }
+
+        return null;
+    }
+
+    internal ISymbol GetFirstSymbolForReferenceId(string id)
+    {
+        if (Compilations.Length == 1)
+            return DocumentationCommentId.GetFirstSymbolForReferenceId(id, Compilations[0]);
+
+        foreach (Compilation compilation in Compilations)
+        {
+            ISymbol symbol = DocumentationCommentId.GetFirstSymbolForReferenceId(id, compilation);
+
+            if (symbol != null)
+                return symbol;
+        }
+
+        return null;
+    }
+
+    public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string preferredCultureName = null)
+    {
+        if (_symbolData.TryGetValue(symbol, out SymbolDocumentationData data)
+            && data.XmlDocumentation != null)
+        {
+            if (object.ReferenceEquals(data.XmlDocumentation, SymbolXmlDocumentation.Default))
+                return null;
+
+            return data.XmlDocumentation;
+        }
+
+        IAssemblySymbol assembly = FindAssembly();
+
+        if (assembly != null)
+        {
+            SymbolXmlDocumentation xmlDocumentation = GetXmlDocumentation(assembly, preferredCultureName)?.GetXmlDocumentation(symbol);
+
+            if (xmlDocumentation != null)
+            {
+                _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
+                return xmlDocumentation;
+            }
+
+            CultureInfo preferredCulture = null;
+
+            if (preferredCultureName != null
+                && !_cultures.TryGetValue(preferredCultureName, out preferredCulture))
+            {
+                preferredCulture = ImmutableInterlocked.GetOrAdd(ref _cultures, preferredCultureName, f => new CultureInfo(f));
+            }
+
+            string xml = symbol.GetDocumentationCommentXml(preferredCulture: preferredCulture, expandIncludes: true);
+
+            if (!string.IsNullOrEmpty(xml))
+            {
+                xml = XmlDocumentation.Unindent(xml);
 
                 if (!string.IsNullOrEmpty(xml))
                 {
-                    xml = XmlDocumentation.Unindent(xml);
+                    var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
 
-                    if (!string.IsNullOrEmpty(xml))
+                    if (InheritDocUtility.ContainsInheritDoc(element))
                     {
-                        var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
+                        XElement inheritedElement = InheritDocUtility.FindInheritedDocumentation(symbol, s => GetXmlDocumentation(s, preferredCultureName)?.Element);
 
-                        if (InheritDocUtility.ContainsInheritDoc(element))
+                        if (inheritedElement is not null)
                         {
-                            XElement inheritedElement = InheritDocUtility.FindInheritedDocumentation(symbol, s => GetXmlDocumentation(s, preferredCultureName)?.Element);
-
-                            if (inheritedElement is not null)
-                            {
-                                element.RemoveNodes();
-                                element.Add(inheritedElement.Elements());
-                            }
+                            element.RemoveNodes();
+                            element.Add(inheritedElement.Elements());
                         }
-
-                        xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
-
-                        _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
-                        return xmlDocumentation;
                     }
+
+                    xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
+
+                    _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
+                    return xmlDocumentation;
                 }
-            }
-
-            if (!_additionalXmlDocumentationPaths.IsDefault)
-            {
-                if (_additionalXmlDocumentations.IsDefault)
-                {
-                    _additionalXmlDocumentations = _additionalXmlDocumentationPaths
-                        .Select(f => XmlDocumentation.Load(f))
-                        .ToImmutableArray();
-                }
-
-                string commentId = symbol.GetDocumentationCommentId();
-
-                foreach (XmlDocumentation xmlDocumentation in _additionalXmlDocumentations)
-                {
-                    SymbolXmlDocumentation documentation = xmlDocumentation.GetXmlDocumentation(symbol, commentId);
-
-                    if (documentation != null)
-                    {
-                        _symbolData[symbol] = data.WithXmlDocumentation(documentation);
-                        return documentation;
-                    }
-                }
-            }
-
-            _symbolData[symbol] = data.WithXmlDocumentation(SymbolXmlDocumentation.Default);
-            return null;
-
-            IAssemblySymbol FindAssembly()
-            {
-                IAssemblySymbol containingAssembly = symbol.ContainingAssembly;
-
-                if (containingAssembly != null)
-                {
-                    AssemblyIdentity identity = containingAssembly.Identity;
-
-                    foreach (IAssemblySymbol a in Assemblies)
-                    {
-                        if (identity.Equals(a.Identity))
-                            return a;
-                    }
-                }
-
-                return null;
             }
         }
 
-        private XmlDocumentation GetXmlDocumentation(IAssemblySymbol assembly, string preferredCultureName = null)
+        if (!_additionalXmlDocumentationPaths.IsDefault)
         {
-            if (!_xmlDocumentations.TryGetValue(assembly, out XmlDocumentation xmlDocumentation))
+            if (_additionalXmlDocumentations.IsDefault)
             {
-                if (Assemblies.Contains(assembly))
+                _additionalXmlDocumentations = _additionalXmlDocumentationPaths
+                    .Select(f => XmlDocumentation.Load(f))
+                    .ToImmutableArray();
+            }
+
+            string commentId = symbol.GetDocumentationCommentId();
+
+            foreach (XmlDocumentation xmlDocumentation in _additionalXmlDocumentations)
+            {
+                SymbolXmlDocumentation documentation = xmlDocumentation.GetXmlDocumentation(symbol, commentId);
+
+                if (documentation != null)
                 {
-                    Compilation compilation = FindCompilation(assembly);
+                    _symbolData[symbol] = data.WithXmlDocumentation(documentation);
+                    return documentation;
+                }
+            }
+        }
 
-                    MetadataReference metadataReference = compilation.GetMetadataReference(assembly);
+        _symbolData[symbol] = data.WithXmlDocumentation(SymbolXmlDocumentation.Default);
+        return null;
 
-                    if (metadataReference is PortableExecutableReference portableExecutableReference)
+        IAssemblySymbol FindAssembly()
+        {
+            IAssemblySymbol containingAssembly = symbol.ContainingAssembly;
+
+            if (containingAssembly != null)
+            {
+                AssemblyIdentity identity = containingAssembly.Identity;
+
+                foreach (IAssemblySymbol a in Assemblies)
+                {
+                    if (identity.Equals(a.Identity))
+                        return a;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    private XmlDocumentation GetXmlDocumentation(IAssemblySymbol assembly, string preferredCultureName = null)
+    {
+        if (!_xmlDocumentations.TryGetValue(assembly, out XmlDocumentation xmlDocumentation))
+        {
+            if (Assemblies.Contains(assembly))
+            {
+                Compilation compilation = FindCompilation(assembly);
+
+                MetadataReference metadataReference = compilation.GetMetadataReference(assembly);
+
+                if (metadataReference is PortableExecutableReference portableExecutableReference)
+                {
+                    string path = portableExecutableReference.FilePath;
+
+                    if (preferredCultureName != null)
                     {
-                        string path = portableExecutableReference.FilePath;
+                        path = Path.GetDirectoryName(path);
 
-                        if (preferredCultureName != null)
+                        path = Path.Combine(path, preferredCultureName);
+
+                        if (Directory.Exists(path))
                         {
-                            path = Path.GetDirectoryName(path);
+                            string fileName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(path), "xml");
 
-                            path = Path.Combine(path, preferredCultureName);
-
-                            if (Directory.Exists(path))
-                            {
-                                string fileName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(path), "xml");
-
-                                path = Path.Combine(path, fileName);
-
-                                if (File.Exists(path))
-                                    xmlDocumentation = XmlDocumentation.Load(path);
-                            }
-                        }
-
-                        if (xmlDocumentation == null)
-                        {
-                            path = Path.ChangeExtension(path, "xml");
+                            path = Path.Combine(path, fileName);
 
                             if (File.Exists(path))
                                 xmlDocumentation = XmlDocumentation.Load(path);
                         }
                     }
+
+                    if (xmlDocumentation == null)
+                    {
+                        path = Path.ChangeExtension(path, "xml");
+
+                        if (File.Exists(path))
+                            xmlDocumentation = XmlDocumentation.Load(path);
+                    }
                 }
-
-                _xmlDocumentations[assembly] = xmlDocumentation;
             }
 
-            return xmlDocumentation;
+            _xmlDocumentations[assembly] = xmlDocumentation;
         }
 
-        private Compilation FindCompilation(IAssemblySymbol assembly)
+        return xmlDocumentation;
+    }
+
+    private Compilation FindCompilation(IAssemblySymbol assembly)
+    {
+        if (Compilations.Length == 1)
+            return Compilations[0];
+
+        if (_compilationMap == null)
+            Interlocked.CompareExchange(ref _compilationMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f), null);
+
+        return _compilationMap[assembly];
+    }
+
+    private readonly struct SymbolDocumentationData
+    {
+        public SymbolDocumentationData(
+            object model,
+            SymbolXmlDocumentation xmlDocumentation)
         {
-            if (Compilations.Length == 1)
-                return Compilations[0];
-
-            if (_compilationMap == null)
-                Interlocked.CompareExchange(ref _compilationMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f), null);
-
-            return _compilationMap[assembly];
+            Model = model;
+            XmlDocumentation = xmlDocumentation;
         }
 
-        private readonly struct SymbolDocumentationData
+        public object Model { get; }
+
+        public SymbolXmlDocumentation XmlDocumentation { get; }
+
+        public SymbolDocumentationData WithModel(object model)
         {
-            public SymbolDocumentationData(
-                object model,
-                SymbolXmlDocumentation xmlDocumentation)
-            {
-                Model = model;
-                XmlDocumentation = xmlDocumentation;
-            }
+            return new SymbolDocumentationData(model, XmlDocumentation);
+        }
 
-            public object Model { get; }
-
-            public SymbolXmlDocumentation XmlDocumentation { get; }
-
-            public SymbolDocumentationData WithModel(object model)
-            {
-                return new SymbolDocumentationData(model, XmlDocumentation);
-            }
-
-            public SymbolDocumentationData WithXmlDocumentation(SymbolXmlDocumentation xmlDocumentation)
-            {
-                return new SymbolDocumentationData(Model, xmlDocumentation);
-            }
+        public SymbolDocumentationData WithXmlDocumentation(SymbolXmlDocumentation xmlDocumentation)
+        {
+            return new SymbolDocumentationData(Model, xmlDocumentation);
         }
     }
 }

@@ -13,66 +13,65 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumDeclarationCodeFixProvider))]
+[Shared]
+public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EnumDeclarationCodeFixProvider))]
-    [Shared]
-    public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.PutEnumMemberOnItsOwnLine); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out EnumDeclarationSyntax enumDeclaration))
+            return;
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        CodeAction codeAction = CodeAction.Create(
+            CodeFixTitles.AddNewLine,
+            ct => AddNewLineBeforeEnumMemberAsync(document, enumDeclaration, ct),
+            GetEquivalenceKey(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    private static Task<Document> AddNewLineBeforeEnumMemberAsync(
+        Document document,
+        EnumDeclarationSyntax enumDeclaration,
+        CancellationToken cancellationToken)
+    {
+        var rewriter = new AddNewLineBeforeEnumMemberAsyncRewriter(enumDeclaration);
+
+        SyntaxNode newNode = rewriter.Visit(enumDeclaration).WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
+    }
+
+    private class AddNewLineBeforeEnumMemberAsyncRewriter : CSharpSyntaxRewriter
+    {
+        private readonly SyntaxToken[] _separators;
+
+        public AddNewLineBeforeEnumMemberAsyncRewriter(EnumDeclarationSyntax enumDeclaration)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.PutEnumMemberOnItsOwnLine); }
+            _separators = enumDeclaration.Members.GetSeparators().ToArray();
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        public override SyntaxToken VisitToken(SyntaxToken token)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out EnumDeclarationSyntax enumDeclaration))
-                return;
-
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            CodeAction codeAction = CodeAction.Create(
-                CodeFixTitles.AddNewLine,
-                ct => AddNewLineBeforeEnumMemberAsync(document, enumDeclaration, ct),
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
-
-        private static Task<Document> AddNewLineBeforeEnumMemberAsync(
-            Document document,
-            EnumDeclarationSyntax enumDeclaration,
-            CancellationToken cancellationToken)
-        {
-            var rewriter = new AddNewLineBeforeEnumMemberAsyncRewriter(enumDeclaration);
-
-            SyntaxNode newNode = rewriter.Visit(enumDeclaration).WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
-        }
-
-        private class AddNewLineBeforeEnumMemberAsyncRewriter : CSharpSyntaxRewriter
-        {
-            private readonly SyntaxToken[] _separators;
-
-            public AddNewLineBeforeEnumMemberAsyncRewriter(EnumDeclarationSyntax enumDeclaration)
+            if (_separators.Contains(token)
+                && !token.TrailingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
             {
-                _separators = enumDeclaration.Members.GetSeparators().ToArray();
+                return token.TrimTrailingTrivia().AppendEndOfLineToTrailingTrivia();
             }
 
-            public override SyntaxToken VisitToken(SyntaxToken token)
-            {
-                if (_separators.Contains(token)
-                    && !token.TrailingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
-                {
-                    return token.TrimTrailingTrivia().AppendEndOfLineToTrailingTrivia();
-                }
-
-                return base.VisitToken(token);
-            }
+            return base.VisitToken(token);
         }
     }
 }

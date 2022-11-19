@@ -3,18 +3,17 @@
 using System;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Testing
+namespace Roslynator.Testing;
+
+internal readonly struct ExpectedDocument
 {
-    internal readonly struct ExpectedDocument
+    public ExpectedDocument(DocumentId id, string text)
     {
-        public ExpectedDocument(DocumentId id, string text)
-        {
-            Id = id ?? throw new ArgumentNullException(nameof(id));
-            Text = text ?? throw new ArgumentNullException(nameof(text));
-        }
-
-        public DocumentId Id { get; }
-
-        public string Text { get; }
+        Id = id ?? throw new ArgumentNullException(nameof(id));
+        Text = text ?? throw new ArgumentNullException(nameof(text));
     }
+
+    public DocumentId Id { get; }
+
+    public string Text { get; }
 }

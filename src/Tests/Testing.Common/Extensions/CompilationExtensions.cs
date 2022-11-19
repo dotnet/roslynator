@@ -5,27 +5,26 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class CompilationExtensions
 {
-    internal static class CompilationExtensions
+    public static Compilation EnsureDiagnosticEnabled(this Compilation compilation, DiagnosticDescriptor descriptor)
     {
-        public static Compilation EnsureDiagnosticEnabled(this Compilation compilation, DiagnosticDescriptor descriptor)
-        {
-            return compilation.WithOptions(compilation.Options.EnsureDiagnosticEnabled(descriptor));
-        }
+        return compilation.WithOptions(compilation.Options.EnsureDiagnosticEnabled(descriptor));
+    }
 
-        public static Compilation EnsureDiagnosticEnabled(this Compilation compilation, IEnumerable<DiagnosticDescriptor> descriptors)
-        {
-            CompilationOptions compilationOptions = compilation.Options;
+    public static Compilation EnsureDiagnosticEnabled(this Compilation compilation, IEnumerable<DiagnosticDescriptor> descriptors)
+    {
+        CompilationOptions compilationOptions = compilation.Options;
 
-            ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions = compilationOptions.SpecificDiagnosticOptions;
+        ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions = compilationOptions.SpecificDiagnosticOptions;
 
-            specificDiagnosticOptions = specificDiagnosticOptions.SetItems(
-                descriptors
-                    .Where(f => !f.IsEnabledByDefault)
-                    .Select(f => new KeyValuePair<string, ReportDiagnostic>(f.Id, f.DefaultSeverity.ToReportDiagnostic())));
+        specificDiagnosticOptions = specificDiagnosticOptions.SetItems(
+            descriptors
+                .Where(f => !f.IsEnabledByDefault)
+                .Select(f => new KeyValuePair<string, ReportDiagnostic>(f.Id, f.DefaultSeverity.ToReportDiagnostic())));
 
-            return compilation.WithOptions(compilationOptions.WithSpecificDiagnosticOptions(specificDiagnosticOptions));
-        }
+        return compilation.WithOptions(compilationOptions.WithSpecificDiagnosticOptions(specificDiagnosticOptions));
     }
 }

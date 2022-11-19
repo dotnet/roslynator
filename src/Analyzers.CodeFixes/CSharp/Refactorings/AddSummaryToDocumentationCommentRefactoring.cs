@@ -8,59 +8,58 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AddSummaryToDocumentationCommentRefactoring
 {
-    internal static class AddSummaryToDocumentationCommentRefactoring
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        DocumentationCommentTriviaSyntax documentationComment,
+        CancellationToken cancellationToken)
     {
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            DocumentationCommentTriviaSyntax documentationComment,
-            CancellationToken cancellationToken)
+        SyntaxList<XmlNodeSyntax> content = documentationComment.Content;
+
+        SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+        TextLine line = sourceText.Lines[documentationComment.GetFullSpanStartLine(cancellationToken)];
+
+        string indent = StringUtility.GetLeadingWhitespaceExceptNewLine(line.ToString());
+
+        TextChange textChange;
+
+        if (content.Count == 1
+            && content[0].IsKind(SyntaxKind.XmlText))
         {
-            SyntaxList<XmlNodeSyntax> content = documentationComment.Content;
+            string text = content[0].ToString().Trim();
 
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+            string newText = CreateSummaryElement(indent, text);
 
-            TextLine line = sourceText.Lines[documentationComment.GetFullSpanStartLine(cancellationToken)];
+            textChange = new TextChange(documentationComment.FullSpan, newText);
+        }
+        else
+        {
+            string newText = CreateSummaryElement(indent);
 
-            string indent = StringUtility.GetLeadingWhitespaceExceptNewLine(line.ToString());
-
-            TextChange textChange;
-
-            if (content.Count == 1
-                && content[0].IsKind(SyntaxKind.XmlText))
-            {
-                string text = content[0].ToString().Trim();
-
-                string newText = CreateSummaryElement(indent, text);
-
-                textChange = new TextChange(documentationComment.FullSpan, newText);
-            }
-            else
-            {
-                string newText = CreateSummaryElement(indent);
-
-                textChange = new TextChange(new TextSpan(documentationComment.FullSpan.Start, 0), newText);
-            }
-
-            return await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
+            textChange = new TextChange(new TextSpan(documentationComment.FullSpan.Start, 0), newText);
         }
 
-        private static string CreateSummaryElement(string indent, string text = null)
-        {
-            var sb = new StringBuilder();
+        return await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
+    }
 
-            sb.AppendLine("/// <summary>");
+    private static string CreateSummaryElement(string indent, string text = null)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine("/// <summary>");
+        sb.Append(indent);
+        sb.Append("/// ");
+        sb.AppendLine(text);
+        sb.Append(indent);
+        sb.AppendLine("/// </summary>");
+
+        if (text == null)
             sb.Append(indent);
-            sb.Append("/// ");
-            sb.AppendLine(text);
-            sb.Append(indent);
-            sb.AppendLine("/// </summary>");
 
-            if (text == null)
-                sb.Append(indent);
-
-            return sb.ToString();
-        }
+        return sb.ToString();
     }
 }

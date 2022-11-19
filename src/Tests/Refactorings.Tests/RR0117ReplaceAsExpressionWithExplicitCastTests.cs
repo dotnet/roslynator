@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0117ReplaceAsExpressionWithExplicitCastTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0117ReplaceAsExpressionWithExplicitCastTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -34,6 +34,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

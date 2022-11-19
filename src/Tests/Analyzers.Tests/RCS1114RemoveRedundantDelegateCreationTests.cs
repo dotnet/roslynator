@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1114RemoveRedundantDelegateCreationTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantDelegateCreationAnalyzer, AssignmentExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantDelegateCreation;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
-        public async Task Test_EventHandler()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1114RemoveRedundantDelegateCreationTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantDelegateCreationAnalyzer, AssignmentExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantDelegateCreation;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
+    public async Task Test_EventHandler()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class Foo
@@ -46,12 +46,12 @@ class Foo
     public event EventHandler Changed;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
-        public async Task Test_EventHandlerOfT()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
+    public async Task Test_EventHandlerOfT()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class Foo
@@ -90,12 +90,12 @@ class Foo
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
-        public async Task Test_CustomEventHandler()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
+    public async Task Test_CustomEventHandler()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class Foo
@@ -138,12 +138,12 @@ class Foo
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
-        public async Task Test_TEventArgs()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
+    public async Task Test_TEventArgs()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class Foo<TEventArgs>
@@ -174,6 +174,5 @@ class Foo<TEventArgs>
     public event EventHandler<TEventArgs> Changed;
 }
 ");
-        }
     }
 }

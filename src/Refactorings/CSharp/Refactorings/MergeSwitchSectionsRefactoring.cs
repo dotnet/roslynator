@@ -9,28 +9,27 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class MergeSwitchSectionsRefactoring
 {
-    internal static class MergeSwitchSectionsRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        SwitchStatementSyntax switchStatement,
+        ImmutableArray<SwitchSectionSyntax> sections,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            SwitchStatementSyntax switchStatement,
-            ImmutableArray<SwitchSectionSyntax> sections,
-            CancellationToken cancellationToken = default)
-        {
-            IEnumerable<SwitchSectionSyntax> newSections = switchStatement
-                .Sections
-                .Select(section =>
-                {
-                    return (sections.Contains(section))
-                        ? section.WithStatements(List<StatementSyntax>())
-                        : section;
-                });
+        IEnumerable<SwitchSectionSyntax> newSections = switchStatement
+            .Sections
+            .Select(section =>
+            {
+                return (sections.Contains(section))
+                    ? section.WithStatements(List<StatementSyntax>())
+                    : section;
+            });
 
-            SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(List(newSections));
+        SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(List(newSections));
 
-            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
     }
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0124ReplaceEqualityOperatorWithStringEqualsTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0124ReplaceEqualityOperatorWithStringEqualsTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -40,6 +40,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

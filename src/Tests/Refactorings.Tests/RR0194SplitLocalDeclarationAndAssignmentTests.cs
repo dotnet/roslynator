@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0194SplitLocalDeclarationAndAssignmentTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.SplitLocalDeclarationAndAssignment;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitLocalDeclarationAndAssignment)]
-        public async Task TestRefactoring()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0194SplitLocalDeclarationAndAssignmentTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.SplitLocalDeclarationAndAssignment;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitLocalDeclarationAndAssignment)]
+    public async Task TestRefactoring()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -31,6 +31,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

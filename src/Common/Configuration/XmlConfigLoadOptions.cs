@@ -2,12 +2,11 @@
 
 using System;
 
-namespace Roslynator.Configuration
+namespace Roslynator.Configuration;
+
+[Flags]
+internal enum XmlConfigLoadOptions
 {
-    [Flags]
-    internal enum XmlConfigLoadOptions
-    {
-        None = 0,
-        SkipIncludes = 1,
-    }
+    None = 0,
+    SkipIncludes = 1,
 }

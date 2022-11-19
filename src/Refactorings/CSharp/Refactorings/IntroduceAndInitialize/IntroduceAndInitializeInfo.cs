@@ -6,34 +6,33 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
+namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
+
+internal abstract class IntroduceAndInitializeInfo
 {
-    internal abstract class IntroduceAndInitializeInfo
+    protected IntroduceAndInitializeInfo(ParameterSyntax parameter)
     {
-        protected IntroduceAndInitializeInfo(ParameterSyntax parameter)
-        {
-            Parameter = parameter;
-            ParameterName = parameter.Identifier.ValueText;
-        }
+        Parameter = parameter;
+        ParameterName = parameter.Identifier.ValueText;
+    }
 
-        public ParameterSyntax Parameter { get; }
+    public ParameterSyntax Parameter { get; }
 
-        public string ParameterName { get; }
+    public string ParameterName { get; }
 
-        public abstract string Name { get; }
+    public abstract string Name { get; }
 
-        public TypeSyntax Type
-        {
-            get { return Parameter.Type?.WithoutTrivia(); }
-        }
+    public TypeSyntax Type
+    {
+        get { return Parameter.Type?.WithoutTrivia(); }
+    }
 
-        public abstract MemberDeclarationSyntax CreateDeclaration();
+    public abstract MemberDeclarationSyntax CreateDeclaration();
 
-        public virtual ExpressionStatementSyntax CreateAssignment()
-        {
-            return SimpleAssignmentStatement(
-                IdentifierName(Name).QualifyWithThis(),
-                IdentifierName(Parameter.Identifier.WithoutTrivia()));
-        }
+    public virtual ExpressionStatementSyntax CreateAssignment()
+    {
+        return SimpleAssignmentStatement(
+            IdentifierName(Name).QualifyWithThis(),
+            IdentifierName(Parameter.Identifier.WithoutTrivia()));
     }
 }
