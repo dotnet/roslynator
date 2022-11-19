@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add analyzer "Add/remove blank line after file scoped namespace declaration" [RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md) ([#993](https://github.com/josefpihrt/roslynator/pull/993).
   - Required option: `roslynator_blank_line_after_file_scoped_namespace_declaration = true|false`
 - Add analyzer "Simplify argument null check" ([RCS1255](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1255.md)) ([#994](https://github.com/JosefPihrt/Roslynator/pull/994)).
-  - Convert `if` null check to `ArgumentNullException.ThrowIfNull`.
+  - Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.
 
 ### Changed
 

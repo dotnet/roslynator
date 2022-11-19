@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1255SimplifyArgumentNullCheckTests : AbstractCSharpDiagnosticVerifier<SimplifyArgumentNullCheckAnalyzer, IfStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyArgumentNullCheck;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
-        public async Task Test_IfStatement_Block_Nameof()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1255SimplifyArgumentNullCheckTests : AbstractCSharpDiagnosticVerifier<SimplifyArgumentNullCheckAnalyzer, IfStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyArgumentNullCheck;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
+    public async Task Test_IfStatement_Block_Nameof()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -39,12 +39,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
-        public async Task Test_IfStatement_Block_Literal()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
+    public async Task Test_IfStatement_Block_Literal()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -68,12 +68,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
-        public async Task Test_IfStatement_Embedded_Nameof()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
+    public async Task Test_IfStatement_Embedded_Nameof()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -95,6 +95,5 @@ class C
     }
 }
 ");
-        }
     }
 }
