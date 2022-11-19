@@ -4,35 +4,34 @@ using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class PathUtilities
 {
-    internal static class PathUtilities
+    internal static string TrimStart(string path, string basePath, bool trimLeadingDirectorySeparator = true)
     {
-        internal static string TrimStart(string path, string basePath, bool trimLeadingDirectorySeparator = true)
+        if (basePath is not null)
         {
-            if (basePath is not null)
+            if (string.Equals(path, basePath, StringComparison.Ordinal))
+                return Path.GetFileName(path);
+
+            if (path.StartsWith(basePath))
             {
-                if (string.Equals(path, basePath, StringComparison.Ordinal))
-                    return Path.GetFileName(path);
+                int length = basePath.Length;
 
-                if (path.StartsWith(basePath))
+                if (trimLeadingDirectorySeparator)
                 {
-                    int length = basePath.Length;
-
-                    if (trimLeadingDirectorySeparator)
+                    while (length < path.Length
+                        && path[length] == Path.DirectorySeparatorChar)
                     {
-                        while (length < path.Length
-                            && path[length] == Path.DirectorySeparatorChar)
-                        {
-                            length++;
-                        }
-
-                        return path.Remove(0, length);
+                        length++;
                     }
+
+                    return path.Remove(0, length);
                 }
             }
-
-            return path;
         }
+
+        return path;
     }
 }

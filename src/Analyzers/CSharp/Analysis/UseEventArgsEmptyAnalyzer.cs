@@ -7,50 +7,49 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class UseEventArgsEmptyAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UseEventArgsEmptyAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseEventArgsEmpty);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseEventArgsEmpty);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
+    }
 
-        private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.SpanContainsDirectives())
-                return;
+    private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
+    {
+        if (context.Node.SpanContainsDirectives())
+            return;
 
-            var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
+        var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
 
-            if (objectCreation.ArgumentList?.Arguments.Count != 0)
-                return;
+        if (objectCreation.ArgumentList?.Arguments.Count != 0)
+            return;
 
-            if (objectCreation.Initializer is not null)
-                return;
+        if (objectCreation.Initializer is not null)
+            return;
 
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
+        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
 
-            if (typeSymbol?.HasMetadataName(MetadataNames.System_EventArgs) != true)
-                return;
+        if (typeSymbol?.HasMetadataName(MetadataNames.System_EventArgs) != true)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseEventArgsEmpty, objectCreation);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseEventArgsEmpty, objectCreation);
     }
 }

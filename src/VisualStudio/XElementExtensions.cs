@@ -3,35 +3,34 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class XElementExtensions
 {
-    internal static class XElementExtensions
+    public static bool TryGetAttributeValueAsString(this XElement element, XName name, out string value)
     {
-        public static bool TryGetAttributeValueAsString(this XElement element, XName name, out string value)
+        XAttribute x = element.Attributes(name).FirstOrDefault();
+
+        if (x != null)
         {
-            XAttribute x = element.Attributes(name).FirstOrDefault();
-
-            if (x != null)
-            {
-                value = x.Value;
-                return true;
-            }
-
-            value = null;
-            return false;
+            value = x.Value;
+            return true;
         }
 
-        public static bool TryGetAttributeValueAsBoolean(this XElement element, XName name, out bool value)
-        {
-            if (TryGetAttributeValueAsString(element, name, out string s)
-                && bool.TryParse(s, out bool result))
-            {
-                value = result;
-                return true;
-            }
+        value = null;
+        return false;
+    }
 
-            value = false;
-            return false;
+    public static bool TryGetAttributeValueAsBoolean(this XElement element, XName name, out bool value)
+    {
+        if (TryGetAttributeValueAsString(element, name, out string s)
+            && bool.TryParse(s, out bool result))
+        {
+            value = result;
+            return true;
         }
+
+        value = false;
+        return false;
     }
 }

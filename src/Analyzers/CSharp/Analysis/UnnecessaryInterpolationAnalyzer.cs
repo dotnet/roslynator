@@ -8,53 +8,52 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class UnnecessaryInterpolationAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UnnecessaryInterpolationAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UnnecessaryInterpolation);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UnnecessaryInterpolation);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
+    }
 
-        private static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
-        {
-            var interpolation = (InterpolationSyntax)context.Node;
+    private static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
+    {
+        var interpolation = (InterpolationSyntax)context.Node;
 
-            if (interpolation.AlignmentClause is not null)
-                return;
+        if (interpolation.AlignmentClause is not null)
+            return;
 
-            if (interpolation.FormatClause is not null)
-                return;
+        if (interpolation.FormatClause is not null)
+            return;
 
-            StringLiteralExpressionInfo stringLiteralInfo = SyntaxInfo.StringLiteralExpressionInfo(interpolation.Expression);
+        StringLiteralExpressionInfo stringLiteralInfo = SyntaxInfo.StringLiteralExpressionInfo(interpolation.Expression);
 
-            if (!stringLiteralInfo.Success)
-                return;
+        if (!stringLiteralInfo.Success)
+            return;
 
-            if (interpolation.Parent is not InterpolatedStringExpressionSyntax interpolatedString)
-                return;
+        if (interpolation.Parent is not InterpolatedStringExpressionSyntax interpolatedString)
+            return;
 
-            if (interpolatedString.StringStartToken.ValueText.Contains("@") != stringLiteralInfo.IsVerbatim)
-                return;
+        if (interpolatedString.StringStartToken.ValueText.Contains("@") != stringLiteralInfo.IsVerbatim)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryInterpolation, interpolation);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryInterpolation, interpolation);
     }
 }
