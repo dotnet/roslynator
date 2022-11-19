@@ -4887,6 +4887,7 @@ class Foo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Summary>
       An iterator method (a method that contains `yield`) will not validate arguments until the caller begins to enumerate the result items.
+ 
       To ensure that arguments are validated immediately (when the method is called), move
       the iterator to a separate method (local function).
     </Summary>
