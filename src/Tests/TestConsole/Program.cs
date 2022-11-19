@@ -36,7 +36,7 @@ class C
             IEnumerable<PortableExecutableReference> metadataReferences = AppContext
                 .GetData("TRUSTED_PLATFORM_ASSEMBLIES")
                 .ToString()
-                .Split(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ';' : ':')
+                .Split((RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? ';' : ':')
                 .Select(f => MetadataReference.CreateFromFile(f));
 
             Project project = workspace.CurrentSolution

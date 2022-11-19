@@ -6,61 +6,60 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Roslynator.Configuration;
 
-namespace Roslynator.VisualStudio
+namespace Roslynator.VisualStudio;
+
+[ClassInterface(ClassInterfaceType.AutoDual)]
+[Guid("1D9ECCF3-5D2F-4112-9B25-264596873DC9")]
+public partial class RefactoringsOptionsPage : BaseOptionsPage
 {
-    [ClassInterface(ClassInterfaceType.AutoDual)]
-    [Guid("1D9ECCF3-5D2F-4112-9B25-264596873DC9")]
-    public partial class RefactoringsOptionsPage : BaseOptionsPage
+    private const string RefactoringCategory = "Refactoring";
+
+    [Category(RefactoringCategory)]
+    [Browsable(false)]
+    public string DisabledRefactorings { get; set; }
+
+    [Category(RefactoringCategory)]
+    [Browsable(false)]
+    public string Refactorings
     {
-        private const string RefactoringCategory = "Refactoring";
-
-        [Category(RefactoringCategory)]
-        [Browsable(false)]
-        public string DisabledRefactorings { get; set; }
-
-        [Category(RefactoringCategory)]
-        [Browsable(false)]
-        public string Refactorings
+        get { return string.Join(",", Items.Select(f => (f.Value) ? f.Key : (f.Key + "!"))); }
+        set
         {
-            get { return string.Join(",", Items.Select(f => (f.Value) ? f.Key : (f.Key + "!"))); }
-            set
-            {
-                Items.Clear();
+            Items.Clear();
 
-                if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
+            {
+                foreach (string id in value.Split(','))
                 {
-                    foreach (string id in value.Split(','))
+                    if (!string.IsNullOrWhiteSpace(id))
                     {
-                        if (!string.IsNullOrWhiteSpace(id))
+                        if (id.EndsWith("!"))
                         {
-                            if (id.EndsWith("!"))
-                            {
-                                if (id.Length > 1)
-                                    Items[id.Remove(id.Length - 1)] = false;
-                            }
-                            else
-                            {
-                                Items[id] = true;
-                            }
+                            if (id.Length > 1)
+                                Items[id.Remove(id.Length - 1)] = false;
+                        }
+                        else
+                        {
+                            Items[id] = true;
                         }
                     }
                 }
             }
         }
+    }
 
-        protected override void OnApply(PageApplyEventArgs e)
+    protected override void OnApply(PageApplyEventArgs e)
+    {
+        base.OnApply(e);
+
+        if (e.ApplyBehavior == ApplyKind.Apply)
         {
-            base.OnApply(e);
-
-            if (e.ApplyBehavior == ApplyKind.Apply)
-            {
-                UpdateConfig();
-            }
+            UpdateConfig();
         }
+    }
 
-        internal void UpdateConfig()
-        {
-            CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithRefactorings(GetItems()));
-        }
+    internal void UpdateConfig()
+    {
+        CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithRefactorings(GetItems()));
     }
 }

@@ -31,7 +31,7 @@ internal static class RuntimeMetadataReference
                 // works only for .NET Core, it returns null for .NET Framework
                 return AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")?
                     .ToString()
-                    .Split(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ';' : ':')
+                    .Split((RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? ';' : ':')
                     .ToImmutableArray()
                     ?? ImmutableArray<string>.Empty;
             }

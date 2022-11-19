@@ -9,100 +9,99 @@ using System.Runtime.InteropServices;
 using Roslynator.CodeFixes;
 using Roslynator.Configuration;
 
-namespace Roslynator.VisualStudio
+namespace Roslynator.VisualStudio;
+
+[ClassInterface(ClassInterfaceType.AutoDual)]
+[Guid("B804AA29-91D5-4C54-9B76-C442DA0AE60D")]
+public partial class CodeFixesOptionsPage : BaseOptionsPage
 {
-    [ClassInterface(ClassInterfaceType.AutoDual)]
-    [Guid("B804AA29-91D5-4C54-9B76-C442DA0AE60D")]
-    public partial class CodeFixesOptionsPage : BaseOptionsPage
+    public CodeFixesOptionsPage()
     {
-        public CodeFixesOptionsPage()
-        {
-            Control.TitleColumnHeaderText = "Fix";
-        }
+        Control.TitleColumnHeaderText = "Fix";
+    }
 
-        [Browsable(false)]
-        public string DisabledCodeFixes { get; set; }
+    [Browsable(false)]
+    public string DisabledCodeFixes { get; set; }
 
-        [Browsable(false)]
-        public string CodeFixes
+    [Browsable(false)]
+    public string CodeFixes
+    {
+        get { return string.Join(",", Items.Select(f => (f.Value) ? f.Key : (f.Key + "!"))); }
+        set
         {
-            get { return string.Join(",", Items.Select(f => (f.Value) ? f.Key : (f.Key + "!"))); }
-            set
+            Items.Clear();
+
+            if (!string.IsNullOrEmpty(value))
             {
-                Items.Clear();
-
-                if (!string.IsNullOrEmpty(value))
+                foreach (string s in value.Split(','))
                 {
-                    foreach (string s in value.Split(','))
+                    string id = s;
+                    var enabled = true;
+
+                    if (s.EndsWith("!"))
                     {
-                        string id = s;
-                        var enabled = true;
+                        id = s.Remove(s.Length - 1);
+                        enabled = false;
+                    }
 
-                        if (s.EndsWith("!"))
+                    if (id.Length > 0)
+                    {
+                        if (id.Contains("."))
                         {
-                            id = s.Remove(s.Length - 1);
-                            enabled = false;
+                            Items[id] = enabled;
                         }
-
-                        if (id.Length > 0)
+                        else if (id.StartsWith(CodeFixIdentifier.CodeFixIdPrefix, StringComparison.Ordinal))
                         {
-                            if (id.Contains("."))
-                            {
-                                Items[id] = enabled;
-                            }
-                            else if (id.StartsWith(CodeFixIdentifier.CodeFixIdPrefix, StringComparison.Ordinal))
-                            {
-                                foreach (string compilerDiagnosticId in CodeFixMap.GetCompilerDiagnosticIds(id))
-                                    Items[$"{compilerDiagnosticId}.{id}"] = enabled;
-                            }
-                            else if (id.StartsWith("CS", StringComparison.Ordinal))
-                            {
-                                foreach (string codeFixId in CodeFixMap.GetCodeFixIds(id))
-                                    Items[$"{id}.{codeFixId}"] = enabled;
-                            }
-                            else
-                            {
-                                Debug.Fail(id);
-                            }
+                            foreach (string compilerDiagnosticId in CodeFixMap.GetCompilerDiagnosticIds(id))
+                                Items[$"{compilerDiagnosticId}.{id}"] = enabled;
+                        }
+                        else if (id.StartsWith("CS", StringComparison.Ordinal))
+                        {
+                            foreach (string codeFixId in CodeFixMap.GetCodeFixIds(id))
+                                Items[$"{id}.{codeFixId}"] = enabled;
+                        }
+                        else
+                        {
+                            Debug.Fail(id);
                         }
                     }
                 }
             }
         }
+    }
 
-        protected override void OnApply(PageApplyEventArgs e)
+    protected override void OnApply(PageApplyEventArgs e)
+    {
+        base.OnApply(e);
+
+        if (e.ApplyBehavior == ApplyKind.Apply)
         {
-            base.OnApply(e);
-
-            if (e.ApplyBehavior == ApplyKind.Apply)
-            {
-                UpdateConfig();
-            }
+            UpdateConfig();
         }
+    }
 
-        internal void UpdateConfig()
+    internal void UpdateConfig()
+    {
+        CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithCodeFixes(GetItems()));
+    }
+
+    protected override void Fill(ICollection<BaseModel> items)
+    {
+        items.Clear();
+
+        foreach (CompilerDiagnosticFix compilerDiagnosticFix in CodeFixMap.GetCompilerDiagnosticFixes()
+            .OrderBy(f => f.CompilerDiagnosticId)
+            .ThenBy(f => f.CodeFixId))
         {
-            CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithCodeFixes(GetItems()));
-        }
+            var model = new CodeFixModel(
+                compilerDiagnosticFix.CompilerDiagnosticId,
+                compilerDiagnosticFix.CompilerDiagnosticTitle,
+                compilerDiagnosticFix.CodeFixId,
+                compilerDiagnosticFix.CodeFixTitle);
 
-        protected override void Fill(ICollection<BaseModel> items)
-        {
-            items.Clear();
+            model.Enabled = IsEnabled(model.Id);
 
-            foreach (CompilerDiagnosticFix compilerDiagnosticFix in CodeFixMap.GetCompilerDiagnosticFixes()
-                .OrderBy(f => f.CompilerDiagnosticId)
-                .ThenBy(f => f.CodeFixId))
-            {
-                var model = new CodeFixModel(
-                    compilerDiagnosticFix.CompilerDiagnosticId,
-                    compilerDiagnosticFix.CompilerDiagnosticTitle,
-                    compilerDiagnosticFix.CodeFixId,
-                    compilerDiagnosticFix.CodeFixTitle);
-
-                model.Enabled = IsEnabled(model.Id);
-
-                items.Add(model);
-            }
+            items.Add(model);
         }
     }
 }

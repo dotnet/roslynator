@@ -16,16 +16,7 @@ internal abstract class CommonDocumentationUrlProvider : DocumentationUrlProvide
     {
     }
 
-    private string LinkToSelf
-    {
-        get
-        {
-            if (_linkToSelf is null)
-                _linkToSelf = "./" + IndexFileName;
-
-            return _linkToSelf;
-        }
-    }
+    private string LinkToSelf => _linkToSelf ??= "./" + IndexFileName;
 
     private static readonly Regex _notWordCharOrHyphenOrSpaceRegex = new(@"[^\w- ]");
 

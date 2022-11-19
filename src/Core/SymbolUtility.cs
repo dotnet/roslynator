@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator;
@@ -214,7 +213,6 @@ internal static class SymbolUtility
 
                 typeSymbol = typeSymbol.BaseType;
             }
-
         }
 
         return null;
