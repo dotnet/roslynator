@@ -11,6 +11,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
+using Roslynator.CSharp.CodeStyle;
+using System.Diagnostics;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp
 {
@@ -20,7 +22,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddEmptyLineAfterFileScopedNamespace); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -35,29 +37,48 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddEmptyLineAfterFileScopedNamespace:
+                case DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration:
                     {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Add empty line",
-                            ct =>
-                            {
-                                MemberDeclarationSyntax member = fileScopedNamespace.Members[0];
+                        MemberDeclarationSyntax member = fileScopedNamespace.Members[0];
 
-                                MemberDeclarationSyntax newMember;
-                                if (!fileScopedNamespace.SemicolonToken.TrailingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
+                        BlankLineStyle style = BlankLineAfterFileScopedNamespaceDeclarationAnalyzer.GetCurrentStyle(fileScopedNamespace, member);
+
+                        if (style == BlankLineStyle.Add)
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                CodeFixTitles.AddBlankLine,
+                                ct =>
                                 {
-                                    newMember = member.PrependToLeadingTrivia(new SyntaxTrivia[] { CSharpFactory.NewLine(), CSharpFactory.NewLine() });
-                                }
-                                else
-                                {
-                                    newMember = member.PrependEndOfLineToLeadingTrivia();
-                                }
+                                    MemberDeclarationSyntax newMember;
+                                    if (!fileScopedNamespace.SemicolonToken.TrailingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
+                                    {
+                                        newMember = member.PrependToLeadingTrivia(new SyntaxTrivia[] { CSharpFactory.NewLine(), CSharpFactory.NewLine() });
+                                    }
+                                    else
+                                    {
+                                        newMember = member.PrependEndOfLineToLeadingTrivia();
+                                    }
 
-                                return document.ReplaceNodeAsync(member, newMember, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                                    return document.ReplaceNodeAsync(member, newMember, ct);
+                                },
+                                GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                        }
+                        else if (style == BlankLineStyle.Remove)
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                CodeFixTitles.RemoveBlankLine,
+                                ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, member.GetFirstToken(), ct),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                        }
+                        else
+                        {
+                            Debug.Fail("");
+                        }
+
                         break;
                     }
             }
