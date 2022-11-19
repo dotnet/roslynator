@@ -42,7 +42,7 @@ public sealed class SimplifyArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
 
         NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(
             ifStatement.Condition,
-            NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);
+            NullCheckStyles.CheckingNull);
 
         if (!nullCheck.Success)
             return;
@@ -74,31 +74,26 @@ public sealed class SimplifyArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
         if (!containingTypeSymbol.GetMembers("ThrowIfNull").Any(f => f.IsKind(SymbolKind.Method)))
             return;
 
-        if (IsFixable())
-            context.ReportDiagnostic(DiagnosticRules.SimplifyArgumentNullCheck, ifStatement.IfKeyword);
-
-        bool IsFixable()
+        if (expression.IsKind(SyntaxKind.StringLiteralExpression))
         {
-            if (expression.IsKind(SyntaxKind.StringLiteralExpression))
-            {
-                var literal = (LiteralExpressionSyntax)expression;
+            var literal = (LiteralExpressionSyntax)expression;
 
-                if (string.Equals(identifierName.Identifier.ValueText, literal.Token.ValueText))
-                {
-                    return true;
-                }
-            }
-            else if (expression is InvocationExpressionSyntax invocationExpression)
-            {
-                if (CSharpUtility.IsNameOfExpression(invocationExpression, context.SemanticModel, context.CancellationToken)
-                    && invocationExpression.ArgumentList.Arguments.FirstOrDefault().Expression is IdentifierNameSyntax identifierName2
-                    && string.Equals(identifierName.Identifier.ValueText, identifierName2.Identifier.ValueText))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            if (string.Equals(identifierName.Identifier.ValueText, literal.Token.ValueText))
+                ReportDiagnostic(context, ifStatement);
         }
+        else if (expression is InvocationExpressionSyntax invocationExpression)
+        {
+            if (CSharpUtility.IsNameOfExpression(invocationExpression, context.SemanticModel, context.CancellationToken)
+                && invocationExpression.ArgumentList.Arguments.FirstOrDefault().Expression is IdentifierNameSyntax identifierName2
+                && string.Equals(identifierName.Identifier.ValueText, identifierName2.Identifier.ValueText))
+            {
+                ReportDiagnostic(context, ifStatement);
+            }
+        }
+    }
+
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
+    {
+        context.ReportDiagnostic(DiagnosticRules.SimplifyArgumentNullCheck, ifStatement.IfKeyword);
     }
 }
