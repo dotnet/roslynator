@@ -2510,18 +2510,6 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1256</summary>
-        public static readonly DiagnosticDescriptor AddOrRemoveTrailingComma = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
-            title:              "Add/remove trailing comma.", 
-            messageFormat:      "{0} trailing comma.", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1256</summary>
         public static readonly DiagnosticDescriptor InvalidArgumentNullCheck = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.InvalidArgumentNullCheck, 
             title:              "Invalid argument null check.", 
@@ -2531,6 +2519,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.InvalidArgumentNullCheck, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1257</summary>
+        public static readonly DiagnosticDescriptor AddOrRemoveTrailingComma = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
+            title:              "Add/remove trailing comma.", 
+            messageFormat:      "{0} trailing comma.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
             customTags:         Array.Empty<string>());
 
     }
