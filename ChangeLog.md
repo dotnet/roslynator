@@ -10,12 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add Arm64 VS 2022 extension support ([#990](https://github.com/JosefPihrt/Roslynator/pull/990) by @snickler).
-- Add analyzer "Add/remove blank line after file scoped namespace declaration" [RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md) ([#993](https://github.com/josefpihrt/roslynator/pull/993).
+- Add analyzer "Add/remove blank line after file scoped namespace declaration" [RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md) ([#993](https://github.com/josefpihrt/roslynator/pull/993)).
   - Required option: `roslynator_blank_line_after_file_scoped_namespace_declaration = true|false`
-  - Not enabled by default
+  - Not enabled by default.
 - Add analyzer "Simplify argument null check" ([RCS1255](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1255.md)) ([#994](https://github.com/JosefPihrt/Roslynator/pull/994)).
   - Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.
-  - Not enabled by default
+  - Not enabled by default.
 - Add analyzer "Invalid argument null check" ([RCS1256](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#888](https://github.com/JosefPihrt/Roslynator/pull/888)).
   - This analyzer reports null checks of arguments that are:
 	- annotated as nullable reference type.
