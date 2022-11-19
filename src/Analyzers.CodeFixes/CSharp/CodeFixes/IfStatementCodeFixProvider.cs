@@ -114,8 +114,8 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                             },
                             GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
                     }
                 case DiagnosticIdentifiers.SimplifyArgumentNullCheck:
                     {
