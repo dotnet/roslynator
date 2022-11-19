@@ -104,7 +104,7 @@ internal abstract class TriviaWalker : CSharpSyntaxWalker
         {
             ContainsOnlyWhitespaceOrEndOfLineTriviaWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
                 _cachedInstance = null;
                 walker.Result = true;

@@ -16,7 +16,7 @@ internal readonly struct AddExceptionToDocumentationCommentAnalysisResult
 
     public bool Success
     {
-        get { return ThrowInfo != null; }
+        get { return ThrowInfo is not null; }
     }
 
     public ISymbol DeclarationSymbol

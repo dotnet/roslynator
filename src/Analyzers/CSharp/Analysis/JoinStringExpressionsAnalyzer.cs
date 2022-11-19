@@ -68,7 +68,7 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
 
                         bool isVerbatim2 = stringLiteral.IsVerbatim;
 
-                        if (firstExpression == null)
+                        if (firstExpression is null)
                         {
                             firstExpression = expression;
                             isLiteral = true;
@@ -81,7 +81,7 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
                             || isVerbatim != isVerbatim2
                             || (!isVerbatim && !CheckHexadecimalEscapeSequence(stringLiteral)))
                         {
-                            if (lastExpression != null)
+                            if (lastExpression is not null)
                                 Analyze(context, firstExpression, lastExpression, isVerbatim);
 
                             firstExpression = null;
@@ -115,7 +115,7 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
 
                         bool isVerbatim2 = interpolatedString.IsVerbatim();
 
-                        if (firstExpression == null)
+                        if (firstExpression is null)
                         {
                             firstExpression = expression;
                             isLiteral = false;
@@ -128,7 +128,7 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
                             || isVerbatim != isVerbatim2
                             || (!isVerbatim && !CheckHexadecimalEscapeSequence(interpolatedString)))
                         {
-                            if (lastExpression != null)
+                            if (lastExpression is not null)
                                 Analyze(context, firstExpression, lastExpression, isVerbatim);
 
                             firstExpression = null;
@@ -158,7 +158,7 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
                     }
                 default:
                     {
-                        if (lastExpression != null)
+                        if (lastExpression is not null)
                             Analyze(context, firstExpression, lastExpression, isVerbatim);
 
                         firstExpression = null;
@@ -168,7 +168,7 @@ public sealed class JoinStringExpressionsAnalyzer : BaseDiagnosticAnalyzer
             }
         }
 
-        if (lastExpression != null)
+        if (lastExpression is not null)
             Analyze(context, firstExpression, lastExpression, isVerbatim);
     }
 

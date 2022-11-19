@@ -63,10 +63,10 @@ internal class SlnListCommand : MSBuildWorkspaceCommand<CommandResult>
         {
             List<string> frameworks = f.Value;
 
-            return (frameworks != null) ? $"({string.Join(", ", frameworks)})".Length : 0;
+            return (frameworks is not null) ? $"({string.Join(", ", frameworks)})".Length : 0;
         });
 
-        bool anyHasTargetFrameworks = projects.Any(f => f.Value != null);
+        bool anyHasTargetFrameworks = projects.Any(f => f.Value is not null);
 
         WriteLine();
         WriteLine($"{projects.Count} {((projects.Count == 1) ? "project" : "projects")} found in solution '{Path.GetFileNameWithoutExtension(solutionInfo.FilePath)}' [{solutionInfo.FilePath}]", ConsoleColors.Green, Verbosity.Minimal);
@@ -86,7 +86,7 @@ internal class SlnListCommand : MSBuildWorkspaceCommand<CommandResult>
             if (anyHasTargetFrameworks)
                 Write("  ", Verbosity.Normal);
 
-            if (targetFrameworks != null)
+            if (targetFrameworks is not null)
             {
                 string targetFrameworksText = $"({string.Join(", ", targetFrameworks.OrderBy(f => f))})";
                 Write(targetFrameworksText.PadRight(targetFrameworksMaxLength), Verbosity.Normal);

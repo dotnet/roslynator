@@ -30,10 +30,10 @@ internal abstract class InlineAnalyzer<TNode, TDeclaration, TSymbol>
 
         TDeclaration declaration = await GetMemberDeclarationAsync(symbol, context.CancellationToken).ConfigureAwait(false);
 
-        if (declaration == null)
+        if (declaration is null)
             return;
 
-        for (SyntaxNode parent = node.Parent; parent != null; parent = parent.Parent)
+        for (SyntaxNode parent = node.Parent; parent is not null; parent = parent.Parent)
         {
             if (object.ReferenceEquals(declaration, parent))
                 return;
@@ -43,7 +43,7 @@ internal abstract class InlineAnalyzer<TNode, TDeclaration, TSymbol>
 
         SyntaxNode nodeIncludingConditionalAccess = node.WalkUp(f => f.IsKind(SyntaxKind.ConditionalAccessExpression));
 
-        if (expression != null
+        if (expression is not null
             || (statements.Any() && nodeIncludingConditionalAccess.IsParentKind(SyntaxKind.ExpressionStatement)))
         {
             ImmutableArray<ParameterInfo> parameterInfos = GetParameterInfos(node, symbol);
@@ -60,7 +60,7 @@ internal abstract class InlineAnalyzer<TNode, TDeclaration, TSymbol>
                 Document document = context.Solution.GetDocument(declaration.SyntaxTree);
 
                 // https://github.com/dotnet/roslyn/issues/5260
-                if (document == null)
+                if (document is null)
                     return;
 
                 declarationSemanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
@@ -70,7 +70,7 @@ internal abstract class InlineAnalyzer<TNode, TDeclaration, TSymbol>
 
             string title = CSharpFacts.GetTitle(declaration);
 
-            if (expression != null)
+            if (expression is not null)
             {
                 context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, ct), GetDescriptor());
 

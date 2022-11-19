@@ -53,11 +53,11 @@ internal class HelpCommand
         {
             OpenHelpInBrowser(commandName);
         }
-        else if (commandName != null)
+        else if (commandName is not null)
         {
             Command command = CommandLoader.LoadCommand(typeof(HelpCommand).Assembly, commandName);
 
-            if (command == null)
+            if (command is null)
                 throw new InvalidOperationException($"Command '{commandName}' does not exist.");
 
             WriteCommandHelp(command, includeValues: includeValues, filter: filter);

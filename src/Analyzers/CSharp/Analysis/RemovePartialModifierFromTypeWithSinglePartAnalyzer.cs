@@ -47,7 +47,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
 
         INamedTypeSymbol symbol = context.SemanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
 
-        if (symbol?.DeclaringSyntaxReferences.SingleOrDefault(shouldThrow: false) == null)
+        if (symbol?.DeclaringSyntaxReferences.SingleOrDefault(shouldThrow: false) is null)
             return;
 
         if (symbol.InheritsFrom(_componentBaseName))
@@ -60,7 +60,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
                 var method = (MethodDeclarationSyntax)member;
 
                 if (method.Modifiers.Contains(SyntaxKind.PartialKeyword)
-                    && method.BodyOrExpressionBody() == null
+                    && method.BodyOrExpressionBody() is null
                     && method.ContainsUnbalancedIfElseDirectives(method.Span))
                 {
                     return;

@@ -16,7 +16,7 @@ internal static class InitializeLocalVariableWithDefaultValueRefactoring
     {
         VariableDeclarationSyntax declaration = localDeclaration.Declaration;
 
-        if (declaration == null)
+        if (declaration is null)
             return;
 
         SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;

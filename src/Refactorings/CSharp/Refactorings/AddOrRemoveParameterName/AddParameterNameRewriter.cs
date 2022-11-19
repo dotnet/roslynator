@@ -48,7 +48,7 @@ internal class AddParameterNameRewriter : CSharpSyntaxRewriter
                 allowParams: false,
                 cancellationToken: cancellationToken);
 
-            if (parameterSymbol != null)
+            if (parameterSymbol is not null)
             {
                 ArgumentSyntax newArgument = argument.WithoutLeadingTrivia();
 

@@ -39,7 +39,7 @@ public sealed class SimplifyCodeBranchingAnalyzer : BaseDiagnosticAnalyzer
 
         SimplifyCodeBranchingKind? kind = GetKind(ifStatement, context.SemanticModel, context.CancellationToken);
 
-        if (kind == null)
+        if (kind is null)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyCodeBranching, ifStatement.IfKeyword);
@@ -54,12 +54,12 @@ public sealed class SimplifyCodeBranchingAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax ifStatementStatement = ifStatement.Statement;
 
-        if (ifStatementStatement == null)
+        if (ifStatementStatement is null)
             return null;
 
         ElseClauseSyntax elseClause = ifStatement.Else;
 
-        if (elseClause != null)
+        if (elseClause is not null)
         {
             if (IsFixableIfElseInsideWhile(ifStatement, elseClause))
             {
@@ -103,7 +103,7 @@ public sealed class SimplifyCodeBranchingAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax whenFalse = elseClause.Statement;
 
-        if (whenFalse == null)
+        if (whenFalse is null)
             return false;
 
         SyntaxKind kind = whenFalse.Kind();
@@ -112,7 +112,7 @@ public sealed class SimplifyCodeBranchingAnalyzer : BaseDiagnosticAnalyzer
         {
             var nestedIf = (IfStatementSyntax)whenFalse;
 
-            if (nestedIf.Else != null)
+            if (nestedIf.Else is not null)
                 return false;
 
             if (nestedIf.Condition?.WalkDownParentheses().IsMissing != false)
@@ -120,7 +120,7 @@ public sealed class SimplifyCodeBranchingAnalyzer : BaseDiagnosticAnalyzer
 
             StatementSyntax statement = nestedIf.Statement;
 
-            if (statement == null)
+            if (statement is null)
                 return false;
 
             if ((statement as BlockSyntax)?.Statements.Any() == false)
@@ -197,7 +197,7 @@ public sealed class SimplifyCodeBranchingAnalyzer : BaseDiagnosticAnalyzer
                     //    }
 
                     return ifStatement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement
-                        && returnStatement.Expression == null;
+                        && returnStatement.Expression is null;
                 }
             case SyntaxKind.ForEachStatement:
             case SyntaxKind.ForEachVariableStatement:
@@ -229,12 +229,12 @@ public sealed class SimplifyCodeBranchingAnalyzer : BaseDiagnosticAnalyzer
     {
         StatementSyntax ifStatementStatement = ifStatement.Statement;
 
-        if (ifStatementStatement == null)
+        if (ifStatementStatement is null)
             return false;
 
         StatementSyntax elseClauseStatement = elseClause.Statement;
 
-        if (elseClauseStatement == null)
+        if (elseClauseStatement is null)
             return false;
 
         if (elseClauseStatement.SingleNonBlockStatementOrDefault()?.Kind() != SyntaxKind.BreakStatement

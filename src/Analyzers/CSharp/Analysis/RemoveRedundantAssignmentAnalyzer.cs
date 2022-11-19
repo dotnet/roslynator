@@ -103,11 +103,11 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
         ExpressionSyntax value = localInfo.Value;
 
-        if (value != null)
+        if (value is not null)
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(localInfo.Type, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return;
 
             if (!semanticModel.IsDefaultValue(typeSymbol, value, cancellationToken))
@@ -119,7 +119,7 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantAssignment, localInfo.Identifier);
 
-        if (value != null)
+        if (value is not null)
         {
             DiagnosticHelpers.ReportNode(context, DiagnosticRules.RemoveRedundantAssignmentFadeOut, localInfo.Initializer);
             DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantAssignmentFadeOut, assignmentInfo.OperatorToken);
@@ -245,7 +245,7 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
         }
         finally
         {
-            if (walker != null)
+            if (walker is not null)
                 RemoveRedundantAssignmentWalker.Free(walker);
         }
 
@@ -266,13 +266,13 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
             {
                 if (CSharpFacts.IsAnonymousFunctionExpression(n.Kind()))
                 {
-                    if (declaringSyntax == null)
+                    if (declaringSyntax is null)
                     {
                         declaringSyntax = symbol.GetSyntaxOrDefault();
 
-                        Debug.Assert(declaringSyntax != null, "");
+                        Debug.Assert(declaringSyntax is not null, "");
 
-                        if (declaringSyntax == null)
+                        if (declaringSyntax is null)
                             break;
 
                         SyntaxDebug.Assert(declaringSyntax.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.Parameter), declaringSyntax);
@@ -290,7 +290,7 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
                         n2 = n2.Parent;
                     }
-                    while (n2 != null);
+                    while (n2 is not null);
 
                     return true;
                 }
@@ -301,7 +301,7 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
                 n = n.Parent;
             }
-            while (n != null);
+            while (n is not null);
 
             return false;
         }
@@ -314,7 +314,7 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
     {
         SyntaxNode node = statement.Parent;
 
-        while (node != null
+        while (node is not null
             && node is not MemberDeclarationSyntax
             && !node.IsKind(SyntaxKind.FinallyClause))
         {
@@ -322,7 +322,7 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
             {
                 BlockSyntax block = tryStatement.Finally?.Block;
 
-                if (block != null)
+                if (block is not null)
                 {
                     ContainsLocalOrParameterReferenceWalker walker = null;
 
@@ -337,7 +337,7 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
                     }
                     finally
                     {
-                        if (walker != null)
+                        if (walker is not null)
                             ContainsLocalOrParameterReferenceWalker.Free(walker);
                     }
                 }
@@ -405,10 +405,10 @@ public sealed class RemoveRedundantAssignmentAnalyzer : BaseDiagnosticAnalyzer
         {
             RemoveRedundantAssignmentWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker.Symbol == null);
-                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.Symbol is null);
+                Debug.Assert(walker.SemanticModel is null);
                 Debug.Assert(walker.CancellationToken == default);
 
                 _cachedInstance = null;

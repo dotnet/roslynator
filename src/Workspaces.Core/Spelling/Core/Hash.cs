@@ -37,6 +37,6 @@ internal static class Hash
     {
         hash = unchecked(hash * Prime);
 
-        return (value != null) ? unchecked(hash + value.GetHashCode()) : hash;
+        return (value is not null) ? unchecked(hash + value.GetHashCode()) : hash;
     }
 }

@@ -218,7 +218,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
 
                 ISymbol symbol = DeclarationSemanticModel.GetSymbol(identifierName, CancellationToken);
 
-                if (symbol != null)
+                if (symbol is not null)
                 {
                     if (symbol is IParameterSymbol parameterSymbol)
                     {
@@ -228,7 +228,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
                             {
                                 ExpressionSyntax expression = parameterInfo.Expression;
 
-                                if (expression == null
+                                if (expression is null
                                     && parameterInfo.ParameterSymbol.HasExplicitDefaultValue)
                                 {
                                     expression = parameterInfo.ParameterSymbol.GetDefaultValueMinimalSyntax(InvocationSemanticModel, Node.SpanStart);
@@ -253,7 +253,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
                     {
                         INamedTypeSymbol containingType = symbol.ContainingType;
 
-                        if (containingType != null)
+                        if (containingType is not null)
                         {
                             if (!NodeEnclosingType
                                 .BaseTypesAndSelf()
@@ -268,14 +268,14 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
                         }
                     }
 
-                    if (symbolMap != null
+                    if (symbolMap is not null
                         && symbolMap.TryGetValue(symbol, out string name))
                     {
                         replacementMap.Add(identifierName, IdentifierName(name));
                     }
                 }
             }
-            else if (symbolMap != null)
+            else if (symbolMap is not null)
             {
                 switch (kind)
                 {
@@ -288,9 +288,9 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
                         {
                             ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, CancellationToken);
 
-                            Debug.Assert(symbol != null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
+                            Debug.Assert(symbol is not null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
 
-                            if (symbol != null
+                            if (symbol is not null
                                 && symbolMap.TryGetValue(symbol, out string name))
                             {
                                 replacementMap.Add(descendant, name);
@@ -361,7 +361,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
                 (symbols ??= new List<ISymbol>()).Add(symbol);
         }
 
-        if (symbols == null)
+        if (symbols is null)
             return null;
 
         reservedNames.UnionWith(declarationSymbols.Select(f => f.Name));

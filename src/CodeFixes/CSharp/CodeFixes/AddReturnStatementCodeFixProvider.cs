@@ -127,7 +127,7 @@ public sealed class AddReturnStatementCodeFixProvider : CompilerDiagnosticCodeFi
         BlockSyntax body,
         SemanticModel semanticModel)
     {
-        if (type != null
+        if (type is not null
             && body?.Statements.Count > 0)
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);

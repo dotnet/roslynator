@@ -38,7 +38,7 @@ public sealed class ObjectCreationExpressionCodeFixProvider : CompilerDiagnostic
             .FindNode(context.Span, getInnermostNodeForTie: true)?
             .FirstAncestorOrSelf<ObjectCreationExpressionSyntax>();
 
-        if (objectCreationExpression == null)
+        if (objectCreationExpression is null)
             return;
 
         switch (diagnostic.Id)
@@ -58,7 +58,7 @@ public sealed class ObjectCreationExpressionCodeFixProvider : CompilerDiagnostic
 
                     InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
 
-                    if (initializer == null)
+                    if (initializer is null)
                         return;
 
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -71,18 +71,18 @@ public sealed class ObjectCreationExpressionCodeFixProvider : CompilerDiagnostic
                             && semanticModel.GetDiagnostic(
                                 CompilerDiagnosticIdentifiers.CS0272_PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible,
                                 assignment.Left.Span,
-                                context.CancellationToken) != null)
+                                context.CancellationToken) is not null)
                         {
                             (expressions ??= new List<ExpressionSyntax>()).Add(expression);
                         }
                     }
 
-                    if (expressions == null)
+                    if (expressions is null)
                         return;
 
                     TypeSyntax type = objectCreationExpression.Type;
 
-                    if (argumentList == null)
+                    if (argumentList is null)
                     {
                         argumentList = ArgumentList().WithTrailingTrivia(type.GetTrailingTrivia());
                         type = type.WithoutTrailingTrivia();

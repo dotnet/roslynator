@@ -67,7 +67,7 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
                 {
                     var ifStatement = (IfStatementSyntax)block.Parent;
 
-                    if (ifStatement.Else == null)
+                    if (ifStatement.Else is null)
                     {
                         blockOrStatement = ifStatement;
                         break;
@@ -99,7 +99,7 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
 
         BlockSyntax block = tryStatement.Finally?.Block ?? tryStatement.Catches.LastOrDefault()?.Block;
 
-        if (block == null)
+        if (block is null)
             return;
 
         SyntaxToken closeBrace = block.CloseBraceToken;
@@ -128,7 +128,7 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
             ? ifStatement.GetTopmostIf().NextStatement()
             : blockOrStatement.NextStatement();
 
-        if (nextStatement != null
+        if (nextStatement is not null
             && closeBrace.SyntaxTree.GetLineCount(TextSpan.FromBounds(closeBrace.Span.End, nextStatement.SpanStart)) == 2)
         {
             SyntaxTrivia endOfLine = closeBrace

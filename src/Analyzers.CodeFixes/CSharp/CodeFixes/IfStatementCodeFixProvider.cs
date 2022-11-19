@@ -153,9 +153,9 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
         SyntaxList<StatementSyntax> newStatements;
 
         if (ifStatement.Statement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement
-            && throwStatement.Expression == null)
+            && throwStatement.Expression is null)
         {
-            if (elseClause != null)
+            if (elseClause is not null)
             {
                 newStatements = ReplaceStatement(elseClause.Statement);
             }

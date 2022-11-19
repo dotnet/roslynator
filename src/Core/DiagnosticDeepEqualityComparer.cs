@@ -26,10 +26,10 @@ internal sealed class DiagnosticDeepEqualityComparer : IEqualityComparer<Diagnos
         if (object.ReferenceEquals(x, y))
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (!x.Descriptor.Equals(y.Descriptor))
@@ -49,7 +49,7 @@ internal sealed class DiagnosticDeepEqualityComparer : IEqualityComparer<Diagnos
 
     public int GetHashCode(Diagnostic obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 0;
 
         return Hash.Combine(

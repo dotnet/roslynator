@@ -39,7 +39,7 @@ internal static class VariableDeclarationRefactoring
     {
         TypeSyntax type = variableDeclaration.Type;
 
-        if (type == null)
+        if (type is null)
             return;
 
         if (variableDeclaration.IsParentKind(SyntaxKind.EventFieldDeclaration))
@@ -47,7 +47,7 @@ internal static class VariableDeclarationRefactoring
 
         VariableDeclaratorSyntax variable = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
 
-        if (variable == null)
+        if (variable is null)
             return;
 
         SyntaxToken identifier = variable.Identifier;
@@ -69,7 +69,7 @@ internal static class VariableDeclarationRefactoring
             variable.SpanStart,
             cancellationToken: context.CancellationToken);
 
-        if (newName == null)
+        if (newName is null)
             return;
 
         context.RegisterRefactoring(

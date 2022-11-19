@@ -65,7 +65,7 @@ public sealed class ExpectedTestState
     {
         get
         {
-            if (_annotationsByKind == null)
+            if (_annotationsByKind is null)
             {
                 Interlocked.CompareExchange(
                     ref _annotationsByKind,

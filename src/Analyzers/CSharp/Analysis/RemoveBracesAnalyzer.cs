@@ -117,7 +117,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = GetFixableBlock(ifStatement.Statement);
 
-        if (block == null)
+        if (block is null)
             return;
 
         if (!FormattingSupportsEmbeddedStatement(ifStatement))
@@ -132,7 +132,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = GetFixableBlock(forEachStatement.Statement);
 
-        if (block == null)
+        if (block is null)
             return;
 
         if (!FormattingSupportsEmbeddedStatement(forEachStatement))
@@ -147,7 +147,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = GetFixableBlock(forStatement.Statement);
 
-        if (block == null)
+        if (block is null)
             return;
 
         if (!FormattingSupportsEmbeddedStatement(forStatement))
@@ -162,7 +162,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = GetFixableBlock(usingStatement.Statement);
 
-        if (block == null)
+        if (block is null)
             return;
 
         if (!FormattingSupportsEmbeddedStatement(usingStatement))
@@ -177,7 +177,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = GetFixableBlock(whileStatement.Statement);
 
-        if (block == null)
+        if (block is null)
             return;
 
         if (!FormattingSupportsEmbeddedStatement(whileStatement))
@@ -192,7 +192,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = GetFixableBlock(doStatement.Statement);
 
-        if (block == null)
+        if (block is null)
             return;
 
         if (!FormattingSupportsEmbeddedStatement(doStatement))
@@ -207,7 +207,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = GetFixableBlock(lockStatement.Statement);
 
-        if (block == null)
+        if (block is null)
             return;
 
         if (!FormattingSupportsEmbeddedStatement(lockStatement))
@@ -222,7 +222,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = GetFixableBlock(fixedStatement.Statement);
 
-        if (block == null)
+        if (block is null)
             return;
 
         if (!FormattingSupportsEmbeddedStatement(fixedStatement))
@@ -238,7 +238,7 @@ public sealed class RemoveBracesAnalyzer : BaseDiagnosticAnalyzer
 
         statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
-        if (statement == null)
+        if (statement is null)
             return null;
 
         if (statement.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement))

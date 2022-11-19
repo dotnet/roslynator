@@ -136,19 +136,19 @@ public class SeparatedSyntaxListSelection<TNode> : ISelection<TNode> where TNode
     public static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, out SeparatedSyntaxListSelection<TNode> selection)
     {
         selection = Create(list, span, 1, int.MaxValue);
-        return selection != null;
+        return selection is not null;
     }
 
     internal static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, out SeparatedSyntaxListSelection<TNode> selection)
     {
         selection = Create(list, span, minCount, int.MaxValue);
-        return selection != null;
+        return selection is not null;
     }
 
     internal static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, int maxCount, out SeparatedSyntaxListSelection<TNode> selection)
     {
         selection = Create(list, span, minCount, maxCount);
-        return selection != null;
+        return selection is not null;
     }
 
     private static SeparatedSyntaxListSelection<TNode> Create(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, int maxCount)

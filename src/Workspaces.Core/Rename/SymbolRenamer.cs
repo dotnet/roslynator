@@ -82,7 +82,7 @@ internal class SymbolRenamer
 
                 Project project = CurrentSolution.GetProject(projects[j]);
 
-                if (predicate == null || predicate(project))
+                if (predicate is null || predicate(project))
                 {
                     WriteLine($"  Rename {GetPluralName(renameScopes[i])} in '{project.Name}' {$"{j + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
@@ -161,7 +161,7 @@ internal class SymbolRenamer
 
         IFindSymbolService service = MefWorkspaceServices.Default.GetService<IFindSymbolService>(project.Language);
 
-        if (service == null)
+        if (service is null)
             return ImmutableArray<SymbolRenameResult>.Empty;
 
         ImmutableArray<string> previousIds = ImmutableArray<string>.Empty;
@@ -276,7 +276,7 @@ internal class SymbolRenamer
             ISymbol symbol = symbolData.Symbol;
             Document document = CurrentSolution.GetDocument(symbolData.DocumentId);
 
-            if (document == null)
+            if (document is null)
             {
                 ignoreIds?.Add(symbolData.Id);
                 WriteLine($"    Cannot find document for '{symbol.Name}'", ConsoleColors.Yellow, Verbosity.Detailed);
@@ -355,7 +355,7 @@ internal class SymbolRenamer
                     i++;
                 }
 
-                if (localFunctionIndexes != null)
+                if (localFunctionIndexes is not null)
                 {
                     await RenameLocalFunctionsAndItsParametersAsync(
                         node,
@@ -368,7 +368,7 @@ internal class SymbolRenamer
                         .ConfigureAwait(false);
                 }
 
-                if (localSymbolIndexes != null)
+                if (localSymbolIndexes is not null)
                 {
                     await RenameLocalsAndLambdaParametersAsync(
                         node,
@@ -428,7 +428,7 @@ internal class SymbolRenamer
             {
                 if (indexes.Contains(i))
                 {
-                    if (semanticModel == null)
+                    if (semanticModel is null)
                     {
                         document = CurrentSolution.GetDocument(documentId);
                         semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
@@ -468,8 +468,8 @@ internal class SymbolRenamer
                 i++;
             }
 
-            if (diffTracker != null
-                && diffTracker2 != null)
+            if (diffTracker is not null
+                && diffTracker2 is not null)
             {
                 diffTracker.Add(diffTracker2);
             }
@@ -576,7 +576,7 @@ internal class SymbolRenamer
         ISymbol currentSymbol = semanticModel.GetDeclaredSymbol(node, cancellationToken)
             ?? semanticModel.GetSymbol(node, cancellationToken);
 
-        if (currentSymbol == null)
+        if (currentSymbol is null)
         {
             Debug.Fail(symbolId);
 
@@ -584,7 +584,7 @@ internal class SymbolRenamer
             return false;
         }
 
-        if (diffTracker != null
+        if (diffTracker is not null
             && _diffTracker.SpanExists(span, document.Id))
         {
             ignoreIds?.Add(GetSymbolId(currentSymbol));
@@ -593,7 +593,7 @@ internal class SymbolRenamer
 
         string currentSymbolId = GetSymbolId(currentSymbol);
 
-        if (currentSymbolId != null)
+        if (currentSymbolId is not null)
         {
             if (!string.Equals(symbolId, currentSymbolId, StringComparison.Ordinal))
                 return false;
@@ -624,7 +624,7 @@ internal class SymbolRenamer
         {
             string newName2 = GetNewName(newName, symbol, findSymbolService, interactive: interactive);
 
-            if (newName2 == null)
+            if (newName2 is null)
             {
                 ignoreIds?.Add(symbolId);
                 return true;
@@ -690,7 +690,7 @@ internal class SymbolRenamer
                     return true;
                 }
                 else if (ErrorResolution == RenameErrorResolution.Ask
-                    && UserDialog != null)
+                    && UserDialog is not null)
                 {
                     switch (UserDialog.ShowDialog("Rename symbol?"))
                     {
@@ -735,7 +735,7 @@ internal class SymbolRenamer
         }
 
         if (Ask
-            && UserDialog != null
+            && UserDialog is not null
             && (compilerErrorCount == 0 || ErrorResolution != RenameErrorResolution.Ask))
         {
             switch (UserDialog.ShowDialog("Rename symbol?"))
@@ -787,8 +787,8 @@ internal class SymbolRenamer
 
         results.Add(new SymbolRenameResult(symbol.Name, newName, symbolId));
 
-        if (diffTracker == null
-            && ignoreIds == null)
+        if (diffTracker is null
+            && ignoreIds is null)
         {
             return true;
         }
@@ -837,7 +837,7 @@ internal class SymbolRenamer
 
         diff += identifierDiff;
 
-        if (diffTracker != null)
+        if (diffTracker is not null)
         {
             diffTracker.AddLocations(locations, diff, oldSolution);
             _diffTracker.AddLocations(locations, diff, oldSolution);
@@ -878,16 +878,16 @@ internal class SymbolRenamer
         }
 #endif
         if (string.Equals(newName, newIdentifier.ValueText, StringComparison.Ordinal)
-            && ignoreIds != null)
+            && ignoreIds is not null)
         {
             SyntaxNode newNode = findSymbolService.FindDeclaration(newIdentifier.Parent);
 
             symbol = semanticModel.GetDeclaredSymbol(newNode, cancellationToken)
                 ?? semanticModel.GetSymbol(newNode, cancellationToken);
 
-            Debug.Assert(symbol != null, GetSymbolId(symbol));
+            Debug.Assert(symbol is not null, GetSymbolId(symbol));
 
-            if (symbol != null)
+            if (symbol is not null)
                 ignoreIds.Add(GetSymbolId(symbol));
         }
 
@@ -901,7 +901,7 @@ internal class SymbolRenamer
             {
                 TextSpan span = location.SourceSpan;
 
-                if (symbol != null)
+                if (symbol is not null)
                 {
                     // 'this' and 'base' constructor references
                     if (symbol.Name.Length == 4

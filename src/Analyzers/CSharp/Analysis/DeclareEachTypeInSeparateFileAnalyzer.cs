@@ -63,7 +63,7 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
                 }
                 else if (SyntaxFacts.IsTypeDeclaration(kind))
                 {
-                    if (firstTypeDeclaration == null)
+                    if (firstTypeDeclaration is null)
                     {
                         firstTypeDeclaration = member;
                     }
@@ -103,7 +103,7 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
 
         member = namespaceDeclaration.Members.SingleOrDefault(shouldThrow: false);
 
-        return member != null
+        return member is not null
             && member.Kind() != SyntaxKind.NamespaceDeclaration;
     }
 }

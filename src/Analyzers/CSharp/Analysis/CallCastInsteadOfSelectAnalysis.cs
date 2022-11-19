@@ -30,7 +30,7 @@ internal static class CallCastInsteadOfSelectAnalysis
 
         ExtensionMethodSymbolInfo extensionInfo = semanticModel.GetExtensionMethodInfo(invocationExpression, cancellationToken);
 
-        if (extensionInfo.Symbol == null)
+        if (extensionInfo.Symbol is null)
             return;
 
         if (!SymbolUtility.IsLinqSelect(extensionInfo.Symbol, allowImmutableArrayExtension: true))
@@ -53,7 +53,7 @@ internal static class CallCastInsteadOfSelectAnalysis
 
         CastExpressionSyntax castExpression = GetCastExpression(lambdaInfo.Body);
 
-        if (castExpression == null)
+        if (castExpression is null)
             return;
 
         if (castExpression.Expression is not IdentifierNameSyntax identifierName)

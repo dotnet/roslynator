@@ -46,7 +46,7 @@ internal static class ChangeVariableDeclarationTypeRefactoring
 
                 VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
 
-                if (variableDeclarator?.Initializer?.Value != null)
+                if (variableDeclarator?.Initializer?.Value is not null)
                 {
                     if (typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
                     {
@@ -58,7 +58,7 @@ internal static class ChangeVariableDeclarationTypeRefactoring
                             semanticModel,
                             context.CancellationToken);
 
-                        if (createChangedDocument != null)
+                        if (createChangedDocument is not null)
                         {
                             context.RegisterRefactoring(
                                 "Use explicit type (and add 'await')",
@@ -70,7 +70,7 @@ internal static class ChangeVariableDeclarationTypeRefactoring
 
                     typeSymbol = semanticModel.GetTypeSymbol(variableDeclarator.Initializer.Value, context.CancellationToken);
 
-                    if (typeSymbol != null)
+                    if (typeSymbol is not null)
                     {
                         context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
                     }
@@ -89,7 +89,7 @@ internal static class ChangeVariableDeclarationTypeRefactoring
         {
             ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
-            if (value == null)
+            if (value is null)
                 return;
 
             Conversion conversion = semanticModel.ClassifyConversion(value, typeSymbol);
@@ -103,7 +103,7 @@ internal static class ChangeVariableDeclarationTypeRefactoring
 
         ITypeSymbol newTypeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables[0].Initializer.Value, context.CancellationToken);
 
-        if (newTypeSymbol == null)
+        if (newTypeSymbol is null)
             return;
 
         context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, variableDeclaration.Type, newTypeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.ChangeTypeAccordingToExpression)));

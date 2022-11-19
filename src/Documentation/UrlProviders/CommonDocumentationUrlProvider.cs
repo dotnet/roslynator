@@ -20,7 +20,7 @@ internal abstract class CommonDocumentationUrlProvider : DocumentationUrlProvide
     {
         get
         {
-            if (_linkToSelf == null)
+            if (_linkToSelf is null)
                 _linkToSelf = "./" + IndexFileName;
 
             return _linkToSelf;
@@ -137,7 +137,7 @@ internal abstract class CommonDocumentationUrlProvider : DocumentationUrlProvide
 
     public override string GetFragment(string value)
     {
-        if (value == null)
+        if (value is null)
             throw new ArgumentNullException(nameof(value));
 
         value = _notWordCharOrHyphenOrSpaceRegex.Replace(value, "");

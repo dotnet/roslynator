@@ -17,7 +17,7 @@ internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
 {
     public static async Task ComputeRefactoringAsync(RefactoringContext context, AttributeSyntax attribute)
     {
-        if (attribute.ArgumentList?.Arguments.Count(f => f.NameEquals == null) != 1)
+        if (attribute.ArgumentList?.Arguments.Count(f => f.NameEquals is null) != 1)
             return;
 
         if (!attribute.IsParentKind(SyntaxKind.AttributeList))
@@ -36,7 +36,7 @@ internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
             .Value?
             .ToString();
 
-        if (value == null)
+        if (value is null)
             return;
 
         if (string.Equals(value, $"{{{DefaultNames.DebuggerDisplayPropertyName},nq}}", StringComparison.Ordinal))

@@ -29,10 +29,10 @@ internal sealed class MatchData
         int maxCount = -1,
         CancellationToken cancellationToken = default)
     {
-        if (regex == null)
+        if (regex is null)
             throw new ArgumentNullException(nameof(regex));
 
-        if (input == null)
+        if (input is null)
             throw new ArgumentNullException(nameof(input));
 
         Match match = regex.Match(input);

@@ -167,7 +167,7 @@ public class DocumentationOptions
             {
                 INamespaceSymbol n = typeSymbol.ContainingNamespace;
 
-                while (n != null)
+                while (n is not null)
                 {
                     if (n.HasMetadataName(metadataName))
                         return true;

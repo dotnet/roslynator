@@ -95,7 +95,7 @@ internal static class SymbolUtility
         SemanticModel semanticModel,
         int position)
     {
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return false;
 
         SymbolKind symbolKind = typeSymbol.Kind;
@@ -108,7 +108,7 @@ internal static class SymbolUtility
 
         bool? hasIndexer = HasIndexer(typeSymbol.SpecialType);
 
-        if (hasIndexer != null)
+        if (hasIndexer is not null)
             return hasIndexer.Value;
 
         ITypeSymbol originalDefinition = typeSymbol.OriginalDefinition;
@@ -117,7 +117,7 @@ internal static class SymbolUtility
         {
             hasIndexer = HasIndexer(originalDefinition.SpecialType);
 
-            if (hasIndexer != null)
+            if (hasIndexer is not null)
                 return hasIndexer.Value;
         }
 
@@ -170,7 +170,7 @@ internal static class SymbolUtility
 
         string propertyName = GetCountOrLengthPropertyName(typeSymbol.SpecialType);
 
-        if (propertyName != null)
+        if (propertyName is not null)
             return (propertyName.Length > 0) ? propertyName : null;
 
         ITypeSymbol originalDefinition = typeSymbol.OriginalDefinition;
@@ -179,7 +179,7 @@ internal static class SymbolUtility
         {
             propertyName = GetCountOrLengthPropertyName(originalDefinition.SpecialType);
 
-            if (propertyName != null)
+            if (propertyName is not null)
                 return (propertyName.Length > 0) ? propertyName : null;
         }
 
@@ -340,7 +340,7 @@ internal static class SymbolUtility
 
         INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
-        if (containingType == null)
+        if (containingType is null)
             return false;
 
         if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
@@ -417,7 +417,7 @@ internal static class SymbolUtility
 
         INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
-        if (containingType == null)
+        if (containingType is null)
             return false;
 
         if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
@@ -461,7 +461,7 @@ internal static class SymbolUtility
 
         INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
-        if (containingType == null)
+        if (containingType is null)
             return false;
 
         if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
@@ -586,12 +586,12 @@ internal static class SymbolUtility
             IMethodSymbol methodSymbol = FindMethod(typeSymbol.GetMembers("RaisePropertyChanged"))
                 ?? FindMethod(typeSymbol.GetMembers("OnPropertyChanged"));
 
-            if (methodSymbol != null)
+            if (methodSymbol is not null)
                 return methodSymbol;
 
             typeSymbol = typeSymbol.BaseType;
         }
-        while (typeSymbol != null
+        while (typeSymbol is not null
             && typeSymbol.SpecialType != SpecialType.System_Object);
 
         return null;
@@ -620,7 +620,7 @@ internal static class SymbolUtility
     {
         INamedTypeSymbol namedTypeSymbol = GetPossiblyAwaitableType(typeSymbol);
 
-        if (namedTypeSymbol == null)
+        if (namedTypeSymbol is null)
             return false;
 
         INamedTypeSymbol originalDefinition = namedTypeSymbol.OriginalDefinition;
@@ -673,7 +673,7 @@ internal static class SymbolUtility
 
             typeSymbol = typeParameterSymbol.ConstraintTypes.SingleOrDefault(f => f.TypeKind == TypeKind.Class, shouldThrow: false);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return null;
         }
 

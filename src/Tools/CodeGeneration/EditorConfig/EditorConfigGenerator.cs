@@ -49,7 +49,7 @@ public static class EditorConfigGenerator
 
                 string defaultValue = option.DefaultValue;
 
-                if (defaultValue != null)
+                if (defaultValue is not null)
                     w.WriteLine($"# Default: {defaultValue}");
 
                 if (analyzers?.Count > 0)

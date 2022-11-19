@@ -112,7 +112,7 @@ internal class AwaitExpressionWalker : CSharpSyntaxNodeWalker
     {
         AwaitExpressionWalker walker = _cachedInstance;
 
-        if (walker != null)
+        if (walker is not null)
         {
             Debug.Assert(walker.AwaitExpressions.Count == 0);
 

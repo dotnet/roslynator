@@ -18,7 +18,7 @@ internal static class CSharpFactory2
     {
         ExpressionSyntax expression = IdentifierName(name);
 
-        if (propertyName != null)
+        if (propertyName is not null)
         {
             expression = SimpleMemberAccessExpression(
                 expression,
@@ -67,7 +67,7 @@ internal static class CSharpFactory2
     {
         ArgumentListSyntax argumentList;
 
-        if (expression != null)
+        if (expression is not null)
         {
             argumentList = ArgumentList(Argument(expression));
         }

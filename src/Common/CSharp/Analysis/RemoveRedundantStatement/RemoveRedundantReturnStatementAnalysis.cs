@@ -18,7 +18,7 @@ internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantSt
     {
         ExpressionSyntax expression = statement.Expression;
 
-        if (expression == null)
+        if (expression is null)
             return base.IsFixable(statement);
 
         if (expression.IsKind(
@@ -69,7 +69,7 @@ internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantSt
             case SyntaxKind.AnonymousMethodExpression:
                 {
                     return statement is ReturnStatementSyntax returnStatement
-                        && returnStatement.Expression == null;
+                        && returnStatement.Expression is null;
                 }
             default:
                 {

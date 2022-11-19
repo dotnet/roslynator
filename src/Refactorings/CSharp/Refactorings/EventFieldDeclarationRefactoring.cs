@@ -35,7 +35,7 @@ internal static class EventFieldDeclarationRefactoring
         {
             VariableDeclaratorSyntax variableDeclarator = eventFieldDeclaration.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
 
-            if (variableDeclarator != null
+            if (variableDeclarator is not null
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(variableDeclarator.Identifier))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

@@ -46,7 +46,7 @@ public sealed class ReturnStatementCodeFixProvider : CompilerDiagnosticCodeFixPr
 
                         ExpressionSyntax expression = returnStatement.Expression;
 
-                        if (expression != null)
+                        if (expression is not null)
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

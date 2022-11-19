@@ -114,7 +114,7 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
 
             if (!en.MoveNext())
             {
-                if (lines == null)
+                if (lines is null)
                 {
                     lines = expression.SyntaxTree.GetText().Lines;
                     startLine = lines.IndexOf(expression.SpanStart);

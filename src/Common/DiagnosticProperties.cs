@@ -20,7 +20,7 @@ internal static class DiagnosticProperties
     {
         get
         {
-            if (_analyzerOption_Invert == null)
+            if (_analyzerOption_Invert is null)
             {
                 Interlocked.CompareExchange(
                     ref _analyzerOption_Invert,

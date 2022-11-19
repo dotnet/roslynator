@@ -94,7 +94,7 @@ public static class CodeFixDescriptorsGenerator
         {
             ExpressionSyntax newExpression = node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon?.Name.Identifier.ValueText.Length ?? 0)));
 
-            if (node.NameColon != null)
+            if (node.NameColon is not null)
             {
                 node = node.WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))));
             }

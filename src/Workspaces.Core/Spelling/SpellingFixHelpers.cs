@@ -137,7 +137,7 @@ internal class SpellingFixHelpers
         {
             Write("    Replace  '");
 
-            if (containingValue != null)
+            if (containingValue is not null)
             {
                 Write(containingValue.Remove(diagnostic.Index));
                 Write(value);
@@ -164,7 +164,7 @@ internal class SpellingFixHelpers
 
         Write("with '");
 
-        if (containingValue != null)
+        if (containingValue is not null)
         {
             Write(containingValue.Remove(diagnostic.Index));
             Write(fix.Value, ConsoleColors.Cyan);

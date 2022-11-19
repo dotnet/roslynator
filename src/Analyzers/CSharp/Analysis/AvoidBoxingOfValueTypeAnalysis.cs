@@ -15,7 +15,7 @@ internal static class AvoidBoxingOfValueTypeAnalysis
     {
         IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, context.CancellationToken);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (methodSymbol.IsExtensionMethod)
@@ -34,7 +34,7 @@ internal static class AvoidBoxingOfValueTypeAnalysis
                     {
                         ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
 
-                        if (argument != null)
+                        if (argument is not null)
                         {
                             ExpressionSyntax expression = argument.Expression;
 

@@ -9,213 +9,214 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis.UnusedParameter;
-
-internal class UnusedParameterWalker : CSharpSyntaxNodeWalker
+namespace Roslynator.CSharp.Analysis.UnusedParameter
 {
-    [ThreadStatic]
-    private static UnusedParameterWalker _cachedInstance;
-
-    private static readonly StringComparer _ordinalComparer = StringComparer.Ordinal;
-
-    private bool _isEmpty;
-
-    public Dictionary<string, NodeSymbolInfo> Nodes { get; } = new(_ordinalComparer);
-
-    public SemanticModel SemanticModel { get; set; }
-
-    public CancellationToken CancellationToken { get; set; }
-
-    public bool IsIndexer { get; set; }
-
-    public bool IsAnyTypeParameter { get; set; }
-
-    protected override bool ShouldVisit => !_isEmpty;
-
-    public void SetValues(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
+    internal class UnusedParameterWalker : CSharpSyntaxNodeWalker
     {
-        _isEmpty = false;
+        [ThreadStatic]
+        private static UnusedParameterWalker _cachedInstance;
 
-        Nodes.Clear();
-        SemanticModel = semanticModel;
-        CancellationToken = cancellationToken;
-        IsIndexer = isIndexer;
-        IsAnyTypeParameter = false;
-    }
+        private static readonly StringComparer _ordinalComparer = StringComparer.Ordinal;
 
-    public void AddParameter(ParameterSyntax parameter)
-    {
-        AddNode(parameter.Identifier.ValueText, parameter);
-    }
+        private bool _isEmpty;
 
-    public void AddTypeParameter(TypeParameterSyntax typeParameter)
-    {
-        AddNode(typeParameter.Identifier.ValueText, typeParameter);
-    }
+        public Dictionary<string, NodeSymbolInfo> Nodes { get; } = new(_ordinalComparer);
 
-    private void AddNode(string name, SyntaxNode node)
-    {
-        Nodes[name] = new NodeSymbolInfo(name, node);
-    }
+        public SemanticModel SemanticModel { get; set; }
 
-    private void RemoveNode(string name)
-    {
-        Nodes.Remove(name);
+        public CancellationToken CancellationToken { get; set; }
 
-        if (Nodes.Count == 0)
-            _isEmpty = true;
-    }
+        public bool IsIndexer { get; set; }
 
-    protected override void VisitType(TypeSyntax node)
-    {
-        switch (node.Kind())
+        public bool IsAnyTypeParameter { get; set; }
+
+        protected override bool ShouldVisit => !_isEmpty;
+
+        public void SetValues(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
         {
-            case SyntaxKind.ArrayType:
-                {
-                    VisitArrayType((ArrayTypeSyntax)node);
-                    break;
-                }
-            case SyntaxKind.AliasQualifiedName:
-            case SyntaxKind.GenericName:
-            case SyntaxKind.IdentifierName:
-            case SyntaxKind.NullableType:
-            case SyntaxKind.OmittedTypeArgument:
-            case SyntaxKind.PointerType:
-            case SyntaxKind.PredefinedType:
-            case SyntaxKind.QualifiedName:
-            case SyntaxKind.RefType:
-            case SyntaxKind.TupleType:
-                {
-                    if (IsAnyTypeParameter)
-                        base.VisitType(node);
+            _isEmpty = false;
 
-                    break;
-                }
-            default:
-                {
-                    base.VisitType(node);
-                    break;
-                }
+            Nodes.Clear();
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+            IsIndexer = isIndexer;
+            IsAnyTypeParameter = false;
         }
-    }
 
-    public override void VisitIdentifierName(IdentifierNameSyntax node)
-    {
-        string name = node.Identifier.ValueText;
-
-        if (Nodes.TryGetValue(name, out NodeSymbolInfo info))
+        public void AddParameter(ParameterSyntax parameter)
         {
-            if (info.Symbol == null)
-            {
-                ISymbol declaredSymbol = SemanticModel.GetDeclaredSymbol(info.Node, CancellationToken);
+            AddNode(parameter.Identifier.ValueText, parameter);
+        }
 
-                if (declaredSymbol == null)
+        public void AddTypeParameter(TypeParameterSyntax typeParameter)
+        {
+            AddNode(typeParameter.Identifier.ValueText, typeParameter);
+        }
+
+        private void AddNode(string name, SyntaxNode node)
+        {
+            Nodes[name] = new NodeSymbolInfo(name, node);
+        }
+
+        private void RemoveNode(string name)
+        {
+            Nodes.Remove(name);
+
+            if (Nodes.Count == 0)
+                _isEmpty = true;
+        }
+
+        protected override void VisitType(TypeSyntax node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.ArrayType:
+                    {
+                        VisitArrayType((ArrayTypeSyntax)node);
+                        break;
+                    }
+                case SyntaxKind.AliasQualifiedName:
+                case SyntaxKind.GenericName:
+                case SyntaxKind.IdentifierName:
+                case SyntaxKind.NullableType:
+                case SyntaxKind.OmittedTypeArgument:
+                case SyntaxKind.PointerType:
+                case SyntaxKind.PredefinedType:
+                case SyntaxKind.QualifiedName:
+                case SyntaxKind.RefType:
+                case SyntaxKind.TupleType:
+                    {
+                        if (IsAnyTypeParameter)
+                            base.VisitType(node);
+
+                        break;
+                    }
+                default:
+                    {
+                        base.VisitType(node);
+                        break;
+                    }
+            }
+        }
+
+        public override void VisitIdentifierName(IdentifierNameSyntax node)
+        {
+            string name = node.Identifier.ValueText;
+
+            if (Nodes.TryGetValue(name, out NodeSymbolInfo info))
+            {
+                if (info.Symbol is null)
                 {
-                    RemoveNode(name);
-                    return;
+                    ISymbol declaredSymbol = SemanticModel.GetDeclaredSymbol(info.Node, CancellationToken);
+
+                    if (declaredSymbol is null)
+                    {
+                        RemoveNode(name);
+                        return;
+                    }
+
+                    info = new NodeSymbolInfo(info.Name, info.Node, declaredSymbol);
+
+                    Nodes[name] = info;
                 }
 
-                info = new NodeSymbolInfo(info.Name, info.Node, declaredSymbol);
+                ISymbol symbol = SemanticModel.GetSymbol(node, CancellationToken);
 
-                Nodes[name] = info;
+                if (IsIndexer)
+                    symbol = GetIndexerParameterSymbol(node, symbol);
+
+                if (SymbolEqualityComparer.Default.Equals(info.Symbol, symbol))
+                    RemoveNode(name);
+            }
+        }
+
+        private static ISymbol GetIndexerParameterSymbol(IdentifierNameSyntax identifierName, ISymbol symbol)
+        {
+            if (symbol?.ContainingSymbol is not IMethodSymbol methodSymbol)
+                return null;
+
+            if (methodSymbol.AssociatedSymbol is not IPropertySymbol propertySymbol)
+                return null;
+
+            if (!propertySymbol.IsIndexer)
+                return null;
+
+            string name = identifierName.Identifier.ValueText;
+
+            foreach (IParameterSymbol parameterSymbol in propertySymbol.Parameters)
+            {
+                if (string.Equals(name, parameterSymbol.Name, StringComparison.Ordinal))
+                    return parameterSymbol;
             }
 
-            ISymbol symbol = SemanticModel.GetSymbol(node, CancellationToken);
-
-            if (IsIndexer)
-                symbol = GetIndexerParameterSymbol(node, symbol);
-
-            if (SymbolEqualityComparer.Default.Equals(info.Symbol, symbol))
-                RemoveNode(name);
-        }
-    }
-
-    private static ISymbol GetIndexerParameterSymbol(IdentifierNameSyntax identifierName, ISymbol symbol)
-    {
-        if (symbol?.ContainingSymbol is not IMethodSymbol methodSymbol)
             return null;
-
-        if (methodSymbol.AssociatedSymbol is not IPropertySymbol propertySymbol)
-            return null;
-
-        if (!propertySymbol.IsIndexer)
-            return null;
-
-        string name = identifierName.Identifier.ValueText;
-
-        foreach (IParameterSymbol parameterSymbol in propertySymbol.Parameters)
-        {
-            if (string.Equals(name, parameterSymbol.Name, StringComparison.Ordinal))
-                return parameterSymbol;
         }
 
-        return null;
-    }
-
-    public override void VisitAttributeList(AttributeListSyntax node)
-    {
-    }
-
-    public override void VisitExplicitInterfaceSpecifier(ExplicitInterfaceSpecifierSyntax node)
-    {
-    }
-
-    public override void VisitGotoStatement(GotoStatementSyntax node)
-    {
-    }
-
-    public override void VisitLiteralExpression(LiteralExpressionSyntax node)
-    {
-    }
-
-    public override void VisitNameColon(NameColonSyntax node)
-    {
-    }
-
-    public override void VisitTypeParameterList(TypeParameterListSyntax node)
-    {
-    }
-
-    public override void VisitBracketedParameterList(BracketedParameterListSyntax node)
-    {
-    }
-
-    public override void VisitParameterList(ParameterListSyntax node)
-    {
-        if (node.IsParentKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
-            base.VisitParameterList(node);
-    }
-
-    public override void VisitTypeParameterConstraintClause(TypeParameterConstraintClauseSyntax node)
-    {
-        if (IsAnyTypeParameter
-            && node.IsParentKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
+        public override void VisitAttributeList(AttributeListSyntax node)
         {
-            base.VisitTypeParameterConstraintClause(node);
-        }
-    }
-
-    public static UnusedParameterWalker GetInstance()
-    {
-        UnusedParameterWalker walker = _cachedInstance;
-
-        if (walker != null)
-        {
-            Debug.Assert(walker.Nodes.Count == 0);
-            Debug.Assert(walker.SemanticModel == null);
-            Debug.Assert(walker.CancellationToken == default);
-
-            _cachedInstance = null;
-            return walker;
         }
 
-        return new UnusedParameterWalker();
-    }
+        public override void VisitExplicitInterfaceSpecifier(ExplicitInterfaceSpecifierSyntax node)
+        {
+        }
 
-    public static void Free(UnusedParameterWalker walker)
-    {
-        walker.SetValues(default(SemanticModel), default(CancellationToken));
+        public override void VisitGotoStatement(GotoStatementSyntax node)
+        {
+        }
 
-        _cachedInstance = walker;
+        public override void VisitLiteralExpression(LiteralExpressionSyntax node)
+        {
+        }
+
+        public override void VisitNameColon(NameColonSyntax node)
+        {
+        }
+
+        public override void VisitTypeParameterList(TypeParameterListSyntax node)
+        {
+        }
+
+        public override void VisitBracketedParameterList(BracketedParameterListSyntax node)
+        {
+        }
+
+        public override void VisitParameterList(ParameterListSyntax node)
+        {
+            if (node.IsParentKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
+                base.VisitParameterList(node);
+        }
+
+        public override void VisitTypeParameterConstraintClause(TypeParameterConstraintClauseSyntax node)
+        {
+            if (IsAnyTypeParameter
+                && node.IsParentKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
+            {
+                base.VisitTypeParameterConstraintClause(node);
+            }
+        }
+
+        public static UnusedParameterWalker GetInstance()
+        {
+            UnusedParameterWalker walker = _cachedInstance;
+
+            if (walker is not null)
+            {
+                Debug.Assert(walker.Nodes.Count == 0);
+                Debug.Assert(walker.SemanticModel is null);
+                Debug.Assert(walker.CancellationToken == default);
+
+                _cachedInstance = null;
+                return walker;
+            }
+
+            return new UnusedParameterWalker();
+        }
+
+        public static void Free(UnusedParameterWalker walker)
+        {
+            walker.SetValues(default(SemanticModel), default(CancellationToken));
+
+            _cachedInstance = walker;
+        }
     }
 }

@@ -20,7 +20,7 @@ public static class SemanticModelExtensions
         TextSpan? span = null,
         CancellationToken cancellationToken = default)
     {
-        if (semanticModel == null)
+        if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
         ImmutableArray<Diagnostic> diagnostics = semanticModel.GetDiagnostics(span, cancellationToken);
@@ -60,12 +60,12 @@ public static class SemanticModelExtensions
         int position,
         CancellationToken cancellationToken = default) where TSymbol : ISymbol
     {
-        if (semanticModel == null)
+        if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
         ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
-        while (symbol != null)
+        while (symbol is not null)
         {
             if (symbol is TSymbol tsymbol)
                 return tsymbol;
@@ -111,7 +111,7 @@ public static class SemanticModelExtensions
     /// <param name="fullyQualifiedMetadataName"></param>
     public static INamedTypeSymbol GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
     {
-        if (semanticModel == null)
+        if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
         return semanticModel
@@ -141,7 +141,7 @@ public static class SemanticModelExtensions
     {
         SyntaxNode node = GetEnclosingSymbolSyntax(semanticModel, position, cancellationToken);
 
-        if (node != null)
+        if (node is not null)
             return GetDeclaredSymbols(semanticModel, node, excludeAnonymousTypeProperty, cancellationToken);
 
         return ImmutableArray<ISymbol>.Empty;
@@ -189,7 +189,7 @@ public static class SemanticModelExtensions
         {
             ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
 
-            if (symbol != null)
+            if (symbol is not null)
             {
                 if (!excludeAnonymousTypeProperty
                     || !symbol.IsPropertyOfAnonymousType())

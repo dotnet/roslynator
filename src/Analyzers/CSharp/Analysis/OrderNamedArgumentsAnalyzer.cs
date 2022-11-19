@@ -71,7 +71,7 @@ public sealed class OrderNamedArgumentsAnalyzer : BaseDiagnosticAnalyzer
 
         for (int i = arguments.Count - 1; i >= 0; i--)
         {
-            if (arguments[i].NameColon != null)
+            if (arguments[i].NameColon is not null)
             {
                 firstIndex = i;
             }

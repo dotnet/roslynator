@@ -108,7 +108,7 @@ public sealed class SimplifyNullableOfTAnalyzer : BaseDiagnosticAnalyzer
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        for (node = node.Parent; node != null; node = node.Parent)
+        for (node = node.Parent; node is not null; node = node.Parent)
         {
             SyntaxKind kind = node.Kind();
 

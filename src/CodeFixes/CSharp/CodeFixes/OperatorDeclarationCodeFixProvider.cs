@@ -42,7 +42,7 @@ public sealed class OperatorDeclarationCodeFixProvider : CompilerDiagnosticCodeF
 
         SyntaxToken newToken = SyntaxFactory.Token(token.LeadingTrivia, matchingKind, token.TrailingTrivia);
 
-        if (operatorDeclaration.BodyOrExpressionBody() == null)
+        if (operatorDeclaration.BodyOrExpressionBody() is null)
             return;
 
         if (operatorDeclaration.Parent is not TypeDeclarationSyntax typeDeclaration)

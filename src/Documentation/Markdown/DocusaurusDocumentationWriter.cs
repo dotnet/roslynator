@@ -19,7 +19,7 @@ public class DocusaurusDocumentationWriter : MarkdownDocumentationWriter
     {
         string label = null;
 
-        if (symbol != null)
+        if (symbol is not null)
             label = DocumentationUtility.GetSymbolLabel(symbol, Context);
 
         if (fileKind == DocumentationFileKind.Root)
@@ -34,7 +34,7 @@ public class DocusaurusDocumentationWriter : MarkdownDocumentationWriter
             WriteLine();
         }
 
-        if (label != null)
+        if (label is not null)
         {
             WriteRaw("sidebar_label: ");
             WriteRaw(label);

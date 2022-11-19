@@ -32,7 +32,7 @@ internal static class InvertIfRefactoring
 
         ElseClauseSyntax elseClause = ifStatement.Else;
 
-        if (elseClause != null)
+        if (elseClause is not null)
         {
             if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertIfElse))
             {
@@ -223,7 +223,7 @@ internal static class InvertIfRefactoring
             {
                 case SyntaxKind.ReturnStatement:
                     {
-                        if (((ReturnStatementSyntax)jumpStatement).Expression == null
+                        if (((ReturnStatementSyntax)jumpStatement).Expression is null
                             && RemoveRedundantStatementAnalysis.IsFixable(lastStatement, SyntaxKind.ReturnStatement))
                         {
                             return true;
@@ -269,7 +269,7 @@ internal static class InvertIfRefactoring
 
         public bool Success
         {
-            get { return IfStatement != null; }
+            get { return IfStatement is not null; }
         }
 
         public static InvertIfAnalysis Create(
@@ -280,7 +280,7 @@ internal static class InvertIfRefactoring
             {
                 statement = block.Statements.LastOrDefault();
 
-                if (statement == null)
+                if (statement is null)
                     return default;
             }
 
@@ -294,7 +294,7 @@ internal static class InvertIfRefactoring
 
             FindLastStatement();
 
-            if (lastStatement == null)
+            if (lastStatement is null)
                 return default;
 
             return new InvertIfAnalysis(ifStatement, lastStatement, statement);

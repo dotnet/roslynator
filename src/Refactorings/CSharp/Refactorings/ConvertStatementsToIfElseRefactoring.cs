@@ -34,7 +34,7 @@ internal static class ConvertStatementsToIfElseRefactoring
                 if (statement is BlockSyntax block)
                     statement = block.Statements.LastOrDefault();
 
-                if (statement == null)
+                if (statement is null)
                     return;
 
                 if (!statement.IsKind(
@@ -77,7 +77,7 @@ internal static class ConvertStatementsToIfElseRefactoring
 
             StatementSyntax elseStatement = newIfStatement;
 
-            if (elseStatement == null)
+            if (elseStatement is null)
             {
                 if (selectedStatements.Count - ifStatementCount > 1)
                 {

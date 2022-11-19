@@ -112,7 +112,7 @@ public sealed class OrderElementsInDocumentationCommentCodeFixProvider : BaseCod
                         ? ((XmlElementSyntax)element).GetAttributeValue("name")
                         : ((XmlEmptyElementSyntax)element).GetAttributeValue("name");
 
-                    if (value != null)
+                    if (value is not null)
                     {
                         ranks[element] = indexOf(nodes, value);
                     }

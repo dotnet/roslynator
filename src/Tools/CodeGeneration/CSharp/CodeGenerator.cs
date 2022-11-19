@@ -35,7 +35,7 @@ public static class CodeGenerator
                                 ImplicitObjectCreationExpression(
                                     ArgumentList(
                                         Argument(NameColon("key"), ParseExpression($"ConfigOptionKeys.{f.Id}")),
-                                        Argument(NameColon("defaultValue"), (f.DefaultValue != null) ? StringLiteralExpression(f.DefaultValue) : NullLiteralExpression()),
+                                        Argument(NameColon("defaultValue"), (f.DefaultValue is not null) ? StringLiteralExpression(f.DefaultValue) : NullLiteralExpression()),
                                         Argument(NameColon("defaultValuePlaceholder"), StringLiteralExpression(f.DefaultValuePlaceholder)),
                                         Argument(NameColon("description"), StringLiteralExpression(f.Description))),
                                     default(InitializerExpressionSyntax)));
@@ -56,7 +56,7 @@ public static class CodeGenerator
                                             {
                                                 ConfigOptionKeyMetadata mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
 
-                                                Debug.Assert(mismatch.Key == null, mismatch.Key);
+                                                Debug.Assert(mismatch.Key is null, mismatch.Key);
 
                                                 IEnumerable<string> optionKeys = f.keys
                                                     .Join(options, f => f.Key, f => f.Key, (_, g) => g)

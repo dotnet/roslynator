@@ -85,7 +85,7 @@ internal static class CodeFixRegistrator
     {
         ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType;
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         ReplaceNullWithDefaultValue(context, diagnostic, expression, typeSymbol, additionalKey);
@@ -119,7 +119,7 @@ internal static class CodeFixRegistrator
 
         TypeSyntax type = CSharpUtility.GetTypeOrReturnType(node);
 
-        if (type == null)
+        if (type is null)
             return;
 
         CodeAction codeAction = CodeActionFactory.ChangeType(context.Document, type, newTypeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(diagnostic, additionalKey));

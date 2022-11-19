@@ -39,7 +39,7 @@ internal class ReplacePropertyWithMethodSyntaxRewriter : CSharpSyntaxRewriter
     {
         SimpleNameSyntax name = node.Name;
 
-        if (name != null && _nodes.Contains(name))
+        if (name is not null && _nodes.Contains(name))
         {
             var expression = (ExpressionSyntax)base.Visit(node.Expression);
 
@@ -65,7 +65,7 @@ internal class ReplacePropertyWithMethodSyntaxRewriter : CSharpSyntaxRewriter
 
             SimpleNameSyntax name = memberBinding.Name;
 
-            if (name != null
+            if (name is not null
                 && _nodes.Contains(name))
             {
                 var expression = (ExpressionSyntax)base.Visit(node.Expression);
@@ -85,7 +85,7 @@ internal class ReplacePropertyWithMethodSyntaxRewriter : CSharpSyntaxRewriter
 
     public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
     {
-        if (_propertyDeclaration != null
+        if (_propertyDeclaration is not null
             && node.Span == _propertyDeclaration.Span)
         {
             node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);

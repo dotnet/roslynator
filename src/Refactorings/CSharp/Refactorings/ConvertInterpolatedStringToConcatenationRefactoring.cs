@@ -25,10 +25,10 @@ internal static class ConvertInterpolatedStringToConcatenationRefactoring
             {
                 var interpolation = (InterpolationSyntax)content;
 
-                if (interpolation.AlignmentClause != null)
+                if (interpolation.AlignmentClause is not null)
                     return;
 
-                if (interpolation.FormatClause != null)
+                if (interpolation.FormatClause is not null)
                     return;
             }
         }

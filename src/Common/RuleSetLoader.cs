@@ -19,7 +19,7 @@ internal static class RuleSetLoader
     {
         get
         {
-            if (_emptyRuleSet == null)
+            if (_emptyRuleSet is null)
                 Interlocked.CompareExchange(ref _emptyRuleSet, CreateEmptyRuleSet(), null);
 
             return _emptyRuleSet;
@@ -81,7 +81,7 @@ internal static class RuleSetLoader
 #endif
                 }
 
-                if (ruleSet != null)
+                if (ruleSet is not null)
                 {
                     sw?.WriteLine($"{DateTime.Now.ToString()} rule set loaded");
                     sw?.WriteLine($"{DateTime.Now.ToString()} default action is {ruleSet.GeneralDiagnosticOption}");
@@ -107,10 +107,10 @@ internal static class RuleSetLoader
 
     public static RuleSet Combine(RuleSet ruleSet, RuleSet parent)
     {
-        if (ruleSet == null)
+        if (ruleSet is null)
             return parent;
 
-        if (parent == null)
+        if (parent is null)
             return ruleSet;
 
         ReportDiagnostic newGeneralOption = (IsStricterThan(ruleSet.GeneralDiagnosticOption, parent.GeneralDiagnosticOption))

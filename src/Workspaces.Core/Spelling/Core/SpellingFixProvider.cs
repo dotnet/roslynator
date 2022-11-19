@@ -97,7 +97,7 @@ internal static class SpellingFixProvider
             j--;
         }
 
-        if (matches == null)
+        if (matches is null)
             return ImmutableArray<string>.Empty;
 
         return matches

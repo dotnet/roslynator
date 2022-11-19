@@ -170,7 +170,7 @@ public sealed class DefaultExpressionAnalyzer : BaseDiagnosticAnalyzer
         SyntaxNodeAnalysisContext context,
         SyntaxNode node)
     {
-        while (node != null)
+        while (node is not null)
         {
             SyntaxKind kind = node.Kind();
 
@@ -221,7 +221,7 @@ public sealed class DefaultExpressionAnalyzer : BaseDiagnosticAnalyzer
                     {
                         ITypeParameterSymbol typeParameterSymbol = namedTypeSymbol.TypeParameters.LastOrDefault();
 
-                        if (typeParameterSymbol != null
+                        if (typeParameterSymbol is not null
                             && parameterSymbol.ContainingSymbol.OriginalDefinition is IMethodSymbol methodSymbol2)
                         {
                             foreach (ITypeParameterSymbol typeParameterSymbol2 in methodSymbol2.TypeParameters)

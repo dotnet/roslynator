@@ -58,9 +58,9 @@ internal static class DeclareUsingDirectiveOnTopLevelRefactoring
         {
             ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
 
-            if (symbol != null)
+            if (symbol is not null)
             {
-                if (semanticModel.GetAliasInfo(name, cancellationToken) != null
+                if (semanticModel.GetAliasInfo(name, cancellationToken) is not null
                     || !symbol.ContainingNamespace.IsGlobalNamespace)
                 {
                     SymbolKind kind = symbol.Kind;

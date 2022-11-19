@@ -17,7 +17,7 @@ internal static class SplitIfElseRefactoring
         if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
             return;
 
-        if (ifStatement.Else == null)
+        if (ifStatement.Else is null)
             return;
 
         foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
@@ -27,7 +27,7 @@ internal static class SplitIfElseRefactoring
             if (statement is BlockSyntax block)
                 statement = block.Statements.LastOrDefault();
 
-            if (statement == null)
+            if (statement is null)
                 return;
 
             if (!statement.IsKind(
@@ -67,10 +67,10 @@ internal static class SplitIfElseRefactoring
 
                     newIfStatement = newIfStatement.WithElse(null);
 
-                    if (parentElse != null)
+                    if (parentElse is not null)
                         newIfStatement = newIfStatement.PrependToLeadingTrivia(parentElse.GetLeadingTrivia());
 
-                    if (elseClause != null)
+                    if (elseClause is not null)
                         newIfStatement = newIfStatement.AppendToTrailingTrivia(CSharpFactory.NewLine());
 
                     yield return newIfStatement.WithFormatterAnnotation();

@@ -21,7 +21,7 @@ internal sealed class WhitespaceRemover : CSharpSyntaxRewriter
 
     public static WhitespaceRemover GetInstance(TextSpan? span = null)
     {
-        if (span != null)
+        if (span is not null)
         {
             return new WhitespaceRemover(span);
         }

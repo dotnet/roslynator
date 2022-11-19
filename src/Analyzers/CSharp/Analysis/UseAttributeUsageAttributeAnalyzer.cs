@@ -6,79 +6,80 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class UseAttributeUsageAttributeAnalyzer : BaseDiagnosticAnalyzer
+namespace Roslynator.CSharp.Analysis
 {
-    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class UseAttributeUsageAttributeAnalyzer : BaseDiagnosticAnalyzer
     {
-        get
-        {
-            if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseAttributeUsageAttribute);
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-            return _supportedDiagnostics;
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get
+            {
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseAttributeUsageAttribute);
+
+                return _supportedDiagnostics;
+            }
         }
-    }
 
-    public override void Initialize(AnalysisContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterCompilationStartAction(startContext =>
+        public override void Initialize(AnalysisContext context)
         {
-            INamedTypeSymbol attributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.Attribute");
-            INamedTypeSymbol attributeUsageAttributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.AttributeUsageAttribute");
+            base.Initialize(context);
 
-            if (attributeSymbol != null
-                && attributeUsageAttributeSymbol != null)
+            context.RegisterCompilationStartAction(startContext =>
             {
-                startContext.RegisterSymbolAction(
-                    nodeContext => AnalyzerNamedTypeSymbol(nodeContext, attributeSymbol, attributeUsageAttributeSymbol),
-                    SymbolKind.NamedType);
-            }
-        });
-    }
+                INamedTypeSymbol attributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.Attribute");
+                INamedTypeSymbol attributeUsageAttributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.AttributeUsageAttribute");
 
-    public static void AnalyzerNamedTypeSymbol(
-        SymbolAnalysisContext context,
-        INamedTypeSymbol attributeSymbol,
-        INamedTypeSymbol attributeUsageAttributeSymbol)
-    {
-        var typeSymbol = (INamedTypeSymbol)context.Symbol;
+                if (attributeSymbol is not null
+                    && attributeUsageAttributeSymbol is not null)
+                {
+                    startContext.RegisterSymbolAction(
+                        nodeContext => AnalyzerNamedTypeSymbol(nodeContext, attributeSymbol, attributeUsageAttributeSymbol),
+                        SymbolKind.NamedType);
+                }
+            });
+        }
 
-        if (typeSymbol.IsImplicitlyDeclared)
-            return;
-
-        if (typeSymbol.TypeKind != TypeKind.Class)
-            return;
-
-        if (!typeSymbol.Name.EndsWith("Attribute", StringComparison.Ordinal))
-            return;
-
-        if (typeSymbol.HasAttribute(attributeUsageAttributeSymbol))
-            return;
-
-        INamedTypeSymbol baseType = typeSymbol.BaseType;
-
-        while (baseType?.SpecialType == SpecialType.None)
+        public static void AnalyzerNamedTypeSymbol(
+            SymbolAnalysisContext context,
+            INamedTypeSymbol attributeSymbol,
+            INamedTypeSymbol attributeUsageAttributeSymbol)
         {
-            if (SymbolEqualityComparer.Default.Equals(baseType, attributeSymbol))
-            {
-                var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
+            var typeSymbol = (INamedTypeSymbol)context.Symbol;
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAttributeUsageAttribute, classDeclaration.Identifier);
-
-                return;
-            }
-
-            if (baseType.HasAttribute(attributeUsageAttributeSymbol))
+            if (typeSymbol.IsImplicitlyDeclared)
                 return;
 
-            baseType = baseType.BaseType;
+            if (typeSymbol.TypeKind != TypeKind.Class)
+                return;
+
+            if (!typeSymbol.Name.EndsWith("Attribute", StringComparison.Ordinal))
+                return;
+
+            if (typeSymbol.HasAttribute(attributeUsageAttributeSymbol))
+                return;
+
+            INamedTypeSymbol baseType = typeSymbol.BaseType;
+
+            while (baseType?.SpecialType == SpecialType.None)
+            {
+                if (SymbolEqualityComparer.Default.Equals(baseType, attributeSymbol))
+                {
+                    var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
+
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAttributeUsageAttribute, classDeclaration.Identifier);
+
+                    return;
+                }
+
+                if (baseType.HasAttribute(attributeUsageAttributeSymbol))
+                    return;
+
+                baseType = baseType.BaseType;
+            }
         }
     }
 }

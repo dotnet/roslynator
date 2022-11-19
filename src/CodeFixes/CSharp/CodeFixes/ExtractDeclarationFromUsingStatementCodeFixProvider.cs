@@ -80,7 +80,7 @@ public sealed class ExtractDeclarationFromUsingStatementCodeFixProvider : Compil
     {
         StatementSyntax statement = usingStatement.Statement;
 
-        if (statement != null)
+        if (statement is not null)
         {
             if (statement.IsKind(SyntaxKind.Block))
             {

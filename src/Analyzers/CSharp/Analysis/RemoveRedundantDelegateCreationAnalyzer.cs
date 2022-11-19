@@ -84,7 +84,7 @@ public sealed class RemoveRedundantDelegateCreationAnalyzer : BaseDiagnosticAnal
             .Expression
             .WalkDownParentheses();
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         if (!expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression))

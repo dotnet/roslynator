@@ -98,7 +98,7 @@ internal abstract class AbstractSymbolDefinitionTextWriter : SymbolDefinitionWri
 
     public override void WriteTypeDefinition(INamedTypeSymbol typeSymbol, SymbolDisplayFormat format = null)
     {
-        if (typeSymbol != null)
+        if (typeSymbol is not null)
         {
             WriteDocumentationComment(typeSymbol);
             WriteDefinition(typeSymbol, format);

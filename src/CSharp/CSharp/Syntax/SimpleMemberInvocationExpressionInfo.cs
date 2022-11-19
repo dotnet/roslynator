@@ -85,7 +85,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public bool Success
     {
-        get { return InvocationExpression != null; }
+        get { return InvocationExpression is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -133,7 +133,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
 
         ArgumentListSyntax argumentList = invocationExpression.ArgumentList;
 
-        if (argumentList == null)
+        if (argumentList is null)
             return default;
 
         return new SimpleMemberInvocationExpressionInfo(invocationExpression, memberAccessExpression);

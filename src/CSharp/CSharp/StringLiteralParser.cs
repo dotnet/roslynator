@@ -236,7 +236,7 @@ internal static class StringLiteralParser
             (sb ??= StringBuilderCache.GetInstance(text.Length)).Append(ch);
         }
 
-        return new StringLiteralParserResult((sb != null)
+        return new StringLiteralParserResult((sb is not null)
             ? StringBuilderCache.GetStringAndFree(sb)
             : text.Substring(start, length));
     }
@@ -288,7 +288,7 @@ internal static class StringLiteralParser
             (sb ??= StringBuilderCache.GetInstance(text.Length)).Append(ch);
         }
 
-        return new StringLiteralParserResult((sb != null)
+        return new StringLiteralParserResult((sb is not null)
             ? StringBuilderCache.GetStringAndFree(sb)
             : text.Substring(start, length));
     }

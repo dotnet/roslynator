@@ -20,9 +20,9 @@ internal static class ListCache<T>
         {
             List<T> list = _cachedInstance;
 
-            Debug.Assert(list == null || list.Count == 0, "");
+            Debug.Assert(list is null || list.Count == 0, "");
 
-            if (list != null
+            if (list is not null
                 && capacity <= list.Capacity)
             {
                 _cachedInstance = null;

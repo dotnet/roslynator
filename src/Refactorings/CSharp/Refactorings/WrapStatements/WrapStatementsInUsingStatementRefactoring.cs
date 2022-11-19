@@ -23,7 +23,7 @@ internal class WrapStatementsInUsingStatementRefactoring : WrapStatementsRefacto
 
         ExpressionSyntax value = localInfo.Value;
 
-        if (value == null)
+        if (value is null)
             return;
 
         if (value.Kind() == SyntaxKind.DefaultExpression)

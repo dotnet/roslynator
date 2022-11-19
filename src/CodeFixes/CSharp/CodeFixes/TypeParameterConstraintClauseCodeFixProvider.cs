@@ -73,7 +73,7 @@ public sealed class TypeParameterConstraintClauseCodeFixProvider : CompilerDiagn
 
                         TypeParameterConstraintClauseSyntax constraintClause2 = genericInfo.FindConstraintClause(name);
 
-                        if (constraintClause2 == null)
+                        if (constraintClause2 is null)
                             break;
 
                         CodeAction codeAction = CodeAction.Create(

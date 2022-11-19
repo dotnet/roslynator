@@ -46,7 +46,7 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
 
         CodeAction codeAction = CreateCodeActionForIfElse(context.Document, diagnostic, statement.Parent);
 
-        if (codeAction != null)
+        if (codeAction is not null)
         {
             context.RegisterCodeFix(codeAction, diagnostic);
             return;
@@ -95,7 +95,7 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
 
                     ElseClauseSyntax elseClause = ifStatement.Else;
 
-                    if (elseClause != null
+                    if (elseClause is not null
                         && ifStatement.IsParentKind(SyntaxKind.ElseClause))
                     {
                         return CodeAction.Create(
@@ -106,7 +106,7 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
 
                     StatementSyntax statement = elseClause?.Statement;
 
-                    if (statement != null)
+                    if (statement is not null)
                     {
                         if (statement is BlockSyntax block)
                         {
@@ -140,7 +140,7 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
                         {
                             StatementSyntax statement = ifStatement.Statement;
 
-                            if (statement != null)
+                            if (statement is not null)
                             {
                                 if (statement is BlockSyntax block)
                                 {

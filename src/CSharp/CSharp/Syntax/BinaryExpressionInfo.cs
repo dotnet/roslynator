@@ -60,7 +60,7 @@ public readonly struct BinaryExpressionInfo
     /// </summary>
     public bool Success
     {
-        get { return BinaryExpression != null; }
+        get { return BinaryExpression is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -101,7 +101,7 @@ public readonly struct BinaryExpressionInfo
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
-        if (binaryExpression == null)
+        if (binaryExpression is null)
             return default;
 
         ExpressionSyntax left = Walk(binaryExpression.Left, walkDownParentheses);

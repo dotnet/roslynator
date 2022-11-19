@@ -98,7 +98,7 @@ internal abstract class FlagsUtility<T> where T : struct
 
         internal override Optional<sbyte> GetUniquePowerOfTwo(IEnumerable<sbyte> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
+            if (reservedValues is null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
             sbyte[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
@@ -190,7 +190,7 @@ internal abstract class FlagsUtility<T> where T : struct
 
         internal override Optional<byte> GetUniquePowerOfTwo(IEnumerable<byte> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
+            if (reservedValues is null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
             byte[] values = reservedValues.Where(f => IsZeroOrPowerOfTwo(f)).ToArray();
@@ -282,7 +282,7 @@ internal abstract class FlagsUtility<T> where T : struct
 
         internal override Optional<short> GetUniquePowerOfTwo(IEnumerable<short> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
+            if (reservedValues is null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
             short[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
@@ -374,7 +374,7 @@ internal abstract class FlagsUtility<T> where T : struct
 
         internal override Optional<ushort> GetUniquePowerOfTwo(IEnumerable<ushort> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
+            if (reservedValues is null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
             ushort[] values = reservedValues.Where(f => IsZeroOrPowerOfTwo(f)).ToArray();
@@ -466,7 +466,7 @@ internal abstract class FlagsUtility<T> where T : struct
 
         internal override Optional<int> GetUniquePowerOfTwo(IEnumerable<int> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
+            if (reservedValues is null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
             int[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
@@ -558,7 +558,7 @@ internal abstract class FlagsUtility<T> where T : struct
 
         internal override Optional<uint> GetUniquePowerOfTwo(IEnumerable<uint> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
+            if (reservedValues is null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
             uint[] values = reservedValues.Where(f => IsZeroOrPowerOfTwo(f)).ToArray();
@@ -650,7 +650,7 @@ internal abstract class FlagsUtility<T> where T : struct
 
         internal override Optional<long> GetUniquePowerOfTwo(IEnumerable<long> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
+            if (reservedValues is null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
             long[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
@@ -742,7 +742,7 @@ internal abstract class FlagsUtility<T> where T : struct
 
         internal override Optional<ulong> GetUniquePowerOfTwo(IEnumerable<ulong> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
+            if (reservedValues is null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
             ulong[] values = reservedValues.Where(f => IsZeroOrPowerOfTwo(f)).ToArray();

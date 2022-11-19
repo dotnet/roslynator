@@ -27,7 +27,7 @@ internal static class PromoteLocalToParameterRefactoring
         if (!methodSymbol.MethodKind.Is(MethodKind.Ordinary, MethodKind.LocalFunction))
             return;
 
-        if (methodSymbol.PartialImplementationPart != null)
+        if (methodSymbol.PartialImplementationPart is not null)
             methodSymbol = methodSymbol.PartialImplementationPart;
 
         SyntaxNode methodOrLocalFunction = methodSymbol.GetSyntax(context.CancellationToken);
@@ -37,19 +37,19 @@ internal static class PromoteLocalToParameterRefactoring
 
         VariableDeclarationSyntax declaration = localDeclaration.Declaration;
 
-        if (declaration == null)
+        if (declaration is null)
             return;
 
         VariableDeclaratorSyntax variable = declaration
             .Variables
             .FirstOrDefault(f => !f.IsMissing && f.Identifier.Span.Contains(context.Span));
 
-        if (variable == null)
+        if (variable is null)
             return;
 
         TypeSyntax type = declaration.Type;
 
-        if (type == null)
+        if (type is null)
             return;
 
         if (type.IsVar)
@@ -95,7 +95,7 @@ internal static class PromoteLocalToParameterRefactoring
 
         SyntaxNode newNode = methodOrLocalFunction;
 
-        if (initializerValue != null)
+        if (initializerValue is not null)
         {
             ExpressionStatementSyntax expressionStatement = SimpleAssignmentStatement(
                 IdentifierName(identifier),

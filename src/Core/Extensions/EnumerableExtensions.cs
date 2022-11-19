@@ -36,10 +36,10 @@ internal static class EnumerableExtensions
         int count,
         Func<T, T> selector)
     {
-        if (enumerable == null)
+        if (enumerable is null)
             throw new ArgumentNullException(nameof(enumerable));
 
-        if (selector == null)
+        if (selector is null)
             throw new ArgumentNullException(nameof(selector));
 
         if (startIndex < 0)

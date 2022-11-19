@@ -32,7 +32,7 @@ public sealed class ImplementExceptionConstructorsAnalyzer : BaseDiagnosticAnaly
         {
             INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Exception");
 
-            if (exceptionSymbol == null)
+            if (exceptionSymbol is null)
                 return;
 
             startContext.RegisterSymbolAction(f => AnalyzeNamedType(f, exceptionSymbol), SymbolKind.NamedType);

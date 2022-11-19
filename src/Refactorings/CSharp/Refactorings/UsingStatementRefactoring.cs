@@ -12,7 +12,7 @@ internal static class UsingStatementRefactoring
         {
             ExpressionSyntax expression = usingStatement.Expression;
 
-            if (expression != null)
+            if (expression is not null)
             {
                 context.RegisterRefactoring(
                     IntroduceLocalVariableRefactoring.GetTitle(expression),

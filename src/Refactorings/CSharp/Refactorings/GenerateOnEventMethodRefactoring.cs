@@ -22,7 +22,7 @@ internal static class GenerateOnEventMethodRefactoring
 
         VariableDeclarationSyntax variableDeclaration = eventFieldDeclaration.Declaration;
 
-        if (variableDeclaration == null)
+        if (variableDeclaration is null)
             return;
 
         SemanticModel semanticModel = null;
@@ -41,7 +41,7 @@ internal static class GenerateOnEventMethodRefactoring
 
             INamedTypeSymbol containingType = eventSymbol.ContainingType;
 
-            if (containingType == null)
+            if (containingType is null)
                 return;
 
             if (eventSymbol.Type is not INamedTypeSymbol eventHandlerType)
@@ -49,7 +49,7 @@ internal static class GenerateOnEventMethodRefactoring
 
             ITypeSymbol eventArgsSymbol = GetEventArgsSymbol(eventHandlerType, semanticModel);
 
-            if (eventArgsSymbol == null)
+            if (eventArgsSymbol is null)
                 continue;
 
             string methodName = "On" + eventSymbol.Name;

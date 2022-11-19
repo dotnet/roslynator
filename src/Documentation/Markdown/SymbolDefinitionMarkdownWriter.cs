@@ -91,7 +91,7 @@ internal class SymbolDefinitionMarkdownWriter : AbstractSymbolDefinitionTextWrit
 
     public override void WriteTypeDefinition(INamedTypeSymbol typeSymbol, SymbolDisplayFormat format = null)
     {
-        if (typeSymbol != null)
+        if (typeSymbol is not null)
         {
             WriteDocumentationComment(typeSymbol);
             WriteDefinition(typeSymbol, format);
@@ -109,7 +109,7 @@ internal class SymbolDefinitionMarkdownWriter : AbstractSymbolDefinitionTextWrit
     {
         DocumentationUrlInfo urlInfo = _urlProvider.GetExternalUrl(symbol);
 
-        if (urlInfo.Url != null)
+        if (urlInfo.Url is not null)
         {
             WriteContainingNamespaceInTypeHierarchy(symbol);
 
@@ -167,7 +167,7 @@ internal class SymbolDefinitionMarkdownWriter : AbstractSymbolDefinitionTextWrit
 
     private void WriteName(ISymbol symbol, string text)
     {
-        if (TypeSymbols != null
+        if (TypeSymbols is not null
             && symbol is INamedTypeSymbol typeSymbol
             && TypeSymbols.Contains(typeSymbol))
         {
@@ -180,7 +180,7 @@ internal class SymbolDefinitionMarkdownWriter : AbstractSymbolDefinitionTextWrit
         {
             string url = _urlProvider.GetExternalUrl(symbol).Url;
 
-            if (url != null)
+            if (url is not null)
             {
                 _writer.WriteLink(
                     text,
@@ -344,7 +344,7 @@ internal class SymbolDefinitionMarkdownWriter : AbstractSymbolDefinitionTextWrit
 
     public override void Close()
     {
-        if (_writer != null)
+        if (_writer is not null)
         {
             try
             {

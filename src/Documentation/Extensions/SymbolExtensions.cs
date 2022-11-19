@@ -48,7 +48,7 @@ internal static class SymbolExtensions
                 return GetMembersIncludingInherited();
             }
         }
-        else if (predicate != null)
+        else if (predicate is not null)
         {
             return typeSymbol
                 .GetMembers()
@@ -68,7 +68,7 @@ internal static class SymbolExtensions
             {
                 ISymbol overriddenSymbol = symbol.OverriddenSymbol();
 
-                if (overriddenSymbol != null)
+                if (overriddenSymbol is not null)
                 {
                     (overriddenSymbols ??= new HashSet<ISymbol>()).Add(overriddenSymbol);
                 }
@@ -78,7 +78,7 @@ internal static class SymbolExtensions
 
             INamedTypeSymbol baseType = typeSymbol.BaseType;
 
-            while (baseType != null)
+            while (baseType is not null)
             {
                 bool areInternalsVisible = typeSymbol.ContainingAssembly.Identity.Equals(baseType.ContainingAssembly.Identity)
                     || baseType.ContainingAssembly.GivesAccessTo(typeSymbol.ContainingAssembly);
@@ -86,7 +86,7 @@ internal static class SymbolExtensions
                 foreach (ISymbol symbol in baseType.GetMembers())
                 {
                     if (!symbol.IsStatic
-                        && (predicate == null || predicate(symbol))
+                        && (predicate is null || predicate(symbol))
                         && (symbol.DeclaredAccessibility != Accessibility.Internal || areInternalsVisible))
                     {
                         if (overriddenSymbols?.Remove(symbol) != true)
@@ -94,7 +94,7 @@ internal static class SymbolExtensions
 
                         ISymbol overriddenSymbol = symbol.OverriddenSymbol();
 
-                        if (overriddenSymbol != null)
+                        if (overriddenSymbol is not null)
                         {
                             (overriddenSymbols ??= new HashSet<ISymbol>()).Add(overriddenSymbol);
                         }
@@ -285,7 +285,7 @@ internal static class SymbolExtensions
 
         foreach (AttributeData attributeData in namedType.GetAttributes())
         {
-            if (predicate == null
+            if (predicate is null
                 || predicate(namedType, attributeData))
             {
                 (attributes ??= new HashSet<AttributeInfo>(AttributeInfo.AttributeClassComparer)).Add(new AttributeInfo(namedType, attributeData));
@@ -294,14 +294,14 @@ internal static class SymbolExtensions
 
         INamedTypeSymbol baseType = namedType.BaseType;
 
-        while (baseType != null
+        while (baseType is not null
             && baseType.SpecialType != SpecialType.System_Object)
         {
             foreach (AttributeData attributeData in baseType.GetAttributes())
             {
                 AttributeData attributeUsage = attributeData.AttributeClass.GetAttribute(MetadataNames.System_AttributeUsageAttribute);
 
-                if (attributeUsage != null)
+                if (attributeUsage is not null)
                 {
                     TypedConstant typedConstant = attributeUsage.NamedArguments.FirstOrDefault(f => f.Key == "Inherited").Value;
 
@@ -313,7 +313,7 @@ internal static class SymbolExtensions
                     }
                 }
 
-                if (predicate == null
+                if (predicate is null
                     || predicate(baseType, attributeData))
                 {
                     (attributes ??= new HashSet<AttributeInfo>(AttributeInfo.AttributeClassComparer)).Add(new AttributeInfo(baseType, attributeData));
@@ -323,7 +323,7 @@ internal static class SymbolExtensions
             baseType = baseType.BaseType;
         }
 
-        return (attributes != null)
+        return (attributes is not null)
             ? attributes.ToImmutableArray()
             : ImmutableArray<AttributeInfo>.Empty;
     }

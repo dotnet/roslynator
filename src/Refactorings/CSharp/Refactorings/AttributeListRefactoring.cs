@@ -96,7 +96,7 @@ internal static class AttributeListRefactoring
 
     public static SyntaxList<AttributeListSyntax> GetAttributeLists(this SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         switch (node.Kind())
@@ -157,7 +157,7 @@ internal static class AttributeListRefactoring
 
     public static CSharpSyntaxNode WithAttributeLists(this CSharpSyntaxNode node, SyntaxList<AttributeListSyntax> attributeLists)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         switch (node.Kind())

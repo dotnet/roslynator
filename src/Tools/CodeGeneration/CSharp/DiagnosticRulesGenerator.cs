@@ -55,7 +55,7 @@ public class DiagnosticRulesGenerator
     {
         foreach (AnalyzerMetadata analyzer in analyzers)
         {
-            if (analyzer.Id == null)
+            if (analyzer.Id is null)
                 continue;
 
             string identifier = analyzer.Identifier;

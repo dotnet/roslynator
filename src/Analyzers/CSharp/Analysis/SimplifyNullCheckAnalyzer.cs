@@ -88,12 +88,12 @@ public sealed class SimplifyNullCheckAnalyzer : BaseDiagnosticAnalyzer
                 semanticModel,
                 cancellationToken);
 
-            if (expression == null)
+            if (expression is null)
                 return;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(nullCheck.Expression, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return;
 
             if (typeSymbol.IsReferenceType)
@@ -144,7 +144,7 @@ public sealed class SimplifyNullCheckAnalyzer : BaseDiagnosticAnalyzer
                     semanticModel,
                     cancellationToken);
 
-                if (expression != null)
+                if (expression is not null)
                 {
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(nullCheck.Expression, cancellationToken);
 

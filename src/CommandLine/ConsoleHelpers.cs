@@ -17,7 +17,7 @@ internal static class ConsoleHelpers
             {
                 string line;
 
-                while ((line = streamReader.ReadLine()) != null)
+                while ((line = streamReader.ReadLine()) is not null)
                     yield return line;
             }
         }

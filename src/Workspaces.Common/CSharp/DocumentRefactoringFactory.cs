@@ -7,76 +7,77 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp;
-
-internal static class DocumentRefactoringFactory
+namespace Roslynator.CSharp
 {
-    public static Func<CancellationToken, Task<Document>> ChangeTypeAndAddAwait(
-        Document document,
-        VariableDeclarationSyntax variableDeclaration,
-        VariableDeclaratorSyntax variableDeclarator,
-        ITypeSymbol newTypeSymbol,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken = default)
+    internal static class DocumentRefactoringFactory
     {
-        if (!newTypeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
-            return default;
-
-        if (semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, cancellationToken) is not IMethodSymbol methodSymbol)
-            return default;
-
-        if (!methodSymbol.MethodKind.Is(MethodKind.Ordinary, MethodKind.LocalFunction))
-            return default;
-
-        SyntaxNode containingMethod = GetContainingMethod();
-
-        if (containingMethod == null)
-            return default;
-
-        SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody();
-
-        if (bodyOrExpressionBody == null)
-            return default;
-
-        foreach (SyntaxNode descendant in bodyOrExpressionBody.DescendantNodes())
+        public static Func<CancellationToken, Task<Document>> ChangeTypeAndAddAwait(
+            Document document,
+            VariableDeclarationSyntax variableDeclaration,
+            VariableDeclaratorSyntax variableDeclarator,
+            ITypeSymbol newTypeSymbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
         {
-            if (descendant is ReturnStatementSyntax returnStatement
-                && returnStatement
-                    .Expression?
-                    .WalkDownParentheses()
-                    .IsKind(SyntaxKind.AwaitExpression) == false)
-            {
+            if (!newTypeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
                 return default;
-            }
-        }
 
-        ITypeSymbol typeArgument = ((INamedTypeSymbol)newTypeSymbol).TypeArguments[0];
+            if (semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, cancellationToken) is not IMethodSymbol methodSymbol)
+                return default;
 
-        return ct => DocumentRefactorings.ChangeTypeAndAddAwaitAsync(document, variableDeclaration, variableDeclarator, containingMethod, typeArgument, ct);
+            if (!methodSymbol.MethodKind.Is(MethodKind.Ordinary, MethodKind.LocalFunction))
+                return default;
 
-        SyntaxNode GetContainingMethod()
-        {
-            foreach (SyntaxReference syntaxReference in methodSymbol.DeclaringSyntaxReferences)
+            SyntaxNode containingMethod = GetContainingMethod();
+
+            if (containingMethod is null)
+                return default;
+
+            SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody();
+
+            if (bodyOrExpressionBody is null)
+                return default;
+
+            foreach (SyntaxNode descendant in bodyOrExpressionBody.DescendantNodes())
             {
-                SyntaxNode syntax = syntaxReference.GetSyntax(cancellationToken);
-
-                if (syntax.Contains(variableDeclaration))
-                    return syntax;
+                if (descendant is ReturnStatementSyntax returnStatement
+                    && returnStatement
+                        .Expression?
+                        .WalkDownParentheses()
+                        .IsKind(SyntaxKind.AwaitExpression) == false)
+                {
+                    return default;
+                }
             }
 
-            return null;
-        }
+            ITypeSymbol typeArgument = ((INamedTypeSymbol)newTypeSymbol).TypeArguments[0];
 
-        SyntaxNode GetBodyOrExpressionBody()
-        {
-            switch (containingMethod.Kind())
+            return ct => DocumentRefactorings.ChangeTypeAndAddAwaitAsync(document, variableDeclaration, variableDeclarator, containingMethod, typeArgument, ct);
+
+            SyntaxNode GetContainingMethod()
             {
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)containingMethod).BodyOrExpressionBody();
-                case SyntaxKind.LocalFunctionStatement:
-                    return ((LocalFunctionStatementSyntax)containingMethod).BodyOrExpressionBody();
-                default:
-                    throw new InvalidOperationException();
+                foreach (SyntaxReference syntaxReference in methodSymbol.DeclaringSyntaxReferences)
+                {
+                    SyntaxNode syntax = syntaxReference.GetSyntax(cancellationToken);
+
+                    if (syntax.Contains(variableDeclaration))
+                        return syntax;
+                }
+
+                return null;
+            }
+
+            SyntaxNode GetBodyOrExpressionBody()
+            {
+                switch (containingMethod.Kind())
+                {
+                    case SyntaxKind.MethodDeclaration:
+                        return ((MethodDeclarationSyntax)containingMethod).BodyOrExpressionBody();
+                    case SyntaxKind.LocalFunctionStatement:
+                        return ((LocalFunctionStatementSyntax)containingMethod).BodyOrExpressionBody();
+                    default:
+                        throw new InvalidOperationException();
+                }
             }
         }
     }

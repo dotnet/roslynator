@@ -75,11 +75,11 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             {
                 hierarchyRoot = compilation.GetTypeByMetadataName(Options.HierarchyRoot);
 
-                if (hierarchyRoot != null)
+                if (hierarchyRoot is not null)
                     break;
             }
 
-            if (hierarchyRoot == null)
+            if (hierarchyRoot is null)
             {
                 WriteLine($"Cannot find type '{Options.HierarchyRoot}'", Verbosity.Quiet);
                 return CommandResults.Fail;
@@ -94,7 +94,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         {
             IAssemblySymbol externalAssembly = FindExternalAssembly(compilations, reference);
 
-            if (externalAssembly == null)
+            if (externalAssembly is null)
             {
                 WriteLine($"Cannot find external assembly '{reference}'", Verbosity.Quiet);
                 return CommandResults.Fail;
@@ -103,7 +103,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             (externalAssemblies ??= new HashSet<IAssemblySymbol>()).Add(externalAssembly);
         }
 
-        if (externalAssemblies != null)
+        if (externalAssemblies is not null)
             assemblies = assemblies.Concat(externalAssemblies);
 
         string text = null;

@@ -195,11 +195,11 @@ public sealed class UnnecessaryAssignmentCodeFixProvider : BaseCodeFixProvider
 
             VariableDeclaratorSyntax declarator = declarators.FirstOrDefault(f => SymbolEqualityComparer.Default.Equals(semanticModel.GetDeclaredSymbol(f, cancellationToken), symbol));
 
-            if (declarator != null)
+            if (declarator is not null)
             {
                 ExpressionSyntax value = declarator.Initializer?.Value;
 
-                if (removeReturnStatement || value != null)
+                if (removeReturnStatement || value is not null)
                 {
                     IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, document.Solution(), cancellationToken).ConfigureAwait(false);
 
@@ -246,7 +246,7 @@ public sealed class UnnecessaryAssignmentCodeFixProvider : BaseCodeFixProvider
         {
             statementsInfo = statementsInfo.RemoveNode(returnStatement, SyntaxRefactorings.GetRemoveOptions(returnStatement));
         }
-        else if (newReturnExpression != null)
+        else if (newReturnExpression is not null)
         {
             ReturnStatementSyntax newReturnStatement = returnStatement.WithExpression(newReturnExpression.WithTriviaFrom(returnExpression));
 

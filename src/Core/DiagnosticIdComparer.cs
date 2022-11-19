@@ -21,10 +21,10 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
         if (x == y)
             return 0;
 
-        if (x == null)
+        if (x is null)
             return -1;
 
-        if (y == null)
+        if (y is null)
             return 1;
 
         if (x is string a
@@ -41,10 +41,10 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
         if (x == y)
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (x is string a
@@ -58,7 +58,7 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
 
     public int GetHashCode(object obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 0;
 
         if (obj is string descriptor)
@@ -74,10 +74,10 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             int length1 = DiagnosticIdPrefix.GetPrefixLength(x);
@@ -101,10 +101,10 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             int length1 = DiagnosticIdPrefix.GetPrefixLength(x);
@@ -116,7 +116,7 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
 
         public override int GetHashCode(string obj)
         {
-            if (obj == null)
+            if (obj is null)
                 throw new ArgumentNullException(nameof(obj));
 
             int length = DiagnosticIdPrefix.GetPrefixLength(obj);

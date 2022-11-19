@@ -19,7 +19,7 @@ public abstract class DocumentationUrlProvider
     {
         SegmentProvider = segmentProvider;
 
-        ExternalProviders = (externalProviders != null)
+        ExternalProviders = (externalProviders is not null)
             ? ImmutableArray.CreateRange(externalProviders)
             : ImmutableArray<ExternalUrlProvider>.Empty;
     }
@@ -44,7 +44,7 @@ public abstract class DocumentationUrlProvider
         {
             DocumentationUrlInfo urlInfo = provider.CreateUrl(symbol);
 
-            if (urlInfo.Url != null)
+            if (urlInfo.Url is not null)
                 return urlInfo;
         }
 

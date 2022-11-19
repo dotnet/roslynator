@@ -21,7 +21,7 @@ public static class SyntaxAccessibility
     /// <param name="declaration"></param>
     public static Accessibility GetDefaultAccessibility(SyntaxNode declaration)
     {
-        if (declaration == null)
+        if (declaration is null)
             throw new ArgumentNullException(nameof(declaration));
 
         switch (declaration.Kind())
@@ -84,7 +84,7 @@ public static class SyntaxAccessibility
     /// <param name="declaration"></param>
     public static Accessibility GetDefaultExplicitAccessibility(SyntaxNode declaration)
     {
-        if (declaration == null)
+        if (declaration is null)
             throw new ArgumentNullException(nameof(declaration));
 
         switch (declaration.Kind())
@@ -147,7 +147,7 @@ public static class SyntaxAccessibility
     /// <param name="declaration"></param>
     public static Accessibility GetAccessibility(SyntaxNode declaration)
     {
-        if (declaration == null)
+        if (declaration is null)
             throw new ArgumentNullException(nameof(declaration));
 
         switch (declaration.Kind())
@@ -210,7 +210,7 @@ public static class SyntaxAccessibility
     /// <param name="declaration"></param>
     public static Accessibility GetExplicitAccessibility(SyntaxNode declaration)
     {
-        if (declaration == null)
+        if (declaration is null)
             throw new ArgumentNullException(nameof(declaration));
 
         switch (declaration.Kind())
@@ -330,7 +330,7 @@ public static class SyntaxAccessibility
     /// <param name="declaration"></param>
     public static bool IsPubliclyVisible(MemberDeclarationSyntax declaration)
     {
-        if (declaration == null)
+        if (declaration is null)
             throw new ArgumentNullException(nameof(declaration));
 
         do
@@ -348,7 +348,7 @@ public static class SyntaxAccessibility
 
             SyntaxNode parent = declaration.Parent;
 
-            if (parent == null)
+            if (parent is null)
                 return true;
 
             if (parent is ICompilationUnitSyntax)
@@ -358,7 +358,7 @@ public static class SyntaxAccessibility
 
             declaration = parent as MemberDeclarationSyntax;
         }
-        while (declaration != null);
+        while (declaration is not null);
 
         return false;
     }
@@ -385,7 +385,7 @@ public static class SyntaxAccessibility
         Accessibility newAccessibility,
         IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         ModifierListInfo info = SyntaxInfo.ModifierListInfo(node);
@@ -406,7 +406,7 @@ public static class SyntaxAccessibility
     /// <param name="ignoreOverride">Ignore "override" modifier.</param>
     public static bool IsValidAccessibility(SyntaxNode node, Accessibility accessibility, bool ignoreOverride = false)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         switch (node.Parent?.Kind())
@@ -511,9 +511,9 @@ public static class SyntaxAccessibility
                 {
                     var memberDeclaration = node.Parent?.Parent as MemberDeclarationSyntax;
 
-                    SyntaxDebug.Assert(memberDeclaration != null, node);
+                    SyntaxDebug.Assert(memberDeclaration is not null, node);
 
-                    if (memberDeclaration != null)
+                    if (memberDeclaration is not null)
                     {
                         if (!CheckProtectedInStaticOrSealedClass(memberDeclaration))
                             return false;
@@ -544,7 +544,7 @@ public static class SyntaxAccessibility
 
         bool CheckAccessorAccessibility(AccessorListSyntax accessorList)
         {
-            if (accessorList != null)
+            if (accessorList is not null)
             {
                 foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
                 {

@@ -3,98 +3,99 @@
 using System;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator;
-
-internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
+namespace Roslynator
 {
-    private readonly Project _project;
-    private readonly Solution _solution;
-
-    internal ProjectOrSolution(Project project)
+    internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
     {
-        _project = project ?? throw new ArgumentNullException(nameof(project));
-        _solution = null;
-    }
+        private readonly Project _project;
+        private readonly Solution _solution;
 
-    internal ProjectOrSolution(Solution solution)
-    {
-        _solution = solution ?? throw new ArgumentNullException(nameof(solution));
-        _project = null;
-    }
-
-    public bool IsProject => _project != null;
-
-    public bool IsSolution => _solution != null;
-
-    public bool IsDefault => _project == null && _solution == null;
-
-    public string FilePath => (IsProject) ? _project.FilePath : _solution?.FilePath;
-
-    public VersionStamp Version => (IsProject) ? _project.Version : (_solution?.Version ?? default);
-
-    public Workspace Workspace => (IsProject) ? _project.Solution.Workspace : _solution?.Workspace;
-
-    public Project AsProject() => _project;
-
-    public Solution AsSolution() => _solution;
-
-    public override string ToString()
-    {
-        return (_project ?? (object)_solution)?.ToString();
-    }
-
-    public override bool Equals(object obj)
-    {
-        return obj is ProjectOrSolution other
-            && Equals(other);
-    }
-
-    public bool Equals(ProjectOrSolution other)
-    {
-        if (_project != null)
+        internal ProjectOrSolution(Project project)
         {
-            return _project == other._project;
-        }
-        else if (_solution != null)
-        {
-            return _solution == other._solution;
+            _project = project ?? throw new ArgumentNullException(nameof(project));
+            _solution = null;
         }
 
-        return false;
-    }
+        internal ProjectOrSolution(Solution solution)
+        {
+            _solution = solution ?? throw new ArgumentNullException(nameof(solution));
+            _project = null;
+        }
 
-    public override int GetHashCode()
-    {
-        return (_project ?? (object)_solution)?.GetHashCode() ?? 0;
-    }
+        public bool IsProject => _project is not null;
 
-    public static bool operator ==(in ProjectOrSolution left, in ProjectOrSolution right)
-    {
-        return left.Equals(right);
-    }
+        public bool IsSolution => _solution is not null;
 
-    public static bool operator !=(in ProjectOrSolution left, in ProjectOrSolution right)
-    {
-        return !left.Equals(right);
-    }
+        public bool IsDefault => _project is null && _solution is null;
 
-    public static implicit operator ProjectOrSolution(Project project)
-    {
-        return new ProjectOrSolution(project);
-    }
+        public string FilePath => (IsProject) ? _project.FilePath : _solution?.FilePath;
 
-    public static implicit operator Project(in ProjectOrSolution ifOrElse)
-    {
-        return ifOrElse.AsProject();
-    }
+        public VersionStamp Version => (IsProject) ? _project.Version : (_solution?.Version ?? default);
 
-    public static implicit operator ProjectOrSolution(Solution solution)
-    {
-        return new ProjectOrSolution(solution);
-    }
+        public Workspace Workspace => (IsProject) ? _project.Solution.Workspace : _solution?.Workspace;
 
-    public static implicit operator Solution(in ProjectOrSolution ifOrElse)
-    {
-        return ifOrElse.AsSolution();
+        public Project AsProject() => _project;
+
+        public Solution AsSolution() => _solution;
+
+        public override string ToString()
+        {
+            return (_project ?? (object)_solution)?.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ProjectOrSolution other
+                && Equals(other);
+        }
+
+        public bool Equals(ProjectOrSolution other)
+        {
+            if (_project is not null)
+            {
+                return _project == other._project;
+            }
+            else if (_solution is not null)
+            {
+                return _solution == other._solution;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return (_project ?? (object)_solution)?.GetHashCode() ?? 0;
+        }
+
+        public static bool operator ==(in ProjectOrSolution left, in ProjectOrSolution right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(in ProjectOrSolution left, in ProjectOrSolution right)
+        {
+            return !left.Equals(right);
+        }
+
+        public static implicit operator ProjectOrSolution(Project project)
+        {
+            return new ProjectOrSolution(project);
+        }
+
+        public static implicit operator Project(in ProjectOrSolution ifOrElse)
+        {
+            return ifOrElse.AsProject();
+        }
+
+        public static implicit operator ProjectOrSolution(Solution solution)
+        {
+            return new ProjectOrSolution(solution);
+        }
+
+        public static implicit operator Solution(in ProjectOrSolution ifOrElse)
+        {
+            return ifOrElse.AsSolution();
+        }
     }
 }

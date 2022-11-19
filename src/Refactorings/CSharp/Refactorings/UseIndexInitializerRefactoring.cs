@@ -43,7 +43,7 @@ internal static class UseIndexInitializerRefactoring
             semanticModel,
             context.CancellationToken);
 
-        if (propertySymbol == null)
+        if (propertySymbol is null)
             return;
 
         ITypeSymbol keyType = propertySymbol.Parameters[0].Type;

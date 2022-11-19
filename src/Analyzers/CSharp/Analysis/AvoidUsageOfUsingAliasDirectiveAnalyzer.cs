@@ -36,7 +36,7 @@ public sealed class AvoidUsageOfUsingAliasDirectiveAnalyzer : BaseDiagnosticAnal
     {
         var usingDirective = (UsingDirectiveSyntax)context.Node;
 
-        if (usingDirective.Alias == null)
+        if (usingDirective.Alias is null)
             return;
 
         if (usingDirective.ContainsDiagnostics)

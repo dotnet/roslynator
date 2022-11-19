@@ -33,7 +33,7 @@ public sealed class AvoidEmptyCatchClauseThatCatchesSystemExceptionAnalyzer : Ba
         {
             INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Exception");
 
-            if (exceptionSymbol == null)
+            if (exceptionSymbol is null)
                 return;
 
             startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeCatchClause(nodeContext, exceptionSymbol), SyntaxKind.CatchClause);
@@ -47,7 +47,7 @@ public sealed class AvoidEmptyCatchClauseThatCatchesSystemExceptionAnalyzer : Ba
         if (catchClause.ContainsDiagnostics)
             return;
 
-        if (catchClause.Filter != null)
+        if (catchClause.Filter is not null)
             return;
 
         if (catchClause.Block?.Statements.Any() != false)
@@ -55,7 +55,7 @@ public sealed class AvoidEmptyCatchClauseThatCatchesSystemExceptionAnalyzer : Ba
 
         TypeSyntax type = catchClause.Declaration?.Type;
 
-        if (type == null)
+        if (type is null)
             return;
 
         ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);

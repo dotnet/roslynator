@@ -102,13 +102,13 @@ internal static class ConvertWhileToForRefactoring
             {
                 var symbol = (ILocalSymbol)semanticModel.GetDeclaredSymbol(variable, cancellationToken);
 
-                if (symbol == null)
+                if (symbol is null)
                     continue;
 
                 if (symbol.Type.IsErrorType())
                     continue;
 
-                if (typeSymbol == null)
+                if (typeSymbol is null)
                 {
                     typeSymbol = symbol.Type;
                 }
@@ -146,7 +146,7 @@ internal static class ConvertWhileToForRefactoring
                 }
                 finally
                 {
-                    if (walker != null)
+                    if (walker is not null)
                         ContainsLocalOrParameterReferenceWalker.Free(walker);
                 }
 

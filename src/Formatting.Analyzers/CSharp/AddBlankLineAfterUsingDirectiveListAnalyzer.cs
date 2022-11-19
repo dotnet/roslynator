@@ -40,7 +40,7 @@ public sealed class AddBlankLineAfterUsingDirectiveListAnalyzer : BaseDiagnostic
 
         UsingDirectiveSyntax usingDirective = compilationUnit.Usings.LastOrDefault();
 
-        if (usingDirective == null)
+        if (usingDirective is null)
             return;
 
         SyntaxToken nextToken = compilationUnit.AttributeLists.FirstOrDefault()?.OpenBracketToken
@@ -59,7 +59,7 @@ public sealed class AddBlankLineAfterUsingDirectiveListAnalyzer : BaseDiagnostic
 
         UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings.LastOrDefault();
 
-        if (usingDirective == null)
+        if (usingDirective is null)
             return;
 
         SyntaxToken nextToken = namespaceDeclaration.Members.FirstOrDefault()?.GetFirstToken() ?? default;

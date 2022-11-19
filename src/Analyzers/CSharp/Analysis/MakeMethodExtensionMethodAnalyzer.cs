@@ -61,10 +61,10 @@ public sealed class MakeMethodExtensionMethodAnalyzer : BaseDiagnosticAnalyzer
 
             ParameterSyntax parameter = methodDeclaration.ParameterList?.Parameters.FirstOrDefault();
 
-            if (parameter == null)
+            if (parameter is null)
                 continue;
 
-            if (parameter.Default != null)
+            if (parameter.Default is not null)
                 continue;
 
             if (parameter.Type.IsKind(SyntaxKind.PointerType))

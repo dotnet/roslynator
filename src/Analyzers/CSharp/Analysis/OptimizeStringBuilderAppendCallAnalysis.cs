@@ -15,7 +15,7 @@ internal static class OptimizeStringBuilderAppendCallAnalysis
     {
         IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, context.CancellationToken);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (methodSymbol.IsExtensionMethod)
@@ -59,7 +59,7 @@ internal static class OptimizeStringBuilderAppendCallAnalysis
 
             ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
 
-            if (argument == null)
+            if (argument is null)
                 return;
 
             ExpressionSyntax expression = argument.Expression;
@@ -105,7 +105,7 @@ internal static class OptimizeStringBuilderAppendCallAnalysis
 
             IMethodSymbol methodSymbol2 = context.SemanticModel.GetMethodSymbol(invocationInfo2.InvocationExpression, context.CancellationToken);
 
-            if (methodSymbol2 == null)
+            if (methodSymbol2 is null)
                 return;
 
             if (!methodSymbol2.IsContainingType(SpecialType.System_String))

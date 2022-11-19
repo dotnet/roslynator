@@ -38,9 +38,9 @@ public sealed class MethodDeclarationOrLocalFunctionStatementCodeFixProvider : C
             ? methodDeclaration.Body
             : ((LocalFunctionStatementSyntax)node).Body;
 
-        SyntaxDebug.Assert(body != null, node);
+        SyntaxDebug.Assert(body is not null, node);
 
-        if (body == null)
+        if (body is null)
             return;
 
         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -58,7 +58,7 @@ public sealed class MethodDeclarationOrLocalFunctionStatementCodeFixProvider : C
 
             ExpressionSyntax expression = yieldReturn.Expression;
 
-            if (expression == null)
+            if (expression is null)
                 continue;
 
             var namedTypeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken) as INamedTypeSymbol;
@@ -66,13 +66,13 @@ public sealed class MethodDeclarationOrLocalFunctionStatementCodeFixProvider : C
             if (namedTypeSymbol?.IsErrorType() != false)
                 continue;
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
             {
                 typeSymbol = namedTypeSymbol;
             }
             else
             {
-                if (typeSymbols == null)
+                if (typeSymbols is null)
                 {
                     typeSymbols = new HashSet<ITypeSymbol>() { typeSymbol };
                 }
@@ -81,7 +81,7 @@ public sealed class MethodDeclarationOrLocalFunctionStatementCodeFixProvider : C
                     continue;
             }
 
-            if (ienumerableOfTSymbol == null)
+            if (ienumerableOfTSymbol is null)
                 ienumerableOfTSymbol = semanticModel.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
 
             CodeFixRegistrator.ChangeTypeOrReturnType(

@@ -68,7 +68,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             if (usingDirective1.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
                 return;
 
-            if (usingDirective1.Alias != null)
+            if (usingDirective1.Alias is not null)
                 return;
 
             UsingDirectiveSyntax usingDirective2 = usings[i];
@@ -76,7 +76,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             if (usingDirective2.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
                 return;
 
-            if (usingDirective2.Alias != null)
+            if (usingDirective2.Alias is not null)
                 return;
 
             SyntaxTriviaList trailingTrivia = usingDirective1.GetTrailingTrivia();
@@ -86,12 +86,12 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
 
             IdentifierNameSyntax rootNamespace1 = usingDirective1.GetRootNamespace();
 
-            if (rootNamespace1 == null)
+            if (rootNamespace1 is null)
                 continue;
 
             IdentifierNameSyntax rootNamespace2 = usingDirective2.GetRootNamespace();
 
-            if (rootNamespace2 == null)
+            if (rootNamespace2 is null)
                 continue;
 
             SyntaxTriviaList leadingTrivia = usingDirective2.GetLeadingTrivia();

@@ -55,15 +55,15 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
 
             node = node.FirstAncestor(f => f.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement));
 
-            Debug.Assert(node != null, "Containing method or local function not found.");
+            Debug.Assert(node is not null, "Containing method or local function not found.");
 
-            if (node == null)
+            if (node is null)
                 return;
         }
 
         SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody(node);
 
-        if (bodyOrExpressionBody == null)
+        if (bodyOrExpressionBody is null)
             return;
 
         if (bodyOrExpressionBody is BlockSyntax body
@@ -93,7 +93,7 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
             if (parameter.RefKind == RefKind.Out
                 && !alwaysAssigned.Contains(parameter))
             {
-                if (singleParameter == null)
+                if (singleParameter is null)
                 {
                     singleParameter = parameter;
                     isAny = true;
@@ -112,7 +112,7 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
             return;
 
         CodeAction codeAction = CodeAction.Create(
-            (singleParameter != null)
+            (singleParameter is not null)
                 ? $"Assign default value to parameter '{singleParameter.Name}'"
                 : "Assign default value to parameters",
             ct => RefactorAsync(context.Document, node, statement, bodyOrExpressionBody, parameters, alwaysAssigned, semanticModel, ct),
@@ -160,7 +160,7 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
 
             newNode = InsertStatements(newNode, expressionStatements);
         }
-        else if (statement != null)
+        else if (statement is not null)
         {
             if (statement.IsEmbedded())
             {
@@ -189,7 +189,7 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
 
         StatementSyntax lastStatement = statements.LastOrDefault(f => !f.IsKind(SyntaxKind.LocalFunctionStatement, SyntaxKind.ReturnStatement));
 
-        int index = (lastStatement != null)
+        int index = (lastStatement is not null)
             ? statements.IndexOf(lastStatement) + 1
             : 0;
 

@@ -36,8 +36,8 @@ public sealed class AvoidUsageOfForStatementToCreateInfiniteLoopAnalyzer : BaseD
     {
         var forStatement = (ForStatementSyntax)context.Node;
 
-        if (forStatement.Declaration == null
-            && forStatement.Condition == null
+        if (forStatement.Declaration is null
+            && forStatement.Condition is null
             && !forStatement.Incrementors.Any()
             && !forStatement.Initializers.Any()
             && !forStatement.OpenParenToken.ContainsDirectives

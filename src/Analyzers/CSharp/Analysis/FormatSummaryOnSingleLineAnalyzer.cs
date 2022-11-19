@@ -61,7 +61,7 @@ public sealed class FormatSummaryOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
 
         XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
-        if (summaryElement != null)
+        if (summaryElement is not null)
         {
             XmlElementStartTagSyntax startTag = summaryElement?.StartTag;
 

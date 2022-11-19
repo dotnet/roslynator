@@ -30,7 +30,7 @@ public sealed class ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider :
 
         Diagnostic diagnostic = context.Diagnostics[0];
 
-        for (SyntaxNode parent = node.Parent; parent != null; parent = parent.Parent)
+        for (SyntaxNode parent = node.Parent; parent is not null; parent = parent.Parent)
         {
             if (parent is MemberDeclarationSyntax memberDeclaration)
             {
@@ -84,12 +84,12 @@ public sealed class ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider :
     {
         ISymbol symbol = semanticModel.GetSymbol(node, context.CancellationToken);
 
-        if (symbol == null)
+        if (symbol is null)
             return;
 
         SyntaxNode syntax = symbol.GetSyntaxOrDefault(context.CancellationToken);
 
-        if (syntax == null)
+        if (syntax is null)
             return;
 
         if (syntax.IsKind(SyntaxKind.VariableDeclarator))

@@ -126,7 +126,7 @@ public sealed class UsePatternMatchingCodeFixProvider : BaseCodeFixProvider
             .WithExpression(newExpression.WithTriviaFrom(expression))
             .WithSections(newSections);
 
-        if (localDeclaration != null)
+        if (localDeclaration is not null)
         {
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(switchStatement);
 

@@ -525,7 +525,7 @@ public abstract class DocumentationWriter : IDisposable
 
         ImmutableArray<SymbolDisplayPart> definitionParts = SymbolDefinitionDisplay.GetDisplayParts(
             symbol,
-            (symbol.GetFirstExplicitInterfaceImplementation() != null)
+            (symbol.GetFirstExplicitInterfaceImplementation() is not null)
                 ? DocumentationDisplayFormats.ExplicitImplementationFullDeclaration
                 : DocumentationDisplayFormats.FullDeclaration,
             typeDeclarationOptions: SymbolDisplayTypeDeclarationOptions.IncludeAccessibility
@@ -676,7 +676,7 @@ public abstract class DocumentationWriter : IDisposable
 
                     IMethodSymbol methodSymbol = namedTypeSymbol.DelegateInvokeMethod;
 
-                    if (methodSymbol != null)
+                    if (methodSymbol is not null)
                     {
                         ITypeSymbol returnType = methodSymbol.ReturnType;
 
@@ -766,7 +766,7 @@ public abstract class DocumentationWriter : IDisposable
                 }
         }
 
-        if (typeSymbol.BaseType == null)
+        if (typeSymbol.BaseType is null)
             return;
 
         WriteHeading(3, Resources.InheritanceTitle);
@@ -956,7 +956,7 @@ public abstract class DocumentationWriter : IDisposable
             {
                 string commentId = element.Attribute("cref")?.Value;
 
-                if (commentId != null
+                if (commentId is not null
                     && DocumentationModel.GetFirstSymbolForReferenceId(commentId) is INamedTypeSymbol exceptionSymbol)
                 {
                     yield return (element, exceptionSymbol);
@@ -1043,7 +1043,7 @@ public abstract class DocumentationWriter : IDisposable
 
                     SymbolXmlDocumentation xmlDocumentation = DocumentationModel.GetXmlDocumentation(fieldSymbol, Options.PreferredCultureName);
 
-                    if (xmlDocumentation != null)
+                    if (xmlDocumentation is not null)
                     {
                         WriteStartTableCell();
                         xmlDocumentation?.GetElement(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
@@ -1160,11 +1160,11 @@ public abstract class DocumentationWriter : IDisposable
             {
                 string commentId = element.Attribute("cref")?.Value;
 
-                if (commentId != null)
+                if (commentId is not null)
                 {
                     ISymbol s = DocumentationModel.GetFirstSymbolForReferenceId(commentId);
 
-                    if (s != null)
+                    if (s is not null)
                         yield return s;
                 }
             }
@@ -1207,10 +1207,10 @@ public abstract class DocumentationWriter : IDisposable
     {
         XElement element = xmlDocumentation.GetElement(elementName);
 
-        if (element == null)
+        if (element is null)
             return;
 
-        if (heading != null)
+        if (heading is not null)
         {
             WriteHeading(2 + headingLevelBase, heading);
         }
@@ -1239,7 +1239,7 @@ public abstract class DocumentationWriter : IDisposable
         {
             INamedTypeSymbol t = type.BaseType;
 
-            while (t != null)
+            while (t is not null)
             {
                 nodes.Add(t.OriginalDefinition);
                 t = t.BaseType;
@@ -1380,7 +1380,7 @@ public abstract class DocumentationWriter : IDisposable
         {
             if (en.MoveNext())
             {
-                if (heading != null)
+                if (heading is not null)
                     WriteHeading(headingLevel, heading);
 
                 WriteStartTable(2);
@@ -1418,7 +1418,7 @@ public abstract class DocumentationWriter : IDisposable
 
                     WriteObsolete(symbol);
 
-                    bool isInherited = containingType != null
+                    bool isInherited = containingType is not null
                         && !SymbolEqualityComparer.Default.Equals(symbol.ContainingType, containingType);
 
                     if (symbol.Kind == SymbolKind.Parameter)
@@ -1477,7 +1477,7 @@ public abstract class DocumentationWriter : IDisposable
             {
                 ISymbol overriddenSymbol = symbol.OverriddenSymbol();
 
-                if (overriddenSymbol != null)
+                if (overriddenSymbol is not null)
                 {
                     WriteSpace();
                     WriteString(Resources.OpenParenthesis);
@@ -1598,7 +1598,7 @@ public abstract class DocumentationWriter : IDisposable
                 if (!includeContainingNamespace)
                     duplicates = GetSymbolDisplayDuplicates(symbols);
 
-                if (heading != null)
+                if (heading is not null)
                     WriteHeading(headingLevel, heading);
 
                 WriteStartBulletList();
@@ -1759,7 +1759,7 @@ public abstract class DocumentationWriter : IDisposable
         {
             if (en.MoveNext())
             {
-                if (heading != null)
+                if (heading is not null)
                     WriteHeading(headingLevel, heading);
 
                 do
@@ -1987,13 +1987,13 @@ public abstract class DocumentationWriter : IDisposable
                 return UrlProvider.GetExternalUrl(symbol).Url;
         }
 
-        ImmutableArray<string> containingFolders = (CurrentSymbol != null)
+        ImmutableArray<string> containingFolders = (CurrentSymbol is not null)
             ? UrlSegmentProvider.GetSegments(CurrentSymbol)
             : default;
 
         string target = GetLocalLinkTarget();
 
-        if (target == null
+        if (target is null
             && Options.ScrollToContent)
         {
             target = WellKnownNames.TopFragmentName;
@@ -2012,7 +2012,7 @@ public abstract class DocumentationWriter : IDisposable
 
                 IEnumerable<ISymbol> members = GetMembers(typeModel);
 
-                if (members != null)
+                if (members is not null)
                 {
                     using (IEnumerator<ISymbol> en = members.Where(f => f.Name == symbol.Name).GetEnumerator())
                     {

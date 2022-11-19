@@ -25,7 +25,7 @@ internal static class SortEnumMemberDeclarationsRefactoring
                 RefactoringDescriptors.SortMemberDeclarations);
         }
 
-        if (selectedMembers.Any(f => f.EqualsValue?.Value != null))
+        if (selectedMembers.Any(f => f.EqualsValue?.Value is not null))
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

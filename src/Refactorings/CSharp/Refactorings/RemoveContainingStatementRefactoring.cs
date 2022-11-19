@@ -31,7 +31,7 @@ internal static class RemoveContainingStatementRefactoring
             parent = statement.Parent;
         }
 
-        if (parent == null)
+        if (parent is null)
             return;
 
         if (!CheckContainingNode(parent))

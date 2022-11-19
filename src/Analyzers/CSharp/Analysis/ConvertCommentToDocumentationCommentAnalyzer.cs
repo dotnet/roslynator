@@ -150,7 +150,7 @@ public sealed class ConvertCommentToDocumentationCommentAnalyzer : BaseDiagnosti
 
             TrailingAnalysis? analysis = AnalyzeTrailing(enumMember);
 
-            if (analysis == null
+            if (analysis is null
                 && (separatorCount == count || i < count - 1))
             {
                 analysis = AnalyzeTrailing(members.GetSeparator(i));
@@ -339,7 +339,7 @@ public sealed class ConvertCommentToDocumentationCommentAnalyzer : BaseDiagnosti
 
     private static TrailingAnalysis? AnalyzeTrailing(SyntaxNodeOrToken? nodeOrToken)
     {
-        return (nodeOrToken != null) ? AnalyzeTrailing(nodeOrToken.Value) : default;
+        return (nodeOrToken is not null) ? AnalyzeTrailing(nodeOrToken.Value) : default;
     }
 
     private static TrailingAnalysis? AnalyzeTrailing(SyntaxNodeOrToken nodeOrToken)
@@ -361,7 +361,7 @@ public sealed class ConvertCommentToDocumentationCommentAnalyzer : BaseDiagnosti
         {
             TrailingAnalysis? analysis = AnalyzeTrailing(node);
 
-            if (analysis != null)
+            if (analysis is not null)
                 return analysis;
         }
 

@@ -39,7 +39,7 @@ public sealed class DocumentationModel
         _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
         _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
 
-        if (additionalXmlDocumentationPaths != null)
+        if (additionalXmlDocumentationPaths is not null)
             _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
     }
 
@@ -55,7 +55,7 @@ public sealed class DocumentationModel
         _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
         _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
 
-        if (additionalXmlDocumentationPaths != null)
+        if (additionalXmlDocumentationPaths is not null)
             _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
     }
 
@@ -163,7 +163,7 @@ public sealed class DocumentationModel
             {
                 INamedTypeSymbol typeSymbol = GetExternalSymbol(methodSymbol);
 
-                if (typeSymbol != null)
+                if (typeSymbol is not null)
                     yield return typeSymbol;
             }
         }
@@ -172,7 +172,7 @@ public sealed class DocumentationModel
         {
             INamedTypeSymbol type = GetExtendedType(methodSymbol);
 
-            if (type == null)
+            if (type is null)
                 return null;
 
             foreach (IAssemblySymbol assembly in Assemblies)
@@ -231,7 +231,7 @@ public sealed class DocumentationModel
     public TypeDocumentationModel GetTypeModel(INamedTypeSymbol typeSymbol)
     {
         if (_symbolData.TryGetValue(typeSymbol, out SymbolDocumentationData data)
-            && data.Model != null)
+            && data.Model is not null)
         {
             return (TypeDocumentationModel)data.Model;
         }
@@ -252,7 +252,7 @@ public sealed class DocumentationModel
         {
             ISymbol symbol = DocumentationCommentId.GetFirstSymbolForDeclarationId(id, compilation);
 
-            if (symbol != null)
+            if (symbol is not null)
                 return symbol;
         }
 
@@ -268,7 +268,7 @@ public sealed class DocumentationModel
         {
             ISymbol symbol = DocumentationCommentId.GetFirstSymbolForReferenceId(id, compilation);
 
-            if (symbol != null)
+            if (symbol is not null)
                 return symbol;
         }
 
@@ -278,7 +278,7 @@ public sealed class DocumentationModel
     public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string preferredCultureName = null)
     {
         if (_symbolData.TryGetValue(symbol, out SymbolDocumentationData data)
-            && data.XmlDocumentation != null)
+            && data.XmlDocumentation is not null)
         {
             if (object.ReferenceEquals(data.XmlDocumentation, SymbolXmlDocumentation.Default))
                 return null;
@@ -288,11 +288,11 @@ public sealed class DocumentationModel
 
         IAssemblySymbol assembly = FindAssembly();
 
-        if (assembly != null)
+        if (assembly is not null)
         {
             SymbolXmlDocumentation xmlDocumentation = GetXmlDocumentation(assembly, preferredCultureName)?.GetXmlDocumentation(symbol);
 
-            if (xmlDocumentation != null)
+            if (xmlDocumentation is not null)
             {
                 _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
                 return xmlDocumentation;
@@ -300,7 +300,7 @@ public sealed class DocumentationModel
 
             CultureInfo preferredCulture = null;
 
-            if (preferredCultureName != null
+            if (preferredCultureName is not null
                 && !_cultures.TryGetValue(preferredCultureName, out preferredCulture))
             {
                 preferredCulture = ImmutableInterlocked.GetOrAdd(ref _cultures, preferredCultureName, f => new CultureInfo(f));
@@ -350,7 +350,7 @@ public sealed class DocumentationModel
             {
                 SymbolXmlDocumentation documentation = xmlDocumentation.GetXmlDocumentation(symbol, commentId);
 
-                if (documentation != null)
+                if (documentation is not null)
                 {
                     _symbolData[symbol] = data.WithXmlDocumentation(documentation);
                     return documentation;
@@ -365,7 +365,7 @@ public sealed class DocumentationModel
         {
             IAssemblySymbol containingAssembly = symbol.ContainingAssembly;
 
-            if (containingAssembly != null)
+            if (containingAssembly is not null)
             {
                 AssemblyIdentity identity = containingAssembly.Identity;
 
@@ -394,7 +394,7 @@ public sealed class DocumentationModel
                 {
                     string path = portableExecutableReference.FilePath;
 
-                    if (preferredCultureName != null)
+                    if (preferredCultureName is not null)
                     {
                         path = Path.GetDirectoryName(path);
 
@@ -411,7 +411,7 @@ public sealed class DocumentationModel
                         }
                     }
 
-                    if (xmlDocumentation == null)
+                    if (xmlDocumentation is null)
                     {
                         path = Path.ChangeExtension(path, "xml");
 
@@ -432,7 +432,7 @@ public sealed class DocumentationModel
         if (Compilations.Length == 1)
             return Compilations[0];
 
-        if (_compilationMap == null)
+        if (_compilationMap is null)
             Interlocked.CompareExchange(ref _compilationMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f), null);
 
         return _compilationMap[assembly];

@@ -37,7 +37,7 @@ public sealed class RemoveEmptyStatementAnalyzer : BaseDiagnosticAnalyzer
 
         SyntaxNode parent = emptyStatement.Parent;
 
-        if (parent == null)
+        if (parent is null)
             return;
 
         SyntaxKind kind = parent.Kind();

@@ -28,7 +28,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
         Walker = null;
     }
 
-    public bool Success => AwaitExpression != null || Walker?.AwaitExpressions.Count > 0;
+    public bool Success => AwaitExpression is not null || Walker?.AwaitExpressions.Count > 0;
 
     public AwaitExpressionSyntax AwaitExpression { get; }
 
@@ -41,7 +41,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
     {
         BlockSyntax body = methodDeclaration.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             return AnalyzeMethodBody(methodDeclaration, body, semanticModel, cancellationToken);
         }
@@ -49,7 +49,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
         {
             ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
-            if (expressionBody != null)
+            if (expressionBody is not null)
                 return AnalyzeExpressionBody(methodDeclaration, expressionBody, semanticModel, cancellationToken);
         }
 
@@ -63,7 +63,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
     {
         BlockSyntax body = localFunction.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             return AnalyzeMethodBody(localFunction, body, semanticModel, cancellationToken);
         }
@@ -71,7 +71,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
         {
             ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
 
-            if (expressionBody != null)
+            if (expressionBody is not null)
                 return AnalyzeExpressionBody(localFunction, expressionBody, semanticModel, cancellationToken);
         }
 
@@ -85,7 +85,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
     {
         BlockSyntax block = anonymousMethod.Block;
 
-        if (block == null)
+        if (block is null)
             return default;
 
         return AnalyzeMethodBody(anonymousMethod, block, semanticModel, cancellationToken);
@@ -120,7 +120,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
     {
         CSharpSyntaxNode body = lambda.Body;
 
-        if (body == null)
+        if (body is null)
             return default;
 
         switch (body.Kind())
@@ -170,7 +170,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
             }
         }
 
-        if (statement == null)
+        if (statement is null)
             return default;
 
         switch (statement.Kind())
@@ -181,7 +181,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
 
                     AwaitExpressionSyntax awaitExpression = GetAwaitExpression(returnStatement);
 
-                    if (awaitExpression == null)
+                    if (awaitExpression is null)
                         return default;
 
                     AwaitExpressionWalker walker = VisitStatements();
@@ -284,7 +284,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
 
             AwaitExpressionSyntax awaitExpression = GetAwaitExpression(ifOrElse.Statement);
 
-            if (awaitExpression == null)
+            if (awaitExpression is null)
                 return false;
 
             count++;
@@ -309,7 +309,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
 
             AwaitExpressionSyntax awaitExpression = GetAwaitExpression(section.Statements.LastOrDefault());
 
-            if (awaitExpression == null)
+            if (awaitExpression is null)
                 return false;
 
             count++;
@@ -320,7 +320,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
 
     private static AwaitExpressionSyntax GetAwaitExpression(StatementSyntax statement)
     {
-        if (statement == null)
+        if (statement is null)
             return null;
 
         SyntaxKind kind = statement.Kind();
@@ -360,7 +360,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
     {
         IMethodSymbol methodSymbol = GetMethodSymbol(node, semanticModel, cancellationToken);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         ITypeSymbol returnType = methodSymbol.ReturnType;
@@ -370,7 +370,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
 
         ITypeSymbol typeArgument = ((INamedTypeSymbol)returnType).TypeArguments.SingleOrDefault(shouldThrow: false);
 
-        if (typeArgument == null)
+        if (typeArgument is null)
             return false;
 
         foreach (AwaitExpressionSyntax awaitExpression in awaitExpressions)
@@ -390,7 +390,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
     {
         IMethodSymbol methodSymbol = GetMethodSymbol(node, semanticModel, cancellationToken);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         ITypeSymbol returnType = methodSymbol.ReturnType;
@@ -400,7 +400,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
 
         ITypeSymbol typeArgument = ((INamedTypeSymbol)returnType).TypeArguments.SingleOrDefault(shouldThrow: false);
 
-        if (typeArgument == null)
+        if (typeArgument is null)
             return false;
 
         return VerifyAwaitType(awaitExpression, typeArgument, semanticModel, cancellationToken);
@@ -415,7 +415,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
 
         ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-        if (expressionTypeSymbol == null)
+        if (expressionTypeSymbol is null)
             return false;
 
         if (expressionTypeSymbol.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T))
@@ -450,7 +450,7 @@ internal struct RemoveAsyncAwaitAnalysis : IDisposable
 
     public void Dispose()
     {
-        if (Walker != null)
+        if (Walker is not null)
         {
             AwaitExpressionWalker.Free(Walker);
         }

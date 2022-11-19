@@ -10,7 +10,7 @@ internal static class RegexEscape
 {
     public static string Escape(string input, bool inCharGroup = false)
     {
-        if (input == null)
+        if (input is null)
             throw new ArgumentNullException(nameof(input));
 
         for (int i = 0; i < input.Length; i++)
@@ -129,7 +129,7 @@ internal static class RegexEscape
 
     public static string EscapeSubstitution(string input)
     {
-        if (input == null)
+        if (input is null)
             throw new ArgumentNullException(nameof(input));
 
         for (int i = 0; i < input.Length; i++)

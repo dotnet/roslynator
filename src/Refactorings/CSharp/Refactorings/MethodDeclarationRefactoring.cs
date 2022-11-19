@@ -113,7 +113,7 @@ internal static class MethodDeclarationRefactoring
 
         ITypeSymbol typeSymbol = GetType(returnType, semanticModel, context.CancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         string newName = NameGenerator.CreateName(typeSymbol);
@@ -154,7 +154,7 @@ internal static class MethodDeclarationRefactoring
     {
         ITypeSymbol returnTypeSymbol = semanticModel.GetTypeSymbol(returnType, cancellationToken);
 
-        if (returnTypeSymbol == null)
+        if (returnTypeSymbol is null)
             return null;
 
         if (returnTypeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))

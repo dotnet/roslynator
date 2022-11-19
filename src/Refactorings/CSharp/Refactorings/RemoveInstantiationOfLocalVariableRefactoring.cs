@@ -18,7 +18,7 @@ internal static class RemoveInstantiationOfLocalVariableRefactoring
             .SingleOrDefault(shouldThrow: false)?
             .Initializer;
 
-        if (equalsValueClause == null)
+        if (equalsValueClause is null)
             return;
 
         if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(equalsValueClause))
@@ -26,7 +26,7 @@ internal static class RemoveInstantiationOfLocalVariableRefactoring
 
         ExpressionSyntax value = equalsValueClause.Value;
 
-        if (value == null)
+        if (value is null)
             return;
 
         const string title = "Remove instantiation";

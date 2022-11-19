@@ -24,7 +24,7 @@ internal static class RemoveBracesRefactoring
             block = (BlockSyntax)statement.Parent;
         }
 
-        if (block != null)
+        if (block is not null)
             ComputeRefactoring(context, block);
     }
 
@@ -47,7 +47,7 @@ internal static class RemoveBracesRefactoring
             {
                 IfStatementSyntax topmostIf = GetTopmostIf(block);
 
-                if (topmostIf?.Else != null
+                if (topmostIf?.Else is not null
                     && CanRefactorIfElse(block, topmostIf))
                 {
                     context.RegisterRefactoring(
@@ -158,7 +158,7 @@ internal static class RemoveBracesRefactoring
     {
         SyntaxNode parent = block.Parent;
 
-        if (parent != null)
+        if (parent is not null)
         {
             SyntaxKind kind = parent.Kind();
 
@@ -168,7 +168,7 @@ internal static class RemoveBracesRefactoring
                     .Statements
                     .SingleOrDefault(shouldThrow: false);
 
-                if (statement != null)
+                if (statement is not null)
                 {
                     switch (statement.Kind())
                     {
@@ -180,7 +180,7 @@ internal static class RemoveBracesRefactoring
                         case SyntaxKind.IfStatement:
                             {
                                 return kind != SyntaxKind.IfStatement
-                                    || ((IfStatementSyntax)parent).Else == null
+                                    || ((IfStatementSyntax)parent).Else is null
                                     || !((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf;
                             }
                         default:

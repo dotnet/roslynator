@@ -51,7 +51,7 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
 
         TypeParameterListSyntax typeParameterList = typeDeclaration.TypeParameterList;
 
-        if (typeParameterList == null)
+        if (typeParameterList is null)
             return;
 
         Analyze(context, typeParameterList.GreaterThanToken, constraintClauses);

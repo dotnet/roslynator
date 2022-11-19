@@ -20,7 +20,7 @@ internal static class ExtractConditionRefactoring
 
         BinaryExpressionSyntax condition = GetCondition(binaryExpression);
 
-        if (condition == null)
+        if (condition is null)
             return;
 
         SyntaxNode parent = condition.Parent;
@@ -76,7 +76,7 @@ internal static class ExtractConditionRefactoring
     {
         SyntaxNode parent = expression.Parent;
 
-        if (parent == null)
+        if (parent is null)
             return;
 
         SyntaxKind kind = parent.Kind();
@@ -86,7 +86,7 @@ internal static class ExtractConditionRefactoring
 
         BinaryExpressionSyntax binaryExpression = GetCondition((BinaryExpressionSyntax)parent);
 
-        if (binaryExpression == null)
+        if (binaryExpression is null)
             return;
 
         parent = binaryExpression.Parent;
@@ -147,7 +147,7 @@ internal static class ExtractConditionRefactoring
     {
         SyntaxKind kind = binaryExpression.Kind();
 
-        for (SyntaxNode parent = binaryExpression.Parent; parent != null; parent = parent.Parent)
+        for (SyntaxNode parent = binaryExpression.Parent; parent is not null; parent = parent.Parent)
         {
             SyntaxKind parentKind = parent.Kind();
 

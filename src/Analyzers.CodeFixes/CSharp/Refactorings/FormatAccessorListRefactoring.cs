@@ -19,7 +19,7 @@ internal static class FormatAccessorListRefactoring
         AccessorListSyntax accessorList,
         CancellationToken cancellationToken)
     {
-        if (accessorList.Accessors.All(f => f.BodyOrExpressionBody() == null))
+        if (accessorList.Accessors.All(f => f.BodyOrExpressionBody() is null))
         {
             SyntaxNode parent = accessorList.Parent;
 
@@ -120,7 +120,7 @@ internal static class FormatAccessorListRefactoring
     {
         BlockSyntax body = accessor.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             SyntaxList<StatementSyntax> statements = body.Statements;
 
@@ -137,7 +137,7 @@ internal static class FormatAccessorListRefactoring
         {
             ArrowExpressionClauseSyntax expressionBody = accessor.ExpressionBody;
 
-            if (expressionBody != null
+            if (expressionBody is not null
                 && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
                 && expressionBody.Expression?.IsSingleLine() == true)
             {

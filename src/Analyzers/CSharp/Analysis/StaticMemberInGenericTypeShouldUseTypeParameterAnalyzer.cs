@@ -7,213 +7,214 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class StaticMemberInGenericTypeShouldUseTypeParameterAnalyzer : BaseDiagnosticAnalyzer
+namespace Roslynator.CSharp.Analysis
 {
-    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class StaticMemberInGenericTypeShouldUseTypeParameterAnalyzer : BaseDiagnosticAnalyzer
     {
-        get
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.StaticMemberInGenericTypeShouldUseTypeParameter);
-
-            return _supportedDiagnostics;
-        }
-    }
-
-    public override void Initialize(AnalysisContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
-    }
-
-    private static void AnalyzeNamedType(SymbolAnalysisContext context)
-    {
-        var namedType = (INamedTypeSymbol)context.Symbol;
-
-        if (!namedType.TypeKind.Is(TypeKind.Class, TypeKind.Struct))
-            return;
-
-        if (namedType.Arity == 0)
-            return;
-
-        if (namedType.IsStatic)
-            return;
-
-        if (namedType.IsImplicitClass)
-            return;
-
-        if (namedType.IsImplicitlyDeclared)
-            return;
-
-        var typeParameters = default(ImmutableArray<ITypeParameterSymbol>);
-
-        foreach (ISymbol member in namedType.GetMembers())
-        {
-            if (member.IsImplicitlyDeclared)
-                continue;
-
-            if (!member.IsStatic)
-                continue;
-
-            if (!member.DeclaredAccessibility.Is(Accessibility.Public, Accessibility.Internal, Accessibility.ProtectedOrInternal))
-                continue;
-
-            switch (member.Kind)
+            get
             {
-                case SymbolKind.Event:
-                    {
-                        var eventSymbol = (IEventSymbol)member;
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.StaticMemberInGenericTypeShouldUseTypeParameter);
 
-                        if (typeParameters.IsDefault)
-                            typeParameters = namedType.TypeParameters;
-
-                        if (!ContainsAnyTypeParameter(typeParameters, eventSymbol.Type))
-                            ReportDiagnostic(context, eventSymbol);
-
-                        break;
-                    }
-                case SymbolKind.Field:
-                    {
-                        var fieldSymbol = (IFieldSymbol)member;
-
-                        if (typeParameters.IsDefault)
-                            typeParameters = namedType.TypeParameters;
-
-                        if (!ContainsAnyTypeParameter(typeParameters, fieldSymbol.Type))
-                            ReportDiagnostic(context, fieldSymbol);
-
-                        break;
-                    }
-                case SymbolKind.Method:
-                    {
-                        var methodsymbol = (IMethodSymbol)member;
-
-                        if (methodsymbol.MethodKind == MethodKind.Ordinary)
-                        {
-                            if (typeParameters.IsDefault)
-                                typeParameters = namedType.TypeParameters;
-
-                            if (!ContainsAnyTypeParameter(typeParameters, methodsymbol.ReturnType)
-                                && !ContainsAnyTypeParameter(typeParameters, methodsymbol.Parameters))
-                            {
-                                ReportDiagnostic(context, methodsymbol);
-                            }
-                        }
-
-                        break;
-                    }
-                case SymbolKind.Property:
-                    {
-                        var propertySymbol = (IPropertySymbol)member;
-
-                        if (!propertySymbol.IsIndexer)
-                        {
-                            if (typeParameters.IsDefault)
-                                typeParameters = namedType.TypeParameters;
-
-                            if (!ContainsAnyTypeParameter(typeParameters, propertySymbol.Type))
-                                ReportDiagnostic(context, propertySymbol);
-                        }
-
-                        break;
-                    }
+                return _supportedDiagnostics;
             }
         }
-    }
 
-    private static bool ContainsAnyTypeParameter(ImmutableArray<ITypeParameterSymbol> typeParameters, ImmutableArray<IParameterSymbol> parameters)
-    {
-        foreach (IParameterSymbol parameter in parameters)
+        public override void Initialize(AnalysisContext context)
         {
-            if (ContainsAnyTypeParameter(typeParameters, parameter.Type))
-                return true;
+            base.Initialize(context);
+
+            context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
         }
 
-        return false;
-    }
-
-    private static bool ContainsAnyTypeParameter(
-        ImmutableArray<ITypeParameterSymbol> typeParameters,
-        ITypeSymbol typeSymbol)
-    {
-        switch (typeSymbol.Kind)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            case SymbolKind.TypeParameter:
+            var namedType = (INamedTypeSymbol)context.Symbol;
+
+            if (!namedType.TypeKind.Is(TypeKind.Class, TypeKind.Struct))
+                return;
+
+            if (namedType.Arity == 0)
+                return;
+
+            if (namedType.IsStatic)
+                return;
+
+            if (namedType.IsImplicitClass)
+                return;
+
+            if (namedType.IsImplicitlyDeclared)
+                return;
+
+            var typeParameters = default(ImmutableArray<ITypeParameterSymbol>);
+
+            foreach (ISymbol member in namedType.GetMembers())
+            {
+                if (member.IsImplicitlyDeclared)
+                    continue;
+
+                if (!member.IsStatic)
+                    continue;
+
+                if (!member.DeclaredAccessibility.Is(Accessibility.Public, Accessibility.Internal, Accessibility.ProtectedOrInternal))
+                    continue;
+
+                switch (member.Kind)
+                {
+                    case SymbolKind.Event:
+                        {
+                            var eventSymbol = (IEventSymbol)member;
+
+                            if (typeParameters.IsDefault)
+                                typeParameters = namedType.TypeParameters;
+
+                            if (!ContainsAnyTypeParameter(typeParameters, eventSymbol.Type))
+                                ReportDiagnostic(context, eventSymbol);
+
+                            break;
+                        }
+                    case SymbolKind.Field:
+                        {
+                            var fieldSymbol = (IFieldSymbol)member;
+
+                            if (typeParameters.IsDefault)
+                                typeParameters = namedType.TypeParameters;
+
+                            if (!ContainsAnyTypeParameter(typeParameters, fieldSymbol.Type))
+                                ReportDiagnostic(context, fieldSymbol);
+
+                            break;
+                        }
+                    case SymbolKind.Method:
+                        {
+                            var methodsymbol = (IMethodSymbol)member;
+
+                            if (methodsymbol.MethodKind == MethodKind.Ordinary)
+                            {
+                                if (typeParameters.IsDefault)
+                                    typeParameters = namedType.TypeParameters;
+
+                                if (!ContainsAnyTypeParameter(typeParameters, methodsymbol.ReturnType)
+                                    && !ContainsAnyTypeParameter(typeParameters, methodsymbol.Parameters))
+                                {
+                                    ReportDiagnostic(context, methodsymbol);
+                                }
+                            }
+
+                            break;
+                        }
+                    case SymbolKind.Property:
+                        {
+                            var propertySymbol = (IPropertySymbol)member;
+
+                            if (!propertySymbol.IsIndexer)
+                            {
+                                if (typeParameters.IsDefault)
+                                    typeParameters = namedType.TypeParameters;
+
+                                if (!ContainsAnyTypeParameter(typeParameters, propertySymbol.Type))
+                                    ReportDiagnostic(context, propertySymbol);
+                            }
+
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static bool ContainsAnyTypeParameter(ImmutableArray<ITypeParameterSymbol> typeParameters, ImmutableArray<IParameterSymbol> parameters)
+        {
+            foreach (IParameterSymbol parameter in parameters)
+            {
+                if (ContainsAnyTypeParameter(typeParameters, parameter.Type))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static bool ContainsAnyTypeParameter(
+            ImmutableArray<ITypeParameterSymbol> typeParameters,
+            ITypeSymbol typeSymbol)
+        {
+            switch (typeSymbol.Kind)
+            {
+                case SymbolKind.TypeParameter:
+                    {
+                        foreach (ITypeParameterSymbol typeParameter in typeParameters)
+                        {
+                            if (SymbolEqualityComparer.Default.Equals(typeParameter, typeSymbol))
+                                return true;
+                        }
+
+                        return false;
+                    }
+                case SymbolKind.ArrayType:
+                    {
+                        return ContainsAnyTypeParameter(typeParameters, ((IArrayTypeSymbol)typeSymbol).ElementType);
+                    }
+                case SymbolKind.NamedType:
+                    {
+                        return ContainsAnyTypeParameter(typeParameters, ((INamedTypeSymbol)typeSymbol).TypeArguments);
+                    }
+            }
+
+            Debug.Assert(typeSymbol.Kind == SymbolKind.ErrorType, typeSymbol.Kind.ToString());
+
+            return true;
+        }
+
+        private static bool ContainsAnyTypeParameter(
+            ImmutableArray<ITypeParameterSymbol> typeParameters,
+            ImmutableArray<ITypeSymbol> typeArguments)
+        {
+            foreach (ITypeSymbol typeArgument in typeArguments)
+            {
+                SymbolKind kind = typeArgument.Kind;
+
+                if (kind == SymbolKind.TypeParameter)
                 {
                     foreach (ITypeParameterSymbol typeParameter in typeParameters)
                     {
-                        if (SymbolEqualityComparer.Default.Equals(typeParameter, typeSymbol))
+                        if (SymbolEqualityComparer.Default.Equals(typeParameter, typeArgument))
                             return true;
                     }
-
-                    return false;
                 }
-            case SymbolKind.ArrayType:
+                else if (kind == SymbolKind.NamedType)
                 {
-                    return ContainsAnyTypeParameter(typeParameters, ((IArrayTypeSymbol)typeSymbol).ElementType);
-                }
-            case SymbolKind.NamedType:
-                {
-                    return ContainsAnyTypeParameter(typeParameters, ((INamedTypeSymbol)typeSymbol).TypeArguments);
-                }
-        }
-
-        Debug.Assert(typeSymbol.Kind == SymbolKind.ErrorType, typeSymbol.Kind.ToString());
-
-        return true;
-    }
-
-    private static bool ContainsAnyTypeParameter(
-        ImmutableArray<ITypeParameterSymbol> typeParameters,
-        ImmutableArray<ITypeSymbol> typeArguments)
-    {
-        foreach (ITypeSymbol typeArgument in typeArguments)
-        {
-            SymbolKind kind = typeArgument.Kind;
-
-            if (kind == SymbolKind.TypeParameter)
-            {
-                foreach (ITypeParameterSymbol typeParameter in typeParameters)
-                {
-                    if (SymbolEqualityComparer.Default.Equals(typeParameter, typeArgument))
+                    if (ContainsAnyTypeParameter(typeParameters, ((INamedTypeSymbol)typeArgument).TypeArguments))
                         return true;
                 }
             }
-            else if (kind == SymbolKind.NamedType)
-            {
-                if (ContainsAnyTypeParameter(typeParameters, ((INamedTypeSymbol)typeArgument).TypeArguments))
-                    return true;
-            }
+
+            return false;
         }
 
-        return false;
-    }
+        private static void ReportDiagnostic(SymbolAnalysisContext context, ISymbol member)
+        {
+            SyntaxNode node = member.GetSyntaxOrDefault(context.CancellationToken);
 
-    private static void ReportDiagnostic(SymbolAnalysisContext context, ISymbol member)
-    {
-        SyntaxNode node = member.GetSyntaxOrDefault(context.CancellationToken);
+            Debug.Assert(node is not null, member.ToString());
 
-        Debug.Assert(node != null, member.ToString());
+            if (node is null)
+                return;
 
-        if (node == null)
-            return;
+            SyntaxToken identifier = CSharpUtility.GetIdentifier(node);
 
-        SyntaxToken identifier = CSharpUtility.GetIdentifier(node);
+            SyntaxDebug.Assert(!identifier.IsKind(SyntaxKind.None), node);
 
-        SyntaxDebug.Assert(!identifier.IsKind(SyntaxKind.None), node);
+            if (identifier.IsKind(SyntaxKind.None))
+                return;
 
-        if (identifier.IsKind(SyntaxKind.None))
-            return;
-
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.StaticMemberInGenericTypeShouldUseTypeParameter,
-            identifier);
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.StaticMemberInGenericTypeShouldUseTypeParameter,
+                identifier);
+        }
     }
 }

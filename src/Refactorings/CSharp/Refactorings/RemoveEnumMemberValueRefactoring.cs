@@ -22,7 +22,7 @@ internal static class RemoveEnumMemberValueRefactoring
 
         for (int i = 0; i < selectedMembers.Count; i++)
         {
-            if (selectedMembers[i].EqualsValue?.Value != null)
+            if (selectedMembers[i].EqualsValue?.Value is not null)
             {
                 count++;
 
@@ -50,7 +50,7 @@ internal static class RemoveEnumMemberValueRefactoring
 
         for (int i = 0; i < members.Count; i++)
         {
-            if (members[i].EqualsValue?.Value != null)
+            if (members[i].EqualsValue?.Value is not null)
             {
                 count++;
 
@@ -91,7 +91,7 @@ internal static class RemoveEnumMemberValueRefactoring
             {
                 ExpressionSyntax expression = enumMember.EqualsValue?.Value;
 
-                if (expression == null)
+                if (expression is null)
                     return false;
 
                 if (keepCompositeValue

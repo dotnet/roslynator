@@ -25,9 +25,9 @@ internal static class EquivalenceKey
     {
         Debug.Assert(!string.IsNullOrEmpty(key));
 
-        if (additionalKey1 != null)
+        if (additionalKey1 is not null)
         {
-            if (additionalKey2 != null)
+            if (additionalKey2 is not null)
             {
                 return Prefix + key + Separator + additionalKey1 + Separator + additionalKey2;
             }
@@ -36,7 +36,7 @@ internal static class EquivalenceKey
                 return Prefix + key + Separator + additionalKey1;
             }
         }
-        else if (additionalKey2 != null)
+        else if (additionalKey2 is not null)
         {
             return Prefix + key + Separator + additionalKey2;
         }
@@ -48,9 +48,9 @@ internal static class EquivalenceKey
 
     internal static string Join(string value1, string value2)
     {
-        if (value1 != null)
+        if (value1 is not null)
         {
-            if (value2 != null)
+            if (value2 is not null)
             {
                 return value1 + Separator + value2;
             }
@@ -59,7 +59,7 @@ internal static class EquivalenceKey
                 return value1;
             }
         }
-        else if (value2 != null)
+        else if (value2 is not null)
         {
             return value2;
         }

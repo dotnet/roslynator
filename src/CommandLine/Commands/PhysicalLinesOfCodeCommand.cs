@@ -40,7 +40,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
 
             ICodeMetricsService service = MefWorkspaceServices.Default.GetService<ICodeMetricsService>(project.Language);
 
-            if (service != null)
+            if (service is not null)
             {
                 codeMetrics = await CountLinesAsync(project, service, codeMetricsOptions, cancellationToken);
             }

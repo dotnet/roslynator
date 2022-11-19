@@ -16,10 +16,10 @@ internal class MemberSymbolEqualityComparer : EqualityComparer<ISymbol>
         if (object.ReferenceEquals(x, y))
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (!string.Equals(x.Name, y.Name, StringComparison.Ordinal))
@@ -165,10 +165,10 @@ internal class MemberSymbolEqualityComparer : EqualityComparer<ISymbol>
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return x.RefKind == y.RefKind
@@ -177,7 +177,7 @@ internal class MemberSymbolEqualityComparer : EqualityComparer<ISymbol>
 
         public override int GetHashCode(IParameterSymbol obj)
         {
-            if (obj == null)
+            if (obj is null)
                 return 0;
 
             return Hash.Combine(obj.Type, (int)obj.RefKind);

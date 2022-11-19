@@ -247,7 +247,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
                 string value = element.GetAttributeValue("name");
 
-                if (value != null
+                if (value is not null
                     && string.Equals(parameter.Identifier.ValueText, value, StringComparison.Ordinal))
                 {
                     return false;
@@ -272,7 +272,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
                 string value = element.GetAttributeValue("name");
 
-                if (value != null
+                if (value is not null
                     && string.Equals(typeParameter.Identifier.ValueText, value, StringComparison.Ordinal))
                 {
                     return false;
@@ -313,7 +313,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
                 ? ((XmlElementSyntax)element).GetAttributeValue("name")
                 : ((XmlEmptyElementSyntax)element).GetAttributeValue("name");
 
-            if (name == null)
+            if (name is null)
             {
                 firstIndex = -1;
                 continue;

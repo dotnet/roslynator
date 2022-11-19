@@ -35,7 +35,7 @@ internal static class MakeIndexerAbstractRefactoring
     {
         AccessorListSyntax accessorList = AccessorList();
 
-        if (indexerDeclaration.ExpressionBody != null)
+        if (indexerDeclaration.ExpressionBody is not null)
         {
             accessorList = accessorList
                 .AddAccessors(
@@ -44,7 +44,7 @@ internal static class MakeIndexerAbstractRefactoring
         else
         {
             AccessorDeclarationSyntax getter = indexerDeclaration.Getter();
-            if (getter != null)
+            if (getter is not null)
             {
                 accessorList = accessorList.AddAccessors(getter
                     .WithBody(null)
@@ -52,7 +52,7 @@ internal static class MakeIndexerAbstractRefactoring
             }
 
             AccessorDeclarationSyntax setter = indexerDeclaration.Setter();
-            if (setter != null)
+            if (setter is not null)
             {
                 accessorList = accessorList.AddAccessors(setter
                     .WithBody(null)

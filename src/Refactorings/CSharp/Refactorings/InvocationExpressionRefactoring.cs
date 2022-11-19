@@ -21,8 +21,8 @@ internal static class InvocationExpressionRefactoring
         {
             ExpressionSyntax expression = invocationExpression.Expression;
 
-            if (expression != null
-                && invocationExpression.ArgumentList != null)
+            if (expression is not null
+                && invocationExpression.ArgumentList is not null)
             {
                 if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
                     && ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(context.Span) == true)

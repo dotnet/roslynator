@@ -62,7 +62,7 @@ public sealed class AttributeArgumentCodeFixProvider : BaseCodeFixProvider
         string languageName,
         CancellationToken cancellationToken)
     {
-        if (_languageNames == null)
+        if (_languageNames is null)
             Interlocked.CompareExchange(ref _languageNames, LoadLanguageNames(), null);
 
         AttributeArgumentSyntax newAttributeArgument = AttributeArgument(

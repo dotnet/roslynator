@@ -52,7 +52,7 @@ internal static class UseElementAccessRefactoring
 
                     string propertyName = CSharpUtility.GetCountOrLengthPropertyName(invocationInfo.Expression, semanticModel, context.CancellationToken);
 
-                    if (propertyName == null)
+                    if (propertyName is null)
                         break;
 
                     context.RegisterRefactoring(

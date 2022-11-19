@@ -36,7 +36,7 @@ internal static class TextSpanExtensions
 
     public static bool IsBetweenSpans(this TextSpan span, SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return span.IsBetweenSpans(node.Span, node.FullSpan);
@@ -67,7 +67,7 @@ internal static class TextSpanExtensions
 
     public static bool IsContainedInSpanOrBetweenSpans(this TextSpan span, SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         TextSpan innerSpan = node.Span;
@@ -98,7 +98,7 @@ internal static class TextSpanExtensions
 
     public static bool IsEmptyAndContainedInSpanOrBetweenSpans(this TextSpan span, SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return IsEmptyAndContainedInSpanOrBetweenSpans(span, node.Span, node.FullSpan);
@@ -133,7 +133,7 @@ internal static class TextSpanExtensions
 
     public static bool IsEmptyAndContainedInSpan(this TextSpan span, SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return span.IsEmpty

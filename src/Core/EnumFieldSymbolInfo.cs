@@ -24,7 +24,7 @@ internal readonly struct EnumFieldSymbolInfo
 
     public static EnumFieldSymbolInfo Create(IFieldSymbol fieldSymbol)
     {
-        if (fieldSymbol == null)
+        if (fieldSymbol is null)
             throw new ArgumentNullException(nameof(fieldSymbol));
 
         if (!TryCreate(fieldSymbol, out EnumFieldSymbolInfo fieldInfo))
@@ -35,7 +35,7 @@ internal readonly struct EnumFieldSymbolInfo
 
     public static bool TryCreate(IFieldSymbol fieldSymbol, out EnumFieldSymbolInfo fieldInfo)
     {
-        if (fieldSymbol == null)
+        if (fieldSymbol is null)
         {
             fieldInfo = default;
             return false;

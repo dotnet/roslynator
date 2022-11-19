@@ -29,7 +29,7 @@ internal static class SplitIfStatementRefactoring
             }
         }
         else if (ifStatement.IsParentKind(SyntaxKind.ElseClause)
-            && ifStatement.Else == null
+            && ifStatement.Else is null
             && ifStatement.Condition.IsKind(SyntaxKind.LogicalOrExpression))
         {
             context.RegisterRefactoring(

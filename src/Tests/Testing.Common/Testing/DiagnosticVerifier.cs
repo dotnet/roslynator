@@ -37,7 +37,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         TestOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        if (data == null)
+        if (data is null)
             throw new ArgumentNullException(nameof(data));
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -112,7 +112,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         TestOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        if (data == null)
+        if (data is null)
             throw new ArgumentNullException(nameof(data));
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -186,10 +186,10 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         TestOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        if (data == null)
+        if (data is null)
             throw new ArgumentNullException(nameof(data));
 
-        if (expected == null)
+        if (expected is null)
             throw new ArgumentNullException(nameof(expected));
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -268,7 +268,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
                     return null;
                 }
 
-                if (diagnostic == null)
+                if (diagnostic is null)
                 {
                     if (!fixRegistered)
                         Fail($"No diagnostic with ID '{data.Descriptor.Id}' found.", diagnostics);
@@ -284,11 +284,11 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
                     diagnostic,
                     (a, d) =>
                     {
-                        if ((data.EquivalenceKey == null
+                        if ((data.EquivalenceKey is null
                             || string.Equals(data.EquivalenceKey, a.EquivalenceKey, StringComparison.Ordinal))
                             && d.Contains(diagnostic))
                         {
-                            if (action != null)
+                            if (action is not null)
                                 Fail($"Multiple fixes registered by '{fixProvider.GetType().Name}'.", new CodeAction[] { action, a });
 
                             action = a;
@@ -302,7 +302,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
                 await fixProvider.RegisterCodeFixesAsync(context);
 
-                if (action == null)
+                if (action is null)
                     Fail("No code fix has been registered.", candidateActions);
 
                 fixRegistered = true;
@@ -331,7 +331,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         TestOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        if (data == null)
+        if (data is null)
             throw new ArgumentNullException(nameof(data));
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -374,7 +374,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
                         diagnostic,
                         (a, d) =>
                         {
-                            if ((data.EquivalenceKey == null
+                            if ((data.EquivalenceKey is null
                                 || string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
                                 && d.Contains(diagnostic))
                             {
@@ -475,7 +475,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         if (verifyAdditionalLocations)
             VerifyAdditionalLocations(expectedDiagnostic.AdditionalLocations, actualDiagnostic.AdditionalLocations);
 
-        if (message != null)
+        if (message is not null)
             Assert.Equal(message, actualDiagnostic.GetMessage(formatProvider));
 
         void VerifyLocation(
@@ -528,7 +528,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
             string message = VerifyLinePositionSpan(expected.Span, actual.Span);
 
-            if (message != null)
+            if (message is not null)
                 Fail($"Diagnostic{message}{GetMessage()}");
         }
 
@@ -579,10 +579,10 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         ImmutableArray<Diagnostic> diagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(cancellationToken);
 
-        if (exception != null)
+        if (exception is not null)
             Fail($"An exception occurred in analyzer '{analyzer.GetType()}'.{Environment.NewLine}{exception}");
 
-        return (comparer != null)
+        return (comparer is not null)
             ? diagnostics.Sort(comparer)
             : diagnostics;
     }

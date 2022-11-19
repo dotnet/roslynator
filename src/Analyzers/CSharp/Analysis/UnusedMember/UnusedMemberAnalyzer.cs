@@ -11,360 +11,361 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis.UnusedMember;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
+namespace Roslynator.CSharp.Analysis.UnusedMember
 {
-    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
     {
-        get
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            if (_supportedDiagnostics.IsDefault)
+            get
             {
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveUnusedMemberDeclaration);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveUnusedMemberDeclaration);
+                }
+
+                return _supportedDiagnostics;
+            }
+        }
+
+        public override void Initialize(AnalysisContext context)
+        {
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(
+                f => AnalyzeTypeDeclaration(f),
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordStructDeclaration);
+        }
+
+        [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.")]
+        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+
+            if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            INamedTypeSymbol declarationSymbol = null;
+            ImmutableArray<AttributeData> attributes = default;
+
+            if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+            {
+                declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
+
+                attributes = declarationSymbol.GetAttributes();
+
+                if (attributes.Any(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute)))
+                    return;
             }
 
-            return _supportedDiagnostics;
-        }
-    }
+            bool? canContainUnityScriptMethods = null;
 
-    public override void Initialize(AnalysisContext context)
-    {
-        base.Initialize(context);
+            SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
 
-        context.RegisterSyntaxNodeAction(
-            f => AnalyzeTypeDeclaration(f),
-            SyntaxKind.ClassDeclaration,
-            SyntaxKind.StructDeclaration,
-            SyntaxKind.RecordStructDeclaration);
-    }
+            UnusedMemberWalker walker = null;
 
-    [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.")]
-    private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var typeDeclaration = (TypeDeclarationSyntax)context.Node;
-
-        if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
-            return;
-
-        SemanticModel semanticModel = context.SemanticModel;
-        CancellationToken cancellationToken = context.CancellationToken;
-
-        INamedTypeSymbol declarationSymbol = null;
-        ImmutableArray<AttributeData> attributes = default;
-
-        if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
-        {
-            declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
-
-            attributes = declarationSymbol.GetAttributes();
-
-            if (attributes.Any(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute)))
-                return;
-        }
-
-        bool? canContainUnityScriptMethods = null;
-
-        SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
-
-        UnusedMemberWalker walker = null;
-
-        foreach (MemberDeclarationSyntax member in members)
-        {
-            if (member.ContainsDiagnostics)
-                continue;
-
-            if (member.ContainsUnbalancedIfElseDirectives(member.Span))
-                continue;
-
-            switch (member.Kind())
+            foreach (MemberDeclarationSyntax member in members)
             {
-                case SyntaxKind.DelegateDeclaration:
-                    {
-                        var declaration = (DelegateDeclarationSyntax)member;
+                if (member.ContainsDiagnostics)
+                    continue;
 
-                        if (SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                if (member.ContainsUnbalancedIfElseDirectives(member.Span))
+                    continue;
+
+                switch (member.Kind())
+                {
+                    case SyntaxKind.DelegateDeclaration:
                         {
-                            if (walker == null)
-                                walker = UnusedMemberWalker.GetInstance();
+                            var declaration = (DelegateDeclarationSyntax)member;
 
-                            walker.AddDelegate(declaration.Identifier.ValueText, declaration);
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.EventDeclaration:
-                    {
-                        var declaration = (EventDeclarationSyntax)member;
-
-                        if (declaration.ExplicitInterfaceSpecifier == null
-                            && SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker == null)
-                                walker = UnusedMemberWalker.GetInstance();
-
-                            walker.AddNode(declaration.Identifier.ValueText, declaration);
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.EventFieldDeclaration:
-                    {
-                        var declaration = (EventFieldDeclarationSyntax)member;
-
-                        if (SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker == null)
-                                walker = UnusedMemberWalker.GetInstance();
-
-                            walker.AddNodes(declaration.Declaration);
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.FieldDeclaration:
-                    {
-                        var declaration = (FieldDeclarationSyntax)member;
-                        SyntaxTokenList modifiers = declaration.Modifiers;
-
-                        if (SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker == null)
-                                walker = UnusedMemberWalker.GetInstance();
-
-                            walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.MethodDeclaration:
-                    {
-                        var declaration = (MethodDeclarationSyntax)member;
-
-                        SyntaxTokenList modifiers = declaration.Modifiers;
-
-                        if (declaration.ExplicitInterfaceSpecifier != null
-                            || declaration.AttributeLists.Any()
-                            || SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility(declaration) != Accessibility.Private)
-                        {
-                            break;
-                        }
-
-                        string methodName = declaration.Identifier.ValueText;
-
-                        if (IsMainMethod(declaration, modifiers, methodName))
-                            break;
-
-                        if (declaration.ReturnsVoid()
-                            && context.GetSuppressUnityScriptMethods() == true)
-                        {
-                            if (canContainUnityScriptMethods == null)
+                            if (SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                             {
-                                if (declarationSymbol == null)
-                                    declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
+                                if (walker is null)
+                                    walker = UnusedMemberWalker.GetInstance();
 
-                                canContainUnityScriptMethods = declarationSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
+                                walker.AddDelegate(declaration.Identifier.ValueText, declaration);
                             }
 
-                            if (canContainUnityScriptMethods == true
-                                && UnityScriptMethods.MethodNames.Contains(methodName))
+                            break;
+                        }
+                    case SyntaxKind.EventDeclaration:
+                        {
+                            var declaration = (EventDeclarationSyntax)member;
+
+                            if (declaration.ExplicitInterfaceSpecifier is null
+                                && SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                            {
+                                if (walker is null)
+                                    walker = UnusedMemberWalker.GetInstance();
+
+                                walker.AddNode(declaration.Identifier.ValueText, declaration);
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.EventFieldDeclaration:
+                        {
+                            var declaration = (EventFieldDeclarationSyntax)member;
+
+                            if (SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                            {
+                                if (walker is null)
+                                    walker = UnusedMemberWalker.GetInstance();
+
+                                walker.AddNodes(declaration.Declaration);
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.FieldDeclaration:
+                        {
+                            var declaration = (FieldDeclarationSyntax)member;
+                            SyntaxTokenList modifiers = declaration.Modifiers;
+
+                            if (SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                            {
+                                if (walker is null)
+                                    walker = UnusedMemberWalker.GetInstance();
+
+                                walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.MethodDeclaration:
+                        {
+                            var declaration = (MethodDeclarationSyntax)member;
+
+                            SyntaxTokenList modifiers = declaration.Modifiers;
+
+                            if (declaration.ExplicitInterfaceSpecifier is not null
+                                || declaration.AttributeLists.Any()
+                                || SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility(declaration) != Accessibility.Private)
                             {
                                 break;
                             }
-                        }
 
-                        if (walker == null)
-                            walker = UnusedMemberWalker.GetInstance();
+                            string methodName = declaration.Identifier.ValueText;
 
-                        walker.AddNode(methodName, declaration);
+                            if (IsMainMethod(declaration, modifiers, methodName))
+                                break;
 
-                        break;
-                    }
-                case SyntaxKind.PropertyDeclaration:
-                    {
-                        var declaration = (PropertyDeclarationSyntax)member;
+                            if (declaration.ReturnsVoid()
+                                && context.GetSuppressUnityScriptMethods() == true)
+                            {
+                                if (canContainUnityScriptMethods is null)
+                                {
+                                    if (declarationSymbol is null)
+                                        declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
 
-                        if (declaration.ExplicitInterfaceSpecifier == null
-                            && SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker == null)
+                                    canContainUnityScriptMethods = declarationSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
+                                }
+
+                                if (canContainUnityScriptMethods == true
+                                    && UnityScriptMethods.MethodNames.Contains(methodName))
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (walker is null)
                                 walker = UnusedMemberWalker.GetInstance();
 
-                            walker.AddNode(declaration.Identifier.ValueText, declaration);
+                            walker.AddNode(methodName, declaration);
+
+                            break;
                         }
+                    case SyntaxKind.PropertyDeclaration:
+                        {
+                            var declaration = (PropertyDeclarationSyntax)member;
 
-                        break;
-                    }
-            }
-        }
+                            if (declaration.ExplicitInterfaceSpecifier is null
+                                && SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                            {
+                                if (walker is null)
+                                    walker = UnusedMemberWalker.GetInstance();
 
-        if (walker == null)
-            return;
+                                walker.AddNode(declaration.Identifier.ValueText, declaration);
+                            }
 
-        try
-        {
-            Collection<NodeSymbolInfo> nodes = walker.Nodes;
-
-            if (ShouldAnalyzeDebuggerDisplayAttribute()
-                && nodes.Any(f => f.CanBeInDebuggerDisplayAttribute))
-            {
-                if (attributes.IsDefault)
-                    attributes = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken).GetAttributes();
-
-                string value = attributes
-                    .FirstOrDefault(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))?
-                    .ConstructorArguments
-                    .SingleOrDefault(shouldThrow: false)
-                    .Value?
-                    .ToString();
-
-                if (value != null)
-                    RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(value, ref nodes);
-            }
-
-            if (nodes.Count > 0)
-            {
-                walker.SemanticModel = semanticModel;
-                walker.CancellationToken = cancellationToken;
-
-                walker.Visit(typeDeclaration);
-
-                foreach (NodeSymbolInfo node in nodes)
-                    ReportDiagnostic(context, node.Node);
-            }
-        }
-        finally
-        {
-            UnusedMemberWalker.Free(walker);
-        }
-
-        bool ShouldAnalyzeDebuggerDisplayAttribute()
-        {
-            foreach (AttributeListSyntax attributeList in typeDeclaration.AttributeLists)
-            {
-                foreach (AttributeSyntax attribute in attributeList.Attributes)
-                {
-                    if (attribute.ArgumentList?.Arguments.Count(f => f.NameEquals == null) == 1)
-                        return true;
+                            break;
+                        }
                 }
             }
 
-            return false;
-        }
-    }
+            if (walker is null)
+                return;
 
-    private static bool IsMainMethod(MethodDeclarationSyntax methodDeclaration, SyntaxTokenList modifiers, string methodName)
-    {
-        return string.Equals(methodName, "Main", StringComparison.Ordinal)
-            && modifiers.Contains(SyntaxKind.StaticKeyword)
-            && methodDeclaration.TypeParameterList == null
-            && methodDeclaration.ParameterList?.Parameters.Count <= 1;
-    }
-
-    private static void RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(
-        string value,
-        ref Collection<NodeSymbolInfo> nodes)
-    {
-        int length = value.Length;
-
-        if (length == 0)
-            return;
-
-        for (int i = 0; i < length; i++)
-        {
-            switch (value[i])
+            try
             {
-                case '{':
+                Collection<NodeSymbolInfo> nodes = walker.Nodes;
+
+                if (ShouldAnalyzeDebuggerDisplayAttribute()
+                    && nodes.Any(f => f.CanBeInDebuggerDisplayAttribute))
+                {
+                    if (attributes.IsDefault)
+                        attributes = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken).GetAttributes();
+
+                    string value = attributes
+                        .FirstOrDefault(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))?
+                        .ConstructorArguments
+                        .SingleOrDefault(shouldThrow: false)
+                        .Value?
+                        .ToString();
+
+                    if (value is not null)
+                        RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(value, ref nodes);
+                }
+
+                if (nodes.Count > 0)
+                {
+                    walker.SemanticModel = semanticModel;
+                    walker.CancellationToken = cancellationToken;
+
+                    walker.Visit(typeDeclaration);
+
+                    foreach (NodeSymbolInfo node in nodes)
+                        ReportDiagnostic(context, node.Node);
+                }
+            }
+            finally
+            {
+                UnusedMemberWalker.Free(walker);
+            }
+
+            bool ShouldAnalyzeDebuggerDisplayAttribute()
+            {
+                foreach (AttributeListSyntax attributeList in typeDeclaration.AttributeLists)
+                {
+                    foreach (AttributeSyntax attribute in attributeList.Attributes)
                     {
-                        i++;
-
-                        int startIndex = i;
-
-                        while (i < length)
-                        {
-                            char ch = value[i];
-
-                            if (ch == '}'
-                                || ch == ','
-                                || ch == '(')
-                            {
-                                int nameLength = i - startIndex;
-
-                                if (nameLength > 0)
-                                {
-                                    for (int j = nodes.Count - 1; j >= 0; j--)
-                                    {
-                                        NodeSymbolInfo nodeSymbolInfo = nodes[j];
-
-                                        if (nodeSymbolInfo.CanBeInDebuggerDisplayAttribute
-                                            && string.CompareOrdinal(nodeSymbolInfo.Name, 0, value, startIndex, nameLength) == 0)
-                                        {
-                                            nodes.RemoveAt(j);
-
-                                            if (nodes.Count == 0)
-                                                return;
-                                        }
-                                    }
-                                }
-
-                                if (ch != '}')
-                                {
-                                    i++;
-
-                                    while (i < length
-                                        && value[i] != '}')
-                                    {
-                                        i++;
-                                    }
-                                }
-
-                                break;
-                            }
-
-                            i++;
-                        }
-
-                        break;
+                        if (attribute.ArgumentList?.Arguments.Count(f => f.NameEquals is null) == 1)
+                            return true;
                     }
-                case '}':
-                    {
-                        return;
-                    }
-                case '\\':
-                    {
-                        i++;
-                        break;
-                    }
+                }
+
+                return false;
             }
         }
-    }
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
-    {
-        if (node is VariableDeclaratorSyntax variableDeclarator)
+        private static bool IsMainMethod(MethodDeclarationSyntax methodDeclaration, SyntaxTokenList modifiers, string methodName)
         {
-            var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
+            return string.Equals(methodName, "Main", StringComparison.Ordinal)
+                && modifiers.Contains(SyntaxKind.StaticKeyword)
+                && methodDeclaration.TypeParameterList is null
+                && methodDeclaration.ParameterList?.Parameters.Count <= 1;
+        }
 
-            if (variableDeclaration.Variables.Count == 1)
+        private static void RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(
+            string value,
+            ref Collection<NodeSymbolInfo> nodes)
+        {
+            int length = value.Length;
+
+            if (length == 0)
+                return;
+
+            for (int i = 0; i < length; i++)
             {
-                ReportDiagnostic(context, variableDeclaration.Parent, CSharpFacts.GetTitle(variableDeclaration.Parent));
+                switch (value[i])
+                {
+                    case '{':
+                        {
+                            i++;
+
+                            int startIndex = i;
+
+                            while (i < length)
+                            {
+                                char ch = value[i];
+
+                                if (ch == '}'
+                                    || ch == ','
+                                    || ch == '(')
+                                {
+                                    int nameLength = i - startIndex;
+
+                                    if (nameLength > 0)
+                                    {
+                                        for (int j = nodes.Count - 1; j >= 0; j--)
+                                        {
+                                            NodeSymbolInfo nodeSymbolInfo = nodes[j];
+
+                                            if (nodeSymbolInfo.CanBeInDebuggerDisplayAttribute
+                                                && string.CompareOrdinal(nodeSymbolInfo.Name, 0, value, startIndex, nameLength) == 0)
+                                            {
+                                                nodes.RemoveAt(j);
+
+                                                if (nodes.Count == 0)
+                                                    return;
+                                            }
+                                        }
+                                    }
+
+                                    if (ch != '}')
+                                    {
+                                        i++;
+
+                                        while (i < length
+                                            && value[i] != '}')
+                                        {
+                                            i++;
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                                i++;
+                            }
+
+                            break;
+                        }
+                    case '}':
+                        {
+                            return;
+                        }
+                    case '\\':
+                        {
+                            i++;
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
+        {
+            if (node is VariableDeclaratorSyntax variableDeclarator)
+            {
+                var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
+
+                if (variableDeclaration.Variables.Count == 1)
+                {
+                    ReportDiagnostic(context, variableDeclaration.Parent, CSharpFacts.GetTitle(variableDeclaration.Parent));
+                }
+                else
+                {
+                    ReportDiagnostic(context, variableDeclarator, CSharpFacts.GetTitle(variableDeclaration.Parent));
+                }
             }
             else
             {
-                ReportDiagnostic(context, variableDeclarator, CSharpFacts.GetTitle(variableDeclaration.Parent));
+                ReportDiagnostic(context, node, CSharpFacts.GetTitle(node));
             }
         }
-        else
-        {
-            ReportDiagnostic(context, node, CSharpFacts.GetTitle(node));
-        }
-    }
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node, string declarationName)
-    {
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnusedMemberDeclaration, CSharpUtility.GetIdentifier(node), declarationName);
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node, string declarationName)
+        {
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnusedMemberDeclaration, CSharpUtility.GetIdentifier(node), declarationName);
+        }
     }
 }

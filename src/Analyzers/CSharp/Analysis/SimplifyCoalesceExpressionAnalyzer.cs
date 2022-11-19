@@ -113,7 +113,7 @@ public sealed class SimplifyCoalesceExpressionAnalyzer : BaseDiagnosticAnalyzer
         {
             object value = optional.Value;
 
-            if (value != null)
+            if (value is not null)
             {
                 return BinaryExpressionPart.Right;
             }
@@ -160,7 +160,7 @@ public sealed class SimplifyCoalesceExpressionAnalyzer : BaseDiagnosticAnalyzer
     {
         TypeSyntax type = defaultExpression.Type;
 
-        if (type != null)
+        if (type is not null)
         {
             if (type.IsKind(SyntaxKind.NullableType))
                 return true;

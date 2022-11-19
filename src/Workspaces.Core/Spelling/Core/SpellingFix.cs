@@ -19,7 +19,7 @@ internal readonly struct SpellingFix : IEquatable<SpellingFix>
 
     public SpellingFixKind Kind { get; }
 
-    public bool IsDefault => Value == null;
+    public bool IsDefault => Value is null;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{Kind}  {Value}";

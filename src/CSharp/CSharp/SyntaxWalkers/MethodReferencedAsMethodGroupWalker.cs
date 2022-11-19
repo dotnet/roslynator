@@ -105,7 +105,7 @@ internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
         }
         finally
         {
-            if (walker != null)
+            if (walker is not null)
                 Free(walker);
         }
 
@@ -116,10 +116,10 @@ internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
     {
         MethodReferencedAsMethodGroupWalker walker = _cachedInstance;
 
-        if (walker != null)
+        if (walker is not null)
         {
-            Debug.Assert(walker.Symbol == null);
-            Debug.Assert(walker.SemanticModel == null);
+            Debug.Assert(walker.Symbol is null);
+            Debug.Assert(walker.SemanticModel is null);
             Debug.Assert(walker.CancellationToken == default);
 
             _cachedInstance = null;

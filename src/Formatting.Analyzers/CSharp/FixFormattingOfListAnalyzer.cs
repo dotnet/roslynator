@@ -145,7 +145,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
     {
         TNode first = nodes.FirstOrDefault();
 
-        if (first == null)
+        if (first is null)
             return;
 
         TextSpan span = nodes.GetSpan(includeExteriorTrivia: false);
@@ -208,7 +208,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
 
                         LambdaBlock lambdaBlock = GetLambdaBlock(argument, lines ??= first.SyntaxTree.GetText().Lines);
 
-                        if (lambdaBlock.Block != null)
+                        if (lambdaBlock.Block is not null)
                         {
                             SyntaxToken token = lambdaBlock.Token;
                             SyntaxTriviaList leading = token.LeadingTrivia;
@@ -235,7 +235,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                         }
                     }
 
-                    if (lines == null)
+                    if (lines is null)
                         lines = first.SyntaxTree.GetText().Lines;
 
                     int lineIndex = lines.IndexOf(span.Start);
@@ -374,7 +374,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             }
         }
 
-        if (block == null)
+        if (block is null)
         {
             startIndex = line.EndIncludingLineBreak;
             openBrace = node.FindToken(startIndex);
@@ -391,7 +391,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             }
         }
 
-        if (block != null)
+        if (block is not null)
         {
             int endIndex = lines.GetLineFromPosition(node.Span.End).Start;
             SyntaxToken closeBrace = node.FindToken(endIndex);

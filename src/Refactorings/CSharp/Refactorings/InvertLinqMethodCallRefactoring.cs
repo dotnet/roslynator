@@ -25,7 +25,7 @@ internal static class InvertLinqMethodCallRefactoring
     {
         IMethodSymbol methodSymbol = semanticModel.GetExtensionMethodInfo(invocation, context.CancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol, fromMethodName))
@@ -33,7 +33,7 @@ internal static class InvertLinqMethodCallRefactoring
 
         ExpressionSyntax expression = GetExpression(invocation);
 
-        if (expression == null)
+        if (expression is null)
             return false;
 
         context.RegisterRefactoring(

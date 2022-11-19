@@ -18,7 +18,7 @@ internal static class InvertBinaryExpressionRefactoring
 
         binaryExpression = GetBinaryExpression(binaryExpression, context.Span);
 
-        if (binaryExpression == null)
+        if (binaryExpression is null)
             return;
 
         context.RegisterRefactoring(

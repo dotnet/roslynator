@@ -39,7 +39,7 @@ public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosti
 
         UsingDirectiveSyntax usingDirective = compilationUnit.Usings.FirstOrDefault();
 
-        if (usingDirective == null)
+        if (usingDirective is null)
             return;
 
         SyntaxTriviaList.Reversed.Enumerator en = usingDirective.GetLeadingTrivia().Reverse().GetEnumerator();

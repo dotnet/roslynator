@@ -42,18 +42,18 @@ internal static class MergeLocalDeclarationsRefactoring
 
             TypeSyntax type = localDeclaration.Declaration?.Type;
 
-            if (type == null)
+            if (type is null)
                 return false;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (typeSymbol.IsErrorType())
                 return false;
 
-            if (prevTypeSymbol != null && !SymbolEqualityComparer.Default.Equals(prevTypeSymbol, typeSymbol))
+            if (prevTypeSymbol is not null && !SymbolEqualityComparer.Default.Equals(prevTypeSymbol, typeSymbol))
                 return false;
 
             prevTypeSymbol = typeSymbol;

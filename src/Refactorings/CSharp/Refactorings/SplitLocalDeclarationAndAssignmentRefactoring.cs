@@ -34,7 +34,7 @@ internal static class SplitLocalDeclarationAndAssignmentRefactoring
 
         ExpressionSyntax value = localInfo.Value;
 
-        if (value == null)
+        if (value is null)
             return;
 
         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -81,7 +81,7 @@ internal static class SplitLocalDeclarationAndAssignmentRefactoring
 
         VariableDeclarationSyntax newDeclaration = localInfo.Declaration.ReplaceNode(declarator, newDeclarator);
 
-        if (type != null)
+        if (type is not null)
             newDeclaration = newDeclaration.WithType(type.WithTriviaFrom(newDeclaration.Type));
 
         LocalDeclarationStatementSyntax newLocalStatement = localStatement

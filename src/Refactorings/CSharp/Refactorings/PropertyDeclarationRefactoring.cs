@@ -104,7 +104,7 @@ internal static class PropertyDeclarationRefactoring
     {
         TypeSyntax type = propertyDeclaration.Type;
 
-        if (type == null)
+        if (type is null)
             return;
 
         SyntaxToken identifier = propertyDeclaration.Identifier;

@@ -41,7 +41,7 @@ public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiag
 
         CatchDeclarationSyntax declaration = catchClause.Declaration;
 
-        if (declaration == null)
+        if (declaration is null)
             return;
 
         SemanticModel semanticModel = context.SemanticModel;
@@ -69,11 +69,11 @@ public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiag
         }
         finally
         {
-            if (walker != null)
+            if (walker is not null)
                 Walker.Free(walker);
         }
 
-        if (expression != null)
+        if (expression is not null)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
@@ -103,7 +103,7 @@ public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiag
         {
             ExpressionSyntax expression = node.Expression;
 
-            if (expression != null)
+            if (expression is not null)
             {
                 ISymbol symbol = SemanticModel.GetSymbol(expression, CancellationToken);
 
@@ -118,12 +118,12 @@ public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiag
         {
             Walker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker.Symbol == null);
-                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.Symbol is null);
+                Debug.Assert(walker.SemanticModel is null);
                 Debug.Assert(walker.CancellationToken == default);
-                Debug.Assert(walker.ThrowStatement == null);
+                Debug.Assert(walker.ThrowStatement is null);
 
                 _cachedInstance = null;
                 return walker;

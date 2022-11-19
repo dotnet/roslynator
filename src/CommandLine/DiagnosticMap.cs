@@ -39,7 +39,7 @@ internal sealed class DiagnosticMap
     {
         get
         {
-            if (_analyzersById == null)
+            if (_analyzersById is null)
                 Interlocked.CompareExchange(ref _analyzersById, LoadAnalyzersById(), null);
 
             return _analyzersById;
@@ -61,7 +61,7 @@ internal sealed class DiagnosticMap
     {
         get
         {
-            if (_supportedDiagnosticsByPrefix == null)
+            if (_supportedDiagnosticsByPrefix is null)
                 Interlocked.CompareExchange(ref _supportedDiagnosticsByPrefix, LoadSupportedDiagnosticsByPrefix(), null);
 
             return _supportedDiagnosticsByPrefix;
@@ -72,7 +72,7 @@ internal sealed class DiagnosticMap
     {
         get
         {
-            if (_fixersById == null)
+            if (_fixersById is null)
                 Interlocked.CompareExchange(ref _fixersById, LoadFixersById(), null);
 
             return _fixersById;
@@ -94,7 +94,7 @@ internal sealed class DiagnosticMap
     {
         get
         {
-            if (_fixableDiagnosticIdsByPrefix == null)
+            if (_fixableDiagnosticIdsByPrefix is null)
                 Interlocked.CompareExchange(ref _fixableDiagnosticIdsByPrefix, LoadFixableDiagnosticIdsByPrefix(), null);
 
             return _fixableDiagnosticIdsByPrefix;
@@ -105,7 +105,7 @@ internal sealed class DiagnosticMap
     {
         get
         {
-            if (_diagnosticsById == null)
+            if (_diagnosticsById is null)
                 Interlocked.CompareExchange(ref _diagnosticsById, LoadDiagnosticsById(), null);
 
             return _diagnosticsById;
@@ -192,7 +192,7 @@ internal sealed class DiagnosticMap
     {
         return Fixers
             .Select(f => f.GetFixAllProvider())
-            .Where(f => f != null)
+            .Where(f => f is not null)
             .Distinct()
             .ToImmutableArray();
     }

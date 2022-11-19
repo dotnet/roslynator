@@ -47,17 +47,17 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
 
         ExpressionSyntax accessedExpression = GetAccessedExpression(parenthesizedExpression.Parent);
 
-        if (accessedExpression == null)
+        if (accessedExpression is null)
             return;
 
         TypeSyntax type = castExpression.Type;
 
-        if (type == null)
+        if (type is null)
             return;
 
         ExpressionSyntax expression = castExpression.Expression;
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         SemanticModel semanticModel = context.SemanticModel;
@@ -88,7 +88,7 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
 
         INamedTypeSymbol containingType = accessedSymbol?.ContainingType;
 
-        if (containingType == null)
+        if (containingType is null)
             return;
 
         if (typeSymbol.TypeKind == TypeKind.Interface)
@@ -124,7 +124,7 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
     {
         ISymbol implementation = typeSymbol.FindImplementationForInterfaceMember(symbol);
 
-        if (implementation == null)
+        if (implementation is null)
             return false;
 
         switch (implementation.Kind)
@@ -173,7 +173,7 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
         {
             INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 
-            while (containingType != null)
+            while (containingType is not null)
             {
                 if (SymbolEqualityComparer.Default.Equals(containingType, expressionTypeSymbol))
                     return true;
@@ -190,7 +190,7 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
             if (SymbolEqualityComparer.Default.Equals(containingType?.ContainingAssembly, expressionTypeSymbol.ContainingAssembly))
                 return true;
 
-            while (containingType != null)
+            while (containingType is not null)
             {
                 if (SymbolEqualityComparer.Default.Equals(containingType, expressionTypeSymbol))
                     return true;
@@ -227,7 +227,7 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
 
         ExtensionMethodSymbolInfo extensionInfo = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken);
 
-        if (extensionInfo.Symbol == null)
+        if (extensionInfo.Symbol is null)
             return;
 
         if (!SymbolUtility.IsLinqCast(extensionInfo.Symbol))
@@ -235,7 +235,7 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
 
         ITypeSymbol typeArgument = extensionInfo.ReducedSymbol.TypeArguments.SingleOrDefault(shouldThrow: false);
 
-        if (typeArgument == null)
+        if (typeArgument is null)
             return;
 
         var memberAccessExpressionType = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken) as INamedTypeSymbol;

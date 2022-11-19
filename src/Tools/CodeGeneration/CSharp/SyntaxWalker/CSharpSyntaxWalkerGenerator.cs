@@ -96,7 +96,7 @@ public partial class CSharpSyntaxWalkerGenerator
 
         void AddIfNotNull(MemberDeclarationSyntax memberDeclaration)
         {
-            if (memberDeclaration != null)
+            if (memberDeclaration is not null)
                 members.Add(memberDeclaration);
         }
     }
@@ -308,7 +308,7 @@ public partial class CSharpSyntaxWalkerGenerator
 
         string methodName = null;
 
-        if (methodSymbol != null)
+        if (methodSymbol is not null)
         {
             methodName = methodSymbol.Name;
         }
@@ -317,7 +317,7 @@ public partial class CSharpSyntaxWalkerGenerator
             methodName = GetMethodName(typeSymbol);
         }
 
-        if (methodName != null)
+        if (methodName is not null)
         {
             string typeName = typeSymbol.Name;
 
@@ -348,7 +348,7 @@ public partial class CSharpSyntaxWalkerGenerator
 
         IMethodSymbol methodSymbol = FindVisitMethod(propertyType);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
         {
             if (EliminateDefaultVisit)
             {
@@ -397,7 +397,7 @@ public partial class CSharpSyntaxWalkerGenerator
 
         string methodName = null;
 
-        if (methodSymbol != null)
+        if (methodSymbol is not null)
         {
             methodName = methodSymbol.Name;
         }
@@ -408,7 +408,7 @@ public partial class CSharpSyntaxWalkerGenerator
 
         StatementSyntax statement;
 
-        if (methodName != null)
+        if (methodName is not null)
         {
             string forEachVariableName = context.CreateVariableName(typeSymbol.Name.Remove(typeSymbol.Name.Length - 6));
 
@@ -471,7 +471,7 @@ public partial class CSharpSyntaxWalkerGenerator
 
             typeSymbol = typeSymbol.BaseType;
         }
-        while (typeSymbol != null);
+        while (typeSymbol is not null);
 
         throw new ArgumentException("", nameof(typeSymbol));
     }

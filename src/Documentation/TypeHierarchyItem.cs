@@ -32,7 +32,7 @@ internal class TypeHierarchyItem
 
             TypeHierarchyItem parent = Parent;
 
-            while (parent != null)
+            while (parent is not null)
             {
                 depth++;
                 parent = parent.Parent;
@@ -48,13 +48,13 @@ internal class TypeHierarchyItem
         get { return $"Depth = {Depth} {Symbol.ToDisplayString(Roslynator.SymbolDisplayFormats.Test)}"; }
     }
 
-    public bool HasChildren => content != null;
+    public bool HasChildren => content is not null;
 
     public IEnumerable<TypeHierarchyItem> Children()
     {
         TypeHierarchyItem e = content;
 
-        if (e != null)
+        if (e is not null)
         {
             do
             {
@@ -79,7 +79,7 @@ internal class TypeHierarchyItem
     {
         TypeHierarchyItem c = ((self) ? this : Parent);
 
-        while (c != null)
+        while (c is not null)
         {
             yield return c;
 
@@ -110,7 +110,7 @@ internal class TypeHierarchyItem
         {
             TypeHierarchyItem first = c?.content?.next;
 
-            if (first != null)
+            if (first is not null)
             {
                 e = first;
             }
@@ -128,7 +128,7 @@ internal class TypeHierarchyItem
                 e = e.next;
             }
 
-            if (e != null)
+            if (e is not null)
                 yield return e;
 
             c = e;

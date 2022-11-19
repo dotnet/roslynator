@@ -42,13 +42,13 @@ internal static class CheckParameterForNullRefactoring
             if (IsValid(parameter, semanticModel, context.CancellationToken)
                 && CanRefactor(parameter, semanticModel, context.CancellationToken))
             {
-                if (singleParameter == null)
+                if (singleParameter is null)
                 {
                     singleParameter = parameter;
                 }
                 else
                 {
-                    if (builder == null)
+                    if (builder is null)
                         builder = ImmutableArray.CreateBuilder<ParameterSyntax>(selectedParameters.Count);
 
                     builder.Add(singleParameter);
@@ -57,11 +57,11 @@ internal static class CheckParameterForNullRefactoring
             }
         }
 
-        if (builder != null)
+        if (builder is not null)
         {
             RegisterRefactoring(context, builder.ToImmutableArray(), "parameters", semanticModel);
         }
-        else if (singleParameter != null)
+        else if (singleParameter is not null)
         {
             RegisterRefactoring(context, singleParameter, semanticModel);
         }
@@ -95,7 +95,7 @@ internal static class CheckParameterForNullRefactoring
     {
         BlockSyntax body = GetBody(parameter);
 
-        if (body == null)
+        if (body is null)
             return false;
 
         IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
@@ -209,9 +209,9 @@ internal static class CheckParameterForNullRefactoring
 
         parent = parent.Parent;
 
-        Debug.Assert(parent != null);
+        Debug.Assert(parent is not null);
 
-        if (parent == null)
+        if (parent is null)
             return null;
 
         switch (parent.Kind())
@@ -247,7 +247,7 @@ internal static class CheckParameterForNullRefactoring
 
     private static bool IsValid(ParameterSyntax parameter, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        return parameter.Type != null
+        return parameter.Type is not null
             && !parameter.Identifier.IsMissing
             && parameter.IsParentKind(SyntaxKind.ParameterList)
             && parameter.Default?.Value?.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression) != true

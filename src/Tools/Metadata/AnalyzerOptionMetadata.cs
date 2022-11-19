@@ -46,7 +46,7 @@ public class AnalyzerOptionMetadata
     public AnalyzerMetadata CreateAnalyzerMetadata(AnalyzerMetadata parent)
     {
         return new AnalyzerMetadata(
-            id: (Id != null) ? parent.Id + Id : null,
+            id: (Id is not null) ? parent.Id + Id : null,
             identifier: Identifier,
             title: Title,
             messageFormat: Title,

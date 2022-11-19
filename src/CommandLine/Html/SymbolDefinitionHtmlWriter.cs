@@ -178,7 +178,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
     public override void WriteStartType(INamedTypeSymbol typeSymbol)
     {
-        if (typeSymbol != null)
+        if (typeSymbol is not null)
         {
             WriteLocalRef(typeSymbol);
 
@@ -233,7 +233,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
     public override void WriteTypeDefinition(INamedTypeSymbol typeSymbol, SymbolDisplayFormat format = null)
     {
-        if (typeSymbol != null)
+        if (typeSymbol is not null)
         {
             if (DocumentationDisplayMode == DocumentationDisplayMode.Xml)
                 WriteDocumentationComment(typeSymbol);
@@ -405,7 +405,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
         string url = SourceReferenceProvider?.GetSourceReferences(symbol).FirstOrDefault().Url
             ?? WellKnownExternalUrlProviders.MicrosoftDocs.CreateUrl(symbol).Url;
 
-        if (url != null)
+        if (url is not null)
         {
             WriteStartElement("a");
             WriteAttributeString("href", url);
@@ -416,7 +416,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
         base.WriteDefinitionName(symbol, format);
 
-        if (url != null)
+        if (url is not null)
             WriteEndElement();
 
         WriteEndElement();
@@ -442,7 +442,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
             {
                 string url = WellKnownExternalUrlProviders.MicrosoftDocs.CreateUrl(symbol).Url;
 
-                if (url != null)
+                if (url is not null)
                 {
                     if (shouldWriteContainingNamespace)
                         WriteContainingNamespace(symbol);
@@ -478,7 +478,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                 && !symbol.ContainingNamespace.IsGlobalNamespace
                 && Format.Includes(SymbolDefinitionPartFilter.ContainingNamespace)
                 && !CSharpFacts.IsPredefinedType(((INamedTypeSymbol)symbol).SpecialType)
-                && (format == null || format.TypeQualificationStyle == SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+                && (format is null || format.TypeQualificationStyle == SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
         }
 
         void WriteName()
@@ -504,7 +504,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                 .GetXmlDocumentation(symbol)?
                 .GetElement(WellKnownXmlTags.Param, "name", part.ToString());
 
-            if (element != null)
+            if (element is not null)
             {
                 WriteStartElement("span");
                 WriteStartAttribute("title");
@@ -514,7 +514,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
             base.WriteParameterName(symbol, part);
 
-            if (element != null)
+            if (element is not null)
                 WriteEndElement();
         }
         else
@@ -614,7 +614,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
         IEnumerable<string> elementsText = DocumentationProvider?.GetXmlDocumentation(symbol)?.GetElementsAsText(skipEmptyElement: true, makeSingleLine: true);
 
-        if (elementsText == null)
+        if (elementsText is null)
             return;
 
         foreach (string elementText in elementsText)
@@ -633,7 +633,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                         {
                             int lineNumber = ((IXmlLineInfo)e).LineNumber;
 
-                            if (elementsByLine == null)
+                            if (elementsByLine is null)
                                 elementsByLine = new Dictionary<int, List<XElement>>();
 
                             if (elementsByLine.ContainsKey(lineNumber))
@@ -656,11 +656,11 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
                 string line = null;
 
-                while ((line = sr.ReadLine()) != null)
+                while ((line = sr.ReadLine()) is not null)
                 {
                     Write("/// ");
 
-                    if (elementsByLine != null
+                    if (elementsByLine is not null
                         && elementsByLine.TryGetValue(lineNumber, out List<XElement> elements))
                     {
                         int lastPos = 0;
@@ -676,7 +676,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                                     {
                                         string name = e.Attribute("name")?.Value;
 
-                                        if (name != null)
+                                        if (name is not null)
                                         {
                                             Write(line.Substring(lastPos, linePos - lastPos));
                                             Write(name);
@@ -689,13 +689,13 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                                     {
                                         string commentId = e.Attribute("cref")?.Value;
 
-                                        if (commentId != null)
+                                        if (commentId is not null)
                                         {
                                             Write(line.Substring(lastPos, linePos - lastPos));
 
                                             ISymbol s = DocumentationProvider.GetFirstSymbolForDeclarationId(commentId)?.OriginalDefinition;
 
-                                            if (s != null)
+                                            if (s is not null)
                                             {
                                                 if (s.Kind == SymbolKind.Field
                                                     && s.ContainingType.TypeKind == TypeKind.Enum)
@@ -720,7 +720,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                                         {
                                             string langword = e.Attribute("langword")?.Value;
 
-                                            if (langword != null)
+                                            if (langword is not null)
                                             {
                                                 Write(line.Substring(lastPos, linePos - lastPos));
                                                 Write(langword);
@@ -754,12 +754,12 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
         SymbolXmlDocumentation xmlDocumentation = DocumentationProvider?.GetXmlDocumentation(symbol);
 
-        if (xmlDocumentation == null)
+        if (xmlDocumentation is null)
             return;
 
         XElement summaryElement = xmlDocumentation.GetElement(WellKnownXmlTags.Summary);
 
-        if (summaryElement != null)
+        if (summaryElement is not null)
         {
             WriteStartAttribute("title");
             WriteDocumentationCommentToolTip(summaryElement);
@@ -773,7 +773,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
             {
                 hasExceptions = true;
 
-                if (summaryElement != null)
+                if (summaryElement is not null)
                 {
                     Write("\n\n");
                 }
@@ -790,11 +790,11 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
                     string commentId = en.Current.Attribute("cref").Value;
 
-                    if (commentId != null)
+                    if (commentId is not null)
                     {
                         ISymbol exceptionSymbol = DocumentationProvider.GetFirstSymbolForDeclarationId(commentId);
 
-                        if (exceptionSymbol != null)
+                        if (exceptionSymbol is not null)
                         {
                             Write(exceptionSymbol.ToDisplayParts(Format.GetFormat()));
                         }
@@ -808,7 +808,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
             }
         }
 
-        if (summaryElement != null
+        if (summaryElement is not null
             || hasExceptions)
         {
             WriteEndAttribute();
@@ -861,7 +861,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                                 {
                                     string parameterName = e.Attribute("name")?.Value;
 
-                                    if (parameterName != null)
+                                    if (parameterName is not null)
                                         Write(parameterName);
 
                                     break;
@@ -870,11 +870,11 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                                 {
                                     string commentId = e.Attribute("cref")?.Value;
 
-                                    if (commentId != null)
+                                    if (commentId is not null)
                                     {
                                         ISymbol symbol = DocumentationProvider.GetFirstSymbolForDeclarationId(commentId);
 
-                                        if (symbol != null)
+                                        if (symbol is not null)
                                         {
                                             Write(symbol.ToDisplayParts(Format.GetFormat()));
                                         }
@@ -890,7 +890,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                                 {
                                     string typeParameterName = e.Attribute("name")?.Value;
 
-                                    if (typeParameterName != null)
+                                    if (typeParameterName is not null)
                                         Write(typeParameterName);
 
                                     break;
@@ -931,7 +931,7 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
 
     public override void Close()
     {
-        if (_writer != null)
+        if (_writer is not null)
         {
             try
             {

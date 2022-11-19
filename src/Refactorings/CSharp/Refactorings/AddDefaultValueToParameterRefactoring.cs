@@ -15,7 +15,7 @@ internal static class AddDefaultValueToParameterRefactoring
     {
         SyntaxNode parent = parameter.Parent as BaseParameterListSyntax;
 
-        if (parent == null)
+        if (parent is null)
             return;
 
         parent = parent.Parent;
@@ -30,7 +30,7 @@ internal static class AddDefaultValueToParameterRefactoring
 
         TypeSyntax type = parameter.Type;
 
-        if (type == null)
+        if (type is null)
             return;
 
         SyntaxToken identifier = parameter.Identifier;
@@ -75,7 +75,7 @@ internal static class AddDefaultValueToParameterRefactoring
 
             EqualsValueClauseSyntax @default = EqualsValueClause(value);
 
-            if (parameter.Default == null || parameter.IsMissing)
+            if (parameter.Default is null || parameter.IsMissing)
             {
                 return parameter
                     .WithIdentifier(parameter.Identifier.WithoutTrailingTrivia())

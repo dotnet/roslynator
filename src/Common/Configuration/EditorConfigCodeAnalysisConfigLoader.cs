@@ -88,7 +88,7 @@ internal static class EditorConfigCodeAnalysisConfigLoader
                     {
                         ReportDiagnostic? reportDiagnostic = ParseReportDiagnostic(option.Value);
 
-                        if (reportDiagnostic != null)
+                        if (reportDiagnostic is not null)
                         {
                             string category = match.Groups["category"].Value;
                             (categories ??= new Dictionary<string, ReportDiagnostic>()).Add(category, reportDiagnostic.Value);

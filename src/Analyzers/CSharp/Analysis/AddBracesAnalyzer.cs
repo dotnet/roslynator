@@ -47,7 +47,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = ifStatement.EmbeddedStatement();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -62,7 +62,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = elseClause.EmbeddedStatement(allowIfStatement: false);
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -77,7 +77,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = forEachStatement.EmbeddedStatement();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -92,7 +92,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = forStatement.EmbeddedStatement();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -107,7 +107,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = usingStatement.EmbeddedStatement(allowUsingStatement: false);
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -122,7 +122,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = whileStatement.EmbeddedStatement();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -137,7 +137,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = doStatement.EmbeddedStatement();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -152,7 +152,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = lockStatement.EmbeddedStatement();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -167,7 +167,7 @@ public sealed class AddBracesAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = fixedStatement.EmbeddedStatement();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)

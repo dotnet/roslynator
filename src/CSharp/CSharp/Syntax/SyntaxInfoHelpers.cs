@@ -35,7 +35,7 @@ internal static class SyntaxInfoHelpers
 
     public static bool Check(SyntaxNode node, bool allowMissing)
     {
-        return node != null
+        return node is not null
             && (allowMissing || !node.IsMissing);
     }
 

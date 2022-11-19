@@ -52,7 +52,7 @@ public sealed class AbstractTypeShouldNotHavePublicConstructorsAnalyzer : BaseDi
         {
             INamedTypeSymbol classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 
-            if (classSymbol != null)
+            if (classSymbol is not null)
                 isAbstract = classSymbol.IsAbstract;
         }
 

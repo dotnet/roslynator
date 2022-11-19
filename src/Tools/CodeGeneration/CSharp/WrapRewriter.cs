@@ -71,7 +71,7 @@ internal class WrapRewriter : CSharpSyntaxRewriter
     public override SyntaxNode VisitArgument(ArgumentSyntax node)
     {
         if ((Options & WrapRewriterOptions.WrapArguments) != 0
-            && node.NameColon != null)
+            && node.NameColon is not null)
         {
             return node
                 .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace(new string(' ', 4 * (2 + _classDeclarationDepth))))))

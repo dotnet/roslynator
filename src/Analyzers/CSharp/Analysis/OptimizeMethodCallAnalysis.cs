@@ -149,7 +149,7 @@ internal static class OptimizeMethodCallAnalysis
 
         ArgumentSyntax firstArgument = invocationInfo.Arguments.FirstOrDefault();
 
-        if (firstArgument == null)
+        if (firstArgument is null)
             return;
 
         if (invocationInfo.MemberAccessExpression.SpanOrTrailingTriviaContainsDirectives()
@@ -187,7 +187,7 @@ internal static class OptimizeMethodCallAnalysis
             return;
         }
 
-        if (firstArgument.Expression == null)
+        if (firstArgument.Expression is null)
             return;
 
         if (!CSharpUtility.IsEmptyStringExpression(firstArgument.Expression, semanticModel, cancellationToken))
@@ -354,7 +354,7 @@ internal static class OptimizeMethodCallAnalysis
                         && context.SemanticModel.IsImplicitConversion(forEachStatement.Expression, methodSymbol.Parameters[0].Type)
                         && forEachStatement.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace()
                         && invocation.GetLeadingTrivia().IsEmptyOrWhitespace()
-                        && (block == null
+                        && (block is null
                             || SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(block.OpenBraceToken)))
                     {
                         DiagnosticHelpers.ReportDiagnostic(

@@ -140,7 +140,7 @@ internal class SymbolDefinitionXmlWriter : SymbolDefinitionWriter
 
     public override void WriteTypeDefinition(INamedTypeSymbol typeSymbol, SymbolDisplayFormat format = null)
     {
-        if (typeSymbol != null)
+        if (typeSymbol is not null)
         {
             WriteStartAttribute("def");
             WriteDefinition(typeSymbol, format);
@@ -385,7 +385,7 @@ internal class SymbolDefinitionXmlWriter : SymbolDefinitionWriter
     {
         IEnumerable<string> elements = DocumentationProvider?.GetXmlDocumentation(symbol)?.GetElementsAsText(skipEmptyElement: true, makeSingleLine: true);
 
-        if (elements == null)
+        if (elements is null)
             return;
 
         using (IEnumerator<string> en = elements.GetEnumerator())
@@ -413,7 +413,7 @@ internal class SymbolDefinitionXmlWriter : SymbolDefinitionWriter
             using (var sr = new StringReader(element))
             {
                 string line = null;
-                while ((line = sr.ReadLine()) != null)
+                while ((line = sr.ReadLine()) is not null)
                 {
                     _writer.WriteWhitespace(_writer.Settings.NewLineChars);
 
@@ -428,7 +428,7 @@ internal class SymbolDefinitionXmlWriter : SymbolDefinitionWriter
 
     public override void Close()
     {
-        if (_writer != null)
+        if (_writer is not null)
         {
             try
             {

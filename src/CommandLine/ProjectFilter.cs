@@ -36,15 +36,15 @@ internal readonly struct ProjectFilter
     {
         get
         {
-            return Names == null
-                && IgnoredNames == null
-                && Language == null;
+            return Names is null
+                && IgnoredNames is null
+                && Language is null;
         }
     }
 
     public bool IsMatch(Project project)
     {
-        if (Language != null
+        if (Language is not null
             && Language != project.Language)
         {
             return false;
@@ -65,9 +65,9 @@ internal readonly struct ProjectFilter
 
         foreach (ProjectName projectName2 in projectNames)
         {
-            if (projectName2.Moniker != null)
+            if (projectName2.Moniker is not null)
             {
-                if (projectName.Moniker != null
+                if (projectName.Moniker is not null
                     && string.Equals(projectName.Name, projectName2.Name, StringComparison.Ordinal))
                 {
                     return true;

@@ -43,14 +43,14 @@ public sealed class AvoidNullReferenceExceptionAnalyzer : BaseDiagnosticAnalyzer
 
         ExpressionSyntax accessExpression = GetAccessExpression(expression);
 
-        if (accessExpression == null)
+        if (accessExpression is null)
             return;
 
         if (accessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
         {
             IMethodSymbol methodSymbol2 = context.SemanticModel.GetMethodSymbol(accessExpression, context.CancellationToken);
 
-            if (methodSymbol2 == null)
+            if (methodSymbol2 is null)
                 return;
 
             if (methodSymbol2.IsExtensionMethod
@@ -69,7 +69,7 @@ public sealed class AvoidNullReferenceExceptionAnalyzer : BaseDiagnosticAnalyzer
 
         INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
-        if (containingType == null)
+        if (containingType is null)
             return;
 
         string methodName = methodSymbol.Name.Remove(methodSymbol.Name.Length - "OrDefault".Length);
@@ -129,10 +129,10 @@ public sealed class AvoidNullReferenceExceptionAnalyzer : BaseDiagnosticAnalyzer
                 if (object.ReferenceEquals(x, y))
                     return true;
 
-                if (x == null)
+                if (x is null)
                     return false;
 
-                if (y == null)
+                if (y is null)
                     return false;
 
                 if (x.RefKind != y.RefKind)
@@ -195,7 +195,7 @@ public sealed class AvoidNullReferenceExceptionAnalyzer : BaseDiagnosticAnalyzer
             SyntaxKind.InvocationExpression,
             SyntaxKind.ParenthesizedExpression));
 
-        if (topExpression == null)
+        if (topExpression is null)
             return;
 
         if (semanticModel
@@ -207,7 +207,7 @@ public sealed class AvoidNullReferenceExceptionAnalyzer : BaseDiagnosticAnalyzer
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(topExpression, cancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         if (!typeSymbol.IsReferenceType && !typeSymbol.IsValueType)

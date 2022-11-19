@@ -52,7 +52,7 @@ public readonly struct AsExpressionInfo
     /// </summary>
     public bool Success
     {
-        get { return Expression != null; }
+        get { return Expression is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]

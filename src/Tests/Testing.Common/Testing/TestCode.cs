@@ -57,7 +57,7 @@ public readonly struct TestCode
     /// <param name="value"></param>
     public static TestCode Parse(string value)
     {
-        if (value == null)
+        if (value is null)
             throw new ArgumentNullException(nameof(value));
 
         (string source, ImmutableArray<TextSpan> spans) = FindSpansAndRemove(value);
@@ -78,10 +78,10 @@ public readonly struct TestCode
         string replacement1,
         string replacement2 = null)
     {
-        if (value == null)
+        if (value is null)
             throw new ArgumentNullException(nameof(value));
 
-        if (replacement1 == null)
+        if (replacement1 is null)
             throw new ArgumentNullException(nameof(replacement1));
 
         (string source, string expected, ImmutableArray<TextSpan> spans) = FindSpansAndReplace(value, replacement1, replacement2);

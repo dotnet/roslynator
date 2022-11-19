@@ -44,7 +44,7 @@ public readonly struct SimpleIfStatementInfo
     /// </summary>
     public bool Success
     {
-        get { return IfStatement != null; }
+        get { return IfStatement is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -71,7 +71,7 @@ public readonly struct SimpleIfStatementInfo
 
         ExpressionSyntax condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
 
-        if (condition == null)
+        if (condition is null)
             return default;
 
         StatementSyntax statement = ifStatement.Statement;

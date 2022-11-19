@@ -15,7 +15,7 @@ internal static class XmlExtensions
     {
         XAttribute attribute = element.Attribute(attributeName);
 
-        if (attribute == null)
+        if (attribute is null)
             return defaultValue;
 
         return bool.Parse(attribute.Value);
@@ -30,7 +30,7 @@ internal static class XmlExtensions
     {
         XElement e = element.Element(elementName);
 
-        if (e == null)
+        if (e is null)
             return defaultValue;
 
         return bool.Parse(e.Value);

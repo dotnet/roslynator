@@ -28,7 +28,7 @@ internal static class GenerateEnumValuesRefactoring
 
         SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
 
-        if (!members.Any(f => f.EqualsValue == null))
+        if (!members.Any(f => f.EqualsValue is null))
             return;
 
         ImmutableArray<ulong> values = GetExplicitValues(enumDeclaration, semanticModel, context.CancellationToken);
@@ -48,7 +48,7 @@ internal static class GenerateEnumValuesRefactoring
             ct => RefactorAsync(document, enumDeclaration, enumSymbol, values, startFromHighestExistingValue: false, cancellationToken: ct),
             RefactoringDescriptors.GenerateEnumValues);
 
-        if (members.Any(f => f.EqualsValue != null))
+        if (members.Any(f => f.EqualsValue is not null))
         {
             Optional<ulong> optional2 = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values, startFromHighestExistingValue: true);
 
@@ -78,7 +78,7 @@ internal static class GenerateEnumValuesRefactoring
 
         for (int i = 0; i < members.Count; i++)
         {
-            if (members[i].EqualsValue == null)
+            if (members[i].EqualsValue is null)
             {
                 Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(valuesList, startFromHighestExistingValue);
 
@@ -118,7 +118,7 @@ internal static class GenerateEnumValuesRefactoring
         {
             ExpressionSyntax value = member.EqualsValue?.Value;
 
-            if (value != null)
+            if (value is not null)
             {
                 IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
 

@@ -30,7 +30,7 @@ internal static class ReplaceConditionalExpressionWithTrueOrFalseBranchRefactori
         if (expression == conditionalExpression.WhenFalse)
             title = "Replace ?: with false branch";
 
-        if (title != null)
+        if (title is not null)
         {
             context.RegisterRefactoring(
                 title,

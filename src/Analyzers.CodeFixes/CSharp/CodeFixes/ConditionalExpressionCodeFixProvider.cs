@@ -102,7 +102,7 @@ public sealed class ConditionalExpressionCodeFixProvider : BaseCodeFixProvider
                             semanticModel,
                             context.CancellationToken);
 
-                        if (recursiveCodeAction != null)
+                        if (recursiveCodeAction is not null)
                             context.RegisterCodeFix(recursiveCodeAction, diagnostic);
 
                         break;

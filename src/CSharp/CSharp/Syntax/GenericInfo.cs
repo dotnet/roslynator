@@ -110,7 +110,7 @@ public readonly struct GenericInfo
     /// </summary>
     public bool Success
     {
-        get { return Node != null; }
+        get { return Node is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -126,7 +126,7 @@ public readonly struct GenericInfo
 
     internal static GenericInfo Create(SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             return default;
 
         switch (node.Kind())
@@ -193,7 +193,7 @@ public readonly struct GenericInfo
 
     internal static GenericInfo Create(TypeDeclarationSyntax typeDeclaration)
     {
-        if (typeDeclaration == null)
+        if (typeDeclaration is null)
             return default;
 
         return new GenericInfo(typeDeclaration);
@@ -201,7 +201,7 @@ public readonly struct GenericInfo
 
     internal static GenericInfo Create(DelegateDeclarationSyntax delegateDeclaration)
     {
-        if (delegateDeclaration == null)
+        if (delegateDeclaration is null)
             return default;
 
         return new GenericInfo(delegateDeclaration);
@@ -209,7 +209,7 @@ public readonly struct GenericInfo
 
     internal static GenericInfo Create(LocalFunctionStatementSyntax localFunctionStatement)
     {
-        if (localFunctionStatement == null)
+        if (localFunctionStatement is null)
             return default;
 
         return new GenericInfo(localFunctionStatement);
@@ -217,7 +217,7 @@ public readonly struct GenericInfo
 
     internal static GenericInfo Create(MethodDeclarationSyntax methodDeclaration)
     {
-        if (methodDeclaration == null)
+        if (methodDeclaration is null)
             return default;
 
         return new GenericInfo(methodDeclaration);
@@ -382,7 +382,7 @@ public readonly struct GenericInfo
 
     private void ThrowInvalidOperationIfNotInitialized()
     {
-        if (Node == null)
+        if (Node is null)
             throw new InvalidOperationException($"{nameof(GenericInfo)} is not initalized.");
     }
 }

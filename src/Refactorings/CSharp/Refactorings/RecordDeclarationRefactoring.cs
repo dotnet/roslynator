@@ -44,7 +44,7 @@ internal static class RecordDeclarationRefactoring
         }
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.ExpandPositionalConstructor)
-            && recordDeclaration.ParameterList != null
+            && recordDeclaration.ParameterList is not null
             && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(recordDeclaration.ParameterList.Parameters))
         {
             ExpandPositionalConstructorRefactoring.ComputeRefactoring(context, recordDeclaration);

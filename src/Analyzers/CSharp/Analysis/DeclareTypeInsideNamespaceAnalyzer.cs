@@ -36,7 +36,7 @@ public sealed class DeclareTypeInsideNamespaceAnalyzer : BaseDiagnosticAnalyzer
         if (symbol.ContainingNamespace?.IsGlobalNamespace != true)
             return;
 
-        if (symbol.ContainingType != null)
+        if (symbol.ContainingType is not null)
             return;
 
         SyntaxNode node = symbol
@@ -44,7 +44,7 @@ public sealed class DeclareTypeInsideNamespaceAnalyzer : BaseDiagnosticAnalyzer
             .SingleOrDefault(shouldThrow: false)?
             .GetSyntax(context.CancellationToken);
 
-        if (node == null)
+        if (node is null)
             return;
 
         SyntaxToken identifier = CSharpUtility.GetIdentifier(node);

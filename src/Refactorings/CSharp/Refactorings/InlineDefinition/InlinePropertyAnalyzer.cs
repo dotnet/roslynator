@@ -77,7 +77,7 @@ internal class InlinePropertyAnalyzer : InlineAnalyzer<IdentifierNameSyntax, Pro
     {
         SyntaxReference syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
 
-        if (syntaxReference != null)
+        if (syntaxReference is not null)
         {
             SyntaxNode node = await syntaxReference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
 
@@ -97,7 +97,7 @@ internal class InlinePropertyAnalyzer : InlineAnalyzer<IdentifierNameSyntax, Pro
     {
         ArrowExpressionClauseSyntax expressionBody = declaration.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
             return (expressionBody.Expression, default(SyntaxList<StatementSyntax>));
 
         AccessorDeclarationSyntax accessor = declaration.AccessorList?.Accessors.SingleOrDefault(shouldThrow: false);
@@ -107,7 +107,7 @@ internal class InlinePropertyAnalyzer : InlineAnalyzer<IdentifierNameSyntax, Pro
 
         expressionBody = accessor.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
             return (expressionBody.Expression, default(SyntaxList<StatementSyntax>));
 
         switch (accessor.Body?.Statements.SingleOrDefault(shouldThrow: false))

@@ -54,7 +54,7 @@ internal class WrapLineNodeFinder
                 {
                     SyntaxNode fixableNode = GetFixableNode(node);
 
-                    if (fixableNode != null)
+                    if (fixableNode is not null)
                         (_nodes ??= new Dictionary<SyntaxGroup, SyntaxNode>())[syntaxGroup] = node;
                 }
 
@@ -65,7 +65,7 @@ internal class WrapLineNodeFinder
             position = Math.Min(position, token.FullSpan.Start) - 1;
         }
 
-        if (_nodes == null)
+        if (_nodes is null)
             return null;
 
         if (TryGetNode(SyntaxGroup.ArgumentList, out SyntaxNode argumentList)
@@ -373,7 +373,7 @@ internal class WrapLineNodeFinder
                         }
 
                         int end;
-                        if (parentBinaryExpression != null)
+                        if (parentBinaryExpression is not null)
                         {
                             end = (addNewLineAfter)
                                 ? parentBinaryExpression.OperatorToken.Span.End
@@ -390,7 +390,7 @@ internal class WrapLineNodeFinder
 
                         longestLength = Math.Max(longestLength, end - start);
 
-                        if (parentBinaryExpression == null)
+                        if (parentBinaryExpression is null)
                             break;
 
                         binaryExpression = parentBinaryExpression;
@@ -484,7 +484,7 @@ internal class WrapLineNodeFinder
 
     private bool TryGetNode(SyntaxGroup syntaxGroup, out SyntaxNode node)
     {
-        if (_nodes != null)
+        if (_nodes is not null)
         {
             return _nodes.TryGetValue(syntaxGroup, out node);
         }
@@ -513,7 +513,7 @@ internal class WrapLineNodeFinder
                 }
         }
 
-        if (_nodes == null)
+        if (_nodes is null)
             return true;
 
         foreach (KeyValuePair<SyntaxGroup, SyntaxNode> kvp in _nodes)
@@ -544,7 +544,7 @@ internal class WrapLineNodeFinder
 
         static bool IsInsideInterpolation(SyntaxNode node)
         {
-            for (SyntaxNode n = node; n != null; n = n.Parent)
+            for (SyntaxNode n = node; n is not null; n = n.Parent)
             {
                 switch (n)
                 {
@@ -602,7 +602,7 @@ internal class WrapLineNodeFinder
                 {
                     ISymbol symbol = SemanticModel.GetSymbol(memberAccessExpression);
 
-                    if (symbol != null)
+                    if (symbol is not null)
                     {
                         if (symbol.IsKind(SymbolKind.Namespace))
                             return false;
@@ -699,10 +699,10 @@ internal class WrapLineNodeFinder
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             return GetSyntaxGroup(x).CompareTo(GetSyntaxGroup(y));

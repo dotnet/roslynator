@@ -14,7 +14,7 @@ internal static class CodeStyleExtensions
         if (configOptions.TryGetValueAsBool(ConfigOptions.PrefixFieldIdentifierWithUnderscore, out bool value))
             return value;
 
-        if (CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore != null)
+        if (CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore is not null)
             return CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore.Value;
 
         if (configOptions.TryGetValueAsBool(LegacyConfigOptions.PrefixFieldIdentifierWithUnderscore, out value))
@@ -31,7 +31,7 @@ internal static class CodeStyleExtensions
             return value;
         }
 
-        if (CodeAnalysisConfig.Instance.MaxLineLength != null)
+        if (CodeAnalysisConfig.Instance.MaxLineLength is not null)
             return CodeAnalysisConfig.Instance.MaxLineLength.Value;
 
         if (configOptions.TryGetValue(LegacyConfigOptions.MaxLineLength.Key, out rawValue)

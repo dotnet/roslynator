@@ -24,7 +24,7 @@ public sealed class CompilerCodeFixOptions : OptionSet<CodeFixIdentifier>
 
     protected override void SetValues(CodeAnalysisConfig configuration)
     {
-        if (configuration == null)
+        if (configuration is null)
             return;
 
         foreach (KeyValuePair<string, bool> kvp in configuration.CodeFixes)

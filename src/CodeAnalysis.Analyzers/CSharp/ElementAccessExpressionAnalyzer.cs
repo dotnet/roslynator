@@ -44,7 +44,7 @@ public sealed class ElementAccessExpressionAnalyzer : BaseDiagnosticAnalyzer
             .Expression
             .WalkDownParentheses();
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         if (!expression.IsKind(SyntaxKind.SubtractExpression))

@@ -19,7 +19,7 @@ internal static class NotifyWhenPropertyChangesRefactoring
     {
         AccessorDeclarationSyntax setter = property.Setter();
 
-        if (setter == null)
+        if (setter is null)
             return;
 
         if (setter.IsKind(SyntaxKind.InitAccessorDeclaration))
@@ -27,7 +27,7 @@ internal static class NotifyWhenPropertyChangesRefactoring
 
         ExpressionSyntax expression = GetExpression();
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(expression);
@@ -50,7 +50,7 @@ internal static class NotifyWhenPropertyChangesRefactoring
             .GetDeclaredSymbol(property, context.CancellationToken)?
             .ContainingType;
 
-        if (containingType == null)
+        if (containingType is null)
             return;
 
         if (!containingType.Implements(MetadataNames.System_ComponentModel_INotifyPropertyChanged, allInterfaces: true))
@@ -58,7 +58,7 @@ internal static class NotifyWhenPropertyChangesRefactoring
 
         IMethodSymbol methodSymbol = SymbolUtility.FindMethodThatRaisePropertyChanged(containingType, expression.SpanStart, semanticModel);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         Document document = context.Document;
@@ -72,7 +72,7 @@ internal static class NotifyWhenPropertyChangesRefactoring
         {
             BlockSyntax body = setter.Body;
 
-            if (body != null)
+            if (body is not null)
             {
                 if (body.Statements.SingleOrDefault(shouldThrow: false) is ExpressionStatementSyntax expressionStatement)
                     return expressionStatement.Expression;
@@ -134,7 +134,7 @@ internal static class NotifyWhenPropertyChangesRefactoring
     {
         BlockSyntax body = accessor.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             var expressionStatement = (ExpressionStatementSyntax)body.Statements[0];
 

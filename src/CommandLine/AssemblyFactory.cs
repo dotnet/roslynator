@@ -106,7 +106,7 @@ internal static class AssemblyFactory
 
         ImmutableArray<Diagnostic> diagnostics = compilation.GetDiagnostics();
 
-        if (expressionSpan != null)
+        if (expressionSpan is not null)
         {
             foreach (Diagnostic diagnostic in diagnostics)
             {
@@ -154,7 +154,7 @@ internal static class AssemblyFactory
     private static void WriteDiagnostic(Diagnostic diagnostic, TextSpan? expressionSpan = null)
     {
         string location;
-        if (expressionSpan != null)
+        if (expressionSpan is not null)
         {
             location = $"1,{diagnostic.Location.SourceSpan.Start - expressionSpan.Value.Start + 1}";
         }

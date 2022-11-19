@@ -42,7 +42,7 @@ public sealed class AddBracesToIfElseAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = ifStatement.EmbeddedStatement();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)
@@ -57,7 +57,7 @@ public sealed class AddBracesToIfElseAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = elseClause.EmbeddedStatement(allowIfStatement: false);
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (statement.ContainsDirectives)

@@ -44,7 +44,7 @@ internal static class ConvertAutoPropertyToFullPropertyRefactoring
 
         AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
-        if (getter != null)
+        if (getter is not null)
         {
             AccessorDeclarationSyntax newGetter = getter.Update(
                 getter.AttributeLists,
@@ -63,7 +63,7 @@ internal static class ConvertAutoPropertyToFullPropertyRefactoring
 
         AccessorDeclarationSyntax newSetter = null;
 
-        if (setter != null)
+        if (setter is not null)
         {
             newSetter = ExpandSetter();
 
@@ -91,7 +91,7 @@ internal static class ConvertAutoPropertyToFullPropertyRefactoring
         int propertyIndex = membersInfo.IndexOf(propertyDeclaration);
 
         if (propertyDeclaration.AccessorList?.Getter()?.IsAutoImplemented() == true
-            && propertyDeclaration.AccessorList.Setter() == null)
+            && propertyDeclaration.AccessorList.Setter() is null)
         {
             var rewriter = new Rewriter(propertySymbol, fieldName, semanticModel, cancellationToken);
 
@@ -128,7 +128,7 @@ internal static class ConvertAutoPropertyToFullPropertyRefactoring
             {
                 IMethodSymbol methodSymbol = SymbolUtility.FindMethodThatRaisePropertyChanged(containingType, setter.SpanStart, semanticModel);
 
-                if (methodSymbol != null)
+                if (methodSymbol is not null)
                 {
                     string propertyName = propertyDeclaration.Identifier.ValueText;
 
@@ -154,7 +154,7 @@ internal static class ConvertAutoPropertyToFullPropertyRefactoring
                 }
             }
 
-            if (body == null)
+            if (body is null)
             {
                 body = Block(SimpleAssignmentStatement(fieldExpression, valueName));
             }

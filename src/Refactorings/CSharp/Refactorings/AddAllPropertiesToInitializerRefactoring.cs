@@ -107,10 +107,10 @@ internal static class AddAllPropertiesToInitializerRefactoring
 
                 IPropertySymbol propertySymbol = GetInitializableProperty(symbol, position, semanticModel);
 
-                if (propertySymbol == null)
+                if (propertySymbol is null)
                     continue;
 
-                if (namesToProperties != null)
+                if (namesToProperties is not null)
                 {
                     if (namesToProperties.ContainsKey(propertySymbol.Name))
                         continue;
@@ -123,7 +123,7 @@ internal static class AddAllPropertiesToInitializerRefactoring
                 namesToProperties.Add(propertySymbol.Name, propertySymbol);
             }
 
-            if (namesToProperties != null)
+            if (namesToProperties is not null)
             {
                 Document document = context.Document;
 
@@ -155,7 +155,7 @@ internal static class AddAllPropertiesToInitializerRefactoring
         {
             foreach (ISymbol symbol in symbols)
             {
-                if (GetInitializableProperty(symbol, position, semanticModel) != null)
+                if (GetInitializableProperty(symbol, position, semanticModel) is not null)
                     return true;
             }
 
@@ -210,7 +210,7 @@ internal static class AddAllPropertiesToInitializerRefactoring
             {
                 IMethodSymbol setter = propertySymbol.SetMethod;
 
-                if (setter != null
+                if (setter is not null
                     && semanticModel.IsAccessible(position, setter))
                 {
                     return propertySymbol;
@@ -232,7 +232,7 @@ internal static class AddAllPropertiesToInitializerRefactoring
         {
             IPropertySymbol propertySymbol = GetInitializableProperty(symbol, position, semanticModel);
 
-            if (propertySymbol != null)
+            if (propertySymbol is not null)
                 yield return propertySymbol;
         }
     }

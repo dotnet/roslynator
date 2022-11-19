@@ -18,7 +18,7 @@ public static class MetadataFile
 
     private static string NormalizeNewLine(this string value)
     {
-        return (value != null) ? _lfWithoutCr.Replace(value, "\r\n") : null;
+        return (value is not null) ? _lfWithoutCr.Replace(value, "\r\n") : null;
     }
 
     public static IEnumerable<AnalyzerMetadata> ReadAnalyzers(string filePath)
@@ -317,7 +317,7 @@ public static class MetadataFile
 
             XElement messageFormatElement = element.Element("MessageFormat");
 
-            if (messageFormatElement != null)
+            if (messageFormatElement is not null)
             {
                 string messageFormat = messageFormatElement.Value;
 
@@ -331,7 +331,7 @@ public static class MetadataFile
 
             XElement supportsFadeOutElement = element.Element("SupportsFadeOut");
 
-            if (supportsFadeOutElement != null
+            if (supportsFadeOutElement is not null
                 && !bool.Parse(supportsFadeOutElement.Value))
             {
                 supportsFadeOutElement.Remove();
@@ -339,7 +339,7 @@ public static class MetadataFile
 
             XElement supportsFadeOutAnalyzerElement = element.Element("SupportsFadeOutAnalyzer");
 
-            if (supportsFadeOutAnalyzerElement != null
+            if (supportsFadeOutAnalyzerElement is not null
                 && !bool.Parse(supportsFadeOutAnalyzerElement.Value))
             {
                 supportsFadeOutAnalyzerElement.Remove();
@@ -347,7 +347,7 @@ public static class MetadataFile
 
             XElement minLanguageVersionElement = element.Element("MinLanguageVersion");
 
-            if (minLanguageVersionElement != null
+            if (minLanguageVersionElement is not null
                 && string.IsNullOrWhiteSpace(minLanguageVersionElement.Value))
             {
                 minLanguageVersionElement.Remove();
@@ -355,7 +355,7 @@ public static class MetadataFile
 
             XElement summaryElement = element.Element("Summary");
 
-            if (summaryElement != null
+            if (summaryElement is not null
                 && string.IsNullOrWhiteSpace(summaryElement.Value))
             {
                 summaryElement.Remove();
@@ -363,7 +363,7 @@ public static class MetadataFile
 
             XElement remarksElement = element.Element("Remarks");
 
-            if (remarksElement != null
+            if (remarksElement is not null
                 && string.IsNullOrWhiteSpace(remarksElement.Value))
             {
                 remarksElement.Remove();
@@ -371,7 +371,7 @@ public static class MetadataFile
 
             XElement configurationElement = element.Element("Configuration");
 
-            if (configurationElement != null
+            if (configurationElement is not null
                 && string.IsNullOrWhiteSpace(configurationElement.Value))
             {
                 configurationElement.Remove();
@@ -379,7 +379,7 @@ public static class MetadataFile
 
             XElement samplesElement = element.Element("Samples");
 
-            if (samplesElement != null)
+            if (samplesElement is not null)
             {
                 foreach (XElement sampleElement in samplesElement.Elements("Sample"))
                 {
@@ -393,7 +393,7 @@ public static class MetadataFile
                         continue;
                     }
 
-                    if (beforeElement != null)
+                    if (beforeElement is not null)
                     {
                         string before = beforeElement.Value;
 
@@ -413,7 +413,7 @@ public static class MetadataFile
 
             XElement linksElement = element.Element("Links");
 
-            if (linksElement != null)
+            if (linksElement is not null)
             {
                 foreach (XElement linkElement in linksElement.Elements("Link"))
                 {

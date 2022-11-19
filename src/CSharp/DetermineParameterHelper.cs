@@ -22,12 +22,12 @@ internal static class DetermineParameterHelper
         if (argument.Parent is not BaseArgumentListSyntax argumentList)
             return null;
 
-        if (argumentList.Parent == null)
+        if (argumentList.Parent is null)
             return null;
 
         ISymbol symbol = GetSymbol(argumentList.Parent, allowCandidate, semanticModel, cancellationToken);
 
-        if (symbol == null)
+        if (symbol is null)
             return null;
 
         ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
@@ -48,7 +48,7 @@ internal static class DetermineParameterHelper
     {
         string name = argument.NameColon?.Name?.Identifier.ValueText;
 
-        if (name != null)
+        if (name is not null)
         {
             foreach (IParameterSymbol parameter in parameters)
             {
@@ -85,7 +85,7 @@ internal static class DetermineParameterHelper
         bool allowCandidate = false,
         CancellationToken cancellationToken = default)
     {
-        if (attributeArgument.NameEquals != null)
+        if (attributeArgument.NameEquals is not null)
             return null;
 
         SyntaxNode parent = attributeArgument.Parent;
@@ -98,7 +98,7 @@ internal static class DetermineParameterHelper
 
         ISymbol symbol = GetSymbol(attribute, allowCandidate, semanticModel, cancellationToken);
 
-        if (symbol == null)
+        if (symbol is null)
             return null;
 
         ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
@@ -119,7 +119,7 @@ internal static class DetermineParameterHelper
     {
         string name = attributeArgument.NameColon?.Name?.Identifier.ValueText;
 
-        if (name != null)
+        if (name is not null)
         {
             foreach (IParameterSymbol parameter in parameters)
             {
@@ -155,7 +155,7 @@ internal static class DetermineParameterHelper
 
         ISymbol symbol = symbolInfo.Symbol;
 
-        if (symbol == null
+        if (symbol is null
             && allowCandidate)
         {
             return symbolInfo.CandidateSymbols.FirstOrDefault();

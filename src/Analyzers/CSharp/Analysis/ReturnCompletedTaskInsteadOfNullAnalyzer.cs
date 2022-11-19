@@ -50,7 +50,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
 
         ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             ExpressionSyntax expression = expressionBody.Expression?.WalkDownParentheses();
 
@@ -72,7 +72,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
         {
             BlockSyntax body = methodDeclaration.Body;
 
-            if (body == null)
+            if (body is null)
                 return;
 
             if (!ReturnsTaskOrTaskOfT())
@@ -98,7 +98,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
 
         ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             ExpressionSyntax expression = expressionBody.Expression?.WalkDownParentheses();
 
@@ -120,7 +120,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
         {
             BlockSyntax body = localFunction.Body;
 
-            if (body == null)
+            if (body is null)
                 return;
 
             if (!ReturnsTaskOrTaskOfT())
@@ -143,7 +143,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
 
         ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             ExpressionSyntax expression = expressionBody.Expression?.WalkDownParentheses();
 
@@ -165,7 +165,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
         {
             AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
-            if (getter == null)
+            if (getter is null)
                 return;
 
             if (!ReturnsTaskOrTaskOfT())
@@ -188,7 +188,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
 
         ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             ExpressionSyntax expression = expressionBody.Expression?.WalkDownParentheses();
 
@@ -210,7 +210,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
         {
             AccessorDeclarationSyntax getter = indexerDeclaration.Getter();
 
-            if (getter == null)
+            if (getter is null)
                 return;
 
             if (!ReturnsTaskOrTaskOfT())
@@ -294,7 +294,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
     {
         ArrowExpressionClauseSyntax expressionBody = getter.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             ExpressionSyntax expression = expressionBody.Expression?.WalkDownParentheses();
 
@@ -315,7 +315,7 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
 
     private static void AnalyzeBlock(SyntaxNodeAnalysisContext context, BlockSyntax body)
     {
-        if (body == null)
+        if (body is null)
             return;
 
         SyntaxWalker walker = SyntaxWalker.GetInstance();
@@ -333,12 +333,12 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
 
     public static bool IsTaskOrTaskOfT(ITypeSymbol typeSymbol)
     {
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return false;
 
         INamedTypeSymbol namedTypeSymbol = SymbolUtility.GetPossiblyAwaitableType(typeSymbol);
 
-        if (namedTypeSymbol == null)
+        if (namedTypeSymbol is null)
             return false;
 
         return namedTypeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)
@@ -382,9 +382,9 @@ public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAna
         {
             SyntaxWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker.Expressions == null || walker.Expressions.Count == 0);
+                Debug.Assert(walker.Expressions is null || walker.Expressions.Count == 0);
 
                 _cachedInstance = null;
                 return walker;

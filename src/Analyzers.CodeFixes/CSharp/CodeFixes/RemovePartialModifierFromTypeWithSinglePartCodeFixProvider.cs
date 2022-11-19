@@ -37,7 +37,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartCodeFixProvider :
             ct =>
             {
                 TypeDeclarationSyntax newTypeDeclaration = typeDeclaration.ReplaceNodes(
-                    typeDeclaration.Members.OfType<MethodDeclarationSyntax>().Where(f => f.Modifiers.Contains(SyntaxKind.PartialKeyword) && f.BodyOrExpressionBody() != null),
+                    typeDeclaration.Members.OfType<MethodDeclarationSyntax>().Where(f => f.Modifiers.Contains(SyntaxKind.PartialKeyword) && f.BodyOrExpressionBody() is not null),
                     (f, _) => f.RemoveModifier(SyntaxKind.PartialKeyword));
 
                 int count = newTypeDeclaration.Members.Count;

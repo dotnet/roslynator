@@ -34,7 +34,7 @@ public sealed class BitwiseOperatorAnalyzer : BaseDiagnosticAnalyzer
         {
             INamedTypeSymbol flagsAttribute = startContext.Compilation.GetTypeByMetadataName("System.FlagsAttribute");
 
-            if (flagsAttribute == null)
+            if (flagsAttribute is null)
                 return;
 
             startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeBinaryExpression(nodeContext, flagsAttribute), SyntaxKind.BitwiseAndExpression);

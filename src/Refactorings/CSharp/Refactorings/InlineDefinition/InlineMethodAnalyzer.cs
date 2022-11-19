@@ -19,12 +19,12 @@ internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax,
     {
         ExpressionSyntax expression = node.Expression;
 
-        if (expression == null)
+        if (expression is null)
             return false;
 
         ArgumentListSyntax argumentList = node.ArgumentList;
 
-        if (argumentList == null)
+        if (argumentList is null)
             return false;
 
         if (expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
@@ -89,7 +89,7 @@ internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax,
             SyntaxNode node = await reference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
 
             if ((node is MethodDeclarationSyntax methodDeclaration)
-                && methodDeclaration.BodyOrExpressionBody() != null)
+                && methodDeclaration.BodyOrExpressionBody() is not null)
             {
                 return methodDeclaration;
             }
@@ -114,7 +114,7 @@ internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax,
         {
             IParameterSymbol parameterSymbol = DetermineParameterHelper.DetermineParameter(argument, arguments, parameters);
 
-            if (parameterSymbol != null)
+            if (parameterSymbol is not null)
             {
                 var parameterInfo = new ParameterInfo(parameterSymbol, argument.Expression);
 
@@ -128,7 +128,7 @@ internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax,
 
         foreach (IParameterSymbol parameterSymbol in parameters)
         {
-            if (parameterInfos == null
+            if (parameterInfos is null
                 || parameterInfos.FindIndex(f => SymbolEqualityComparer.Default.Equals(f.ParameterSymbol, parameterSymbol)) == -1)
             {
                 if (parameterSymbol.HasExplicitDefaultValue)
@@ -163,7 +163,7 @@ internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax,
             (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
         }
 
-        return (parameterInfos != null)
+        return (parameterInfos is not null)
             ? parameterInfos.ToImmutableArray()
             : ImmutableArray<ParameterInfo>.Empty;
     }
@@ -172,7 +172,7 @@ internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax,
     {
         BlockSyntax body = declaration.Body;
 
-        if (body == null)
+        if (body is null)
             return (declaration.ExpressionBody?.Expression, default(SyntaxList<StatementSyntax>));
 
         SyntaxList<StatementSyntax> statements = body.Statements;

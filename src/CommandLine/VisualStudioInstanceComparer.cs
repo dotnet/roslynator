@@ -18,10 +18,10 @@ public sealed class VisualStudioInstanceComparer : EqualityComparer<VisualStudio
         if (object.ReferenceEquals(x, y))
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         return FileSystemHelpers.Comparer.Equals(x.MSBuildPath, y.MSBuildPath);
@@ -29,6 +29,6 @@ public sealed class VisualStudioInstanceComparer : EqualityComparer<VisualStudio
 
     public override int GetHashCode(VisualStudioInstance obj)
     {
-        return (obj == null) ? 0 : FileSystemHelpers.Comparer.GetHashCode(obj.MSBuildPath);
+        return (obj is null) ? 0 : FileSystemHelpers.Comparer.GetHashCode(obj.MSBuildPath);
     }
 }

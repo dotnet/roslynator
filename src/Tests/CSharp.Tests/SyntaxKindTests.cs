@@ -573,7 +573,7 @@ public static class SyntaxKindTests
             }
         }
 
-        if (unknownKinds != null)
+        if (unknownKinds is not null)
         {
             Assert.True(
                 false,

@@ -136,7 +136,7 @@ public sealed class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
 
         SyntaxNode nodeToRemove = newRoot.GetAnnotatedNodes(_removeAnnotation).FirstOrDefault();
 
-        if (nodeToRemove != null)
+        if (nodeToRemove is not null)
             newRoot = newRoot.RemoveNode(nodeToRemove, SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
         return document.WithSyntaxRoot(newRoot);
@@ -146,7 +146,7 @@ public sealed class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
     {
         ArrowExpressionClauseSyntax expressionBody = property.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             return semanticModel.GetSymbol(expressionBody.Expression, cancellationToken);
         }
@@ -156,7 +156,7 @@ public sealed class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
 
             BlockSyntax body = getter.Body;
 
-            if (body != null)
+            if (body is not null)
             {
                 var returnStatement = (ReturnStatementSyntax)body.Statements[0];
 
@@ -173,7 +173,7 @@ public sealed class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
     {
         AccessorListSyntax accessorList = property.AccessorList;
 
-        if (accessorList != null)
+        if (accessorList is not null)
         {
             SyntaxList<AccessorDeclarationSyntax> newAccessors = accessorList
                 .Accessors
@@ -214,7 +214,7 @@ public sealed class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
             accessorList: accessorList,
             expressionBody: default(ArrowExpressionClauseSyntax),
             initializer: initializer,
-            semicolonToken: (initializer != null) ? SemicolonToken() : default);
+            semicolonToken: (initializer is not null) ? SemicolonToken() : default);
 
         return newProperty
             .WithTriviaFrom(property)

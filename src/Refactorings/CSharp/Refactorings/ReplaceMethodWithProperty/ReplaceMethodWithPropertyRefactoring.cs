@@ -18,7 +18,7 @@ internal static class ReplaceMethodWithPropertyRefactoring
     {
         return methodDeclaration.ReturnType?.IsVoid() == false
             && methodDeclaration.ParameterList?.Parameters.Count == 0
-            && methodDeclaration.TypeParameterList == null
+            && methodDeclaration.TypeParameterList is null
             && !methodDeclaration.Modifiers.ContainsAny(SyntaxKind.OverrideKeyword, SyntaxKind.AsyncKeyword);
     }
 
@@ -78,7 +78,7 @@ internal static class ReplaceMethodWithPropertyRefactoring
                     parameterList.CloseParenToken.GetAllTrivia()));
         }
 
-        if (methodDeclaration.ExpressionBody != null)
+        if (methodDeclaration.ExpressionBody is not null)
         {
             return PropertyDeclaration(
                 methodDeclaration.AttributeLists,
@@ -107,7 +107,7 @@ internal static class ReplaceMethodWithPropertyRefactoring
     {
         BlockSyntax body = method.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             SyntaxList<StatementSyntax> statements = body.Statements;
 

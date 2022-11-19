@@ -21,7 +21,7 @@ internal static class ConvertLambdaExpressionBodyToExpressionBodyAnalysis
 
         StatementSyntax statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
-        if (statement == null)
+        if (statement is null)
             return false;
 
         ExpressionSyntax expression = GetExpression(statement);

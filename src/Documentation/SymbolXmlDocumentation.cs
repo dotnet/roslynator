@@ -75,7 +75,7 @@ public class SymbolXmlDocumentation
 
     public bool HasElement(string name)
     {
-        return GetElement(name) != null;
+        return GetElement(name) is not null;
     }
 
     public IEnumerable<string> GetElementsAsText(bool skipEmptyElement = false, bool makeSingleLine = false)

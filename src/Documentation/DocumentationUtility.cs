@@ -62,7 +62,7 @@ internal static class DocumentationUtility
         {
             string label = symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_TypeParameters);
 
-            if (symbol.ContainingType != null)
+            if (symbol.ContainingType is not null)
             {
                 label = symbol.ContainingType.ToDisplayString(TypeSymbolDisplayFormats.Name_TypeParameters)
                     + "."
@@ -90,7 +90,7 @@ internal static class DocumentationUtility
 
             ISymbol explicitImplementation = symbol.GetFirstExplicitInterfaceImplementation();
 
-            if (explicitImplementation != null)
+            if (explicitImplementation is not null)
             {
                 label = explicitImplementation.ContainingType.ToDisplayString(TypeSymbolDisplayFormats.Name_TypeParameters)
                     + "."
@@ -155,7 +155,7 @@ internal static class DocumentationUtility
     {
         StringBuilder sb = StringBuilderCache.GetInstance();
 
-        if (prefix != null)
+        if (prefix is not null)
             sb.Append(prefix);
 
         int count = 0;
@@ -189,7 +189,7 @@ internal static class DocumentationUtility
 
         INamedTypeSymbol t = symbol.ContainingType;
 
-        while (t != null)
+        while (t is not null)
         {
             t = t.ContainingType;
             count++;

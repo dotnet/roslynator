@@ -90,7 +90,7 @@ public readonly struct XmlElementInfo
     /// </summary>
     public bool Success
     {
-        get { return Element != null; }
+        get { return Element is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -117,7 +117,7 @@ public readonly struct XmlElementInfo
                 {
                     string localName = element.StartTag?.Name?.LocalName.ValueText;
 
-                    if (localName == null)
+                    if (localName is null)
                         return default;
 
                     return new XmlElementInfo(element, localName);
@@ -126,7 +126,7 @@ public readonly struct XmlElementInfo
                 {
                     string localName = element.Name?.LocalName.ValueText;
 
-                    if (localName == null)
+                    if (localName is null)
                         return default;
 
                     return new XmlElementInfo(element, localName);

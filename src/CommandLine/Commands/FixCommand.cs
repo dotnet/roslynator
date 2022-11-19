@@ -65,7 +65,7 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
         IEnumerable<AnalyzerAssembly> analyzerAssemblies = Options.AnalyzerAssemblies
             .SelectMany(path => AnalyzerAssemblyLoader.LoadFrom(path).Select(info => info.AnalyzerAssembly));
 
-        CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
+        CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
         var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
 

@@ -16,7 +16,7 @@ internal static class TextHelpers
         {
             string line = null;
 
-            while ((line = sr.ReadLine()) != null)
+            while ((line = sr.ReadLine()) is not null)
             {
                 yield return line;
             }
@@ -112,10 +112,10 @@ internal static class TextHelpers
 
     public static string SplitCamelCase(string value, string separator)
     {
-        if (value == null)
+        if (value is null)
             throw new ArgumentNullException(nameof(value));
 
-        if (separator == null)
+        if (separator is null)
             throw new ArgumentNullException(nameof(separator));
 
         int len = value.Length;

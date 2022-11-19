@@ -44,12 +44,12 @@ internal static class ReplacePropertyWithMethodRefactoring
         if (accessor?.Kind() != SyntaxKind.GetAccessorDeclaration)
             return false;
 
-        if (accessor.BodyOrExpressionBody() != null)
+        if (accessor.BodyOrExpressionBody() is not null)
             return true;
 
         return context.SupportsCSharp6
             && accessor.IsAutoImplemented()
-            && propertyDeclaration.Initializer?.Value != null;
+            && propertyDeclaration.Initializer?.Value is not null;
     }
 
     public static async Task<Solution> RefactorAsync(
@@ -96,7 +96,7 @@ internal static class ReplacePropertyWithMethodRefactoring
 
         BlockSyntax methodBody;
 
-        if (getterBody != null)
+        if (getterBody is not null)
         {
             methodBody = Block(getterBody.Statements);
         }
@@ -104,7 +104,7 @@ internal static class ReplacePropertyWithMethodRefactoring
         {
             ArrowExpressionClauseSyntax getterExpressionBody = getter.ExpressionBody;
 
-            if (getterExpressionBody != null)
+            if (getterExpressionBody is not null)
             {
                 methodBody = Block(ReturnStatement(getterExpressionBody.Expression));
             }

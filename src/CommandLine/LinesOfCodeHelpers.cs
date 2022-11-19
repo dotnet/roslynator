@@ -29,7 +29,7 @@ internal static class LinesOfCodeHelpers
             {
                 ICodeMetricsService service = MefWorkspaceServices.Default.GetService<ICodeMetricsService>(project.Language);
 
-                CodeMetricsInfo projectMetrics = (service != null)
+                CodeMetricsInfo projectMetrics = (service is not null)
                     ? service.CountLinesAsync(project, kind, options, cancellationToken).Result
                     : CodeMetricsInfo.NotAvailable;
 

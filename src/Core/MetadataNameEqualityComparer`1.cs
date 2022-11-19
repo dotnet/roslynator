@@ -126,10 +126,10 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSy
 
         while (!object.ReferenceEquals(t1, t2))
         {
-            if (t1 == null)
+            if (t1 is null)
                 return false;
 
-            if (t2 == null)
+            if (t2 is null)
                 return false;
 
             if (!StringComparer.Ordinal.Equals(t1.MetadataName, t2.MetadataName))
@@ -144,10 +144,10 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSy
 
         while (!object.ReferenceEquals(n1, n2))
         {
-            if (n1 == null)
+            if (n1 is null)
                 return false;
 
-            if (n2 == null)
+            if (n2 is null)
                 return false;
 
             if (!StringComparer.Ordinal.Equals(n1.MetadataName, n2.MetadataName))
@@ -168,7 +168,7 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSy
     /// <exception cref="ArgumentNullException"><paramref name="obj"/> is <c>null</c>.</exception>
     public override int GetHashCode(TSymbol obj)
     {
-        if (obj == null)
+        if (obj is null)
             throw new ArgumentNullException(nameof(obj));
 
         if (Default.Equals(obj, default(TSymbol)))
@@ -178,13 +178,13 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSy
 
         INamedTypeSymbol t = obj.ContainingType;
 
-        if (t != null)
+        if (t is not null)
         {
             hashCode = Combine(t);
 
             t = t.ContainingType;
 
-            while (t != null)
+            while (t is not null)
             {
                 hashCode = Hash.Combine(MetadataName.PlusHashCode, hashCode);
 
@@ -196,13 +196,13 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSy
 
         INamespaceSymbol n = obj.ContainingNamespace;
 
-        if (n != null)
+        if (n is not null)
         {
             hashCode = Combine(n);
 
             n = n.ContainingNamespace;
 
-            while (n != null)
+            while (n is not null)
             {
                 hashCode = Hash.Combine(MetadataName.DotHashCode, hashCode);
 

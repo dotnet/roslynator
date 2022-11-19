@@ -50,7 +50,7 @@ public sealed class ConditionalExpressionClauseCodeFixProvider : CompilerDiagnos
 
         ITypeSymbol destinationType = FindDestinationType(whenTrue, falseType.BaseType, semanticModel);
 
-        if (destinationType == null)
+        if (destinationType is null)
             return;
 
         CodeFixRegistrator.AddExplicitCast(context, diagnostic, whenTrue, destinationType, semanticModel);
@@ -58,7 +58,7 @@ public sealed class ConditionalExpressionClauseCodeFixProvider : CompilerDiagnos
 
     private static ITypeSymbol FindDestinationType(ExpressionSyntax expression, ITypeSymbol type, SemanticModel semanticModel)
     {
-        while (type != null)
+        while (type is not null)
         {
             if (semanticModel.IsImplicitConversion(expression, type))
                 return type;

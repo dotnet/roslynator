@@ -7,178 +7,179 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp;
-
-internal readonly struct MethodChain : IEnumerable<SyntaxNode>
+namespace Roslynator.CSharp
 {
-    public MethodChain(ExpressionSyntax expression)
+    internal readonly struct MethodChain : IEnumerable<SyntaxNode>
     {
-        Expression = expression;
-    }
-
-    public ExpressionSyntax Expression { get; }
-
-    IEnumerator<SyntaxNode> IEnumerable<SyntaxNode>.GetEnumerator()
-    {
-        if (Expression != null)
-            return new EnumeratorImpl(this);
-
-        return Empty.Enumerator<SyntaxNode>();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        if (Expression != null)
-            return new EnumeratorImpl(this);
-
-        return Empty.Enumerator<SyntaxNode>();
-    }
-
-    public Enumerator GetEnumerator()
-    {
-        return new Enumerator(this);
-    }
-
-    public struct Enumerator
-    {
-        private readonly MethodChain _chain;
-        private SyntaxNode _current;
-
-        internal Enumerator(MethodChain chain)
+        public MethodChain(ExpressionSyntax expression)
         {
-            _chain = chain;
-            _current = null;
+            Expression = expression;
         }
 
-        public bool MoveNext()
+        public ExpressionSyntax Expression { get; }
+
+        IEnumerator<SyntaxNode> IEnumerable<SyntaxNode>.GetEnumerator()
         {
-            if (_current == null)
-            {
-                _current = _chain.Expression;
+            if (Expression is not null)
+                return new EnumeratorImpl(this);
 
-                return _current != null;
+            return Empty.Enumerator<SyntaxNode>();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            if (Expression is not null)
+                return new EnumeratorImpl(this);
+
+            return Empty.Enumerator<SyntaxNode>();
+        }
+
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        public struct Enumerator
+        {
+            private readonly MethodChain _chain;
+            private SyntaxNode _current;
+
+            internal Enumerator(MethodChain chain)
+            {
+                _chain = chain;
+                _current = null;
             }
 
-            ExpressionSyntax last = GetLastChild(_current);
-
-            if (last != null)
+            public bool MoveNext()
             {
-                _current = last;
-            }
-            else
-            {
-                while (_current != _chain.Expression
-                    && IsFirstChild(_current))
+                if (_current is null)
                 {
-                    _current = _current.Parent;
+                    _current = _chain.Expression;
+
+                    return _current is not null;
                 }
 
-                if (_current == _chain.Expression)
+                ExpressionSyntax last = GetLastChild(_current);
+
+                if (last is not null)
                 {
-                    _current = null;
-                    return false;
+                    _current = last;
+                }
+                else
+                {
+                    while (_current != _chain.Expression
+                        && IsFirstChild(_current))
+                    {
+                        _current = _current.Parent;
+                    }
+
+                    if (_current == _chain.Expression)
+                    {
+                        _current = null;
+                        return false;
+                    }
+
+                    _current = GetPreviousSibling(_current);
                 }
 
-                _current = GetPreviousSibling(_current);
+                return true;
             }
 
-            return true;
-        }
-
-        private static ExpressionSyntax GetLastChild(SyntaxNode node)
-        {
-            switch (node?.Kind())
+            private static ExpressionSyntax GetLastChild(SyntaxNode node)
             {
-                case SyntaxKind.ConditionalAccessExpression:
-                    return ((ConditionalAccessExpressionSyntax)node).WhenNotNull;
-                case SyntaxKind.MemberBindingExpression:
-                    return ((MemberBindingExpressionSyntax)node).Name;
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    return ((MemberAccessExpressionSyntax)node).Name;
-                case SyntaxKind.ElementAccessExpression:
-                    return ((ElementAccessExpressionSyntax)node).Expression;
-                case SyntaxKind.InvocationExpression:
-                    return ((InvocationExpressionSyntax)node).Expression;
+                switch (node?.Kind())
+                {
+                    case SyntaxKind.ConditionalAccessExpression:
+                        return ((ConditionalAccessExpressionSyntax)node).WhenNotNull;
+                    case SyntaxKind.MemberBindingExpression:
+                        return ((MemberBindingExpressionSyntax)node).Name;
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                        return ((MemberAccessExpressionSyntax)node).Name;
+                    case SyntaxKind.ElementAccessExpression:
+                        return ((ElementAccessExpressionSyntax)node).Expression;
+                    case SyntaxKind.InvocationExpression:
+                        return ((InvocationExpressionSyntax)node).Expression;
+                }
+
+                return null;
             }
 
-            return null;
-        }
-
-        private static SyntaxNode GetPreviousSibling(SyntaxNode node)
-        {
-            SyntaxNode parent = node.Parent;
-
-            switch (parent.Kind())
+            private static SyntaxNode GetPreviousSibling(SyntaxNode node)
             {
-                case SyntaxKind.ConditionalAccessExpression:
-                    {
-                        var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
+                SyntaxNode parent = node.Parent;
 
-                        if (conditionalAccess.WhenNotNull == node)
-                            return conditionalAccess.Expression;
+                switch (parent.Kind())
+                {
+                    case SyntaxKind.ConditionalAccessExpression:
+                        {
+                            var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
 
-                        break;
-                    }
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        var memberAccess = (MemberAccessExpressionSyntax)parent;
+                            if (conditionalAccess.WhenNotNull == node)
+                                return conditionalAccess.Expression;
 
-                        if (memberAccess.Name == node)
-                            return memberAccess.Expression;
+                            break;
+                        }
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                        {
+                            var memberAccess = (MemberAccessExpressionSyntax)parent;
 
-                        break;
-                    }
+                            if (memberAccess.Name == node)
+                                return memberAccess.Expression;
+
+                            break;
+                        }
+                }
+
+                return null;
             }
 
-            return null;
-        }
-
-        private static bool IsFirstChild(SyntaxNode node)
-        {
-            SyntaxNode parent = node.Parent;
-
-            switch (parent.Kind())
+            private static bool IsFirstChild(SyntaxNode node)
             {
-                case SyntaxKind.ConditionalAccessExpression:
-                    return ((ConditionalAccessExpressionSyntax)parent).Expression == node;
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    return ((MemberAccessExpressionSyntax)parent).Expression == node;
+                SyntaxNode parent = node.Parent;
+
+                switch (parent.Kind())
+                {
+                    case SyntaxKind.ConditionalAccessExpression:
+                        return ((ConditionalAccessExpressionSyntax)parent).Expression == node;
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                        return ((MemberAccessExpressionSyntax)parent).Expression == node;
+                }
+
+                return true;
             }
 
-            return true;
+            public SyntaxNode Current => _current ?? throw new InvalidOperationException();
+
+            public void Reset()
+            {
+                _current = null;
+            }
+
+            public override bool Equals(object obj) => throw new NotSupportedException();
+
+            public override int GetHashCode() => throw new NotSupportedException();
         }
 
-        public SyntaxNode Current => _current ?? throw new InvalidOperationException();
-
-        public void Reset()
+        private class EnumeratorImpl : IEnumerator<SyntaxNode>
         {
-            _current = null;
-        }
+            private Enumerator _en;
 
-        public override bool Equals(object obj) => throw new NotSupportedException();
+            internal EnumeratorImpl(in MethodChain methodChain)
+            {
+                _en = new Enumerator(methodChain);
+            }
 
-        public override int GetHashCode() => throw new NotSupportedException();
-    }
+            public SyntaxNode Current => _en.Current;
 
-    private class EnumeratorImpl : IEnumerator<SyntaxNode>
-    {
-        private Enumerator _en;
+            object IEnumerator.Current => _en.Current;
 
-        internal EnumeratorImpl(in MethodChain methodChain)
-        {
-            _en = new Enumerator(methodChain);
-        }
+            public bool MoveNext() => _en.MoveNext();
 
-        public SyntaxNode Current => _en.Current;
+            void IEnumerator.Reset() => _en.Reset();
 
-        object IEnumerator.Current => _en.Current;
-
-        public bool MoveNext() => _en.MoveNext();
-
-        void IEnumerator.Reset() => _en.Reset();
-
-        void IDisposable.Dispose()
-        {
+            void IDisposable.Dispose()
+            {
+            }
         }
     }
 }

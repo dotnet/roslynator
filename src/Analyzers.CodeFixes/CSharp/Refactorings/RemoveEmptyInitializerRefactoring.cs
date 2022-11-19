@@ -22,7 +22,7 @@ internal static class RemoveEmptyInitializerRefactoring
         InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
 
         ObjectCreationExpressionSyntax newNode = objectCreationExpression.WithInitializer(null);
-        if (argumentList == null)
+        if (argumentList is null)
         {
             TypeSyntax type = objectCreationExpression.Type;
 

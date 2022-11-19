@@ -30,13 +30,13 @@ internal sealed class ReplaceData
         int count = -1,
         CancellationToken cancellationToken = default)
     {
-        if (regex == null)
+        if (regex is null)
             throw new ArgumentNullException(nameof(regex));
 
-        if (input == null)
+        if (input is null)
             throw new ArgumentNullException(nameof(input));
 
-        if (replacement == null)
+        if (replacement is null)
             replacement = "";
 
         return Create(regex, input, f => Evaluate(f), count, cancellationToken);
@@ -54,13 +54,13 @@ internal sealed class ReplaceData
         int count = -1,
         CancellationToken cancellationToken = default)
     {
-        if (regex == null)
+        if (regex is null)
             throw new ArgumentNullException(nameof(regex));
 
-        if (input == null)
+        if (input is null)
             throw new ArgumentNullException(nameof(input));
 
-        if (evaluator == null)
+        if (evaluator is null)
             throw new ArgumentNullException(nameof(evaluator));
 
         var items = new List<ReplaceItem>();

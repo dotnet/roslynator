@@ -97,12 +97,12 @@ public sealed class TypeParameterConstraintCodeFixProvider : CompilerDiagnosticC
 
                         TypeParameterConstraintSyntax classConstraint = constraintInfo.Constraints.Find(SyntaxKind.ClassConstraint);
 
-                        if (classConstraint != null)
+                        if (classConstraint is not null)
                             RemoveConstraint(context, diagnostic, classConstraint);
 
                         TypeParameterConstraintSyntax structConstraint = constraintInfo.Constraints.Find(SyntaxKind.StructConstraint);
 
-                        if (structConstraint != null)
+                        if (structConstraint is not null)
                             RemoveConstraint(context, diagnostic, structConstraint);
 
                         break;

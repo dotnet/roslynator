@@ -36,10 +36,10 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
         TestOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        if (data == null)
+        if (data is null)
             throw new ArgumentNullException(nameof(data));
 
-        if (expected == null)
+        if (expected is null)
             throw new ArgumentNullException(nameof(expected));
 
         if (data.Spans.IsEmpty)
@@ -71,10 +71,10 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
                     span,
                     a =>
                     {
-                        if (data.EquivalenceKey == null
+                        if (data.EquivalenceKey is null
                             || string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
                         {
-                            if (action != null)
+                            if (action is not null)
                                 Fail($"Multiple refactorings registered by '{refactoringProvider.GetType().Name}'.", new CodeAction[] { action, a });
 
                             action = a;
@@ -88,7 +88,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
 
                 await refactoringProvider.ComputeRefactoringsAsync(context);
 
-                if (action == null)
+                if (action is null)
                     Fail("No code refactoring has been registered.", candidateActions);
 
                 document = await VerifyAndApplyCodeActionAsync(document, action, expected.CodeActionTitle);
@@ -118,7 +118,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
         TestOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        if (data == null)
+        if (data is null)
             throw new ArgumentNullException(nameof(data));
 
         if (data.Spans.IsEmpty)
@@ -149,7 +149,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
                     span,
                     a =>
                     {
-                        if (data.EquivalenceKey == null
+                        if (data.EquivalenceKey is null
                             || string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
                         {
                             Fail("No code refactoring expected.");

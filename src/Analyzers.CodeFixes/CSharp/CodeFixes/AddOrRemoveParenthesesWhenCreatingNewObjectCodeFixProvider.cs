@@ -32,7 +32,7 @@ public sealed class AddOrRemoveParenthesesWhenCreatingNewObjectCodeFixProvider :
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
 
-        if (objectCreationExpression.ArgumentList != null)
+        if (objectCreationExpression.ArgumentList is not null)
         {
             CodeAction codeAction = CodeAction.Create(
                 "Remove parentheses",

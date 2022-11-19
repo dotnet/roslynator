@@ -45,7 +45,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
 
         SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
 
-        if (accessors.Any(f => f.BodyOrExpressionBody() != null))
+        if (accessors.Any(f => f.BodyOrExpressionBody() is not null))
         {
             if (DiagnosticRules.PutFullAccessorOnItsOwnLine.IsEffective(context))
             {
@@ -53,7 +53,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
 
                 foreach (AccessorDeclarationSyntax accessor in accessors)
                 {
-                    if (accessor.BodyOrExpressionBody() != null
+                    if (accessor.BodyOrExpressionBody() is not null
                         && accessor.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(token.Span.End, accessor.SpanStart)))
                     {
                         DiagnosticHelpers.ReportDiagnostic(
@@ -114,7 +114,7 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
 
                             BracketedParameterListSyntax parameterList = indexerDeclaration.ParameterList;
 
-                            if (parameterList != null)
+                            if (parameterList is not null)
                             {
                                 SyntaxToken closeBracket = parameterList.CloseBracketToken;
 

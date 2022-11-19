@@ -19,10 +19,10 @@ public abstract class CommandOptionComparer : IComparer<CommandOption>
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             string name1 = x.Name;

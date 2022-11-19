@@ -52,7 +52,7 @@ public sealed class FormatAccessorBracesAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = accessor.Body;
 
-        if (block == null)
+        if (block is null)
             return;
 
         SyntaxToken openBrace = block.OpenBraceToken;

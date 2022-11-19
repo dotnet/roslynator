@@ -43,7 +43,7 @@ internal class MethodChainingWithAssignmentAnalysis : UseMethodChainingAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         if (!SymbolEqualityComparer.Default.Equals(methodSymbol.ReturnType, typeSymbol))
@@ -70,7 +70,7 @@ internal class MethodChainingWithAssignmentAnalysis : UseMethodChainingAnalysis
                 && identifierName != identifierName2
                 && name == identifierName2.Identifier.ValueText)
             {
-                if (symbol == null)
+                if (symbol is null)
                     symbol = semanticModel.GetSymbol(identifierName, cancellationToken);
 
                 if (SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbol(identifierName2, cancellationToken), symbol))

@@ -26,7 +26,7 @@ public class RefactoringMetadata
         IEnumerable<SampleMetadata> samples,
         IEnumerable<LinkMetadata> links)
     {
-        if (optionKey == null
+        if (optionKey is null
             && !isObsolete)
         {
             throw new ArgumentNullException(nameof(optionKey));

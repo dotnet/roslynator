@@ -27,7 +27,7 @@ internal static class Program
 
     private static async Task Main(string[] args)
     {
-        if (args == null || args.Length == 0)
+        if (args is null || args.Length == 0)
         {
 #if DEBUG
             args = new[] { @"..\..\..\..\.." };
@@ -176,7 +176,7 @@ internal static class Program
                 fileMustExists: false);
 
             foreach (AnalyzerOptionMetadata option in analyzer.Options
-                .Where(f => f.Id != null))
+                .Where(f => f.Id is not null))
             {
                 WriteAllText(
                     $@"..\docs\analyzers\{option.ParentId}{option.Id}.md",
@@ -235,7 +235,7 @@ internal static class Program
 
             ImmutableDictionary<string, AnalyzerMetadata> dic = allAnalyzers
                 .Concat(allAnalyzers.SelectMany(f => f.OptionAnalyzers))
-                .Where(f => f.Id != null)
+                .Where(f => f.Id is not null)
                 .ToImmutableDictionary(f => f.Id, f => f);
 
             s = issueRegex.Replace(s, "([issue](https://github.com/JosefPihrt/Roslynator/issues/${issue}))");

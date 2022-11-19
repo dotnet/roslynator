@@ -38,7 +38,7 @@ internal static class EnumUtility
             if (val != 0
                 && (result & val) == val)
             {
-                if (builder == null)
+                if (builder is null)
                 {
                     if (result == val)
                         return OneOrMany.Create(fields[i]);
@@ -56,7 +56,7 @@ internal static class EnumUtility
         }
 
         if (result == 0
-            && builder != null)
+            && builder is not null)
         {
             builder.Reverse();
 
@@ -105,7 +105,7 @@ internal static class EnumUtility
         }
 
         if (result == 0
-            && builder != null)
+            && builder is not null)
         {
             Debug.Assert(builder.Count > 1);
 

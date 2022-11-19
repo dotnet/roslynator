@@ -46,7 +46,7 @@ internal static class AssemblyResolver
                 {
                     Assembly assembly = FindLoadedAssembly();
 
-                    if (assembly != null)
+                    if (assembly is not null)
                         return assembly;
 
                     break;
@@ -76,7 +76,7 @@ internal static class AssemblyResolver
                 if (assemblyName.Name == an.Name
                     && assemblyName.Version <= an.Version)
                 {
-                    if (result == null)
+                    if (result is null)
                     {
                         result = assembly;
                     }

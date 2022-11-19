@@ -68,14 +68,14 @@ public class RoslynatorInfo
     {
         ISymbol diagnosticDescriptor = DiagnosticDescriptors.FirstOrDefault(f => f.Name == identifier);
 
-        if (diagnosticDescriptor == null)
+        if (diagnosticDescriptor is null)
             throw new InvalidOperationException($"Diagnostic descriptor symbol not found for identifier '{identifier}'.");
 
         IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(diagnosticDescriptor, Solution, cancellationToken).ConfigureAwait(false);
 
         ISymbol diagnosticIdentifier = DiagnosticIdentifiers.FirstOrDefault(f => f.Name == identifier);
 
-        if (diagnosticIdentifier == null)
+        if (diagnosticIdentifier is null)
             throw new InvalidOperationException($"Diagnostic identifier symbol not found for identifier '{identifier}'.");
 
         IEnumerable<ReferencedSymbol> referencedSymbols2 = await SymbolFinder.FindReferencesAsync(diagnosticIdentifier, Solution, cancellationToken).ConfigureAwait(false);
@@ -87,7 +87,7 @@ public class RoslynatorInfo
     {
         ISymbol symbol = RefactoringIdentifiers.FirstOrDefault(f => f.Name == identifier);
 
-        if (symbol == null)
+        if (symbol is null)
             throw new InvalidOperationException($"Refactoring identifier symbol not found for identifier '{identifier}'.");
 
         IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, Solution, cancellationToken).ConfigureAwait(false);
@@ -99,7 +99,7 @@ public class RoslynatorInfo
     {
         ISymbol symbol = CompilerDiagnosticIdentifiers.FirstOrDefault(f => f.Name == identifier);
 
-        if (symbol == null)
+        if (symbol is null)
             throw new InvalidOperationException($"Compiler diagnostic identifier symbol not found for identifier '{identifier}'.");
 
         IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, Solution, cancellationToken).ConfigureAwait(false);

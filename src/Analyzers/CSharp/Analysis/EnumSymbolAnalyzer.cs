@@ -115,7 +115,7 @@ public sealed class EnumSymbolAnalyzer : BaseDiagnosticAnalyzer
 
                 ExpressionSyntax expression = declaration.EqualsValue?.Value.WalkDownParentheses();
 
-                if (expression != null
+                if (expression is not null
                     && (expression.IsKind(SyntaxKind.NumericLiteralExpression)
                         || expression
                             .DescendantNodes()
@@ -198,25 +198,25 @@ public sealed class EnumSymbolAnalyzer : BaseDiagnosticAnalyzer
 
                     var enumMember1 = (EnumMemberDeclarationSyntax)symbolInfo1.Symbol.GetSyntax(context.CancellationToken);
 
-                    if (enumMember1 == null)
+                    if (enumMember1 is null)
                         continue;
 
                     var enumMember2 = (EnumMemberDeclarationSyntax)symbolInfo2.Symbol.GetSyntax(context.CancellationToken);
 
-                    if (enumMember2 == null)
+                    if (enumMember2 is null)
                         continue;
 
                     ExpressionSyntax value1 = enumMember1.EqualsValue?.Value?.WalkDownParentheses();
                     ExpressionSyntax value2 = enumMember2.EqualsValue?.Value?.WalkDownParentheses();
 
-                    if (value1 == null)
+                    if (value1 is null)
                     {
-                        if (value2 != null)
+                        if (value2 is not null)
                         {
                             ReportDuplicateValue(context, enumMember1, value2);
                         }
                     }
-                    else if (value2 == null)
+                    else if (value2 is null)
                     {
                         ReportDuplicateValue(context, enumMember2, value1);
                     }

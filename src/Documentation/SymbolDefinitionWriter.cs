@@ -68,7 +68,7 @@ internal abstract class SymbolDefinitionWriter : IDisposable
     {
         get
         {
-            if (_definitionFormat == null)
+            if (_definitionFormat is null)
             {
                 var format = new SymbolDisplayFormat(
                     globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
@@ -340,7 +340,7 @@ internal abstract class SymbolDefinitionWriter : IDisposable
         else
         {
             typesByNamespace = assemblies
-                .SelectMany(a => a.GetTypes(t => t.ContainingType == null && Filter.IsMatch(t)))
+                .SelectMany(a => a.GetTypes(t => t.ContainingType is null && Filter.IsMatch(t)))
                 .GroupBy(t => t.ContainingNamespace, MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
                 .Where(g => Filter.IsMatch(g.Key))
                 .OrderBy(g => g.Key, Comparer.NamespaceComparer)
@@ -774,7 +774,7 @@ internal abstract class SymbolDefinitionWriter : IDisposable
     {
         INamedTypeSymbol attributeSymbol = attribute.AttributeClass;
 
-        if (attributeSymbol.ContainingType != null
+        if (attributeSymbol.ContainingType is not null
             || (Format.Includes(SymbolDefinitionPartFilter.ContainingNamespace)
                 && !attributeSymbol.ContainingNamespace.IsGlobalNamespace))
         {
@@ -909,7 +909,7 @@ internal abstract class SymbolDefinitionWriter : IDisposable
                     }
                 case TypedConstantKind.Type:
                     {
-                        if (typedConstant.Value == null)
+                        if (typedConstant.Value is null)
                         {
                             Write("null");
                         }
@@ -995,11 +995,11 @@ internal abstract class SymbolDefinitionWriter : IDisposable
 
             ISymbol explicitImplementation = symbol.GetFirstExplicitInterfaceImplementation();
 
-            if (explicitImplementation != null)
+            if (explicitImplementation is not null)
             {
                 INamedTypeSymbol containingType = explicitImplementation.ContainingType;
 
-                if (containingType != null)
+                if (containingType is not null)
                 {
                     WriteParts(containingType, containingType.ToDisplayParts(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_TypeParameters));
                     Write(".");

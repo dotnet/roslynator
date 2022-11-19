@@ -85,7 +85,7 @@ public sealed class CannotConvertArgumentTypeCodeFixProvider : CompilerDiagnosti
 
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) != null)
+                        if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) is not null)
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Add argument list",

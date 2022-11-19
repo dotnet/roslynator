@@ -38,7 +38,7 @@ internal static class WordListLoader
         foreach (string word in state.Words)
             fixes.Remove(word);
 
-        if (state.CaseSensitiveWords != null)
+        if (state.CaseSensitiveWords is not null)
         {
             foreach (string word in state.CaseSensitiveWords)
                 fixes.Remove(word);
@@ -265,7 +265,7 @@ internal static class WordListLoader
 
                     if (s.Length > 0)
                     {
-                        if (caseSensitiveSequences != null
+                        if (caseSensitiveSequences is not null
                             && !IsLower(value))
                         {
                             caseSensitiveSequences.Add(new WordSequence(s.ToImmutableArray()));
@@ -279,7 +279,7 @@ internal static class WordListLoader
                 else if (value.Length >= minWordLength
                     && value.Length <= maxWordLength)
                 {
-                    if (caseSensitiveWords != null
+                    if (caseSensitiveWords is not null
                         && !IsLower(value))
                     {
                         caseSensitiveWords.Add(value);

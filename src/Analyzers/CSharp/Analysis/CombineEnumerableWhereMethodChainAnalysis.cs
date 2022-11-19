@@ -33,7 +33,7 @@ internal static class CombineEnumerableWhereMethodChainAnalysis
 
         IMethodSymbol methodSymbol2 = semanticModel.GetReducedExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol2 == null)
+        if (methodSymbol2 is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol2, "Where", parameterCount: 2))
@@ -45,7 +45,7 @@ internal static class CombineEnumerableWhereMethodChainAnalysis
         {
             IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
-            if (methodSymbol != null
+            if (methodSymbol is not null
                 && SymbolUtility.IsLinqWhere(methodSymbol))
             {
                 Analyze(context, invocationInfo, invocationInfo2);
@@ -58,7 +58,7 @@ internal static class CombineEnumerableWhereMethodChainAnalysis
         {
             IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
-            if (methodSymbol != null
+            if (methodSymbol is not null
                 && SymbolUtility.IsLinqWhereWithIndex(methodSymbol))
             {
                 Analyze(context, invocationInfo, invocationInfo2);
@@ -98,10 +98,10 @@ internal static class CombineEnumerableWhereMethodChainAnalysis
 
     private static bool AreEquivalentLambdas(ExpressionSyntax expression1, ExpressionSyntax expression2)
     {
-        if (expression1 == null)
+        if (expression1 is null)
             return false;
 
-        if (expression2 == null)
+        if (expression2 is null)
             return false;
 
         SyntaxKind kind = expression1.Kind();
@@ -126,8 +126,8 @@ internal static class CombineEnumerableWhereMethodChainAnalysis
             ParameterListSyntax parameterList1 = lambda1.ParameterList;
             ParameterListSyntax parameterList2 = lambda2.ParameterList;
 
-            if (parameterList1 != null
-                && parameterList2 != null)
+            if (parameterList1 is not null
+                && parameterList2 is not null)
             {
                 SeparatedSyntaxList<ParameterSyntax> parameters1 = parameterList1.Parameters;
                 SeparatedSyntaxList<ParameterSyntax> parameters2 = parameterList2.Parameters;

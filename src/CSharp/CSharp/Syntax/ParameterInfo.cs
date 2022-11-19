@@ -57,7 +57,7 @@ internal readonly struct ParameterInfo
 
     public bool Success
     {
-        get { return ParameterList != null || Parameter != null; }
+        get { return ParameterList is not null || Parameter is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]

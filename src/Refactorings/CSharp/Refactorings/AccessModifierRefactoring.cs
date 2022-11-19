@@ -66,7 +66,7 @@ internal static class AccessModifierRefactoring
 
             ISymbol symbol = GetBaseSymbolOrDefault(semanticModel, context.CancellationToken);
 
-            if (symbol != null)
+            if (symbol is not null)
             {
                 if (SyntaxAccessibility.IsValidAccessibility(node, accessibility, ignoreOverride: true))
                 {

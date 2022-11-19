@@ -107,7 +107,7 @@ internal static class ConvertIfToSwitchRefactoring
 
                     ExpressionSyntax expression = isPatternExpression.Expression.WalkDownParentheses();
 
-                    if (switchExpression == null)
+                    if (switchExpression is null)
                     {
                         switchExpression = expression;
                     }
@@ -139,7 +139,7 @@ internal static class ConvertIfToSwitchRefactoring
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(right, cancellationToken).ConvertedType;
 
-                if (typeSymbol == null)
+                if (typeSymbol is null)
                     return false;
 
                 if (!SymbolUtility.SupportsSwitchExpression(typeSymbol))
@@ -151,7 +151,7 @@ internal static class ConvertIfToSwitchRefactoring
 
             ExpressionSyntax left = binaryExpressionInfo.Left;
 
-            if (switchExpression == null)
+            if (switchExpression is null)
             {
                 switchExpression = left;
             }
@@ -342,7 +342,7 @@ internal static class ConvertIfToSwitchRefactoring
 
         bool IsContainedInIterationStatement()
         {
-            for (SyntaxNode node = statement.Parent; node != null; node = node.Parent)
+            for (SyntaxNode node = statement.Parent; node is not null; node = node.Parent)
             {
                 if (node is MemberDeclarationSyntax)
                     break;

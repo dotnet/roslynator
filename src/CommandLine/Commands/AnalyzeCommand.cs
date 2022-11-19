@@ -43,7 +43,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
         IEnumerable<AnalyzerAssembly> analyzerAssemblies = Options.AnalyzerAssemblies
             .SelectMany(path => AnalyzerAssemblyLoader.LoadFrom(path, loadFixers: false).Select(info => info.AnalyzerAssembly));
 
-        CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
+        CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
         var analyzerLoader = new AnalyzerLoader(analyzerAssemblies, codeAnalyzerOptions);
 
@@ -95,10 +95,10 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
         if (results.Count > 1)
             WriteAnalysisResults(analysisResults);
 
-        if (Options.Output != null
+        if (Options.Output is not null
             && analysisResults.Any(f => f.Diagnostics.Any()))
         {
-            CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
+            CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
             DiagnosticXmlSerializer.Serialize(analysisResults, Options.Output, culture);
         }

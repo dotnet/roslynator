@@ -20,7 +20,7 @@ internal static class CommandLoader
             {
                 VerbAttribute verbAttribute = type.GetCustomAttribute<VerbAttribute>();
 
-                if (verbAttribute != null)
+                if (verbAttribute is not null)
                     yield return CreateCommand(type, verbAttribute);
             }
         }
@@ -73,16 +73,16 @@ internal static class CommandLoader
                     arguments.Add(argument);
                     break;
                 }
-                else if (optionAttribute == null)
+                else if (optionAttribute is null)
                 {
                     optionAttribute = attribute as OptionAttribute;
 
-                    if (optionAttribute != null)
+                    if (optionAttribute is not null)
                         continue;
                 }
             }
 
-            if (optionAttribute != null)
+            if (optionAttribute is not null)
             {
                 Debug.Assert(
                     propertyInfo.PropertyType != typeof(bool) || string.IsNullOrEmpty(optionAttribute.MetaValue),
@@ -108,7 +108,7 @@ internal static class CommandLoader
         return new Command(
             verbAttribute.Name,
             verbAttribute.HelpText,
-            (commandGroupAttribute != null)
+            (commandGroupAttribute is not null)
                 ? new CommandGroup(commandGroupAttribute.Name, commandGroupAttribute.Ordinal)
                 : CommandGroup.Default,
             arguments.OrderBy(f => f.Index),

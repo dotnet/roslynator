@@ -16,7 +16,7 @@ internal static class CopyAttributeArgumentRefactoring
 
         AttributeArgumentSyntax argument = GetArgument(context, argumentList);
 
-        if (argument == null)
+        if (argument is null)
             return;
 
         context.RegisterRefactoring(

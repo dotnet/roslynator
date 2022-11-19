@@ -137,7 +137,7 @@ internal abstract class DocumentationCommentRefactoring<TNode> where TNode : Syn
                         {
                             XmlElementSyntax previousElement = GetPreviousElement(comment, element);
 
-                            if (previousElement != null)
+                            if (previousElement is not null)
                             {
                                 insertIndex = previousElement.FullSpan.End;
                             }

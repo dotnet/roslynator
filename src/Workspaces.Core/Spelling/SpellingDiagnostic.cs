@@ -43,7 +43,7 @@ internal abstract class SpellingDiagnostic
 
     public int ParentIndex { get; }
 
-    public int Offset => (Parent != null) ? Index - ParentIndex : 0;
+    public int Offset => (Parent is not null) ? Index - ParentIndex : 0;
 
     public Location Location => Diagnostic.Location;
 
@@ -55,7 +55,7 @@ internal abstract class SpellingDiagnostic
 
     public SyntaxToken Identifier { get; }
 
-    public bool IsSymbol => Identifier.Parent != null;
+    public bool IsSymbol => Identifier.Parent is not null;
 
     public string ValueLower => _valueLower ??= Value.ToLowerInvariant();
 

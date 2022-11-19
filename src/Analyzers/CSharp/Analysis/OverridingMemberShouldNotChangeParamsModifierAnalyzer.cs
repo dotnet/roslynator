@@ -39,7 +39,7 @@ public sealed class OverridingMemberShouldNotChangeParamsModifierAnalyzer : Base
 
         IParameterSymbol lastParameterSymbol = methodSymbol.OverriddenMethod?.Parameters.LastOrDefault();
 
-        if (lastParameterSymbol == null)
+        if (lastParameterSymbol is null)
             return;
 
         if (methodSymbol.GetSyntaxOrDefault(context.CancellationToken) is not MethodDeclarationSyntax methodDeclaration)
@@ -47,7 +47,7 @@ public sealed class OverridingMemberShouldNotChangeParamsModifierAnalyzer : Base
 
         ParameterSyntax lastParameter = methodDeclaration.ParameterList?.Parameters.LastOrDefault();
 
-        if (lastParameter == null)
+        if (lastParameter is null)
             return;
 
         if (lastParameter.Modifiers.Contains(SyntaxKind.ParamsKeyword) == lastParameterSymbol.IsParams)
@@ -65,7 +65,7 @@ public sealed class OverridingMemberShouldNotChangeParamsModifierAnalyzer : Base
 
         IParameterSymbol lastParameterSymbol = propertySymbol.OverriddenProperty?.Parameters.LastOrDefault();
 
-        if (lastParameterSymbol == null)
+        if (lastParameterSymbol is null)
             return;
 
         if (propertySymbol.GetSyntaxOrDefault(context.CancellationToken) is not IndexerDeclarationSyntax indexerDeclaration)
@@ -73,7 +73,7 @@ public sealed class OverridingMemberShouldNotChangeParamsModifierAnalyzer : Base
 
         ParameterSyntax lastParameter = indexerDeclaration.ParameterList?.Parameters.LastOrDefault();
 
-        if (lastParameter == null)
+        if (lastParameter is null)
             return;
 
         if (lastParameter.Modifiers.Contains(SyntaxKind.ParamsKeyword) == lastParameterSymbol.IsParams)

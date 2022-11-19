@@ -10,293 +10,294 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp;
-
-public readonly partial struct ExpressionChain
+namespace Roslynator.CSharp
 {
-    /// <summary>
-    /// Enables to enumerate expressions of <see cref="ExpressionChain"/> in a reversed order.
-    /// </summary>
-    [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.")]
-    public readonly struct Reversed : IEquatable<Reversed>, IEnumerable<ExpressionSyntax>
+    public readonly partial struct ExpressionChain
     {
-        private readonly ExpressionChain _chain;
-
-        public Reversed(in ExpressionChain chain)
-        {
-            _chain = chain;
-        }
-
-        internal bool IsStringConcatenation(
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
-        {
-            if (!_chain.BinaryExpression.IsKind(SyntaxKind.AddExpression))
-                return false;
-
-            Enumerator en = GetEnumerator();
-
-            if (!en.MoveNext())
-                return false;
-
-            var binaryExpression = (BinaryExpressionSyntax)en.Current.Parent;
-
-            if (!en.MoveNext())
-                return false;
-
-            while (true)
-            {
-                if (!CSharpUtility.IsStringConcatenation(binaryExpression, semanticModel, cancellationToken))
-                    return false;
-
-                ExpressionSyntax prev = en.Current;
-
-                if (en.MoveNext())
-                {
-                    binaryExpression = (BinaryExpressionSyntax)prev.Parent;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            return true;
-        }
-
-        public Enumerator GetEnumerator()
-        {
-            return new Enumerator(_chain);
-        }
-
-        IEnumerator<ExpressionSyntax> IEnumerable<ExpressionSyntax>.GetEnumerator()
-        {
-            if (_chain.BinaryExpression == null)
-                return Empty.Enumerator<ExpressionSyntax>();
-
-            return new EnumeratorImpl(_chain);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            if (_chain.BinaryExpression == null)
-                return Empty.Enumerator<ExpressionSyntax>();
-
-            return new EnumeratorImpl(_chain);
-        }
-
-        public override string ToString()
-        {
-            return _chain.ToString();
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Reversed other && Equals(other);
-        }
-
-        public bool Equals(Reversed other)
-        {
-            return _chain.Equals(other._chain);
-        }
-
-        public override int GetHashCode()
-        {
-            return _chain.GetHashCode();
-        }
-
-        public static bool operator ==(in Reversed reversed1, in Reversed reversed2)
-        {
-            return reversed1.Equals(reversed2);
-        }
-
-        public static bool operator !=(in Reversed reversed1, in Reversed reversed2)
-        {
-            return !(reversed1 == reversed2);
-        }
-
+        /// <summary>
+        /// Enables to enumerate expressions of <see cref="ExpressionChain"/> in a reversed order.
+        /// </summary>
         [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.")]
-        public struct Enumerator
+        public readonly struct Reversed : IEquatable<Reversed>, IEnumerable<ExpressionSyntax>
         {
             private readonly ExpressionChain _chain;
-            private ExpressionSyntax _current;
-            private State _state;
 
-            internal Enumerator(in ExpressionChain chain)
+            public Reversed(in ExpressionChain chain)
             {
                 _chain = chain;
-                _current = null;
-                _state = State.Start;
             }
 
-            public bool MoveNext()
+            internal bool IsStringConcatenation(
+                SemanticModel semanticModel,
+                CancellationToken cancellationToken = default)
             {
-                switch (_state)
+                if (!_chain.BinaryExpression.IsKind(SyntaxKind.AddExpression))
+                    return false;
+
+                Enumerator en = GetEnumerator();
+
+                if (!en.MoveNext())
+                    return false;
+
+                var binaryExpression = (BinaryExpressionSyntax)en.Current.Parent;
+
+                if (!en.MoveNext())
+                    return false;
+
+                while (true)
                 {
-                    case State.Start:
-                        {
-                            if (_chain.BinaryExpression == null)
-                                return false;
+                    if (!CSharpUtility.IsStringConcatenation(binaryExpression, semanticModel, cancellationToken))
+                        return false;
 
-                            if (_chain.Span == null)
+                    ExpressionSyntax prev = en.Current;
+
+                    if (en.MoveNext())
+                    {
+                        binaryExpression = (BinaryExpressionSyntax)prev.Parent;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                return true;
+            }
+
+            public Enumerator GetEnumerator()
+            {
+                return new Enumerator(_chain);
+            }
+
+            IEnumerator<ExpressionSyntax> IEnumerable<ExpressionSyntax>.GetEnumerator()
+            {
+                if (_chain.BinaryExpression is null)
+                    return Empty.Enumerator<ExpressionSyntax>();
+
+                return new EnumeratorImpl(_chain);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                if (_chain.BinaryExpression is null)
+                    return Empty.Enumerator<ExpressionSyntax>();
+
+                return new EnumeratorImpl(_chain);
+            }
+
+            public override string ToString()
+            {
+                return _chain.ToString();
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is Reversed other && Equals(other);
+            }
+
+            public bool Equals(Reversed other)
+            {
+                return _chain.Equals(other._chain);
+            }
+
+            public override int GetHashCode()
+            {
+                return _chain.GetHashCode();
+            }
+
+            public static bool operator ==(in Reversed reversed1, in Reversed reversed2)
+            {
+                return reversed1.Equals(reversed2);
+            }
+
+            public static bool operator !=(in Reversed reversed1, in Reversed reversed2)
+            {
+                return !(reversed1 == reversed2);
+            }
+
+            [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.")]
+            public struct Enumerator
+            {
+                private readonly ExpressionChain _chain;
+                private ExpressionSyntax _current;
+                private State _state;
+
+                internal Enumerator(in ExpressionChain chain)
+                {
+                    _chain = chain;
+                    _current = null;
+                    _state = State.Start;
+                }
+
+                public bool MoveNext()
+                {
+                    switch (_state)
+                    {
+                        case State.Start:
                             {
-                                _current = _chain.BinaryExpression.Right;
-                                _state = State.Right;
-                                return true;
-                            }
+                                if (_chain.BinaryExpression is null)
+                                    return false;
 
-                            ExpressionSyntax right = _chain.BinaryExpression.Right;
-
-                            TextSpan span = _chain.Span.Value;
-
-                            if (IsInSpan(span, right.Span))
-                            {
-                                _current = right;
-                                _state = State.Right;
-                                return true;
-                            }
-
-                            BinaryExpressionSyntax binaryExpression = _chain.BinaryExpression;
-
-                            ExpressionSyntax left;
-
-                            while (true)
-                            {
-                                left = binaryExpression.Left;
-
-                                if (left.RawKind == binaryExpression.RawKind)
+                                if (_chain.Span is null)
                                 {
-                                    binaryExpression = (BinaryExpressionSyntax)left;
-                                    right = binaryExpression.Right;
-
-                                    if (IsInSpan(span, right.Span))
-                                    {
-                                        _current = right;
-                                        _state = State.Right;
-                                        return true;
-                                    }
-                                }
-                                else if (IsInSpan(span, left.Span))
-                                {
-                                    _current = left;
-                                    _state = State.Left;
+                                    _current = _chain.BinaryExpression.Right;
+                                    _state = State.Right;
                                     return true;
                                 }
-                                else
-                                {
-                                    _state = State.Left;
-                                    return false;
-                                }
-                            }
-                        }
-                    case State.Right:
-                        {
-                            var binaryExpression = (BinaryExpressionSyntax)_current.Parent;
 
-                            ExpressionSyntax left = binaryExpression.Left;
+                                ExpressionSyntax right = _chain.BinaryExpression.Right;
 
-                            if (_chain.Span == null)
-                            {
-                                if (left.RawKind == binaryExpression.RawKind)
-                                {
-                                    binaryExpression = (BinaryExpressionSyntax)left;
-
-                                    _current = binaryExpression.Right;
-                                    _state = State.Right;
-                                }
-                                else
-                                {
-                                    _current = left;
-                                    _state = State.Left;
-                                }
-
-                                return true;
-                            }
-                            else
-                            {
                                 TextSpan span = _chain.Span.Value;
 
-                                if (left.RawKind == binaryExpression.RawKind)
+                                if (IsInSpan(span, right.Span))
                                 {
-                                    binaryExpression = (BinaryExpressionSyntax)left;
-
-                                    ExpressionSyntax right = binaryExpression.Right;
-
-                                    if (IsInSpan(span, right.Span))
-                                    {
-                                        _current = right;
-                                        _state = State.Right;
-                                        return true;
-                                    }
+                                    _current = right;
+                                    _state = State.Right;
+                                    return true;
                                 }
 
-                                if (IsInSpan(span, left.Span))
+                                BinaryExpressionSyntax binaryExpression = _chain.BinaryExpression;
+
+                                ExpressionSyntax left;
+
+                                while (true)
                                 {
-                                    _current = left;
-                                    _state = State.Left;
+                                    left = binaryExpression.Left;
+
+                                    if (left.RawKind == binaryExpression.RawKind)
+                                    {
+                                        binaryExpression = (BinaryExpressionSyntax)left;
+                                        right = binaryExpression.Right;
+
+                                        if (IsInSpan(span, right.Span))
+                                        {
+                                            _current = right;
+                                            _state = State.Right;
+                                            return true;
+                                        }
+                                    }
+                                    else if (IsInSpan(span, left.Span))
+                                    {
+                                        _current = left;
+                                        _state = State.Left;
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        _state = State.Left;
+                                        return false;
+                                    }
+                                }
+                            }
+                        case State.Right:
+                            {
+                                var binaryExpression = (BinaryExpressionSyntax)_current.Parent;
+
+                                ExpressionSyntax left = binaryExpression.Left;
+
+                                if (_chain.Span is null)
+                                {
+                                    if (left.RawKind == binaryExpression.RawKind)
+                                    {
+                                        binaryExpression = (BinaryExpressionSyntax)left;
+
+                                        _current = binaryExpression.Right;
+                                        _state = State.Right;
+                                    }
+                                    else
+                                    {
+                                        _current = left;
+                                        _state = State.Left;
+                                    }
+
                                     return true;
                                 }
                                 else
                                 {
-                                    _current = null;
-                                    _state = State.Left;
-                                    return false;
+                                    TextSpan span = _chain.Span.Value;
+
+                                    if (left.RawKind == binaryExpression.RawKind)
+                                    {
+                                        binaryExpression = (BinaryExpressionSyntax)left;
+
+                                        ExpressionSyntax right = binaryExpression.Right;
+
+                                        if (IsInSpan(span, right.Span))
+                                        {
+                                            _current = right;
+                                            _state = State.Right;
+                                            return true;
+                                        }
+                                    }
+
+                                    if (IsInSpan(span, left.Span))
+                                    {
+                                        _current = left;
+                                        _state = State.Left;
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        _current = null;
+                                        _state = State.Left;
+                                        return false;
+                                    }
                                 }
                             }
-                        }
-                    case State.Left:
-                        {
-                            return false;
-                        }
-                    default:
-                        {
-                            throw new InvalidOperationException();
-                        }
+                        case State.Left:
+                            {
+                                return false;
+                            }
+                        default:
+                            {
+                                throw new InvalidOperationException();
+                            }
+                    }
+                }
+
+                public ExpressionSyntax Current
+                {
+                    get { return _current ?? throw new InvalidOperationException(); }
+                }
+
+                public void Reset()
+                {
+                    _current = null;
+                    _state = State.Start;
+                }
+
+                public override bool Equals(object obj) => throw new NotSupportedException();
+
+                public override int GetHashCode() => throw new NotSupportedException();
+
+                private enum State
+                {
+                    Start = 0,
+                    Left = 1,
+                    Right = 2,
                 }
             }
 
-            public ExpressionSyntax Current
+            private class EnumeratorImpl : IEnumerator<ExpressionSyntax>
             {
-                get { return _current ?? throw new InvalidOperationException(); }
-            }
+                private Enumerator _en;
 
-            public void Reset()
-            {
-                _current = null;
-                _state = State.Start;
-            }
+                internal EnumeratorImpl(in ExpressionChain chain)
+                {
+                    _en = new Enumerator(chain);
+                }
 
-            public override bool Equals(object obj) => throw new NotSupportedException();
+                public ExpressionSyntax Current => _en.Current;
 
-            public override int GetHashCode() => throw new NotSupportedException();
+                object IEnumerator.Current => _en.Current;
 
-            private enum State
-            {
-                Start = 0,
-                Left = 1,
-                Right = 2,
-            }
-        }
+                public bool MoveNext() => _en.MoveNext();
 
-        private class EnumeratorImpl : IEnumerator<ExpressionSyntax>
-        {
-            private Enumerator _en;
+                public void Reset() => _en.Reset();
 
-            internal EnumeratorImpl(in ExpressionChain chain)
-            {
-                _en = new Enumerator(chain);
-            }
-
-            public ExpressionSyntax Current => _en.Current;
-
-            object IEnumerator.Current => _en.Current;
-
-            public bool MoveNext() => _en.MoveNext();
-
-            public void Reset() => _en.Reset();
-
-            public void Dispose()
-            {
+                public void Dispose()
+                {
+                }
             }
         }
     }

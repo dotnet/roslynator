@@ -109,7 +109,7 @@ internal static class XmlExtensions
                                 {
                                     string parameterName = e.Attribute("name")?.Value;
 
-                                    if (parameterName != null)
+                                    if (parameterName is not null)
                                         writer.WriteBold(parameterName);
 
                                     break;
@@ -118,13 +118,13 @@ internal static class XmlExtensions
                                 {
                                     string commentId = e.Attribute("cref")?.Value;
 
-                                    if (commentId != null)
+                                    if (commentId is not null)
                                     {
                                         ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
 
                                         //XTODO: repair roslyn documentation
                                         Debug.Assert(
-                                            symbol != null
+                                            symbol is not null
                                                 || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"
                                                 || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxToken"
                                                 || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxTrivia"
@@ -133,7 +133,7 @@ internal static class XmlExtensions
                                                 || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxTrivia",
                                             commentId);
 
-                                        if (symbol != null)
+                                        if (symbol is not null)
                                         {
                                             writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
                                         }
@@ -149,7 +149,7 @@ internal static class XmlExtensions
                                 {
                                     string typeParameterName = e.Attribute("name")?.Value;
 
-                                    if (typeParameterName != null)
+                                    if (typeParameterName is not null)
                                         writer.WriteBold(typeParameterName);
 
                                     break;

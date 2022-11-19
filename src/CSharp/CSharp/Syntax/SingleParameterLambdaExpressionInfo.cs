@@ -68,7 +68,7 @@ public readonly struct SingleParameterLambdaExpressionInfo
     /// </summary>
     public bool Success
     {
-        get { return LambdaExpression != null; }
+        get { return LambdaExpression is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]

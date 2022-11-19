@@ -81,7 +81,7 @@ public sealed class FormatDocumentationCommentSummaryAnalyzer : BaseDiagnosticAn
         {
             XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
-            if (summaryElement != null)
+            if (summaryElement is not null)
             {
                 XmlElementStartTagSyntax startTag = summaryElement?.StartTag;
 

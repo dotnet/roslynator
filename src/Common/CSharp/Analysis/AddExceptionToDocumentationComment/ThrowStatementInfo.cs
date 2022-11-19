@@ -20,7 +20,7 @@ internal class ThrowStatementInfo : ThrowInfo
     {
         SyntaxNode parent = Node.Parent;
 
-        if (parent == null)
+        if (parent is null)
             return null;
 
         if (parent.IsKind(SyntaxKind.Block))
@@ -38,7 +38,7 @@ internal class ThrowStatementInfo : ThrowInfo
 
         ExpressionSyntax left = equalsExpression.Left;
 
-        if (left == null)
+        if (left is null)
             return null;
 
         ISymbol leftSymbol = semanticModel.GetSymbol(left, cancellationToken);

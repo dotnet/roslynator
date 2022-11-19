@@ -45,7 +45,7 @@ internal static class IntroduceConstructorRefactoring
             {
                 if (context.Span.Contains(member.Span))
                 {
-                    if (semanticModel == null)
+                    if (semanticModel is null)
                         semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     if (CanBeAssignedFromConstructor(member, context.Span, semanticModel, context.CancellationToken))
@@ -56,7 +56,7 @@ internal static class IntroduceConstructorRefactoring
             }
         }
 
-        if (members == null)
+        if (members is null)
             return;
 
         context.RegisterRefactoring(
@@ -89,7 +89,7 @@ internal static class IntroduceConstructorRefactoring
     {
         ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-        if (symbol == null)
+        if (symbol is null)
             return false;
 
         if (symbol.IsStatic)
@@ -100,18 +100,18 @@ internal static class IntroduceConstructorRefactoring
 
         ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             ExpressionSyntax expression = expressionBody?.Expression;
 
-            if (expression != null)
-                return GetBackingFieldSymbol(expression, semanticModel, cancellationToken) != null;
+            if (expression is not null)
+                return GetBackingFieldSymbol(expression, semanticModel, cancellationToken) is not null;
         }
         else
         {
             AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
-            if (getter != null)
+            if (getter is not null)
                 return CanPropertyBeAssignedFromConstructor(getter, semanticModel, cancellationToken);
         }
 
@@ -125,19 +125,19 @@ internal static class IntroduceConstructorRefactoring
     {
         BlockSyntax body = getter.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
-            if (statement != null)
-                return GetBackingFieldSymbol(statement, semanticModel, cancellationToken) != null;
+            if (statement is not null)
+                return GetBackingFieldSymbol(statement, semanticModel, cancellationToken) is not null;
         }
         else
         {
             ExpressionSyntax expression = getter.ExpressionBody?.Expression;
 
-            return expression != null
-                && GetBackingFieldSymbol(expression, semanticModel, cancellationToken) != null;
+            return expression is not null
+                && GetBackingFieldSymbol(expression, semanticModel, cancellationToken) is not null;
         }
 
         return true;
@@ -154,7 +154,7 @@ internal static class IntroduceConstructorRefactoring
             .Variables
             .SingleOrDefault(shouldThrow: false);
 
-        if (variable == null)
+        if (variable is null)
             return false;
 
         MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(GetContainingDeclaration(fieldDeclaration));
@@ -164,7 +164,7 @@ internal static class IntroduceConstructorRefactoring
 
         ISymbol symbol = semanticModel.GetDeclaredSymbol(variable, cancellationToken);
 
-        if (symbol == null)
+        if (symbol is null)
             return false;
 
         if (symbol.IsStatic)
@@ -196,18 +196,18 @@ internal static class IntroduceConstructorRefactoring
 
         ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             ExpressionSyntax expression = expressionBody.Expression;
 
-            return expression != null
+            return expression is not null
                 && SymbolEqualityComparer.Default.Equals(symbol, GetBackingFieldSymbol(expression, semanticModel, cancellationToken));
         }
         else
         {
             AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
-            if (getter != null)
+            if (getter is not null)
                 return IsBackingField(getter, symbol, semanticModel, cancellationToken);
         }
 
@@ -218,18 +218,18 @@ internal static class IntroduceConstructorRefactoring
     {
         BlockSyntax body = getter.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
-            if (statement != null)
+            if (statement is not null)
                 return SymbolEqualityComparer.Default.Equals(symbol, GetBackingFieldSymbol(statement, semanticModel, cancellationToken));
         }
         else
         {
             ExpressionSyntax expression = getter.ExpressionBody?.Expression;
 
-            return expression != null
+            return expression is not null
                 && SymbolEqualityComparer.Default.Equals(symbol, GetBackingFieldSymbol(expression, semanticModel, cancellationToken));
         }
 
@@ -245,7 +245,7 @@ internal static class IntroduceConstructorRefactoring
         {
             ExpressionSyntax expression = returnStatement.Expression;
 
-            if (expression != null)
+            if (expression is not null)
                 return GetBackingFieldSymbol(expression, semanticModel, cancellationToken);
         }
 
@@ -398,7 +398,7 @@ internal static class IntroduceConstructorRefactoring
     {
         ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-        if (expressionBody != null)
+        if (expressionBody is not null)
         {
             ExpressionSyntax expression = expressionBody.Expression;
 
@@ -409,11 +409,11 @@ internal static class IntroduceConstructorRefactoring
         {
             AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
-            if (getter != null)
+            if (getter is not null)
             {
                 BlockSyntax getterBody = getter.Body;
 
-                if (getterBody != null)
+                if (getterBody is not null)
                 {
                     var returnStatement = (ReturnStatementSyntax)getterBody.Statements[0];
 
@@ -423,7 +423,7 @@ internal static class IntroduceConstructorRefactoring
                 {
                     ArrowExpressionClauseSyntax getterExpressionBody = getter.ExpressionBody;
 
-                    if (getterExpressionBody != null)
+                    if (getterExpressionBody is not null)
                         return GetIdentifier(getterExpressionBody.Expression);
                 }
             }

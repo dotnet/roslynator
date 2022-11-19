@@ -147,7 +147,7 @@ internal static class HelpProvider
             builder.Add(new OptionValueList(provider.Name, valueItems));
         }
 
-        return (filter != null)
+        return (filter is not null)
             ? FilterOptionValues(builder, filter)
             : builder.ToImmutableArray();
     }
@@ -295,7 +295,7 @@ internal static class HelpProvider
         {
             int length = f.Name.Length;
 
-            if (f.MetaValue != null)
+            if (f.MetaValue is not null)
             {
                 length++; // separator between option name and meta value;
                 length += f.MetaValue.Length;

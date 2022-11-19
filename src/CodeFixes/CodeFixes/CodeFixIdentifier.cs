@@ -26,7 +26,7 @@ public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, ICompa
 
     public bool IsDefault
     {
-        get { return CompilerDiagnosticId == null && CodeFixId == null; }
+        get { return CompilerDiagnosticId is null && CodeFixId is null; }
     }
 
     public static CodeFixIdentifier Parse(string text)
@@ -43,7 +43,7 @@ public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, ICompa
 
     private static CodeFixIdentifier Parse(string text, bool shouldThrow)
     {
-        if (text == null)
+        if (text is null)
         {
             if (shouldThrow)
                 throw new ArgumentNullException(nameof(text));
@@ -99,9 +99,9 @@ public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, ICompa
 
     public override string ToString()
     {
-        if (CompilerDiagnosticId != null)
+        if (CompilerDiagnosticId is not null)
         {
-            if (CodeFixId != null)
+            if (CodeFixId is not null)
             {
                 return CompilerDiagnosticId + "." + CodeFixId;
             }
@@ -110,7 +110,7 @@ public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, ICompa
                 return CompilerDiagnosticId;
             }
         }
-        else if (CodeFixId != null)
+        else if (CodeFixId is not null)
         {
             return CodeFixId;
         }
@@ -130,7 +130,7 @@ public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, ICompa
 
     public int CompareTo(object obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 1;
 
         if (obj is CodeFixIdentifier other)

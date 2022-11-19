@@ -127,7 +127,7 @@ internal static class SymbolDefinitionWriterHelpers
 
         bool IsMatch(ISymbol s)
         {
-            if (s != null)
+            if (s is not null)
             {
                 foreach (AttributeData attribute in s.GetAttributes())
                 {
@@ -161,7 +161,7 @@ internal static class SymbolDefinitionWriterHelpers
         {
             IMethodSymbol delegateInvokeMethod = typeSymbol.DelegateInvokeMethod;
 
-            if (delegateInvokeMethod != null)
+            if (delegateInvokeMethod is not null)
                 return delegateInvokeMethod.Parameters;
         }
 

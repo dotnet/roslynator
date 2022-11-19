@@ -34,7 +34,7 @@ internal static class TestExtensions
 
     public static LinePositionSpan ToLinePositionSpan(this TextSpan span, string s)
     {
-        if (s == null)
+        if (s is null)
             throw new ArgumentNullException(nameof(s));
 
         int length = s.Length;

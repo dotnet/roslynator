@@ -65,7 +65,7 @@ internal readonly struct HexNumericLiteralExpressionInfo
     {
         string suffix = GetSuffix();
 
-        if (suffix == null)
+        if (suffix is null)
             return HexNumericLiteralSuffixKind.None;
 
         if (string.Equals(GetSuffix(), "u", StringComparison.OrdinalIgnoreCase))
@@ -85,7 +85,7 @@ internal readonly struct HexNumericLiteralExpressionInfo
 
     public bool Success
     {
-        get { return LiteralExpression != null; }
+        get { return LiteralExpression is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -101,7 +101,7 @@ internal readonly struct HexNumericLiteralExpressionInfo
 
     internal static HexNumericLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
     {
-        if (literalExpression == null)
+        if (literalExpression is null)
             return default;
 
         if (!literalExpression.IsKind(SyntaxKind.NumericLiteralExpression))

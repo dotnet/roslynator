@@ -7,72 +7,73 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class ThrowingOfNewNotImplementedExceptionAnalyzer : BaseDiagnosticAnalyzer
+namespace Roslynator.CSharp.Analysis
 {
-    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class ThrowingOfNewNotImplementedExceptionAnalyzer : BaseDiagnosticAnalyzer
     {
-        get
-        {
-            if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ThrowingOfNewNotImplementedException);
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-            return _supportedDiagnostics;
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get
+            {
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ThrowingOfNewNotImplementedException);
+
+                return _supportedDiagnostics;
+            }
         }
-    }
 
-    public override void Initialize(AnalysisContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterCompilationStartAction(startContext =>
+        public override void Initialize(AnalysisContext context)
         {
-            INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.NotImplementedException");
+            base.Initialize(context);
 
-            if (exceptionSymbol == null)
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.NotImplementedException");
+
+                if (exceptionSymbol is null)
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowStatement(f, exceptionSymbol), SyntaxKind.ThrowStatement);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowExpression(f, exceptionSymbol), SyntaxKind.ThrowExpression);
+            });
+        }
+
+        private static void AnalyzeThrowStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
+        {
+            var throwStatement = (ThrowStatementSyntax)context.Node;
+
+            Analyze(context, throwStatement.Expression, exceptionSymbol);
+        }
+
+        private static void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
+        {
+            var throwExpression = (ThrowExpressionSyntax)context.Node;
+
+            Analyze(context, throwExpression.Expression, exceptionSymbol);
+        }
+
+        private static void Analyze(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, INamedTypeSymbol exceptionSymbol)
+        {
+            if (expression?.Kind() != SyntaxKind.ObjectCreationExpression)
                 return;
 
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowStatement(f, exceptionSymbol), SyntaxKind.ThrowStatement);
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowExpression(f, exceptionSymbol), SyntaxKind.ThrowExpression);
-        });
-    }
+            var objectCreationExpression = (ObjectCreationExpressionSyntax)expression;
 
-    private static void AnalyzeThrowStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
-    {
-        var throwStatement = (ThrowStatementSyntax)context.Node;
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(objectCreationExpression, context.CancellationToken);
 
-        Analyze(context, throwStatement.Expression, exceptionSymbol);
-    }
+            if (typeSymbol is null)
+                return;
 
-    private static void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
-    {
-        var throwExpression = (ThrowExpressionSyntax)context.Node;
+            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, exceptionSymbol))
+                return;
 
-        Analyze(context, throwExpression.Expression, exceptionSymbol);
-    }
-
-    private static void Analyze(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, INamedTypeSymbol exceptionSymbol)
-    {
-        if (expression?.Kind() != SyntaxKind.ObjectCreationExpression)
-            return;
-
-        var objectCreationExpression = (ObjectCreationExpressionSyntax)expression;
-
-        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(objectCreationExpression, context.CancellationToken);
-
-        if (typeSymbol == null)
-            return;
-
-        if (!SymbolEqualityComparer.Default.Equals(typeSymbol, exceptionSymbol))
-            return;
-
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.ThrowingOfNewNotImplementedException,
-            expression);
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.ThrowingOfNewNotImplementedException,
+                expression);
+        }
     }
 }

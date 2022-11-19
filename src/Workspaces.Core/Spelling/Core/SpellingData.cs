@@ -49,7 +49,7 @@ internal class SpellingData
     {
         get
         {
-            if (_charIndexMap == null)
+            if (_charIndexMap is null)
                 Interlocked.CompareExchange(ref _charIndexMap, WordCharMap.CreateCharIndexMap(Words), null);
 
             return _charIndexMap;
@@ -60,7 +60,7 @@ internal class SpellingData
     {
         get
         {
-            if (_reversedCharIndexMap == null)
+            if (_reversedCharIndexMap is null)
                 Interlocked.CompareExchange(ref _reversedCharIndexMap, WordCharMap.CreateCharIndexMap(Words, reverse: true), null);
 
             return _reversedCharIndexMap;
@@ -71,7 +71,7 @@ internal class SpellingData
     {
         get
         {
-            if (_charMap == null)
+            if (_charMap is null)
                 Interlocked.CompareExchange(ref _charMap, Create(), null);
 
             return _charMap;

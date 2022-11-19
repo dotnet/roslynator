@@ -20,7 +20,7 @@ internal static class SymbolListHelpers
         {
             if (symbol is INamedTypeSymbol typeSymbol)
             {
-                if (typeSymbol.ContainingType == null)
+                if (typeSymbol.ContainingType is null)
                     baseTypeSymbols.Add(typeSymbol);
 
                 typeSymbols.Add(typeSymbol);
@@ -45,7 +45,7 @@ internal static class SymbolListHelpers
 
             IMethodSymbol delegateMethodSymbol = baseType.DelegateInvokeMethod;
 
-            if (delegateMethodSymbol != null)
+            if (delegateMethodSymbol is not null)
                 results.AddRange(delegateMethodSymbol.Parameters);
 
             results.AddRange(baseType.TypeParameters);
@@ -73,7 +73,7 @@ internal static class SymbolListHelpers
         foreach (ISymbol symbol in symbols
             .Where(s =>
             {
-                return s.OverriddenSymbol() == null
+                return s.OverriddenSymbol() is null
                     && !s.ImplementsInterfaceMember(allInterfaces: true);
             })
 #if DEBUG

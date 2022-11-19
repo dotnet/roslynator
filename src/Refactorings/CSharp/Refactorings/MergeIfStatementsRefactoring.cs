@@ -41,7 +41,7 @@ internal static class MergeIfStatementsRefactoring
             {
                 statement = ifStatement.Statement;
 
-                if (statement == null)
+                if (statement is null)
                     return;
             }
             else if (!AreEquivalent(statement, ifStatement.Statement))
@@ -79,7 +79,7 @@ internal static class MergeIfStatementsRefactoring
 
     private static BinaryExpressionSyntax BinaryExpression(SyntaxKind kind, IEnumerable<ExpressionSyntax> expressions)
     {
-        if (expressions == null)
+        if (expressions is null)
             throw new ArgumentNullException(nameof(expressions));
 
         using (IEnumerator<ExpressionSyntax> en = expressions.GetEnumerator())
@@ -106,10 +106,10 @@ internal static class MergeIfStatementsRefactoring
 
     private static bool AreEquivalent(StatementSyntax statement1, StatementSyntax statement2)
     {
-        if (statement1 == null)
+        if (statement1 is null)
             return false;
 
-        if (statement2 == null)
+        if (statement2 is null)
             return false;
 
         if (statement1 is not BlockSyntax block1)

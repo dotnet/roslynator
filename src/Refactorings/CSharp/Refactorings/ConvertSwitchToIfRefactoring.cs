@@ -110,7 +110,7 @@ internal static class ConvertSwitchToIfRefactoring
                 CreateCondition(switchStatement, sections[i], semanticModel),
                 Block(statements));
 
-            if (ifStatement != null)
+            if (ifStatement is not null)
             {
                 ifStatement = @if.WithElse(ElseClause(ifStatement));
             }
@@ -118,7 +118,7 @@ internal static class ConvertSwitchToIfRefactoring
             {
                 ifStatement = @if;
 
-                if (elseClause != null)
+                if (elseClause is not null)
                     ifStatement = ifStatement.WithElse(elseClause);
             }
         }
@@ -151,7 +151,7 @@ internal static class ConvertSwitchToIfRefactoring
                     {
                         BinaryExpressionSyntax equalsExpression = EqualsExpression(switchExpression, constantLabel.Value);
 
-                        if (semanticModel.GetSpeculativeMethodSymbol(switchSection.SpanStart, equalsExpression) != null)
+                        if (semanticModel.GetSpeculativeMethodSymbol(switchSection.SpanStart, equalsExpression) is not null)
                         {
                             expression = equalsExpression;
                         }
@@ -169,7 +169,7 @@ internal static class ConvertSwitchToIfRefactoring
                     {
                         expression = IsPatternExpression(switchExpression.Parenthesize(), patternLabel.Pattern).Parenthesize();
 
-                        if (patternLabel.WhenClause != null)
+                        if (patternLabel.WhenClause is not null)
                         {
                             expression = LogicalAndExpression(
                                 expression,
@@ -185,7 +185,7 @@ internal static class ConvertSwitchToIfRefactoring
                     }
             }
 
-            if (condition != null)
+            if (condition is not null)
             {
                 condition = LogicalOrExpression(expression, condition);
             }

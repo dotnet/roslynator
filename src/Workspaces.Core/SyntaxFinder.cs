@@ -30,10 +30,10 @@ internal static class SyntaxFinder
         bool allowCandidate = false,
         CancellationToken cancellationToken = default)
     {
-        if (symbol == null)
+        if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
 
-        if (solution == null)
+        if (solution is null)
             throw new ArgumentNullException(nameof(solution));
 
         List<SyntaxNode> nodes = null;
@@ -74,10 +74,10 @@ internal static class SyntaxFinder
         bool allowCandidate = false,
         CancellationToken cancellationToken = default)
     {
-        if (symbol == null)
+        if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
 
-        if (solution == null)
+        if (solution is null)
             throw new ArgumentNullException(nameof(solution));
 
         List<DocumentReferenceInfo> infos = null;
@@ -99,7 +99,7 @@ internal static class SyntaxFinder
 
                 FindReferences(grouping, root, allowCandidate, ref nodes);
 
-                if (nodes != null)
+                if (nodes is not null)
                 {
                     var info = new DocumentReferenceInfo(document, root, nodes.ToImmutableArray());
 
@@ -117,10 +117,10 @@ internal static class SyntaxFinder
         bool allowCandidate = false,
         CancellationToken cancellationToken = default)
     {
-        if (symbol == null)
+        if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
 
-        if (document == null)
+        if (document is null)
             throw new ArgumentNullException(nameof(document));
 
         SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -157,7 +157,7 @@ internal static class SyntaxFinder
                 {
                     SyntaxNode node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
 
-                    Debug.Assert(node != null);
+                    Debug.Assert(node is not null);
 
                     (nodes ??= new List<SyntaxNode>()).Add(node);
                 }
@@ -167,7 +167,7 @@ internal static class SyntaxFinder
 
     private static ImmutableArray<T> ToImmutableArray<T>(IEnumerable<T> nodes)
     {
-        if (nodes != null)
+        if (nodes is not null)
         {
             return ImmutableArray.CreateRange(nodes);
         }

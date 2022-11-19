@@ -43,7 +43,7 @@ internal static class IdentifierNameRefactoring
 
         PropertyDeclarationSyntax propertyDeclaration = identifierName.FirstAncestor<PropertyDeclarationSyntax>();
 
-        if (propertyDeclaration == null)
+        if (propertyDeclaration is null)
             return;
 
         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -55,7 +55,7 @@ internal static class IdentifierNameRefactoring
 
         IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 
-        if (propertySymbol == null)
+        if (propertySymbol is null)
             return;
 
         if (fieldSymbol.IsStatic != propertySymbol.IsStatic)

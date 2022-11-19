@@ -43,7 +43,7 @@ public sealed class AvoidLockingOnPubliclyAccessibleInstanceAnalyzer : BaseDiagn
 
         ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         if (!typeSymbol.DeclaredAccessibility.Is(

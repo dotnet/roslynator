@@ -92,9 +92,9 @@ public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
         if (!CSharpFacts.CanHaveModifiers(node.Kind()))
             node = node.FirstAncestor(f => CSharpFacts.CanHaveModifiers(f.Kind()));
 
-        Debug.Assert(node != null, $"{nameof(node)} is null");
+        Debug.Assert(node is not null, $"{nameof(node)} is null");
 
-        if (node == null)
+        if (node is null)
             return;
 
         foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -508,7 +508,7 @@ public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
                         if (semanticModel.GetDiagnostic(
                             CompilerDiagnosticIdentifiers.CS0114_MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword,
                             CSharpUtility.GetIdentifier(node).Span,
-                            context.CancellationToken) != null)
+                            context.CancellationToken) is not null)
                         {
                             break;
                         }
@@ -538,17 +538,17 @@ public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
             case SyntaxKind.MethodDeclaration:
                 {
                     return node.IsParentKind(SyntaxKind.InterfaceDeclaration)
-                        || ((MethodDeclarationSyntax)node).ExplicitInterfaceSpecifier != null;
+                        || ((MethodDeclarationSyntax)node).ExplicitInterfaceSpecifier is not null;
                 }
             case SyntaxKind.PropertyDeclaration:
                 {
                     return node.IsParentKind(SyntaxKind.InterfaceDeclaration)
-                        || ((PropertyDeclarationSyntax)node).ExplicitInterfaceSpecifier != null;
+                        || ((PropertyDeclarationSyntax)node).ExplicitInterfaceSpecifier is not null;
                 }
             case SyntaxKind.IndexerDeclaration:
                 {
                     return node.IsParentKind(SyntaxKind.InterfaceDeclaration)
-                        || ((IndexerDeclarationSyntax)node).ExplicitInterfaceSpecifier != null;
+                        || ((IndexerDeclarationSyntax)node).ExplicitInterfaceSpecifier is not null;
                 }
             case SyntaxKind.EventFieldDeclaration:
                 {
@@ -556,7 +556,7 @@ public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
                 }
             case SyntaxKind.EventDeclaration:
                 {
-                    return ((EventDeclarationSyntax)node).ExplicitInterfaceSpecifier != null;
+                    return ((EventDeclarationSyntax)node).ExplicitInterfaceSpecifier is not null;
                 }
         }
 

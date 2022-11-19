@@ -43,7 +43,7 @@ internal static class AddArgumentNameRefactoring
                     allowParams: false,
                     cancellationToken: cancellationToken);
 
-                if (parameterSymbol != null)
+                if (parameterSymbol is not null)
                     return true;
             }
         }

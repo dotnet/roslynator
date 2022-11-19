@@ -94,14 +94,14 @@ internal static class ConvertInterpolatedStringToStringFormatRefactoring
                         index++;
 
                         InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
-                        if (alignmentClause != null)
+                        if (alignmentClause is not null)
                         {
                             b.Append(",");
                             b.AppendSpan(alignmentClause.Value);
                         }
 
                         InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
-                        if (formatClause != null)
+                        if (formatClause is not null)
                         {
                             b.Append(":");
                             b.AppendSpan(formatClause.FormatStringToken);

@@ -76,7 +76,7 @@ internal static class ParseHelpers
 
             string key = property.Substring(0, index);
 
-            if (properties == null)
+            if (properties is null)
                 properties = new Dictionary<string, string>();
 
             properties[key] = property.Substring(index + 1);
@@ -126,7 +126,7 @@ internal static class ParseHelpers
 
         if (values?.Any() != true)
         {
-            if (defaultValue != null)
+            if (defaultValue is not null)
             {
                 result = (TEnum)(object)defaultValue;
             }
@@ -182,8 +182,8 @@ internal static class ParseHelpers
 
     public static bool TryParseOptionValueAsEnum<TEnum>(string value, string optionName, out TEnum result, TEnum? defaultValue = null) where TEnum : struct
     {
-        if (value == null
-            && defaultValue != null)
+        if (value is null
+            && defaultValue is not null)
         {
             result = defaultValue.Value;
             return true;

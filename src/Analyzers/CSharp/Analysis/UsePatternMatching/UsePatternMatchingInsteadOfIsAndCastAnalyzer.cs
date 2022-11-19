@@ -9,152 +9,153 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.UsePatternMatching;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class UsePatternMatchingInsteadOfIsAndCastAnalyzer : BaseDiagnosticAnalyzer
+namespace Roslynator.CSharp.Analysis.UsePatternMatching
 {
-    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class UsePatternMatchingInsteadOfIsAndCastAnalyzer : BaseDiagnosticAnalyzer
     {
-        get
-        {
-            if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast);
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-            return _supportedDiagnostics;
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get
+            {
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast);
+
+                return _supportedDiagnostics;
+            }
         }
-    }
 
-    public override void Initialize(AnalysisContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterCompilationStartAction(startContext =>
+        public override void Initialize(AnalysisContext context)
         {
-            if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp7)
+            base.Initialize(context);
+
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp7)
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeIsExpression(f), SyntaxKind.IsExpression);
+            });
+        }
+
+        private static void AnalyzeIsExpression(SyntaxNodeAnalysisContext context)
+        {
+            var isExpression = (BinaryExpressionSyntax)context.Node;
+
+            IsExpressionInfo isExpressionInfo = SyntaxInfo.IsExpressionInfo(isExpression);
+
+            if (!isExpressionInfo.Success)
                 return;
 
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeIsExpression(f), SyntaxKind.IsExpression);
-        });
-    }
+            ExpressionSyntax expression = isExpressionInfo.Expression;
 
-    private static void AnalyzeIsExpression(SyntaxNodeAnalysisContext context)
-    {
-        var isExpression = (BinaryExpressionSyntax)context.Node;
+            var identifierName = expression as IdentifierNameSyntax;
 
-        IsExpressionInfo isExpressionInfo = SyntaxInfo.IsExpressionInfo(isExpression);
-
-        if (!isExpressionInfo.Success)
-            return;
-
-        ExpressionSyntax expression = isExpressionInfo.Expression;
-
-        var identifierName = expression as IdentifierNameSyntax;
-
-        if (identifierName == null)
-        {
-            if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+            if (identifierName is null)
             {
-                var memberAccess = (MemberAccessExpressionSyntax)expression;
+                if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+                {
+                    var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
-                    identifierName = memberAccess.Name as IdentifierNameSyntax;
+                    if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
+                        identifierName = memberAccess.Name as IdentifierNameSyntax;
+                }
+
+                if (identifierName is null)
+                    return;
             }
 
-            if (identifierName == null)
+            ExpressionSyntax left = isExpression.WalkUpParentheses();
+
+            SyntaxNode node = left.Parent;
+
+            if (node.ContainsDiagnostics)
                 return;
+
+            switch (node.Kind())
+            {
+                case SyntaxKind.LogicalAndExpression:
+                    {
+                        var logicalAnd = (BinaryExpressionSyntax)node;
+
+                        if (left != logicalAnd.Left)
+                            return;
+
+                        ExpressionSyntax right = logicalAnd.Right;
+
+                        if (right is null)
+                            return;
+
+                        SemanticModel semanticModel = context.SemanticModel;
+                        CancellationToken cancellationToken = context.CancellationToken;
+
+                        if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
+                            return;
+
+                        if (logicalAnd.Parent.IsInExpressionTree(semanticModel, cancellationToken))
+                            return;
+
+                        if (!IsFixable(right, identifierName, semanticModel, cancellationToken))
+                            return;
+
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
+                        break;
+                    }
+                case SyntaxKind.IfStatement:
+                    {
+                        var ifStatement = (IfStatementSyntax)node;
+
+                        if (left != ifStatement.Condition)
+                            return;
+
+                        StatementSyntax statement = ifStatement.Statement;
+
+                        if (statement is null)
+                            return;
+
+                        SemanticModel semanticModel = context.SemanticModel;
+                        CancellationToken cancellationToken = context.CancellationToken;
+
+                        if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
+                            return;
+
+                        if (!IsFixable(statement, identifierName, semanticModel, cancellationToken))
+                            return;
+
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
+                        break;
+                    }
+            }
         }
 
-        ExpressionSyntax left = isExpression.WalkUpParentheses();
-
-        SyntaxNode node = left.Parent;
-
-        if (node.ContainsDiagnostics)
-            return;
-
-        switch (node.Kind())
+        private static bool IsFixable(
+            SyntaxNode node,
+            IdentifierNameSyntax identifierName,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            case SyntaxKind.LogicalAndExpression:
-                {
-                    var logicalAnd = (BinaryExpressionSyntax)node;
+            bool isFixable;
+            UsePatternMatchingWalker walker = null;
 
-                    if (left != logicalAnd.Left)
-                        return;
+            try
+            {
+                walker = UsePatternMatchingWalker.GetInstance();
 
-                    ExpressionSyntax right = logicalAnd.Right;
+                walker.SetValues(identifierName, semanticModel, cancellationToken);
 
-                    if (right == null)
-                        return;
+                walker.Visit(node);
 
-                    SemanticModel semanticModel = context.SemanticModel;
-                    CancellationToken cancellationToken = context.CancellationToken;
+                isFixable = walker.IsFixable.GetValueOrDefault();
+            }
+            finally
+            {
+                if (walker is not null)
+                    UsePatternMatchingWalker.Free(walker);
+            }
 
-                    if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
-                        return;
-
-                    if (logicalAnd.Parent.IsInExpressionTree(semanticModel, cancellationToken))
-                        return;
-
-                    if (!IsFixable(right, identifierName, semanticModel, cancellationToken))
-                        return;
-
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
-                    break;
-                }
-            case SyntaxKind.IfStatement:
-                {
-                    var ifStatement = (IfStatementSyntax)node;
-
-                    if (left != ifStatement.Condition)
-                        return;
-
-                    StatementSyntax statement = ifStatement.Statement;
-
-                    if (statement == null)
-                        return;
-
-                    SemanticModel semanticModel = context.SemanticModel;
-                    CancellationToken cancellationToken = context.CancellationToken;
-
-                    if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
-                        return;
-
-                    if (!IsFixable(statement, identifierName, semanticModel, cancellationToken))
-                        return;
-
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
-                    break;
-                }
+            return isFixable;
         }
-    }
-
-    private static bool IsFixable(
-        SyntaxNode node,
-        IdentifierNameSyntax identifierName,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken)
-    {
-        bool isFixable;
-        UsePatternMatchingWalker walker = null;
-
-        try
-        {
-            walker = UsePatternMatchingWalker.GetInstance();
-
-            walker.SetValues(identifierName, semanticModel, cancellationToken);
-
-            walker.Visit(node);
-
-            isFixable = walker.IsFixable.GetValueOrDefault();
-        }
-        finally
-        {
-            if (walker != null)
-                UsePatternMatchingWalker.Free(walker);
-        }
-
-        return isFixable;
     }
 }

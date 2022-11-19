@@ -45,7 +45,7 @@ internal static class XmlCodeAnalysisConfigLoader
 
         ImmutableArray<string> includes = queue?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
 
-        if (queue != null
+        if (queue is not null
             && (options & XmlConfigLoadOptions.SkipIncludes) == 0)
         {
             var loadedIncludes = new HashSet<string>(FileSystemHelpers.Comparer) { path };
@@ -75,7 +75,7 @@ internal static class XmlCodeAnalysisConfigLoader
             while (queue.Count > 0);
         }
 
-        if (builder == null)
+        if (builder is null)
             return null;
 
         return new XmlCodeAnalysisConfig(
@@ -107,7 +107,7 @@ internal static class XmlCodeAnalysisConfigLoader
             {
                 if (element.HasName("Settings"))
                 {
-                    if (builder == null)
+                    if (builder is null)
                         builder = new Builder();
 
                     LoadSettings(element, builder, uri);
@@ -122,7 +122,7 @@ internal static class XmlCodeAnalysisConfigLoader
 
                             string path = LoadPath(attribute, directoryPath);
 
-                            if (path != null)
+                            if (path is not null)
                                 (includes ??= new Queue<string>()).Enqueue(path);
                         }
                         else
@@ -261,7 +261,7 @@ internal static class XmlCodeAnalysisConfigLoader
                 }
 
                 if (!string.IsNullOrEmpty(id)
-                    && isEnabled != null)
+                    && isEnabled is not null)
                 {
                     builder.Refactorings[id] = isEnabled.Value;
                 }
@@ -299,7 +299,7 @@ internal static class XmlCodeAnalysisConfigLoader
                 }
 
                 if (!string.IsNullOrEmpty(id)
-                    && isEnabled != null)
+                    && isEnabled is not null)
                 {
                     builder.CodeFixes[id] = isEnabled.Value;
                 }

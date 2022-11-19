@@ -212,7 +212,7 @@ public sealed class OptimizeStringBuilderAppendCallCodeFixProvider : BaseCodeFix
                 arguments = ReplaceStringLiteralWithCharacterLiteral(arguments);
             }
 
-            if (newExpression == null)
+            if (newExpression is null)
             {
                 arguments = arguments.Replace(arguments[0], arguments[0].WithLeadingTrivia(interpolatedString.GetLeadingTrivia()));
 
@@ -336,11 +336,11 @@ public sealed class OptimizeStringBuilderAppendCallCodeFixProvider : BaseCodeFix
     {
         ArgumentSyntax argument = arguments.SingleOrDefault(shouldThrow: false);
 
-        if (argument != null)
+        if (argument is not null)
         {
             ExpressionSyntax expression = argument.Expression;
 
-            if (expression != null)
+            if (expression is not null)
             {
                 ExpressionSyntax newExpression = ReplaceStringLiteralWithCharacterLiteral(expression);
 

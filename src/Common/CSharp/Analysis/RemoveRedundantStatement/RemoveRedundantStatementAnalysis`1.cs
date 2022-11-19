@@ -22,7 +22,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
 
         while (true)
         {
-            if (parent == null)
+            if (parent is null)
                 return false;
 
             SyntaxKind kind = parent.Kind();
@@ -35,7 +35,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
 
                         block = containingStatement.Parent as BlockSyntax;
 
-                        if (block == null)
+                        if (block is null)
                             return false;
 
                         if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
@@ -55,7 +55,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
 
                         block = containingStatement.Parent as BlockSyntax;
 
-                        if (block == null)
+                        if (block is null)
                             return false;
 
                         if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
@@ -85,7 +85,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
 
         while (true)
         {
-            if (parent == null)
+            if (parent is null)
                 return false;
 
             SyntaxKind kind = parent.Kind();
@@ -98,7 +98,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
 
                         block = containingStatement.Parent as BlockSyntax;
 
-                        if (block == null)
+                        if (block is null)
                             return false;
 
                         if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
@@ -118,7 +118,7 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
 
                         block = containingStatement.Parent as BlockSyntax;
 
-                        if (block == null)
+                        if (block is null)
                             return false;
 
                         if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))

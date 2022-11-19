@@ -42,7 +42,7 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
             ?? (SyntaxNode)compilationUnit.AttributeLists.FirstOrDefault()
             ?? compilationUnit.Members.FirstOrDefault();
 
-        if (node == null)
+        if (node is null)
             return;
 
         SyntaxTriviaList.Enumerator en = node.GetLeadingTrivia().GetEnumerator();

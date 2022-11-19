@@ -21,5 +21,5 @@ internal readonly struct SymbolRenameResult
     public string SymbolId { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => (OldName != null) ? $"{OldName}  {NewName}  {SymbolId}" : "Uninitialized";
+    private string DebuggerDisplay => (OldName is not null) ? $"{OldName}  {NewName}  {SymbolId}" : "Uninitialized";
 }

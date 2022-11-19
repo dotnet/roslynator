@@ -78,7 +78,7 @@ internal class AnalyzeAssemblyCommand
 
         if (analyzerAssemblies.Length > 0)
         {
-            CultureInfo culture = (options.Culture != null) ? CultureInfo.GetCultureInfo(options.Culture) : null;
+            CultureInfo culture = (options.Culture is not null) ? CultureInfo.GetCultureInfo(options.Culture) : null;
 
             foreach (string path in options.Output)
             {
@@ -243,7 +243,7 @@ internal class AnalyzeAssemblyCommand
 
                 FixAllProvider fixAllProvider = fixer.GetFixAllProvider();
 
-                if (fixAllProvider != null)
+                if (fixAllProvider is not null)
                 {
                     WriteLine($"{fixAllProvider.GetType().FullName} ({string.Join(", ", fixAllProvider.GetSupportedFixAllScopes().Select(f => f.ToString()).OrderBy(f => f))})", ConsoleColors.DarkGray, Verbosity.Diagnostic);
                 }
@@ -269,7 +269,7 @@ internal class AnalyzeAssemblyCommand
 
         void WriteDiagnostic(string diagnosticId, DiagnosticDescriptor descriptor)
         {
-            if (descriptor == null)
+            if (descriptor is null)
             {
                 WriteLine($"    {diagnosticId}", Verbosity.Detailed);
             }

@@ -373,14 +373,14 @@ public class DocumentationGenerator
                         }
                     case NamespaceDocumentationParts.Examples:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteExamples(namespaceSymbol, xmlDocumentation);
 
                             break;
                         }
                     case NamespaceDocumentationParts.Remarks:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteRemarks(namespaceSymbol, xmlDocumentation);
 
                             break;
@@ -428,7 +428,7 @@ public class DocumentationGenerator
                         }
                     case NamespaceDocumentationParts.SeeAlso:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteSeeAlso(namespaceSymbol, xmlDocumentation);
 
                             break;
@@ -625,7 +625,7 @@ public class DocumentationGenerator
                         {
                             INamespaceSymbol containingNamespace = typeModel.ContainingNamespace;
 
-                            if (containingNamespace != null)
+                            if (containingNamespace is not null)
                                 writer.WriteContainingNamespace(containingNamespace, Resources.NamespaceTitle);
 
                             break;
@@ -644,7 +644,7 @@ public class DocumentationGenerator
                         }
                     case TypeDocumentationParts.Summary:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteSummary(typeSymbol, xmlDocumentation);
 
                             break;
@@ -666,7 +666,7 @@ public class DocumentationGenerator
                         }
                     case TypeDocumentationParts.ReturnValue:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteReturnType(typeSymbol, xmlDocumentation);
 
                             break;
@@ -695,14 +695,14 @@ public class DocumentationGenerator
                         }
                     case TypeDocumentationParts.Examples:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteExamples(typeSymbol, xmlDocumentation);
 
                             break;
                         }
                     case TypeDocumentationParts.Remarks:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteRemarks(typeSymbol, xmlDocumentation);
 
                             break;
@@ -787,14 +787,14 @@ public class DocumentationGenerator
                         }
                     case TypeDocumentationParts.AppliesTo:
                         {
-                            if (SourceReferenceProvider != null)
+                            if (SourceReferenceProvider is not null)
                                 writer.WriteAppliesTo(typeSymbol, SourceReferenceProvider.GetSourceReferences(typeSymbol));
 
                             break;
                         }
                     case TypeDocumentationParts.SeeAlso:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteSeeAlso(typeSymbol, xmlDocumentation);
 
                             break;
@@ -1015,7 +1015,7 @@ public class DocumentationGenerator
                         }
                     case MemberDocumentationParts.Summary:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteSummary(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
 
                             break;
@@ -1052,28 +1052,28 @@ public class DocumentationGenerator
                         }
                     case MemberDocumentationParts.Exceptions:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteExceptions(symbol, xmlDocumentation);
 
                             break;
                         }
                     case MemberDocumentationParts.Examples:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteExamples(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
 
                             break;
                         }
                     case MemberDocumentationParts.Remarks:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteRemarks(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
 
                             break;
                         }
                     case MemberDocumentationParts.AppliesTo:
                         {
-                            if (SourceReferenceProvider == null)
+                            if (SourceReferenceProvider is null)
                                 break;
 
                             writer.WriteAppliesTo(symbol, SourceReferenceProvider.GetSourceReferences(symbol), headingLevelBase: headingLevelBase);
@@ -1082,7 +1082,7 @@ public class DocumentationGenerator
                         }
                     case MemberDocumentationParts.SeeAlso:
                         {
-                            if (xmlDocumentation != null)
+                            if (xmlDocumentation is not null)
                                 writer.WriteSeeAlso(symbol, xmlDocumentation, headingLevelBase: headingLevelBase);
 
                             break;

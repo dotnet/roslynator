@@ -227,7 +227,7 @@ internal static class ReduceIfNestingAnalysis
 
                     if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
                     {
-                        if (ifStatement.Else != null)
+                        if (ifStatement.Else is not null)
                             return Fail(parent);
 
                         if (!options.AllowIfInsideIfElse())
@@ -264,7 +264,7 @@ internal static class ReduceIfNestingAnalysis
     {
         options |= ReduceIfNestingOptions.AllowNestedFix;
 
-        while (node != null)
+        while (node is not null)
         {
             if (node is IfStatementSyntax ifStatement)
             {
@@ -357,7 +357,7 @@ internal static class ReduceIfNestingAnalysis
                 {
                     ExpressionSyntax expression = returnStatement.Expression;
 
-                    if (expression == null)
+                    if (expression is null)
                         return SyntaxKind.ReturnStatement;
 
                     SyntaxKind kind = expression.Kind();
@@ -377,7 +377,7 @@ internal static class ReduceIfNestingAnalysis
                 {
                     ExpressionSyntax expression = throwStatement.Expression;
 
-                    if (expression == null)
+                    if (expression is null)
                         return SyntaxKind.ThrowStatement;
 
                     return SyntaxKind.None;
@@ -411,7 +411,7 @@ internal static class ReduceIfNestingAnalysis
 
     internal static bool IsFixable(IfStatementSyntax ifStatement)
     {
-        if (ifStatement == null)
+        if (ifStatement is null)
             return false;
 
         if (!ifStatement.IsSimpleIf())

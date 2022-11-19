@@ -8,103 +8,104 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class ValidateArgumentsCorrectlyAnalyzer : BaseDiagnosticAnalyzer
+namespace Roslynator.CSharp.Analysis
 {
-    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class ValidateArgumentsCorrectlyAnalyzer : BaseDiagnosticAnalyzer
     {
-        get
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ValidateArgumentsCorrectly);
-
-            return _supportedDiagnostics;
-        }
-    }
-
-    public override void Initialize(AnalysisContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
-    }
-
-    private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var methodDeclaration = (MethodDeclarationSyntax)context.Node;
-
-        BlockSyntax body = methodDeclaration.Body;
-
-        if (body == null)
-            return;
-
-        ParameterListSyntax parameterList = methodDeclaration.ParameterList;
-
-        if (parameterList == null)
-            return;
-
-        if (!parameterList.Parameters.Any())
-            return;
-
-        SyntaxList<StatementSyntax> statements = body.Statements;
-
-        int statementCount = statements.Count;
-
-        int index = -1;
-        for (int i = 0; i < statementCount; i++)
-        {
-            if (IsConditionWithThrow(statements[i])
-                || ArgumentNullCheckAnalysis.IsArgumentNullExceptionThrowIfNullCheck(statements[i], context.SemanticModel, context.CancellationToken))
+            get
             {
-                index++;
-            }
-            else
-            {
-                break;
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ValidateArgumentsCorrectly);
+
+                return _supportedDiagnostics;
             }
         }
 
-        if (index == -1)
-            return;
+        public override void Initialize(AnalysisContext context)
+        {
+            base.Initialize(context);
 
-        if (index == statementCount - 1)
-            return;
+            context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
+        }
 
-        TextSpan span = TextSpan.FromBounds(statements[index + 1].SpanStart, statements.Last().Span.End);
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-        if (body.ContainsUnbalancedIfElseDirectives(span))
-            return;
+            BlockSyntax body = methodDeclaration.Body;
 
-        context.CancellationToken.ThrowIfCancellationRequested();
+            if (body is null)
+                return;
 
-        ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
+            ParameterListSyntax parameterList = methodDeclaration.ParameterList;
 
-        walker.VisitBlock(body);
+            if (parameterList is null)
+                return;
 
-        YieldStatementSyntax yieldStatement = walker.YieldStatement;
+            if (!parameterList.Parameters.Any())
+                return;
 
-        ContainsYieldWalker.Free(walker);
+            SyntaxList<StatementSyntax> statements = body.Statements;
 
-        if (yieldStatement == null)
-            return;
+            int statementCount = statements.Count;
 
-        if (yieldStatement.SpanStart < statements[index].Span.End)
-            return;
+            int index = -1;
+            for (int i = 0; i < statementCount; i++)
+            {
+                if (IsConditionWithThrow(statements[i])
+                    || ArgumentNullCheckAnalysis.IsArgumentNullExceptionThrowIfNullCheck(statements[i], context.SemanticModel, context.CancellationToken))
+                {
+                    index++;
+                }
+                else
+                {
+                    break;
+                }
+            }
 
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.ValidateArgumentsCorrectly,
-            Location.Create(body.SyntaxTree, new TextSpan(statements[index + 1].SpanStart, 0)));
-    }
+            if (index == -1)
+                return;
 
-    private static bool IsConditionWithThrow(StatementSyntax statement)
-    {
-        return statement is IfStatementSyntax ifStatement
-            && ifStatement.IsSimpleIf()
-            && ifStatement.SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ThrowStatement);
+            if (index == statementCount - 1)
+                return;
+
+            TextSpan span = TextSpan.FromBounds(statements[index + 1].SpanStart, statements.Last().Span.End);
+
+            if (body.ContainsUnbalancedIfElseDirectives(span))
+                return;
+
+            context.CancellationToken.ThrowIfCancellationRequested();
+
+            ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
+
+            walker.VisitBlock(body);
+
+            YieldStatementSyntax yieldStatement = walker.YieldStatement;
+
+            ContainsYieldWalker.Free(walker);
+
+            if (yieldStatement is null)
+                return;
+
+            if (yieldStatement.SpanStart < statements[index].Span.End)
+                return;
+
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.ValidateArgumentsCorrectly,
+                Location.Create(body.SyntaxTree, new TextSpan(statements[index + 1].SpanStart, 0)));
+        }
+
+        private static bool IsConditionWithThrow(StatementSyntax statement)
+        {
+            return statement is IfStatementSyntax ifStatement
+                && ifStatement.IsSimpleIf()
+                && ifStatement.SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ThrowStatement);
+        }
     }
 }

@@ -129,7 +129,7 @@ public readonly struct ModifierListInfo
     /// </summary>
     public bool Success
     {
-        get { return Parent != null; }
+        get { return Parent is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -145,7 +145,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             return default;
 
         switch (node.Kind())
@@ -204,7 +204,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(ClassDeclarationSyntax classDeclaration)
     {
-        if (classDeclaration == null)
+        if (classDeclaration is null)
             return default;
 
         return new ModifierListInfo(classDeclaration, classDeclaration.Modifiers);
@@ -212,7 +212,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(ConstructorDeclarationSyntax constructorDeclaration)
     {
-        if (constructorDeclaration == null)
+        if (constructorDeclaration is null)
             return default;
 
         return new ModifierListInfo(constructorDeclaration, constructorDeclaration.Modifiers);
@@ -220,7 +220,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
     {
-        if (conversionOperatorDeclaration == null)
+        if (conversionOperatorDeclaration is null)
             return default;
 
         return new ModifierListInfo(conversionOperatorDeclaration, conversionOperatorDeclaration.Modifiers);
@@ -228,7 +228,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(DelegateDeclarationSyntax delegateDeclaration)
     {
-        if (delegateDeclaration == null)
+        if (delegateDeclaration is null)
             return default;
 
         return new ModifierListInfo(delegateDeclaration, delegateDeclaration.Modifiers);
@@ -236,7 +236,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(DestructorDeclarationSyntax destructorDeclaration)
     {
-        if (destructorDeclaration == null)
+        if (destructorDeclaration is null)
             return default;
 
         return new ModifierListInfo(destructorDeclaration, destructorDeclaration.Modifiers);
@@ -244,7 +244,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(EnumDeclarationSyntax enumDeclaration)
     {
-        if (enumDeclaration == null)
+        if (enumDeclaration is null)
             return default;
 
         return new ModifierListInfo(enumDeclaration, enumDeclaration.Modifiers);
@@ -252,7 +252,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(EventDeclarationSyntax eventDeclaration)
     {
-        if (eventDeclaration == null)
+        if (eventDeclaration is null)
             return default;
 
         return new ModifierListInfo(eventDeclaration, eventDeclaration.Modifiers);
@@ -260,7 +260,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(EventFieldDeclarationSyntax eventFieldDeclaration)
     {
-        if (eventFieldDeclaration == null)
+        if (eventFieldDeclaration is null)
             return default;
 
         return new ModifierListInfo(eventFieldDeclaration, eventFieldDeclaration.Modifiers);
@@ -268,7 +268,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(FieldDeclarationSyntax fieldDeclaration)
     {
-        if (fieldDeclaration == null)
+        if (fieldDeclaration is null)
             return default;
 
         return new ModifierListInfo(fieldDeclaration, fieldDeclaration.Modifiers);
@@ -276,7 +276,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(IndexerDeclarationSyntax indexerDeclaration)
     {
-        if (indexerDeclaration == null)
+        if (indexerDeclaration is null)
             return default;
 
         return new ModifierListInfo(indexerDeclaration, indexerDeclaration.Modifiers);
@@ -284,7 +284,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(InterfaceDeclarationSyntax interfaceDeclaration)
     {
-        if (interfaceDeclaration == null)
+        if (interfaceDeclaration is null)
             return default;
 
         return new ModifierListInfo(interfaceDeclaration, interfaceDeclaration.Modifiers);
@@ -292,7 +292,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(MethodDeclarationSyntax methodDeclaration)
     {
-        if (methodDeclaration == null)
+        if (methodDeclaration is null)
             return default;
 
         return new ModifierListInfo(methodDeclaration, methodDeclaration.Modifiers);
@@ -300,7 +300,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(OperatorDeclarationSyntax operatorDeclaration)
     {
-        if (operatorDeclaration == null)
+        if (operatorDeclaration is null)
             return default;
 
         return new ModifierListInfo(operatorDeclaration, operatorDeclaration.Modifiers);
@@ -308,7 +308,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(PropertyDeclarationSyntax propertyDeclaration)
     {
-        if (propertyDeclaration == null)
+        if (propertyDeclaration is null)
             return default;
 
         return new ModifierListInfo(propertyDeclaration, propertyDeclaration.Modifiers);
@@ -316,7 +316,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(StructDeclarationSyntax structDeclaration)
     {
-        if (structDeclaration == null)
+        if (structDeclaration is null)
             return default;
 
         return new ModifierListInfo(structDeclaration, structDeclaration.Modifiers);
@@ -324,7 +324,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(IncompleteMemberSyntax incompleteMember)
     {
-        if (incompleteMember == null)
+        if (incompleteMember is null)
             return default;
 
         return new ModifierListInfo(incompleteMember, incompleteMember.Modifiers);
@@ -332,7 +332,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(AccessorDeclarationSyntax accessorDeclaration)
     {
-        if (accessorDeclaration == null)
+        if (accessorDeclaration is null)
             return default;
 
         return new ModifierListInfo(accessorDeclaration, accessorDeclaration.Modifiers);
@@ -340,7 +340,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(LocalDeclarationStatementSyntax localDeclarationStatement)
     {
-        if (localDeclarationStatement == null)
+        if (localDeclarationStatement is null)
             return default;
 
         return new ModifierListInfo(localDeclarationStatement, localDeclarationStatement.Modifiers);
@@ -348,7 +348,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(LocalFunctionStatementSyntax localFunctionStatement)
     {
-        if (localFunctionStatement == null)
+        if (localFunctionStatement is null)
             return default;
 
         return new ModifierListInfo(localFunctionStatement, localFunctionStatement.Modifiers);
@@ -356,7 +356,7 @@ public readonly struct ModifierListInfo
 
     internal static ModifierListInfo Create(ParameterSyntax parameter)
     {
-        if (parameter == null)
+        if (parameter is null)
             return default;
 
         return new ModifierListInfo(parameter, parameter.Modifiers);
@@ -778,7 +778,7 @@ public readonly struct ModifierListInfo
 
     private void ThrowInvalidOperationIfNotInitialized()
     {
-        if (Parent == null)
+        if (Parent is null)
             throw new InvalidOperationException($"{nameof(ModifierListInfo)} is not initalized.");
     }
 }

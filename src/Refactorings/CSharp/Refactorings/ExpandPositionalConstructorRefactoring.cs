@@ -48,7 +48,7 @@ internal static class ExpandPositionalConstructorRefactoring
 
         ImmutableHashSet<string> basePropertyNames = ImmutableHashSet<string>.Empty;
 
-        if (baseType != null)
+        if (baseType is not null)
         {
             basePropertyNames = baseType
                 .ArgumentList?
@@ -125,7 +125,7 @@ internal static class ExpandPositionalConstructorRefactoring
             .WithParameterList(null)
             .WithSemicolonToken(default);
 
-        if (baseType != null)
+        if (baseType is not null)
         {
             SimpleBaseTypeSyntax newBaseType = SimpleBaseType(baseType.Type).WithTrailingTrivia(baseType.GetTrailingTrivia());
 

@@ -65,7 +65,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
             interactive: Options.Interactive,
             dryRun: Options.DryRun);
 
-        CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
+        CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
         var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
 
@@ -142,7 +142,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
         if (ShouldWrite(Verbosity.Normal))
         {
             foreach (IGrouping<string, SpellingFixResult> grouping in results
-                .Where(f => !f.HasFix && f.ContainingValue != null)
+                .Where(f => !f.HasFix && f.ContainingValue is not null)
                 .GroupBy(f => f.ContainingValue!, comparer)
                 .OrderBy(f => f.Key, comparer))
             {
@@ -262,7 +262,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
             WriteLine(grouping2.Key, ConsoleColors.Cyan, Verbosity.Detailed);
 
             foreach (SpellingFixResult result in grouping2
-                .Where(f => f.SourceText != null)
+                .Where(f => f.SourceText is not null)
                 .Distinct(SpellingFixResultEqualityComparer.ValueAndLineSpan)
                 .OrderBy(f => f.LineNumber)
                 .ThenBy(f => f.LineSpan.StartLinePosition.Character))
@@ -318,7 +318,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
         string outputPath = null,
         CancellationToken cancellationToken = default)
     {
-        if (newFixesPath != null)
+        if (newFixesPath is not null)
         {
             Dictionary<string, List<SpellingFix>> fixes = spellingData.Fixes.Items.ToDictionary(
                 f => f.Key,
@@ -368,7 +368,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
         const StringComparison comparison = StringComparison.InvariantCulture;
         StringComparer comparer = StringComparerUtility.FromComparison(comparison);
 
-        if (newWordsPath != null)
+        if (newWordsPath is not null)
         {
             HashSet<string> newValues = spellingData.IgnoredValues
                 .Concat(results.Select(f => f.Value))
@@ -394,13 +394,13 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             IEnumerable<string> compoundWords = results
                 .Select(f => f.ContainingValue)
-                .Where(f => f != null)
+                .Where(f => f is not null)
                 .Select(f => f!);
 
             WordList.Save(newWordsPath, newValues.Concat(compoundWords).Concat(possibleNewFixes), comparer, merge: true);
         }
 
-        if (outputPath != null
+        if (outputPath is not null
             && results.Count > 0)
         {
             using (var writer = new StreamWriter(outputPath, false, Encoding.UTF8))
@@ -412,7 +412,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
                     writer.WriteLine(grouping.Key);
 
                     foreach (IGrouping<string, SpellingFixResult> grouping2 in grouping
-                        .Where(f => f.SourceText != null)
+                        .Where(f => f.SourceText is not null)
                         .GroupBy(f => f.FilePath)
                         .OrderBy(f => f.Key, comparer))
                     {

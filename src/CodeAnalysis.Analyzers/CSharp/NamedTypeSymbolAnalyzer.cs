@@ -47,7 +47,7 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
 
         INamedTypeSymbol baseType = symbol.BaseType;
 
-        while (baseType != null)
+        while (baseType is not null)
         {
             switch (baseType.Name)
             {
@@ -91,7 +91,7 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
     {
         AttributeData attribute = symbol.GetAttribute(RoslynMetadataNames.Microsoft_CodeAnalysis_Diagnostics_DiagnosticAnalyzerAttribute);
 
-        if (attribute == null)
+        if (attribute is null)
             return;
 
         if (DiagnosticRules.UnknownLanguageName.IsEffective(context))
@@ -102,7 +102,7 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
     {
         AttributeData attribute = symbol.GetAttribute(RoslynMetadataNames.Microsoft_CodeAnalysis_CodeFixes_ExportCodeFixProviderAttribute);
 
-        if (attribute == null)
+        if (attribute is null)
             return;
 
         if (DiagnosticRules.UnknownLanguageName.IsEffective(context))
@@ -119,7 +119,7 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
     {
         AttributeData attribute = symbol.GetAttribute(RoslynMetadataNames.Microsoft_CodeAnalysis_CodeRefactorings_ExportCodeRefactoringProviderAttribute);
 
-        if (attribute == null)
+        if (attribute is null)
             return;
 
         if (DiagnosticRules.UnknownLanguageName.IsEffective(context))

@@ -36,7 +36,7 @@ public readonly struct RegionInfo
     /// </summary>
     public bool Success
     {
-        get { return Directive != null; }
+        get { return Directive is not null; }
     }
 
     /// <summary>
@@ -133,7 +133,7 @@ public readonly struct RegionInfo
 
     internal static RegionInfo Create(RegionDirectiveTriviaSyntax regionDirective)
     {
-        if (regionDirective == null)
+        if (regionDirective is null)
             return default;
 
         List<DirectiveTriviaSyntax> list = regionDirective.GetRelatedDirectives();
@@ -149,7 +149,7 @@ public readonly struct RegionInfo
 
     internal static RegionInfo Create(EndRegionDirectiveTriviaSyntax endRegionDirective)
     {
-        if (endRegionDirective == null)
+        if (endRegionDirective is null)
             return default;
 
         List<DirectiveTriviaSyntax> list = endRegionDirective.GetRelatedDirectives();

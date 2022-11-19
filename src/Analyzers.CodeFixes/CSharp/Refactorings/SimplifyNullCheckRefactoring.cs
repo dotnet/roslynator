@@ -31,7 +31,7 @@ internal static class SimplifyNullCheckRefactoring
 
         var castExpression = whenNotNull as CastExpressionSyntax;
 
-        ExpressionSyntax expression = (castExpression != null)
+        ExpressionSyntax expression = (castExpression is not null)
             ? UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, castExpression.Expression, semanticModel, cancellationToken)
             : UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull, semanticModel, cancellationToken);
 
@@ -66,7 +66,7 @@ internal static class SimplifyNullCheckRefactoring
                     {
                         newNode = ParseExpression($"{expression}?{whenNotNull.ToString().Substring(memberAccessExpression.Span.End - whenNotNull.SpanStart)}");
 
-                        if (castExpression != null)
+                        if (castExpression is not null)
                         {
                             newNode = castExpression
                                 .WithExpression(newNode.Parenthesize())
@@ -77,7 +77,7 @@ internal static class SimplifyNullCheckRefactoring
             }
         }
 
-        if (newNode == null)
+        if (newNode is null)
             newNode = ParseExpression(whenNotNull.ToString().Insert(expression.Span.End - whenNotNull.SpanStart, "?"));
 
         if (coalesce
