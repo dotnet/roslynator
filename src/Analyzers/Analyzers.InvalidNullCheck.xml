@@ -7,7 +7,7 @@
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Summary>This analyzer reports null checks of arguments that are:
-- are annotated as nullable reference type.
-- are optional and its default value is `null`.</Summary>
+- annotated as nullable reference type.
+- optional and its default value is `null`.</Summary>
   </Analyzer>
 </Analyzers>
