@@ -10,106 +10,105 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
-{
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemovePropertyOrFieldInitializerCodeFixProvider))]
-    [Shared]
-    public sealed class RemovePropertyOrFieldInitializerCodeFixProvider : CompilerDiagnosticCodeFixProvider
-    {
-        private const string Title = "Remove initializer";
+namespace Roslynator.CSharp.CodeFixes;
 
-        public override ImmutableArray<string> FixableDiagnosticIds
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemovePropertyOrFieldInitializerCodeFixProvider))]
+[Shared]
+public sealed class RemovePropertyOrFieldInitializerCodeFixProvider : CompilerDiagnosticCodeFixProvider
+{
+    private const string Title = "Remove initializer";
+
+    public override ImmutableArray<string> FixableDiagnosticIds
+    {
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType,
-                    CompilerDiagnosticIdentifiers.CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct,
-                    CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers);
-            }
+            return ImmutableArray.Create(
+                CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType,
+                CompilerDiagnosticIdentifiers.CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct,
+                CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers);
+        }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemovePropertyOrFieldInitializer, context.Document, root.SyntaxTree))
+            return;
+
+        if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
+            return;
+
+        SyntaxDebug.Assert(token.IsKind(SyntaxKind.IdentifierToken, SyntaxKind.NullKeyword), token);
+
+        switch (GetNode(token))
+        {
+            case PropertyDeclarationSyntax propertyDeclaration:
+                {
+                    EqualsValueClauseSyntax initializer = propertyDeclaration.Initializer;
+
+                    CodeAction codeAction = CodeAction.Create(
+                        Title,
+                        ct =>
+                        {
+                            PropertyDeclarationSyntax newNode = propertyDeclaration
+                                .RemoveNode(initializer)
+                                .WithSemicolonToken(default(SyntaxToken))
+                                .AppendToTrailingTrivia(propertyDeclaration.SemicolonToken.GetAllTrivia())
+                                .WithFormatterAnnotation();
+
+                            return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, ct);
+                        },
+                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            case VariableDeclaratorSyntax variableDeclarator:
+                {
+                    EqualsValueClauseSyntax initializer = variableDeclarator.Initializer;
+
+                    CodeAction codeAction = CodeAction.Create(
+                        Title,
+                        ct =>
+                        {
+                            VariableDeclaratorSyntax newNode = variableDeclarator
+                                .RemoveNode(initializer)
+                                .WithFormatterAnnotation();
+
+                            return context.Document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
+                        },
+                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        static SyntaxNode GetNode(SyntaxToken token)
         {
-            Diagnostic diagnostic = context.Diagnostics[0];
+            if (token.IsKind(SyntaxKind.IdentifierToken))
+                return token.Parent;
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemovePropertyOrFieldInitializer, context.Document, root.SyntaxTree))
-                return;
-
-            if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
-                return;
-
-            SyntaxDebug.Assert(token.IsKind(SyntaxKind.IdentifierToken, SyntaxKind.NullKeyword), token);
-
-            switch (GetNode(token))
+            if (token.IsKind(SyntaxKind.NullKeyword))
             {
-                case PropertyDeclarationSyntax propertyDeclaration:
-                    {
-                        EqualsValueClauseSyntax initializer = propertyDeclaration.Initializer;
+                SyntaxNode node = token.Parent;
 
-                        CodeAction codeAction = CodeAction.Create(
-                            Title,
-                            ct =>
-                            {
-                                PropertyDeclarationSyntax newNode = propertyDeclaration
-                                    .RemoveNode(initializer)
-                                    .WithSemicolonToken(default(SyntaxToken))
-                                    .AppendToTrailingTrivia(propertyDeclaration.SemicolonToken.GetAllTrivia())
-                                    .WithFormatterAnnotation();
-
-                                return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, ct);
-                            },
-                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case VariableDeclaratorSyntax variableDeclarator:
-                    {
-                        EqualsValueClauseSyntax initializer = variableDeclarator.Initializer;
-
-                        CodeAction codeAction = CodeAction.Create(
-                            Title,
-                            ct =>
-                            {
-                                VariableDeclaratorSyntax newNode = variableDeclarator
-                                    .RemoveNode(initializer)
-                                    .WithFormatterAnnotation();
-
-                                return context.Document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
-                            },
-                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-            }
-
-            static SyntaxNode GetNode(SyntaxToken token)
-            {
-                if (token.IsKind(SyntaxKind.IdentifierToken))
-                    return token.Parent;
-
-                if (token.IsKind(SyntaxKind.NullKeyword))
+                if (node.IsKind(SyntaxKind.NullLiteralExpression))
                 {
-                    SyntaxNode node = token.Parent;
+                    node = node.Parent;
 
-                    if (node.IsKind(SyntaxKind.NullLiteralExpression))
-                    {
+                    if (node.IsKind(SyntaxKind.SuppressNullableWarningExpression))
                         node = node.Parent;
 
-                        if (node.IsKind(SyntaxKind.SuppressNullableWarningExpression))
-                            node = node.Parent;
-
-                        if (node.IsKind(SyntaxKind.EqualsValueClause))
-                            return node.Parent;
-                    }
+                    if (node.IsKind(SyntaxKind.EqualsValueClause))
+                        return node.Parent;
                 }
-
-                return null;
             }
+
+            return null;
         }
     }
 }

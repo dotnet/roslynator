@@ -11,55 +11,54 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RecordDeclarationCodeFixProvider))]
+[Shared]
+public class RecordDeclarationCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RecordDeclarationCodeFixProvider))]
-    [Shared]
-    public class RecordDeclarationCodeFixProvider : BaseCodeFixProvider
+    public sealed override ImmutableArray<string> FixableDiagnosticIds
     {
-        public sealed override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryBraces); }
+    }
+
+    public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out RecordDeclarationSyntax recordDeclaration))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryBraces); }
+            return;
         }
 
-        public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out RecordDeclarationSyntax recordDeclaration))
+        CodeAction codeAction = CodeAction.Create(
+            "Remove unnecessary braces",
+            ct =>
             {
-                return;
-            }
+                RecordDeclarationSyntax newRecordDeclaration = recordDeclaration.Update(
+                    recordDeclaration.AttributeLists,
+                    recordDeclaration.Modifiers,
+                    recordDeclaration.Keyword,
+                    recordDeclaration.Identifier,
+                    recordDeclaration.TypeParameterList,
+                    recordDeclaration.ParameterList.WithoutTrailingTrivia(),
+                    recordDeclaration.BaseList,
+                    recordDeclaration.ConstraintClauses,
+                    default,
+                    default,
+                    default,
+                    Token(SyntaxKind.SemicolonToken));
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+                return document.ReplaceNodeAsync(recordDeclaration, newRecordDeclaration, ct);
+            },
+            GetEquivalenceKey(diagnostic));
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove unnecessary braces",
-                ct =>
-                {
-                    RecordDeclarationSyntax newRecordDeclaration = recordDeclaration.Update(
-                        recordDeclaration.AttributeLists,
-                        recordDeclaration.Modifiers,
-                        recordDeclaration.Keyword,
-                        recordDeclaration.Identifier,
-                        recordDeclaration.TypeParameterList,
-                        recordDeclaration.ParameterList.WithoutTrailingTrivia(),
-                        recordDeclaration.BaseList,
-                        recordDeclaration.ConstraintClauses,
-                        default,
-                        default,
-                        default,
-                        Token(SyntaxKind.SemicolonToken));
-
-                    return document.ReplaceNodeAsync(recordDeclaration, newRecordDeclaration, ct);
-                },
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

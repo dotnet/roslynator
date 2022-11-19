@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveEmptyNamespaceDeclarationRefactoring
 {
-    internal static class RemoveEmptyNamespaceDeclarationRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        NamespaceDeclarationSyntax declaration,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            NamespaceDeclarationSyntax declaration,
-            CancellationToken cancellationToken)
-        {
-            return document.RemoveNodeAsync(declaration, cancellationToken);
-        }
+        return document.RemoveNodeAsync(declaration, cancellationToken);
     }
 }

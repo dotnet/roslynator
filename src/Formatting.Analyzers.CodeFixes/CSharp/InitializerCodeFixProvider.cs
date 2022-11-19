@@ -10,40 +10,39 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InitializerCodeFixProvider))]
+[Shared]
+public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InitializerCodeFixProvider))]
-    [Shared]
-    public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.PutInitializerOnSingleLine); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out InitializerExpressionSyntax initializer))
+            return;
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        switch (diagnostic.Id)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.PutInitializerOnSingleLine); }
-        }
+            case DiagnosticIdentifiers.PutInitializerOnSingleLine:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Put initializer on a single line",
+                        ct => SyntaxFormatter.ToSingleLineAsync(document, initializer, removeTrailingComma: true, ct),
+                        GetEquivalenceKey(diagnostic));
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out InitializerExpressionSyntax initializer))
-                return;
-
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.PutInitializerOnSingleLine:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Put initializer on a single line",
-                            ct => SyntaxFormatter.ToSingleLineAsync(document, initializer, removeTrailingComma: true, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-            }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
     }
 }

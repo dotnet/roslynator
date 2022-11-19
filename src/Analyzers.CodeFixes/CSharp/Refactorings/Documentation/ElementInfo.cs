@@ -2,23 +2,22 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.CSharp.Analysis.Documentation
+namespace Roslynator.CSharp.Analysis.Documentation;
+
+internal abstract class ElementInfo<TNode> where TNode : SyntaxNode
 {
-    internal abstract class ElementInfo<TNode> where TNode : SyntaxNode
+    protected ElementInfo(TNode node, int insertIndex, NewLinePosition newLinePosition)
     {
-        protected ElementInfo(TNode node, int insertIndex, NewLinePosition newLinePosition)
-        {
-            Node = node;
-            InsertIndex = insertIndex;
-            NewLinePosition = newLinePosition;
-        }
-
-        public abstract string Name { get; }
-
-        public TNode Node { get; }
-
-        public int InsertIndex { get; }
-
-        public NewLinePosition NewLinePosition { get; }
+        Node = node;
+        InsertIndex = insertIndex;
+        NewLinePosition = newLinePosition;
     }
+
+    public abstract string Name { get; }
+
+    public TNode Node { get; }
+
+    public int InsertIndex { get; }
+
+    public NewLinePosition NewLinePosition { get; }
 }

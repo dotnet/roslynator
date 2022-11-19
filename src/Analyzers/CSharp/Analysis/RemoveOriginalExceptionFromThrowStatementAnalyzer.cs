@@ -10,137 +10,136 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveOriginalExceptionFromThrowStatement);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveOriginalExceptionFromThrowStatement);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeCatchClause(f), SyntaxKind.CatchClause);
+    }
+
+    private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
+    {
+        var catchClause = (CatchClauseSyntax)context.Node;
+
+        CatchDeclarationSyntax declaration = catchClause.Declaration;
+
+        if (declaration == null)
+            return;
+
+        SemanticModel semanticModel = context.SemanticModel;
+        CancellationToken cancellationToken = context.CancellationToken;
+
+        ILocalSymbol symbol = semanticModel.GetDeclaredSymbol(declaration, cancellationToken);
+
+        if (symbol?.IsErrorType() != false)
+            return;
+
+        ExpressionSyntax expression = null;
+        Walker walker = null;
+
+        try
+        {
+            walker = Walker.GetInstance();
+
+            walker.Symbol = symbol;
+            walker.SemanticModel = semanticModel;
+            walker.CancellationToken = cancellationToken;
+
+            walker.VisitBlock(catchClause.Block);
+
+            expression = walker.ThrowStatement?.Expression;
+        }
+        finally
+        {
+            if (walker != null)
+                Walker.Free(walker);
         }
 
-        public override void Initialize(AnalysisContext context)
+        if (expression != null)
         {
-            base.Initialize(context);
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.RemoveOriginalExceptionFromThrowStatement,
+                expression);
+        }
+    }
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeCatchClause(f), SyntaxKind.CatchClause);
+    private class Walker : CSharpSyntaxNodeWalker
+    {
+        [ThreadStatic]
+        private static Walker _cachedInstance;
+
+        public ThrowStatementSyntax ThrowStatement { get; set; }
+
+        public ISymbol Symbol { get; set; }
+
+        public SemanticModel SemanticModel { get; set; }
+
+        public CancellationToken CancellationToken { get; set; }
+
+        public override void VisitCatchClause(CatchClauseSyntax node)
+        {
         }
 
-        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
+        public override void VisitThrowStatement(ThrowStatementSyntax node)
         {
-            var catchClause = (CatchClauseSyntax)context.Node;
-
-            CatchDeclarationSyntax declaration = catchClause.Declaration;
-
-            if (declaration == null)
-                return;
-
-            SemanticModel semanticModel = context.SemanticModel;
-            CancellationToken cancellationToken = context.CancellationToken;
-
-            ILocalSymbol symbol = semanticModel.GetDeclaredSymbol(declaration, cancellationToken);
-
-            if (symbol?.IsErrorType() != false)
-                return;
-
-            ExpressionSyntax expression = null;
-            Walker walker = null;
-
-            try
-            {
-                walker = Walker.GetInstance();
-
-                walker.Symbol = symbol;
-                walker.SemanticModel = semanticModel;
-                walker.CancellationToken = cancellationToken;
-
-                walker.VisitBlock(catchClause.Block);
-
-                expression = walker.ThrowStatement?.Expression;
-            }
-            finally
-            {
-                if (walker != null)
-                    Walker.Free(walker);
-            }
+            ExpressionSyntax expression = node.Expression;
 
             if (expression != null)
             {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.RemoveOriginalExceptionFromThrowStatement,
-                    expression);
+                ISymbol symbol = SemanticModel.GetSymbol(expression, CancellationToken);
+
+                if (SymbolEqualityComparer.Default.Equals(Symbol, symbol))
+                    ThrowStatement = node;
             }
+
+            base.VisitThrowStatement(node);
         }
 
-        private class Walker : CSharpSyntaxNodeWalker
+        public static Walker GetInstance()
         {
-            [ThreadStatic]
-            private static Walker _cachedInstance;
+            Walker walker = _cachedInstance;
 
-            public ThrowStatementSyntax ThrowStatement { get; set; }
-
-            public ISymbol Symbol { get; set; }
-
-            public SemanticModel SemanticModel { get; set; }
-
-            public CancellationToken CancellationToken { get; set; }
-
-            public override void VisitCatchClause(CatchClauseSyntax node)
+            if (walker != null)
             {
+                Debug.Assert(walker.Symbol == null);
+                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.CancellationToken == default);
+                Debug.Assert(walker.ThrowStatement == null);
+
+                _cachedInstance = null;
+                return walker;
             }
 
-            public override void VisitThrowStatement(ThrowStatementSyntax node)
-            {
-                ExpressionSyntax expression = node.Expression;
+            return new Walker();
+        }
 
-                if (expression != null)
-                {
-                    ISymbol symbol = SemanticModel.GetSymbol(expression, CancellationToken);
+        public static void Free(Walker walker)
+        {
+            walker.Symbol = null;
+            walker.SemanticModel = null;
+            walker.CancellationToken = default;
+            walker.ThrowStatement = null;
 
-                    if (SymbolEqualityComparer.Default.Equals(Symbol, symbol))
-                        ThrowStatement = node;
-                }
-
-                base.VisitThrowStatement(node);
-            }
-
-            public static Walker GetInstance()
-            {
-                Walker walker = _cachedInstance;
-
-                if (walker != null)
-                {
-                    Debug.Assert(walker.Symbol == null);
-                    Debug.Assert(walker.SemanticModel == null);
-                    Debug.Assert(walker.CancellationToken == default);
-                    Debug.Assert(walker.ThrowStatement == null);
-
-                    _cachedInstance = null;
-                    return walker;
-                }
-
-                return new Walker();
-            }
-
-            public static void Free(Walker walker)
-            {
-                walker.Symbol = null;
-                walker.SemanticModel = null;
-                walker.CancellationToken = default;
-                walker.ThrowStatement = null;
-
-                _cachedInstance = walker;
-            }
+            _cachedInstance = walker;
         }
     }
 }

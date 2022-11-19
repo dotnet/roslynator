@@ -5,101 +5,100 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 
-namespace Roslynator.CSharp.Syntax
+namespace Roslynator.CSharp.Syntax;
+
+/// <summary>
+/// Provides information about conditional expression.
+/// </summary>
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly struct ConditionalExpressionInfo
 {
-    /// <summary>
-    /// Provides information about conditional expression.
-    /// </summary>
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct ConditionalExpressionInfo
+    private ConditionalExpressionInfo(
+        ExpressionSyntax condition,
+        ExpressionSyntax whenTrue,
+        ExpressionSyntax whenFalse)
     {
-        private ConditionalExpressionInfo(
-            ExpressionSyntax condition,
-            ExpressionSyntax whenTrue,
-            ExpressionSyntax whenFalse)
-        {
-            Condition = condition;
-            WhenTrue = whenTrue;
-            WhenFalse = whenFalse;
-        }
+        Condition = condition;
+        WhenTrue = whenTrue;
+        WhenFalse = whenFalse;
+    }
 
-        /// <summary>
-        /// The conditional expression.
-        /// </summary>
-        public ConditionalExpressionSyntax ConditionalExpression
-        {
-            get { return (ConditionalExpressionSyntax)Condition?.WalkUpParentheses().Parent; }
-        }
+    /// <summary>
+    /// The conditional expression.
+    /// </summary>
+    public ConditionalExpressionSyntax ConditionalExpression
+    {
+        get { return (ConditionalExpressionSyntax)Condition?.WalkUpParentheses().Parent; }
+    }
 
-        /// <summary>
-        /// The condition expression.
-        /// </summary>
-        public ExpressionSyntax Condition { get; }
+    /// <summary>
+    /// The condition expression.
+    /// </summary>
+    public ExpressionSyntax Condition { get; }
 
-        /// <summary>
-        /// The expression to be executed when the expression is true.
-        /// </summary>
-        public ExpressionSyntax WhenTrue { get; }
+    /// <summary>
+    /// The expression to be executed when the expression is true.
+    /// </summary>
+    public ExpressionSyntax WhenTrue { get; }
 
-        /// <summary>
-        /// The expression to be executed when the expression is false.
-        /// </summary>
-        public ExpressionSyntax WhenFalse { get; }
+    /// <summary>
+    /// The expression to be executed when the expression is false.
+    /// </summary>
+    public ExpressionSyntax WhenFalse { get; }
 
-        /// <summary>
-        /// The token representing the question mark.
-        /// </summary>
-        public SyntaxToken QuestionToken
-        {
-            get { return ConditionalExpression?.QuestionToken ?? default; }
-        }
+    /// <summary>
+    /// The token representing the question mark.
+    /// </summary>
+    public SyntaxToken QuestionToken
+    {
+        get { return ConditionalExpression?.QuestionToken ?? default; }
+    }
 
-        /// <summary>
-        /// The token representing the colon.
-        /// </summary>
-        public SyntaxToken ColonToken
-        {
-            get { return ConditionalExpression?.ColonToken ?? default; }
-        }
+    /// <summary>
+    /// The token representing the colon.
+    /// </summary>
+    public SyntaxToken ColonToken
+    {
+        get { return ConditionalExpression?.ColonToken ?? default; }
+    }
 
-        /// <summary>
-        /// Determines whether this struct was initialized with an actual syntax.
-        /// </summary>
-        public bool Success
-        {
-            get { return Condition != null; }
-        }
+    /// <summary>
+    /// Determines whether this struct was initialized with an actual syntax.
+    /// </summary>
+    public bool Success
+    {
+        get { return Condition != null; }
+    }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return ToDebugString(Success, this, ConditionalExpression); }
-        }
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return ToDebugString(Success, this, ConditionalExpression); }
+    }
 
-        internal static ConditionalExpressionInfo Create(
-            ConditionalExpressionSyntax conditionalExpression,
-            bool walkDownParentheses = true,
-            bool allowMissing = false)
-        {
-            if (conditionalExpression == null)
-                return default;
+    internal static ConditionalExpressionInfo Create(
+        ConditionalExpressionSyntax conditionalExpression,
+        bool walkDownParentheses = true,
+        bool allowMissing = false)
+    {
+        if (conditionalExpression == null)
+            return default;
 
-            ExpressionSyntax condition = WalkAndCheck(conditionalExpression.Condition, walkDownParentheses, allowMissing);
+        ExpressionSyntax condition = WalkAndCheck(conditionalExpression.Condition, walkDownParentheses, allowMissing);
 
-            if (condition == null)
-                return default;
+        if (condition == null)
+            return default;
 
-            ExpressionSyntax whenTrue = WalkAndCheck(conditionalExpression.WhenTrue, walkDownParentheses, allowMissing);
+        ExpressionSyntax whenTrue = WalkAndCheck(conditionalExpression.WhenTrue, walkDownParentheses, allowMissing);
 
-            if (whenTrue == null)
-                return default;
+        if (whenTrue == null)
+            return default;
 
-            ExpressionSyntax whenFalse = WalkAndCheck(conditionalExpression.WhenFalse, walkDownParentheses, allowMissing);
+        ExpressionSyntax whenFalse = WalkAndCheck(conditionalExpression.WhenFalse, walkDownParentheses, allowMissing);
 
-            if (whenFalse == null)
-                return default;
+        if (whenFalse == null)
+            return default;
 
-            return new ConditionalExpressionInfo(condition, whenTrue, whenFalse);
-        }
+        return new ConditionalExpressionInfo(condition, whenTrue, whenFalse);
     }
 }

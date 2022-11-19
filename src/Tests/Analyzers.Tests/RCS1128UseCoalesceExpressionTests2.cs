@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1128UseCoalesceExpressionTests2 : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, UseCoalesceExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpression;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_GetValueOrDefault()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1128UseCoalesceExpressionTests2 : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, UseCoalesceExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpression;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_GetValueOrDefault()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -36,12 +36,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_GetValueOrDefault_ConditionalAccess()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_GetValueOrDefault_ConditionalAccess()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -70,6 +70,5 @@ class C
     public int? P2 { get; }
 }
 ");
-        }
     }
 }

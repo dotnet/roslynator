@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1212RemoveRedundantAssignmentTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantAssignmentAnalyzer, RemoveRedundantAssignmentCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAssignment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task Test_Local()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1212RemoveRedundantAssignmentTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantAssignmentAnalyzer, RemoveRedundantAssignmentCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAssignment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task Test_Local()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     bool M()
@@ -39,12 +39,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task Test_Parameter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task Test_Parameter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     bool M(bool f)
@@ -62,12 +62,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task Test_Local_WithComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task Test_Local_WithComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -98,12 +98,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task Test_Local_ReferencedInRightSideOfAssignment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task Test_Local_ReferencedInRightSideOfAssignment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -123,12 +123,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task Test_LocalDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task Test_LocalDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -146,12 +146,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task Test_LocalInsideLambda()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task Test_LocalInsideLambda()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -189,12 +189,12 @@ class C
     int M2(Func<int> p) => 0;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task Test_ParameterInsideLambda()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task Test_ParameterInsideLambda()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -226,12 +226,12 @@ class C
     int M2(Func<int, int> p) => 0;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task TestNoDiagnostic_OutParameter()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task TestNoDiagnostic_OutParameter()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     bool M(out bool f)
@@ -241,12 +241,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task TestNoDiagnostic_SequenceOfAssignments()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task TestNoDiagnostic_SequenceOfAssignments()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     int M()
@@ -258,12 +258,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task TestNoDiagnostic_LocalReferencedInLambda()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task TestNoDiagnostic_LocalReferencedInLambda()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -291,12 +291,12 @@ class C
     Action<int> _a;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task TestNoDiagnostic_LocalAssignedInsideLambda()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task TestNoDiagnostic_LocalAssignedInsideLambda()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -315,12 +315,12 @@ class C
     int M2(Func<int> p) => 0;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task TestNoDiagnostic_ParameterAssignedInsideLambda()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task TestNoDiagnostic_ParameterAssignedInsideLambda()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -337,12 +337,12 @@ class C
     int M2(Func<int> p) => 0;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task TestNoDiagnostic_FinallyClause()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task TestNoDiagnostic_FinallyClause()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 using System.Linq;
 
@@ -368,12 +368,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
-        public async Task TestNoDiagnostic_CatchClause()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+    public async Task TestNoDiagnostic_CatchClause()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 using System.Linq;
 
@@ -404,6 +404,5 @@ class C
     }
 }
 ");
-        }
     }
 }

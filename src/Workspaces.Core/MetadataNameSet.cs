@@ -5,44 +5,43 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal class MetadataNameSet
 {
-    internal class MetadataNameSet
+    public static MetadataNameSet Empty { get; } = new(ImmutableArray<MetadataName>.Empty);
+
+    public ImmutableArray<MetadataName> Values { get; }
+
+    private readonly ImmutableDictionary<string, ImmutableArray<MetadataName>> _valuesByName;
+
+    public MetadataNameSet(IEnumerable<string> values)
+        : this(values.Select(f => MetadataName.Parse(f)))
     {
-        public static MetadataNameSet Empty { get; } = new(ImmutableArray<MetadataName>.Empty);
+    }
 
-        public ImmutableArray<MetadataName> Values { get; }
+    public MetadataNameSet(IEnumerable<MetadataName> values)
+    {
+        Values = values.ToImmutableArray();
 
-        private readonly ImmutableDictionary<string, ImmutableArray<MetadataName>> _valuesByName;
+        _valuesByName = Values
+            .GroupBy(f => f.Name)
+            .ToImmutableDictionary(f => f.Key, f => f.ToImmutableArray());
+    }
 
-        public MetadataNameSet(IEnumerable<string> values)
-            : this(values.Select(f => MetadataName.Parse(f)))
+    public bool IsEmpty => Values.IsEmpty;
+
+    public bool Contains(ISymbol symbol)
+    {
+        if (_valuesByName.TryGetValue(symbol.Name, out ImmutableArray<MetadataName> names))
         {
-        }
-
-        public MetadataNameSet(IEnumerable<MetadataName> values)
-        {
-            Values = values.ToImmutableArray();
-
-            _valuesByName = Values
-                .GroupBy(f => f.Name)
-                .ToImmutableDictionary(f => f.Key, f => f.ToImmutableArray());
-        }
-
-        public bool IsEmpty => Values.IsEmpty;
-
-        public bool Contains(ISymbol symbol)
-        {
-            if (_valuesByName.TryGetValue(symbol.Name, out ImmutableArray<MetadataName> names))
+            foreach (MetadataName name in names)
             {
-                foreach (MetadataName name in names)
-                {
-                    if (symbol.HasMetadataName(name))
-                        return true;
-                }
+                if (symbol.HasMetadataName(name))
+                    return true;
             }
-
-            return false;
         }
+
+        return false;
     }
 }

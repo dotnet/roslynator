@@ -2,15 +2,14 @@
 
 using System;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+[Flags]
+internal enum OmitMemberParts
 {
-    [Flags]
-    internal enum OmitMemberParts
-    {
-        None = 0,
-        ConstantValue = 1,
-        Implements = 1 << 1,
-        InheritedFrom = 1 << 2,
-        Overrides = 1 << 3
-    }
+    None = 0,
+    ConstantValue = 1,
+    Implements = 1 << 1,
+    InheritedFrom = 1 << 2,
+    Overrides = 1 << 3
 }

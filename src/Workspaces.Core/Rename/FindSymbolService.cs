@@ -4,19 +4,18 @@ using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.FindSymbols
+namespace Roslynator.FindSymbols;
+
+internal abstract class FindSymbolService : IFindSymbolService
 {
-    internal abstract class FindSymbolService : IFindSymbolService
-    {
-        public abstract ISyntaxFactsService SyntaxFacts { get; }
+    public abstract ISyntaxFactsService SyntaxFacts { get; }
 
-        public abstract SyntaxNode FindDeclaration(SyntaxNode node);
+    public abstract SyntaxNode FindDeclaration(SyntaxNode node);
 
-        public abstract bool CanBeRenamed(SyntaxToken token);
+    public abstract bool CanBeRenamed(SyntaxToken token);
 
-        public abstract ImmutableArray<ISymbol> FindLocalSymbols(
-            SyntaxNode node,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken);
-    }
+    public abstract ImmutableArray<ISymbol> FindLocalSymbols(
+        SyntaxNode node,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken);
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1004RemoveBracesFromIfElseTests : AbstractCSharpDiagnosticVerifier<RemoveBracesFromIfElseAnalyzer, RemoveBracesFromIfElseCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveBracesFromIfElse;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1004RemoveBracesFromIfElseTests : AbstractCSharpDiagnosticVerifier<RemoveBracesFromIfElseAnalyzer, RemoveBracesFromIfElseCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveBracesFromIfElse;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -46,12 +46,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-        public async Task Test2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+    public async Task Test2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -82,12 +82,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-        public async Task TestNoDiagnostic_SimpleIfInsideIfWithElse()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+    public async Task TestNoDiagnostic_SimpleIfInsideIfWithElse()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -105,12 +105,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-        public async Task TestNoDiagnostic_SimpleIfInsideIfWithElse2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+    public async Task TestNoDiagnostic_SimpleIfInsideIfWithElse2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -128,12 +128,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-        public async Task TestNoDiagnostic_CommentAboveStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+    public async Task TestNoDiagnostic_CommentAboveStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -150,12 +150,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-        public async Task TestNoDiagnostic_CommentBelowStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+    public async Task TestNoDiagnostic_CommentBelowStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -172,6 +172,5 @@ class C
     }
 }
 ");
-        }
     }
 }

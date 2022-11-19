@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0085PromoteLocalVariableToParameterTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.PromoteLocalVariableToParameter;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
-        public async Task Test_MethodWithSingleLocalDeclaration()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0085PromoteLocalVariableToParameterTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.PromoteLocalVariableToParameter;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
+    public async Task Test_MethodWithSingleLocalDeclaration()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -30,12 +30,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
-        public async Task Test_LocalFunctionWithSingleLocalDeclaration()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
+    public async Task Test_LocalFunctionWithSingleLocalDeclaration()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -58,12 +58,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
-        public async Task Test_MethodWithMultipleLocalDeclarationsWithoutInitialization()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
+    public async Task Test_MethodWithMultipleLocalDeclarationsWithoutInitialization()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(object parameter)
@@ -80,12 +80,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
-        public async Task Test_MethodWithMultipleLocalDeclarationsWithInitialization()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
+    public async Task Test_MethodWithMultipleLocalDeclarationsWithInitialization()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(object parameter)
@@ -103,12 +103,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
-        public async Task TestNoRefactoring_TypeDoesNotSupportExplicitDeclaration()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
+    public async Task TestNoRefactoring_TypeDoesNotSupportExplicitDeclaration()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Linq;
 
 class C
@@ -120,6 +120,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

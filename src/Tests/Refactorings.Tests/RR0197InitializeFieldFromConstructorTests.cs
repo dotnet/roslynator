@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0197InitializeFieldFromConstructorTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.InitializeFieldFromConstructor;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InitializeFieldFromConstructor)]
-        public async Task TestRefactoring()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0197InitializeFieldFromConstructorTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.InitializeFieldFromConstructor;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InitializeFieldFromConstructor)]
+    public async Task TestRefactoring()
+    {
+        await VerifyRefactoringAsync(@"
 class Foo : FooBase
 {
 [|    private string bar;
@@ -98,6 +98,5 @@ class FooBase
     public FooBase(object parameter1, object bar) { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

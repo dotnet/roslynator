@@ -12,188 +12,187 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class OrderNamedArgumentsAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class OrderNamedArgumentsAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.OrderNamedArguments);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.OrderNamedArguments);
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeBaseArgumentList(f), SyntaxKind.ArgumentList);
+        context.RegisterSyntaxNodeAction(f => AnalyzeBaseArgumentList(f), SyntaxKind.BracketedArgumentList);
+    }
+
+    private static void AnalyzeBaseArgumentList(SyntaxNodeAnalysisContext context)
+    {
+        if (context.Node.ContainsDiagnostics)
+            return;
+
+        SeparatedSyntaxList<ArgumentSyntax> arguments = ((BaseArgumentListSyntax)context.Node).Arguments;
+
+        if (arguments.Count >= 2)
+        {
+            (int first, int last) = FindFixableSpan(arguments, context.SemanticModel, context.CancellationToken);
+
+            if (first >= 0
+                && last > first)
+            {
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.OrderNamedArguments,
+                    Location.Create(
+                        context.Node.SyntaxTree,
+                        TextSpan.FromBounds(arguments[first].SpanStart, arguments[last].Span.End)));
+            }
+        }
+    }
+
+    internal static (int first, int last) FindFixableSpan(
+        SeparatedSyntaxList<ArgumentSyntax> arguments,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        int firstIndex = -1;
+
+        for (int i = arguments.Count - 1; i >= 0; i--)
+        {
+            if (arguments[i].NameColon != null)
+            {
+                firstIndex = i;
+            }
+            else
+            {
+                break;
             }
         }
 
-        public override void Initialize(AnalysisContext context)
+        if (firstIndex >= 0
+            && firstIndex < arguments.Count - 1)
         {
-            base.Initialize(context);
+            ISymbol symbol = semanticModel.GetSymbol(arguments.First().Parent.Parent, cancellationToken);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseArgumentList(f), SyntaxKind.ArgumentList);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseArgumentList(f), SyntaxKind.BracketedArgumentList);
-        }
-
-        private static void AnalyzeBaseArgumentList(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.ContainsDiagnostics)
-                return;
-
-            SeparatedSyntaxList<ArgumentSyntax> arguments = ((BaseArgumentListSyntax)context.Node).Arguments;
-
-            if (arguments.Count >= 2)
+            if (symbol is not null)
             {
-                (int first, int last) = FindFixableSpan(arguments, context.SemanticModel, context.CancellationToken);
+                ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
 
-                if (first >= 0
-                    && last > first)
+                Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
+
+                if (!parameters.IsDefault
+                    && parameters.Length >= arguments.Count
+                    && IsFixable(firstIndex, arguments, parameters))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.OrderNamedArguments,
-                        Location.Create(
-                            context.Node.SyntaxTree,
-                            TextSpan.FromBounds(arguments[first].SpanStart, arguments[last].Span.End)));
+                    return GetFixableSpan(firstIndex, arguments, parameters);
                 }
             }
         }
 
-        internal static (int first, int last) FindFixableSpan(
-            SeparatedSyntaxList<ArgumentSyntax> arguments,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        return default;
+    }
+
+    private static bool IsFixable(
+        int firstIndex,
+        SeparatedSyntaxList<ArgumentSyntax> arguments,
+        ImmutableArray<IParameterSymbol> parameters)
+    {
+        int j = -1;
+        string firstName = arguments[firstIndex].NameColon.Name.Identifier.ValueText;
+
+        for (int i = 0; i < parameters.Length; i++)
         {
-            int firstIndex = -1;
-
-            for (int i = arguments.Count - 1; i >= 0; i--)
+            if (parameters[i].Name == firstName)
             {
-                if (arguments[i].NameColon != null)
-                {
-                    firstIndex = i;
-                }
-                else
-                {
-                    break;
-                }
+                j = i;
+                break;
             }
+        }
 
-            if (firstIndex >= 0
-                && firstIndex < arguments.Count - 1)
+        if (j >= 0)
+        {
+            for (int i = firstIndex + 1; i < arguments.Count; i++)
             {
-                ISymbol symbol = semanticModel.GetSymbol(arguments.First().Parent.Parent, cancellationToken);
+                string name = arguments[i].NameColon.Name.Identifier.ValueText;
 
-                if (symbol is not null)
+                while (!string.Equals(
+                    name,
+                    parameters[j].Name,
+                    StringComparison.Ordinal))
                 {
-                    ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
+                    j++;
 
-                    Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
-
-                    if (!parameters.IsDefault
-                        && parameters.Length >= arguments.Count
-                        && IsFixable(firstIndex, arguments, parameters))
+                    if (j == parameters.Length)
                     {
-                        return GetFixableSpan(firstIndex, arguments, parameters);
-                    }
-                }
-            }
-
-            return default;
-        }
-
-        private static bool IsFixable(
-            int firstIndex,
-            SeparatedSyntaxList<ArgumentSyntax> arguments,
-            ImmutableArray<IParameterSymbol> parameters)
-        {
-            int j = -1;
-            string firstName = arguments[firstIndex].NameColon.Name.Identifier.ValueText;
-
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                if (parameters[i].Name == firstName)
-                {
-                    j = i;
-                    break;
-                }
-            }
-
-            if (j >= 0)
-            {
-                for (int i = firstIndex + 1; i < arguments.Count; i++)
-                {
-                    string name = arguments[i].NameColon.Name.Identifier.ValueText;
-
-                    while (!string.Equals(
-                        name,
-                        parameters[j].Name,
-                        StringComparison.Ordinal))
-                    {
-                        j++;
-
-                        if (j == parameters.Length)
+                        foreach (IParameterSymbol parameter in parameters)
                         {
-                            foreach (IParameterSymbol parameter in parameters)
-                            {
-                                if (parameter.Name == name)
-                                    return true;
-                            }
+                            if (parameter.Name == name)
+                                return true;
                         }
                     }
                 }
             }
-
-            return false;
         }
 
-        private static (int first, int last) GetFixableSpan(
-            int firstIndex,
-            SeparatedSyntaxList<ArgumentSyntax> arguments,
-            ImmutableArray<IParameterSymbol> parameters)
+        return false;
+    }
+
+    private static (int first, int last) GetFixableSpan(
+        int firstIndex,
+        SeparatedSyntaxList<ArgumentSyntax> arguments,
+        ImmutableArray<IParameterSymbol> parameters)
+    {
+        var sortedArgs = new List<(ArgumentSyntax argument, int ordinal)>();
+
+        for (int i = firstIndex; i < arguments.Count; i++)
         {
-            var sortedArgs = new List<(ArgumentSyntax argument, int ordinal)>();
+            IParameterSymbol parameter = parameters.FirstOrDefault(p => p.Name == arguments[i].NameColon.Name.Identifier.ValueText);
 
-            for (int i = firstIndex; i < arguments.Count; i++)
+            if (parameter is null)
+                return default;
+
+            sortedArgs.Add((arguments[i], parameters.IndexOf(parameter)));
+        }
+
+        sortedArgs.Sort((x, y) => x.ordinal.CompareTo(y.ordinal));
+
+        int first = firstIndex;
+        int last = arguments.Count - 1;
+
+        while (first < arguments.Count)
+        {
+            if (sortedArgs[first - firstIndex].argument == arguments[first])
             {
-                IParameterSymbol parameter = parameters.FirstOrDefault(p => p.Name == arguments[i].NameColon.Name.Identifier.ValueText);
-
-                if (parameter is null)
-                    return default;
-
-                sortedArgs.Add((arguments[i], parameters.IndexOf(parameter)));
+                first++;
             }
-
-            sortedArgs.Sort((x, y) => x.ordinal.CompareTo(y.ordinal));
-
-            int first = firstIndex;
-            int last = arguments.Count - 1;
-
-            while (first < arguments.Count)
+            else
             {
-                if (sortedArgs[first - firstIndex].argument == arguments[first])
+                while (last > first)
                 {
-                    first++;
-                }
-                else
-                {
-                    while (last > first)
+                    if (sortedArgs[last - firstIndex].argument == arguments[last])
                     {
-                        if (sortedArgs[last - firstIndex].argument == arguments[last])
-                        {
-                            last--;
-                        }
-                        else
-                        {
-                            return (first, last);
-                        }
+                        last--;
+                    }
+                    else
+                    {
+                        return (first, last);
                     }
                 }
             }
-
-            return default;
         }
+
+        return default;
     }
 }

@@ -9,103 +9,133 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp;
 
-namespace Roslynator.Documentation
-{
-    internal static class SymbolDefinitionDisplay
-    {
-        public static ImmutableArray<SymbolDisplayPart> GetDisplayParts(
-            ISymbol symbol,
-            SymbolDisplayFormat format,
-            SymbolDisplayTypeDeclarationOptions typeDeclarationOptions = SymbolDisplayTypeDeclarationOptions.None,
-            SymbolDisplayAdditionalOptions additionalOptions = SymbolDisplayAdditionalOptions.None,
-            Func<ISymbol, AttributeData, bool> shouldDisplayAttribute = null)
-        {
-            ImmutableArray<SymbolDisplayPart> parts;
+namespace Roslynator.Documentation;
 
-            if (symbol is INamedTypeSymbol typeSymbol)
+internal static class SymbolDefinitionDisplay
+{
+    public static ImmutableArray<SymbolDisplayPart> GetDisplayParts(
+        ISymbol symbol,
+        SymbolDisplayFormat format,
+        SymbolDisplayTypeDeclarationOptions typeDeclarationOptions = SymbolDisplayTypeDeclarationOptions.None,
+        SymbolDisplayAdditionalOptions additionalOptions = SymbolDisplayAdditionalOptions.None,
+        Func<ISymbol, AttributeData, bool> shouldDisplayAttribute = null)
+    {
+        ImmutableArray<SymbolDisplayPart> parts;
+
+        if (symbol is INamedTypeSymbol typeSymbol)
+        {
+            parts = typeSymbol.ToDisplayParts(format, typeDeclarationOptions);
+        }
+        else
+        {
+            parts = symbol.ToDisplayParts(format);
+            typeSymbol = null;
+        }
+
+        IEnumerable<AttributeData> attributes = (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeAttributes))
+            ? GetAttributes(symbol, shouldDisplayAttribute)
+            : ImmutableArray<AttributeData>.Empty;
+
+        ImmutableArray<SymbolDisplayPart>.Builder builder = default;
+
+        INamedTypeSymbol baseType = null;
+        ImmutableArray<INamedTypeSymbol> interfaces = ImmutableArray<INamedTypeSymbol>.Empty;
+
+        if (typeSymbol != null
+            && (typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.BaseList) != 0)
+        {
+            if ((typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.BaseType) != 0
+                && typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Interface))
             {
-                parts = typeSymbol.ToDisplayParts(format, typeDeclarationOptions);
+                baseType = typeSymbol.BaseType;
+
+                if (baseType?.SpecialType == SpecialType.System_Object)
+                    baseType = null;
+            }
+
+            if ((typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.Interfaces) != 0)
+            {
+                interfaces = typeSymbol.Interfaces;
+
+                if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.OmitIEnumerable)
+                    && interfaces.Any(f => f.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T))
+                {
+                    interfaces = interfaces.RemoveAll(f => f.SpecialType == SpecialType.System_Collections_IEnumerable);
+                }
+            }
+        }
+
+        int baseListCount = interfaces.Length;
+
+        if (baseType != null)
+            baseListCount++;
+
+        int constraintCount = 0;
+        int whereIndex = -1;
+
+        for (int i = 0; i < parts.Length; i++)
+        {
+            if (parts[i].IsKeyword("where"))
+            {
+                if (whereIndex == -1)
+                    whereIndex = i;
+
+                constraintCount++;
+            }
+        }
+
+        if (baseListCount > 0)
+        {
+            InitializeBuilder();
+
+            if (whereIndex != -1)
+            {
+                builder.AddRange(parts, whereIndex);
             }
             else
             {
-                parts = symbol.ToDisplayParts(format);
-                typeSymbol = null;
+                builder.AddRange(parts);
+                builder.AddSpace();
             }
 
-            IEnumerable<AttributeData> attributes = (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeAttributes))
-                ? GetAttributes(symbol, shouldDisplayAttribute)
-                : ImmutableArray<AttributeData>.Empty;
+            builder.AddPunctuation(":");
+            builder.AddSpace();
 
-            ImmutableArray<SymbolDisplayPart>.Builder builder = default;
-
-            INamedTypeSymbol baseType = null;
-            ImmutableArray<INamedTypeSymbol> interfaces = ImmutableArray<INamedTypeSymbol>.Empty;
-
-            if (typeSymbol != null
-                && (typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.BaseList) != 0)
+            if (baseType != null)
             {
-                if ((typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.BaseType) != 0
-                    && typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Interface))
+                builder.AddDisplayParts(baseType, format, additionalOptions);
+
+                if (interfaces.Any())
                 {
-                    baseType = typeSymbol.BaseType;
+                    builder.AddPunctuation(",");
 
-                    if (baseType?.SpecialType == SpecialType.System_Object)
-                        baseType = null;
-                }
-
-                if ((typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.Interfaces) != 0)
-                {
-                    interfaces = typeSymbol.Interfaces;
-
-                    if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.OmitIEnumerable)
-                        && interfaces.Any(f => f.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T))
+                    if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapBaseTypes))
                     {
-                        interfaces = interfaces.RemoveAll(f => f.SpecialType == SpecialType.System_Collections_IEnumerable);
+                        builder.AddLineBreak();
+                        builder.AddIndentation();
+                    }
+                    else
+                    {
+                        builder.AddSpace();
                     }
                 }
             }
 
-            int baseListCount = interfaces.Length;
+            IComparer<INamedTypeSymbol> comparer = (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.OmitContainingNamespace))
+                ? SymbolDefinitionComparer.SystemFirstOmitContainingNamespace.TypeComparer
+                : SymbolDefinitionComparer.SystemFirst.TypeComparer;
 
-            if (baseType != null)
-                baseListCount++;
+            interfaces = interfaces.Sort(comparer);
 
-            int constraintCount = 0;
-            int whereIndex = -1;
+            ImmutableArray<INamedTypeSymbol>.Enumerator en = interfaces.GetEnumerator();
 
-            for (int i = 0; i < parts.Length; i++)
+            if (en.MoveNext())
             {
-                if (parts[i].IsKeyword("where"))
+                while (true)
                 {
-                    if (whereIndex == -1)
-                        whereIndex = i;
+                    builder.AddDisplayParts(en.Current, format, additionalOptions);
 
-                    constraintCount++;
-                }
-            }
-
-            if (baseListCount > 0)
-            {
-                InitializeBuilder();
-
-                if (whereIndex != -1)
-                {
-                    builder.AddRange(parts, whereIndex);
-                }
-                else
-                {
-                    builder.AddRange(parts);
-                    builder.AddSpace();
-                }
-
-                builder.AddPunctuation(":");
-                builder.AddSpace();
-
-                if (baseType != null)
-                {
-                    builder.AddDisplayParts(baseType, format, additionalOptions);
-
-                    if (interfaces.Any())
+                    if (en.MoveNext())
                     {
                         builder.AddPunctuation(",");
 
@@ -119,996 +149,234 @@ namespace Roslynator.Documentation
                             builder.AddSpace();
                         }
                     }
-                }
-
-                IComparer<INamedTypeSymbol> comparer = (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.OmitContainingNamespace))
-                    ? SymbolDefinitionComparer.SystemFirstOmitContainingNamespace.TypeComparer
-                    : SymbolDefinitionComparer.SystemFirst.TypeComparer;
-
-                interfaces = interfaces.Sort(comparer);
-
-                ImmutableArray<INamedTypeSymbol>.Enumerator en = interfaces.GetEnumerator();
-
-                if (en.MoveNext())
-                {
-                    while (true)
+                    else
                     {
-                        builder.AddDisplayParts(en.Current, format, additionalOptions);
-
-                        if (en.MoveNext())
-                        {
-                            builder.AddPunctuation(",");
-
-                            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapBaseTypes))
-                            {
-                                builder.AddLineBreak();
-                                builder.AddIndentation();
-                            }
-                            else
-                            {
-                                builder.AddSpace();
-                            }
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                if (whereIndex != -1)
-                {
-                    if (!additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapConstraints)
-                        || (baseListCount == 1 && constraintCount == 1))
-                    {
-                        builder.AddSpace();
+                        break;
                     }
                 }
             }
 
             if (whereIndex != -1)
             {
-                InitializeBuilder();
-
-                if (baseListCount == 0)
-                    builder.AddRange(parts, whereIndex);
-
-                for (int i = whereIndex; i < parts.Length; i++)
+                if (!additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapConstraints)
+                    || (baseListCount == 1 && constraintCount == 1))
                 {
-                    if (parts[i].IsKeyword("where")
-                        && additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapConstraints)
-                        && (baseListCount > 1 || constraintCount > 1))
-                    {
-                        builder.AddLineBreak();
-                        builder.AddIndentation();
-                    }
-
-                    builder.Add(parts[i]);
+                    builder.AddSpace();
                 }
             }
+        }
 
-            if (builder == null
-                && attributes.Any())
+        if (whereIndex != -1)
+        {
+            InitializeBuilder();
+
+            if (baseListCount == 0)
+                builder.AddRange(parts, whereIndex);
+
+            for (int i = whereIndex; i < parts.Length; i++)
+            {
+                if (parts[i].IsKeyword("where")
+                    && additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapConstraints)
+                    && (baseListCount > 1 || constraintCount > 1))
+                {
+                    builder.AddLineBreak();
+                    builder.AddIndentation();
+                }
+
+                builder.Add(parts[i]);
+            }
+        }
+
+        if (builder == null
+            && attributes.Any())
+        {
+            builder = ImmutableArray.CreateBuilder<SymbolDisplayPart>(parts.Length);
+
+            AddAttributes(builder, attributes, format, additionalOptions, includeTrailingNewLine: true);
+
+            builder.AddRange(parts);
+        }
+
+        var hasEventAccessorList = false;
+
+        if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeAccessorAttributes))
+        {
+            if (symbol.Kind == SymbolKind.Property)
+            {
+                var propertySymbol = (IPropertySymbol)symbol;
+
+                IMethodSymbol getMethod = propertySymbol.GetMethod;
+                if (getMethod != null)
+                {
+                    builder ??= parts.ToBuilder();
+
+                    AddAccessorAttributes(builder, getMethod, format, additionalOptions, shouldDisplayAttribute: shouldDisplayAttribute);
+                }
+
+                IMethodSymbol setMethod = propertySymbol.SetMethod;
+                if (setMethod != null)
+                {
+                    builder ??= parts.ToBuilder();
+
+                    AddAccessorAttributes(builder, setMethod, format, additionalOptions, shouldDisplayAttribute: shouldDisplayAttribute);
+                }
+            }
+            else if (symbol.Kind == SymbolKind.Event)
+            {
+                var eventSymbol = (IEventSymbol)symbol;
+
+                IEnumerable<AttributeData> addAttributes = GetAttributes(eventSymbol.AddMethod, shouldDisplayAttribute);
+                IEnumerable<AttributeData> removeAttributes = GetAttributes(eventSymbol.RemoveMethod, shouldDisplayAttribute);
+
+                if (addAttributes.Any()
+                    || removeAttributes.Any())
+                {
+                    hasEventAccessorList = true;
+
+                    builder ??= parts.ToBuilder();
+
+                    AddEventAccessorAttributes(builder, addAttributes, removeAttributes, format, additionalOptions);
+                }
+            }
+        }
+
+        ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
+
+        if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeParameterAttributes)
+            && parameters.Any(f => GetAttributes(f, shouldDisplayAttribute).Any()))
+        {
+            builder ??= parts.ToBuilder();
+
+            AddParameterAttributes(builder, symbol, parameters, format, additionalOptions, shouldDisplayAttribute);
+        }
+
+        if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatParameters)
+            && parameters.Length > 1)
+        {
+            builder ??= parts.ToBuilder();
+
+            FormatParameters(symbol, builder, DefinitionListFormat.Default.IndentChars);
+        }
+
+        if (ShouldAddTrailingSemicolon())
+        {
+            if (builder == null)
+            {
+                parts = parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.Punctuation, null, ";"));
+            }
+            else
+            {
+                builder.AddPunctuation(";");
+            }
+        }
+
+        return builder?.ToImmutableArray() ?? parts;
+
+        void InitializeBuilder()
+        {
+            if (builder == null)
             {
                 builder = ImmutableArray.CreateBuilder<SymbolDisplayPart>(parts.Length);
 
-                AddAttributes(builder, attributes, format, additionalOptions, includeTrailingNewLine: true);
-
-                builder.AddRange(parts);
+                if (attributes.Any())
+                    AddAttributes(builder, attributes, format, additionalOptions, includeTrailingNewLine: true);
             }
+        }
 
-            var hasEventAccessorList = false;
-
-            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeAccessorAttributes))
+        bool ShouldAddTrailingSemicolon()
+        {
+            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeTrailingSemicolon))
             {
-                if (symbol.Kind == SymbolKind.Property)
+                if (typeSymbol?.TypeKind == TypeKind.Delegate)
+                    return true;
+
+                switch (symbol.Kind)
                 {
-                    var propertySymbol = (IPropertySymbol)symbol;
-
-                    IMethodSymbol getMethod = propertySymbol.GetMethod;
-                    if (getMethod != null)
-                    {
-                        builder ??= parts.ToBuilder();
-
-                        AddAccessorAttributes(builder, getMethod, format, additionalOptions, shouldDisplayAttribute: shouldDisplayAttribute);
-                    }
-
-                    IMethodSymbol setMethod = propertySymbol.SetMethod;
-                    if (setMethod != null)
-                    {
-                        builder ??= parts.ToBuilder();
-
-                        AddAccessorAttributes(builder, setMethod, format, additionalOptions, shouldDisplayAttribute: shouldDisplayAttribute);
-                    }
-                }
-                else if (symbol.Kind == SymbolKind.Event)
-                {
-                    var eventSymbol = (IEventSymbol)symbol;
-
-                    IEnumerable<AttributeData> addAttributes = GetAttributes(eventSymbol.AddMethod, shouldDisplayAttribute);
-                    IEnumerable<AttributeData> removeAttributes = GetAttributes(eventSymbol.RemoveMethod, shouldDisplayAttribute);
-
-                    if (addAttributes.Any()
-                        || removeAttributes.Any())
-                    {
-                        hasEventAccessorList = true;
-
-                        builder ??= parts.ToBuilder();
-
-                        AddEventAccessorAttributes(builder, addAttributes, removeAttributes, format, additionalOptions);
-                    }
-                }
-            }
-
-            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
-
-            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeParameterAttributes)
-                && parameters.Any(f => GetAttributes(f, shouldDisplayAttribute).Any()))
-            {
-                builder ??= parts.ToBuilder();
-
-                AddParameterAttributes(builder, symbol, parameters, format, additionalOptions, shouldDisplayAttribute);
-            }
-
-            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatParameters)
-                && parameters.Length > 1)
-            {
-                builder ??= parts.ToBuilder();
-
-                FormatParameters(symbol, builder, DefinitionListFormat.Default.IndentChars);
-            }
-
-            if (ShouldAddTrailingSemicolon())
-            {
-                if (builder == null)
-                {
-                    parts = parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.Punctuation, null, ";"));
-                }
-                else
-                {
-                    builder.AddPunctuation(";");
-                }
-            }
-
-            return builder?.ToImmutableArray() ?? parts;
-
-            void InitializeBuilder()
-            {
-                if (builder == null)
-                {
-                    builder = ImmutableArray.CreateBuilder<SymbolDisplayPart>(parts.Length);
-
-                    if (attributes.Any())
-                        AddAttributes(builder, attributes, format, additionalOptions, includeTrailingNewLine: true);
-                }
-            }
-
-            bool ShouldAddTrailingSemicolon()
-            {
-                if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeTrailingSemicolon))
-                {
-                    if (typeSymbol?.TypeKind == TypeKind.Delegate)
+                    case SymbolKind.Event:
+                        return !hasEventAccessorList;
+                    case SymbolKind.Field:
+                        return symbol.ContainingType?.TypeKind != TypeKind.Enum;
+                    case SymbolKind.Method:
                         return true;
-
-                    switch (symbol.Kind)
-                    {
-                        case SymbolKind.Event:
-                            return !hasEventAccessorList;
-                        case SymbolKind.Field:
-                            return symbol.ContainingType?.TypeKind != TypeKind.Enum;
-                        case SymbolKind.Method:
-                            return true;
-                    }
                 }
-
-                return false;
             }
+
+            return false;
         }
+    }
 
-        public static ImmutableArray<SymbolDisplayPart> GetAttributesParts(
-            ISymbol symbol,
-            SymbolDisplayFormat format,
-            SymbolDisplayAdditionalOptions additionalOptions,
-            Func<ISymbol, AttributeData, bool> shouldDisplayAttribute,
-            bool includeTrailingNewLine = false,
-            bool? formatAttributes = null)
+    public static ImmutableArray<SymbolDisplayPart> GetAttributesParts(
+        ISymbol symbol,
+        SymbolDisplayFormat format,
+        SymbolDisplayAdditionalOptions additionalOptions,
+        Func<ISymbol, AttributeData, bool> shouldDisplayAttribute,
+        bool includeTrailingNewLine = false,
+        bool? formatAttributes = null)
+    {
+        IEnumerable<AttributeData> attributes = GetAttributes(symbol, shouldDisplayAttribute);
+
+        if (!attributes.Any())
+            return ImmutableArray<SymbolDisplayPart>.Empty;
+
+        ImmutableArray<SymbolDisplayPart>.Builder parts = ImmutableArray.CreateBuilder<SymbolDisplayPart>();
+
+        AddAttributes(
+            parts: parts,
+            attributes: attributes,
+            format: format,
+            additionalOptions: additionalOptions,
+            includeTrailingNewLine: includeTrailingNewLine,
+            formatAttributes: formatAttributes);
+
+        return parts.ToImmutableArray();
+    }
+
+    private static void AddAttributes(
+        ImmutableArray<SymbolDisplayPart>.Builder parts,
+        IEnumerable<AttributeData> attributes,
+        SymbolDisplayFormat format,
+        SymbolDisplayAdditionalOptions additionalOptions,
+        bool includeTrailingNewLine = true,
+        bool? formatAttributes = null)
+    {
+        IComparer<INamedTypeSymbol> comparer = (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.OmitContainingNamespace))
+            ? SymbolDefinitionComparer.SystemFirstOmitContainingNamespace.TypeComparer
+            : SymbolDefinitionComparer.SystemFirst.TypeComparer;
+
+        attributes = attributes.OrderBy(f => f.AttributeClass, comparer);
+
+        using (IEnumerator<AttributeData> en = attributes.GetEnumerator())
         {
-            IEnumerable<AttributeData> attributes = GetAttributes(symbol, shouldDisplayAttribute);
-
-            if (!attributes.Any())
-                return ImmutableArray<SymbolDisplayPart>.Empty;
-
-            ImmutableArray<SymbolDisplayPart>.Builder parts = ImmutableArray.CreateBuilder<SymbolDisplayPart>();
-
-            AddAttributes(
-                parts: parts,
-                attributes: attributes,
-                format: format,
-                additionalOptions: additionalOptions,
-                includeTrailingNewLine: includeTrailingNewLine,
-                formatAttributes: formatAttributes);
-
-            return parts.ToImmutableArray();
-        }
-
-        private static void AddAttributes(
-            ImmutableArray<SymbolDisplayPart>.Builder parts,
-            IEnumerable<AttributeData> attributes,
-            SymbolDisplayFormat format,
-            SymbolDisplayAdditionalOptions additionalOptions,
-            bool includeTrailingNewLine = true,
-            bool? formatAttributes = null)
-        {
-            IComparer<INamedTypeSymbol> comparer = (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.OmitContainingNamespace))
-                ? SymbolDefinitionComparer.SystemFirstOmitContainingNamespace.TypeComparer
-                : SymbolDefinitionComparer.SystemFirst.TypeComparer;
-
-            attributes = attributes.OrderBy(f => f.AttributeClass, comparer);
-
-            using (IEnumerator<AttributeData> en = attributes.GetEnumerator())
+            if (en.MoveNext())
             {
-                if (en.MoveNext())
+                parts.AddPunctuation("[");
+
+                while (true)
                 {
-                    parts.AddPunctuation("[");
+                    AddAttribute(parts, en.Current, format, additionalOptions);
 
-                    while (true)
+                    if (en.MoveNext())
                     {
-                        AddAttribute(parts, en.Current, format, additionalOptions);
-
-                        if (en.MoveNext())
+                        if (formatAttributes ?? additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatAttributes))
                         {
-                            if (formatAttributes ?? additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatAttributes))
+                            parts.AddPunctuation("]");
+
+                            if (includeTrailingNewLine)
                             {
-                                parts.AddPunctuation("]");
-
-                                if (includeTrailingNewLine)
-                                {
-                                    parts.AddLineBreak();
-                                }
-                                else
-                                {
-                                    parts.AddSpace();
-                                }
-
-                                parts.AddPunctuation("[");
+                                parts.AddLineBreak();
                             }
                             else
                             {
-                                parts.AddPunctuation(",");
                                 parts.AddSpace();
                             }
+
+                            parts.AddPunctuation("[");
                         }
                         else
-                        {
-                            break;
-                        }
-                    }
-
-                    parts.AddPunctuation("]");
-
-                    if (includeTrailingNewLine)
-                        parts.AddLineBreak();
-                }
-            }
-        }
-
-        private static void AddAttribute(
-            ImmutableArray<SymbolDisplayPart>.Builder parts,
-            AttributeData attribute,
-            SymbolDisplayFormat format,
-            SymbolDisplayAdditionalOptions additionalOptions)
-        {
-            parts.AddDisplayParts(attribute.AttributeClass, format, additionalOptions, removeAttributeSuffix: true);
-
-            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeAttributeArguments))
-                AddAttributeArguments();
-
-            void AddAttributeArguments()
-            {
-                var hasConstructorArgument = false;
-                var hasNamedArgument = false;
-
-                AppendConstructorArguments();
-                AppendNamedArguments();
-
-                if (hasConstructorArgument || hasNamedArgument)
-                {
-                    parts.AddPunctuation(")");
-                }
-
-                void AppendConstructorArguments()
-                {
-                    ImmutableArray<TypedConstant>.Enumerator en = attribute.ConstructorArguments.GetEnumerator();
-
-                    if (en.MoveNext())
-                    {
-                        hasConstructorArgument = true;
-                        parts.AddPunctuation("(");
-
-                        while (true)
-                        {
-                            AddConstantValue(en.Current);
-
-                            if (en.MoveNext())
-                            {
-                                parts.AddPunctuation(",");
-                                parts.AddSpace();
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                void AppendNamedArguments()
-                {
-                    ImmutableArray<KeyValuePair<string, TypedConstant>>.Enumerator en = attribute.NamedArguments.GetEnumerator();
-
-                    if (en.MoveNext())
-                    {
-                        hasNamedArgument = true;
-
-                        if (hasConstructorArgument)
                         {
                             parts.AddPunctuation(",");
                             parts.AddSpace();
                         }
-                        else
-                        {
-                            parts.AddPunctuation("(");
-                        }
-
-                        while (true)
-                        {
-                            parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.PropertyName, null, en.Current.Key));
-                            parts.AddSpace();
-                            parts.AddPunctuation("=");
-                            parts.AddSpace();
-                            AddConstantValue(en.Current.Value);
-
-                            if (en.MoveNext())
-                            {
-                                parts.AddPunctuation(",");
-                                parts.AddSpace();
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            void AddConstantValue(TypedConstant typedConstant)
-            {
-                switch (typedConstant.Kind)
-                {
-                    case TypedConstantKind.Primitive:
-                        {
-                            parts.Add(new SymbolDisplayPart(
-                                GetSymbolDisplayPart(typedConstant.Type.SpecialType),
-                                null,
-                                SymbolDisplay.FormatPrimitive(typedConstant.Value, quoteStrings: true, useHexadecimalNumbers: false)));
-
-                            break;
-                        }
-                    case TypedConstantKind.Enum:
-                        {
-                            OneOrMany<EnumFieldSymbolInfo> oneOrMany = EnumUtility.GetConstituentFields(typedConstant.Value, (INamedTypeSymbol)typedConstant.Type);
-
-                            OneOrMany<EnumFieldSymbolInfo>.Enumerator en = oneOrMany.GetEnumerator();
-
-                            if (en.MoveNext())
-                            {
-                                while (true)
-                                {
-                                    AddDisplayParts(parts, en.Current.Symbol, format, additionalOptions);
-
-                                    if (en.MoveNext())
-                                    {
-                                        parts.AddSpace();
-                                        parts.AddPunctuation("|");
-                                        parts.AddSpace();
-                                    }
-                                    else
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                parts.AddPunctuation("(");
-                                AddDisplayParts(parts, (INamedTypeSymbol)typedConstant.Type, format, additionalOptions);
-                                parts.AddPunctuation(")");
-                                parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.NumericLiteral, null, typedConstant.Value.ToString()));
-                            }
-
-                            break;
-                        }
-                    case TypedConstantKind.Type:
-                        {
-                            if (typedConstant.Value == null)
-                            {
-                                parts.AddKeyword("null");
-                            }
-                            else
-                            {
-                                parts.AddKeyword("typeof");
-                                parts.AddPunctuation("(");
-                                AddDisplayParts(parts, (ISymbol)typedConstant.Value, format, additionalOptions);
-                                parts.AddPunctuation(")");
-                            }
-
-                            break;
-                        }
-                    case TypedConstantKind.Array:
-                        {
-                            var arrayType = (IArrayTypeSymbol)typedConstant.Type;
-
-                            parts.AddKeyword("new");
-                            parts.AddSpace();
-                            AddDisplayParts(parts, arrayType.ElementType, format, additionalOptions);
-
-                            parts.AddPunctuation("[");
-                            parts.AddPunctuation("]");
-                            parts.AddSpace();
-                            parts.AddPunctuation("{");
-                            parts.AddSpace();
-
-                            ImmutableArray<TypedConstant>.Enumerator en = typedConstant.Values.GetEnumerator();
-
-                            if (en.MoveNext())
-                            {
-                                while (true)
-                                {
-                                    AddConstantValue(en.Current);
-
-                                    if (en.MoveNext())
-                                    {
-                                        parts.AddPunctuation(",");
-                                        parts.AddSpace();
-                                    }
-                                    else
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-
-                            parts.AddSpace();
-                            parts.AddPunctuation("}");
-                            break;
-                        }
-                    default:
-                        {
-                            throw new InvalidOperationException();
-                        }
-                }
-
-                static SymbolDisplayPartKind GetSymbolDisplayPart(SpecialType specialType)
-                {
-                    switch (specialType)
-                    {
-                        case SpecialType.System_Boolean:
-                        case SpecialType.System_Object:
-                            return SymbolDisplayPartKind.Keyword;
-                        case SpecialType.System_SByte:
-                        case SpecialType.System_Byte:
-                        case SpecialType.System_Int16:
-                        case SpecialType.System_UInt16:
-                        case SpecialType.System_Int32:
-                        case SpecialType.System_UInt32:
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_UInt64:
-                        case SpecialType.System_Single:
-                        case SpecialType.System_Double:
-                            return SymbolDisplayPartKind.NumericLiteral;
-                        case SpecialType.System_Char:
-                        case SpecialType.System_String:
-                            return SymbolDisplayPartKind.StringLiteral;
-                        default:
-                            throw new InvalidOperationException();
-                    }
-                }
-            }
-        }
-
-        private static void AddParameterAttributes(
-            ImmutableArray<SymbolDisplayPart>.Builder parts,
-            ISymbol symbol,
-            ImmutableArray<IParameterSymbol> parameters,
-            SymbolDisplayFormat format,
-            SymbolDisplayAdditionalOptions additionalOptions,
-            Func<ISymbol, AttributeData, bool> shouldDisplayAttribute)
-        {
-            int i = FindParameterListStart(symbol, parts);
-
-            if (i == -1)
-                return;
-
-            i++;
-
-            int parameterIndex = 0;
-
-            AddParameterAttributes();
-
-            int parenthesesDepth = 1;
-            int bracesDepth = 0;
-            int bracketsDepth = 0;
-            int angleBracketsDepth = 0;
-
-            while (i < parts.Count)
-            {
-                SymbolDisplayPart part = parts[i];
-
-                if (part.Kind == SymbolDisplayPartKind.Punctuation)
-                {
-                    switch (part.ToString())
-                    {
-                        case ",":
-                            {
-                                if (((angleBracketsDepth == 0 && parenthesesDepth == 1 && bracesDepth == 0 && bracketsDepth == 0)
-                                    || (angleBracketsDepth == 0 && parenthesesDepth == 0 && bracesDepth == 0 && bracketsDepth == 1))
-                                    && i < parts.Count - 1)
-                                {
-                                    SymbolDisplayPart nextPart = parts[i + 1];
-
-                                    if (nextPart.Kind == SymbolDisplayPartKind.Space)
-                                    {
-                                        i += 2;
-                                        parameterIndex++;
-
-                                        AddParameterAttributes();
-                                        continue;
-                                    }
-                                }
-
-                                break;
-                            }
-                        case "(":
-                            {
-                                parenthesesDepth++;
-                                break;
-                            }
-                        case ")":
-                            {
-                                Debug.Assert(parenthesesDepth >= 0);
-                                parenthesesDepth--;
-
-                                if (parenthesesDepth == 0
-                                    && symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType))
-                                {
-                                    return;
-                                }
-
-                                break;
-                            }
-                        case "[":
-                            {
-                                bracketsDepth++;
-                                break;
-                            }
-                        case "]":
-                            {
-                                Debug.Assert(bracketsDepth >= 0);
-                                bracketsDepth--;
-
-                                if (bracketsDepth == 0
-                                    && symbol.Kind == SymbolKind.Property)
-                                {
-                                    return;
-                                }
-
-                                break;
-                            }
-                        case "{":
-                            {
-                                bracesDepth++;
-                                break;
-                            }
-                        case "}":
-                            {
-                                Debug.Assert(bracesDepth >= 0);
-                                bracesDepth--;
-                                break;
-                            }
-                        case "<":
-                            {
-                                angleBracketsDepth++;
-                                break;
-                            }
-                        case ">":
-                            {
-                                Debug.Assert(angleBracketsDepth >= 0);
-                                angleBracketsDepth--;
-                                break;
-                            }
-                    }
-                }
-
-                i++;
-            }
-
-            void AddParameterAttributes()
-            {
-                IParameterSymbol parameter = parameters[parameterIndex];
-
-                ImmutableArray<SymbolDisplayPart> attributeParts = GetAttributesParts(
-                    parameter,
-                    format,
-                    additionalOptions,
-                    shouldDisplayAttribute: shouldDisplayAttribute);
-
-                if (attributeParts.Any())
-                {
-                    parts.Insert(i, SymbolDisplayPartFactory.Space());
-                    parts.InsertRange(i, attributeParts);
-                    i += attributeParts.Length + 1;
-                }
-            }
-        }
-
-        private static void AddAccessorAttributes(
-            ImmutableArray<SymbolDisplayPart>.Builder parts,
-            IMethodSymbol methodSymbol,
-            SymbolDisplayFormat format,
-            SymbolDisplayAdditionalOptions additionalOptions,
-            Func<ISymbol, AttributeData, bool> shouldDisplayAttribute)
-        {
-            ImmutableArray<SymbolDisplayPart> attributeParts = GetAttributesParts(
-                methodSymbol,
-                format: format,
-                additionalOptions: additionalOptions,
-                shouldDisplayAttribute: shouldDisplayAttribute,
-                formatAttributes: false);
-
-            if (attributeParts.Any())
-            {
-                string keyword = GetKeyword();
-
-                SymbolDisplayPart part = parts.FirstOrDefault(f => f.IsKeyword(keyword));
-
-                Debug.Assert(part.Kind == SymbolDisplayPartKind.Keyword);
-
-                if (part.Kind == SymbolDisplayPartKind.Keyword)
-                {
-                    int index = parts.IndexOf(part);
-
-                    parts.Insert(index, SymbolDisplayPartFactory.Space());
-                    parts.InsertRange(index, attributeParts);
-                }
-            }
-
-            string GetKeyword()
-            {
-                switch (methodSymbol.MethodKind)
-                {
-                    case MethodKind.EventAdd:
-                        return "add";
-                    case MethodKind.EventRemove:
-                        return "remove";
-                    case MethodKind.PropertyGet:
-                        return "get";
-                    case MethodKind.PropertySet:
-                        return "set";
-                    default:
-                        throw new InvalidOperationException();
-                }
-            }
-        }
-
-        private static void AddEventAccessorAttributes(
-            ImmutableArray<SymbolDisplayPart>.Builder parts,
-            IEnumerable<AttributeData> addAttributes,
-            IEnumerable<AttributeData> removeAttributes,
-            SymbolDisplayFormat format,
-            SymbolDisplayAdditionalOptions additionalOptions)
-        {
-            parts.AddSpace();
-            parts.AddPunctuation("{");
-            parts.AddSpace();
-
-            AddAccessorAttributes(addAttributes);
-
-            parts.AddKeyword("add");
-            parts.AddPunctuation(";");
-            parts.AddSpace();
-
-            AddAccessorAttributes(removeAttributes);
-
-            parts.AddKeyword("remove");
-            parts.AddPunctuation(";");
-            parts.AddSpace();
-            parts.AddPunctuation("}");
-
-            void AddAccessorAttributes(IEnumerable<AttributeData> attributes)
-            {
-                AddAttributes(
-                    parts: parts,
-                    attributes: attributes,
-                    format: format,
-                    additionalOptions: additionalOptions,
-                    includeTrailingNewLine: false,
-                    formatAttributes: false);
-
-                parts.AddSpace();
-            }
-        }
-
-        private static void FormatParameters(
-            ISymbol symbol,
-            ImmutableArray<SymbolDisplayPart>.Builder parts,
-            string indentChars)
-        {
-            int parenthesesDepth = 0;
-            int bracesDepth = 0;
-            int bracketsDepth = 0;
-            int angleBracketsDepth = 0;
-
-            int i = 0;
-
-            int index = FindParameterListStart(symbol, parts);
-
-            Debug.Assert(index != -1);
-
-            if (index == -1)
-                return;
-
-            parts.Insert(index + 1, SymbolDisplayPartFactory.Indentation(indentChars));
-            parts.Insert(index + 1, SymbolDisplayPartFactory.LineBreak());
-
-            i++;
-
-            while (i < parts.Count)
-            {
-                SymbolDisplayPart part = parts[i];
-
-                if (part.Kind == SymbolDisplayPartKind.Punctuation)
-                {
-                    switch (part.ToString())
-                    {
-                        case ",":
-                            {
-                                if (((angleBracketsDepth == 0 && parenthesesDepth == 1 && bracesDepth == 0 && bracketsDepth == 0)
-                                    || (angleBracketsDepth == 0 && parenthesesDepth == 0 && bracesDepth == 0 && bracketsDepth == 1))
-                                    && i < parts.Count - 1)
-                                {
-                                    SymbolDisplayPart nextPart = parts[i + 1];
-
-                                    if (nextPart.Kind == SymbolDisplayPartKind.Space)
-                                    {
-                                        parts[i + 1] = SymbolDisplayPartFactory.LineBreak();
-                                        parts.Insert(i + 2, SymbolDisplayPartFactory.Indentation(indentChars));
-                                    }
-                                }
-
-                                break;
-                            }
-                        case "(":
-                            {
-                                parenthesesDepth++;
-                                break;
-                            }
-                        case ")":
-                            {
-                                Debug.Assert(parenthesesDepth >= 0);
-                                parenthesesDepth--;
-
-                                if (parenthesesDepth == 0
-                                    && symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType))
-                                {
-                                    return;
-                                }
-
-                                break;
-                            }
-                        case "[":
-                            {
-                                bracketsDepth++;
-                                break;
-                            }
-                        case "]":
-                            {
-                                Debug.Assert(bracketsDepth >= 0);
-                                bracketsDepth--;
-
-                                if (bracketsDepth == 0
-                                    && symbol.Kind == SymbolKind.Property)
-                                {
-                                    return;
-                                }
-
-                                break;
-                            }
-                        case "{":
-                            {
-                                bracesDepth++;
-                                break;
-                            }
-                        case "}":
-                            {
-                                Debug.Assert(bracesDepth >= 0);
-                                bracesDepth--;
-                                break;
-                            }
-                        case "<":
-                            {
-                                angleBracketsDepth++;
-                                break;
-                            }
-                        case ">":
-                            {
-                                Debug.Assert(angleBracketsDepth >= 0);
-                                angleBracketsDepth--;
-                                break;
-                            }
-                    }
-                }
-
-                i++;
-            }
-        }
-
-        private static int FindParameterListStart(
-            ISymbol symbol,
-            IList<SymbolDisplayPart> parts)
-        {
-            int parenthesesDepth = 0;
-            int bracesDepth = 0;
-            int bracketsDepth = 0;
-            int angleBracketsDepth = 0;
-
-            for (int i = 0; i < parts.Count; i++)
-            {
-                SymbolDisplayPart part = parts[i];
-
-                if (part.Kind == SymbolDisplayPartKind.Punctuation)
-                {
-                    switch (part.ToString())
-                    {
-                        case "(":
-                            {
-                                parenthesesDepth++;
-
-                                if (symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType)
-                                    && parenthesesDepth == 1
-                                    && bracesDepth == 0
-                                    && bracketsDepth == 0
-                                    && angleBracketsDepth == 0)
-                                {
-                                    return i;
-                                }
-
-                                break;
-                            }
-                        case ")":
-                            {
-                                Debug.Assert(parenthesesDepth >= 0);
-                                parenthesesDepth--;
-                                break;
-                            }
-                        case "[":
-                            {
-                                bracketsDepth++;
-
-                                if (symbol.Kind == SymbolKind.Property
-                                    && parenthesesDepth == 0
-                                    && bracesDepth == 0
-                                    && bracketsDepth == 1
-                                    && angleBracketsDepth == 0)
-                                {
-                                    return i;
-                                }
-
-                                break;
-                            }
-                        case "]":
-                            {
-                                Debug.Assert(bracketsDepth >= 0);
-                                bracketsDepth--;
-                                break;
-                            }
-                        case "{":
-                            {
-                                bracesDepth++;
-                                break;
-                            }
-                        case "}":
-                            {
-                                Debug.Assert(bracesDepth >= 0);
-                                bracesDepth--;
-                                break;
-                            }
-                        case "<":
-                            {
-                                angleBracketsDepth++;
-                                break;
-                            }
-                        case ">":
-                            {
-                                Debug.Assert(angleBracketsDepth >= 0);
-                                angleBracketsDepth--;
-                                break;
-                            }
-                    }
-                }
-            }
-
-            return -1;
-        }
-
-        private static void AddDisplayParts(
-            this ImmutableArray<SymbolDisplayPart>.Builder parts,
-            ISymbol symbol,
-            SymbolDisplayFormat format,
-            SymbolDisplayAdditionalOptions additionalOptions,
-            bool removeAttributeSuffix = false)
-        {
-            SymbolDisplayFormat format2;
-            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.OmitContainingNamespace))
-            {
-                format2 = TypeSymbolDisplayFormats.Name_ContainingTypes_SpecialTypes;
-            }
-            else if (format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Included)
-            {
-                format2 = TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_SpecialTypes;
-            }
-            else
-            {
-                format2 = TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_SpecialTypes;
-            }
-
-            parts.AddRange(symbol.ToDisplayParts(format2));
-
-            if (symbol is not INamedTypeSymbol typeSymbol)
-                return;
-
-            if (removeAttributeSuffix)
-            {
-                SymbolDisplayPart last = parts.Last();
-
-                if (last.Kind == SymbolDisplayPartKind.ClassName)
-                {
-                    const string attributeSuffix = "Attribute";
-
-                    string text = last.ToString();
-                    if (text.EndsWith(attributeSuffix, StringComparison.Ordinal))
-                    {
-                        parts[parts.Count - 1] = last.WithText(text.Remove(text.Length - attributeSuffix.Length));
-                    }
-                }
-            }
-
-            ImmutableArray<ITypeSymbol> typeArguments = typeSymbol.TypeArguments;
-
-            ImmutableArray<ITypeSymbol>.Enumerator en = typeArguments.GetEnumerator();
-
-            if (en.MoveNext())
-            {
-                parts.AddPunctuation("<");
-
-                while (true)
-                {
-                    if (en.Current.Kind == SymbolKind.NamedType
-                        || en.Current.Kind == SymbolKind.ArrayType)
-                    {
-                        parts.AddDisplayParts(en.Current, format, additionalOptions);
-                    }
-                    else
-                    {
-                        Debug.Assert(en.Current.Kind == SymbolKind.TypeParameter, $"{symbol.ToDisplayString(SymbolDisplayFormats.Test)}\n\n{en.Current.Kind} {en.Current.ToDisplayString(SymbolDisplayFormats.Test)}");
-
-                        parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.TypeParameterName, en.Current, en.Current.Name));
-                    }
-
-                    if (en.MoveNext())
-                    {
-                        parts.AddPunctuation(",");
-                        parts.AddSpace();
                     }
                     else
                     {
@@ -1116,59 +384,790 @@ namespace Roslynator.Documentation
                     }
                 }
 
-                parts.AddPunctuation(">");
+                parts.AddPunctuation("]");
+
+                if (includeTrailingNewLine)
+                    parts.AddLineBreak();
             }
         }
+    }
 
-        private static void AddSpace(this ImmutableArray<SymbolDisplayPart>.Builder builder)
-        {
-            builder.Add(SymbolDisplayPartFactory.Space());
-        }
+    private static void AddAttribute(
+        ImmutableArray<SymbolDisplayPart>.Builder parts,
+        AttributeData attribute,
+        SymbolDisplayFormat format,
+        SymbolDisplayAdditionalOptions additionalOptions)
+    {
+        parts.AddDisplayParts(attribute.AttributeClass, format, additionalOptions, removeAttributeSuffix: true);
 
-        private static void AddIndentation(this ImmutableArray<SymbolDisplayPart>.Builder builder)
-        {
-            builder.Add(SymbolDisplayPartFactory.Indentation());
-        }
+        if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeAttributeArguments))
+            AddAttributeArguments();
 
-        private static void AddLineBreak(this ImmutableArray<SymbolDisplayPart>.Builder builder)
+        void AddAttributeArguments()
         {
-            builder.Add(SymbolDisplayPartFactory.LineBreak());
-        }
+            var hasConstructorArgument = false;
+            var hasNamedArgument = false;
 
-        private static void AddPunctuation(this ImmutableArray<SymbolDisplayPart>.Builder builder, string text)
-        {
-            builder.Add(SymbolDisplayPartFactory.Punctuation(text));
-        }
+            AppendConstructorArguments();
+            AppendNamedArguments();
 
-        private static void AddKeyword(this ImmutableArray<SymbolDisplayPart>.Builder builder, string text)
-        {
-            builder.Add(SymbolDisplayPartFactory.Keyword(text));
-        }
-
-        private static void InsertRange(this ImmutableArray<SymbolDisplayPart>.Builder builder, int index, ImmutableArray<SymbolDisplayPart> parts)
-        {
-            for (int i = parts.Length - 1; i >= 0; i--)
+            if (hasConstructorArgument || hasNamedArgument)
             {
-                builder.Insert(index, parts[i]);
+                parts.AddPunctuation(")");
+            }
+
+            void AppendConstructorArguments()
+            {
+                ImmutableArray<TypedConstant>.Enumerator en = attribute.ConstructorArguments.GetEnumerator();
+
+                if (en.MoveNext())
+                {
+                    hasConstructorArgument = true;
+                    parts.AddPunctuation("(");
+
+                    while (true)
+                    {
+                        AddConstantValue(en.Current);
+
+                        if (en.MoveNext())
+                        {
+                            parts.AddPunctuation(",");
+                            parts.AddSpace();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            void AppendNamedArguments()
+            {
+                ImmutableArray<KeyValuePair<string, TypedConstant>>.Enumerator en = attribute.NamedArguments.GetEnumerator();
+
+                if (en.MoveNext())
+                {
+                    hasNamedArgument = true;
+
+                    if (hasConstructorArgument)
+                    {
+                        parts.AddPunctuation(",");
+                        parts.AddSpace();
+                    }
+                    else
+                    {
+                        parts.AddPunctuation("(");
+                    }
+
+                    while (true)
+                    {
+                        parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.PropertyName, null, en.Current.Key));
+                        parts.AddSpace();
+                        parts.AddPunctuation("=");
+                        parts.AddSpace();
+                        AddConstantValue(en.Current.Value);
+
+                        if (en.MoveNext())
+                        {
+                            parts.AddPunctuation(",");
+                            parts.AddSpace();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
             }
         }
 
-        private static bool HasOption(this SymbolDisplayAdditionalOptions options, SymbolDisplayAdditionalOptions option)
+        void AddConstantValue(TypedConstant typedConstant)
         {
-            return (options & option) == option;
+            switch (typedConstant.Kind)
+            {
+                case TypedConstantKind.Primitive:
+                    {
+                        parts.Add(new SymbolDisplayPart(
+                            GetSymbolDisplayPart(typedConstant.Type.SpecialType),
+                            null,
+                            SymbolDisplay.FormatPrimitive(typedConstant.Value, quoteStrings: true, useHexadecimalNumbers: false)));
+
+                        break;
+                    }
+                case TypedConstantKind.Enum:
+                    {
+                        OneOrMany<EnumFieldSymbolInfo> oneOrMany = EnumUtility.GetConstituentFields(typedConstant.Value, (INamedTypeSymbol)typedConstant.Type);
+
+                        OneOrMany<EnumFieldSymbolInfo>.Enumerator en = oneOrMany.GetEnumerator();
+
+                        if (en.MoveNext())
+                        {
+                            while (true)
+                            {
+                                AddDisplayParts(parts, en.Current.Symbol, format, additionalOptions);
+
+                                if (en.MoveNext())
+                                {
+                                    parts.AddSpace();
+                                    parts.AddPunctuation("|");
+                                    parts.AddSpace();
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            parts.AddPunctuation("(");
+                            AddDisplayParts(parts, (INamedTypeSymbol)typedConstant.Type, format, additionalOptions);
+                            parts.AddPunctuation(")");
+                            parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.NumericLiteral, null, typedConstant.Value.ToString()));
+                        }
+
+                        break;
+                    }
+                case TypedConstantKind.Type:
+                    {
+                        if (typedConstant.Value == null)
+                        {
+                            parts.AddKeyword("null");
+                        }
+                        else
+                        {
+                            parts.AddKeyword("typeof");
+                            parts.AddPunctuation("(");
+                            AddDisplayParts(parts, (ISymbol)typedConstant.Value, format, additionalOptions);
+                            parts.AddPunctuation(")");
+                        }
+
+                        break;
+                    }
+                case TypedConstantKind.Array:
+                    {
+                        var arrayType = (IArrayTypeSymbol)typedConstant.Type;
+
+                        parts.AddKeyword("new");
+                        parts.AddSpace();
+                        AddDisplayParts(parts, arrayType.ElementType, format, additionalOptions);
+
+                        parts.AddPunctuation("[");
+                        parts.AddPunctuation("]");
+                        parts.AddSpace();
+                        parts.AddPunctuation("{");
+                        parts.AddSpace();
+
+                        ImmutableArray<TypedConstant>.Enumerator en = typedConstant.Values.GetEnumerator();
+
+                        if (en.MoveNext())
+                        {
+                            while (true)
+                            {
+                                AddConstantValue(en.Current);
+
+                                if (en.MoveNext())
+                                {
+                                    parts.AddPunctuation(",");
+                                    parts.AddSpace();
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+
+                        parts.AddSpace();
+                        parts.AddPunctuation("}");
+                        break;
+                    }
+                default:
+                    {
+                        throw new InvalidOperationException();
+                    }
+            }
+
+            static SymbolDisplayPartKind GetSymbolDisplayPart(SpecialType specialType)
+            {
+                switch (specialType)
+                {
+                    case SpecialType.System_Boolean:
+                    case SpecialType.System_Object:
+                        return SymbolDisplayPartKind.Keyword;
+                    case SpecialType.System_SByte:
+                    case SpecialType.System_Byte:
+                    case SpecialType.System_Int16:
+                    case SpecialType.System_UInt16:
+                    case SpecialType.System_Int32:
+                    case SpecialType.System_UInt32:
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_UInt64:
+                    case SpecialType.System_Single:
+                    case SpecialType.System_Double:
+                        return SymbolDisplayPartKind.NumericLiteral;
+                    case SpecialType.System_Char:
+                    case SpecialType.System_String:
+                        return SymbolDisplayPartKind.StringLiteral;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+        }
+    }
+
+    private static void AddParameterAttributes(
+        ImmutableArray<SymbolDisplayPart>.Builder parts,
+        ISymbol symbol,
+        ImmutableArray<IParameterSymbol> parameters,
+        SymbolDisplayFormat format,
+        SymbolDisplayAdditionalOptions additionalOptions,
+        Func<ISymbol, AttributeData, bool> shouldDisplayAttribute)
+    {
+        int i = FindParameterListStart(symbol, parts);
+
+        if (i == -1)
+            return;
+
+        i++;
+
+        int parameterIndex = 0;
+
+        AddParameterAttributes();
+
+        int parenthesesDepth = 1;
+        int bracesDepth = 0;
+        int bracketsDepth = 0;
+        int angleBracketsDepth = 0;
+
+        while (i < parts.Count)
+        {
+            SymbolDisplayPart part = parts[i];
+
+            if (part.Kind == SymbolDisplayPartKind.Punctuation)
+            {
+                switch (part.ToString())
+                {
+                    case ",":
+                        {
+                            if (((angleBracketsDepth == 0 && parenthesesDepth == 1 && bracesDepth == 0 && bracketsDepth == 0)
+                                || (angleBracketsDepth == 0 && parenthesesDepth == 0 && bracesDepth == 0 && bracketsDepth == 1))
+                                && i < parts.Count - 1)
+                            {
+                                SymbolDisplayPart nextPart = parts[i + 1];
+
+                                if (nextPart.Kind == SymbolDisplayPartKind.Space)
+                                {
+                                    i += 2;
+                                    parameterIndex++;
+
+                                    AddParameterAttributes();
+                                    continue;
+                                }
+                            }
+
+                            break;
+                        }
+                    case "(":
+                        {
+                            parenthesesDepth++;
+                            break;
+                        }
+                    case ")":
+                        {
+                            Debug.Assert(parenthesesDepth >= 0);
+                            parenthesesDepth--;
+
+                            if (parenthesesDepth == 0
+                                && symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType))
+                            {
+                                return;
+                            }
+
+                            break;
+                        }
+                    case "[":
+                        {
+                            bracketsDepth++;
+                            break;
+                        }
+                    case "]":
+                        {
+                            Debug.Assert(bracketsDepth >= 0);
+                            bracketsDepth--;
+
+                            if (bracketsDepth == 0
+                                && symbol.Kind == SymbolKind.Property)
+                            {
+                                return;
+                            }
+
+                            break;
+                        }
+                    case "{":
+                        {
+                            bracesDepth++;
+                            break;
+                        }
+                    case "}":
+                        {
+                            Debug.Assert(bracesDepth >= 0);
+                            bracesDepth--;
+                            break;
+                        }
+                    case "<":
+                        {
+                            angleBracketsDepth++;
+                            break;
+                        }
+                    case ">":
+                        {
+                            Debug.Assert(angleBracketsDepth >= 0);
+                            angleBracketsDepth--;
+                            break;
+                        }
+                }
+            }
+
+            i++;
         }
 
-        private static IEnumerable<AttributeData> GetAttributes(ISymbol symbol, Func<ISymbol, AttributeData, bool> predicate)
+        void AddParameterAttributes()
         {
-            if (symbol == null)
-                return ImmutableArray<AttributeData>.Empty;
+            IParameterSymbol parameter = parameters[parameterIndex];
 
-            ImmutableArray<AttributeData> attributes = symbol.GetAttributes();
+            ImmutableArray<SymbolDisplayPart> attributeParts = GetAttributesParts(
+                parameter,
+                format,
+                additionalOptions,
+                shouldDisplayAttribute: shouldDisplayAttribute);
 
-            if (predicate != null)
-                return attributes.Where(f => predicate(symbol, f));
-
-            return attributes;
+            if (attributeParts.Any())
+            {
+                parts.Insert(i, SymbolDisplayPartFactory.Space());
+                parts.InsertRange(i, attributeParts);
+                i += attributeParts.Length + 1;
+            }
         }
+    }
+
+    private static void AddAccessorAttributes(
+        ImmutableArray<SymbolDisplayPart>.Builder parts,
+        IMethodSymbol methodSymbol,
+        SymbolDisplayFormat format,
+        SymbolDisplayAdditionalOptions additionalOptions,
+        Func<ISymbol, AttributeData, bool> shouldDisplayAttribute)
+    {
+        ImmutableArray<SymbolDisplayPart> attributeParts = GetAttributesParts(
+            methodSymbol,
+            format: format,
+            additionalOptions: additionalOptions,
+            shouldDisplayAttribute: shouldDisplayAttribute,
+            formatAttributes: false);
+
+        if (attributeParts.Any())
+        {
+            string keyword = GetKeyword();
+
+            SymbolDisplayPart part = parts.FirstOrDefault(f => f.IsKeyword(keyword));
+
+            Debug.Assert(part.Kind == SymbolDisplayPartKind.Keyword);
+
+            if (part.Kind == SymbolDisplayPartKind.Keyword)
+            {
+                int index = parts.IndexOf(part);
+
+                parts.Insert(index, SymbolDisplayPartFactory.Space());
+                parts.InsertRange(index, attributeParts);
+            }
+        }
+
+        string GetKeyword()
+        {
+            switch (methodSymbol.MethodKind)
+            {
+                case MethodKind.EventAdd:
+                    return "add";
+                case MethodKind.EventRemove:
+                    return "remove";
+                case MethodKind.PropertyGet:
+                    return "get";
+                case MethodKind.PropertySet:
+                    return "set";
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+    }
+
+    private static void AddEventAccessorAttributes(
+        ImmutableArray<SymbolDisplayPart>.Builder parts,
+        IEnumerable<AttributeData> addAttributes,
+        IEnumerable<AttributeData> removeAttributes,
+        SymbolDisplayFormat format,
+        SymbolDisplayAdditionalOptions additionalOptions)
+    {
+        parts.AddSpace();
+        parts.AddPunctuation("{");
+        parts.AddSpace();
+
+        AddAccessorAttributes(addAttributes);
+
+        parts.AddKeyword("add");
+        parts.AddPunctuation(";");
+        parts.AddSpace();
+
+        AddAccessorAttributes(removeAttributes);
+
+        parts.AddKeyword("remove");
+        parts.AddPunctuation(";");
+        parts.AddSpace();
+        parts.AddPunctuation("}");
+
+        void AddAccessorAttributes(IEnumerable<AttributeData> attributes)
+        {
+            AddAttributes(
+                parts: parts,
+                attributes: attributes,
+                format: format,
+                additionalOptions: additionalOptions,
+                includeTrailingNewLine: false,
+                formatAttributes: false);
+
+            parts.AddSpace();
+        }
+    }
+
+    private static void FormatParameters(
+        ISymbol symbol,
+        ImmutableArray<SymbolDisplayPart>.Builder parts,
+        string indentChars)
+    {
+        int parenthesesDepth = 0;
+        int bracesDepth = 0;
+        int bracketsDepth = 0;
+        int angleBracketsDepth = 0;
+
+        int i = 0;
+
+        int index = FindParameterListStart(symbol, parts);
+
+        Debug.Assert(index != -1);
+
+        if (index == -1)
+            return;
+
+        parts.Insert(index + 1, SymbolDisplayPartFactory.Indentation(indentChars));
+        parts.Insert(index + 1, SymbolDisplayPartFactory.LineBreak());
+
+        i++;
+
+        while (i < parts.Count)
+        {
+            SymbolDisplayPart part = parts[i];
+
+            if (part.Kind == SymbolDisplayPartKind.Punctuation)
+            {
+                switch (part.ToString())
+                {
+                    case ",":
+                        {
+                            if (((angleBracketsDepth == 0 && parenthesesDepth == 1 && bracesDepth == 0 && bracketsDepth == 0)
+                                || (angleBracketsDepth == 0 && parenthesesDepth == 0 && bracesDepth == 0 && bracketsDepth == 1))
+                                && i < parts.Count - 1)
+                            {
+                                SymbolDisplayPart nextPart = parts[i + 1];
+
+                                if (nextPart.Kind == SymbolDisplayPartKind.Space)
+                                {
+                                    parts[i + 1] = SymbolDisplayPartFactory.LineBreak();
+                                    parts.Insert(i + 2, SymbolDisplayPartFactory.Indentation(indentChars));
+                                }
+                            }
+
+                            break;
+                        }
+                    case "(":
+                        {
+                            parenthesesDepth++;
+                            break;
+                        }
+                    case ")":
+                        {
+                            Debug.Assert(parenthesesDepth >= 0);
+                            parenthesesDepth--;
+
+                            if (parenthesesDepth == 0
+                                && symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType))
+                            {
+                                return;
+                            }
+
+                            break;
+                        }
+                    case "[":
+                        {
+                            bracketsDepth++;
+                            break;
+                        }
+                    case "]":
+                        {
+                            Debug.Assert(bracketsDepth >= 0);
+                            bracketsDepth--;
+
+                            if (bracketsDepth == 0
+                                && symbol.Kind == SymbolKind.Property)
+                            {
+                                return;
+                            }
+
+                            break;
+                        }
+                    case "{":
+                        {
+                            bracesDepth++;
+                            break;
+                        }
+                    case "}":
+                        {
+                            Debug.Assert(bracesDepth >= 0);
+                            bracesDepth--;
+                            break;
+                        }
+                    case "<":
+                        {
+                            angleBracketsDepth++;
+                            break;
+                        }
+                    case ">":
+                        {
+                            Debug.Assert(angleBracketsDepth >= 0);
+                            angleBracketsDepth--;
+                            break;
+                        }
+                }
+            }
+
+            i++;
+        }
+    }
+
+    private static int FindParameterListStart(
+        ISymbol symbol,
+        IList<SymbolDisplayPart> parts)
+    {
+        int parenthesesDepth = 0;
+        int bracesDepth = 0;
+        int bracketsDepth = 0;
+        int angleBracketsDepth = 0;
+
+        for (int i = 0; i < parts.Count; i++)
+        {
+            SymbolDisplayPart part = parts[i];
+
+            if (part.Kind == SymbolDisplayPartKind.Punctuation)
+            {
+                switch (part.ToString())
+                {
+                    case "(":
+                        {
+                            parenthesesDepth++;
+
+                            if (symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType)
+                                && parenthesesDepth == 1
+                                && bracesDepth == 0
+                                && bracketsDepth == 0
+                                && angleBracketsDepth == 0)
+                            {
+                                return i;
+                            }
+
+                            break;
+                        }
+                    case ")":
+                        {
+                            Debug.Assert(parenthesesDepth >= 0);
+                            parenthesesDepth--;
+                            break;
+                        }
+                    case "[":
+                        {
+                            bracketsDepth++;
+
+                            if (symbol.Kind == SymbolKind.Property
+                                && parenthesesDepth == 0
+                                && bracesDepth == 0
+                                && bracketsDepth == 1
+                                && angleBracketsDepth == 0)
+                            {
+                                return i;
+                            }
+
+                            break;
+                        }
+                    case "]":
+                        {
+                            Debug.Assert(bracketsDepth >= 0);
+                            bracketsDepth--;
+                            break;
+                        }
+                    case "{":
+                        {
+                            bracesDepth++;
+                            break;
+                        }
+                    case "}":
+                        {
+                            Debug.Assert(bracesDepth >= 0);
+                            bracesDepth--;
+                            break;
+                        }
+                    case "<":
+                        {
+                            angleBracketsDepth++;
+                            break;
+                        }
+                    case ">":
+                        {
+                            Debug.Assert(angleBracketsDepth >= 0);
+                            angleBracketsDepth--;
+                            break;
+                        }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private static void AddDisplayParts(
+        this ImmutableArray<SymbolDisplayPart>.Builder parts,
+        ISymbol symbol,
+        SymbolDisplayFormat format,
+        SymbolDisplayAdditionalOptions additionalOptions,
+        bool removeAttributeSuffix = false)
+    {
+        SymbolDisplayFormat format2;
+        if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.OmitContainingNamespace))
+        {
+            format2 = TypeSymbolDisplayFormats.Name_ContainingTypes_SpecialTypes;
+        }
+        else if (format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Included)
+        {
+            format2 = TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_SpecialTypes;
+        }
+        else
+        {
+            format2 = TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_SpecialTypes;
+        }
+
+        parts.AddRange(symbol.ToDisplayParts(format2));
+
+        if (symbol is not INamedTypeSymbol typeSymbol)
+            return;
+
+        if (removeAttributeSuffix)
+        {
+            SymbolDisplayPart last = parts.Last();
+
+            if (last.Kind == SymbolDisplayPartKind.ClassName)
+            {
+                const string attributeSuffix = "Attribute";
+
+                string text = last.ToString();
+                if (text.EndsWith(attributeSuffix, StringComparison.Ordinal))
+                {
+                    parts[parts.Count - 1] = last.WithText(text.Remove(text.Length - attributeSuffix.Length));
+                }
+            }
+        }
+
+        ImmutableArray<ITypeSymbol> typeArguments = typeSymbol.TypeArguments;
+
+        ImmutableArray<ITypeSymbol>.Enumerator en = typeArguments.GetEnumerator();
+
+        if (en.MoveNext())
+        {
+            parts.AddPunctuation("<");
+
+            while (true)
+            {
+                if (en.Current.Kind == SymbolKind.NamedType
+                    || en.Current.Kind == SymbolKind.ArrayType)
+                {
+                    parts.AddDisplayParts(en.Current, format, additionalOptions);
+                }
+                else
+                {
+                    Debug.Assert(en.Current.Kind == SymbolKind.TypeParameter, $"{symbol.ToDisplayString(SymbolDisplayFormats.Test)}\n\n{en.Current.Kind} {en.Current.ToDisplayString(SymbolDisplayFormats.Test)}");
+
+                    parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.TypeParameterName, en.Current, en.Current.Name));
+                }
+
+                if (en.MoveNext())
+                {
+                    parts.AddPunctuation(",");
+                    parts.AddSpace();
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            parts.AddPunctuation(">");
+        }
+    }
+
+    private static void AddSpace(this ImmutableArray<SymbolDisplayPart>.Builder builder)
+    {
+        builder.Add(SymbolDisplayPartFactory.Space());
+    }
+
+    private static void AddIndentation(this ImmutableArray<SymbolDisplayPart>.Builder builder)
+    {
+        builder.Add(SymbolDisplayPartFactory.Indentation());
+    }
+
+    private static void AddLineBreak(this ImmutableArray<SymbolDisplayPart>.Builder builder)
+    {
+        builder.Add(SymbolDisplayPartFactory.LineBreak());
+    }
+
+    private static void AddPunctuation(this ImmutableArray<SymbolDisplayPart>.Builder builder, string text)
+    {
+        builder.Add(SymbolDisplayPartFactory.Punctuation(text));
+    }
+
+    private static void AddKeyword(this ImmutableArray<SymbolDisplayPart>.Builder builder, string text)
+    {
+        builder.Add(SymbolDisplayPartFactory.Keyword(text));
+    }
+
+    private static void InsertRange(this ImmutableArray<SymbolDisplayPart>.Builder builder, int index, ImmutableArray<SymbolDisplayPart> parts)
+    {
+        for (int i = parts.Length - 1; i >= 0; i--)
+        {
+            builder.Insert(index, parts[i]);
+        }
+    }
+
+    private static bool HasOption(this SymbolDisplayAdditionalOptions options, SymbolDisplayAdditionalOptions option)
+    {
+        return (options & option) == option;
+    }
+
+    private static IEnumerable<AttributeData> GetAttributes(ISymbol symbol, Func<ISymbol, AttributeData, bool> predicate)
+    {
+        if (symbol == null)
+            return ImmutableArray<AttributeData>.Empty;
+
+        ImmutableArray<AttributeData> attributes = symbol.GetAttributes();
+
+        if (predicate != null)
+            return attributes.Where(f => predicate(symbol, f));
+
+        return attributes;
     }
 }

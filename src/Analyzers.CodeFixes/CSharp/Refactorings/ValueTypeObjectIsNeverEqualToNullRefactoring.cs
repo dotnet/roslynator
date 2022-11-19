@@ -9,53 +9,52 @@ using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ValueTypeObjectIsNeverEqualToNullRefactoring
 {
-    internal static class ValueTypeObjectIsNeverEqualToNullRefactoring
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        BinaryExpressionSyntax binaryExpression,
+        ITypeSymbol typeSymbol,
+        CancellationToken cancellationToken)
     {
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            BinaryExpressionSyntax binaryExpression,
-            ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken)
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        ExpressionSyntax right = binaryExpression.Right;
+
+        ExpressionSyntax newNode = null;
+
+        if (CSharpFacts.IsSimpleType(typeSymbol.SpecialType)
+            || typeSymbol.ContainsMember<IMethodSymbol>(WellKnownMemberNames.EqualityOperatorName))
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            newNode = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions())
+                .WithTriviaFrom(right)
+                .WithFormatterAnnotation();
 
-            ExpressionSyntax right = binaryExpression.Right;
+            return await document.ReplaceNodeAsync(right, newNode, cancellationToken).ConfigureAwait(false);
+        }
+        else
+        {
+            INamedTypeSymbol equalityComparerSymbol = semanticModel
+                .GetTypeByMetadataName("System.Collections.Generic.EqualityComparer`1")
+                .Construct(typeSymbol);
 
-            ExpressionSyntax newNode = null;
+            newNode = InvocationExpression(
+                SimpleMemberAccessExpression(
+                    SimpleMemberAccessExpression(equalityComparerSymbol.ToMinimalTypeSyntax(semanticModel, binaryExpression.SpanStart), IdentifierName("Default")), IdentifierName("Equals")),
+                ArgumentList(
+                    Argument(binaryExpression.Left.WithoutTrivia()),
+                    Argument(DefaultExpression(typeSymbol.ToMinimalTypeSyntax(semanticModel, right.SpanStart)))));
 
-            if (CSharpFacts.IsSimpleType(typeSymbol.SpecialType)
-                || typeSymbol.ContainsMember<IMethodSymbol>(WellKnownMemberNames.EqualityOperatorName))
-            {
-                newNode = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions())
-                    .WithTriviaFrom(right)
-                    .WithFormatterAnnotation();
+            if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
+                newNode = LogicalNotExpression(newNode);
 
-                return await document.ReplaceNodeAsync(right, newNode, cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                INamedTypeSymbol equalityComparerSymbol = semanticModel
-                    .GetTypeByMetadataName("System.Collections.Generic.EqualityComparer`1")
-                    .Construct(typeSymbol);
+            newNode = newNode
+                .WithTriviaFrom(binaryExpression)
+                .WithFormatterAnnotation();
 
-                newNode = InvocationExpression(
-                    SimpleMemberAccessExpression(
-                        SimpleMemberAccessExpression(equalityComparerSymbol.ToMinimalTypeSyntax(semanticModel, binaryExpression.SpanStart), IdentifierName("Default")), IdentifierName("Equals")),
-                    ArgumentList(
-                        Argument(binaryExpression.Left.WithoutTrivia()),
-                        Argument(DefaultExpression(typeSymbol.ToMinimalTypeSyntax(semanticModel, right.SpanStart)))));
-
-                if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
-                    newNode = LogicalNotExpression(newNode);
-
-                newNode = newNode
-                    .WithTriviaFrom(binaryExpression)
-                    .WithFormatterAnnotation();
-
-                return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
-            }
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

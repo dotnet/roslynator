@@ -10,36 +10,35 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DoStatementCodeFixProvider))]
+[Shared]
+public sealed class DoStatementCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DoStatementCodeFixProvider))]
-    [Shared]
-    public sealed class DoStatementCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out DoStatementSyntax doStatement))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out DoStatementSyntax doStatement))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Convert to 'while'",
-                ct =>
-                {
-                    return ConvertDoToWhileRefactoring.RefactorAsync(
-                        context.Document,
-                        doStatement,
-                        ct);
-                },
-                GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop));
+        CodeAction codeAction = CodeAction.Create(
+            "Convert to 'while'",
+            ct =>
+            {
+                return ConvertDoToWhileRefactoring.RefactorAsync(
+                    context.Document,
+                    doStatement,
+                    ct);
+            },
+            GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

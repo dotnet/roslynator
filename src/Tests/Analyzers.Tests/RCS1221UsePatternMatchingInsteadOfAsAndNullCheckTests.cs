@@ -7,16 +7,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1221UsePatternMatchingInsteadOfAsAndNullCheckTests : AbstractCSharpDiagnosticVerifier<UsePatternMatchingInsteadOfAsAndNullCheckAnalyzer, UsePatternMatchingInsteadOfAsAndNullCheckCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatchingInsteadOfAsAndNullCheck;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task Test_EqualsToNull()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1221UsePatternMatchingInsteadOfAsAndNullCheckTests : AbstractCSharpDiagnosticVerifier<UsePatternMatchingInsteadOfAsAndNullCheckAnalyzer, UsePatternMatchingInsteadOfAsAndNullCheckCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatchingInsteadOfAsAndNullCheck;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task Test_EqualsToNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -45,12 +45,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task Test_EqualsToNull_ExplicitType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task Test_EqualsToNull_ExplicitType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -74,12 +74,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task Test_EqualsToNull_ReturnVariable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task Test_EqualsToNull_ReturnVariable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -111,12 +111,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task Test_IsNull()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task Test_IsNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -144,12 +144,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_MultipleLocalDeclarations()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_MultipleLocalDeclarations()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -164,12 +164,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_NotSimpleIf()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_NotSimpleIf()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -187,12 +187,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_DoesNotContainJumpStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_DoesNotContainJumpStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -207,12 +207,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_NotEqualsToNull()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_NotEqualsToNull()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -227,12 +227,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_OtherVariableCheckedForNull()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_OtherVariableCheckedForNull()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -248,12 +248,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_TypesDoNotEqual()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_TypesDoNotEqual()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -268,12 +268,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_Directive()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_Directive()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -290,12 +290,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_NullableType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_NullableType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -310,12 +310,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
-        public async Task TestNoDiagnostic_LanguageVersion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck)]
+    public async Task TestNoDiagnostic_LanguageVersion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -330,6 +330,5 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp6);
-        }
     }
 }

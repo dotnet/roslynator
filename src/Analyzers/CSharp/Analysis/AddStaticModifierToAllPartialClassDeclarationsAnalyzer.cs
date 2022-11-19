@@ -7,65 +7,64 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddStaticModifierToAllPartialClassDeclarationsAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddStaticModifierToAllPartialClassDeclarationsAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddStaticModifierToAllPartialClassDeclarations);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddStaticModifierToAllPartialClassDeclarations);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
+    }
+
+    private static void AnalyzeNamedType(SymbolAnalysisContext context)
+    {
+        var symbol = (INamedTypeSymbol)context.Symbol;
+
+        if (symbol.TypeKind != TypeKind.Class)
+            return;
+
+        if (!symbol.IsStatic)
+            return;
+
+        if (symbol.IsImplicitClass)
+            return;
+
+        if (symbol.IsImplicitlyDeclared)
+            return;
+
+        ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
+
+        if (syntaxReferences.Length <= 1)
+            return;
+
+        foreach (SyntaxReference syntaxReference in syntaxReferences)
         {
-            base.Initialize(context);
+            var classDeclaration = (ClassDeclarationSyntax)syntaxReference.GetSyntax(context.CancellationToken);
 
-            context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
-        }
+            SyntaxTokenList modifiers = classDeclaration.Modifiers;
 
-        private static void AnalyzeNamedType(SymbolAnalysisContext context)
-        {
-            var symbol = (INamedTypeSymbol)context.Symbol;
-
-            if (symbol.TypeKind != TypeKind.Class)
-                return;
-
-            if (!symbol.IsStatic)
-                return;
-
-            if (symbol.IsImplicitClass)
-                return;
-
-            if (symbol.IsImplicitlyDeclared)
-                return;
-
-            ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
-
-            if (syntaxReferences.Length <= 1)
-                return;
-
-            foreach (SyntaxReference syntaxReference in syntaxReferences)
+            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                var classDeclaration = (ClassDeclarationSyntax)syntaxReference.GetSyntax(context.CancellationToken);
-
-                SyntaxTokenList modifiers = classDeclaration.Modifiers;
-
-                if (!modifiers.Contains(SyntaxKind.StaticKeyword))
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.AddStaticModifierToAllPartialClassDeclarations,
-                        classDeclaration.Identifier);
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.AddStaticModifierToAllPartialClassDeclarations,
+                    classDeclaration.Identifier);
             }
         }
     }

@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0055FixFormattingOfBinaryExpressionChainTests : AbstractCSharpDiagnosticVerifier<FixFormattingOfBinaryExpressionChainAnalyzer, FixFormattingOfBinaryExpressionChainCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixFormattingOfBinaryExpressionChain;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task Test_NotWrapped()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0055FixFormattingOfBinaryExpressionChainTests : AbstractCSharpDiagnosticVerifier<FixFormattingOfBinaryExpressionChainAnalyzer, FixFormattingOfBinaryExpressionChainCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixFormattingOfBinaryExpressionChain;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task Test_NotWrapped()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M() 
@@ -39,12 +39,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task Test_NotWrapped2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task Test_NotWrapped2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M() 
@@ -68,12 +68,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task Test_NoIndentation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task Test_NoIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M() 
@@ -98,12 +98,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task Test_NoIndentation2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task Test_NoIndentation2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(string x) 
@@ -126,12 +126,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "after"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task Test_WrongIndentation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task Test_WrongIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M() 
@@ -156,12 +156,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task Test_StartsOnSeparateLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task Test_StartsOnSeparateLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M() 
@@ -187,12 +187,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task Test_LeftIsMultiline_RightIsSingleLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task Test_LeftIsMultiline_RightIsSingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M() 
@@ -218,12 +218,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task Test_NestedBinaryExpressionOfDifferentKind()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task Test_NestedBinaryExpressionOfDifferentKind()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -254,12 +254,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M() 
@@ -271,12 +271,12 @@ class C
     }
 }
         ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task TestNoDiagnostic_StartsOnSeparateLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task TestNoDiagnostic_StartsOnSeparateLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M() 
@@ -290,12 +290,12 @@ class C
     }
 }
         ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-        public async Task TestNoDiagnostic_IndentationSizeCannotBeDetermined()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task TestNoDiagnostic_IndentationSizeCannotBeDetermined()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Obsolete(""a""
@@ -305,6 +305,5 @@ class C
 {
 }
         ");
-        }
     }
 }

@@ -9,59 +9,58 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ExpandCompoundAssignmentRefactoring
 {
-    internal static class ExpandCompoundAssignmentRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        AssignmentExpressionSyntax assignmentExpression,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            AssignmentExpressionSyntax assignmentExpression,
-            CancellationToken cancellationToken = default)
+        ExpressionSyntax left = assignmentExpression.Left;
+
+        AssignmentExpressionSyntax newNode = SimpleAssignmentExpression(
+            left,
+            BinaryExpression(
+                GetBinaryExpressionKind(assignmentExpression),
+                left.WithoutLeadingTrivia(),
+                assignmentExpression.Right));
+
+        newNode = newNode
+            .WithTriviaFrom(assignmentExpression)
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(assignmentExpression, newNode, cancellationToken);
+    }
+
+    private static SyntaxKind GetBinaryExpressionKind(AssignmentExpressionSyntax assignmentExpression)
+    {
+        switch (assignmentExpression.Kind())
         {
-            ExpressionSyntax left = assignmentExpression.Left;
-
-            AssignmentExpressionSyntax newNode = SimpleAssignmentExpression(
-                left,
-                BinaryExpression(
-                    GetBinaryExpressionKind(assignmentExpression),
-                    left.WithoutLeadingTrivia(),
-                    assignmentExpression.Right));
-
-            newNode = newNode
-                .WithTriviaFrom(assignmentExpression)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(assignmentExpression, newNode, cancellationToken);
+            case SyntaxKind.AddAssignmentExpression:
+                return SyntaxKind.AddExpression;
+            case SyntaxKind.SubtractAssignmentExpression:
+                return SyntaxKind.SubtractExpression;
+            case SyntaxKind.MultiplyAssignmentExpression:
+                return SyntaxKind.MultiplyExpression;
+            case SyntaxKind.DivideAssignmentExpression:
+                return SyntaxKind.DivideExpression;
+            case SyntaxKind.ModuloAssignmentExpression:
+                return SyntaxKind.ModuloExpression;
+            case SyntaxKind.AndAssignmentExpression:
+                return SyntaxKind.BitwiseAndExpression;
+            case SyntaxKind.OrAssignmentExpression:
+                return SyntaxKind.BitwiseOrExpression;
+            case SyntaxKind.ExclusiveOrAssignmentExpression:
+                return SyntaxKind.ExclusiveOrExpression;
+            case SyntaxKind.LeftShiftAssignmentExpression:
+                return SyntaxKind.LeftShiftExpression;
+            case SyntaxKind.RightShiftAssignmentExpression:
+                return SyntaxKind.RightShiftExpression;
         }
 
-        private static SyntaxKind GetBinaryExpressionKind(AssignmentExpressionSyntax assignmentExpression)
-        {
-            switch (assignmentExpression.Kind())
-            {
-                case SyntaxKind.AddAssignmentExpression:
-                    return SyntaxKind.AddExpression;
-                case SyntaxKind.SubtractAssignmentExpression:
-                    return SyntaxKind.SubtractExpression;
-                case SyntaxKind.MultiplyAssignmentExpression:
-                    return SyntaxKind.MultiplyExpression;
-                case SyntaxKind.DivideAssignmentExpression:
-                    return SyntaxKind.DivideExpression;
-                case SyntaxKind.ModuloAssignmentExpression:
-                    return SyntaxKind.ModuloExpression;
-                case SyntaxKind.AndAssignmentExpression:
-                    return SyntaxKind.BitwiseAndExpression;
-                case SyntaxKind.OrAssignmentExpression:
-                    return SyntaxKind.BitwiseOrExpression;
-                case SyntaxKind.ExclusiveOrAssignmentExpression:
-                    return SyntaxKind.ExclusiveOrExpression;
-                case SyntaxKind.LeftShiftAssignmentExpression:
-                    return SyntaxKind.LeftShiftExpression;
-                case SyntaxKind.RightShiftAssignmentExpression:
-                    return SyntaxKind.RightShiftExpression;
-            }
-
-            SyntaxDebug.Fail(assignmentExpression);
-            return SyntaxKind.None;
-        }
+        SyntaxDebug.Fail(assignmentExpression);
+        return SyntaxKind.None;
     }
 }

@@ -3,17 +3,16 @@
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Roslynator.Testing;
 
-namespace Roslynator.VisualBasic.Testing
+namespace Roslynator.VisualBasic.Testing;
+
+public abstract class VisualBasicRefactoringVerifier<TRefactoringProvider> : RefactoringVerifier<TRefactoringProvider>
+    where TRefactoringProvider : CodeRefactoringProvider, new()
 {
-    public abstract class VisualBasicRefactoringVerifier<TRefactoringProvider> : RefactoringVerifier<TRefactoringProvider>
-        where TRefactoringProvider : CodeRefactoringProvider, new()
+    internal VisualBasicRefactoringVerifier(IAssert assert) : base(assert)
     {
-        internal VisualBasicRefactoringVerifier(IAssert assert) : base(assert)
-        {
-        }
-
-        new public virtual VisualBasicTestOptions Options => VisualBasicTestOptions.Default;
-
-        protected override TestOptions CommonOptions => Options;
     }
+
+    new public virtual VisualBasicTestOptions Options => VisualBasicTestOptions.Default;
+
+    protected override TestOptions CommonOptions => Options;
 }

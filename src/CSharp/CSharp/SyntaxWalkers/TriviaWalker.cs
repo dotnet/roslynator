@@ -5,120 +5,119 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.SyntaxWalkers
+namespace Roslynator.CSharp.SyntaxWalkers;
+
+internal abstract class TriviaWalker : CSharpSyntaxWalker
 {
-    internal abstract class TriviaWalker : CSharpSyntaxWalker
+    public TextSpan Span { get; protected set; }
+
+    protected TriviaWalker(TextSpan span) : base(SyntaxWalkerDepth.Trivia)
     {
-        public TextSpan Span { get; protected set; }
+        Span = span;
+    }
 
-        protected TriviaWalker(TextSpan span) : base(SyntaxWalkerDepth.Trivia)
+    public static bool ContainsOnlyWhitespaceOrEndOfLineTrivia(SyntaxNode node, TextSpan? span = null)
+    {
+        ContainsOnlyWhitespaceOrEndOfLineTriviaWalker walker = ContainsOnlyWhitespaceOrEndOfLineTriviaWalker.GetInstance(span ?? node.FullSpan);
+
+        walker.Visit(node);
+
+        bool result = walker.Result;
+
+        ContainsOnlyWhitespaceOrEndOfLineTriviaWalker.Free(walker);
+
+        return result;
+    }
+
+    public override void Visit(SyntaxNode node)
+    {
+        if (IsInSpan(node.FullSpan))
+            base.Visit(node);
+    }
+
+    private bool IsInSpan(TextSpan span)
+    {
+        return Span.OverlapsWith(span)
+            || (span.Length == 0 && Span.IntersectsWith(span));
+    }
+
+    public override void VisitLeadingTrivia(SyntaxToken token)
+    {
+        if (IsInSpan(token.FullSpan))
         {
-            Span = span;
+            SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
+
+            if (leadingTrivia.Any())
+            {
+                foreach (SyntaxTrivia trivia in leadingTrivia)
+                    VisitTrivia(trivia);
+            }
         }
+    }
 
-        public static bool ContainsOnlyWhitespaceOrEndOfLineTrivia(SyntaxNode node, TextSpan? span = null)
+    public override void VisitTrailingTrivia(SyntaxToken token)
+    {
+        if (IsInSpan(token.FullSpan))
         {
-            ContainsOnlyWhitespaceOrEndOfLineTriviaWalker walker = ContainsOnlyWhitespaceOrEndOfLineTriviaWalker.GetInstance(span ?? node.FullSpan);
+            SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
 
-            walker.Visit(node);
+            if (trailingTrivia.Any())
+            {
+                foreach (SyntaxTrivia trivia in trailingTrivia)
+                    VisitTrivia(trivia);
+            }
+        }
+    }
 
-            bool result = walker.Result;
+    public override void VisitTrivia(SyntaxTrivia trivia)
+    {
+        if (IsInSpan(trivia.FullSpan))
+            VisitTriviaCore(trivia);
+    }
 
-            ContainsOnlyWhitespaceOrEndOfLineTriviaWalker.Free(walker);
+    protected abstract void VisitTriviaCore(SyntaxTrivia trivia);
 
-            return result;
+    private sealed class ContainsOnlyWhitespaceOrEndOfLineTriviaWalker : TriviaWalker
+    {
+        [ThreadStatic]
+        private static ContainsOnlyWhitespaceOrEndOfLineTriviaWalker _cachedInstance;
+
+        public bool Result { get; private set; } = true;
+
+        public ContainsOnlyWhitespaceOrEndOfLineTriviaWalker(TextSpan span) : base(span)
+        {
         }
 
         public override void Visit(SyntaxNode node)
         {
-            if (IsInSpan(node.FullSpan))
+            if (Result)
                 base.Visit(node);
         }
 
-        private bool IsInSpan(TextSpan span)
+        protected override void VisitTriviaCore(SyntaxTrivia trivia)
         {
-            return Span.OverlapsWith(span)
-                || (span.Length == 0 && Span.IntersectsWith(span));
+            if (!trivia.IsWhitespaceOrEndOfLineTrivia())
+                Result = false;
         }
 
-        public override void VisitLeadingTrivia(SyntaxToken token)
+        public static ContainsOnlyWhitespaceOrEndOfLineTriviaWalker GetInstance(TextSpan span)
         {
-            if (IsInSpan(token.FullSpan))
-            {
-                SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
+            ContainsOnlyWhitespaceOrEndOfLineTriviaWalker walker = _cachedInstance;
 
-                if (leadingTrivia.Any())
-                {
-                    foreach (SyntaxTrivia trivia in leadingTrivia)
-                        VisitTrivia(trivia);
-                }
+            if (walker != null)
+            {
+                _cachedInstance = null;
+                walker.Result = true;
+                walker.Span = span;
+                return walker;
             }
+
+            return new ContainsOnlyWhitespaceOrEndOfLineTriviaWalker(span);
         }
 
-        public override void VisitTrailingTrivia(SyntaxToken token)
+        public static void Free(ContainsOnlyWhitespaceOrEndOfLineTriviaWalker walker)
         {
-            if (IsInSpan(token.FullSpan))
-            {
-                SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
-
-                if (trailingTrivia.Any())
-                {
-                    foreach (SyntaxTrivia trivia in trailingTrivia)
-                        VisitTrivia(trivia);
-                }
-            }
-        }
-
-        public override void VisitTrivia(SyntaxTrivia trivia)
-        {
-            if (IsInSpan(trivia.FullSpan))
-                VisitTriviaCore(trivia);
-        }
-
-        protected abstract void VisitTriviaCore(SyntaxTrivia trivia);
-
-        private sealed class ContainsOnlyWhitespaceOrEndOfLineTriviaWalker : TriviaWalker
-        {
-            [ThreadStatic]
-            private static ContainsOnlyWhitespaceOrEndOfLineTriviaWalker _cachedInstance;
-
-            public bool Result { get; private set; } = true;
-
-            public ContainsOnlyWhitespaceOrEndOfLineTriviaWalker(TextSpan span) : base(span)
-            {
-            }
-
-            public override void Visit(SyntaxNode node)
-            {
-                if (Result)
-                    base.Visit(node);
-            }
-
-            protected override void VisitTriviaCore(SyntaxTrivia trivia)
-            {
-                if (!trivia.IsWhitespaceOrEndOfLineTrivia())
-                    Result = false;
-            }
-
-            public static ContainsOnlyWhitespaceOrEndOfLineTriviaWalker GetInstance(TextSpan span)
-            {
-                ContainsOnlyWhitespaceOrEndOfLineTriviaWalker walker = _cachedInstance;
-
-                if (walker != null)
-                {
-                    _cachedInstance = null;
-                    walker.Result = true;
-                    walker.Span = span;
-                    return walker;
-                }
-
-                return new ContainsOnlyWhitespaceOrEndOfLineTriviaWalker(span);
-            }
-
-            public static void Free(ContainsOnlyWhitespaceOrEndOfLineTriviaWalker walker)
-            {
-                _cachedInstance = walker;
-            }
+            _cachedInstance = walker;
         }
     }
 }

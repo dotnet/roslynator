@@ -3,75 +3,74 @@
 using System;
 using System.Diagnostics;
 
-namespace Roslynator
+namespace Roslynator;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct ConsoleColors : IEquatable<ConsoleColors>
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct ConsoleColors : IEquatable<ConsoleColors>
+    public static ConsoleColors Cyan { get; } = new(ConsoleColor.Cyan);
+
+    public static ConsoleColors DarkGray { get; } = new(ConsoleColor.DarkGray);
+
+    public static ConsoleColors Gray { get; } = new(ConsoleColor.Gray);
+
+    public static ConsoleColors Green { get; } = new(ConsoleColor.Green);
+
+    public static ConsoleColors Magenta { get; } = new(ConsoleColor.Magenta);
+
+    public static ConsoleColors Yellow { get; } = new(ConsoleColor.Yellow);
+
+    public ConsoleColors(ConsoleColor? foreground)
+        : this(foreground, null)
     {
-        public static ConsoleColors Cyan { get; } = new(ConsoleColor.Cyan);
+    }
 
-        public static ConsoleColors DarkGray { get; } = new(ConsoleColor.DarkGray);
+    public ConsoleColors(ConsoleColor? foreground, ConsoleColor? background)
+    {
+        Foreground = foreground;
+        Background = background;
+    }
 
-        public static ConsoleColors Gray { get; } = new(ConsoleColor.Gray);
+    public ConsoleColor? Foreground { get; }
 
-        public static ConsoleColors Green { get; } = new(ConsoleColor.Green);
+    public ConsoleColor? Background { get; }
 
-        public static ConsoleColors Magenta { get; } = new(ConsoleColor.Magenta);
+    public bool IsDefault => Foreground == null && Background == null;
 
-        public static ConsoleColors Yellow { get; } = new(ConsoleColor.Yellow);
-
-        public ConsoleColors(ConsoleColor? foreground)
-            : this(foreground, null)
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get
         {
+            return $"{((Foreground != null) ? Foreground.ToString() : "None")}  "
+                + $"{((Background != null) ? Background.ToString() : "None")}";
         }
+    }
 
-        public ConsoleColors(ConsoleColor? foreground, ConsoleColor? background)
-        {
-            Foreground = foreground;
-            Background = background;
-        }
+    public override bool Equals(object obj)
+    {
+        return obj is ConsoleColors colors
+            && Equals(colors);
+    }
 
-        public ConsoleColor? Foreground { get; }
+    public bool Equals(ConsoleColors other)
+    {
+        return Foreground == other.Foreground
+            && Background == other.Background;
+    }
 
-        public ConsoleColor? Background { get; }
+    public override int GetHashCode()
+    {
+        return Hash.Combine(Foreground?.GetHashCode() ?? -1, Background?.GetHashCode() ?? -1);
+    }
 
-        public bool IsDefault => Foreground == null && Background == null;
+    public static bool operator ==(ConsoleColors left, ConsoleColors right)
+    {
+        return left.Equals(right);
+    }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get
-            {
-                return $"{((Foreground != null) ? Foreground.ToString() : "None")}  "
-                    + $"{((Background != null) ? Background.ToString() : "None")}";
-            }
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is ConsoleColors colors
-                && Equals(colors);
-        }
-
-        public bool Equals(ConsoleColors other)
-        {
-            return Foreground == other.Foreground
-                && Background == other.Background;
-        }
-
-        public override int GetHashCode()
-        {
-            return Hash.Combine(Foreground?.GetHashCode() ?? -1, Background?.GetHashCode() ?? -1);
-        }
-
-        public static bool operator ==(ConsoleColors left, ConsoleColors right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(ConsoleColors left, ConsoleColors right)
-        {
-            return !(left == right);
-        }
+    public static bool operator !=(ConsoleColors left, ConsoleColors right)
+    {
+        return !(left == right);
     }
 }

@@ -5,59 +5,58 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ExtractTypeDeclarationToNewFileRefactoring
 {
-    internal static class ExtractTypeDeclarationToNewFileRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
     {
-        public static void ComputeRefactorings(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
-        {
-            SyntaxToken identifier = classDeclaration.Identifier;
-            ComputeRefactorings(context, classDeclaration, identifier);
-        }
+        SyntaxToken identifier = classDeclaration.Identifier;
+        ComputeRefactorings(context, classDeclaration, identifier);
+    }
 
-        public static void ComputeRefactorings(RefactoringContext context, RecordDeclarationSyntax recordDeclaration)
-        {
-            SyntaxToken identifier = recordDeclaration.Identifier;
-            ComputeRefactorings(context, recordDeclaration, identifier);
-        }
+    public static void ComputeRefactorings(RefactoringContext context, RecordDeclarationSyntax recordDeclaration)
+    {
+        SyntaxToken identifier = recordDeclaration.Identifier;
+        ComputeRefactorings(context, recordDeclaration, identifier);
+    }
 
-        public static void ComputeRefactorings(RefactoringContext context, StructDeclarationSyntax structDeclaration)
-        {
-            SyntaxToken identifier = structDeclaration.Identifier;
-            ComputeRefactorings(context, structDeclaration, identifier);
-        }
+    public static void ComputeRefactorings(RefactoringContext context, StructDeclarationSyntax structDeclaration)
+    {
+        SyntaxToken identifier = structDeclaration.Identifier;
+        ComputeRefactorings(context, structDeclaration, identifier);
+    }
 
-        public static void ComputeRefactorings(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
-        {
-            SyntaxToken identifier = interfaceDeclaration.Identifier;
-            ComputeRefactorings(context, interfaceDeclaration, identifier);
-        }
+    public static void ComputeRefactorings(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
+    {
+        SyntaxToken identifier = interfaceDeclaration.Identifier;
+        ComputeRefactorings(context, interfaceDeclaration, identifier);
+    }
 
-        public static void ComputeRefactorings(RefactoringContext context, EnumDeclarationSyntax enumDeclaration)
-        {
-            SyntaxToken identifier = enumDeclaration.Identifier;
-            ComputeRefactorings(context, enumDeclaration, identifier);
-        }
+    public static void ComputeRefactorings(RefactoringContext context, EnumDeclarationSyntax enumDeclaration)
+    {
+        SyntaxToken identifier = enumDeclaration.Identifier;
+        ComputeRefactorings(context, enumDeclaration, identifier);
+    }
 
-        public static void ComputeRefactorings(RefactoringContext context, DelegateDeclarationSyntax delegateDeclaration)
-        {
-            SyntaxToken identifier = delegateDeclaration.Identifier;
-            ComputeRefactorings(context, delegateDeclaration, identifier);
-        }
+    public static void ComputeRefactorings(RefactoringContext context, DelegateDeclarationSyntax delegateDeclaration)
+    {
+        SyntaxToken identifier = delegateDeclaration.Identifier;
+        ComputeRefactorings(context, delegateDeclaration, identifier);
+    }
 
-        private static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax memberDeclaration, SyntaxToken identifier)
+    private static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax memberDeclaration, SyntaxToken identifier)
+    {
+        if (identifier.Span.Contains(context.Span)
+            && memberDeclaration.IsParentKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.CompilationUnit)
+            && context.IsRootCompilationUnit
+            && context.Workspace.Kind != WorkspaceKind.MiscellaneousFiles
+            && ExtractTypeDeclarationToNewDocumentRefactoring.GetNonNestedTypeDeclarations((CompilationUnitSyntax)context.Root).Skip(1).Any())
         {
-            if (identifier.Span.Contains(context.Span)
-                && memberDeclaration.IsParentKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.CompilationUnit)
-                && context.IsRootCompilationUnit
-                && context.Workspace.Kind != WorkspaceKind.MiscellaneousFiles
-                && ExtractTypeDeclarationToNewDocumentRefactoring.GetNonNestedTypeDeclarations((CompilationUnitSyntax)context.Root).Skip(1).Any())
-            {
-                context.RegisterRefactoring(
-                    ExtractTypeDeclarationToNewDocumentRefactoring.GetTitle(identifier.ValueText),
-                    ct => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
-                    RefactoringDescriptors.ExtractTypeDeclarationToNewFile);
-            }
+            context.RegisterRefactoring(
+                ExtractTypeDeclarationToNewDocumentRefactoring.GetTitle(identifier.ValueText),
+                ct => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
+                RefactoringDescriptors.ExtractTypeDeclarationToNewFile);
         }
     }
 }

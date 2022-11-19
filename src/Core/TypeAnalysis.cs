@@ -4,59 +4,58 @@ using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+[DebuggerDisplay("{Flags}")]
+internal readonly struct TypeAnalysis : IEquatable<TypeAnalysis>
 {
-    [DebuggerDisplay("{Flags}")]
-    internal readonly struct TypeAnalysis : IEquatable<TypeAnalysis>
+    internal TypeAnalysis(ITypeSymbol symbol, TypeAnalysisFlags flags)
     {
-        internal TypeAnalysis(ITypeSymbol symbol, TypeAnalysisFlags flags)
-        {
-            Symbol = symbol;
-            Flags = flags;
-        }
+        Symbol = symbol;
+        Flags = flags;
+    }
 
-        public bool IsImplicit => Any(TypeAnalysisFlags.Implicit);
+    public bool IsImplicit => Any(TypeAnalysisFlags.Implicit);
 
-        public bool IsExplicit => Any(TypeAnalysisFlags.Explicit);
+    public bool IsExplicit => Any(TypeAnalysisFlags.Explicit);
 
-        public bool SupportsImplicit => Any(TypeAnalysisFlags.SupportsImplicit);
+    public bool SupportsImplicit => Any(TypeAnalysisFlags.SupportsImplicit);
 
-        public bool SupportsExplicit => Any(TypeAnalysisFlags.SupportsExplicit);
+    public bool SupportsExplicit => Any(TypeAnalysisFlags.SupportsExplicit);
 
-        public bool IsTypeObvious => Any(TypeAnalysisFlags.TypeObvious);
+    public bool IsTypeObvious => Any(TypeAnalysisFlags.TypeObvious);
 
-        public ITypeSymbol Symbol { get; }
+    public ITypeSymbol Symbol { get; }
 
-        public TypeAnalysisFlags Flags { get; }
+    public TypeAnalysisFlags Flags { get; }
 
-        public bool Any(TypeAnalysisFlags flags)
-        {
-            return (Flags & flags) != 0;
-        }
+    public bool Any(TypeAnalysisFlags flags)
+    {
+        return (Flags & flags) != 0;
+    }
 
-        public override bool Equals(object obj)
-        {
-            return obj is TypeAnalysis other && Equals(other);
-        }
+    public override bool Equals(object obj)
+    {
+        return obj is TypeAnalysis other && Equals(other);
+    }
 
-        public bool Equals(TypeAnalysis other)
-        {
-            return SymbolEqualityComparer.Default.Equals(Symbol, other.Symbol);
-        }
+    public bool Equals(TypeAnalysis other)
+    {
+        return SymbolEqualityComparer.Default.Equals(Symbol, other.Symbol);
+    }
 
-        public override int GetHashCode()
-        {
-            return Symbol.GetHashCode();
-        }
+    public override int GetHashCode()
+    {
+        return Symbol.GetHashCode();
+    }
 
-        public static bool operator ==(in TypeAnalysis analysis1, in TypeAnalysis analysis2)
-        {
-            return analysis1.Equals(analysis2);
-        }
+    public static bool operator ==(in TypeAnalysis analysis1, in TypeAnalysis analysis2)
+    {
+        return analysis1.Equals(analysis2);
+    }
 
-        public static bool operator !=(in TypeAnalysis analysis1, in TypeAnalysis analysis2)
-        {
-            return !(analysis1 == analysis2);
-        }
+    public static bool operator !=(in TypeAnalysis analysis1, in TypeAnalysis analysis2)
+    {
+        return !(analysis1 == analysis2);
     }
 }

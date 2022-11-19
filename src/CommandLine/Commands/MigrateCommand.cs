@@ -13,14 +13,14 @@ using System.Xml.Linq;
 using Roslynator.Migration;
 using static Roslynator.Logger;
 
-namespace Roslynator.CommandLine
-{
-    internal class MigrateCommand
-    {
-        private static readonly Regex _versionRegex = new(@"\A(?<version>\d+\.\d+\.\d+)(?<suffix>-.*)?\z");
+namespace Roslynator.CommandLine;
 
-        private static readonly Regex _editorConfigRegex = new(
-            @"
+internal class MigrateCommand
+{
+    private static readonly Regex _versionRegex = new(@"\A(?<version>\d+\.\d+\.\d+)(?<suffix>-.*)?\z");
+
+    private static readonly Regex _editorConfigRegex = new(
+        @"
             dotnet_diagnostic\.
             (?<id>
                 RCS[0-9]{4}[a-z]?
@@ -34,513 +34,512 @@ namespace Roslynator.CommandLine
                 (?<eol>\r?\n)?
             )
             ",
-            RegexOptions.IgnorePatternWhitespace);
+        RegexOptions.IgnorePatternWhitespace);
 
-        public MigrateCommand(ImmutableArray<string> paths, string identifier, Version version, bool dryRun)
+    public MigrateCommand(ImmutableArray<string> paths, string identifier, Version version, bool dryRun)
+    {
+        Paths = paths;
+        Identifier = identifier;
+        Version = version;
+        DryRun = dryRun;
+    }
+
+    public ImmutableArray<string> Paths { get; }
+
+    public string Identifier { get; }
+
+    public Version Version { get; }
+
+    public bool DryRun { get; }
+
+    public CommandStatus Execute()
+    {
+        using var cts = new CancellationTokenSource();
+        Console.CancelKeyPress += (sender, e) =>
         {
-            Paths = paths;
-            Identifier = identifier;
-            Version = version;
-            DryRun = dryRun;
+            e.Cancel = true;
+            cts.Cancel();
+        };
+
+        CancellationToken cancellationToken = cts.Token;
+
+        try
+        {
+            return Execute(cancellationToken);
         }
-
-        public ImmutableArray<string> Paths { get; }
-
-        public string Identifier { get; }
-
-        public Version Version { get; }
-
-        public bool DryRun { get; }
-
-        public CommandStatus Execute()
+        catch (OperationCanceledException ex)
         {
-            using var cts = new CancellationTokenSource();
-            Console.CancelKeyPress += (sender, e) =>
-            {
-                e.Cancel = true;
-                cts.Cancel();
-            };
-
-            CancellationToken cancellationToken = cts.Token;
-
-            try
-            {
-                return Execute(cancellationToken);
-            }
-            catch (OperationCanceledException ex)
-            {
-                OperationCanceled(ex);
-            }
-            catch (AggregateException ex)
-            {
-                OperationCanceledException operationCanceledException = ex.GetOperationCanceledException();
-
-                if (operationCanceledException != null)
-                {
-                    OperationCanceled(operationCanceledException);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CommandStatus.Canceled;
+            OperationCanceled(ex);
         }
-
-        private CommandStatus Execute(CancellationToken cancellationToken)
+        catch (AggregateException ex)
         {
-            var status = CommandStatus.Success;
+            OperationCanceledException operationCanceledException = ex.GetOperationCanceledException();
 
-            foreach (string path in Paths)
+            if (operationCanceledException != null)
             {
-                CommandStatus status2 = ExecutePath(path, cancellationToken);
-
-                if (status != CommandStatus.Success)
-                    status = status2;
-            }
-
-            return status;
-        }
-
-        private CommandStatus ExecutePath(string path, CancellationToken cancellationToken)
-        {
-            if (Directory.Exists(path))
-            {
-                WriteLine($"Search '{path}'", Verbosity.Detailed);
-                return ExecuteDirectory(path, cancellationToken);
-            }
-            else if (File.Exists(path))
-            {
-                WriteLine($"Search '{path}'", Verbosity.Detailed);
-                return ExecuteFile(path);
+                OperationCanceled(operationCanceledException);
             }
             else
             {
-                WriteLine($"File or directory not found: '{path}'", Colors.Message_Warning, Verbosity.Minimal);
-                return CommandStatus.NotSuccess;
+                throw;
             }
         }
 
-        private CommandStatus ExecuteDirectory(string directoryPath, CancellationToken cancellationToken)
+        return CommandStatus.Canceled;
+    }
+
+    private CommandStatus Execute(CancellationToken cancellationToken)
+    {
+        var status = CommandStatus.Success;
+
+        foreach (string path in Paths)
         {
-            var status = CommandStatus.Success;
+            CommandStatus status2 = ExecutePath(path, cancellationToken);
+
+            if (status != CommandStatus.Success)
+                status = status2;
+        }
+
+        return status;
+    }
+
+    private CommandStatus ExecutePath(string path, CancellationToken cancellationToken)
+    {
+        if (Directory.Exists(path))
+        {
+            WriteLine($"Search '{path}'", Verbosity.Detailed);
+            return ExecuteDirectory(path, cancellationToken);
+        }
+        else if (File.Exists(path))
+        {
+            WriteLine($"Search '{path}'", Verbosity.Detailed);
+            return ExecuteFile(path);
+        }
+        else
+        {
+            WriteLine($"File or directory not found: '{path}'", Colors.Message_Warning, Verbosity.Minimal);
+            return CommandStatus.NotSuccess;
+        }
+    }
+
+    private CommandStatus ExecuteDirectory(string directoryPath, CancellationToken cancellationToken)
+    {
+        var status = CommandStatus.Success;
 
 #if NETCOREAPP3_1
-            var enumerationOptions = new EnumerationOptions() { IgnoreInaccessible = true, RecurseSubdirectories = true };
+        var enumerationOptions = new EnumerationOptions() { IgnoreInaccessible = true, RecurseSubdirectories = true };
 
-            IEnumerable<string> files = Directory.EnumerateFiles(directoryPath, "*.*", enumerationOptions);
+        IEnumerable<string> files = Directory.EnumerateFiles(directoryPath, "*.*", enumerationOptions);
 #else
-            IEnumerable<string> files = Directory.EnumerateFiles(directoryPath, "*.*", SearchOption.AllDirectories);
+        IEnumerable<string> files = Directory.EnumerateFiles(directoryPath, "*.*", SearchOption.AllDirectories);
 #endif
 
-            foreach (string filePath in files)
-            {
-                CommandStatus status2 = ExecuteFile(filePath);
+        foreach (string filePath in files)
+        {
+            CommandStatus status2 = ExecuteFile(filePath);
 
-                if (status != CommandStatus.Success)
-                    status = status2;
+            if (status != CommandStatus.Success)
+                status = status2;
 
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-
-            return status;
+            cancellationToken.ThrowIfCancellationRequested();
         }
 
-        private CommandStatus ExecuteFile(string path)
+        return status;
+    }
+
+    private CommandStatus ExecuteFile(string path)
+    {
+        string extension = Path.GetExtension(path);
+
+        //if (string.Equals(extension, ".csproj", StringComparison.OrdinalIgnoreCase)
+        //    || string.Equals(extension, ".props", StringComparison.OrdinalIgnoreCase))
+        //{
+        //    if (!GeneratedCodeUtility.IsGeneratedCodeFile(path))
+        //        return ExecuteProject(path);
+        //}
+
+        if (string.Equals(extension, ".ruleset", StringComparison.OrdinalIgnoreCase))
         {
-            string extension = Path.GetExtension(path);
+            if (!GeneratedCodeUtility.IsGeneratedCodeFile(path))
+                return ExecuteRuleSet(path);
+        }
+        else
+        {
+            string fileName = Path.GetFileName(path);
 
-            //if (string.Equals(extension, ".csproj", StringComparison.OrdinalIgnoreCase)
-            //    || string.Equals(extension, ".props", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    if (!GeneratedCodeUtility.IsGeneratedCodeFile(path))
-            //        return ExecuteProject(path);
-            //}
-
-            if (string.Equals(extension, ".ruleset", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(fileName, ".editorconfig", StringComparison.OrdinalIgnoreCase)
+                && !GeneratedCodeUtility.IsGeneratedCodeFile(path))
             {
-                if (!GeneratedCodeUtility.IsGeneratedCodeFile(path))
-                    return ExecuteRuleSet(path);
+                return ExecuteEditorConfig(path);
             }
-            else
-            {
-                string fileName = Path.GetFileName(path);
+        }
 
-                if (string.Equals(fileName, ".editorconfig", StringComparison.OrdinalIgnoreCase)
-                    && !GeneratedCodeUtility.IsGeneratedCodeFile(path))
-                {
-                    return ExecuteEditorConfig(path);
-                }
-            }
+        WriteLine(path, Verbosity.Diagnostic);
+        return CommandStatus.NotSuccess;
+    }
 
-            WriteLine(path, Verbosity.Diagnostic);
+    private CommandStatus ExecuteProject(string path)
+    {
+        XDocument document;
+        try
+        {
+            document = XDocument.Load(path, LoadOptions.PreserveWhitespace | LoadOptions.SetLineInfo);
+        }
+        catch (XmlException ex)
+        {
+            WriteLine($"Cannot load '{path}'", Colors.Message_Warning, Verbosity.Minimal);
+            WriteError(ex, verbosity: Verbosity.Minimal);
             return CommandStatus.NotSuccess;
         }
 
-        private CommandStatus ExecuteProject(string path)
+        XElement root = document.Root;
+
+        if (root.Attribute("Sdk")?.Value == "Microsoft.NET.Sdk")
         {
-            XDocument document;
-            try
+            WriteLine($"Analyze '{path}'", Verbosity.Detailed);
+            return ExecuteProject(path, document);
+        }
+        else
+        {
+            WriteLine($"Project does not support migration: '{path}'", Colors.Message_Warning, Verbosity.Detailed);
+
+            return CommandStatus.NotSuccess;
+        }
+    }
+
+    private CommandStatus ExecuteProject(string path, XDocument document)
+    {
+        List<LogMessage> messages = null;
+
+        foreach (XElement itemGroup in document.Root.Descendants("ItemGroup"))
+        {
+            XElement analyzers = null;
+            XElement formattingAnalyzers = null;
+
+            foreach (XElement e in itemGroup.Elements("PackageReference"))
             {
-                document = XDocument.Load(path, LoadOptions.PreserveWhitespace | LoadOptions.SetLineInfo);
-            }
-            catch (XmlException ex)
-            {
-                WriteLine($"Cannot load '{path}'", Colors.Message_Warning, Verbosity.Minimal);
-                WriteError(ex, verbosity: Verbosity.Minimal);
-                return CommandStatus.NotSuccess;
+                string packageId = e.Attribute("Include")?.Value;
+
+                if (packageId == null)
+                    continue;
+
+                if (packageId == "Roslynator.Formatting.Analyzers")
+                    formattingAnalyzers = e;
+
+                if (packageId == "Roslynator.Analyzers")
+                    analyzers = e;
             }
 
-            XElement root = document.Root;
+            if (analyzers == null)
+                continue;
 
-            if (root.Attribute("Sdk")?.Value == "Microsoft.NET.Sdk")
+            if (formattingAnalyzers != null)
             {
-                WriteLine($"Analyze '{path}'", Verbosity.Detailed);
-                return ExecuteProject(path, document);
+                string versionText = formattingAnalyzers.Attribute("Version")?.Value;
+
+                if (versionText == null)
+                {
+                    WriteXmlError(formattingAnalyzers, "Version attribute not found");
+                    continue;
+                }
+
+                if (versionText != null)
+                {
+                    Match match = _versionRegex.Match(versionText);
+
+                    if (!match.Success)
+                    {
+                        WriteXmlError(formattingAnalyzers, $"Invalid version '{versionText}'");
+                        continue;
+                    }
+
+                    versionText = match.Groups["version"].Value;
+
+                    if (!Version.TryParse(versionText, out Version version))
+                    {
+                        WriteXmlError(formattingAnalyzers, $"Invalid version '{versionText}'");
+                        continue;
+                    }
+
+                    if (version > Versions.Version_1_0_0
+                        || !match.Groups["suffix"].Success)
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            if (formattingAnalyzers != null)
+            {
+                var message = new LogMessage("Update package 'Roslynator.Formatting.Analyzers' to '1.0.0'", Colors.Message_OK, Verbosity.Normal);
+
+                (messages ??= new List<LogMessage>()).Add(message);
+
+                formattingAnalyzers.SetAttributeValue("Version", "1.0.0");
             }
             else
             {
-                WriteLine($"Project does not support migration: '{path}'", Colors.Message_Warning, Verbosity.Detailed);
+                var message = new LogMessage("Add package 'Roslynator.Formatting.Analyzers 1.0.0'", Colors.Message_OK, Verbosity.Normal);
 
-                return CommandStatus.NotSuccess;
+                (messages ??= new List<LogMessage>()).Add(message);
+
+                XText whitespace = null;
+
+                if (analyzers.NodesBeforeSelf().LastOrDefault() is XText xtext
+                    && xtext != null
+                    && string.IsNullOrWhiteSpace(xtext.Value))
+                {
+                    whitespace = xtext;
+                }
+
+                analyzers.AddAfterSelf(whitespace, new XElement("PackageReference", new XAttribute("Include", "Roslynator.Formatting.Analyzers"), new XAttribute("Version", "1.0.0")));
             }
         }
 
-        private CommandStatus ExecuteProject(string path, XDocument document)
+        if (messages != null)
         {
-            List<LogMessage> messages = null;
+            WriteUpdateMessages(path, messages);
 
-            foreach (XElement itemGroup in document.Root.Descendants("ItemGroup"))
+            if (!DryRun)
             {
-                XElement analyzers = null;
-                XElement formattingAnalyzers = null;
+                var settings = new XmlWriterSettings() { OmitXmlDeclaration = true };
 
-                foreach (XElement e in itemGroup.Elements("PackageReference"))
-                {
-                    string packageId = e.Attribute("Include")?.Value;
+                using (XmlWriter xmlWriter = XmlWriter.Create(path, settings))
+                    document.Save(xmlWriter);
+            }
+        }
 
-                    if (packageId == null)
-                        continue;
+        return CommandStatus.Success;
+    }
 
-                    if (packageId == "Roslynator.Formatting.Analyzers")
-                        formattingAnalyzers = e;
+    private CommandStatus ExecuteRuleSet(string path)
+    {
+        XDocument document;
+        try
+        {
+            document = XDocument.Load(path);
+        }
+        catch (XmlException ex)
+        {
+            WriteLine($"Cannot load '{path}'", Colors.Message_Warning, Verbosity.Minimal);
+            WriteError(ex, verbosity: Verbosity.Minimal);
+            return CommandStatus.NotSuccess;
+        }
 
-                    if (packageId == "Roslynator.Analyzers")
-                        analyzers = e;
-                }
+        WriteLine($"Analyze '{path}'", Verbosity.Detailed);
 
-                if (analyzers == null)
+        var ids = new Dictionary<string, XElement>();
+
+        IEnumerable<XElement> rules = document.Root.Elements("Rules");
+
+        if (!rules.Any())
+            return CommandStatus.Success;
+
+        foreach (XElement element in rules.Elements("Rule"))
+        {
+            string id = element.Attribute("Id")?.Value;
+
+            if (id != null)
+                ids[id] = element;
+        }
+
+        XElement analyzers = rules.LastOrDefault(f => f.Attribute("AnalyzerId")?.Value == "Roslynator.CSharp.Analyzers");
+
+        XElement formattingAnalyzers = rules.FirstOrDefault(f => f.Attribute("AnalyzerId")?.Value == "Roslynator.Formatting.Analyzers");
+
+        if (formattingAnalyzers == null)
+        {
+            formattingAnalyzers = new XElement(
+                "Rules",
+                new XAttribute("AnalyzerId", "Roslynator.Formatting.Analyzers"),
+                new XAttribute("RuleNamespace", "Roslynator.Formatting.Analyzers"));
+
+            (analyzers ?? rules.Last()).AddAfterSelf(formattingAnalyzers);
+        }
+
+        List<LogMessage> messages = null;
+
+        foreach (KeyValuePair<string, XElement> kvp in ids)
+        {
+            if (!AnalyzersMapping.Mapping.TryGetValue(kvp.Key, out ImmutableArray<string> newIds))
+                continue;
+
+            foreach (string newId in newIds)
+            {
+                if (ids.ContainsKey(newId))
                     continue;
 
-                if (formattingAnalyzers != null)
-                {
-                    string versionText = formattingAnalyzers.Attribute("Version")?.Value;
+                string action = kvp.Value.Attribute("Action")?.Value ?? "Info";
+                var newRule = new XElement(
+                    "Rule",
+                    new XAttribute("Id", newId),
+                    new XAttribute("Action", action));
 
-                    if (versionText == null)
-                    {
-                        WriteXmlError(formattingAnalyzers, "Version attribute not found");
-                        continue;
-                    }
+                var message = new LogMessage($"Update rule '{kvp.Key}' to '{newId}' ({action})", Colors.Message_OK, Verbosity.Normal);
 
-                    if (versionText != null)
-                    {
-                        Match match = _versionRegex.Match(versionText);
+                (messages ??= new List<LogMessage>()).Add(message);
 
-                        if (!match.Success)
-                        {
-                            WriteXmlError(formattingAnalyzers, $"Invalid version '{versionText}'");
-                            continue;
-                        }
+                formattingAnalyzers.Add(newRule);
 
-                        versionText = match.Groups["version"].Value;
-
-                        if (!Version.TryParse(versionText, out Version version))
-                        {
-                            WriteXmlError(formattingAnalyzers, $"Invalid version '{versionText}'");
-                            continue;
-                        }
-
-                        if (version > Versions.Version_1_0_0
-                            || !match.Groups["suffix"].Success)
-                        {
-                            continue;
-                        }
-                    }
-                }
-
-                if (formattingAnalyzers != null)
-                {
-                    var message = new LogMessage("Update package 'Roslynator.Formatting.Analyzers' to '1.0.0'", Colors.Message_OK, Verbosity.Normal);
-
-                    (messages ??= new List<LogMessage>()).Add(message);
-
-                    formattingAnalyzers.SetAttributeValue("Version", "1.0.0");
-                }
-                else
-                {
-                    var message = new LogMessage("Add package 'Roslynator.Formatting.Analyzers 1.0.0'", Colors.Message_OK, Verbosity.Normal);
-
-                    (messages ??= new List<LogMessage>()).Add(message);
-
-                    XText whitespace = null;
-
-                    if (analyzers.NodesBeforeSelf().LastOrDefault() is XText xtext
-                        && xtext != null
-                        && string.IsNullOrWhiteSpace(xtext.Value))
-                    {
-                        whitespace = xtext;
-                    }
-
-                    analyzers.AddAfterSelf(whitespace, new XElement("PackageReference", new XAttribute("Include", "Roslynator.Formatting.Analyzers"), new XAttribute("Version", "1.0.0")));
-                }
-            }
-
-            if (messages != null)
-            {
-                WriteUpdateMessages(path, messages);
-
-                if (!DryRun)
-                {
-                    var settings = new XmlWriterSettings() { OmitXmlDeclaration = true };
-
-                    using (XmlWriter xmlWriter = XmlWriter.Create(path, settings))
-                        document.Save(xmlWriter);
-                }
-            }
-
-            return CommandStatus.Success;
-        }
-
-        private CommandStatus ExecuteRuleSet(string path)
-        {
-            XDocument document;
-            try
-            {
-                document = XDocument.Load(path);
-            }
-            catch (XmlException ex)
-            {
-                WriteLine($"Cannot load '{path}'", Colors.Message_Warning, Verbosity.Minimal);
-                WriteError(ex, verbosity: Verbosity.Minimal);
-                return CommandStatus.NotSuccess;
-            }
-
-            WriteLine($"Analyze '{path}'", Verbosity.Detailed);
-
-            var ids = new Dictionary<string, XElement>();
-
-            IEnumerable<XElement> rules = document.Root.Elements("Rules");
-
-            if (!rules.Any())
-                return CommandStatus.Success;
-
-            foreach (XElement element in rules.Elements("Rule"))
-            {
-                string id = element.Attribute("Id")?.Value;
-
-                if (id != null)
-                    ids[id] = element;
-            }
-
-            XElement analyzers = rules.LastOrDefault(f => f.Attribute("AnalyzerId")?.Value == "Roslynator.CSharp.Analyzers");
-
-            XElement formattingAnalyzers = rules.FirstOrDefault(f => f.Attribute("AnalyzerId")?.Value == "Roslynator.Formatting.Analyzers");
-
-            if (formattingAnalyzers == null)
-            {
-                formattingAnalyzers = new XElement(
-                    "Rules",
-                    new XAttribute("AnalyzerId", "Roslynator.Formatting.Analyzers"),
-                    new XAttribute("RuleNamespace", "Roslynator.Formatting.Analyzers"));
-
-                (analyzers ?? rules.Last()).AddAfterSelf(formattingAnalyzers);
-            }
-
-            List<LogMessage> messages = null;
-
-            foreach (KeyValuePair<string, XElement> kvp in ids)
-            {
-                if (!AnalyzersMapping.Mapping.TryGetValue(kvp.Key, out ImmutableArray<string> newIds))
-                    continue;
-
-                foreach (string newId in newIds)
-                {
-                    if (ids.ContainsKey(newId))
-                        continue;
-
-                    string action = kvp.Value.Attribute("Action")?.Value ?? "Info";
-                    var newRule = new XElement(
-                        "Rule",
-                        new XAttribute("Id", newId),
-                        new XAttribute("Action", action));
-
-                    var message = new LogMessage($"Update rule '{kvp.Key}' to '{newId}' ({action})", Colors.Message_OK, Verbosity.Normal);
-
-                    (messages ??= new List<LogMessage>()).Add(message);
-
-                    formattingAnalyzers.Add(newRule);
-
-                    if (kvp.Value.Parent != null)
-                        kvp.Value.Remove();
-                }
-            }
-
-            if (messages != null)
-            {
-                WriteUpdateMessages(path, messages);
-
-                if (!DryRun)
-                {
-                    if (analyzers?.IsEmpty == true)
-                        analyzers.Remove();
-
-                    analyzers?.ReplaceNodes(analyzers.Elements().OrderBy(f => f.Attribute("Id")?.Value));
-
-                    formattingAnalyzers?.ReplaceNodes(formattingAnalyzers.Elements().OrderBy(f => f.Attribute("Id")?.Value));
-
-                    var settings = new XmlWriterSettings() { OmitXmlDeclaration = false, Indent = true };
-
-                    using (XmlWriter xmlWriter = XmlWriter.Create(path, settings))
-                    {
-                        document.Save(xmlWriter);
-                    }
-                }
-            }
-
-            return CommandStatus.Success;
-        }
-
-        private CommandStatus ExecuteEditorConfig(string path)
-        {
-            string content;
-            Encoding encoding = null;
-
-            try
-            {
-                content = ReadFile(path, ref encoding);
-            }
-            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
-            {
-                WriteLine($"Cannot load '{path}'", Verbosity.Minimal);
-                WriteError(ex, verbosity: Verbosity.Minimal);
-                return CommandStatus.NotSuccess;
-            }
-
-            WriteLine($"Analyze '{path}'", Verbosity.Detailed);
-
-            Match fileEolMatch = Regex.Match(content, "\r?\n");
-
-            string fileEol = (fileEolMatch.Success) ? fileEolMatch.Value : Environment.NewLine;
-
-            List<LogMessage> messages = null;
-
-            content = _editorConfigRegex.Replace(
-                content,
-                match =>
-                {
-                    string id = match.Groups["id"].Value;
-                    string severity = match.Groups["severity"].Value;
-
-                    if (!AnalyzersMapping.Mapping.TryGetValue(id, out ImmutableArray<string> newIds))
-                        return match.Value;
-
-                    ImmutableArray<string>.Enumerator en = newIds.GetEnumerator();
-
-                    if (!en.MoveNext())
-                        return match.Value;
-
-                    string newValue = match.Result($"dotnet_diagnostic.{en.Current}.severity = ${{severity}}${{trailing}}");
-
-                    var message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
-
-                    (messages ??= new List<LogMessage>()).Add(message);
-
-                    if (en.MoveNext())
-                    {
-                        Group eolGroup = match.Groups["eol"];
-                        string eolBefore = (eolGroup.Success) ? "" : fileEol;
-                        string eolAfter = (eolGroup.Success) ? fileEol : "";
-
-                        do
-                        {
-                            newValue += eolBefore
-                                + $"dotnet_diagnostic.{en.Current}.severity = {severity}"
-                                + eolAfter;
-
-                            message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
-
-                            messages.Add(message);
-                        }
-                        while (en.MoveNext());
-                    }
-
-                    return newValue;
-                });
-
-            if (messages != null)
-            {
-                WriteUpdateMessages(path, messages);
-
-                if (!DryRun)
-                {
-                    try
-                    {
-                        File.WriteAllText(path, content, encoding ?? Encodings.UTF8NoBom);
-                    }
-                    catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
-                    {
-                        WriteLine($"Cannot save '{path}'", Colors.Message_Warning, Verbosity.Minimal);
-                        WriteError(ex, verbosity: Verbosity.Minimal);
-                        return CommandStatus.NotSuccess;
-                    }
-                }
-            }
-
-            return CommandStatus.Success;
-        }
-
-        private static void WriteXmlError(XElement element, string message)
-        {
-            WriteLine($"{message}, line: {((IXmlLineInfo)element).LineNumber}, file: '{element}'", Colors.Message_Warning, Verbosity.Detailed);
-        }
-
-        private static void WriteUpdateMessages(string path, List<LogMessage> messages)
-        {
-            WriteLine($"Update '{path}'", Colors.Message_OK, Verbosity.Minimal);
-
-            foreach (LogMessage update in messages)
-            {
-                Write("  ", update.Verbosity);
-                WriteLine(update);
+                if (kvp.Value.Parent != null)
+                    kvp.Value.Remove();
             }
         }
 
-        protected virtual void OperationCanceled(OperationCanceledException ex)
+        if (messages != null)
         {
-            WriteLine("Operation was canceled.", Verbosity.Quiet);
+            WriteUpdateMessages(path, messages);
+
+            if (!DryRun)
+            {
+                if (analyzers?.IsEmpty == true)
+                    analyzers.Remove();
+
+                analyzers?.ReplaceNodes(analyzers.Elements().OrderBy(f => f.Attribute("Id")?.Value));
+
+                formattingAnalyzers?.ReplaceNodes(formattingAnalyzers.Elements().OrderBy(f => f.Attribute("Id")?.Value));
+
+                var settings = new XmlWriterSettings() { OmitXmlDeclaration = false, Indent = true };
+
+                using (XmlWriter xmlWriter = XmlWriter.Create(path, settings))
+                {
+                    document.Save(xmlWriter);
+                }
+            }
         }
 
-        private static string ReadFile(
-            string filePath,
-            ref Encoding encoding)
+        return CommandStatus.Success;
+    }
+
+    private CommandStatus ExecuteEditorConfig(string path)
+    {
+        string content;
+        Encoding encoding = null;
+
+        try
         {
-            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            content = ReadFile(path, ref encoding);
+        }
+        catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+        {
+            WriteLine($"Cannot load '{path}'", Verbosity.Minimal);
+            WriteError(ex, verbosity: Verbosity.Minimal);
+            return CommandStatus.NotSuccess;
+        }
+
+        WriteLine($"Analyze '{path}'", Verbosity.Detailed);
+
+        Match fileEolMatch = Regex.Match(content, "\r?\n");
+
+        string fileEol = (fileEolMatch.Success) ? fileEolMatch.Value : Environment.NewLine;
+
+        List<LogMessage> messages = null;
+
+        content = _editorConfigRegex.Replace(
+            content,
+            match =>
             {
-                Encoding encodingFromBom = EncodingHelpers.DetectEncoding(stream);
+                string id = match.Groups["id"].Value;
+                string severity = match.Groups["severity"].Value;
 
-                if (encodingFromBom != null)
-                    encoding = encodingFromBom;
+                if (!AnalyzersMapping.Mapping.TryGetValue(id, out ImmutableArray<string> newIds))
+                    return match.Value;
 
-                stream.Position = 0;
+                ImmutableArray<string>.Enumerator en = newIds.GetEnumerator();
 
-                using (var reader = new StreamReader(
-                    stream,
-                    encoding ?? Encodings.UTF8NoBom,
-                    detectEncodingFromByteOrderMarks: encodingFromBom == null))
+                if (!en.MoveNext())
+                    return match.Value;
+
+                string newValue = match.Result($"dotnet_diagnostic.{en.Current}.severity = ${{severity}}${{trailing}}");
+
+                var message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
+
+                (messages ??= new List<LogMessage>()).Add(message);
+
+                if (en.MoveNext())
                 {
-                    return reader.ReadToEnd();
+                    Group eolGroup = match.Groups["eol"];
+                    string eolBefore = (eolGroup.Success) ? "" : fileEol;
+                    string eolAfter = (eolGroup.Success) ? fileEol : "";
+
+                    do
+                    {
+                        newValue += eolBefore
+                            + $"dotnet_diagnostic.{en.Current}.severity = {severity}"
+                            + eolAfter;
+
+                        message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
+
+                        messages.Add(message);
+                    }
+                    while (en.MoveNext());
                 }
+
+                return newValue;
+            });
+
+        if (messages != null)
+        {
+            WriteUpdateMessages(path, messages);
+
+            if (!DryRun)
+            {
+                try
+                {
+                    File.WriteAllText(path, content, encoding ?? Encodings.UTF8NoBom);
+                }
+                catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+                {
+                    WriteLine($"Cannot save '{path}'", Colors.Message_Warning, Verbosity.Minimal);
+                    WriteError(ex, verbosity: Verbosity.Minimal);
+                    return CommandStatus.NotSuccess;
+                }
+            }
+        }
+
+        return CommandStatus.Success;
+    }
+
+    private static void WriteXmlError(XElement element, string message)
+    {
+        WriteLine($"{message}, line: {((IXmlLineInfo)element).LineNumber}, file: '{element}'", Colors.Message_Warning, Verbosity.Detailed);
+    }
+
+    private static void WriteUpdateMessages(string path, List<LogMessage> messages)
+    {
+        WriteLine($"Update '{path}'", Colors.Message_OK, Verbosity.Minimal);
+
+        foreach (LogMessage update in messages)
+        {
+            Write("  ", update.Verbosity);
+            WriteLine(update);
+        }
+    }
+
+    protected virtual void OperationCanceled(OperationCanceledException ex)
+    {
+        WriteLine("Operation was canceled.", Verbosity.Quiet);
+    }
+
+    private static string ReadFile(
+        string filePath,
+        ref Encoding encoding)
+    {
+        using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+        {
+            Encoding encodingFromBom = EncodingHelpers.DetectEncoding(stream);
+
+            if (encodingFromBom != null)
+                encoding = encodingFromBom;
+
+            stream.Position = 0;
+
+            using (var reader = new StreamReader(
+                stream,
+                encoding ?? Encodings.UTF8NoBom,
+                detectEncodingFromByteOrderMarks: encodingFromBom == null))
+            {
+                return reader.ReadToEnd();
             }
         }
     }

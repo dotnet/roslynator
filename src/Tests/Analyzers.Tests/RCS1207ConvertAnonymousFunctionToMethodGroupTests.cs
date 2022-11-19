@@ -6,31 +6,31 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
+namespace Roslynator.CSharp.Analysis.Tests;
+
+public class RCS1207ConvertAnonymousFunctionToMethodGroupTests : AbstractCSharpDiagnosticVerifier<UseAnonymousFunctionOrMethodGroupAnalyzer, UseAnonymousFunctionOrMethodGroupCodeFixProvider>
 {
-    public class RCS1207ConvertAnonymousFunctionToMethodGroupTests : AbstractCSharpDiagnosticVerifier<UseAnonymousFunctionOrMethodGroupAnalyzer, UseAnonymousFunctionOrMethodGroupCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseAnonymousFunctionOrMethodGroup;
+
+    public override CSharpTestOptions Options
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseAnonymousFunctionOrMethodGroup;
+        get { return base.Options.AddConfigOption(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup); }
+    }
 
-        public override CSharpTestOptions Options
-        {
-            get { return base.Options.AddConfigOption(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup); }
-        }
-
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        [InlineData("f => M(f)", "M")]
-        [InlineData("f => { M(f); }", "M")]
-        [InlineData("(f) => M(f)", "M")]
-        [InlineData("(f) => { M(f); }", "M")]
-        [InlineData("delegate (string f) { M(f); }", "M")]
-        [InlineData("f => f.M()", "M")]
-        [InlineData("f => { f.M(); }", "M")]
-        [InlineData("(f) => f.M()", "M")]
-        [InlineData("(f) => { f.M(); }", "M")]
-        [InlineData("delegate (string f) { f.M(); }", "M")]
-        public async Task Test_VoidAnonymousFunction_AsParameter(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    [InlineData("f => M(f)", "M")]
+    [InlineData("f => { M(f); }", "M")]
+    [InlineData("(f) => M(f)", "M")]
+    [InlineData("(f) => { M(f); }", "M")]
+    [InlineData("delegate (string f) { M(f); }", "M")]
+    [InlineData("f => f.M()", "M")]
+    [InlineData("f => { f.M(); }", "M")]
+    [InlineData("(f) => f.M()", "M")]
+    [InlineData("(f) => { f.M(); }", "M")]
+    [InlineData("delegate (string f) { f.M(); }", "M")]
+    public async Task Test_VoidAnonymousFunction_AsParameter(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -46,18 +46,18 @@ static class C
     static void M(this string value) { }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        [InlineData("f => M(f)", "M")]
-        [InlineData("f => { return M(f); }", "M")]
-        [InlineData("delegate (string f) { return M(f); }", "M")]
-        [InlineData("f => f.M()", "M")]
-        [InlineData("f => { return f.M();}", "M")]
-        [InlineData("delegate (string f) { return f.M(); }", "M")]
-        public async Task Test_AnonymousFunction_AsParameter(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    [InlineData("f => M(f)", "M")]
+    [InlineData("f => { return M(f); }", "M")]
+    [InlineData("delegate (string f) { return M(f); }", "M")]
+    [InlineData("f => f.M()", "M")]
+    [InlineData("f => { return f.M();}", "M")]
+    [InlineData("delegate (string f) { return f.M(); }", "M")]
+    public async Task Test_AnonymousFunction_AsParameter(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,18 +74,18 @@ static class C
     static string M(this string value) => value;
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        [InlineData("(f, i) => M(f, i)", "M")]
-        [InlineData("(f, i) => { return M(f, i); }", "M")]
-        [InlineData("delegate (string f, int i) { return M(f, i); }", "M")]
-        [InlineData("(f, i) => f.M(i)", "M")]
-        [InlineData("(f, i) => { return f.M(i); }", "M")]
-        [InlineData("delegate (string f, int i) { return f.M(i); }", "M")]
-        public async Task Test_AnonymousFunctionWithTwoParameters_AsParameter(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    [InlineData("(f, i) => M(f, i)", "M")]
+    [InlineData("(f, i) => { return M(f, i); }", "M")]
+    [InlineData("delegate (string f, int i) { return M(f, i); }", "M")]
+    [InlineData("(f, i) => f.M(i)", "M")]
+    [InlineData("(f, i) => { return f.M(i); }", "M")]
+    [InlineData("delegate (string f, int i) { return f.M(i); }", "M")]
+    public async Task Test_AnonymousFunctionWithTwoParameters_AsParameter(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,18 +102,18 @@ static class C
     static string M(this string value, int index) => value;
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        [InlineData("f => M(f)", "M")]
-        [InlineData("f => { return M(f); }", "M")]
-        [InlineData("delegate (string f) { return M(f); }", "M")]
-        [InlineData("f => f.M()", "M")]
-        [InlineData("f => { return f.M(); }", "M")]
-        [InlineData("delegate (string f) { return f.M(); }", "M")]
-        public async Task Test_AnonymousFunction_Assignment(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    [InlineData("f => M(f)", "M")]
+    [InlineData("f => { return M(f); }", "M")]
+    [InlineData("delegate (string f) { return M(f); }", "M")]
+    [InlineData("f => f.M()", "M")]
+    [InlineData("f => { return f.M(); }", "M")]
+    [InlineData("delegate (string f) { return f.M(); }", "M")]
+    public async Task Test_AnonymousFunction_Assignment(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 static class C
@@ -126,18 +126,18 @@ static class C
     static string M(this string value) => value;
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        [InlineData("(f, i) => M(f, i)", "M")]
-        [InlineData("(f, i) => { return M(f, i); }", "M")]
-        [InlineData("delegate (string f, int i) { return M(f, i); }", "M")]
-        [InlineData("(f, i) => f.M(i)", "M")]
-        [InlineData("(f, i) => { return f.M(i); }", "M")]
-        [InlineData("delegate (string f, int i) { return f.M(i); }", "M")]
-        public async Task Test_AnonymousFunctionWithTwoParameters_Assignment(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    [InlineData("(f, i) => M(f, i)", "M")]
+    [InlineData("(f, i) => { return M(f, i); }", "M")]
+    [InlineData("delegate (string f, int i) { return M(f, i); }", "M")]
+    [InlineData("(f, i) => f.M(i)", "M")]
+    [InlineData("(f, i) => { return f.M(i); }", "M")]
+    [InlineData("delegate (string f, int i) { return f.M(i); }", "M")]
+    public async Task Test_AnonymousFunctionWithTwoParameters_Assignment(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 static class C
@@ -150,14 +150,14 @@ static class C
     static string M(this string value, int index) => value;
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        [InlineData("() => Foo.M()", "Foo.M")]
-        [InlineData("delegate () { return Foo.M(); }", "Foo.M")]
-        public async Task Test_StaticMethod_Assignment(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    [InlineData("() => Foo.M()", "Foo.M")]
+    [InlineData("delegate () { return Foo.M(); }", "Foo.M")]
+    public async Task Test_StaticMethod_Assignment(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -174,12 +174,12 @@ static class Foo
 
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task Test_SwitchExpressionArm()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task Test_SwitchExpressionArm()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -218,12 +218,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_NullReferenceException()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_NullReferenceException()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class Foo
@@ -242,12 +242,12 @@ class Foo
     private string M2() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_FuncToAction()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_FuncToAction()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class Foo
@@ -258,12 +258,12 @@ class Foo
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_FuncToAction2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_FuncToAction2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class Foo
@@ -276,12 +276,12 @@ class Foo
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_ReportsDiagnosticBeforeCSharp73()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_ReportsDiagnosticBeforeCSharp73()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Immutable;
 using System.Collections.Generic;
@@ -297,13 +297,13 @@ class C
     private static ImmutableArray<int> M2(string s) => throw new NotImplementedException();
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3
-                .AddConfigOption(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup));
-        }
+            .AddConfigOption(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup));
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_ReducedExtensionFromOtherClassInvokedOnLambdaParameter()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_ReducedExtensionFromOtherClassInvokedOnLambdaParameter()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -318,12 +318,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_ConditionalAccess()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_ConditionalAccess()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -344,12 +344,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_ConditionalAccess2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_ConditionalAccess2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -367,12 +367,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_DelegateInvoke()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_DelegateInvoke()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -387,12 +387,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
-        public async Task TestNoDiagnostic_InParameter()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
+    public async Task TestNoDiagnostic_InParameter()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -408,6 +408,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -11,57 +11,56 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddExceptionToDocumentationCommentCodeFixProvider))]
+[Shared]
+public sealed class AddExceptionToDocumentationCommentCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddExceptionToDocumentationCommentCodeFixProvider))]
-    [Shared]
-    public sealed class AddExceptionToDocumentationCommentCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddExceptionToDocumentationComment); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.ThrowStatement, SyntaxKind.ThrowExpression)))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddExceptionToDocumentationComment); }
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.ThrowStatement, SyntaxKind.ThrowExpression)))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.AddExceptionToDocumentationComment:
+                case DiagnosticIdentifiers.AddExceptionToDocumentationComment:
+                    {
+                        switch (node.Kind())
                         {
-                            switch (node.Kind())
-                            {
-                                case SyntaxKind.ThrowStatement:
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            "Add exception to documentation comment",
-                                            ct => AddExceptionElementToDocumentationCommentRefactoring.RefactorAsync(context.Document, (ThrowStatementSyntax)node, ct),
-                                            GetEquivalenceKey(diagnostic));
+                            case SyntaxKind.ThrowStatement:
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Add exception to documentation comment",
+                                        ct => AddExceptionElementToDocumentationCommentRefactoring.RefactorAsync(context.Document, (ThrowStatementSyntax)node, ct),
+                                        GetEquivalenceKey(diagnostic));
 
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                        break;
-                                    }
-                                case SyntaxKind.ThrowExpression:
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            "Add exception to documentation comment",
-                                            ct => AddExceptionElementToDocumentationCommentRefactoring.RefactorAsync(context.Document, (ThrowExpressionSyntax)node, ct),
-                                            GetEquivalenceKey(diagnostic));
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                    break;
+                                }
+                            case SyntaxKind.ThrowExpression:
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Add exception to documentation comment",
+                                        ct => AddExceptionElementToDocumentationCommentRefactoring.RefactorAsync(context.Document, (ThrowExpressionSyntax)node, ct),
+                                        GetEquivalenceKey(diagnostic));
 
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                        break;
-                                    }
-                            }
-
-                            break;
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                    break;
+                                }
                         }
-                }
+
+                        break;
+                    }
             }
         }
     }

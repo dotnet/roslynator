@@ -3,26 +3,25 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.If
+namespace Roslynator.CSharp.Analysis.If;
+
+internal sealed class IfReturnToReturnWithBooleanExpressionAnalysis : IfToReturnWithBooleanExpressionAnalysis
 {
-    internal sealed class IfReturnToReturnWithBooleanExpressionAnalysis : IfToReturnWithBooleanExpressionAnalysis
+    public IfReturnToReturnWithBooleanExpressionAnalysis(
+        IfStatementSyntax ifStatement,
+        ExpressionSyntax expression1,
+        ExpressionSyntax expression2,
+        SemanticModel semanticModel) : base(ifStatement, expression1, expression2, semanticModel)
     {
-        public IfReturnToReturnWithBooleanExpressionAnalysis(
-            IfStatementSyntax ifStatement,
-            ExpressionSyntax expression1,
-            ExpressionSyntax expression2,
-            SemanticModel semanticModel) : base(ifStatement, expression1, expression2, semanticModel)
-        {
-        }
+    }
 
-        public override IfAnalysisKind Kind
-        {
-            get { return IfAnalysisKind.IfReturnToReturnWithBooleanExpression; }
-        }
+    public override IfAnalysisKind Kind
+    {
+        get { return IfAnalysisKind.IfReturnToReturnWithBooleanExpression; }
+    }
 
-        public override string Title
-        {
-            get { return "Simplify if-return"; }
-        }
+    public override string Title
+    {
+        get { return "Simplify if-return"; }
     }
 }

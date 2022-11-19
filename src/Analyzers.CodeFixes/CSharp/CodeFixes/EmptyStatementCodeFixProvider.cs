@@ -10,30 +10,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EmptyStatementCodeFixProvider))]
+[Shared]
+public sealed class EmptyStatementCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EmptyStatementCodeFixProvider))]
-    [Shared]
-    public sealed class EmptyStatementCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyStatement); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyStatement); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out EmptyStatementSyntax emptyStatement))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out EmptyStatementSyntax emptyStatement))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove empty statement",
-                ct => RemoveEmptyStatementRefactoring.RefactorAsync(context.Document, emptyStatement, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyStatement));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove empty statement",
+            ct => RemoveEmptyStatementRefactoring.RefactorAsync(context.Document, emptyStatement, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyStatement));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

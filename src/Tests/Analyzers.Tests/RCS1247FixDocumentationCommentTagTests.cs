@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1247FixDocumentationCommentTagTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, XmlNodeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixDocumentationCommentTag;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
-        public async Task Test_C_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1247FixDocumentationCommentTagTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, XmlNodeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixDocumentationCommentTag;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    public async Task Test_C_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -70,12 +70,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
-        public async Task Test_C_Multiline_List()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    public async Task Test_C_Multiline_List()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -146,12 +146,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
-        public async Task Test_Code_Singleline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    public async Task Test_Code_Singleline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -190,12 +190,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
-        public async Task Test_Code_Singleline_List()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    public async Task Test_Code_Singleline_List()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -250,12 +250,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
-        public async Task TestNoDiagnostic_C_Singleline()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    public async Task TestNoDiagnostic_C_Singleline()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary>
@@ -274,12 +274,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
-        public async Task TestNoDiagnostic_Code_Multiline()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
+    public async Task TestNoDiagnostic_Code_Multiline()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary>
@@ -309,6 +309,5 @@ class C
     }
 }
 ");
-        }
     }
 }

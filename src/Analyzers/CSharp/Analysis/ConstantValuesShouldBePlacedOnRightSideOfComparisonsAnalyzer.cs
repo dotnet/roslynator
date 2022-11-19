@@ -7,59 +7,58 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class ConstantValuesShouldBePlacedOnRightSideOfComparisonsAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ConstantValuesShouldBePlacedOnRightSideOfComparisonsAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ConstantValuesShouldBePlacedOnRightSideOfComparisons);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ConstantValuesShouldBePlacedOnRightSideOfComparisons);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(
+            f => AnalyzeBinaryExpression(f),
+            SyntaxKind.EqualsExpression,
+            SyntaxKind.NotEqualsExpression);
+    }
+
+    private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
+    {
+        var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+        if (binaryExpression.SpanContainsDirectives())
+            return;
+
+        BinaryExpressionInfo info = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
+
+        if (!info.Success)
+            return;
+
+        SyntaxKind leftKind = info.Left.Kind();
+
+        if (leftKind == SyntaxKind.DefaultExpression || CSharpFacts.IsLiteralExpression(leftKind))
         {
-            base.Initialize(context);
+            SyntaxKind rightKind = info.Right.Kind();
 
-            context.RegisterSyntaxNodeAction(
-                f => AnalyzeBinaryExpression(f),
-                SyntaxKind.EqualsExpression,
-                SyntaxKind.NotEqualsExpression);
-        }
-
-        private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
-        {
-            var binaryExpression = (BinaryExpressionSyntax)context.Node;
-
-            if (binaryExpression.SpanContainsDirectives())
-                return;
-
-            BinaryExpressionInfo info = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
-
-            if (!info.Success)
-                return;
-
-            SyntaxKind leftKind = info.Left.Kind();
-
-            if (leftKind == SyntaxKind.DefaultExpression || CSharpFacts.IsLiteralExpression(leftKind))
+            if (rightKind != SyntaxKind.DefaultExpression && !CSharpFacts.IsLiteralExpression(rightKind))
             {
-                SyntaxKind rightKind = info.Right.Kind();
-
-                if (rightKind != SyntaxKind.DefaultExpression && !CSharpFacts.IsLiteralExpression(rightKind))
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
-                        info.Left);
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
+                    info.Left);
             }
         }
     }

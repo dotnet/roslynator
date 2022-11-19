@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1013UsePredefinedTypeTests : AbstractCSharpDiagnosticVerifier<UsePredefinedTypeAnalyzer, UsePredefinedTypeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePredefinedType;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1013UsePredefinedTypeTests : AbstractCSharpDiagnosticVerifier<UsePredefinedTypeAnalyzer, UsePredefinedTypeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePredefinedType;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -68,12 +68,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
-        public async Task Test_NullableReferenceType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
+    public async Task Test_NullableReferenceType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -92,12 +92,12 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_NullableReferenceTypes);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using s = System.String;
 
@@ -116,6 +116,5 @@ class C
     }
 }
 ");
-        }
     }
 }

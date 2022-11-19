@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1044RemoveOriginalExceptionFromThrowStatementTests : AbstractCSharpDiagnosticVerifier<RemoveOriginalExceptionFromThrowStatementAnalyzer, RemoveOriginalExceptionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveOriginalExceptionFromThrowStatement;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
-        public async Task Test_OriginalExceptionUsed()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1044RemoveOriginalExceptionFromThrowStatementTests : AbstractCSharpDiagnosticVerifier<RemoveOriginalExceptionFromThrowStatementAnalyzer, RemoveOriginalExceptionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveOriginalExceptionFromThrowStatement;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
+    public async Task Test_OriginalExceptionUsed()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 public class A
@@ -50,12 +50,12 @@ public class A
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
-        public async Task TestNoDiagnostic_OnlyThrowStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
+    public async Task TestNoDiagnostic_OnlyThrowStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 public class A
@@ -73,12 +73,12 @@ public class A
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
-        public async Task TestNoDiagnostic_NewExceptionInstantiated()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement)]
+    public async Task TestNoDiagnostic_NewExceptionInstantiated()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 public class A
@@ -96,6 +96,5 @@ public class A
     }
 }
 ");
-        }
     }
 }

@@ -2,15 +2,14 @@
 
 using System;
 
-namespace Roslynator
-{
-    internal class AnalyzerAssemblyEventArgs : EventArgs
-    {
-        public AnalyzerAssemblyEventArgs(AnalyzerAssembly analyzerAssembly)
-        {
-            AnalyzerAssembly = analyzerAssembly;
-        }
+namespace Roslynator;
 
-        public AnalyzerAssembly AnalyzerAssembly { get; }
+internal class AnalyzerAssemblyEventArgs : EventArgs
+{
+    public AnalyzerAssemblyEventArgs(AnalyzerAssembly analyzerAssembly)
+    {
+        AnalyzerAssembly = analyzerAssembly;
     }
+
+    public AnalyzerAssembly AnalyzerAssembly { get; }
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0112RenameIdentifierAccordingToTypeNameTest : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.RenameIdentifierAccordingToTypeName;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RenameIdentifierAccordingToTypeName)]
-        public async Task TestRefactoring_VariableDeclaration()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0112RenameIdentifierAccordingToTypeNameTest : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.RenameIdentifierAccordingToTypeName;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RenameIdentifierAccordingToTypeName)]
+    public async Task TestRefactoring_VariableDeclaration()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using Microsoft.CodeAnalysis;
 
@@ -36,12 +36,12 @@ class C
         }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RenameIdentifierAccordingToTypeName)]
-        public async Task TestRefactoring_VariableDeclaration_Syntax()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RenameIdentifierAccordingToTypeName)]
+    public async Task TestRefactoring_VariableDeclaration_Syntax()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -64,6 +64,5 @@ class C
         }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

@@ -8,67 +8,66 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ExpandCoalesceExpressionRefactoring
 {
-    internal static class ExpandCoalesceExpressionRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
     {
-        public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
+        if (!binaryExpression.IsKind(SyntaxKind.CoalesceExpression))
+            return;
+
+        if (binaryExpression.Left?.IsMissing != false)
+            return;
+
+        if (binaryExpression.Right?.IsMissing != false)
+            return;
+
+        context.RegisterRefactoring(
+            "Expand ??",
+            ct => RefactorAsync(context.Document, binaryExpression, ct),
+            RefactoringDescriptors.ExpandCoalesceExpression);
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        BinaryExpressionSyntax binaryExpression,
+        CancellationToken cancellationToken = default)
+    {
+        ExpressionSyntax left = binaryExpression.Left.WithoutTrivia();
+        ExpressionSyntax right = binaryExpression.Right.WithoutTrivia();
+
+        ExpressionSyntax expression = left.WalkDownParentheses();
+
+        ExpressionSyntax condition;
+        ExpressionSyntax whenTrue;
+
+        if (expression.IsKind(SyntaxKind.AsExpression))
         {
-            if (!binaryExpression.IsKind(SyntaxKind.CoalesceExpression))
-                return;
+            var asExpression = (BinaryExpressionSyntax)expression;
 
-            if (binaryExpression.Left?.IsMissing != false)
-                return;
+            condition = IsExpression(
+                asExpression.Left,
+                Token(SyntaxKind.IsKeyword).WithTriviaFrom(asExpression.OperatorToken),
+                asExpression.Right);
 
-            if (binaryExpression.Right?.IsMissing != false)
-                return;
-
-            context.RegisterRefactoring(
-                "Expand ??",
-                ct => RefactorAsync(context.Document, binaryExpression, ct),
-                RefactoringDescriptors.ExpandCoalesceExpression);
+            whenTrue = CastExpression((TypeSyntax)asExpression.Right, asExpression.Left.Parenthesize());
+        }
+        else
+        {
+            condition = NotEqualsExpression(left, NullLiteralExpression());
+            whenTrue = left;
         }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken = default)
-        {
-            ExpressionSyntax left = binaryExpression.Left.WithoutTrivia();
-            ExpressionSyntax right = binaryExpression.Right.WithoutTrivia();
+        ConditionalExpressionSyntax conditionalExpression = ConditionalExpression(
+            condition.ParenthesizeIf(!CSharpFacts.IsSingleTokenExpression(condition.Kind()), simplifiable: false),
+            whenTrue.Parenthesize(),
+            right.Parenthesize());
 
-            ExpressionSyntax expression = left.WalkDownParentheses();
+        conditionalExpression = conditionalExpression
+            .WithTriviaFrom(binaryExpression)
+            .WithFormatterAnnotation();
 
-            ExpressionSyntax condition;
-            ExpressionSyntax whenTrue;
-
-            if (expression.IsKind(SyntaxKind.AsExpression))
-            {
-                var asExpression = (BinaryExpressionSyntax)expression;
-
-                condition = IsExpression(
-                    asExpression.Left,
-                    Token(SyntaxKind.IsKeyword).WithTriviaFrom(asExpression.OperatorToken),
-                    asExpression.Right);
-
-                whenTrue = CastExpression((TypeSyntax)asExpression.Right, asExpression.Left.Parenthesize());
-            }
-            else
-            {
-                condition = NotEqualsExpression(left, NullLiteralExpression());
-                whenTrue = left;
-            }
-
-            ConditionalExpressionSyntax conditionalExpression = ConditionalExpression(
-                condition.ParenthesizeIf(!CSharpFacts.IsSingleTokenExpression(condition.Kind()), simplifiable: false),
-                whenTrue.Parenthesize(),
-                right.Parenthesize());
-
-            conditionalExpression = conditionalExpression
-                .WithTriviaFrom(binaryExpression)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(binaryExpression, conditionalExpression, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(binaryExpression, conditionalExpression, cancellationToken);
     }
 }

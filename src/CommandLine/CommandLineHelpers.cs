@@ -2,18 +2,17 @@
 
 using System;
 
-namespace Roslynator.CommandLine
-{
-    internal static class CommandLineHelpers
-    {
-        public static void WaitForKeyPress(string message = null)
-        {
-            if (Console.IsInputRedirected)
-                return;
+namespace Roslynator.CommandLine;
 
-            Console.Write(message ?? "Press any key to continue...");
-            Console.ReadKey();
-            Console.WriteLine();
-        }
+internal static class CommandLineHelpers
+{
+    public static void WaitForKeyPress(string message = null)
+    {
+        if (Console.IsInputRedirected)
+            return;
+
+        Console.Write(message ?? "Press any key to continue...");
+        Console.ReadKey();
+        Console.WriteLine();
     }
 }

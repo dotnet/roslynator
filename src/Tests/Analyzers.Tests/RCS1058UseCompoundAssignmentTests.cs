@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1058UseCompoundAssignmentTests : AbstractCSharpDiagnosticVerifier<UseCompoundAssignmentAnalyzer, UseCompoundAssignmentCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCompoundAssignment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        public async Task Test_Property()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1058UseCompoundAssignmentTests : AbstractCSharpDiagnosticVerifier<UseCompoundAssignmentAnalyzer, UseCompoundAssignmentCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCompoundAssignment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    public async Task Test_Property()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -36,23 +36,23 @@ class C
     int P { get; set; }
 }
 ");
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        [InlineData("i = i + 1", "i += 1")]
-        [InlineData("i = (i + 1)", "i += 1")]
-        [InlineData("i = i - 1", "i -= 1")]
-        [InlineData("i = i * 1", "i *= 1")]
-        [InlineData("i = i / 1", "i /= 1")]
-        [InlineData("i = i % 1", "i %= 1")]
-        [InlineData("i = i << 1", "i <<= 1")]
-        [InlineData("i = i >> 1", "i >>= 1")]
-        [InlineData("i = i | 1", "i |= 1")]
-        [InlineData("i = i & 1", "i &= 1")]
-        [InlineData("i = i ^ 1", "i ^= 1")]
-        public async Task Test(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    [InlineData("i = i + 1", "i += 1")]
+    [InlineData("i = (i + 1)", "i += 1")]
+    [InlineData("i = i - 1", "i -= 1")]
+    [InlineData("i = i * 1", "i *= 1")]
+    [InlineData("i = i / 1", "i /= 1")]
+    [InlineData("i = i % 1", "i %= 1")]
+    [InlineData("i = i << 1", "i <<= 1")]
+    [InlineData("i = i >> 1", "i >>= 1")]
+    [InlineData("i = i | 1", "i |= 1")]
+    [InlineData("i = i & 1", "i &= 1")]
+    [InlineData("i = i ^ 1", "i ^= 1")]
+    public async Task Test(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(int i)
@@ -61,12 +61,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        public async Task Test_CoalesceExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    public async Task Test_CoalesceExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -83,12 +83,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        public async Task Test_LazyInitialization()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    public async Task Test_LazyInitialization()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -109,12 +109,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        public async Task TestNoDiagnostic_ObjectInitializer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    public async Task TestNoDiagnostic_ObjectInitializer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -125,12 +125,12 @@ class C
     int P { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        public async Task TestNoDiagnostic_CoalesceExpression_CSharp6()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    public async Task TestNoDiagnostic_CoalesceExpression_CSharp6()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s)
@@ -139,12 +139,12 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp6);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        public async Task TestNoDiagnostic_LazyInitialization_ExpressionsAreNotEquivalent()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    public async Task TestNoDiagnostic_LazyInitialization_ExpressionsAreNotEquivalent()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -156,12 +156,12 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        public async Task TestNoDiagnostic_LazyInitialization_CSharp7_3()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    public async Task TestNoDiagnostic_LazyInitialization_CSharp7_3()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -172,12 +172,12 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
-        public async Task TestNoDiagnostic_ThrowExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+    public async Task TestNoDiagnostic_ThrowExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -190,6 +190,5 @@ class C
     }
 }
 ");
-        }
     }
 }

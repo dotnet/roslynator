@@ -7,71 +7,70 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddBlankLineAfterRegionDirectiveAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddBlankLineAfterRegionDirectiveAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineAfterRegionDirective);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineAfterRegionDirective);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeRegionDirectiveTrivia(f), SyntaxKind.RegionDirectiveTrivia);
+    }
+
+    private static void AnalyzeRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
+    {
+        var regionDirective = (RegionDirectiveTriviaSyntax)context.Node;
+
+        if (IsFollowedWithEmptyLineOrEndRegionDirective())
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AddBlankLineAfterRegionDirective,
+            Location.Create(regionDirective.SyntaxTree, regionDirective.EndOfDirectiveToken.Span));
+
+        bool IsFollowedWithEmptyLineOrEndRegionDirective()
         {
-            base.Initialize(context);
+            SyntaxTrivia parentTrivia = regionDirective.ParentTrivia;
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeRegionDirectiveTrivia(f), SyntaxKind.RegionDirectiveTrivia);
-        }
+            SyntaxTriviaList.Enumerator en = parentTrivia.Token.LeadingTrivia.GetEnumerator();
 
-        private static void AnalyzeRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
-        {
-            var regionDirective = (RegionDirectiveTriviaSyntax)context.Node;
-
-            if (IsFollowedWithEmptyLineOrEndRegionDirective())
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.AddBlankLineAfterRegionDirective,
-                Location.Create(regionDirective.SyntaxTree, regionDirective.EndOfDirectiveToken.Span));
-
-            bool IsFollowedWithEmptyLineOrEndRegionDirective()
+            while (en.MoveNext())
             {
-                SyntaxTrivia parentTrivia = regionDirective.ParentTrivia;
-
-                SyntaxTriviaList.Enumerator en = parentTrivia.Token.LeadingTrivia.GetEnumerator();
-
-                while (en.MoveNext())
+                if (en.Current == parentTrivia)
                 {
-                    if (en.Current == parentTrivia)
+                    if (!en.MoveNext())
+                        return false;
+
+                    if (en.Current.IsWhitespaceTrivia()
+                        && !en.MoveNext())
                     {
-                        if (!en.MoveNext())
-                            return false;
-
-                        if (en.Current.IsWhitespaceTrivia()
-                            && !en.MoveNext())
-                        {
-                            return false;
-                        }
-
-                        if (en.Current.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
-                            return true;
-
-                        return en.Current.IsEndOfLineTrivia();
+                        return false;
                     }
-                }
 
-                return false;
+                    if (en.Current.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
+                        return true;
+
+                    return en.Current.IsEndOfLineTrivia();
+                }
             }
+
+            return false;
         }
     }
 }

@@ -7,22 +7,21 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseEventArgsEmptyRefactoring
 {
-    internal static class UseEventArgsEmptyRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ObjectCreationExpressionSyntax objectCreationExpression,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ObjectCreationExpressionSyntax objectCreationExpression,
-            CancellationToken cancellationToken)
-        {
-            MemberAccessExpressionSyntax newNode = SimpleMemberAccessExpression(
-                ParseTypeName("System.EventArgs").WithSimplifierAnnotation(),
-                IdentifierName("Empty"));
+        MemberAccessExpressionSyntax newNode = SimpleMemberAccessExpression(
+            ParseTypeName("System.EventArgs").WithSimplifierAnnotation(),
+            IdentifierName("Empty"));
 
-            newNode = newNode.WithTriviaFrom(objectCreationExpression);
+        newNode = newNode.WithTriviaFrom(objectCreationExpression);
 
-            return document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken);
     }
 }

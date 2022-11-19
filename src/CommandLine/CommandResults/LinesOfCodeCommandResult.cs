@@ -2,16 +2,15 @@
 
 using Roslynator.CodeMetrics;
 
-namespace Roslynator.CommandLine
-{
-    internal class LinesOfCodeCommandResult : CommandResult
-    {
-        public LinesOfCodeCommandResult(CommandStatus status, CodeMetricsInfo metrics)
-            : base(status)
-        {
-            Metrics = metrics;
-        }
+namespace Roslynator.CommandLine;
 
-        public CodeMetricsInfo Metrics { get; }
+internal class LinesOfCodeCommandResult : CommandResult
+{
+    public LinesOfCodeCommandResult(CommandStatus status, CodeMetricsInfo metrics)
+        : base(status)
+    {
+        Metrics = metrics;
     }
+
+    public CodeMetricsInfo Metrics { get; }
 }

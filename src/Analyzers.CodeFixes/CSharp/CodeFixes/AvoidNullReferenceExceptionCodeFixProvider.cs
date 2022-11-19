@@ -13,106 +13,105 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AvoidNullReferenceExceptionCodeFixProvider))]
+[Shared]
+public sealed class AvoidNullReferenceExceptionCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AvoidNullReferenceExceptionCodeFixProvider))]
-    [Shared]
-    public sealed class AvoidNullReferenceExceptionCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidNullReferenceException); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression, predicate: f => f.IsKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)))
+            return;
+
+        if (IsPartOfLeftSideOfAssignment())
+            return;
+
+        if (expression
+            .WalkUp(f => f.IsKind(SyntaxKind.InvocationExpression, SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression, SyntaxKind.ParenthesizedExpression))
+            .IsParentKind(SyntaxKind.AwaitExpression))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidNullReferenceException); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        if (expression.IsInExpressionTree(semanticModel, context.CancellationToken))
+            return;
+
+        SyntaxKind kind = expression.Kind();
+
+        if (kind == SyntaxKind.SimpleMemberAccessExpression)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression, predicate: f => f.IsKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)))
-                return;
-
-            if (IsPartOfLeftSideOfAssignment())
-                return;
-
-            if (expression
-                .WalkUp(f => f.IsKind(SyntaxKind.InvocationExpression, SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression, SyntaxKind.ParenthesizedExpression))
-                .IsParentKind(SyntaxKind.AwaitExpression))
-            {
-                return;
-            }
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            if (expression.IsInExpressionTree(semanticModel, context.CancellationToken))
-                return;
-
-            SyntaxKind kind = expression.Kind();
-
-            if (kind == SyntaxKind.SimpleMemberAccessExpression)
-            {
-                expression = ((MemberAccessExpressionSyntax)expression).Expression;
-            }
-            else if (kind == SyntaxKind.ElementAccessExpression)
-            {
-                expression = ((ElementAccessExpressionSyntax)expression).Expression;
-            }
-
-            CodeAction codeAction = CodeAction.Create(
-                "Use conditional access",
-                ct => RefactorAsync(context.Document, expression, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.AvoidNullReferenceException));
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-
-            bool IsPartOfLeftSideOfAssignment()
-            {
-                for (SyntaxNode node = expression; node != null; node = node.Parent)
-                {
-                    var assignmentExpression = node.Parent as AssignmentExpressionSyntax;
-
-                    if (assignmentExpression?.Left == node)
-                        return true;
-                }
-
-                return false;
-            }
+            expression = ((MemberAccessExpressionSyntax)expression).Expression;
+        }
+        else if (kind == SyntaxKind.ElementAccessExpression)
+        {
+            expression = ((ElementAccessExpressionSyntax)expression).Expression;
         }
 
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken)
+        CodeAction codeAction = CodeAction.Create(
+            "Use conditional access",
+            ct => RefactorAsync(context.Document, expression, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.AvoidNullReferenceException));
+
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
+
+        bool IsPartOfLeftSideOfAssignment()
         {
-            var span = new TextSpan(expression.Span.End, 0);
-
-            Document newDocument = await document.WithTextChangeAsync(span, "?", cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode root = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var conditionalAccessExpression = (ConditionalAccessExpressionSyntax)root.FindNode(span, getInnermostNodeForTie: true);
-
-            SemanticModel semanticModel = await newDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            TypeInfo typeInfo = semanticModel.GetTypeInfo(conditionalAccessExpression, cancellationToken);
-
-            ITypeSymbol type = typeInfo.Type;
-            ITypeSymbol convertedType = typeInfo.ConvertedType;
-
-            if (!SymbolEqualityComparer.Default.Equals(type, convertedType)
-                && type.IsNullableType()
-                && SymbolEqualityComparer.Default.Equals(((INamedTypeSymbol)type).TypeArguments[0], convertedType))
+            for (SyntaxNode node = expression; node != null; node = node.Parent)
             {
-                ExpressionSyntax defaultValue = convertedType.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions());
+                var assignmentExpression = node.Parent as AssignmentExpressionSyntax;
 
-                ExpressionSyntax coalesceExpression = CoalesceExpression(conditionalAccessExpression.WithoutTrivia(), defaultValue)
-                    .WithTriviaFrom(conditionalAccessExpression)
-                    .Parenthesize()
-                    .WithFormatterAnnotation();
-
-                return await newDocument.ReplaceNodeAsync(conditionalAccessExpression, coalesceExpression, cancellationToken).ConfigureAwait(false);
+                if (assignmentExpression?.Left == node)
+                    return true;
             }
 
-            return newDocument;
+            return false;
         }
+    }
+
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken)
+    {
+        var span = new TextSpan(expression.Span.End, 0);
+
+        Document newDocument = await document.WithTextChangeAsync(span, "?", cancellationToken).ConfigureAwait(false);
+
+        SyntaxNode root = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        var conditionalAccessExpression = (ConditionalAccessExpressionSyntax)root.FindNode(span, getInnermostNodeForTie: true);
+
+        SemanticModel semanticModel = await newDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        TypeInfo typeInfo = semanticModel.GetTypeInfo(conditionalAccessExpression, cancellationToken);
+
+        ITypeSymbol type = typeInfo.Type;
+        ITypeSymbol convertedType = typeInfo.ConvertedType;
+
+        if (!SymbolEqualityComparer.Default.Equals(type, convertedType)
+            && type.IsNullableType()
+            && SymbolEqualityComparer.Default.Equals(((INamedTypeSymbol)type).TypeArguments[0], convertedType))
+        {
+            ExpressionSyntax defaultValue = convertedType.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions());
+
+            ExpressionSyntax coalesceExpression = CoalesceExpression(conditionalAccessExpression.WithoutTrivia(), defaultValue)
+                .WithTriviaFrom(conditionalAccessExpression)
+                .Parenthesize()
+                .WithFormatterAnnotation();
+
+            return await newDocument.ReplaceNodeAsync(conditionalAccessExpression, coalesceExpression, cancellationToken).ConfigureAwait(false);
+        }
+
+        return newDocument;
     }
 }

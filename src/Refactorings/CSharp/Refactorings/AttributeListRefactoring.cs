@@ -10,210 +10,209 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AttributeListRefactoring
 {
-    internal static class AttributeListRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax member)
     {
-        public static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax member)
+        if (context.IsAnyRefactoringEnabled(
+            RefactoringDescriptors.SplitAttributes,
+            RefactoringDescriptors.MergeAttributes)
+            && !member.IsKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration)
+            && SyntaxListSelection<AttributeListSyntax>.TryCreate(member.GetAttributeLists(), context.Span, out SyntaxListSelection<AttributeListSyntax> selectedAttributeLists))
         {
-            if (context.IsAnyRefactoringEnabled(
-                RefactoringDescriptors.SplitAttributes,
-                RefactoringDescriptors.MergeAttributes)
-                && !member.IsKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration)
-                && SyntaxListSelection<AttributeListSyntax>.TryCreate(member.GetAttributeLists(), context.Span, out SyntaxListSelection<AttributeListSyntax> selectedAttributeLists))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SplitAttributes)
+                && selectedAttributeLists.Any(f => f.Attributes.Count > 1))
             {
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.SplitAttributes)
-                    && selectedAttributeLists.Any(f => f.Attributes.Count > 1))
+                context.RegisterRefactoring(
+                    "Split attributes",
+                    ct => SplitAsync(context.Document, member, selectedAttributeLists.ToArray(), ct),
+                    RefactoringDescriptors.SplitAttributes);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MergeAttributes)
+                && selectedAttributeLists.Count > 1)
+            {
+                context.RegisterRefactoring(
+                    "Merge attributes",
+                    ct => MergeAsync(context.Document, member, selectedAttributeLists.ToArray(), ct),
+                    RefactoringDescriptors.MergeAttributes);
+            }
+        }
+    }
+
+    public static Task<Document> SplitAsync(
+        Document document,
+        MemberDeclarationSyntax member,
+        AttributeListSyntax[] attributeLists,
+        CancellationToken cancellationToken = default)
+    {
+        SyntaxList<AttributeListSyntax> lists = member.GetAttributeLists();
+
+        var newLists = new List<AttributeListSyntax>();
+
+        int index = lists.IndexOf(attributeLists[0]);
+
+        for (int i = 0; i < index; i++)
+            newLists.Add(lists[i]);
+
+        newLists.AddRange(attributeLists.SelectMany(f => SyntaxRefactorings.SplitAttributeList(f)).Select(f => f.WithFormatterAnnotation()));
+
+        for (int i = index + attributeLists.Length; i < lists.Count; i++)
+            newLists.Add(lists[i]);
+
+        return document.ReplaceNodeAsync(
+            member,
+            member.WithAttributeLists(newLists.ToSyntaxList()),
+            cancellationToken);
+    }
+
+    public static Task<Document> MergeAsync(
+        Document document,
+        MemberDeclarationSyntax member,
+        AttributeListSyntax[] attributeLists,
+        CancellationToken cancellationToken = default)
+    {
+        SyntaxList<AttributeListSyntax> lists = member.GetAttributeLists();
+
+        var newLists = new List<AttributeListSyntax>(lists.Count - attributeLists.Length + 1);
+
+        int index = lists.IndexOf(attributeLists[0]);
+
+        for (int i = 0; i < index; i++)
+            newLists.Add(lists[i]);
+
+        newLists.Add(SyntaxRefactorings.JoinAttributes(attributeLists).WithFormatterAnnotation());
+
+        for (int i = index + attributeLists.Length; i < lists.Count; i++)
+            newLists.Add(lists[i]);
+
+        return document.ReplaceNodeAsync(
+            member,
+            member.WithAttributeLists(newLists.ToSyntaxList()),
+            cancellationToken);
+    }
+
+    public static SyntaxList<AttributeListSyntax> GetAttributeLists(this SyntaxNode node)
+    {
+        if (node == null)
+            throw new ArgumentNullException(nameof(node));
+
+        switch (node.Kind())
+        {
+            case SyntaxKind.EnumDeclaration:
+                return ((EnumDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.DelegateDeclaration:
+                return ((DelegateDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.ClassDeclaration:
+                return ((ClassDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.TypeParameter:
+                return ((TypeParameterSyntax)node).AttributeLists;
+            case SyntaxKind.RecordDeclaration:
+            case SyntaxKind.RecordStructDeclaration:
+                return ((RecordDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.StructDeclaration:
+                return ((StructDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.PropertyDeclaration:
+                return ((PropertyDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.Parameter:
+                return ((ParameterSyntax)node).AttributeLists;
+            case SyntaxKind.OperatorDeclaration:
+                return ((OperatorDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.MethodDeclaration:
+                return ((MethodDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.InterfaceDeclaration:
+                return ((InterfaceDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.IndexerDeclaration:
+                return ((IndexerDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.FieldDeclaration:
+                return ((FieldDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.EventFieldDeclaration:
+                return ((EventFieldDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.EventDeclaration:
+                return ((EventDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.EnumMemberDeclaration:
+                return ((EnumMemberDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.DestructorDeclaration:
+                return ((DestructorDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.ConversionOperatorDeclaration:
+                return ((ConversionOperatorDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.ConstructorDeclaration:
+                return ((ConstructorDeclarationSyntax)node).AttributeLists;
+            case SyntaxKind.IncompleteMember:
+                return ((IncompleteMemberSyntax)node).AttributeLists;
+            case SyntaxKind.GetAccessorDeclaration:
+            case SyntaxKind.SetAccessorDeclaration:
+            case SyntaxKind.AddAccessorDeclaration:
+            case SyntaxKind.RemoveAccessorDeclaration:
+                return ((AccessorDeclarationSyntax)node).AttributeLists;
+            default:
                 {
-                    context.RegisterRefactoring(
-                        "Split attributes",
-                        ct => SplitAsync(context.Document, member, selectedAttributeLists.ToArray(), ct),
-                        RefactoringDescriptors.SplitAttributes);
+                    SyntaxDebug.Assert(node.IsKind(SyntaxKind.GlobalStatement), node);
+                    return default;
                 }
+        }
+    }
 
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.MergeAttributes)
-                    && selectedAttributeLists.Count > 1)
+    public static CSharpSyntaxNode WithAttributeLists(this CSharpSyntaxNode node, SyntaxList<AttributeListSyntax> attributeLists)
+    {
+        if (node == null)
+            throw new ArgumentNullException(nameof(node));
+
+        switch (node.Kind())
+        {
+            case SyntaxKind.EnumDeclaration:
+                return ((EnumDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.DelegateDeclaration:
+                return ((DelegateDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.ClassDeclaration:
+                return ((ClassDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.TypeParameter:
+                return ((TypeParameterSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.RecordDeclaration:
+            case SyntaxKind.RecordStructDeclaration:
+                return ((RecordDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.StructDeclaration:
+                return ((StructDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.PropertyDeclaration:
+                return ((PropertyDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.Parameter:
+                return ((ParameterSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.OperatorDeclaration:
+                return ((OperatorDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.MethodDeclaration:
+                return ((MethodDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.InterfaceDeclaration:
+                return ((InterfaceDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.IndexerDeclaration:
+                return ((IndexerDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.FieldDeclaration:
+                return ((FieldDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.EventFieldDeclaration:
+                return ((EventFieldDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.EventDeclaration:
+                return ((EventDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.EnumMemberDeclaration:
+                return ((EnumMemberDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.DestructorDeclaration:
+                return ((DestructorDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.ConversionOperatorDeclaration:
+                return ((ConversionOperatorDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.ConstructorDeclaration:
+                return ((ConstructorDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.IncompleteMember:
+                return ((IncompleteMemberSyntax)node).WithAttributeLists(attributeLists);
+            case SyntaxKind.GetAccessorDeclaration:
+            case SyntaxKind.SetAccessorDeclaration:
+            case SyntaxKind.AddAccessorDeclaration:
+            case SyntaxKind.RemoveAccessorDeclaration:
+                return ((AccessorDeclarationSyntax)node).WithAttributeLists(attributeLists);
+            default:
                 {
-                    context.RegisterRefactoring(
-                        "Merge attributes",
-                        ct => MergeAsync(context.Document, member, selectedAttributeLists.ToArray(), ct),
-                        RefactoringDescriptors.MergeAttributes);
+                    SyntaxDebug.Fail(node);
+                    return node;
                 }
-            }
-        }
-
-        public static Task<Document> SplitAsync(
-            Document document,
-            MemberDeclarationSyntax member,
-            AttributeListSyntax[] attributeLists,
-            CancellationToken cancellationToken = default)
-        {
-            SyntaxList<AttributeListSyntax> lists = member.GetAttributeLists();
-
-            var newLists = new List<AttributeListSyntax>();
-
-            int index = lists.IndexOf(attributeLists[0]);
-
-            for (int i = 0; i < index; i++)
-                newLists.Add(lists[i]);
-
-            newLists.AddRange(attributeLists.SelectMany(f => SyntaxRefactorings.SplitAttributeList(f)).Select(f => f.WithFormatterAnnotation()));
-
-            for (int i = index + attributeLists.Length; i < lists.Count; i++)
-                newLists.Add(lists[i]);
-
-            return document.ReplaceNodeAsync(
-                member,
-                member.WithAttributeLists(newLists.ToSyntaxList()),
-                cancellationToken);
-        }
-
-        public static Task<Document> MergeAsync(
-            Document document,
-            MemberDeclarationSyntax member,
-            AttributeListSyntax[] attributeLists,
-            CancellationToken cancellationToken = default)
-        {
-            SyntaxList<AttributeListSyntax> lists = member.GetAttributeLists();
-
-            var newLists = new List<AttributeListSyntax>(lists.Count - attributeLists.Length + 1);
-
-            int index = lists.IndexOf(attributeLists[0]);
-
-            for (int i = 0; i < index; i++)
-                newLists.Add(lists[i]);
-
-            newLists.Add(SyntaxRefactorings.JoinAttributes(attributeLists).WithFormatterAnnotation());
-
-            for (int i = index + attributeLists.Length; i < lists.Count; i++)
-                newLists.Add(lists[i]);
-
-            return document.ReplaceNodeAsync(
-                member,
-                member.WithAttributeLists(newLists.ToSyntaxList()),
-                cancellationToken);
-        }
-
-        public static SyntaxList<AttributeListSyntax> GetAttributeLists(this SyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            switch (node.Kind())
-            {
-                case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.TypeParameter:
-                    return ((TypeParameterSyntax)node).AttributeLists;
-                case SyntaxKind.RecordDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
-                    return ((RecordDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.Parameter:
-                    return ((ParameterSyntax)node).AttributeLists;
-                case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.EventFieldDeclaration:
-                    return ((EventFieldDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.EventDeclaration:
-                    return ((EventDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.EnumMemberDeclaration:
-                    return ((EnumMemberDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.DestructorDeclaration:
-                    return ((DestructorDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.IncompleteMember:
-                    return ((IncompleteMemberSyntax)node).AttributeLists;
-                case SyntaxKind.GetAccessorDeclaration:
-                case SyntaxKind.SetAccessorDeclaration:
-                case SyntaxKind.AddAccessorDeclaration:
-                case SyntaxKind.RemoveAccessorDeclaration:
-                    return ((AccessorDeclarationSyntax)node).AttributeLists;
-                default:
-                    {
-                        SyntaxDebug.Assert(node.IsKind(SyntaxKind.GlobalStatement), node);
-                        return default;
-                    }
-            }
-        }
-
-        public static CSharpSyntaxNode WithAttributeLists(this CSharpSyntaxNode node, SyntaxList<AttributeListSyntax> attributeLists)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            switch (node.Kind())
-            {
-                case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.TypeParameter:
-                    return ((TypeParameterSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.RecordDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
-                    return ((RecordDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.Parameter:
-                    return ((ParameterSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.EventFieldDeclaration:
-                    return ((EventFieldDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.EventDeclaration:
-                    return ((EventDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.EnumMemberDeclaration:
-                    return ((EnumMemberDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.DestructorDeclaration:
-                    return ((DestructorDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.IncompleteMember:
-                    return ((IncompleteMemberSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.GetAccessorDeclaration:
-                case SyntaxKind.SetAccessorDeclaration:
-                case SyntaxKind.AddAccessorDeclaration:
-                case SyntaxKind.RemoveAccessorDeclaration:
-                    return ((AccessorDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                default:
-                    {
-                        SyntaxDebug.Fail(node);
-                        return node;
-                    }
-            }
         }
     }
 }

@@ -12,84 +12,83 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitTypeInsteadOfVarCodeFixProvider))]
+[Shared]
+public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitTypeInsteadOfVarCodeFixProvider))]
-    [Shared]
-    public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
-                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
+                DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.VariableDeclaration, SyntaxKind.DeclarationExpression)))
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        if (node is VariableDeclarationSyntax variableDeclaration)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            ExpressionSyntax value = variableDeclaration.Variables[0].Initializer.Value;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(value, context.CancellationToken);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.VariableDeclaration, SyntaxKind.DeclarationExpression)))
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            if (node is VariableDeclarationSyntax variableDeclaration)
+            if (typeSymbol is null)
             {
-                ExpressionSyntax value = variableDeclaration.Variables[0].Initializer.Value;
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(value, context.CancellationToken);
+                var localSymbol = semanticModel.GetDeclaredSymbol(variableDeclaration.Variables[0], context.CancellationToken) as ILocalSymbol;
 
-                if (typeSymbol is null)
+                if (localSymbol is not null)
                 {
-                    var localSymbol = semanticModel.GetDeclaredSymbol(variableDeclaration.Variables[0], context.CancellationToken) as ILocalSymbol;
+                    typeSymbol = localSymbol.Type;
 
-                    if (localSymbol is not null)
-                    {
-                        typeSymbol = localSymbol.Type;
+                    value = value.WalkDownParentheses();
 
-                        value = value.WalkDownParentheses();
+                    Debug.Assert(
+                        value.IsKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression),
+                        value.Kind().ToString());
 
-                        Debug.Assert(
-                            value.IsKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression),
-                            value.Kind().ToString());
-
-                        if (value.IsKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression))
-                            typeSymbol = typeSymbol.WithNullableAnnotation(NullableAnnotation.NotAnnotated);
-                    }
-                    else
-                    {
-                        SyntaxDebug.Fail(variableDeclaration.Variables[0]);
-                        return;
-                    }
+                    if (value.IsKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression))
+                        typeSymbol = typeSymbol.WithNullableAnnotation(NullableAnnotation.NotAnnotated);
                 }
-
-                RegisterCodeFix(context, variableDeclaration.Type, typeSymbol, semanticModel);
+                else
+                {
+                    SyntaxDebug.Fail(variableDeclaration.Variables[0]);
+                    return;
+                }
             }
-            else
-            {
-                var declarationExpression = (DeclarationExpressionSyntax)node;
 
-                TypeSyntax type = declarationExpression.Type;
-
-                var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
-
-                ITypeSymbol typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
-
-                RegisterCodeFix(context, type, typeSymbol, semanticModel);
-            }
+            RegisterCodeFix(context, variableDeclaration.Type, typeSymbol, semanticModel);
         }
-
-        private void RegisterCodeFix(CodeFixContext context, TypeSyntax type, ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        else
         {
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                CodeAction codeAction = CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+            var declarationExpression = (DeclarationExpressionSyntax)node;
 
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
+            TypeSyntax type = declarationExpression.Type;
+
+            var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
+
+            ITypeSymbol typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
+
+            RegisterCodeFix(context, type, typeSymbol, semanticModel);
+        }
+    }
+
+    private void RegisterCodeFix(CodeFixContext context, TypeSyntax type, ITypeSymbol typeSymbol, SemanticModel semanticModel)
+    {
+        foreach (Diagnostic diagnostic in context.Diagnostics)
+        {
+            CodeAction codeAction = CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

@@ -4,30 +4,29 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Roslynator.Utilities
-{
-    public static class FileHelper
-    {
-        public static void WriteAllText(string path, string content, Encoding encoding, bool onlyIfChanges = true, bool fileMustExists = true)
-        {
-            if (fileMustExists
-                && !File.Exists(path))
-            {
-                Console.WriteLine($"file not found '{path}'");
-                return;
-            }
+namespace Roslynator.Utilities;
 
-            if (!onlyIfChanges
-                || !File.Exists(path)
-                || !string.Equals(content, File.ReadAllText(path, encoding), StringComparison.Ordinal))
-            {
-                File.WriteAllText(path, content, encoding);
-                Console.WriteLine($"file saved: '{path}'");
-            }
-            else
-            {
-                Console.WriteLine($"file unchanged: '{path}'");
-            }
+public static class FileHelper
+{
+    public static void WriteAllText(string path, string content, Encoding encoding, bool onlyIfChanges = true, bool fileMustExists = true)
+    {
+        if (fileMustExists
+            && !File.Exists(path))
+        {
+            Console.WriteLine($"file not found '{path}'");
+            return;
+        }
+
+        if (!onlyIfChanges
+            || !File.Exists(path)
+            || !string.Equals(content, File.ReadAllText(path, encoding), StringComparison.Ordinal))
+        {
+            File.WriteAllText(path, content, encoding);
+            Console.WriteLine($"file saved: '{path}'");
+        }
+        else
+        {
+            Console.WriteLine($"file unchanged: '{path}'");
         }
     }
 }

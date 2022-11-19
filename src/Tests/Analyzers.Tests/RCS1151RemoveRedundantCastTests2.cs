@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1151RemoveRedundantCastTests2 : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, RemoveRedundantCastCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantCast;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
-        public async Task Test_CastToDerivedType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1151RemoveRedundantCastTests2 : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, RemoveRedundantCastCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantCast;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    public async Task Test_CastToDerivedType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,12 +45,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
-        public async Task TestNoDiagnostic_CastFromObject()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    public async Task TestNoDiagnostic_CastFromObject()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections;
 using System.Linq;
 
@@ -64,12 +64,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
-        public async Task TestNoDiagnostic_CastFromDynamic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    public async Task TestNoDiagnostic_CastFromDynamic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections;
 using System.Linq;
 
@@ -83,12 +83,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
-        internal async Task TestNoDiagnostic_NullableReferenceType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    internal async Task TestNoDiagnostic_NullableReferenceType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -106,6 +106,5 @@ class C
     }
 }
 ");
-        }
     }
 }

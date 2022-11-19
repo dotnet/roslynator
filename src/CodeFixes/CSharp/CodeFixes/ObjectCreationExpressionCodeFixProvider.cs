@@ -14,136 +14,135 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ObjectCreationExpressionCodeFixProvider))]
+[Shared]
+public sealed class ObjectCreationExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ObjectCreationExpressionCodeFixProvider))]
-    [Shared]
-    public sealed class ObjectCreationExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor, context.Document, root.SyntaxTree))
+            return;
+
+        ObjectCreationExpressionSyntax objectCreationExpression = root
+            .FindNode(context.Span, getInnermostNodeForTie: true)?
+            .FirstAncestorOrSelf<ObjectCreationExpressionSyntax>();
+
+        if (objectCreationExpression == null)
+            return;
+
+        switch (diagnostic.Id)
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter); }
-        }
+            case CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter:
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor, context.Document, root.SyntaxTree))
+                        break;
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+                    if (!objectCreationExpression.Type.Span.Contains(diagnostic.Location.SourceSpan))
+                        return;
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+                    ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor, context.Document, root.SyntaxTree))
-                return;
+                    if (argumentList?.Arguments.Any() == true)
+                        return;
 
-            ObjectCreationExpressionSyntax objectCreationExpression = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ObjectCreationExpressionSyntax>();
+                    InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
 
-            if (objectCreationExpression == null)
-                return;
+                    if (initializer == null)
+                        return;
 
-            switch (diagnostic.Id)
-            {
-                case CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter:
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    List<ExpressionSyntax> expressions = null;
+
+                    foreach (ExpressionSyntax expression in initializer.Expressions)
                     {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor, context.Document, root.SyntaxTree))
-                            break;
-
-                        if (!objectCreationExpression.Type.Span.Contains(diagnostic.Location.SourceSpan))
-                            return;
-
-                        ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
-
-                        if (argumentList?.Arguments.Any() == true)
-                            return;
-
-                        InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
-
-                        if (initializer == null)
-                            return;
-
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        List<ExpressionSyntax> expressions = null;
-
-                        foreach (ExpressionSyntax expression in initializer.Expressions)
+                        if (expression is AssignmentExpressionSyntax assignment
+                            && semanticModel.GetDiagnostic(
+                                CompilerDiagnosticIdentifiers.CS0272_PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible,
+                                assignment.Left.Span,
+                                context.CancellationToken) != null)
                         {
-                            if (expression is AssignmentExpressionSyntax assignment
-                                && semanticModel.GetDiagnostic(
-                                    CompilerDiagnosticIdentifiers.CS0272_PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible,
-                                    assignment.Left.Span,
-                                    context.CancellationToken) != null)
+                            (expressions ??= new List<ExpressionSyntax>()).Add(expression);
+                        }
+                    }
+
+                    if (expressions == null)
+                        return;
+
+                    TypeSyntax type = objectCreationExpression.Type;
+
+                    if (argumentList == null)
+                    {
+                        argumentList = ArgumentList().WithTrailingTrivia(type.GetTrailingTrivia());
+                        type = type.WithoutTrailingTrivia();
+                    }
+
+                    SeparatedSyntaxList<ArgumentSyntax> arguments = expressions
+                        .Select(f => Argument(((AssignmentExpressionSyntax)f).Right))
+                        .ToSeparatedSyntaxList();
+
+                    argumentList = argumentList.WithArguments(arguments);
+
+                    ObjectCreationExpressionSyntax newObjectCreationExpression = objectCreationExpression.Update(
+                        objectCreationExpression.NewKeyword,
+                        type,
+                        argumentList,
+                        initializer);
+
+                    SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(
+                        objectCreationExpression.SpanStart,
+                        newObjectCreationExpression,
+                        SpeculativeBindingOption.BindAsExpression);
+
+                    if (symbolInfo.Symbol is IMethodSymbol methodSymbol
+                        && methodSymbol.MethodKind == MethodKind.Constructor)
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Move initializer expressions to constructor",
+                            ct =>
                             {
-                                (expressions ??= new List<ExpressionSyntax>()).Add(expression);
-                            }
-                        }
+                                InitializerExpressionSyntax newInitializer = initializer.RemoveNodes(expressions, SyntaxRefactorings.DefaultRemoveOptions);
 
-                        if (expressions == null)
-                            return;
-
-                        TypeSyntax type = objectCreationExpression.Type;
-
-                        if (argumentList == null)
-                        {
-                            argumentList = ArgumentList().WithTrailingTrivia(type.GetTrailingTrivia());
-                            type = type.WithoutTrailingTrivia();
-                        }
-
-                        SeparatedSyntaxList<ArgumentSyntax> arguments = expressions
-                            .Select(f => Argument(((AssignmentExpressionSyntax)f).Right))
-                            .ToSeparatedSyntaxList();
-
-                        argumentList = argumentList.WithArguments(arguments);
-
-                        ObjectCreationExpressionSyntax newObjectCreationExpression = objectCreationExpression.Update(
-                            objectCreationExpression.NewKeyword,
-                            type,
-                            argumentList,
-                            initializer);
-
-                        SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(
-                            objectCreationExpression.SpanStart,
-                            newObjectCreationExpression,
-                            SpeculativeBindingOption.BindAsExpression);
-
-                        if (symbolInfo.Symbol is IMethodSymbol methodSymbol
-                            && methodSymbol.MethodKind == MethodKind.Constructor)
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Move initializer expressions to constructor",
-                                ct =>
+                                if (!newInitializer.Expressions.Any()
+                                    && newInitializer
+                                        .DescendantTrivia(TextSpan.FromBounds(newInitializer.OpenBraceToken.SpanStart, newInitializer.CloseBraceToken.SpanStart))
+                                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                 {
-                                    InitializerExpressionSyntax newInitializer = initializer.RemoveNodes(expressions, SyntaxRefactorings.DefaultRemoveOptions);
+                                    newInitializer = null;
 
-                                    if (!newInitializer.Expressions.Any()
-                                        && newInitializer
-                                            .DescendantTrivia(TextSpan.FromBounds(newInitializer.OpenBraceToken.SpanStart, newInitializer.CloseBraceToken.SpanStart))
-                                            .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                                    {
-                                        newInitializer = null;
-
-                                        ArgumentListSyntax newArgumentList = newObjectCreationExpression
-                                            .ArgumentList
-                                            .TrimTrailingTrivia()
-                                            .AppendToTrailingTrivia(initializer.GetTrailingTrivia());
-
-                                        newObjectCreationExpression = newObjectCreationExpression
-                                            .WithArgumentList(newArgumentList);
-                                    }
+                                    ArgumentListSyntax newArgumentList = newObjectCreationExpression
+                                        .ArgumentList
+                                        .TrimTrailingTrivia()
+                                        .AppendToTrailingTrivia(initializer.GetTrailingTrivia());
 
                                     newObjectCreationExpression = newObjectCreationExpression
-                                        .WithInitializer(newInitializer)
-                                        .WithFormatterAnnotation();
+                                        .WithArgumentList(newArgumentList);
+                                }
 
-                                    return context.Document.ReplaceNodeAsync(objectCreationExpression, newObjectCreationExpression, ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                                newObjectCreationExpression = newObjectCreationExpression
+                                    .WithInitializer(newInitializer)
+                                    .WithFormatterAnnotation();
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
+                                return context.Document.ReplaceNodeAsync(objectCreationExpression, newObjectCreationExpression, ct);
+                            },
+                            GetEquivalenceKey(diagnostic));
 
-                        break;
+                        context.RegisterCodeFix(codeAction, diagnostic);
                     }
-            }
+
+                    break;
+                }
         }
     }
 }

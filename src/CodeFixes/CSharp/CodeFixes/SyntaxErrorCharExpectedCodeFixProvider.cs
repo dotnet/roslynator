@@ -12,96 +12,95 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SyntaxErrorCharExpectedCodeFixProvider))]
+[Shared]
+public sealed class SyntaxErrorCharExpectedCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SyntaxErrorCharExpectedCodeFixProvider))]
-    [Shared]
-    public sealed class SyntaxErrorCharExpectedCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddMissingComma, context.Document, root.SyntaxTree))
+            return;
+
+        ExpressionSyntax expression = root.FindNode(context.Span).FirstAncestorOrSelf<ExpressionSyntax>();
+
+        if (expression == null)
+            return;
+
+        int position = -1;
+
+        switch (expression.Parent.Kind())
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected); }
+            case SyntaxKind.ArrayInitializerExpression:
+                {
+                    var initializer = (InitializerExpressionSyntax)expression.Parent;
+
+                    SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+
+                    position = FindMissingCommaPosition(expressions, expression);
+                    break;
+                }
+            case SyntaxKind.EqualsValueClause:
+                {
+                    var equalsValueClause = (EqualsValueClauseSyntax)expression.Parent;
+
+                    if (equalsValueClause.Parent is EnumMemberDeclarationSyntax enumMemberDeclaration)
+                    {
+                        var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
+
+                        position = FindMissingCommaPosition(enumDeclaration.Members, enumMemberDeclaration);
+                    }
+
+                    break;
+                }
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        if (position == -1)
+            return;
+
+        CodeAction codeAction = CodeAction.Create(
+            "Add missing comma",
+            ct => context.Document.WithTextChangeAsync(new TextSpan(position, 0), ",", ct),
+            GetEquivalenceKey(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+
+        static int FindMissingCommaPosition<TNode>(SeparatedSyntaxList<TNode> nodes, TNode node) where TNode : SyntaxNode
         {
-            Diagnostic diagnostic = context.Diagnostics[0];
+            int index = nodes.IndexOf(node);
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            Debug.Assert(index > 0);
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddMissingComma, context.Document, root.SyntaxTree))
-                return;
+            if (index <= 0)
+                return -1;
 
-            ExpressionSyntax expression = root.FindNode(context.Span).FirstAncestorOrSelf<ExpressionSyntax>();
-
-            if (expression == null)
-                return;
-
-            int position = -1;
-
-            switch (expression.Parent.Kind())
+            if (nodes.GetSeparator(index - 1).IsMissing)
             {
-                case SyntaxKind.ArrayInitializerExpression:
-                    {
-                        var initializer = (InitializerExpressionSyntax)expression.Parent;
-
-                        SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
-
-                        position = FindMissingCommaPosition(expressions, expression);
-                        break;
-                    }
-                case SyntaxKind.EqualsValueClause:
-                    {
-                        var equalsValueClause = (EqualsValueClauseSyntax)expression.Parent;
-
-                        if (equalsValueClause.Parent is EnumMemberDeclarationSyntax enumMemberDeclaration)
-                        {
-                            var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
-
-                            position = FindMissingCommaPosition(enumDeclaration.Members, enumMemberDeclaration);
-                        }
-
-                        break;
-                    }
+                return nodes[index - 1].Span.End;
             }
-
-            if (position == -1)
-                return;
-
-            CodeAction codeAction = CodeAction.Create(
-                "Add missing comma",
-                ct => context.Document.WithTextChangeAsync(new TextSpan(position, 0), ",", ct),
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-
-            static int FindMissingCommaPosition<TNode>(SeparatedSyntaxList<TNode> nodes, TNode node) where TNode : SyntaxNode
+            else
             {
-                int index = nodes.IndexOf(node);
+                Debug.Assert(index < nodes.Count - 1);
 
-                Debug.Assert(index > 0);
-
-                if (index <= 0)
+                if (index == nodes.Count - 1)
                     return -1;
 
-                if (nodes.GetSeparator(index - 1).IsMissing)
-                {
-                    return nodes[index - 1].Span.End;
-                }
-                else
-                {
-                    Debug.Assert(index < nodes.Count - 1);
+                Debug.Assert(nodes.GetSeparator(index).IsMissing);
 
-                    if (index == nodes.Count - 1)
-                        return -1;
+                if (!nodes.GetSeparator(index).IsMissing)
+                    return -1;
 
-                    Debug.Assert(nodes.GetSeparator(index).IsMissing);
-
-                    if (!nodes.GetSeparator(index).IsMissing)
-                        return -1;
-
-                    return node.Span.End;
-                }
+                return node.Span.End;
             }
         }
     }

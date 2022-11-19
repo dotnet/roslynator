@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0162InvertIfElseTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.InvertIfElse;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIfElse)]
-        public async Task Test_IfElse()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0162InvertIfElseTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.InvertIfElse;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIfElse)]
+    public async Task Test_IfElse()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M(bool f = false)
@@ -44,12 +44,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIfElse)]
-        public async Task Test_IfElse_Nested()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIfElse)]
+    public async Task Test_IfElse_Nested()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M()
@@ -92,12 +92,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIfElse)]
-        public async Task TestNoRefactoring_IfElseIf()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIfElse)]
+    public async Task TestNoRefactoring_IfElseIf()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(bool f = false, bool f2 = false)
@@ -115,6 +115,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

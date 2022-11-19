@@ -3,29 +3,28 @@
 using System;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.FindSymbols
+namespace Roslynator.FindSymbols;
+
+internal class PredicateSymbolFilterRule : SymbolFilterRule
 {
-    internal class PredicateSymbolFilterRule : SymbolFilterRule
+    private readonly Func<ISymbol, bool> _isMatch;
+    private readonly Func<ISymbol, bool> _isApplicable;
+
+    public PredicateSymbolFilterRule(Func<ISymbol, bool> isMatch, Func<ISymbol, bool> isApplicable, SymbolFilterReason reason)
     {
-        private readonly Func<ISymbol, bool> _isMatch;
-        private readonly Func<ISymbol, bool> _isApplicable;
+        _isMatch = isMatch;
+        _isApplicable = isApplicable;
+        Reason = reason;
+    }
 
-        public PredicateSymbolFilterRule(Func<ISymbol, bool> isMatch, Func<ISymbol, bool> isApplicable, SymbolFilterReason reason)
-        {
-            _isMatch = isMatch;
-            _isApplicable = isApplicable;
-            Reason = reason;
-        }
+    public override bool IsApplicable(ISymbol value) => _isApplicable(value);
 
-        public override bool IsApplicable(ISymbol value) => _isApplicable(value);
+    public override bool IsMatch(ISymbol value) => _isMatch(value);
 
-        public override bool IsMatch(ISymbol value) => _isMatch(value);
+    public override SymbolFilterReason Reason { get; }
 
-        public override SymbolFilterReason Reason { get; }
-
-        public PredicateSymbolFilterRule Invert()
-        {
-            return new PredicateSymbolFilterRule(f => !_isMatch(f), _isApplicable, Reason);
-        }
+    public PredicateSymbolFilterRule Invert()
+    {
+        return new PredicateSymbolFilterRule(f => !_isMatch(f), _isApplicable, Reason);
     }
 }

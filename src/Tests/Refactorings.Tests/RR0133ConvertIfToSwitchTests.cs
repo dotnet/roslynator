@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0133ConvertIfToSwitchTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertIfToSwitch;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
-        public async Task Test_Constant()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0133ConvertIfToSwitchTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertIfToSwitch;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
+    public async Task Test_Constant()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -68,12 +68,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
-        public async Task Test_Pattern()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
+    public async Task Test_Pattern()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -124,12 +124,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
-        public async Task Test_NotPattern()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
+    public async Task Test_NotPattern()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -171,12 +171,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
-        public async Task Test_ConstantAndPattern()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
+    public async Task Test_ConstantAndPattern()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -239,12 +239,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
-        public async Task TestNoRefactoring_ExpressionsAreNotEqual()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
+    public async Task TestNoRefactoring_ExpressionsAreNotEqual()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     int M()
@@ -265,6 +265,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

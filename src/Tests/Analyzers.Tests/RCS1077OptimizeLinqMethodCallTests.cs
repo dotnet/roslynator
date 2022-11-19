@@ -6,24 +6,24 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1077OptimizeLinqMethodCallTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, OptimizeLinqMethodCallCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OptimizeLinqMethodCall;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("Where(_ => true).Any()", "Any(_ => true)")]
-        [InlineData("Where(_ => true).Count()", "Count(_ => true)")]
-        [InlineData("Where(_ => true).First()", "First(_ => true)")]
-        [InlineData("Where(_ => true).FirstOrDefault()", "FirstOrDefault(_ => true)")]
-        [InlineData("Where(_ => true).Last()", "Last(_ => true)")]
-        [InlineData("Where(_ => true).LastOrDefault()", "LastOrDefault(_ => true)")]
-        [InlineData("Where(_ => true).LongCount()", "LongCount(_ => true)")]
-        [InlineData("Where(_ => true).Single()", "Single(_ => true)")]
-        public async Task Test_Where(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1077OptimizeLinqMethodCallTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, OptimizeLinqMethodCallCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OptimizeLinqMethodCall;
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("Where(_ => true).Any()", "Any(_ => true)")]
+    [InlineData("Where(_ => true).Count()", "Count(_ => true)")]
+    [InlineData("Where(_ => true).First()", "First(_ => true)")]
+    [InlineData("Where(_ => true).FirstOrDefault()", "FirstOrDefault(_ => true)")]
+    [InlineData("Where(_ => true).Last()", "Last(_ => true)")]
+    [InlineData("Where(_ => true).LastOrDefault()", "LastOrDefault(_ => true)")]
+    [InlineData("Where(_ => true).LongCount()", "LongCount(_ => true)")]
+    [InlineData("Where(_ => true).Single()", "Single(_ => true)")]
+    public async Task Test_Where(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -36,12 +36,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_Where_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_Where_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -71,20 +71,20 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("Where(_ => true).Any()", "Any(_ => true)")]
-        [InlineData("Where(_ => true).Count()", "Count(_ => true)")]
-        [InlineData("Where(_ => true).First()", "First(_ => true)")]
-        [InlineData("Where(_ => true).FirstOrDefault()", "FirstOrDefault(_ => true)")]
-        [InlineData("Where(_ => true).Last()", "Last(_ => true)")]
-        [InlineData("Where(_ => true).LastOrDefault()", "LastOrDefault(_ => true)")]
-        [InlineData("Where(_ => true).LongCount()", "LongCount(_ => true)")]
-        [InlineData("Where(_ => true).Single()", "Single(_ => true)")]
-        public async Task Test_Where_ImmutableArray(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("Where(_ => true).Any()", "Any(_ => true)")]
+    [InlineData("Where(_ => true).Count()", "Count(_ => true)")]
+    [InlineData("Where(_ => true).First()", "First(_ => true)")]
+    [InlineData("Where(_ => true).FirstOrDefault()", "FirstOrDefault(_ => true)")]
+    [InlineData("Where(_ => true).Last()", "Last(_ => true)")]
+    [InlineData("Where(_ => true).LastOrDefault()", "LastOrDefault(_ => true)")]
+    [InlineData("Where(_ => true).LongCount()", "LongCount(_ => true)")]
+    [InlineData("Where(_ => true).Single()", "Single(_ => true)")]
+    public async Task Test_Where_ImmutableArray(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -98,12 +98,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_WhereAndCount()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_WhereAndCount()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -126,12 +126,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_SelectAndMin()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_SelectAndMin()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -152,12 +152,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_SelectAndMax()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_SelectAndMax()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -178,12 +178,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_SelectAndMin_ImmutableArray()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_SelectAndMin_ImmutableArray()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -206,12 +206,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_SelectAndMax_ImmutableArray()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_SelectAndMax_ImmutableArray()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -234,18 +234,18 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("Where(f => f is object).Cast<object>()", "OfType<object>()")]
-        [InlineData("Where((f) => f is object).Cast<object>()", "OfType<object>()")]
-        [InlineData(@"Where(f =>
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("Where(f => f is object).Cast<object>()", "OfType<object>()")]
+    [InlineData("Where((f) => f is object).Cast<object>()", "OfType<object>()")]
+    [InlineData(@"Where(f =>
         {
             return f is object;
         }).Cast<object>()", "OfType<object>()")]
-        public async Task Test_CallOfTypeInsteadOfWhereAndCast(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    public async Task Test_CallOfTypeInsteadOfWhereAndCast(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -259,14 +259,14 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData(@"Where(f => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any(f => f.StartsWith(""a"") && f.StartsWith(""b""))")]
-        [InlineData(@"Where((f) => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any((f) => f.StartsWith(""a"") && f.StartsWith(""b""))")]
-        public async Task Test_CombineWhereAndAny(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData(@"Where(f => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any(f => f.StartsWith(""a"") && f.StartsWith(""b""))")]
+    [InlineData(@"Where((f) => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any((f) => f.StartsWith(""a"") && f.StartsWith(""b""))")]
+    public async Task Test_CombineWhereAndAny(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -280,14 +280,14 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData(@"Where(f => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any(f => f.StartsWith(""a"") && f.StartsWith(""b""))")]
-        [InlineData(@"Where((f) => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any((f) => f.StartsWith(""a"") && f.StartsWith(""b""))")]
-        public async Task Test_CombineWhereAndAny_ImmutableArray(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData(@"Where(f => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any(f => f.StartsWith(""a"") && f.StartsWith(""b""))")]
+    [InlineData(@"Where((f) => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any((f) => f.StartsWith(""a"") && f.StartsWith(""b""))")]
+    public async Task Test_CombineWhereAndAny_ImmutableArray(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -301,15 +301,15 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault() != null", "items.Any()")]
-        [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
-        public async Task Test_FirstOrDefault_IEnumerableOfReferenceType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
+    [InlineData("items.FirstOrDefault() != null", "items.Any()")]
+    [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
+    public async Task Test_FirstOrDefault_IEnumerableOfReferenceType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -322,15 +322,15 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault() != null", "items.Any()")]
-        [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
-        public async Task Test_FirstOrDefault_IEnumerableOfNullableType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
+    [InlineData("items.FirstOrDefault() != null", "items.Any()")]
+    [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
+    public async Task Test_FirstOrDefault_IEnumerableOfNullableType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -343,15 +343,15 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault() != null", "items.Any()")]
-        [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
-        public async Task Test_FirstOrDefault_ImmutableArrayOfReferenceType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
+    [InlineData("items.FirstOrDefault() != null", "items.Any()")]
+    [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
+    public async Task Test_FirstOrDefault_ImmutableArrayOfReferenceType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -365,15 +365,15 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault() != null", "items.Any()")]
-        [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
-        public async Task Test_FirstOrDefault_ImmutableArrayOfNullableType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
+    [InlineData("items.FirstOrDefault() != null", "items.Any()")]
+    [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
+    public async Task Test_FirstOrDefault_ImmutableArrayOfNullableType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -387,12 +387,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_OptimizeOfType_ReferenceType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_OptimizeOfType_ReferenceType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -419,12 +419,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_OptimizeOfType_ValueType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_OptimizeOfType_ValueType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -451,12 +451,12 @@ struct C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_OptimizeOfType_TypeParameterWithStructConstraint()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_OptimizeOfType_TypeParameterWithStructConstraint()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -483,12 +483,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallCastInsteadOfSelect_ExtensionMethodCall()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallCastInsteadOfSelect_ExtensionMethodCall()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -509,12 +509,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallCastInsteadOfSelect_StaticMethodCall()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallCastInsteadOfSelect_StaticMethodCall()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -535,12 +535,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallCastInsteadOfSelect_ParenthesizedLambda()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallCastInsteadOfSelect_ParenthesizedLambda()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -561,12 +561,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallCastInsteadOfSelect_LambdaWithBlock()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallCastInsteadOfSelect_LambdaWithBlock()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -590,12 +590,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallPeekInsteadOfFirst_Queue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallPeekInsteadOfFirst_Queue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -622,12 +622,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallPeekInsteadOfFirst_Stack()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallPeekInsteadOfFirst_Stack()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -654,12 +654,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallFindInsteadOfFirstOrDefault_List()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallFindInsteadOfFirstOrDefault_List()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -686,12 +686,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallFindInsteadOfFirstOrDefault_Array()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallFindInsteadOfFirstOrDefault_Array()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Linq;
 
@@ -718,21 +718,21 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("((List<object>)x).[|Count()|]", "((List<object>)x).Count")]
-        [InlineData("((IList<object>)x).[|Count()|]", "((IList<object>)x).Count")]
-        [InlineData("((IReadOnlyList<object>)x).[|Count()|]", "((IReadOnlyList<object>)x).Count")]
-        [InlineData("((Collection<object>)x).[|Count()|]", "((Collection<object>)x).Count")]
-        [InlineData("((ICollection<object>)x).[|Count()|]", "((ICollection<object>)x).Count")]
-        [InlineData("((IReadOnlyCollection<object>)x).[|Count()|]", "((IReadOnlyCollection<object>)x).Count")]
-        [InlineData("((ImmutableArray<object>)x).[|Count()|]", "((ImmutableArray<object>)x).Length")]
-        [InlineData("((object[])x).[|Count()|]", "((object[])x).Length")]
-        [InlineData("((string)x).[|Count()|]", "((string)x).Length")]
-        public async Task Test_OptimizeCountCall_Array(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("((List<object>)x).[|Count()|]", "((List<object>)x).Count")]
+    [InlineData("((IList<object>)x).[|Count()|]", "((IList<object>)x).Count")]
+    [InlineData("((IReadOnlyList<object>)x).[|Count()|]", "((IReadOnlyList<object>)x).Count")]
+    [InlineData("((Collection<object>)x).[|Count()|]", "((Collection<object>)x).Count")]
+    [InlineData("((ICollection<object>)x).[|Count()|]", "((ICollection<object>)x).Count")]
+    [InlineData("((IReadOnlyCollection<object>)x).[|Count()|]", "((IReadOnlyCollection<object>)x).Count")]
+    [InlineData("((ImmutableArray<object>)x).[|Count()|]", "((ImmutableArray<object>)x).Length")]
+    [InlineData("((object[])x).[|Count()|]", "((object[])x).Length")]
+    [InlineData("((string)x).[|Count()|]", "((string)x).Length")]
+    public async Task Test_OptimizeCountCall_Array(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -748,24 +748,24 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.[|Count()|] != 0", "items.Any()")]
-        [InlineData("items.[|Count()|] > 0", "items.Any()")]
-        [InlineData("items.[|Count()|] >= 1", "items.Any()")]
-        [InlineData("0 != items.[|Count()|]", "items.Any()")]
-        [InlineData("0 < items.[|Count()|]", "items.Any()")]
-        [InlineData("1 <= items.[|Count()|]", "items.Any()")]
-        [InlineData("items.[|Count()|] == 0", "!items.Any()")]
-        [InlineData("items.[|Count()|] < 1", "!items.Any()")]
-        [InlineData("items.[|Count()|] <= 0", "!items.Any()")]
-        [InlineData("0 == items.[|Count()|]", "!items.Any()")]
-        [InlineData("1 > items.[|Count()|]", "!items.Any()")]
-        [InlineData("0 >= items.[|Count()|]", "!items.Any()")]
-        public async Task Test_CallAnyInsteadOfCount(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.[|Count()|] != 0", "items.Any()")]
+    [InlineData("items.[|Count()|] > 0", "items.Any()")]
+    [InlineData("items.[|Count()|] >= 1", "items.Any()")]
+    [InlineData("0 != items.[|Count()|]", "items.Any()")]
+    [InlineData("0 < items.[|Count()|]", "items.Any()")]
+    [InlineData("1 <= items.[|Count()|]", "items.Any()")]
+    [InlineData("items.[|Count()|] == 0", "!items.Any()")]
+    [InlineData("items.[|Count()|] < 1", "!items.Any()")]
+    [InlineData("items.[|Count()|] <= 0", "!items.Any()")]
+    [InlineData("0 == items.[|Count()|]", "!items.Any()")]
+    [InlineData("1 > items.[|Count()|]", "!items.Any()")]
+    [InlineData("0 >= items.[|Count()|]", "!items.Any()")]
+    public async Task Test_CallAnyInsteadOfCount(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -782,12 +782,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallFirstOrDefaultInsteadOfConditionalExpression_ReferenceType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallFirstOrDefaultInsteadOfConditionalExpression_ReferenceType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -838,12 +838,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallFirstOrDefaultInsteadOfConditionalExpression_ValueType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallFirstOrDefaultInsteadOfConditionalExpression_ValueType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -886,12 +886,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallOrderByDescendingInsteadOfOrderByAndReverse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallOrderByDescendingInsteadOfOrderByAndReverse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -918,12 +918,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallOrderByAndWhereInReverseOrder()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallOrderByAndWhereInReverseOrder()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -950,12 +950,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallOrderByAndWhereInReverseOrder2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallOrderByAndWhereInReverseOrder2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -982,12 +982,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallOrderByDescendingAndWhereInReverseOrder()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallOrderByDescendingAndWhereInReverseOrder()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1014,12 +1014,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallOrderByDescendingAndWhereInReverseOrder2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallOrderByDescendingAndWhereInReverseOrder2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1046,12 +1046,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallSumInsteadOfSelectManyAndCount()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallSumInsteadOfSelectManyAndCount()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1078,12 +1078,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task Test_CallConvertAllInsteadOfSelectAndToList_List()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallConvertAllInsteadOfSelectAndToList_List()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1110,16 +1110,16 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.FirstOrDefault(_ => true) == null")]
-        [InlineData("items.FirstOrDefault(_ => true) is null")]
-        [InlineData("items.FirstOrDefault() == null")]
-        [InlineData("items.FirstOrDefault() is null")]
-        public async Task TestNoDiagnostic_FirstOrDefault_IEnumerableOfReferenceType(string source)
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.FirstOrDefault(_ => true) == null")]
+    [InlineData("items.FirstOrDefault(_ => true) is null")]
+    [InlineData("items.FirstOrDefault() == null")]
+    [InlineData("items.FirstOrDefault() is null")]
+    public async Task TestNoDiagnostic_FirstOrDefault_IEnumerableOfReferenceType(string source)
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 
 class C
@@ -1132,16 +1132,16 @@ class C
     }
 }
 ", source);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.FirstOrDefault(_ => true) == null")]
-        [InlineData("items.FirstOrDefault(_ => true) is null")]
-        [InlineData("items.FirstOrDefault() == null")]
-        [InlineData("items.FirstOrDefault() is null")]
-        public async Task TestNoDiagnostc_FirstOrDefault_IEnumerableOfNullableType(string source)
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.FirstOrDefault(_ => true) == null")]
+    [InlineData("items.FirstOrDefault(_ => true) is null")]
+    [InlineData("items.FirstOrDefault() == null")]
+    [InlineData("items.FirstOrDefault() is null")]
+    public async Task TestNoDiagnostc_FirstOrDefault_IEnumerableOfNullableType(string source)
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 
 class C
@@ -1154,16 +1154,16 @@ class C
     }
 }
 ", source);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.FirstOrDefault(_ => true) == null")]
-        [InlineData("items.FirstOrDefault(_ => true) is null")]
-        [InlineData("items.FirstOrDefault() == null")]
-        [InlineData("items.FirstOrDefault() is null")]
-        public async Task TestNoDiagnostic_FirstOrDefault_ImmutableArrayOfReferenceType(string source)
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.FirstOrDefault(_ => true) == null")]
+    [InlineData("items.FirstOrDefault(_ => true) is null")]
+    [InlineData("items.FirstOrDefault() == null")]
+    [InlineData("items.FirstOrDefault() is null")]
+    public async Task TestNoDiagnostic_FirstOrDefault_ImmutableArrayOfReferenceType(string source)
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -1177,16 +1177,16 @@ class C
     }
 }
 ", source);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        [InlineData("items.FirstOrDefault(_ => true) == null")]
-        [InlineData("items.FirstOrDefault(_ => true) is null")]
-        [InlineData("items.FirstOrDefault() == null")]
-        [InlineData("items.FirstOrDefault() is null")]
-        public async Task TestNoDiagnostic_FirstOrDefault_ImmutableArrayOfNullableType(string source)
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("items.FirstOrDefault(_ => true) == null")]
+    [InlineData("items.FirstOrDefault(_ => true) is null")]
+    [InlineData("items.FirstOrDefault() == null")]
+    [InlineData("items.FirstOrDefault() is null")]
+    public async Task TestNoDiagnostic_FirstOrDefault_ImmutableArrayOfNullableType(string source)
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -1200,12 +1200,12 @@ class C
     }
 }
 ", source);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_CallOfTypeInsteadOfWhereAndCast()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_CallOfTypeInsteadOfWhereAndCast()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1219,12 +1219,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_CombineWhereAndAny()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_CombineWhereAndAny()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1238,12 +1238,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_FirstOrDefault_ValueType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_FirstOrDefault_ValueType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -1268,12 +1268,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_CallCastInsteadOfSelect_Conversion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_CallCastInsteadOfSelect_Conversion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 
 class C
@@ -1297,12 +1297,12 @@ class C2
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_OptimizeCountCall_IEnumerableOfT()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_OptimizeCountCall_IEnumerableOfT()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 
 class C
@@ -1313,12 +1313,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_OptimizeCountCall_ExpressionCannotBeMemberAccessExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_OptimizeCountCall_ExpressionCannotBeMemberAccessExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1341,12 +1341,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_OptimizeCountCall_InfiniteRecursion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_OptimizeCountCall_InfiniteRecursion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -1363,12 +1363,12 @@ class C : IReadOnlyCollection<int>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_OptimizeCountCall_InfiniteRecursion2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_OptimizeCountCall_InfiniteRecursion2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -1388,12 +1388,12 @@ class C : IReadOnlyCollection<int>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_CallAnyInsteadOfCount()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_CallAnyInsteadOfCount()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1423,12 +1423,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_CallFindInsteadOfFirstOrDefault_Array_ConditionalAccess()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_CallFindInsteadOfFirstOrDefault_Array_ConditionalAccess()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 
 class C
@@ -1443,12 +1443,12 @@ class C
     object[] Items { get; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-        public async Task TestNoDiagnostic_CallSumInsteadOfSelectManyAndCount()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_CallSumInsteadOfSelectManyAndCount()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1465,6 +1465,5 @@ class C
     Func<string, IEnumerable<string>> M2() => null;
 }
 ");
-        }
     }
 }

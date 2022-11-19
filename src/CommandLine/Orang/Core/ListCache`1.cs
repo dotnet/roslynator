@@ -4,41 +4,40 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class ListCache<T>
 {
-    internal static class ListCache<T>
+    private const int MaxSize = 256;
+    private const int DefaultCapacity = 16;
+
+    [ThreadStatic]
+    private static List<T> _cachedInstance;
+
+    public static List<T> GetInstance(int capacity = DefaultCapacity)
     {
-        private const int MaxSize = 256;
-        private const int DefaultCapacity = 16;
-
-        [ThreadStatic]
-        private static List<T> _cachedInstance;
-
-        public static List<T> GetInstance(int capacity = DefaultCapacity)
+        if (capacity <= MaxSize)
         {
-            if (capacity <= MaxSize)
+            List<T> list = _cachedInstance;
+
+            Debug.Assert(list == null || list.Count == 0, "");
+
+            if (list != null
+                && capacity <= list.Capacity)
             {
-                List<T> list = _cachedInstance;
-
-                Debug.Assert(list == null || list.Count == 0, "");
-
-                if (list != null
-                    && capacity <= list.Capacity)
-                {
-                    _cachedInstance = null;
-                    return list;
-                }
+                _cachedInstance = null;
+                return list;
             }
-
-            return new List<T>(capacity);
         }
 
-        public static void Free(List<T> list)
-        {
-            list.Clear();
+        return new List<T>(capacity);
+    }
 
-            if (list.Capacity <= MaxSize)
-                _cachedInstance = list;
-        }
+    public static void Free(List<T> list)
+    {
+        list.Clear();
+
+        if (list.Capacity <= MaxSize)
+            _cachedInstance = list;
     }
 }

@@ -2,13 +2,12 @@
 
 using System;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+[Flags]
+public enum SymbolDisplayAdditionalMemberOptions
 {
-    [Flags]
-    public enum SymbolDisplayAdditionalMemberOptions
-    {
-        None = 0,
-        UseItemPropertyName = 1,
-        UseOperatorName = 1 << 1,
-    }
+    None = 0,
+    UseItemPropertyName = 1,
+    UseOperatorName = 1 << 1,
 }

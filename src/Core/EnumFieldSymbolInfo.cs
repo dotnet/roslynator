@@ -4,60 +4,59 @@ using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal readonly struct EnumFieldSymbolInfo
 {
-    internal readonly struct EnumFieldSymbolInfo
+    public EnumFieldSymbolInfo(IFieldSymbol symbol, ulong value)
     {
-        public EnumFieldSymbolInfo(IFieldSymbol symbol, ulong value)
+        Symbol = symbol;
+        Value = value;
+    }
+
+    public IFieldSymbol Symbol { get; }
+
+    public ulong Value { get; }
+
+    public bool HasValue => Symbol?.HasConstantValue == true;
+
+    public string Name => Symbol?.Name;
+
+    public static EnumFieldSymbolInfo Create(IFieldSymbol fieldSymbol)
+    {
+        if (fieldSymbol == null)
+            throw new ArgumentNullException(nameof(fieldSymbol));
+
+        if (!TryCreate(fieldSymbol, out EnumFieldSymbolInfo fieldInfo))
+            throw new ArgumentException("", nameof(fieldSymbol));
+
+        return fieldInfo;
+    }
+
+    public static bool TryCreate(IFieldSymbol fieldSymbol, out EnumFieldSymbolInfo fieldInfo)
+    {
+        if (fieldSymbol == null)
         {
-            Symbol = symbol;
-            Value = value;
+            fieldInfo = default;
+            return false;
         }
 
-        public IFieldSymbol Symbol { get; }
+        ulong value = (fieldSymbol.HasConstantValue)
+            ? SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType)
+            : 0;
 
-        public ulong Value { get; }
+        fieldInfo = new EnumFieldSymbolInfo(fieldSymbol, value);
 
-        public bool HasValue => Symbol?.HasConstantValue == true;
+        return true;
+    }
 
-        public string Name => Symbol?.Name;
+    public bool HasCompositeValue()
+    {
+        return FlagsUtility<ulong>.Instance.IsComposite(Value);
+    }
 
-        public static EnumFieldSymbolInfo Create(IFieldSymbol fieldSymbol)
-        {
-            if (fieldSymbol == null)
-                throw new ArgumentNullException(nameof(fieldSymbol));
-
-            if (!TryCreate(fieldSymbol, out EnumFieldSymbolInfo fieldInfo))
-                throw new ArgumentException("", nameof(fieldSymbol));
-
-            return fieldInfo;
-        }
-
-        public static bool TryCreate(IFieldSymbol fieldSymbol, out EnumFieldSymbolInfo fieldInfo)
-        {
-            if (fieldSymbol == null)
-            {
-                fieldInfo = default;
-                return false;
-            }
-
-            ulong value = (fieldSymbol.HasConstantValue)
-                ? SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType)
-                : 0;
-
-            fieldInfo = new EnumFieldSymbolInfo(fieldSymbol, value);
-
-            return true;
-        }
-
-        public bool HasCompositeValue()
-        {
-            return FlagsUtility<ulong>.Instance.IsComposite(Value);
-        }
-
-        public IEnumerable<ulong> GetFlags()
-        {
-            return FlagsUtility<ulong>.Instance.GetFlags(Value);
-        }
+    public IEnumerable<ulong> GetFlags()
+    {
+        return FlagsUtility<ulong>.Instance.GetFlags(Value);
     }
 }

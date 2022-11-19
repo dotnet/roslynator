@@ -7,74 +7,73 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class MarkTypeWithDebuggerDisplayAttributeRefactoring
 {
-    internal static class MarkTypeWithDebuggerDisplayAttributeRefactoring
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        TypeDeclarationSyntax typeDeclaration,
+        CancellationToken cancellationToken)
     {
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            TypeDeclarationSyntax typeDeclaration,
-            CancellationToken cancellationToken)
+        int position = typeDeclaration.OpenBraceToken.Span.End;
+
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        string propertyName = NameGenerator.Default.EnsureUniqueName(DefaultNames.DebuggerDisplayPropertyName, semanticModel, position);
+
+        AttributeListSyntax attributeList = AttributeList(
+            Attribute(
+                ParseName("System.Diagnostics.DebuggerDisplayAttribute").WithSimplifierAnnotation(),
+                AttributeArgument(LiteralExpression($"{{{propertyName},nq}}"))));
+
+        PropertyDeclarationSyntax propertyDeclaration = DebuggerDisplayPropertyDeclaration(propertyName, InvocationExpression(IdentifierName("ToString")));
+
+        TypeDeclarationSyntax newTypeDeclaration;
+
+        if (typeDeclaration is ClassDeclarationSyntax classDeclaration)
         {
-            int position = typeDeclaration.OpenBraceToken.Span.End;
+            newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(classDeclaration, keepDocumentationCommentOnTop: true, attributeList);
+        }
+        else
+        {
+            var structDeclaration = (StructDeclarationSyntax)typeDeclaration;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            string propertyName = NameGenerator.Default.EnsureUniqueName(DefaultNames.DebuggerDisplayPropertyName, semanticModel, position);
-
-            AttributeListSyntax attributeList = AttributeList(
-                Attribute(
-                    ParseName("System.Diagnostics.DebuggerDisplayAttribute").WithSimplifierAnnotation(),
-                    AttributeArgument(LiteralExpression($"{{{propertyName},nq}}"))));
-
-            PropertyDeclarationSyntax propertyDeclaration = DebuggerDisplayPropertyDeclaration(propertyName, InvocationExpression(IdentifierName("ToString")));
-
-            TypeDeclarationSyntax newTypeDeclaration;
-
-            if (typeDeclaration is ClassDeclarationSyntax classDeclaration)
-            {
-                newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(classDeclaration, keepDocumentationCommentOnTop: true, attributeList);
-            }
-            else
-            {
-                var structDeclaration = (StructDeclarationSyntax)typeDeclaration;
-
-                newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(structDeclaration, keepDocumentationCommentOnTop: true, attributeList);
-            }
-
-            newTypeDeclaration = MemberDeclarationInserter.Default.Insert(newTypeDeclaration, propertyDeclaration);
-
-            return await document.ReplaceNodeAsync(typeDeclaration, newTypeDeclaration, cancellationToken).ConfigureAwait(false);
+            newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(structDeclaration, keepDocumentationCommentOnTop: true, attributeList);
         }
 
-        public static PropertyDeclarationSyntax DebuggerDisplayPropertyDeclaration(string name, ExpressionSyntax returnExpression)
-        {
-            return PropertyDeclaration(
-                SingletonList(
-                    AttributeList(
-                        Attribute(
-                            ParseName("System.Diagnostics.DebuggerBrowsableAttribute"),
-                            AttributeArgument(
-                                SimpleMemberAccessExpression(
-                                    ParseName("System.Diagnostics.DebuggerBrowsableState").WithSimplifierAnnotation(),
-                                    IdentifierName("Never"))
-                            )
+        newTypeDeclaration = MemberDeclarationInserter.Default.Insert(newTypeDeclaration, propertyDeclaration);
+
+        return await document.ReplaceNodeAsync(typeDeclaration, newTypeDeclaration, cancellationToken).ConfigureAwait(false);
+    }
+
+    public static PropertyDeclarationSyntax DebuggerDisplayPropertyDeclaration(string name, ExpressionSyntax returnExpression)
+    {
+        return PropertyDeclaration(
+            SingletonList(
+                AttributeList(
+                    Attribute(
+                        ParseName("System.Diagnostics.DebuggerBrowsableAttribute"),
+                        AttributeArgument(
+                            SimpleMemberAccessExpression(
+                                ParseName("System.Diagnostics.DebuggerBrowsableState").WithSimplifierAnnotation(),
+                                IdentifierName("Never"))
                         )
-                            .WithSimplifierAnnotation()
                     )
-                ),
-                Modifiers.Private(),
-                CSharpTypeFactory.StringType(),
-                default(ExplicitInterfaceSpecifierSyntax),
-                Identifier(name).WithRenameAnnotation(),
-                AccessorList(
-                    GetAccessorDeclaration(
-                        Block(
-                            ReturnStatement(returnExpression))
-                        )
+                        .WithSimplifierAnnotation()
+                )
+            ),
+            Modifiers.Private(),
+            CSharpTypeFactory.StringType(),
+            default(ExplicitInterfaceSpecifierSyntax),
+            Identifier(name).WithRenameAnnotation(),
+            AccessorList(
+                GetAccessorDeclaration(
+                    Block(
+                        ReturnStatement(returnExpression))
                     )
                 )
-                .WithFormatterAnnotation();
-        }
+            )
+            .WithFormatterAnnotation();
     }
 }

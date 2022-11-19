@@ -9,120 +9,119 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.CodeStyle;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class ConfigureAwaitAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ConfigureAwaitAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ConfigureAwait);
+            }
+
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(
+            c =>
+            {
+                ConfigureAwaitStyle style = c.GetConfigureAwaitStyle();
+
+                if (style == ConfigureAwaitStyle.Omit)
                 {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ConfigureAwait);
+                    RemoveCallToConfigureAwait(c);
                 }
-
-                return _supportedDiagnostics;
-            }
-        }
-
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(
-                c =>
+                else if (style == ConfigureAwaitStyle.Include
+                    && c.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") != null)
                 {
-                    ConfigureAwaitStyle style = c.GetConfigureAwaitStyle();
+                    AddCallToConfigureAwait(c);
+                }
+            },
+            SyntaxKind.AwaitExpression);
+    }
 
-                    if (style == ConfigureAwaitStyle.Omit)
+    private static void AddCallToConfigureAwait(SyntaxNodeAnalysisContext context)
+    {
+        var awaitExpression = (AwaitExpressionSyntax)context.Node;
+
+        ExpressionSyntax expression = awaitExpression.Expression;
+
+        if (IsConfigureAwait(expression))
+            return;
+
+        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+        if (typeSymbol == null)
+            return;
+
+        if (!SymbolUtility.IsAwaitable(typeSymbol))
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConfigureAwait, awaitExpression.Expression, "Add");
+    }
+
+    private static void RemoveCallToConfigureAwait(SyntaxNodeAnalysisContext context)
+    {
+        var awaitExpression = (AwaitExpressionSyntax)context.Node;
+
+        ExpressionSyntax expression = awaitExpression.Expression;
+
+        SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
+
+        if (!IsConfigureAwait(expression))
+            return;
+
+        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+        if (typeSymbol == null)
+            return;
+
+        switch (typeSymbol.MetadataName)
+        {
+            case "ConfiguredTaskAwaitable":
+            case "ConfiguredTaskAwaitable`1":
+            case "ConfiguredValueTaskAwaitable":
+            case "ConfiguredValueTaskAwaitable`1":
+                {
+                    if (typeSymbol.ContainingNamespace.HasMetadataName(MetadataNames.System_Runtime_CompilerServices))
                     {
-                        RemoveCallToConfigureAwait(c);
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
+                            DiagnosticRules.ConfigureAwait,
+                            Location.Create(
+                                awaitExpression.SyntaxTree,
+                                TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)),
+                            "Remove");
                     }
-                    else if (style == ConfigureAwaitStyle.Include
-                        && c.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") != null)
-                    {
-                        AddCallToConfigureAwait(c);
-                    }
-                },
-                SyntaxKind.AwaitExpression);
+
+                    break;
+                }
         }
+    }
 
-        private static void AddCallToConfigureAwait(SyntaxNodeAnalysisContext context)
-        {
-            var awaitExpression = (AwaitExpressionSyntax)context.Node;
+    public static bool IsConfigureAwait(ExpressionSyntax expression)
+    {
+        SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
 
-            ExpressionSyntax expression = awaitExpression.Expression;
+        return IsConfigureAwait(invocationInfo);
+    }
 
-            if (IsConfigureAwait(expression))
-                return;
-
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-            if (typeSymbol == null)
-                return;
-
-            if (!SymbolUtility.IsAwaitable(typeSymbol))
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConfigureAwait, awaitExpression.Expression, "Add");
-        }
-
-        private static void RemoveCallToConfigureAwait(SyntaxNodeAnalysisContext context)
-        {
-            var awaitExpression = (AwaitExpressionSyntax)context.Node;
-
-            ExpressionSyntax expression = awaitExpression.Expression;
-
-            SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
-
-            if (!IsConfigureAwait(expression))
-                return;
-
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-            if (typeSymbol == null)
-                return;
-
-            switch (typeSymbol.MetadataName)
-            {
-                case "ConfiguredTaskAwaitable":
-                case "ConfiguredTaskAwaitable`1":
-                case "ConfiguredValueTaskAwaitable":
-                case "ConfiguredValueTaskAwaitable`1":
-                    {
-                        if (typeSymbol.ContainingNamespace.HasMetadataName(MetadataNames.System_Runtime_CompilerServices))
-                        {
-                            DiagnosticHelpers.ReportDiagnostic(
-                                context,
-                                DiagnosticRules.ConfigureAwait,
-                                Location.Create(
-                                    awaitExpression.SyntaxTree,
-                                    TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)),
-                                "Remove");
-                        }
-
-                        break;
-                    }
-            }
-        }
-
-        public static bool IsConfigureAwait(ExpressionSyntax expression)
-        {
-            SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
-
-            return IsConfigureAwait(invocationInfo);
-        }
-
-        private static bool IsConfigureAwait(SimpleMemberInvocationExpressionInfo invocationInfo)
-        {
-            return invocationInfo.Success
-                && invocationInfo.Name.IsKind(SyntaxKind.IdentifierName)
-                && string.Equals(invocationInfo.NameText, "ConfigureAwait")
-                && invocationInfo.Arguments.Count == 1;
-        }
+    private static bool IsConfigureAwait(SimpleMemberInvocationExpressionInfo invocationInfo)
+    {
+        return invocationInfo.Success
+            && invocationInfo.Name.IsKind(SyntaxKind.IdentifierName)
+            && string.Equals(invocationInfo.NameText, "ConfigureAwait")
+            && invocationInfo.Arguments.Count == 1;
     }
 }

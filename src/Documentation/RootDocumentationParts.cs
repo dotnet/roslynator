@@ -2,17 +2,16 @@
 
 using System;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+[Flags]
+public enum RootDocumentationParts
 {
-    [Flags]
-    public enum RootDocumentationParts
-    {
-        None = 0,
-        Content = 1,
-        Namespaces = 1 << 1,
-        ClassHierarchy = 1 << 2,
-        Types = 1 << 3,
-        Other = 1 << 4,
-        All = int.MaxValue
-    }
+    None = 0,
+    Content = 1,
+    Namespaces = 1 << 1,
+    ClassHierarchy = 1 << 2,
+    Types = 1 << 3,
+    Other = 1 << 4,
+    All = int.MaxValue
 }

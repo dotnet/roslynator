@@ -7,50 +7,49 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class PutConstructorInitializerOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class PutConstructorInitializerOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutConstructorInitializerOnItsOwnLine);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutConstructorInitializerOnItsOwnLine);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorInitializer(f), SyntaxKind.ThisConstructorInitializer);
-            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorInitializer(f), SyntaxKind.BaseConstructorInitializer);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeConstructorInitializer(f), SyntaxKind.ThisConstructorInitializer);
+        context.RegisterSyntaxNodeAction(f => AnalyzeConstructorInitializer(f), SyntaxKind.BaseConstructorInitializer);
+    }
 
-        private static void AnalyzeConstructorInitializer(SyntaxNodeAnalysisContext context)
-        {
-            var constructorInitializer = (ConstructorInitializerSyntax)context.Node;
+    private static void AnalyzeConstructorInitializer(SyntaxNodeAnalysisContext context)
+    {
+        var constructorInitializer = (ConstructorInitializerSyntax)context.Node;
 
-            SyntaxToken colonToken = constructorInitializer.ColonToken;
+        SyntaxToken colonToken = constructorInitializer.ColonToken;
 
-            if (colonToken.LeadingTrivia.Any())
-                return;
+        if (colonToken.LeadingTrivia.Any())
+            return;
 
-            var constructorDeclaration = (ConstructorDeclarationSyntax)constructorInitializer.Parent;
+        var constructorDeclaration = (ConstructorDeclarationSyntax)constructorInitializer.Parent;
 
-            if (!constructorDeclaration.ParameterList.GetTrailingTrivia().SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
-                return;
+        if (!constructorDeclaration.ParameterList.GetTrailingTrivia().SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.PutConstructorInitializerOnItsOwnLine,
-                Location.Create(colonToken.SyntaxTree, colonToken.Span.WithLength(0)));
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.PutConstructorInitializerOnItsOwnLine,
+            Location.Create(colonToken.SyntaxTree, colonToken.Span.WithLength(0)));
     }
 }

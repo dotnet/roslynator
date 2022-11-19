@@ -6,99 +6,98 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 
-namespace Roslynator.CSharp.Syntax
+namespace Roslynator.CSharp.Syntax;
+
+/// <summary>
+/// Provides information about "is" expression.
+/// </summary>
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly struct IsExpressionInfo
 {
-    /// <summary>
-    /// Provides information about "is" expression.
-    /// </summary>
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct IsExpressionInfo
+    private IsExpressionInfo(
+        BinaryExpressionSyntax isExpression,
+        ExpressionSyntax expression,
+        TypeSyntax type)
     {
-        private IsExpressionInfo(
-            BinaryExpressionSyntax isExpression,
-            ExpressionSyntax expression,
-            TypeSyntax type)
-        {
-            IsExpression = isExpression;
-            Expression = expression;
-            Type = type;
-        }
+        IsExpression = isExpression;
+        Expression = expression;
+        Type = type;
+    }
 
-        /// <summary>
-        /// The "is" expression.
-        /// </summary>
-        public BinaryExpressionSyntax IsExpression { get; }
+    /// <summary>
+    /// The "is" expression.
+    /// </summary>
+    public BinaryExpressionSyntax IsExpression { get; }
 
-        /// <summary>
-        /// The expression that is being casted.
-        /// </summary>
-        public ExpressionSyntax Expression { get; }
+    /// <summary>
+    /// The expression that is being casted.
+    /// </summary>
+    public ExpressionSyntax Expression { get; }
 
-        /// <summary>
-        /// The type to which the expression is being cast.
-        /// </summary>
-        public TypeSyntax Type { get; }
+    /// <summary>
+    /// The type to which the expression is being cast.
+    /// </summary>
+    public TypeSyntax Type { get; }
 
-        /// <summary>
-        /// The "is" operator token.
-        /// </summary>
-        public SyntaxToken OperatorToken
-        {
-            get { return IsExpression?.OperatorToken ?? default; }
-        }
+    /// <summary>
+    /// The "is" operator token.
+    /// </summary>
+    public SyntaxToken OperatorToken
+    {
+        get { return IsExpression?.OperatorToken ?? default; }
+    }
 
-        /// <summary>
-        /// Determines whether this struct was initialized with an actual syntax.
-        /// </summary>
-        public bool Success
-        {
-            get { return Expression != null; }
-        }
+    /// <summary>
+    /// Determines whether this struct was initialized with an actual syntax.
+    /// </summary>
+    public bool Success
+    {
+        get { return Expression != null; }
+    }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return SyntaxInfoHelpers.ToDebugString(Success, this, Expression); }
-        }
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return SyntaxInfoHelpers.ToDebugString(Success, this, Expression); }
+    }
 
-        internal static IsExpressionInfo Create(
-            SyntaxNode node,
-            bool walkDownParentheses = true,
-            bool allowMissing = false)
-        {
-            return CreateImpl(
-                Walk(node, walkDownParentheses) as BinaryExpressionSyntax,
-                walkDownParentheses,
-                allowMissing);
-        }
+    internal static IsExpressionInfo Create(
+        SyntaxNode node,
+        bool walkDownParentheses = true,
+        bool allowMissing = false)
+    {
+        return CreateImpl(
+            Walk(node, walkDownParentheses) as BinaryExpressionSyntax,
+            walkDownParentheses,
+            allowMissing);
+    }
 
-        internal static IsExpressionInfo Create(
-            BinaryExpressionSyntax binaryExpression,
-            bool walkDownParentheses = true,
-            bool allowMissing = false)
-        {
-            return CreateImpl(binaryExpression, walkDownParentheses, allowMissing);
-        }
+    internal static IsExpressionInfo Create(
+        BinaryExpressionSyntax binaryExpression,
+        bool walkDownParentheses = true,
+        bool allowMissing = false)
+    {
+        return CreateImpl(binaryExpression, walkDownParentheses, allowMissing);
+    }
 
-        private static IsExpressionInfo CreateImpl(
-            BinaryExpressionSyntax binaryExpression,
-            bool walkDownParentheses = true,
-            bool allowMissing = false)
-        {
-            if (binaryExpression?.Kind() != SyntaxKind.IsExpression)
-                return default;
+    private static IsExpressionInfo CreateImpl(
+        BinaryExpressionSyntax binaryExpression,
+        bool walkDownParentheses = true,
+        bool allowMissing = false)
+    {
+        if (binaryExpression?.Kind() != SyntaxKind.IsExpression)
+            return default;
 
-            ExpressionSyntax expression = Walk(binaryExpression.Left, walkDownParentheses);
+        ExpressionSyntax expression = Walk(binaryExpression.Left, walkDownParentheses);
 
-            if (!Check(expression, allowMissing))
-                return default;
+        if (!Check(expression, allowMissing))
+            return default;
 
-            var type = binaryExpression.Right as TypeSyntax;
+        var type = binaryExpression.Right as TypeSyntax;
 
-            if (!Check(type, allowMissing))
-                return default;
+        if (!Check(type, allowMissing))
+            return default;
 
-            return new IsExpressionInfo(binaryExpression, expression, type);
-        }
+        return new IsExpressionInfo(binaryExpression, expression, type);
     }
 }

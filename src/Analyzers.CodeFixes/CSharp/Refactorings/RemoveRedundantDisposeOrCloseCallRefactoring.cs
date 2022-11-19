@@ -5,20 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveRedundantDisposeOrCloseCallRefactoring
 {
-    internal static class RemoveRedundantDisposeOrCloseCallRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ExpressionStatementSyntax expressionStatement,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ExpressionStatementSyntax expressionStatement,
-            CancellationToken cancellationToken)
-        {
-            var block = (BlockSyntax)expressionStatement.Parent;
+        var block = (BlockSyntax)expressionStatement.Parent;
 
-            BlockSyntax newBlock = block.RemoveStatement(expressionStatement);
+        BlockSyntax newBlock = block.RemoveStatement(expressionStatement);
 
-            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
     }
 }

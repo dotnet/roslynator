@@ -3,25 +3,24 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.If
+namespace Roslynator.CSharp.Analysis.If;
+
+internal sealed class IfElseToAssignmentWithConditionalExpressionAnalysis : ToAssignmentWithConditionalExpressionAnalysis
 {
-    internal sealed class IfElseToAssignmentWithConditionalExpressionAnalysis : ToAssignmentWithConditionalExpressionAnalysis
+    internal IfElseToAssignmentWithConditionalExpressionAnalysis(
+        IfStatementSyntax ifStatement,
+        ExpressionSyntax left,
+        ExpressionSyntax right1,
+        ExpressionSyntax right2,
+        SemanticModel semanticModel) : base(ifStatement, right1, right2, semanticModel)
     {
-        internal IfElseToAssignmentWithConditionalExpressionAnalysis(
-            IfStatementSyntax ifStatement,
-            ExpressionSyntax left,
-            ExpressionSyntax right1,
-            ExpressionSyntax right2,
-            SemanticModel semanticModel) : base(ifStatement, right1, right2, semanticModel)
-        {
-            Left = left;
-        }
+        Left = left;
+    }
 
-        public ExpressionSyntax Left { get; }
+    public ExpressionSyntax Left { get; }
 
-        public override IfAnalysisKind Kind
-        {
-            get { return IfAnalysisKind.IfElseToAssignmentWithConditionalExpression; }
-        }
+    public override IfAnalysisKind Kind
+    {
+        get { return IfAnalysisKind.IfElseToAssignmentWithConditionalExpression; }
     }
 }

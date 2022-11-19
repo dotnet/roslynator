@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS8602DereferenceOfPossiblyNullReferenceTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CS8602DereferenceOfPossiblyNullReferenceTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 #nullable enable
 
 public class C
@@ -58,6 +58,5 @@ public static class E
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

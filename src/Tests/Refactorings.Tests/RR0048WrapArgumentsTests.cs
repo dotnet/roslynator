@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0048WrapArgumentsTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapArguments;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
-        public async Task Test_ToMultiLine()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0048WrapArgumentsTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.WrapArguments;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
+    public async Task Test_ToMultiLine()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
@@ -33,12 +33,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
-        public async Task Test_ToMultiLine2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
+    public async Task Test_ToMultiLine2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
@@ -58,12 +58,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
-        public async Task Test_ToSingleLine()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
+    public async Task Test_ToSingleLine()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
@@ -83,12 +83,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
-        public async Task Test_ToSingleLine2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
+    public async Task Test_ToSingleLine2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
@@ -108,12 +108,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
-        public async Task Test_ToSingleLine3()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
+    public async Task Test_ToSingleLine3()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public C(int[] values)
@@ -143,12 +143,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
-        public async Task TestNoRefactoring()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
+    public async Task TestNoRefactoring()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
@@ -160,6 +160,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

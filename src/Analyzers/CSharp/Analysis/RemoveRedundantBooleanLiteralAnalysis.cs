@@ -6,43 +6,42 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using static Roslynator.CSharp.CSharpFacts;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+internal static class RemoveRedundantBooleanLiteralAnalysis
 {
-    internal static class RemoveRedundantBooleanLiteralAnalysis
+    public static void ReportDiagnostic(
+        SyntaxNodeAnalysisContext context,
+        BinaryExpressionSyntax binaryExpression,
+        ExpressionSyntax left,
+        ExpressionSyntax right)
     {
-        public static void ReportDiagnostic(
-            SyntaxNodeAnalysisContext context,
-            BinaryExpressionSyntax binaryExpression,
-            ExpressionSyntax left,
-            ExpressionSyntax right)
+        if (!DiagnosticRules.RemoveRedundantBooleanLiteral.IsEffective(context))
+            return;
+
+        if (binaryExpression.SpanContainsDirectives())
+            return;
+
+        TextSpan span = GetSpanToRemove(binaryExpression, left, right);
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.RemoveRedundantBooleanLiteral,
+            Location.Create(binaryExpression.SyntaxTree, span),
+            binaryExpression.ToString(span));
+    }
+
+    public static TextSpan GetSpanToRemove(BinaryExpressionSyntax binaryExpression, ExpressionSyntax left, ExpressionSyntax right)
+    {
+        SyntaxToken operatorToken = binaryExpression.OperatorToken;
+
+        if (IsBooleanLiteralExpression(left.Kind()))
         {
-            if (!DiagnosticRules.RemoveRedundantBooleanLiteral.IsEffective(context))
-                return;
-
-            if (binaryExpression.SpanContainsDirectives())
-                return;
-
-            TextSpan span = GetSpanToRemove(binaryExpression, left, right);
-
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.RemoveRedundantBooleanLiteral,
-                Location.Create(binaryExpression.SyntaxTree, span),
-                binaryExpression.ToString(span));
+            return TextSpan.FromBounds(left.SpanStart, operatorToken.Span.End);
         }
-
-        public static TextSpan GetSpanToRemove(BinaryExpressionSyntax binaryExpression, ExpressionSyntax left, ExpressionSyntax right)
+        else
         {
-            SyntaxToken operatorToken = binaryExpression.OperatorToken;
-
-            if (IsBooleanLiteralExpression(left.Kind()))
-            {
-                return TextSpan.FromBounds(left.SpanStart, operatorToken.Span.End);
-            }
-            else
-            {
-                return TextSpan.FromBounds(operatorToken.SpanStart, right.Span.End);
-            }
+            return TextSpan.FromBounds(operatorToken.SpanStart, right.Span.End);
         }
     }
 }

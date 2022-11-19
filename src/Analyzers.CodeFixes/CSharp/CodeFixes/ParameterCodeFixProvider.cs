@@ -9,62 +9,61 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ParameterCodeFixProvider))]
+[Shared]
+public sealed class ParameterCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ParameterCodeFixProvider))]
-    [Shared]
-    public sealed class ParameterCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier,
-                    DiagnosticIdentifiers.MakeParameterRefReadOnly,
-                    DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier,
+                DiagnosticIdentifiers.MakeParameterRefReadOnly,
+                DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ParameterSyntax parameter))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ParameterSyntax parameter))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier:
+                case DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier:
+                    {
+                        if (parameter.IsParams())
                         {
-                            if (parameter.IsParams())
-                            {
-                                ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
-                            }
-                            else
-                            {
-                                ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
-                            }
-
-                            break;
+                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
                         }
-                    case DiagnosticIdentifiers.MakeParameterRefReadOnly:
-                    case DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference:
+                        else
                         {
-                            if (parameter.Modifiers.Contains(SyntaxKind.InKeyword))
-                            {
-                                ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
-                            }
-                            else
-                            {
-                                ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
-                            }
-
-                            break;
+                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
                         }
-                }
+
+                        break;
+                    }
+                case DiagnosticIdentifiers.MakeParameterRefReadOnly:
+                case DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference:
+                    {
+                        if (parameter.Modifiers.Contains(SyntaxKind.InKeyword))
+                        {
+                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
+                        }
+                        else
+                        {
+                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
+                        }
+
+                        break;
+                    }
             }
         }
     }
