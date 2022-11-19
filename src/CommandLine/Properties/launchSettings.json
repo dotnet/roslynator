@@ -2,7 +2,7 @@
   "profiles": {
     "CommandLine": {
       "commandName": "Project",
-      "commandLineArgs": "analyze \"C:\\code\\datamole\\ddp-kernel-device-management\\src\\Datamole.DataPlatform.DeviceManagement.sln\" --supported-diagnostics RCS1256 --analyzer-assemblies \"C:\\code\\public\\roslynator\\src\\Analyzers\\bin\\Debug\\netstandard2.0\\Roslynator.CSharp.Analyzers.dll\""
+      "commandLineArgs": "migrate \"E:\\Projects\\Roslynator\\src\\Migration.Test\" --target-version 3.0 --identifier roslynator.analyzers -d"
     }
   }
 }
