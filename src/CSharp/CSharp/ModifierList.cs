@@ -22,7 +22,7 @@ namespace Roslynator.CSharp
         /// <param name="comparer"></param>
         public static int GetInsertIndex(SyntaxTokenList tokens, SyntaxToken token, IComparer<SyntaxToken> comparer = null)
         {
-            if (comparer == null)
+            if (comparer is null)
                 comparer = ModifierComparer.Default;
 
             int index = -1;
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp
         /// <param name="comparer"></param>
         public static int GetInsertIndex(SyntaxTokenList tokens, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
         {
-            if (comparer == null)
+            if (comparer is null)
                 comparer = ModifierKindComparer.Default;
 
             int index = -1;

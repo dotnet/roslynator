@@ -4,11 +4,11 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Threading;
 
-namespace Roslynator.CodeGeneration.Markdown
+namespace Roslynator.CodeGeneration.Markdown;
+
+internal static class AnalyzersMapping
 {
-    internal static class AnalyzersMapping
-    {
-        private const string _mappingData = @"
+    private const string _mappingData = @"
 RCS1023;FormatEmptyBlock;RCS0022;AddNewLineAfterOpeningBraceOfEmptyBlock
 RCS1024;FormatAccessorList;RCS0025;AddNewLineBeforeAccessorOfFullProperty
 RCS1024;FormatAccessorList;RCS0042;RemoveNewLinesFromAccessorListOfAutoProperty
@@ -32,44 +32,43 @@ RCS1184;FormatConditionalExpression;RCS0028;AddNewLineBeforeConditionalOperatorI
 RCS1185;FormatSingleLineBlock;RCS0021;AddNewLineAfterOpeningBraceOfBlock
 ";
 
-        private static ImmutableDictionary<string, ImmutableArray<string>> _mapping;
+    private static ImmutableDictionary<string, ImmutableArray<string>> _mapping;
 
-        public static ImmutableDictionary<string, ImmutableArray<string>> Mapping
+    public static ImmutableDictionary<string, ImmutableArray<string>> Mapping
+    {
+        get
         {
-            get
-            {
-                if (_mapping == null)
-                    Interlocked.CompareExchange(ref _mapping, LoadMapping(), null);
+            if (_mapping is null)
+                Interlocked.CompareExchange(ref _mapping, LoadMapping(), null);
 
-                return _mapping;
-            }
+            return _mapping;
         }
+    }
 
-        private static ImmutableDictionary<string, ImmutableArray<string>> LoadMapping()
+    private static ImmutableDictionary<string, ImmutableArray<string>> LoadMapping()
+    {
+        ImmutableDictionary<string, ImmutableArray<string>>.Builder dic = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>();
+
+        using (var sr = new StringReader(_mappingData))
         {
-            ImmutableDictionary<string, ImmutableArray<string>>.Builder dic = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>();
+            string line = null;
 
-            using (var sr = new StringReader(_mappingData))
+            while ((line = sr.ReadLine()) is not null)
             {
-                string line = null;
-
-                while ((line = sr.ReadLine()) != null)
+                if (line.Length > 0)
                 {
-                    if (line.Length > 0)
-                    {
-                        string[] split = line.Split(';');
+                    string[] split = line.Split(';');
 
-                        string oldId = split[0];
-                        string newId = split[2];
+                    string oldId = split[0];
+                    string newId = split[2];
 
-                        dic[oldId] = (dic.TryGetValue(oldId, out ImmutableArray<string> newIds))
-                            ? newIds.Add(newId)
-                            : ImmutableArray.Create(newId);
-                    }
+                    dic[oldId] = (dic.TryGetValue(oldId, out ImmutableArray<string> newIds))
+                        ? newIds.Add(newId)
+                        : ImmutableArray.Create(newId);
                 }
             }
-
-            return dic.ToImmutableDictionary();
         }
+
+        return dic.ToImmutableDictionary();
     }
 }

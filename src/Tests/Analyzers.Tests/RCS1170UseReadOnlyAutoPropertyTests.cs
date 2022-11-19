@@ -7,16 +7,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1170UseReadOnlyAutoPropertyTests : AbstractCSharpDiagnosticVerifier<MakeMemberReadOnlyAnalyzer, MemberDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseReadOnlyAutoProperty;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task Test_InstanceProperty()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1170UseReadOnlyAutoPropertyTests : AbstractCSharpDiagnosticVerifier<MakeMemberReadOnlyAnalyzer, MemberDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseReadOnlyAutoProperty;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task Test_InstanceProperty()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public string P1 { get; [|private set;|] }
@@ -39,12 +39,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task Test_InstanceProperty_Int32()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task Test_InstanceProperty_Int32()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public int P { get; [|private set;|] }
@@ -65,12 +65,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task Test_InstanceProperty_Enum()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task Test_InstanceProperty_Enum()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -95,12 +95,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task Test_InstanceProperty_ReadOnlyStruct()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task Test_InstanceProperty_ReadOnlyStruct()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public B P { get; [|private set;|] }
@@ -129,12 +129,12 @@ readonly struct B
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task Test_StaticProperty()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task Test_StaticProperty()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -159,23 +159,23 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_ReadOnlyProperty()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_ReadOnlyProperty()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public int P { get; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_FullProperty()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_FullProperty()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     private int _p;
@@ -187,12 +187,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_Assigned()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_Assigned()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public int P { get; private set; }
@@ -203,12 +203,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_Struct()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_Struct()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public B P { get; private set; }
@@ -218,12 +218,12 @@ struct B
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_Tuple()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_Tuple()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public int P1 { get; private set; }
@@ -235,12 +235,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_AssignedInConstructor_LocalFunction()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_AssignedInConstructor_LocalFunction()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public int P { get; private set; }
@@ -254,12 +254,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_AssignedInConstructor_SimpleLambda()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_AssignedInConstructor_SimpleLambda()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 using System.Collections.Generic;
 
@@ -279,12 +279,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_AssignedInConstructor_ParenthesizedLambda()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_AssignedInConstructor_ParenthesizedLambda()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 using System.Collections.Generic;
 
@@ -304,12 +304,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_AssignedInConstructor_AnonymousMethod()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_AssignedInConstructor_AnonymousMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 using System.Collections.Generic;
 
@@ -329,12 +329,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_StaticPropertyAssignedInInstanceConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_StaticPropertyAssignedInInstanceConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public static int P { get; private set; }
@@ -345,12 +345,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_Generic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_Generic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class B
 {
 }
@@ -365,12 +365,12 @@ class C<T> : B
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_VariablePropertyAssignedInConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_VariablePropertyAssignedInConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public C P1 { get; private set; }
@@ -383,12 +383,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_DateMemberAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_DateMemberAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Runtime.Serialization;
 
@@ -405,12 +405,12 @@ namespace System.Runtime.Serialization
     {
     }
 }", options: Options.AddAllowedCompilerDiagnosticId("CS0436"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_SetterHasAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_SetterHasAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;
 
 class C
@@ -418,12 +418,12 @@ class C
     public string P { get; [DebuggerStepThrough]private set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_AssignedSymbolIsNull()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_AssignedSymbolIsNull()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public string P { get; private set; }
@@ -442,34 +442,34 @@ class C2
     public string P2 { get; }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1061"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_ReadOnlyAutoPropertyNotAvailableInCSharp5()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_ReadOnlyAutoPropertyNotAvailableInCSharp5()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public string P { get; private set; }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp5);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_InitSetter()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_InitSetter()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public string P { get; private init; }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_DependencyAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_DependencyAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -483,12 +483,12 @@ class DependencyAttribute : Attribute
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_ParameterAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_ParameterAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using Microsoft.AspNetCore.Components;
 
@@ -506,12 +506,12 @@ namespace Microsoft.AspNetCore.Components
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
-        public async Task TestNoDiagnostic_CascadingParameterAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_CascadingParameterAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using Microsoft.AspNetCore.Components;
 
@@ -529,6 +529,5 @@ namespace Microsoft.AspNetCore.Components
     }
 }
 ");
-        }
     }
 }

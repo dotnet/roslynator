@@ -16,112 +16,111 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AwaitExpressionCodeFixProvider))]
+[Shared]
+public sealed class AwaitExpressionCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AwaitExpressionCodeFixProvider))]
-    [Shared]
-    public sealed class AwaitExpressionCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.ConfigureAwait); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out AwaitExpressionSyntax awaitExpression))
+            return;
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        if (ConfigureAwaitAnalyzer.IsConfigureAwait(awaitExpression.Expression))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ConfigureAwait); }
+            CodeAction codeAction = CodeAction.Create(
+                "Remove 'ConfigureAwait' call",
+                ct => RemoveCallToConfigureAwaitRefactorAsync(document, awaitExpression, ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+        else
+        {
+            CodeAction codeAction = CodeAction.Create(
+                "Call 'ConfigureAwait'",
+                ct => AddCallToConfigureAwaitRefactorAsync(document, awaitExpression, ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+    }
+
+    private static Task<Document> AddCallToConfigureAwaitRefactorAsync(
+        Document document,
+        AwaitExpressionSyntax awaitExpression,
+        CancellationToken cancellationToken)
+    {
+        ExpressionSyntax expression = awaitExpression.Expression;
+
+        SyntaxTriviaList leading = default;
+
+        switch (expression.Kind())
+        {
+            case SyntaxKind.SimpleMemberAccessExpression:
+                {
+                    var memberAccess = (MemberAccessExpressionSyntax)expression;
+
+                    leading = memberAccess.OperatorToken.LeadingTrivia;
+                    break;
+                }
+            case SyntaxKind.InvocationExpression:
+                {
+                    var invocation = (InvocationExpressionSyntax)expression;
+
+                    SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
+
+                    leading = invocationInfo.OperatorToken.LeadingTrivia;
+                    break;
+                }
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxTrivia last = leading.LastOrDefault();
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AwaitExpressionSyntax awaitExpression))
-                return;
+        last = (last.IsWhitespaceTrivia()) ? last : default;
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+        ParenthesizedExpressionSyntax expression2 = expression.WithoutTrailingTrivia().Parenthesize();
 
-            if (ConfigureAwaitAnalyzer.IsConfigureAwait(awaitExpression.Expression))
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Remove 'ConfigureAwait' call",
-                    ct => RemoveCallToConfigureAwaitRefactorAsync(document, awaitExpression, ct),
-                    GetEquivalenceKey(diagnostic));
+        if (last.IsWhitespaceTrivia())
+            expression2 = expression2.WithTrailingTrivia(SyntaxTriviaAnalysis.DetermineEndOfLine(awaitExpression));
 
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
-            else
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Call 'ConfigureAwait'",
-                    ct => AddCallToConfigureAwaitRefactorAsync(document, awaitExpression, ct),
-                    GetEquivalenceKey(diagnostic));
+        InvocationExpressionSyntax newInvocationExpression = InvocationExpression(
+            SimpleMemberAccessExpression(
+                expression2,
+                Token(SyntaxKind.DotToken).WithLeadingTrivia(last),
+                IdentifierName("ConfigureAwait")),
+            ArgumentList(
+                Token(SyntaxKind.OpenParenToken),
+                SingletonSeparatedList(Argument(FalseLiteralExpression())),
+                Token(default, SyntaxKind.CloseParenToken, expression.GetTrailingTrivia())));
 
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
-        }
+        return document.ReplaceNodeAsync(expression, newInvocationExpression, cancellationToken);
+    }
 
-        private static Task<Document> AddCallToConfigureAwaitRefactorAsync(
-            Document document,
-            AwaitExpressionSyntax awaitExpression,
-            CancellationToken cancellationToken)
-        {
-            ExpressionSyntax expression = awaitExpression.Expression;
+    private static Task<Document> RemoveCallToConfigureAwaitRefactorAsync(
+        Document document,
+        AwaitExpressionSyntax awaitExpression,
+        CancellationToken cancellationToken)
+    {
+        ExpressionSyntax expression = awaitExpression.Expression;
 
-            SyntaxTriviaList leading = default;
+        SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
 
-            switch (expression.Kind())
-            {
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        var memberAccess = (MemberAccessExpressionSyntax)expression;
+        ExpressionSyntax newExpression = invocationInfo.Expression
+            .WithTrailingTrivia(invocationInfo.Expression.GetTrailingTrivia().EmptyIfWhitespace())
+            .AppendToTrailingTrivia(expression.GetTrailingTrivia());
 
-                        leading = memberAccess.OperatorToken.LeadingTrivia;
-                        break;
-                    }
-                case SyntaxKind.InvocationExpression:
-                    {
-                        var invocation = (InvocationExpressionSyntax)expression;
-
-                        SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
-
-                        leading = invocationInfo.OperatorToken.LeadingTrivia;
-                        break;
-                    }
-            }
-
-            SyntaxTrivia last = leading.LastOrDefault();
-
-            last = (last.IsWhitespaceTrivia()) ? last : default;
-
-            ParenthesizedExpressionSyntax expression2 = expression.WithoutTrailingTrivia().Parenthesize();
-
-            if (last.IsWhitespaceTrivia())
-                expression2 = expression2.WithTrailingTrivia(SyntaxTriviaAnalysis.DetermineEndOfLine(awaitExpression));
-
-            InvocationExpressionSyntax newInvocationExpression = InvocationExpression(
-                SimpleMemberAccessExpression(
-                    expression2,
-                    Token(SyntaxKind.DotToken).WithLeadingTrivia(last),
-                    IdentifierName("ConfigureAwait")),
-                ArgumentList(
-                    Token(SyntaxKind.OpenParenToken),
-                    SingletonSeparatedList(Argument(FalseLiteralExpression())),
-                    Token(default, SyntaxKind.CloseParenToken, expression.GetTrailingTrivia())));
-
-            return document.ReplaceNodeAsync(expression, newInvocationExpression, cancellationToken);
-        }
-
-        private static Task<Document> RemoveCallToConfigureAwaitRefactorAsync(
-            Document document,
-            AwaitExpressionSyntax awaitExpression,
-            CancellationToken cancellationToken)
-        {
-            ExpressionSyntax expression = awaitExpression.Expression;
-
-            SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
-
-            ExpressionSyntax newExpression = invocationInfo.Expression
-                .WithTrailingTrivia(invocationInfo.Expression.GetTrailingTrivia().EmptyIfWhitespace())
-                .AppendToTrailingTrivia(expression.GetTrailingTrivia());
-
-            return document.ReplaceNodeAsync(expression, newExpression, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(expression, newExpression, cancellationToken);
     }
 }

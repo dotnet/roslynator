@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0139ReplaceNullLiteralWithDefaultExpressionTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
-        public async Task Test_Argument()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0139ReplaceNullLiteralWithDefaultExpressionTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
+    public async Task Test_Argument()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(C p)
@@ -30,12 +30,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
-        public async Task Test_ReturnExpression()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
+    public async Task Test_ReturnExpression()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     object M()
@@ -52,12 +52,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
-        public async Task Test_LocalDeclaration()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
+    public async Task Test_LocalDeclaration()
+    {
+        await VerifyRefactoringAsync(@"
 #nullable enable
 
 class C
@@ -78,12 +78,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
-        public async Task TestNoRefactoring_ParameterDefaultValue()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
+    public async Task TestNoRefactoring_ParameterDefaultValue()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(C p = [||]null)
@@ -91,6 +91,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

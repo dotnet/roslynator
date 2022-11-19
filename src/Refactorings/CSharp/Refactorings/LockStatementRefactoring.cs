@@ -4,27 +4,26 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class LockStatementRefactoring
-    {
-        public static void ComputeRefactorings(RefactoringContext context, LockStatementSyntax lockStatement)
-        {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceFieldToLockOn))
-            {
-                ExpressionSyntax expression = lockStatement.Expression;
+namespace Roslynator.CSharp.Refactorings;
 
-                if (expression != null)
+internal static class LockStatementRefactoring
+{
+    public static void ComputeRefactorings(RefactoringContext context, LockStatementSyntax lockStatement)
+    {
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceFieldToLockOn))
+        {
+            ExpressionSyntax expression = lockStatement.Expression;
+
+            if (expression is not null)
+            {
+                if (expression.IsMissing || expression.IsKind(SyntaxKind.ThisExpression))
                 {
-                    if (expression.IsMissing || expression.IsKind(SyntaxKind.ThisExpression))
+                    if (context.Span.IsContainedInSpanOrBetweenSpans(expression))
                     {
-                        if (context.Span.IsContainedInSpanOrBetweenSpans(expression))
-                        {
-                            context.RegisterRefactoring(
-                                "Introduce field to lock on",
-                                ct => IntroduceFieldToLockOnRefactoring.RefactorAsync(context.Document, lockStatement, ct),
-                                RefactoringDescriptors.IntroduceFieldToLockOn);
-                        }
+                        context.RegisterRefactoring(
+                            "Introduce field to lock on",
+                            ct => IntroduceFieldToLockOnRefactoring.RefactorAsync(context.Document, lockStatement, ct),
+                            RefactoringDescriptors.IntroduceFieldToLockOn);
                     }
                 }
             }

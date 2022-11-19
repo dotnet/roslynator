@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0013AddUsingDirectiveTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddUsingDirective;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0013AddUsingDirectiveTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.AddUsingDirective;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 using A.B;
 
 namespace N
@@ -55,12 +55,12 @@ namespace A.B.C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
-        public async Task Test_FileScopedNamespace()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
+    public async Task Test_FileScopedNamespace()
+    {
+        await VerifyRefactoringAsync(@"
 using A.B;
 
 namespace N;
@@ -93,32 +93,32 @@ namespace A.B.C
     }
 }
 " }, equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
-        public async Task TestNoRefactoring_InsideFileScopedNamespace()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
+    public async Task TestNoRefactoring_InsideFileScopedNamespace()
+    {
+        await VerifyNoRefactoringAsync(@"
 namespace A.[||]B;
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
-        public async Task TestNoRefactoring_InsideUsingDirective()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
+    public async Task TestNoRefactoring_InsideUsingDirective()
+    {
+        await VerifyNoRefactoringAsync(@"
 using A.[||]B;
 
 namespace A.B
 {
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
-        public async Task TestNoRefactoring_UsingInScope()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]
+    public async Task TestNoRefactoring_UsingInScope()
+    {
+        await VerifyNoRefactoringAsync(@"
 using A.B;
 
 namespace N
@@ -139,6 +139,5 @@ namespace A.B
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

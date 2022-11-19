@@ -6,36 +6,35 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveConditionFromLastElseRefactoring
 {
-    internal static class RemoveConditionFromLastElseRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
     {
-        public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
+        if (elseClause.Statement?.Kind() == SyntaxKind.IfStatement
+            && ((IfStatementSyntax)elseClause.Statement).Else is null)
         {
-            if (elseClause.Statement?.Kind() == SyntaxKind.IfStatement
-                && ((IfStatementSyntax)elseClause.Statement).Else == null)
-            {
-                context.RegisterRefactoring(
-                    "Remove condition",
-                    ct => RefactorAsync(context.Document, elseClause, ct),
-                    RefactoringDescriptors.RemoveConditionFromLastElse);
-            }
+            context.RegisterRefactoring(
+                "Remove condition",
+                ct => RefactorAsync(context.Document, elseClause, ct),
+                RefactoringDescriptors.RemoveConditionFromLastElse);
         }
+    }
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            ElseClauseSyntax elseClause,
-            CancellationToken cancellationToken = default)
-        {
-            var ifStatement = (IfStatementSyntax)elseClause.Statement;
+    private static Task<Document> RefactorAsync(
+        Document document,
+        ElseClauseSyntax elseClause,
+        CancellationToken cancellationToken = default)
+    {
+        var ifStatement = (IfStatementSyntax)elseClause.Statement;
 
-            ElseClauseSyntax newElseClause = elseClause
-                .WithElseKeyword(
-                    elseClause.ElseKeyword
-                        .WithTrailingTrivia(ifStatement.CloseParenToken.TrailingTrivia))
-                .WithStatement(ifStatement.Statement);
+        ElseClauseSyntax newElseClause = elseClause
+            .WithElseKeyword(
+                elseClause.ElseKeyword
+                    .WithTrailingTrivia(ifStatement.CloseParenToken.TrailingTrivia))
+            .WithStatement(ifStatement.Statement);
 
-            return document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken);
     }
 }

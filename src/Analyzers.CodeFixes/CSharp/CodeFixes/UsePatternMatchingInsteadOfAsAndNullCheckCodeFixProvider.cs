@@ -16,90 +16,89 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UsePatternMatchingInsteadOfAsAndNullCheckCodeFixProvider))]
+[Shared]
+public sealed class UsePatternMatchingInsteadOfAsAndNullCheckCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UsePatternMatchingInsteadOfAsAndNullCheckCodeFixProvider))]
-    [Shared]
-    public sealed class UsePatternMatchingInsteadOfAsAndNullCheckCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out LocalDeclarationStatementSyntax localDeclaration))
+            return;
+
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        CodeAction codeAction = CodeAction.Create(
+            "Use pattern matching",
+            ct => RefactorAsync(context.Document, localDeclaration, ct),
+            GetEquivalenceKey(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        LocalDeclarationStatementSyntax localDeclaration,
+        CancellationToken cancellationToken)
+    {
+        VariableDeclaratorSyntax variableDeclarator = localDeclaration
+            .Declaration
+            .Variables
+            .Single();
+
+        ExpressionSyntax expression = variableDeclarator
+            .Initializer
+            .Value
+            .WalkDownParentheses();
+
+        AsExpressionInfo asExpressionInfo = SyntaxInfo.AsExpressionInfo(expression);
+
+        PrefixUnaryExpressionSyntax newCondition = LogicalNotExpression(
+            ParenthesizedExpression(
+                IsPatternExpression(
+                    asExpressionInfo.Expression,
+                    DeclarationPattern(
+                        asExpressionInfo.Type,
+                        SingleVariableDesignation(variableDeclarator.Identifier)))));
+
+        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(localDeclaration);
+
+        int index = statementsInfo.IndexOf(localDeclaration);
+
+        var ifStatement = (IfStatementSyntax)statementsInfo[index + 1];
+
+        SyntaxTriviaList leadingTrivia = statementsInfo.Parent
+            .DescendantTrivia(TextSpan.FromBounds(localDeclaration.SpanStart, ifStatement.SpanStart))
+            .ToSyntaxTriviaList()
+            .EmptyIfWhitespace();
+
+        leadingTrivia = localDeclaration.GetLeadingTrivia().AddRange(leadingTrivia);
+
+        StatementSyntax newStatement = ifStatement.Statement;
+
+        if (ifStatement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement
+            && returnStatement.Expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName
+            && string.Equals(identifierName.Identifier.ValueText, variableDeclarator.Identifier.ValueText, System.StringComparison.Ordinal))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck); }
+            newStatement = newStatement.ReplaceNode(returnStatement.Expression, NullLiteralExpression().WithTriviaFrom(returnStatement.Expression));
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        IfStatementSyntax newIfStatement = ifStatement
+            .WithCondition(newCondition.WithTriviaFrom(ifStatement.Condition))
+            .WithStatement(newStatement)
+            .WithLeadingTrivia(leadingTrivia)
+            .WithFormatterAnnotation();
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out LocalDeclarationStatementSyntax localDeclaration))
-                return;
+        SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.ReplaceRange(index, 2, newIfStatement);
 
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            CodeAction codeAction = CodeAction.Create(
-                "Use pattern matching",
-                ct => RefactorAsync(context.Document, localDeclaration, ct),
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            LocalDeclarationStatementSyntax localDeclaration,
-            CancellationToken cancellationToken)
-        {
-            VariableDeclaratorSyntax variableDeclarator = localDeclaration
-                .Declaration
-                .Variables
-                .Single();
-
-            ExpressionSyntax expression = variableDeclarator
-                .Initializer
-                .Value
-                .WalkDownParentheses();
-
-            AsExpressionInfo asExpressionInfo = SyntaxInfo.AsExpressionInfo(expression);
-
-            PrefixUnaryExpressionSyntax newCondition = LogicalNotExpression(
-                ParenthesizedExpression(
-                    IsPatternExpression(
-                        asExpressionInfo.Expression,
-                        DeclarationPattern(
-                            asExpressionInfo.Type,
-                            SingleVariableDesignation(variableDeclarator.Identifier)))));
-
-            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(localDeclaration);
-
-            int index = statementsInfo.IndexOf(localDeclaration);
-
-            var ifStatement = (IfStatementSyntax)statementsInfo[index + 1];
-
-            SyntaxTriviaList leadingTrivia = statementsInfo.Parent
-                .DescendantTrivia(TextSpan.FromBounds(localDeclaration.SpanStart, ifStatement.SpanStart))
-                .ToSyntaxTriviaList()
-                .EmptyIfWhitespace();
-
-            leadingTrivia = localDeclaration.GetLeadingTrivia().AddRange(leadingTrivia);
-
-            StatementSyntax newStatement = ifStatement.Statement;
-
-            if (ifStatement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement
-                && returnStatement.Expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName
-                && string.Equals(identifierName.Identifier.ValueText, variableDeclarator.Identifier.ValueText, System.StringComparison.Ordinal))
-            {
-                newStatement = newStatement.ReplaceNode(returnStatement.Expression, NullLiteralExpression().WithTriviaFrom(returnStatement.Expression));
-            }
-
-            IfStatementSyntax newIfStatement = ifStatement
-                .WithCondition(newCondition.WithTriviaFrom(ifStatement.Condition))
-                .WithStatement(newStatement)
-                .WithLeadingTrivia(leadingTrivia)
-                .WithFormatterAnnotation();
-
-            SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.ReplaceRange(index, 2, newIfStatement);
-
-            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
-        }
+        return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
     }
 }

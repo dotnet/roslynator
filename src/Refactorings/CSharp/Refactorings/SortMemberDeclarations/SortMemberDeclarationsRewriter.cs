@@ -7,68 +7,67 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.SyntaxRewriters.SortMembers
+namespace Roslynator.CSharp.SyntaxRewriters.SortMembers;
+
+internal class SortMemberDeclarationsRewriter : CSharpSyntaxRewriter
 {
-    internal class SortMemberDeclarationsRewriter : CSharpSyntaxRewriter
+    private readonly IComparer<MemberDeclarationSyntax> _memberComparer;
+    private readonly IComparer<EnumMemberDeclarationSyntax> _enumMemberComparer;
+
+    public SortMemberDeclarationsRewriter(
+        IComparer<MemberDeclarationSyntax> memberComparer,
+        IComparer<EnumMemberDeclarationSyntax> enumMemberComparer)
     {
-        private readonly IComparer<MemberDeclarationSyntax> _memberComparer;
-        private readonly IComparer<EnumMemberDeclarationSyntax> _enumMemberComparer;
+        _memberComparer = memberComparer ?? throw new ArgumentNullException(nameof(memberComparer));
+        _enumMemberComparer = enumMemberComparer ?? throw new ArgumentNullException(nameof(enumMemberComparer));
+    }
 
-        public SortMemberDeclarationsRewriter(
-            IComparer<MemberDeclarationSyntax> memberComparer,
-            IComparer<EnumMemberDeclarationSyntax> enumMemberComparer)
-        {
-            _memberComparer = memberComparer ?? throw new ArgumentNullException(nameof(memberComparer));
-            _enumMemberComparer = enumMemberComparer ?? throw new ArgumentNullException(nameof(enumMemberComparer));
-        }
+    public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
+    {
+        node = (NamespaceDeclarationSyntax)base.VisitNamespaceDeclaration(node);
 
-        public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
-        {
-            node = (NamespaceDeclarationSyntax)base.VisitNamespaceDeclaration(node);
+        return node.WithMembers(SortMembers(node.Members));
+    }
 
-            return node.WithMembers(SortMembers(node.Members));
-        }
+    public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
+    {
+        node = (ClassDeclarationSyntax)base.VisitClassDeclaration(node);
 
-        public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
-        {
-            node = (ClassDeclarationSyntax)base.VisitClassDeclaration(node);
+        return node.WithMembers(SortMembers(node.Members));
+    }
 
-            return node.WithMembers(SortMembers(node.Members));
-        }
+    public override SyntaxNode VisitStructDeclaration(StructDeclarationSyntax node)
+    {
+        node = (StructDeclarationSyntax)base.VisitStructDeclaration(node);
 
-        public override SyntaxNode VisitStructDeclaration(StructDeclarationSyntax node)
-        {
-            node = (StructDeclarationSyntax)base.VisitStructDeclaration(node);
+        return node.WithMembers(SortMembers(node.Members));
+    }
 
-            return node.WithMembers(SortMembers(node.Members));
-        }
+    public override SyntaxNode VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
+    {
+        node = (InterfaceDeclarationSyntax)base.VisitInterfaceDeclaration(node);
 
-        public override SyntaxNode VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
-        {
-            node = (InterfaceDeclarationSyntax)base.VisitInterfaceDeclaration(node);
+        return node.WithMembers(SortMembers(node.Members));
+    }
 
-            return node.WithMembers(SortMembers(node.Members));
-        }
+    public override SyntaxNode VisitEnumDeclaration(EnumDeclarationSyntax node)
+    {
+        node = (EnumDeclarationSyntax)base.VisitEnumDeclaration(node);
 
-        public override SyntaxNode VisitEnumDeclaration(EnumDeclarationSyntax node)
-        {
-            node = (EnumDeclarationSyntax)base.VisitEnumDeclaration(node);
+        return node.WithMembers(SortMembers(node.Members));
+    }
 
-            return node.WithMembers(SortMembers(node.Members));
-        }
+    private SyntaxList<MemberDeclarationSyntax> SortMembers(SyntaxList<MemberDeclarationSyntax> members)
+    {
+        return members
+            .OrderBy(f => f, _memberComparer)
+            .ToSyntaxList();
+    }
 
-        private SyntaxList<MemberDeclarationSyntax> SortMembers(SyntaxList<MemberDeclarationSyntax> members)
-        {
-            return members
-                .OrderBy(f => f, _memberComparer)
-                .ToSyntaxList();
-        }
-
-        private SeparatedSyntaxList<EnumMemberDeclarationSyntax> SortMembers(SeparatedSyntaxList<EnumMemberDeclarationSyntax> members)
-        {
-            return members
-                .OrderBy(f => f, _enumMemberComparer)
-                .ToSeparatedSyntaxList();
-        }
+    private SeparatedSyntaxList<EnumMemberDeclarationSyntax> SortMembers(SeparatedSyntaxList<EnumMemberDeclarationSyntax> members)
+    {
+        return members
+            .OrderBy(f => f, _enumMemberComparer)
+            .ToSeparatedSyntaxList();
     }
 }

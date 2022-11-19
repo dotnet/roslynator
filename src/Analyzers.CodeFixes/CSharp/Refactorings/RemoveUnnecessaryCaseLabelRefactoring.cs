@@ -6,32 +6,31 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveUnnecessaryCaseLabelRefactoring
 {
-    internal static class RemoveUnnecessaryCaseLabelRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        CaseSwitchLabelSyntax label,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            CaseSwitchLabelSyntax label,
-            CancellationToken cancellationToken)
+        var switchSection = (SwitchSectionSyntax)label.Parent;
+
+        SwitchSectionSyntax newNode = switchSection.RemoveNode(label, GetRemoveOptions(label))
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(switchSection, newNode, cancellationToken);
+    }
+
+    private static SyntaxRemoveOptions GetRemoveOptions(CaseSwitchLabelSyntax label)
+    {
+        if (label.GetLeadingTrivia().IsEmptyOrWhitespace()
+            && label.GetTrailingTrivia().IsEmptyOrWhitespace())
         {
-            var switchSection = (SwitchSectionSyntax)label.Parent;
-
-            SwitchSectionSyntax newNode = switchSection.RemoveNode(label, GetRemoveOptions(label))
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(switchSection, newNode, cancellationToken);
+            return SyntaxRemoveOptions.KeepNoTrivia;
         }
 
-        private static SyntaxRemoveOptions GetRemoveOptions(CaseSwitchLabelSyntax label)
-        {
-            if (label.GetLeadingTrivia().IsEmptyOrWhitespace()
-                && label.GetTrailingTrivia().IsEmptyOrWhitespace())
-            {
-                return SyntaxRemoveOptions.KeepNoTrivia;
-            }
-
-            return SyntaxRemoveOptions.KeepExteriorTrivia;
-        }
+        return SyntaxRemoveOptions.KeepExteriorTrivia;
     }
 }

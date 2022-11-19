@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1134RemoveRedundantStatementTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantStatementAnalyzer, StatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantStatement;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
-        public async Task Test_SimpleIf_ReturnNull()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1134RemoveRedundantStatementTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantStatementAnalyzer, StatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantStatement;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
+    public async Task Test_SimpleIf_ReturnNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -45,12 +45,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
-        public async Task Test_SimpleIf_ReturnDefault()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
+    public async Task Test_SimpleIf_ReturnDefault()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -80,12 +80,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
-        public async Task Test_SimpleIf_ReturnTrue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
+    public async Task Test_SimpleIf_ReturnTrue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     bool M()
@@ -115,12 +115,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
-        public async Task Test_SimpleIf_ReturnFalse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
+    public async Task Test_SimpleIf_ReturnFalse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     bool M()
@@ -150,12 +150,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
-        public async Task Test_SimpleLambdaBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
+    public async Task Test_SimpleLambdaBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -195,12 +195,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
-        public async Task Test_ParenthesizedLambdaBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
+    public async Task Test_ParenthesizedLambdaBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -240,12 +240,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
-        public async Task Test_AnonymousMethodBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
+    public async Task Test_AnonymousMethodBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -285,12 +285,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
-        public async Task TestNoDiagnostic_SimpleIf_ExpressionsAreNotEquivalent()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantStatement)]
+    public async Task TestNoDiagnostic_SimpleIf_ExpressionsAreNotEquivalent()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     bool M()
@@ -306,6 +306,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0165UseOfUnassignedLocalVariableTests : AbstractCSharpCompilerDiagnosticFixVerifier<IdentifierNameCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CS0165UseOfUnassignedLocalVariableTests : AbstractCSharpCompilerDiagnosticFixVerifier<IdentifierNameCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 class C
@@ -42,6 +42,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

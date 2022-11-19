@@ -2,17 +2,16 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class DelegateDeclarationRefactoring
-    {
-        public static void ComputeRefactorings(RefactoringContext context, DelegateDeclarationSyntax delegateDeclaration)
-        {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddGenericParameterToDeclaration))
-                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, delegateDeclaration);
+namespace Roslynator.CSharp.Refactorings;
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractTypeDeclarationToNewFile))
-                ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, delegateDeclaration);
-        }
+internal static class DelegateDeclarationRefactoring
+{
+    public static void ComputeRefactorings(RefactoringContext context, DelegateDeclarationSyntax delegateDeclaration)
+    {
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.AddGenericParameterToDeclaration))
+            AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, delegateDeclaration);
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractTypeDeclarationToNewFile))
+            ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, delegateDeclaration);
     }
 }

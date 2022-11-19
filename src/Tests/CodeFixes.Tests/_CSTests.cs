@@ -5,16 +5,16 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CSTests : AbstractCSharpCompilerDiagnosticFixVerifier<AddBodyCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0019_OperatorCannotBeAppliedToOperands;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CSTests : AbstractCSharpCompilerDiagnosticFixVerifier<AddBodyCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0019_OperatorCannotBeAppliedToOperands;
+
+    //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,13 +28,13 @@ class C
 }
 ", @"
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        //[Theory, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
-        //[InlineData("", "")]
-        public async Task Test(string source, string expected)
-        {
-            await VerifyFixAsync(@"
+    //[Theory, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
+    //[InlineData("", "")]
+    public async Task Test(string source, string expected)
+    {
+        await VerifyFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,12 +47,12 @@ class C
     }
 }
 ", source, expected, equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
-        public async Task TestNoFix()
-        {
-            await VerifyNoFixAsync(@"
+    //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
+    public async Task TestNoFix()
+    {
+        await VerifyNoFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +65,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

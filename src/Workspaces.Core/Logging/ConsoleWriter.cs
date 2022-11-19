@@ -17,10 +17,10 @@ namespace Roslynator
             get { return new ConsoleColors(Console.ForegroundColor, Console.BackgroundColor); }
             set
             {
-                if (value.Foreground != null)
+                if (value.Foreground is not null)
                     Console.ForegroundColor = value.Foreground.Value;
 
-                if (value.Background != null)
+                if (value.Background is not null)
                     Console.BackgroundColor = value.Background.Value;
             }
         }
@@ -74,7 +74,7 @@ namespace Roslynator
 
         public override void WriteLine(LogMessage message)
         {
-            if (message.Colors != null)
+            if (message.Colors is not null)
             {
                 WriteLineIf(ShouldWrite(message.Verbosity), message.Text, message.Colors.Value);
             }

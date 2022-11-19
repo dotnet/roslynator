@@ -10,54 +10,53 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Documentation;
 using Roslynator.Documentation;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AddDocumentationCommentRefactoring
 {
-    internal static class AddDocumentationCommentRefactoring
+    private static readonly string[] _tagSeparator = new[] { "," };
+
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        MemberDeclarationSyntax memberDeclaration,
+        bool copyCommentFromBaseIfAvailable,
+        CancellationToken cancellationToken = default)
     {
-        private static readonly string[] _tagSeparator = new[] { "," };
+        MemberDeclarationSyntax newNode = null;
 
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            MemberDeclarationSyntax memberDeclaration,
-            bool copyCommentFromBaseIfAvailable,
-            CancellationToken cancellationToken = default)
+        if (copyCommentFromBaseIfAvailable
+            && DocumentationCommentGenerator.CanGenerateFromBase(memberDeclaration.Kind()))
         {
-            MemberDeclarationSyntax newNode = null;
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            if (copyCommentFromBaseIfAvailable
-                && DocumentationCommentGenerator.CanGenerateFromBase(memberDeclaration.Kind()))
+            DocumentationCommentData data = DocumentationCommentGenerator.GenerateFromBase(memberDeclaration, semanticModel, cancellationToken);
+
+            if (data.Success)
             {
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                SyntaxTrivia comment = DocumentationCommentTriviaFactory.Parse(data.RawXml, semanticModel, memberDeclaration.SpanStart);
 
-                DocumentationCommentData data = DocumentationCommentGenerator.GenerateFromBase(memberDeclaration, semanticModel, cancellationToken);
-
-                if (data.Success)
-                {
-                    SyntaxTrivia comment = DocumentationCommentTriviaFactory.Parse(data.RawXml, semanticModel, memberDeclaration.SpanStart);
-
-                    newNode = memberDeclaration.WithDocumentationComment(comment, indent: true);
-                }
+                newNode = memberDeclaration.WithDocumentationComment(comment, indent: true);
             }
-
-            DocumentationCommentGeneratorSettings settings = DocumentationCommentGeneratorSettings.Default;
-
-            if (document.TryGetAnalyzerOptionValue(
-                memberDeclaration,
-                CodeFixOptions.CS1591_MissingXmlCommentForPubliclyVisibleTypeOrMember_IgnoredTags,
-                out string value))
-            {
-                ImmutableArray<string> ignoredTags = value
-                    .Split(_tagSeparator, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(f => f.Trim())
-                    .Where(f => f.Length > 0)
-                    .ToImmutableArray();
-
-                settings = new DocumentationCommentGeneratorSettings(ignoredTags: ignoredTags);
-            }
-
-            newNode ??= memberDeclaration.WithNewSingleLineDocumentationComment(settings);
-
-            return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
+
+        DocumentationCommentGeneratorSettings settings = DocumentationCommentGeneratorSettings.Default;
+
+        if (document.TryGetAnalyzerOptionValue(
+            memberDeclaration,
+            CodeFixOptions.CS1591_MissingXmlCommentForPubliclyVisibleTypeOrMember_IgnoredTags,
+            out string value))
+        {
+            ImmutableArray<string> ignoredTags = value
+                .Split(_tagSeparator, StringSplitOptions.RemoveEmptyEntries)
+                .Select(f => f.Trim())
+                .Where(f => f.Length > 0)
+                .ToImmutableArray();
+
+            settings = new DocumentationCommentGeneratorSettings(ignoredTags: ignoredTags);
+        }
+
+        newNode ??= memberDeclaration.WithNewSingleLineDocumentationComment(settings);
+
+        return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
+namespace Roslynator.CSharp.Analysis.Tests;
+
+public class RCS1154SortEnumMembersTests : AbstractCSharpDiagnosticVerifier<SortEnumMembersAnalyzer, EnumDeclarationCodeFixProvider>
 {
-    public class RCS1154SortEnumMembersTests : AbstractCSharpDiagnosticVerifier<SortEnumMembersAnalyzer, EnumDeclarationCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SortEnumMembers;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test()
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SortEnumMembers;
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync(@"
 enum [|Foo|]
 {
     B = 1,
@@ -32,12 +32,12 @@ enum Foo
     D = 3
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-        public async Task Test_TrailingSeparator()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test_TrailingSeparator()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum [|Foo|]
 {
     B = 1,
@@ -54,12 +54,12 @@ enum Foo
     D = 3,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-        public async Task Test_EmptyLines()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test_EmptyLines()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum [|Foo|]
 {
     B = 1,
@@ -82,12 +82,12 @@ enum Foo
     D = 3
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-        public async Task Test_WithComments()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test_WithComments()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum [|Foo|]
 {
     /// <summary>B</summary>
@@ -112,12 +112,12 @@ enum Foo
     D = 3,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-        public async Task Test_Comments_EmptyLines()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test_Comments_EmptyLines()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum [|Foo|]
 {
     /// <summary>B</summary>
@@ -148,12 +148,12 @@ enum Foo
     D = 3
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-        public async Task Test_Comments_EmptyLines_TrailingSeparator()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test_Comments_EmptyLines_TrailingSeparator()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum [|Foo|]
 {
     /// <summary>B</summary>
@@ -184,6 +184,5 @@ enum Foo
     D = 3,
 }
 ");
-        }
     }
 }

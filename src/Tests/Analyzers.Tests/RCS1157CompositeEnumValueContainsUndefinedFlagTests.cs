@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1157CompositeEnumValueContainsUndefinedFlagTests : AbstractCSharpDiagnosticVerifier<EnumSymbolAnalyzer, CompositeEnumValueContainsUndefinedFlagCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.CompositeEnumValueContainsUndefinedFlag;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1157CompositeEnumValueContainsUndefinedFlagTests : AbstractCSharpDiagnosticVerifier<EnumSymbolAnalyzer, CompositeEnumValueContainsUndefinedFlagCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.CompositeEnumValueContainsUndefinedFlag;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -47,12 +47,12 @@ enum Foo
     EnumMember = 16
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Flags]
@@ -67,12 +67,12 @@ enum Foo
     ABCD = 15,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
-        public async Task TestNoDiagnostic_NegativeValue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
+    public async Task TestNoDiagnostic_NegativeValue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Flags]
@@ -81,12 +81,12 @@ public enum E
     A = 1 << 31
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
-        public async Task TestNoDiagnostic_MaxValue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
+    public async Task TestNoDiagnostic_MaxValue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Flags]
@@ -95,6 +95,5 @@ public enum E
     A = int.MaxValue
 }
 ");
-        }
     }
 }

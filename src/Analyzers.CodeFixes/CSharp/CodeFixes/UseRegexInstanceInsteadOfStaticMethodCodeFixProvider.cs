@@ -10,39 +10,38 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseRegexInstanceInsteadOfStaticMethodCodeFixProvider))]
+[Shared]
+public sealed class UseRegexInstanceInsteadOfStaticMethodCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseRegexInstanceInsteadOfStaticMethodCodeFixProvider))]
-    [Shared]
-    public sealed class UseRegexInstanceInsteadOfStaticMethodCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod); }
+    }
 
-        public override FixAllProvider GetFixAllProvider()
-        {
+    public override FixAllProvider GetFixAllProvider()
+    {
 #if DEBUG
-            return WellKnownFixAllProviders.BatchFixer;
+        return WellKnownFixAllProviders.BatchFixer;
 #else
-            return null;
+        return null;
 #endif
-        }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out InvocationExpressionSyntax invocation))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out InvocationExpressionSyntax invocation))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Use Regex instance",
-                ct => UseRegexInstanceInsteadOfStaticMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod));
+        CodeAction codeAction = CodeAction.Create(
+            "Use Regex instance",
+            ct => UseRegexInstanceInsteadOfStaticMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

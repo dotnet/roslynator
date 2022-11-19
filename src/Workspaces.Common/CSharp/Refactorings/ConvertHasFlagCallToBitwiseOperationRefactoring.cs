@@ -8,92 +8,91 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConvertHasFlagCallToBitwiseOperationRefactoring
 {
-    internal static class ConvertHasFlagCallToBitwiseOperationRefactoring
+    public const string Title = "Use '&' operator";
+
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        InvocationExpressionSyntax invocation,
+        CancellationToken cancellationToken = default)
     {
-        public const string Title = "Use '&' operator";
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            InvocationExpressionSyntax invocation,
-            CancellationToken cancellationToken = default)
+        return await RefactorAsync(document, invocation, semanticModel, cancellationToken).ConfigureAwait(false);
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        InvocationExpressionSyntax invocation,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
+    {
+        ExpressionSyntax expression = invocation.ArgumentList.Arguments[0].Expression;
+
+        bool isComposite = SyntaxUtility.IsCompositeEnumValue(expression, semanticModel, cancellationToken);
+
+        ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
+            BitwiseAndExpression(
+                ((MemberAccessExpressionSyntax)invocation.Expression).Expression.Parenthesize(),
+                expression.Parenthesize())
+                .Parenthesize());
+
+        SyntaxKind binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
+
+        SyntaxNode nodeToReplace = invocation;
+
+        SyntaxNode parent = invocation.Parent;
+
+        if (!parent.SpanContainsDirectives())
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            switch (parent.Kind())
+            {
+                case SyntaxKind.LogicalNotExpression:
+                    {
+                        binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
+                        nodeToReplace = parent;
+                        break;
+                    }
+                case SyntaxKind.EqualsExpression:
+                    {
+                        switch (((BinaryExpressionSyntax)parent).Right?.Kind())
+                        {
+                            case SyntaxKind.TrueLiteralExpression:
+                                {
+                                    binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
+                                    nodeToReplace = parent;
+                                    break;
+                                }
+                            case SyntaxKind.FalseLiteralExpression:
+                                {
+                                    binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
+                                    nodeToReplace = parent;
+                                    break;
+                                }
+                        }
 
-            return await RefactorAsync(document, invocation, semanticModel, cancellationToken).ConfigureAwait(false);
+                        break;
+                    }
+            }
         }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InvocationExpressionSyntax invocation,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
+        ExpressionSyntax right;
+        if (isComposite)
         {
-            ExpressionSyntax expression = invocation.ArgumentList.Arguments[0].Expression;
-
-            bool isComposite = SyntaxUtility.IsCompositeEnumValue(expression, semanticModel, cancellationToken);
-
-            ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
-                BitwiseAndExpression(
-                    ((MemberAccessExpressionSyntax)invocation.Expression).Expression.Parenthesize(),
-                    expression.Parenthesize())
-                    .Parenthesize());
-
-            SyntaxKind binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
-
-            SyntaxNode nodeToReplace = invocation;
-
-            SyntaxNode parent = invocation.Parent;
-
-            if (!parent.SpanContainsDirectives())
-            {
-                switch (parent.Kind())
-                {
-                    case SyntaxKind.LogicalNotExpression:
-                        {
-                            binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
-                            nodeToReplace = parent;
-                            break;
-                        }
-                    case SyntaxKind.EqualsExpression:
-                        {
-                            switch (((BinaryExpressionSyntax)parent).Right?.Kind())
-                            {
-                                case SyntaxKind.TrueLiteralExpression:
-                                    {
-                                        binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
-                                        nodeToReplace = parent;
-                                        break;
-                                    }
-                                case SyntaxKind.FalseLiteralExpression:
-                                    {
-                                        binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
-                                        nodeToReplace = parent;
-                                        break;
-                                    }
-                            }
-
-                            break;
-                        }
-                }
-            }
-
-            ExpressionSyntax right;
-            if (isComposite)
-            {
-                right = expression.Parenthesize();
-            }
-            else
-            {
-                right = NumericLiteralExpression(0);
-            }
-
-            ParenthesizedExpressionSyntax newNode = BinaryExpression(binaryExpressionKind, parenthesizedExpression, right).WithTriviaFrom(nodeToReplace)
-                .Parenthesize()
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(nodeToReplace, newNode, cancellationToken);
+            right = expression.Parenthesize();
         }
+        else
+        {
+            right = NumericLiteralExpression(0);
+        }
+
+        ParenthesizedExpressionSyntax newNode = BinaryExpression(binaryExpressionKind, parenthesizedExpression, right).WithTriviaFrom(nodeToReplace)
+            .Parenthesize()
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(nodeToReplace, newNode, cancellationToken);
     }
 }

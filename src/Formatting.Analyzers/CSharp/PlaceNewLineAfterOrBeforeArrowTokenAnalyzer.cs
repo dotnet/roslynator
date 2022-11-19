@@ -8,63 +8,62 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class PlaceNewLineAfterOrBeforeArrowTokenAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class PlaceNewLineAfterOrBeforeArrowTokenAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken);
-                }
-
-                return _supportedDiagnostics;
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken);
             }
+
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeArrowExpressionClause(f), SyntaxKind.ArrowExpressionClause);
+    }
+
+    private static void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
+    {
+        var arrowExpressionClause = (ArrowExpressionClauseSyntax)context.Node;
+
+        SyntaxToken arrowToken = arrowExpressionClause.ArrowToken;
+
+        NewLinePosition newLinePosition = context.GetArrowTokenNewLinePosition();
+
+        if (newLinePosition == NewLinePosition.None)
+            return;
+
+        FormattingSuggestion suggestion = FormattingAnalysis.AnalyzeNewLineBeforeOrAfter(arrowToken, arrowExpressionClause.Expression, newLinePosition);
+
+        if (suggestion == FormattingSuggestion.AddNewLineBefore)
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeArrowExpressionClause(f), SyntaxKind.ArrowExpressionClause);
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
+                arrowToken.GetLocation(),
+                "before");
         }
-
-        private static void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
+        else if (suggestion == FormattingSuggestion.AddNewLineAfter)
         {
-            var arrowExpressionClause = (ArrowExpressionClauseSyntax)context.Node;
-
-            SyntaxToken arrowToken = arrowExpressionClause.ArrowToken;
-
-            NewLinePosition newLinePosition = context.GetArrowTokenNewLinePosition();
-
-            if (newLinePosition == NewLinePosition.None)
-                return;
-
-            FormattingSuggestion suggestion = FormattingAnalysis.AnalyzeNewLineBeforeOrAfter(arrowToken, arrowExpressionClause.Expression, newLinePosition);
-
-            if (suggestion == FormattingSuggestion.AddNewLineBefore)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
-                    arrowToken.GetLocation(),
-                    "before");
-            }
-            else if (suggestion == FormattingSuggestion.AddNewLineAfter)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
-                    arrowToken.GetLocation(),
-                    properties: DiagnosticProperties.AnalyzerOption_Invert,
-                    "after");
-            }
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
+                arrowToken.GetLocation(),
+                properties: DiagnosticProperties.AnalyzerOption_Invert,
+                "after");
         }
     }
 }

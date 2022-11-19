@@ -3,64 +3,63 @@
 using Microsoft.CodeAnalysis;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+internal static class SyntaxTriviaExtensions
 {
-    internal static class SyntaxTriviaExtensions
+    public static TNode PrependEndOfLineToLeadingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
     {
-        public static TNode PrependEndOfLineToLeadingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node);
+        SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node);
 
-            return node.PrependToLeadingTrivia(endOfLine);
-        }
+        return node.PrependToLeadingTrivia(endOfLine);
+    }
 
-        public static TNode AppendEndOfLineToLeadingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node);
+    public static TNode AppendEndOfLineToLeadingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
+    {
+        SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node);
 
-            return node.AppendToLeadingTrivia(endOfLine);
-        }
+        return node.AppendToLeadingTrivia(endOfLine);
+    }
 
-        public static TNode PrependEndOfLineToTrailingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node);
+    public static TNode PrependEndOfLineToTrailingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
+    {
+        SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node);
 
-            return node.PrependToTrailingTrivia(endOfLine);
-        }
+        return node.PrependToTrailingTrivia(endOfLine);
+    }
 
-        public static TNode AppendEndOfLineToTrailingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node);
+    public static TNode AppendEndOfLineToTrailingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
+    {
+        SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node);
 
-            return node.AppendToTrailingTrivia(endOfLine);
-        }
+        return node.AppendToTrailingTrivia(endOfLine);
+    }
 
-        public static SyntaxToken PrependEndOfLineToLeadingTrivia(this SyntaxToken token)
-        {
-            SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(token);
+    public static SyntaxToken PrependEndOfLineToLeadingTrivia(this SyntaxToken token)
+    {
+        SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(token);
 
-            return token.PrependToLeadingTrivia(endOfLine);
-        }
+        return token.PrependToLeadingTrivia(endOfLine);
+    }
 
-        public static SyntaxToken AppendEndOfLineToLeadingTrivia(this SyntaxToken token)
-        {
-            SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(token);
+    public static SyntaxToken AppendEndOfLineToLeadingTrivia(this SyntaxToken token)
+    {
+        SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(token);
 
-            return token.AppendToLeadingTrivia(endOfLine);
-        }
+        return token.AppendToLeadingTrivia(endOfLine);
+    }
 
-        public static SyntaxToken PrependEndOfLineToTrailingTrivia(this SyntaxToken token)
-        {
-            SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(token);
+    public static SyntaxToken PrependEndOfLineToTrailingTrivia(this SyntaxToken token)
+    {
+        SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(token);
 
-            return token.PrependToTrailingTrivia(endOfLine);
-        }
+        return token.PrependToTrailingTrivia(endOfLine);
+    }
 
-        public static SyntaxToken AppendEndOfLineToTrailingTrivia(this SyntaxToken token)
-        {
-            SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(token);
+    public static SyntaxToken AppendEndOfLineToTrailingTrivia(this SyntaxToken token)
+    {
+        SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(token);
 
-            return token.AppendToTrailingTrivia(endOfLine);
-        }
+        return token.AppendToTrailingTrivia(endOfLine);
     }
 }

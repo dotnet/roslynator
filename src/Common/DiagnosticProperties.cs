@@ -4,38 +4,37 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class DiagnosticProperties
 {
-    internal static class DiagnosticProperties
+    public static ImmutableDictionary<string, string> NewLinePosition_After = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("NewLinePosition", "After") });
+
+    private static ImmutableDictionary<string, string> _analyzerOption_Invert;
+
+    private const string AnalyzerOptionKey = "AnalyzerOption";
+
+    private const string InvertValue = "Invert";
+
+    public static ImmutableDictionary<string, string> AnalyzerOption_Invert
     {
-        public static ImmutableDictionary<string, string> NewLinePosition_After = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("NewLinePosition", "After") });
-
-        private static ImmutableDictionary<string, string> _analyzerOption_Invert;
-
-        private const string AnalyzerOptionKey = "AnalyzerOption";
-
-        private const string InvertValue = "Invert";
-
-        public static ImmutableDictionary<string, string> AnalyzerOption_Invert
+        get
         {
-            get
+            if (_analyzerOption_Invert is null)
             {
-                if (_analyzerOption_Invert == null)
-                {
-                    Interlocked.CompareExchange(
-                        ref _analyzerOption_Invert,
-                        ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>(AnalyzerOptionKey, InvertValue) }),
-                        null);
-                }
-
-                return _analyzerOption_Invert;
+                Interlocked.CompareExchange(
+                    ref _analyzerOption_Invert,
+                    ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>(AnalyzerOptionKey, InvertValue) }),
+                    null);
             }
-        }
 
-        public static bool ContainsInvert(ImmutableDictionary<string, string> properties)
-        {
-            return properties.TryGetValue(AnalyzerOptionKey, out string value)
-                && value == InvertValue;
+            return _analyzerOption_Invert;
         }
+    }
+
+    public static bool ContainsInvert(ImmutableDictionary<string, string> properties)
+    {
+        return properties.TryGetValue(AnalyzerOptionKey, out string value)
+            && value == InvertValue;
     }
 }

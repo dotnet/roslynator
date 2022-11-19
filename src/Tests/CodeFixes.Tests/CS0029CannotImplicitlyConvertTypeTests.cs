@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0029CannotImplicitlyConvertTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<ExpressionCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
-        public async Task Test_RemoveAssignmentOfVoidExpression()
-        {
-            await VerifyFixAsync(@"
+public class CS0029CannotImplicitlyConvertTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<ExpressionCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
+    public async Task Test_RemoveAssignmentOfVoidExpression()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -32,12 +32,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "RemoveAssignment"));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
-        public async Task Test_ChangeReturnTypeAccordingToReturnExpression()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
+    public async Task Test_ChangeReturnTypeAccordingToReturnExpression()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     int M()
@@ -54,12 +54,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
-        public async Task Test_ChangeReturnTypeAccordingToReturnExpression_ExpressionBody()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
+    public async Task Test_ChangeReturnTypeAccordingToReturnExpression_ExpressionBody()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     int M() => """";
@@ -70,6 +70,5 @@ class C
     string M() => """";
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
-        }
     }
 }

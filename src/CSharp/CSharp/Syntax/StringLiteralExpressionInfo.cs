@@ -7,146 +7,145 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 
-namespace Roslynator.CSharp.Syntax
+namespace Roslynator.CSharp.Syntax;
+
+/// <summary>
+/// Provides information about string literal expression.
+/// </summary>
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly struct StringLiteralExpressionInfo
 {
-    /// <summary>
-    /// Provides information about string literal expression.
-    /// </summary>
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct StringLiteralExpressionInfo
+    private StringLiteralExpressionInfo(LiteralExpressionSyntax expression)
     {
-        private StringLiteralExpressionInfo(LiteralExpressionSyntax expression)
+        Expression = expression;
+    }
+
+    /// <summary>
+    /// The string literal expression.
+    /// </summary>
+    public LiteralExpressionSyntax Expression { get; }
+
+    /// <summary>
+    /// The token representing the string literal expression.
+    /// </summary>
+    public SyntaxToken Token
+    {
+        get { return Expression?.Token ?? default; }
+    }
+
+    /// <summary>
+    /// The token text.
+    /// </summary>
+    public string Text
+    {
+        get { return Token.Text; }
+    }
+
+    /// <summary>
+    /// The token text, not including leading ampersand, if any, and enclosing quotation marks.
+    /// </summary>
+    public string InnerText
+    {
+        get
         {
-            Expression = expression;
+            string text = Text;
+
+            int length = text.Length;
+
+            if (length == 0)
+                return "";
+
+            if (text[0] == '@')
+                return text.Substring(2, length - 3);
+
+            return text.Substring(1, length - 2);
         }
+    }
 
-        /// <summary>
-        /// The string literal expression.
-        /// </summary>
-        public LiteralExpressionSyntax Expression { get; }
+    /// <summary>
+    /// The token value text.
+    /// </summary>
+    public string ValueText
+    {
+        get { return Token.ValueText; }
+    }
 
-        /// <summary>
-        /// The token representing the string literal expression.
-        /// </summary>
-        public SyntaxToken Token
+    /// <summary>
+    /// True if this instance is regular string literal expression.
+    /// </summary>
+    public bool IsRegular
+    {
+        get { return Text.StartsWith("\"", StringComparison.Ordinal); }
+    }
+
+    /// <summary>
+    /// True if this instance is verbatim string literal expression.
+    /// </summary>
+    public bool IsVerbatim
+    {
+        get { return Text.StartsWith("@", StringComparison.Ordinal); }
+    }
+
+    /// <summary>
+    /// True if the string literal contains linefeed.
+    /// </summary>
+    public bool ContainsLinefeed
+    {
+        get
         {
-            get { return Expression?.Token ?? default; }
-        }
+            if (IsRegular)
+                return ValueText.Contains("\n");
 
-        /// <summary>
-        /// The token text.
-        /// </summary>
-        public string Text
+            if (IsVerbatim)
+                return Text.Contains("\n");
+
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// True if the string literal expression contains escape sequence.
+    /// </summary>
+    public bool ContainsEscapeSequence
+    {
+        get
         {
-            get { return Token.Text; }
+            if (IsRegular)
+                return Text.Contains("\\");
+
+            if (IsVerbatim)
+                return InnerText.Contains("\"\"");
+
+            return false;
         }
+    }
 
-        /// <summary>
-        /// The token text, not including leading ampersand, if any, and enclosing quotation marks.
-        /// </summary>
-        public string InnerText
-        {
-            get
-            {
-                string text = Text;
+    /// <summary>
+    /// Determines whether this struct was initialized with an actual syntax.
+    /// </summary>
+    public bool Success
+    {
+        get { return Expression is not null; }
+    }
 
-                int length = text.Length;
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return SyntaxInfoHelpers.ToDebugString(Success, this, Expression); }
+    }
 
-                if (length == 0)
-                    return "";
+    internal static StringLiteralExpressionInfo Create(
+        SyntaxNode node,
+        bool walkDownParentheses = true)
+    {
+        return Create(Walk(node, walkDownParentheses) as LiteralExpressionSyntax);
+    }
 
-                if (text[0] == '@')
-                    return text.Substring(2, length - 3);
+    internal static StringLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
+    {
+        if (literalExpression?.Kind() != SyntaxKind.StringLiteralExpression)
+            return default;
 
-                return text.Substring(1, length - 2);
-            }
-        }
-
-        /// <summary>
-        /// The token value text.
-        /// </summary>
-        public string ValueText
-        {
-            get { return Token.ValueText; }
-        }
-
-        /// <summary>
-        /// True if this instance is regular string literal expression.
-        /// </summary>
-        public bool IsRegular
-        {
-            get { return Text.StartsWith("\"", StringComparison.Ordinal); }
-        }
-
-        /// <summary>
-        /// True if this instance is verbatim string literal expression.
-        /// </summary>
-        public bool IsVerbatim
-        {
-            get { return Text.StartsWith("@", StringComparison.Ordinal); }
-        }
-
-        /// <summary>
-        /// True if the string literal contains linefeed.
-        /// </summary>
-        public bool ContainsLinefeed
-        {
-            get
-            {
-                if (IsRegular)
-                    return ValueText.Contains("\n");
-
-                if (IsVerbatim)
-                    return Text.Contains("\n");
-
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// True if the string literal expression contains escape sequence.
-        /// </summary>
-        public bool ContainsEscapeSequence
-        {
-            get
-            {
-                if (IsRegular)
-                    return Text.Contains("\\");
-
-                if (IsVerbatim)
-                    return InnerText.Contains("\"\"");
-
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Determines whether this struct was initialized with an actual syntax.
-        /// </summary>
-        public bool Success
-        {
-            get { return Expression != null; }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return SyntaxInfoHelpers.ToDebugString(Success, this, Expression); }
-        }
-
-        internal static StringLiteralExpressionInfo Create(
-            SyntaxNode node,
-            bool walkDownParentheses = true)
-        {
-            return Create(Walk(node, walkDownParentheses) as LiteralExpressionSyntax);
-        }
-
-        internal static StringLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
-        {
-            if (literalExpression?.Kind() != SyntaxKind.StringLiteralExpression)
-                return default;
-
-            return new StringLiteralExpressionInfo(literalExpression);
-        }
+        return new StringLiteralExpressionInfo(literalExpression);
     }
 }

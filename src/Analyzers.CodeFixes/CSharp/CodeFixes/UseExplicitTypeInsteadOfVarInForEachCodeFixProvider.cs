@@ -11,72 +11,71 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitTypeInsteadOfVarInForEachCodeFixProvider))]
+[Shared]
+public sealed class UseExplicitTypeInsteadOfVarInForEachCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitTypeInsteadOfVarInForEachCodeFixProvider))]
-    [Shared]
-    public sealed class UseExplicitTypeInsteadOfVarInForEachCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.ForEachStatement, SyntaxKind.ForEachVariableStatement, SyntaxKind.DeclarationExpression)))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        TypeSyntax type;
+        ITypeSymbol typeSymbol;
+
+        switch (node)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            case ForEachStatementSyntax forEachStatement:
+                {
+                    type = forEachStatement.Type;
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                predicate: f => f.IsKind(SyntaxKind.ForEachStatement, SyntaxKind.ForEachVariableStatement, SyntaxKind.DeclarationExpression)))
-            {
-                return;
-            }
+                    typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
+                    break;
+                }
+            case ForEachVariableStatementSyntax forEachVariableStatement:
+                {
+                    var declarationExpression = (DeclarationExpressionSyntax)forEachVariableStatement.Variable;
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+                    type = declarationExpression.Type;
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
+                    break;
+                }
+            case DeclarationExpressionSyntax declarationExpression:
+                {
+                    type = declarationExpression.Type;
 
-            TypeSyntax type;
-            ITypeSymbol typeSymbol;
-
-            switch (node)
-            {
-                case ForEachStatementSyntax forEachStatement:
-                    {
-                        type = forEachStatement.Type;
-
-                        typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
-                        break;
-                    }
-                case ForEachVariableStatementSyntax forEachVariableStatement:
-                    {
-                        var declarationExpression = (DeclarationExpressionSyntax)forEachVariableStatement.Variable;
-
-                        type = declarationExpression.Type;
-
-                        typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
-                        break;
-                    }
-                case DeclarationExpressionSyntax declarationExpression:
-                    {
-                        type = declarationExpression.Type;
-
-                        typeSymbol = semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
-                        break;
-                    }
-                default:
-                    {
-                        throw new InvalidOperationException();
-                    }
-            }
-
-            CodeAction codeAction = CodeActionFactory.UseExplicitType(document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
+                    typeSymbol = semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
+                    break;
+                }
+            default:
+                {
+                    throw new InvalidOperationException();
+                }
         }
+
+        CodeAction codeAction = CodeActionFactory.UseExplicitType(document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

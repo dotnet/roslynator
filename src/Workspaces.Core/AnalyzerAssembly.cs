@@ -79,7 +79,7 @@ namespace Roslynator
             {
                 types = ex.Types.OfType<TypeInfo>().ToArray();
 
-                int count = ex.Types.Count(f => f == null);
+                int count = ex.Types.Count(f => f is null);
                 string message = $"Cannot load {count} type{((count == 1) ? "" : "s")} from assembly '{analyzerAssembly.FullName}'";
 
                 if (!string.IsNullOrEmpty(analyzerAssembly.Location))
@@ -99,18 +99,18 @@ namespace Roslynator
                 {
                     DiagnosticAnalyzerAttribute attribute = typeInfo.GetCustomAttribute<DiagnosticAnalyzerAttribute>();
 
-                    if (attribute != null)
+                    if (attribute is not null)
                     {
                         DiagnosticAnalyzer analyzer = CreateInstanceAndCatchIfThrows<DiagnosticAnalyzer>(typeInfo);
 
-                        if (analyzer != null)
+                        if (analyzer is not null)
                         {
-                            if (analyzers == null)
+                            if (analyzers is null)
                                 analyzers = new Dictionary<string, ImmutableArray<DiagnosticAnalyzer>.Builder>();
 
                             foreach (string language2 in attribute.Languages)
                             {
-                                if (language == null
+                                if (language is null
                                     || language == language2)
                                 {
                                     if (!analyzers.TryGetValue(language2, out ImmutableArray<DiagnosticAnalyzer>.Builder value))
@@ -128,18 +128,18 @@ namespace Roslynator
                 {
                     ExportCodeFixProviderAttribute attribute = typeInfo.GetCustomAttribute<ExportCodeFixProviderAttribute>();
 
-                    if (attribute != null)
+                    if (attribute is not null)
                     {
                         CodeFixProvider fixer = CreateInstanceAndCatchIfThrows<CodeFixProvider>(typeInfo);
 
-                        if (fixer != null)
+                        if (fixer is not null)
                         {
-                            if (fixers == null)
+                            if (fixers is null)
                                 fixers = new Dictionary<string, ImmutableArray<CodeFixProvider>.Builder>();
 
                             foreach (string language2 in attribute.Languages)
                             {
-                                if (language == null
+                                if (language is null
                                     || language == language2)
                                 {
                                     if (!fixers.TryGetValue(language2, out ImmutableArray<CodeFixProvider>.Builder value))
@@ -186,7 +186,7 @@ namespace Roslynator
 
         public bool Equals(AnalyzerAssembly other)
         {
-            return other != null
+            return other is not null
                 && StringComparer.Ordinal.Equals(FullName, other.FullName);
         }
     }

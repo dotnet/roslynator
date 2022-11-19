@@ -4,38 +4,37 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal class NumberSuffixNameGenerator : NameGenerator
 {
-    internal class NumberSuffixNameGenerator : NameGenerator
+    public override string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, bool isCaseSensitive = true)
     {
-        public override string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, bool isCaseSensitive = true)
+        int suffix = 1;
+
+        string name = baseName;
+
+        while (!IsUniqueName(name, reservedNames, isCaseSensitive))
         {
-            int suffix = 1;
-
-            string name = baseName;
-
-            while (!IsUniqueName(name, reservedNames, isCaseSensitive))
-            {
-                suffix++;
-                name = baseName + suffix.ToString();
-            }
-
-            return name;
+            suffix++;
+            name = baseName + suffix.ToString();
         }
 
-        public override string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
+        return name;
+    }
+
+    public override string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
+    {
+        int suffix = 1;
+
+        string name = baseName;
+
+        while (!IsUniqueName(name, symbols, isCaseSensitive))
         {
-            int suffix = 1;
-
-            string name = baseName;
-
-            while (!IsUniqueName(name, symbols, isCaseSensitive))
-            {
-                suffix++;
-                name = baseName + suffix.ToString();
-            }
-
-            return name;
+            suffix++;
+            name = baseName + suffix.ToString();
         }
+
+        return name;
     }
 }

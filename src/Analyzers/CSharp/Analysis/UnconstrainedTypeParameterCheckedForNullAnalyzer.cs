@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.Analysis
             bool allowValueType,
             bool allowConstructor)
         {
-            if (typeParameterSymbol == null)
+            if (typeParameterSymbol is null)
                 throw new ArgumentNullException(nameof(typeParameterSymbol));
 
             if (!CheckConstraint(typeParameterSymbol, allowReference, allowValueType, allowConstructor))

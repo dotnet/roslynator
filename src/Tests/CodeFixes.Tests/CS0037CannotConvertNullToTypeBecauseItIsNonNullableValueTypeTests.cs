@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0037CannotConvertNullToTypeBecauseItIsNonNullableValueTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<RemovePropertyOrFieldInitializerCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType)]
-        public async Task Test_RemovePropertyInitializer()
-        {
-            await VerifyFixAsync(@"
+public class CS0037CannotConvertNullToTypeBecauseItIsNonNullableValueTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<RemovePropertyOrFieldInitializerCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType)]
+    public async Task Test_RemovePropertyInitializer()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 class C
@@ -28,12 +28,12 @@ class C
     public StringSplitOptions Options { get; set }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType)]
-        public async Task Test_RemovePropertyInitializer_NullForgivingOperator()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType)]
+    public async Task Test_RemovePropertyInitializer_NullForgivingOperator()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 class C
@@ -48,12 +48,12 @@ class C
     public StringSplitOptions Options { get; set }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType)]
-        public async Task Test_RemoveFieldInitializer()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType)]
+    public async Task Test_RemoveFieldInitializer()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 class C
@@ -68,6 +68,5 @@ class C
     public StringSplitOptions Options;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
-        }
     }
 }

@@ -3,20 +3,19 @@
 using System.Collections.Generic;
 using CommandLine;
 
-namespace Roslynator.CommandLine
-{
-    public class AbstractLinesOfCodeCommandLineOptions : MSBuildCommandLineOptions
-    {
-        [Value(
-            index: 0,
-            HelpText = "Path to one or more project/solution files.",
-            MetaName = "<PROJECT|SOLUTION>")]
-        public IEnumerable<string> Paths { get; set; }
+namespace Roslynator.CommandLine;
 
-        [Option(
-            shortName: OptionShortNames.IncludeGeneratedCode,
-            longName: "include-generated-code",
-            HelpText = "Indicates whether generated code should be included.")]
-        public bool IncludeGeneratedCode { get; set; }
-    }
+public class AbstractLinesOfCodeCommandLineOptions : MSBuildCommandLineOptions
+{
+    [Value(
+        index: 0,
+        HelpText = "Path to one or more project/solution files.",
+        MetaName = "<PROJECT|SOLUTION>")]
+    public IEnumerable<string> Paths { get; set; }
+
+    [Option(
+        shortName: OptionShortNames.IncludeGeneratedCode,
+        longName: "include-generated-code",
+        HelpText = "Indicates whether generated code should be included.")]
+    public bool IncludeGeneratedCode { get; set; }
 }

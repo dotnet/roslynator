@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol delegateInvokeMethod = namedType.DelegateInvokeMethod;
 
-            if (delegateInvokeMethod == null)
+            if (delegateInvokeMethod is null)
                 return;
 
             if (!delegateInvokeMethod.ReturnType.IsVoid())
@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.Analysis
 
             TypeSyntax type = GetTypeSyntax(node);
 
-            if (type == null)
+            if (type is null)
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseGenericEventHandler, type);

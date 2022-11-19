@@ -7,21 +7,20 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class SimplifyNullableOfTRefactoring
-    {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            TypeSyntax type,
-            TypeSyntax nullableType,
-            CancellationToken cancellationToken)
-        {
-            TypeSyntax newType = NullableType(nullableType.WithoutTrivia(), Token(SyntaxKind.QuestionToken))
-                .WithTriviaFrom(type)
-                .WithFormatterAnnotation();
+namespace Roslynator.CSharp.Refactorings;
 
-            return document.ReplaceNodeAsync(type, newType, cancellationToken);
-        }
+internal static class SimplifyNullableOfTRefactoring
+{
+    public static Task<Document> RefactorAsync(
+        Document document,
+        TypeSyntax type,
+        TypeSyntax nullableType,
+        CancellationToken cancellationToken)
+    {
+        TypeSyntax newType = NullableType(nullableType.WithoutTrivia(), Token(SyntaxKind.QuestionToken))
+            .WithTriviaFrom(type)
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(type, newType, cancellationToken);
     }
 }

@@ -251,7 +251,7 @@ namespace Roslynator.CSharp.CodeFixes
                     (indexes ??= new List<int>()).Add(i);
             }
 
-            if (indexes != null)
+            if (indexes is not null)
             {
                 if (indexes.Count == 1)
                 {

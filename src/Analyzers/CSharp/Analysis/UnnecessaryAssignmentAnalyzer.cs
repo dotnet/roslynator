@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = returnStatement?.Expression;
 
-            if (expression == null)
+            if (expression is null)
                 return;
 
             if (ifStatement.SpanOrTrailingTriviaContainsDirectives())
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis
 
             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            if (symbol == null)
+            if (symbol is null)
                 return;
 
             if (!IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, statementsInfo.Parent, semanticModel, cancellationToken))
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = returnStatement?.Expression;
 
-            if (expression == null)
+            if (expression is null)
                 return;
 
             if (switchStatement.SpanOrTrailingTriviaContainsDirectives())
@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.Analysis
 
             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            if (symbol == null)
+            if (symbol is null)
                 return;
 
             if (!IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, statementsInfo.Parent, semanticModel, cancellationToken))
@@ -188,7 +188,7 @@ namespace Roslynator.CSharp.Analysis
                         {
                             ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(containingNode.SpanStart, cancellationToken);
 
-                            if (enclosingSymbol != null)
+                            if (enclosingSymbol is not null)
                             {
                                 ImmutableArray<IParameterSymbol> parameters = enclosingSymbol.ParametersOrDefault();
 

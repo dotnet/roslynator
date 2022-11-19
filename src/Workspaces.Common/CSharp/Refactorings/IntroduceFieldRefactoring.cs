@@ -8,61 +8,60 @@ using Roslynator.Configuration;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class IntroduceFieldRefactoring
 {
-    internal static class IntroduceFieldRefactoring
+    internal static Task<Document> RefactorAsync(
+        Document document,
+        ExpressionStatementSyntax expressionStatement,
+        ITypeSymbol typeSymbol,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
     {
-        internal static Task<Document> RefactorAsync(
-            Document document,
-            ExpressionStatementSyntax expressionStatement,
-            ITypeSymbol typeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            MemberDeclarationSyntax containingMember = expressionStatement.FirstAncestor<MemberDeclarationSyntax>();
+        MemberDeclarationSyntax containingMember = expressionStatement.FirstAncestor<MemberDeclarationSyntax>();
 
-            var containingType = (TypeDeclarationSyntax)containingMember.Parent;
+        var containingType = (TypeDeclarationSyntax)containingMember.Parent;
 
-            string name = NameGenerator.CreateName(typeSymbol, firstCharToLower: true) ?? DefaultNames.Variable;
+        string name = NameGenerator.CreateName(typeSymbol, firstCharToLower: true) ?? DefaultNames.Variable;
 
-            if (document.GetConfigOptions(expressionStatement.SyntaxTree).GetPrefixFieldIdentifierWithUnderscore())
-                name = "_" + name;
+        if (document.GetConfigOptions(expressionStatement.SyntaxTree).GetPrefixFieldIdentifierWithUnderscore())
+            name = "_" + name;
 
-            name = NameGenerator.Default.EnsureUniqueLocalName(
-                name,
-                semanticModel,
-                expressionStatement.SpanStart,
-                cancellationToken: cancellationToken);
+        name = NameGenerator.Default.EnsureUniqueLocalName(
+            name,
+            semanticModel,
+            expressionStatement.SpanStart,
+            cancellationToken: cancellationToken);
 
-            name = NameGenerator.Default.EnsureUniqueName(
-                name,
-                semanticModel,
-                containingType.OpenBraceToken.Span.End);
+        name = NameGenerator.Default.EnsureUniqueName(
+            name,
+            semanticModel,
+            containingType.OpenBraceToken.Span.End);
 
-            ExpressionSyntax expression = expressionStatement.Expression;
+        ExpressionSyntax expression = expressionStatement.Expression;
 
-            ExpressionStatementSyntax newExpressionStatement = ExpressionStatement(
-                SimpleAssignmentExpression(
-                    IdentifierName(Identifier(name).WithRenameAnnotation()),
-                    expression.WithoutTrivia())
-                    .WithTriviaFrom(expression));
+        ExpressionStatementSyntax newExpressionStatement = ExpressionStatement(
+            SimpleAssignmentExpression(
+                IdentifierName(Identifier(name).WithRenameAnnotation()),
+                expression.WithoutTrivia())
+                .WithTriviaFrom(expression));
 
-            newExpressionStatement = newExpressionStatement
-                .WithTriviaFrom(expressionStatement)
-                .WithFormatterAnnotation();
+        newExpressionStatement = newExpressionStatement
+            .WithTriviaFrom(expressionStatement)
+            .WithFormatterAnnotation();
 
-            FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                (SyntaxInfo.ModifierListInfo(containingMember).IsStatic) ? Modifiers.Private_Static() : Modifiers.Private(),
-                typeSymbol.ToMinimalTypeSyntax(semanticModel, containingType.OpenBraceToken.Span.End),
-                name);
+        FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
+            (SyntaxInfo.ModifierListInfo(containingMember).IsStatic) ? Modifiers.Private_Static() : Modifiers.Private(),
+            typeSymbol.ToMinimalTypeSyntax(semanticModel, containingType.OpenBraceToken.Span.End),
+            name);
 
-            fieldDeclaration = fieldDeclaration.WithFormatterAnnotation();
+        fieldDeclaration = fieldDeclaration.WithFormatterAnnotation();
 
-            TypeDeclarationSyntax newNode = containingType.ReplaceNode(expressionStatement, newExpressionStatement);
+        TypeDeclarationSyntax newNode = containingType.ReplaceNode(expressionStatement, newExpressionStatement);
 
-            newNode = MemberDeclarationInserter.Default.Insert(newNode, fieldDeclaration);
+        newNode = MemberDeclarationInserter.Default.Insert(newNode, fieldDeclaration);
 
-            return document.ReplaceNodeAsync(containingType, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(containingType, newNode, cancellationToken);
     }
 }

@@ -5,28 +5,27 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
+namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
+
+internal class IntroduceAndInitializeFieldInfo : IntroduceAndInitializeInfo
 {
-    internal class IntroduceAndInitializeFieldInfo : IntroduceAndInitializeInfo
+    private string _name;
+
+    public IntroduceAndInitializeFieldInfo(ParameterSyntax parameter, bool prefixFieldIdentifierWithUnderscore = false)
+        : base(parameter)
     {
-        private string _name;
+        PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
+    }
 
-        public IntroduceAndInitializeFieldInfo(ParameterSyntax parameter, bool prefixFieldIdentifierWithUnderscore = false)
-            : base(parameter)
-        {
-            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
-        }
+    public bool PrefixFieldIdentifierWithUnderscore { get; }
 
-        public bool PrefixFieldIdentifierWithUnderscore { get; }
+    public override string Name
+    {
+        get { return _name ??= StringUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore); }
+    }
 
-        public override string Name
-        {
-            get { return _name ??= StringUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore); }
-        }
-
-        public override MemberDeclarationSyntax CreateDeclaration()
-        {
-            return FieldDeclaration(Modifiers.Private_ReadOnly(), Type, Name);
-        }
+    public override MemberDeclarationSyntax CreateDeclaration()
+    {
+        return FieldDeclaration(Modifiers.Private_ReadOnly(), Type, Name);
     }
 }

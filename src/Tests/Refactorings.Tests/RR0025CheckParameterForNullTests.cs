@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0025CheckParameterForNullTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.CheckParameterForNull;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task Test_ReferenceType()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0025CheckParameterForNullTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.CheckParameterForNull;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task Test_ReferenceType()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -34,12 +34,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task Test_NullableType()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task Test_NullableType()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -60,12 +60,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task Test_MultipleParametersSelected_OneNullCheckAdded()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task Test_MultipleParametersSelected_OneNullCheckAdded()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -91,12 +91,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task Test_MultipleParametersSelected_TwoNullChecksAdded()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task Test_MultipleParametersSelected_TwoNullChecksAdded()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -131,12 +131,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task TestNoRefactoring_NullCheckAlreadyExists()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task TestNoRefactoring_NullCheckAlreadyExists()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System;
 
 class C
@@ -148,12 +148,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task TestNoRefactoring_NullCheckAlreadyExists_MultipleParametersSelected()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task TestNoRefactoring_NullCheckAlreadyExists_MultipleParametersSelected()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System;
 
 class C
@@ -168,12 +168,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task TestNoRefactoring_ValueType()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task TestNoRefactoring_ValueType()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(int [||]p)
@@ -181,12 +181,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task TestNoRefactoring_NullLiteral()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task TestNoRefactoring_NullLiteral()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(object [||]p = null)
@@ -194,12 +194,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task TestNoRefactoring_DefaultLiteral()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task TestNoRefactoring_DefaultLiteral()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(object [||]p = default)
@@ -207,12 +207,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task TestNoRefactoring_DefaultExpression()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task TestNoRefactoring_DefaultExpression()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(object [||]p = default(object))
@@ -220,12 +220,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
-        public async Task TestNoRefactoring_NullableReferenceType()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+    public async Task TestNoRefactoring_NullableReferenceType()
+    {
+        await VerifyNoRefactoringAsync(@"
 #nullable enable
 
 class C
@@ -235,6 +235,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

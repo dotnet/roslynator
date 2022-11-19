@@ -8,68 +8,67 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract
+namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract;
+
+internal static class MakeIndexerAbstractRefactoring
 {
-    internal static class MakeIndexerAbstractRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
     {
-        public static void ComputeRefactoring(RefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
+        SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
+
+        if (modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.StaticKeyword))
+            return;
+
+        if ((indexerDeclaration.Parent as ClassDeclarationSyntax)?.Modifiers.Contains(SyntaxKind.AbstractKeyword) != true)
+            return;
+
+        context.RegisterRefactoring(
+            "Make indexer abstract",
+            ct => RefactorAsync(context.Document, indexerDeclaration, ct),
+            RefactoringDescriptors.MakeMemberAbstract);
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        IndexerDeclarationSyntax indexerDeclaration,
+        CancellationToken cancellationToken = default)
+    {
+        AccessorListSyntax accessorList = AccessorList();
+
+        if (indexerDeclaration.ExpressionBody is not null)
         {
-            SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
-
-            if (modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.StaticKeyword))
-                return;
-
-            if ((indexerDeclaration.Parent as ClassDeclarationSyntax)?.Modifiers.Contains(SyntaxKind.AbstractKeyword) != true)
-                return;
-
-            context.RegisterRefactoring(
-                "Make indexer abstract",
-                ct => RefactorAsync(context.Document, indexerDeclaration, ct),
-                RefactoringDescriptors.MakeMemberAbstract);
+            accessorList = accessorList
+                .AddAccessors(
+                    AutoGetAccessorDeclaration());
         }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            IndexerDeclarationSyntax indexerDeclaration,
-            CancellationToken cancellationToken = default)
+        else
         {
-            AccessorListSyntax accessorList = AccessorList();
-
-            if (indexerDeclaration.ExpressionBody != null)
+            AccessorDeclarationSyntax getter = indexerDeclaration.Getter();
+            if (getter is not null)
             {
-                accessorList = accessorList
-                    .AddAccessors(
-                        AutoGetAccessorDeclaration());
-            }
-            else
-            {
-                AccessorDeclarationSyntax getter = indexerDeclaration.Getter();
-                if (getter != null)
-                {
-                    accessorList = accessorList.AddAccessors(getter
-                        .WithBody(null)
-                        .WithSemicolonToken(SemicolonToken()));
-                }
-
-                AccessorDeclarationSyntax setter = indexerDeclaration.Setter();
-                if (setter != null)
-                {
-                    accessorList = accessorList.AddAccessors(setter
-                        .WithBody(null)
-                        .WithSemicolonToken(SemicolonToken()));
-                }
+                accessorList = accessorList.AddAccessors(getter
+                    .WithBody(null)
+                    .WithSemicolonToken(SemicolonToken()));
             }
 
-            IndexerDeclarationSyntax newNode = indexerDeclaration
-                .WithExpressionBody(null)
-                .WithSemicolonToken(default(SyntaxToken))
-                .WithAccessorList(accessorList)
-                .InsertModifier(SyntaxKind.AbstractKeyword)
-                .RemoveModifier(SyntaxKind.VirtualKeyword)
-                .WithTriviaFrom(indexerDeclaration)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken);
+            AccessorDeclarationSyntax setter = indexerDeclaration.Setter();
+            if (setter is not null)
+            {
+                accessorList = accessorList.AddAccessors(setter
+                    .WithBody(null)
+                    .WithSemicolonToken(SemicolonToken()));
+            }
         }
+
+        IndexerDeclarationSyntax newNode = indexerDeclaration
+            .WithExpressionBody(null)
+            .WithSemicolonToken(default(SyntaxToken))
+            .WithAccessorList(accessorList)
+            .InsertModifier(SyntaxKind.AbstractKeyword)
+            .RemoveModifier(SyntaxKind.VirtualKeyword)
+            .WithTriviaFrom(indexerDeclaration)
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken);
     }
 }

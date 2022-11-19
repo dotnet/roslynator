@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1156UseStringLengthInsteadOfComparisonWithEmptyStringTests : AbstractCSharpDiagnosticVerifier<UseStringLengthInsteadOfComparisonWithEmptyStringAnalyzer, BinaryExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseStringLengthInsteadOfComparisonWithEmptyString;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
-        public async Task Test_ComparisonToEmptyString()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1156UseStringLengthInsteadOfComparisonWithEmptyStringTests : AbstractCSharpDiagnosticVerifier<UseStringLengthInsteadOfComparisonWithEmptyStringAnalyzer, BinaryExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseStringLengthInsteadOfComparisonWithEmptyString;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
+    public async Task Test_ComparisonToEmptyString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -34,12 +34,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
-        public async Task Test_ComparisonToEmptyString2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
+    public async Task Test_ComparisonToEmptyString2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -58,12 +58,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
-        public async Task Test_ComparisonToStringEmpty()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
+    public async Task Test_ComparisonToStringEmpty()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -82,6 +82,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                             if (SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                             {
-                                if (walker == null)
+                                if (walker is null)
                                     walker = UnusedMemberWalker.GetInstance();
 
                                 walker.AddDelegate(declaration.Identifier.ValueText, declaration);
@@ -100,10 +100,10 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                         {
                             var declaration = (EventDeclarationSyntax)member;
 
-                            if (declaration.ExplicitInterfaceSpecifier == null
+                            if (declaration.ExplicitInterfaceSpecifier is null
                                 && SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                             {
-                                if (walker == null)
+                                if (walker is null)
                                     walker = UnusedMemberWalker.GetInstance();
 
                                 walker.AddNode(declaration.Identifier.ValueText, declaration);
@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                             if (SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                             {
-                                if (walker == null)
+                                if (walker is null)
                                     walker = UnusedMemberWalker.GetInstance();
 
                                 walker.AddNodes(declaration.Declaration);
@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                             if (SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                             {
-                                if (walker == null)
+                                if (walker is null)
                                     walker = UnusedMemberWalker.GetInstance();
 
                                 walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                             SyntaxTokenList modifiers = declaration.Modifiers;
 
-                            if (declaration.ExplicitInterfaceSpecifier != null
+                            if (declaration.ExplicitInterfaceSpecifier is not null
                                 || declaration.AttributeLists.Any()
                                 || SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility(declaration) != Accessibility.Private)
                             {
@@ -161,9 +161,9 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                             if (declaration.ReturnsVoid()
                                 && context.GetSuppressUnityScriptMethods() == true)
                             {
-                                if (canContainUnityScriptMethods == null)
+                                if (canContainUnityScriptMethods is null)
                                 {
-                                    if (declarationSymbol == null)
+                                    if (declarationSymbol is null)
                                         declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
 
                                     canContainUnityScriptMethods = declarationSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
@@ -176,7 +176,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                                 }
                             }
 
-                            if (walker == null)
+                            if (walker is null)
                                 walker = UnusedMemberWalker.GetInstance();
 
                             walker.AddNode(methodName, declaration);
@@ -187,10 +187,10 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                         {
                             var declaration = (PropertyDeclarationSyntax)member;
 
-                            if (declaration.ExplicitInterfaceSpecifier == null
+                            if (declaration.ExplicitInterfaceSpecifier is null
                                 && SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                             {
-                                if (walker == null)
+                                if (walker is null)
                                     walker = UnusedMemberWalker.GetInstance();
 
                                 walker.AddNode(declaration.Identifier.ValueText, declaration);
@@ -201,7 +201,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                 }
             }
 
-            if (walker == null)
+            if (walker is null)
                 return;
 
             try
@@ -221,7 +221,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                         .Value?
                         .ToString();
 
-                    if (value != null)
+                    if (value is not null)
                         RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(value, ref nodes);
                 }
 
@@ -247,7 +247,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                 {
                     foreach (AttributeSyntax attribute in attributeList.Attributes)
                     {
-                        if (attribute.ArgumentList?.Arguments.Count(f => f.NameEquals == null) == 1)
+                        if (attribute.ArgumentList?.Arguments.Count(f => f.NameEquals is null) == 1)
                             return true;
                     }
                 }
@@ -260,7 +260,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         {
             return string.Equals(methodName, "Main", StringComparison.Ordinal)
                 && modifiers.Contains(SyntaxKind.StaticKeyword)
-                && methodDeclaration.TypeParameterList == null
+                && methodDeclaration.TypeParameterList is null
                 && methodDeclaration.ParameterList?.Parameters.Count <= 1;
         }
 

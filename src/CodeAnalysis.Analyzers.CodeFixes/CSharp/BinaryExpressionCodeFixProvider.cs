@@ -14,87 +14,86 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BinaryExpressionCodeFixProvider))]
+[Shared]
+public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BinaryExpressionCodeFixProvider))]
-    [Shared]
-    public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount,
-                    DiagnosticIdentifiers.UnnecessaryNullCheck);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount,
+                DiagnosticIdentifiers.UnnecessaryNullCheck);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out BinaryExpressionSyntax binaryExpression))
+            return;
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        switch (diagnostic.Id)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            case DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Call 'Any' instead of accessing 'Count'",
+                        ct => CallAnyInsteadOfUsingCountAsync(document, binaryExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BinaryExpressionSyntax binaryExpression))
-                return;
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            case DiagnosticIdentifiers.UnnecessaryNullCheck:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove unnecessary null check",
+                        ct =>
+                        {
+                            ExpressionSyntax newExpression = binaryExpression.Right.WithLeadingTrivia(binaryExpression.GetLeadingTrivia());
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+                            return document.ReplaceNodeAsync(binaryExpression, newExpression, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Call 'Any' instead of accessing 'Count'",
-                            ct => CallAnyInsteadOfUsingCountAsync(document, binaryExpression, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case DiagnosticIdentifiers.UnnecessaryNullCheck:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove unnecessary null check",
-                            ct =>
-                            {
-                                ExpressionSyntax newExpression = binaryExpression.Right.WithLeadingTrivia(binaryExpression.GetLeadingTrivia());
-
-                                return document.ReplaceNodeAsync(binaryExpression, newExpression, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-            }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
+    }
 
-        private static Task<Document> CallAnyInsteadOfUsingCountAsync(
-            Document document,
-            BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken)
-        {
-            BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
+    private static Task<Document> CallAnyInsteadOfUsingCountAsync(
+        Document document,
+        BinaryExpressionSyntax binaryExpression,
+        CancellationToken cancellationToken)
+    {
+        BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
 
-            if (binaryExpressionInfo.Left is not MemberAccessExpressionSyntax memberAccessExpression)
-                memberAccessExpression = (MemberAccessExpressionSyntax)binaryExpressionInfo.Right;
+        if (binaryExpressionInfo.Left is not MemberAccessExpressionSyntax memberAccessExpression)
+            memberAccessExpression = (MemberAccessExpressionSyntax)binaryExpressionInfo.Right;
 
-            SimpleNameSyntax name = memberAccessExpression.Name;
+        SimpleNameSyntax name = memberAccessExpression.Name;
 
-            ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
-                memberAccessExpression.Expression,
-                IdentifierName("Any").WithLeadingTrivia(name.GetLeadingTrivia()),
-                ArgumentList().WithTrailingTrivia(name.GetTrailingTrivia()));
+        ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
+            memberAccessExpression.Expression,
+            IdentifierName("Any").WithLeadingTrivia(name.GetLeadingTrivia()),
+            ArgumentList().WithTrailingTrivia(name.GetTrailingTrivia()));
 
-            if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
-                newExpression = LogicalNotExpression(newExpression.WithoutLeadingTrivia().Parenthesize());
+        if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
+            newExpression = LogicalNotExpression(newExpression.WithoutLeadingTrivia().Parenthesize());
 
-            newExpression = newExpression
-                .WithTriviaFrom(binaryExpression)
-                .WithFormatterAnnotation();
+        newExpression = newExpression
+            .WithTriviaFrom(binaryExpression)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(binaryExpression, newExpression, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(binaryExpression, newExpression, cancellationToken);
     }
 }

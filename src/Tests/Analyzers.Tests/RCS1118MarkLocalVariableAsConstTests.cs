@@ -7,16 +7,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1118MarkLocalVariableAsConstTests : AbstractCSharpDiagnosticVerifier<LocalDeclarationStatementAnalyzer, MarkLocalVariableAsConstCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MarkLocalVariableAsConst;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
-        public async Task Test_ConstantValue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1118MarkLocalVariableAsConstTests : AbstractCSharpDiagnosticVerifier<LocalDeclarationStatementAnalyzer, MarkLocalVariableAsConstCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MarkLocalVariableAsConst;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+    public async Task Test_ConstantValue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -35,12 +35,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
-        public async Task Test_NullableReferenceType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+    public async Task Test_NullableReferenceType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 class C
@@ -63,12 +63,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
-        public async Task TestNoDiagnostic_InterpolatedString()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+    public async Task TestNoDiagnostic_InterpolatedString()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -79,12 +79,12 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp9);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
-        public async Task TestNoDiagnostic_RefParameter()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+    public async Task TestNoDiagnostic_RefParameter()
+    {
+        await VerifyNoDiagnosticAsync(@"
 public static class C
 {
     static int Foo(int p)
@@ -100,12 +100,12 @@ public static class C
         return p1 + p2;
     }
 }");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
-        public async Task TestNoDiagnostic_RefParameter_ExtensionMethod()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+    public async Task TestNoDiagnostic_RefParameter_ExtensionMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
 public static class C
 {
     static int Foo(int p)
@@ -121,6 +121,5 @@ public static class C
         return p1 + p2;
     }
 }");
-        }
     }
 }

@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
 
             BlockSyntax body = methodDeclaration.Body;
 
-            if (body == null)
+            if (body is null)
                 return;
 
             if (!body.Statements.Any())
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
 
             BlockSyntax body = localFunction.Body;
 
-            if (body == null)
+            if (body is null)
                 return;
 
             if (!body.Statements.Any())
@@ -137,7 +137,7 @@ namespace Roslynator.CSharp.Analysis
 
             BlockSyntax body = anonymousMethod.Block;
 
-            if (body == null)
+            if (body is null)
                 return;
 
             if (context.SemanticModel.GetSymbol(anonymousMethod, context.CancellationToken) is not IMethodSymbol methodSymbol)
@@ -160,11 +160,11 @@ namespace Roslynator.CSharp.Analysis
 
                 walker.VisitBlock(body);
 
-                return walker.ReturnStatement != null;
+                return walker.ReturnStatement is not null;
             }
             finally
             {
-                if (walker != null)
+                if (walker is not null)
                     UseAsyncAwaitWalker.Free(walker);
             }
         }
@@ -197,7 +197,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 BlockSyntax block = node.Block;
 
-                if (block != null)
+                if (block is not null)
                 {
                     _usingOrTryStatementDepth++;
                     VisitBlock(block);
@@ -209,7 +209,7 @@ namespace Roslynator.CSharp.Analysis
 
                 FinallyClauseSyntax finallyClause = node.Finally;
 
-                if (finallyClause != null)
+                if (finallyClause is not null)
                     VisitFinallyClause(finallyClause);
             }
 
@@ -331,7 +331,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 UseAsyncAwaitWalker walker = _cachedInstance;
 
-                if (walker != null)
+                if (walker is not null)
                 {
                     _cachedInstance = null;
                 }

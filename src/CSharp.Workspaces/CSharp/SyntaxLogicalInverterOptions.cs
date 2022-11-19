@@ -2,19 +2,18 @@
 
 #pragma warning disable RCS1223
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+public class SyntaxLogicalInverterOptions
 {
-    public class SyntaxLogicalInverterOptions
+    public SyntaxLogicalInverterOptions(bool useNotPattern = true)
     {
-        public SyntaxLogicalInverterOptions(bool useNotPattern = true)
-        {
-            UseNotPattern = useNotPattern;
-        }
-
-        public static SyntaxLogicalInverterOptions Default { get; } = new();
-
-        internal static SyntaxLogicalInverterOptions CSharp8 { get; } = new(useNotPattern: false);
-
-        public bool UseNotPattern { get; }
+        UseNotPattern = useNotPattern;
     }
+
+    public static SyntaxLogicalInverterOptions Default { get; } = new();
+
+    internal static SyntaxLogicalInverterOptions CSharp8 { get; } = new(useNotPattern: false);
+
+    public bool UseNotPattern { get; }
 }

@@ -11,60 +11,59 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseVarInsteadOfExplicitTypeCodeFixProvider))]
+[Shared]
+public sealed class UseVarInsteadOfExplicitTypeCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseVarInsteadOfExplicitTypeCodeFixProvider))]
-    [Shared]
-    public sealed class UseVarInsteadOfExplicitTypeCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious,
-                    DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious,
-                    DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious,
+                DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious,
+                DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach);
+        }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f is TypeSyntax || f.IsKind(SyntaxKind.TupleExpression)))
+        {
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
+
+        switch (node)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            case TypeSyntax type:
+                {
+                    CodeAction codeAction = CodeActionFactory.ChangeTypeToVar(document, type, equivalenceKey: GetEquivalenceKey(diagnostic));
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                predicate: f => f is TypeSyntax || f.IsKind(SyntaxKind.TupleExpression)))
-            {
-                return;
-            }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            case TupleExpressionSyntax tupleExpression:
+                {
+                    CodeAction codeAction = CodeActionFactory.ChangeTypeToVar(document, tupleExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
 
-            Diagnostic diagnostic = context.Diagnostics[0];
-            Document document = context.Document;
-
-            switch (node)
-            {
-                case TypeSyntax type:
-                    {
-                        CodeAction codeAction = CodeActionFactory.ChangeTypeToVar(document, type, equivalenceKey: GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case TupleExpressionSyntax tupleExpression:
-                    {
-                        CodeAction codeAction = CodeActionFactory.ChangeTypeToVar(document, tupleExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                default:
-                    {
-                        throw new InvalidOperationException();
-                    }
-            }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            default:
+                {
+                    throw new InvalidOperationException();
+                }
         }
     }
 }

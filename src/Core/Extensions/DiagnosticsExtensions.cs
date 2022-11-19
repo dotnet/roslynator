@@ -7,607 +7,606 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator
+namespace Roslynator;
+
+/// <summary>
+/// A set of extension methods for <see cref="SymbolAnalysisContext"/>, <see cref="SyntaxNodeAnalysisContext"/> and <see cref="SyntaxTreeAnalysisContext"/>.
+/// </summary>
+public static class DiagnosticsExtensions
 {
+    #region SymbolAnalysisContext
     /// <summary>
-    /// A set of extension methods for <see cref="SymbolAnalysisContext"/>, <see cref="SyntaxNodeAnalysisContext"/> and <see cref="SyntaxTreeAnalysisContext"/>.
+    /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
     /// </summary>
-    public static class DiagnosticsExtensions
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="node"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SymbolAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxNode node,
+        params object[] messageArgs)
     {
-        #region SymbolAnalysisContext
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="node"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SymbolAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxNode node,
-            params object[] messageArgs)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
+        if (node is null)
+            throw new ArgumentNullException(nameof(node));
 
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: node.GetLocation(),
-                messageArgs: messageArgs);
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: node.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="token"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SymbolAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxToken token,
+        params object[] messageArgs)
+    {
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: token.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="trivia"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SymbolAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxTrivia trivia,
+        params object[] messageArgs)
+    {
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: trivia.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SymbolAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="additionalLocations"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SymbolAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        IEnumerable<Location> additionalLocations,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            additionalLocations: additionalLocations,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="properties"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SymbolAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        ImmutableDictionary<string, string> properties,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            properties: properties,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="additionalLocations"></param>
+    /// <param name="properties"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SymbolAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        IEnumerable<Location> additionalLocations,
+        ImmutableDictionary<string, string> properties,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            additionalLocations: additionalLocations,
+            properties: properties,
+            messageArgs: messageArgs));
+    }
+    #endregion SymbolAnalysisContext
+
+    #region SyntaxNodeAnalysisContext
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="node"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxNodeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxNode node,
+        params object[] messageArgs)
+    {
+        if (node is null)
+            throw new ArgumentNullException(nameof(node));
+
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: node.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="token"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxNodeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxToken token,
+        params object[] messageArgs)
+    {
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: token.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="trivia"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxNodeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxTrivia trivia,
+        params object[] messageArgs)
+    {
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: trivia.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxNodeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="additionalLocations"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxNodeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        IEnumerable<Location> additionalLocations,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            additionalLocations: additionalLocations,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="properties"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxNodeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        ImmutableDictionary<string, string> properties,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            properties: properties,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="additionalLocations"></param>
+    /// <param name="properties"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxNodeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        IEnumerable<Location> additionalLocations,
+        ImmutableDictionary<string, string> properties,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            additionalLocations: additionalLocations,
+            properties: properties,
+            messageArgs: messageArgs));
+    }
+    #endregion SyntaxNodeAnalysisContext
+
+    #region SyntaxTreeAnalysisContext
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="node"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxTreeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxNode node,
+        params object[] messageArgs)
+    {
+        if (node is null)
+            throw new ArgumentNullException(nameof(node));
+
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: node.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="token"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxTreeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxToken token,
+        params object[] messageArgs)
+    {
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: token.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="trivia"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxTreeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        SyntaxTrivia trivia,
+        params object[] messageArgs)
+    {
+        ReportDiagnostic(
+            context: context,
+            descriptor: descriptor,
+            location: trivia.GetLocation(),
+            messageArgs: messageArgs);
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxTreeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="additionalLocations"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxTreeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        IEnumerable<Location> additionalLocations,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            additionalLocations: additionalLocations,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="properties"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxTreeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        ImmutableDictionary<string, string> properties,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            properties: properties,
+            messageArgs: messageArgs));
+    }
+
+    /// <summary>
+    /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="descriptor"></param>
+    /// <param name="location"></param>
+    /// <param name="additionalLocations"></param>
+    /// <param name="properties"></param>
+    /// <param name="messageArgs"></param>
+    public static void ReportDiagnostic(
+        this SyntaxTreeAnalysisContext context,
+        DiagnosticDescriptor descriptor,
+        Location location,
+        IEnumerable<Location> additionalLocations,
+        ImmutableDictionary<string, string> properties,
+        params object[] messageArgs)
+    {
+        context.ReportDiagnostic(Diagnostic.Create(
+            descriptor: descriptor,
+            location: location,
+            additionalLocations: additionalLocations,
+            properties: properties,
+            messageArgs: messageArgs));
+    }
+    #endregion SyntaxTreeAnalysisContext
+
+    internal static ReportDiagnostic ToReportDiagnostic(this DiagnosticSeverity diagnosticSeverity)
+    {
+        switch (diagnosticSeverity)
+        {
+            case DiagnosticSeverity.Hidden:
+                return Microsoft.CodeAnalysis.ReportDiagnostic.Hidden;
+            case DiagnosticSeverity.Info:
+                return Microsoft.CodeAnalysis.ReportDiagnostic.Info;
+            case DiagnosticSeverity.Warning:
+                return Microsoft.CodeAnalysis.ReportDiagnostic.Warn;
+            case DiagnosticSeverity.Error:
+                return Microsoft.CodeAnalysis.ReportDiagnostic.Error;
+            default:
+                throw new ArgumentException($"Unknown value '{diagnosticSeverity}'.", nameof(diagnosticSeverity));
         }
+    }
 
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="token"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SymbolAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxToken token,
-            params object[] messageArgs)
+    internal static DiagnosticSeverity ToDiagnosticSeverity(this ReportDiagnostic reportDiagnostic)
+    {
+        switch (reportDiagnostic)
         {
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: token.GetLocation(),
-                messageArgs: messageArgs);
+            case Microsoft.CodeAnalysis.ReportDiagnostic.Error:
+                return DiagnosticSeverity.Error;
+            case Microsoft.CodeAnalysis.ReportDiagnostic.Warn:
+                return DiagnosticSeverity.Warning;
+            case Microsoft.CodeAnalysis.ReportDiagnostic.Info:
+                return DiagnosticSeverity.Info;
+            case Microsoft.CodeAnalysis.ReportDiagnostic.Hidden:
+                return DiagnosticSeverity.Hidden;
+            default:
+                throw new ArgumentException($"Unknown value '{reportDiagnostic}'.", nameof(reportDiagnostic));
         }
+    }
 
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="trivia"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SymbolAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxTrivia trivia,
-            params object[] messageArgs)
+    internal static bool IsAnalyzerExceptionDiagnostic(this Diagnostic diagnostic)
+    {
+        return IsAnalyzerExceptionDescriptor(diagnostic.Descriptor);
+    }
+
+    internal static bool IsAnalyzerExceptionDescriptor(this DiagnosticDescriptor descriptor)
+    {
+        if (descriptor.Id == "AD0001"
+            || descriptor.Id == "AD0002")
         {
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: trivia.GetLocation(),
-                messageArgs: messageArgs);
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SymbolAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="additionalLocations"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SymbolAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            IEnumerable<Location> additionalLocations,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="properties"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SymbolAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                properties: properties,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="additionalLocations"></param>
-        /// <param name="properties"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SymbolAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            IEnumerable<Location> additionalLocations,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                properties: properties,
-                messageArgs: messageArgs));
-        }
-        #endregion SymbolAnalysisContext
-
-        #region SyntaxNodeAnalysisContext
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="node"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxNode node,
-            params object[] messageArgs)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: node.GetLocation(),
-                messageArgs: messageArgs);
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="token"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxToken token,
-            params object[] messageArgs)
-        {
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: token.GetLocation(),
-                messageArgs: messageArgs);
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="trivia"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxTrivia trivia,
-            params object[] messageArgs)
-        {
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: trivia.GetLocation(),
-                messageArgs: messageArgs);
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="additionalLocations"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            IEnumerable<Location> additionalLocations,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="properties"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                properties: properties,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="additionalLocations"></param>
-        /// <param name="properties"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            IEnumerable<Location> additionalLocations,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                properties: properties,
-                messageArgs: messageArgs));
-        }
-        #endregion SyntaxNodeAnalysisContext
-
-        #region SyntaxTreeAnalysisContext
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="node"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxTreeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxNode node,
-            params object[] messageArgs)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: node.GetLocation(),
-                messageArgs: messageArgs);
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="token"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxTreeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxToken token,
-            params object[] messageArgs)
-        {
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: token.GetLocation(),
-                messageArgs: messageArgs);
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="trivia"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxTreeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxTrivia trivia,
-            params object[] messageArgs)
-        {
-            ReportDiagnostic(
-                context: context,
-                descriptor: descriptor,
-                location: trivia.GetLocation(),
-                messageArgs: messageArgs);
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxTreeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="additionalLocations"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxTreeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            IEnumerable<Location> additionalLocations,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="properties"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxTreeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                properties: properties,
-                messageArgs: messageArgs));
-        }
-
-        /// <summary>
-        /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxTree"/>.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="location"></param>
-        /// <param name="additionalLocations"></param>
-        /// <param name="properties"></param>
-        /// <param name="messageArgs"></param>
-        public static void ReportDiagnostic(
-            this SyntaxTreeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            Location location,
-            IEnumerable<Location> additionalLocations,
-            ImmutableDictionary<string, string> properties,
-            params object[] messageArgs)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                properties: properties,
-                messageArgs: messageArgs));
-        }
-        #endregion SyntaxTreeAnalysisContext
-
-        internal static ReportDiagnostic ToReportDiagnostic(this DiagnosticSeverity diagnosticSeverity)
-        {
-            switch (diagnosticSeverity)
+            foreach (string tag in descriptor.CustomTags)
             {
-                case DiagnosticSeverity.Hidden:
-                    return Microsoft.CodeAnalysis.ReportDiagnostic.Hidden;
-                case DiagnosticSeverity.Info:
-                    return Microsoft.CodeAnalysis.ReportDiagnostic.Info;
-                case DiagnosticSeverity.Warning:
-                    return Microsoft.CodeAnalysis.ReportDiagnostic.Warn;
-                case DiagnosticSeverity.Error:
-                    return Microsoft.CodeAnalysis.ReportDiagnostic.Error;
-                default:
-                    throw new ArgumentException($"Unknown value '{diagnosticSeverity}'.", nameof(diagnosticSeverity));
+                if (tag == WellKnownDiagnosticTags.AnalyzerException)
+                    return true;
             }
         }
 
-        internal static DiagnosticSeverity ToDiagnosticSeverity(this ReportDiagnostic reportDiagnostic)
+        return false;
+    }
+
+    internal static bool IsEffective(this DiagnosticDescriptor descriptor, SymbolAnalysisContext context)
+    {
+        return IsEffective(
+            descriptor,
+            context.Symbol.Locations[0].SourceTree,
+            context.Compilation.Options,
+            context.CancellationToken);
+    }
+
+    internal static bool IsEffective(this DiagnosticDescriptor descriptor, SyntaxNodeAnalysisContext context)
+    {
+        return IsEffective(
+            descriptor,
+            context.Node.SyntaxTree,
+            context.Compilation.Options,
+            context.CancellationToken);
+    }
+
+    internal static bool IsEffective(
+        this DiagnosticDescriptor descriptor,
+        SyntaxTree syntaxTree,
+        CompilationOptions compilationOptions,
+        CancellationToken cancellationToken = default)
+    {
+        var reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Default;
+
+        SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
+
+        if (provider is not null
+            && !provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic)
+            && !provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out reportDiagnostic))
         {
-            switch (reportDiagnostic)
-            {
-                case Microsoft.CodeAnalysis.ReportDiagnostic.Error:
-                    return DiagnosticSeverity.Error;
-                case Microsoft.CodeAnalysis.ReportDiagnostic.Warn:
-                    return DiagnosticSeverity.Warning;
-                case Microsoft.CodeAnalysis.ReportDiagnostic.Info:
-                    return DiagnosticSeverity.Info;
-                case Microsoft.CodeAnalysis.ReportDiagnostic.Hidden:
-                    return DiagnosticSeverity.Hidden;
-                default:
-                    throw new ArgumentException($"Unknown value '{reportDiagnostic}'.", nameof(reportDiagnostic));
-            }
+            reportDiagnostic = compilationOptions.SpecificDiagnosticOptions.GetValueOrDefault(descriptor.Id);
         }
 
-        internal static bool IsAnalyzerExceptionDiagnostic(this Diagnostic diagnostic)
+        return reportDiagnostic switch
         {
-            return IsAnalyzerExceptionDescriptor(diagnostic.Descriptor);
+            Microsoft.CodeAnalysis.ReportDiagnostic.Default => descriptor.IsEnabledByDefault,
+            Microsoft.CodeAnalysis.ReportDiagnostic.Suppress => false,
+            _ => true,
+        };
+    }
+
+    internal static ReportDiagnostic GetEffectiveSeverity(
+        this DiagnosticDescriptor descriptor,
+        SyntaxTree syntaxTree,
+        CompilationOptions compilationOptions,
+        CancellationToken cancellationToken = default)
+    {
+        SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
+
+        if (provider is not null)
+        {
+            if (provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out ReportDiagnostic globalReportDiagnostic))
+                return globalReportDiagnostic;
+
+            if (provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic))
+                return treeReportDiagnostic;
         }
 
-        internal static bool IsAnalyzerExceptionDescriptor(this DiagnosticDescriptor descriptor)
+        if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out ReportDiagnostic reportDiagnostic))
+            return reportDiagnostic;
+
+        return (descriptor.IsEnabledByDefault)
+            ? descriptor.DefaultSeverity.ToReportDiagnostic()
+            : Microsoft.CodeAnalysis.ReportDiagnostic.Suppress;
+    }
+
+    internal static bool IsEffective(this DiagnosticDescriptor descriptor, Compilation compilation)
+    {
+        return IsEffective(descriptor, compilation.Options);
+    }
+
+    internal static bool IsEffective(this DiagnosticDescriptor descriptor, CompilationOptions compilationOptions)
+    {
+        return (compilationOptions.SpecificDiagnosticOptions.GetValueOrDefault(descriptor.Id)) switch
         {
-            if (descriptor.Id == "AD0001"
-                || descriptor.Id == "AD0002")
-            {
-                foreach (string tag in descriptor.CustomTags)
-                {
-                    if (tag == WellKnownDiagnosticTags.AnalyzerException)
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        internal static bool IsEffective(this DiagnosticDescriptor descriptor, SymbolAnalysisContext context)
-        {
-            return IsEffective(
-                descriptor,
-                context.Symbol.Locations[0].SourceTree,
-                context.Compilation.Options,
-                context.CancellationToken);
-        }
-
-        internal static bool IsEffective(this DiagnosticDescriptor descriptor, SyntaxNodeAnalysisContext context)
-        {
-            return IsEffective(
-                descriptor,
-                context.Node.SyntaxTree,
-                context.Compilation.Options,
-                context.CancellationToken);
-        }
-
-        internal static bool IsEffective(
-            this DiagnosticDescriptor descriptor,
-            SyntaxTree syntaxTree,
-            CompilationOptions compilationOptions,
-            CancellationToken cancellationToken = default)
-        {
-            var reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Default;
-
-            SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
-
-            if (provider is not null
-                && !provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic)
-                && !provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out reportDiagnostic))
-            {
-                reportDiagnostic = compilationOptions.SpecificDiagnosticOptions.GetValueOrDefault(descriptor.Id);
-            }
-
-            return reportDiagnostic switch
-            {
-                Microsoft.CodeAnalysis.ReportDiagnostic.Default => descriptor.IsEnabledByDefault,
-                Microsoft.CodeAnalysis.ReportDiagnostic.Suppress => false,
-                _ => true,
-            };
-        }
-
-        internal static ReportDiagnostic GetEffectiveSeverity(
-            this DiagnosticDescriptor descriptor,
-            SyntaxTree syntaxTree,
-            CompilationOptions compilationOptions,
-            CancellationToken cancellationToken = default)
-        {
-            SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
-
-            if (provider is not null)
-            {
-                if (provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out ReportDiagnostic globalReportDiagnostic))
-                    return globalReportDiagnostic;
-
-                if (provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic))
-                    return treeReportDiagnostic;
-            }
-
-            if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out ReportDiagnostic reportDiagnostic))
-                return reportDiagnostic;
-
-            return (descriptor.IsEnabledByDefault)
-                ? descriptor.DefaultSeverity.ToReportDiagnostic()
-                : Microsoft.CodeAnalysis.ReportDiagnostic.Suppress;
-        }
-
-        internal static bool IsEffective(this DiagnosticDescriptor descriptor, Compilation compilation)
-        {
-            return IsEffective(descriptor, compilation.Options);
-        }
-
-        internal static bool IsEffective(this DiagnosticDescriptor descriptor, CompilationOptions compilationOptions)
-        {
-            return (compilationOptions.SpecificDiagnosticOptions.GetValueOrDefault(descriptor.Id)) switch
-            {
-                Microsoft.CodeAnalysis.ReportDiagnostic.Default => descriptor.IsEnabledByDefault,
-                Microsoft.CodeAnalysis.ReportDiagnostic.Suppress => false,
-                _ => true,
-            };
-        }
+            Microsoft.CodeAnalysis.ReportDiagnostic.Default => descriptor.IsEnabledByDefault,
+            Microsoft.CodeAnalysis.ReportDiagnostic.Suppress => false,
+            _ => true,
+        };
     }
 }

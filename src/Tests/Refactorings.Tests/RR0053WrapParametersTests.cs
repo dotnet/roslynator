@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0053WrapParametersTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapParameters;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapParameters)]
-        public async Task Test_ToMultiLine_NoNamespace()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0053WrapParametersTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.WrapParameters;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapParameters)]
+    public async Task Test_ToMultiLine_NoNamespace()
+    {
+        await VerifyRefactoringAsync(@"
 record R([||]object p, object q, object r)
 {
     void M()
@@ -35,6 +35,5 @@ record R(
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

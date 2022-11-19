@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS1003SyntaxErrorCharExpectedTests : AbstractCSharpCompilerDiagnosticFixVerifier<SyntaxErrorCharExpectedCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
-        public async Task Test_MissingCommaInInitializer_Singleline()
-        {
-            await VerifyFixAsync(@"
+public class CS1003SyntaxErrorCharExpectedTests : AbstractCSharpCompilerDiagnosticFixVerifier<SyntaxErrorCharExpectedCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
+    public async Task Test_MissingCommaInInitializer_Singleline()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     public void M()
@@ -34,12 +34,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
-        public async Task Test_MissingCommaInInitializer_Multiline()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
+    public async Task Test_MissingCommaInInitializer_Multiline()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     public void M()
@@ -70,12 +70,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
-        public async Task Test_MissingCommaBetweenEnumMembers()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
+    public async Task Test_MissingCommaBetweenEnumMembers()
+    {
+        await VerifyFixAsync(@"
 enum E
 {
     A = 1
@@ -90,6 +90,5 @@ enum E
     C = 3
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

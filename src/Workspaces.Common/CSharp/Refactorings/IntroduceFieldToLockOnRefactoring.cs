@@ -22,16 +22,16 @@ namespace Roslynator.CSharp.Refactorings
         {
             MemberDeclarationSyntax containingMember = lockStatement.FirstAncestor<MemberDeclarationSyntax>();
 
-            Debug.Assert(containingMember != null);
+            Debug.Assert(containingMember is not null);
 
-            if (containingMember == null)
+            if (containingMember is null)
                 return document;
 
             TypeDeclarationSyntax containingType = containingMember.FirstAncestor<TypeDeclarationSyntax>();
 
-            Debug.Assert(containingType != null);
+            Debug.Assert(containingType is not null);
 
-            if (containingType == null)
+            if (containingType is null)
                 return document;
 
             SyntaxList<MemberDeclarationSyntax> members = containingType.Members;

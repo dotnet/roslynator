@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0118ReplaceExplicitCastWithAsExpressionTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0118ReplaceExplicitCastWithAsExpressionTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -34,12 +34,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)]
-        public async Task TestNoRefactoring_ValueType()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)]
+    public async Task TestNoRefactoring_ValueType()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -49,6 +49,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

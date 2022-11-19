@@ -2,15 +2,14 @@
 
 using System;
 
-namespace Roslynator
+namespace Roslynator;
+
+[Flags]
+internal enum VisibilityFilter
 {
-    [Flags]
-    internal enum VisibilityFilter
-    {
-        None = 0,
-        Public = 1,
-        Internal = 1 << 1,
-        Private = 1 << 2,
-        All = Public | Internal | Private
-    }
+    None = 0,
+    Public = 1,
+    Internal = 1 << 1,
+    Private = 1 << 2,
+    All = Public | Internal | Private
 }

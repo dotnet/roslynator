@@ -5,27 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemovePropertyInitializerRefactoring
 {
-    internal static class RemovePropertyInitializerRefactoring
+    public static bool CanRefactor(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
     {
-        public static bool CanRefactor(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
-        {
-            return propertyDeclaration.Initializer?.Span.Contains(context.Span) == true;
-        }
+        return propertyDeclaration.Initializer?.Span.Contains(context.Span) == true;
+    }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            PropertyDeclarationSyntax propertyDeclaration,
-            CancellationToken cancellationToken = default)
-        {
-            PropertyDeclarationSyntax newNode = propertyDeclaration
-                .WithInitializer(null)
-                .WithSemicolonToken(default(SyntaxToken))
-                .WithTriviaFrom(propertyDeclaration)
-                .WithFormatterAnnotation();
+    public static Task<Document> RefactorAsync(
+        Document document,
+        PropertyDeclarationSyntax propertyDeclaration,
+        CancellationToken cancellationToken = default)
+    {
+        PropertyDeclarationSyntax newNode = propertyDeclaration
+            .WithInitializer(null)
+            .WithSemicolonToken(default(SyntaxToken))
+            .WithTriviaFrom(propertyDeclaration)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
     }
 }

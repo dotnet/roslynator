@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0177OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethodTests : AbstractCSharpCompilerDiagnosticFixVerifier<AssignDefaultValueToOutParameterCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_VoidMethodWithTwoOutParameters()
-        {
-            await VerifyFixAsync(@"
+public class CS0177OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethodTests : AbstractCSharpCompilerDiagnosticFixVerifier<AssignDefaultValueToOutParameterCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_VoidMethodWithTwoOutParameters()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M(object p1, out object p2, out object p3)
@@ -30,12 +30,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_VoidMethodWithStatement()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_VoidMethodWithStatement()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M(object p1, out object p2, out object p3)
@@ -54,12 +54,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_BoolMethodWithReturnStatement()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_BoolMethodWithReturnStatement()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     bool M(object p1, out object p2, out object p3)
@@ -78,12 +78,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_BoolMethodWithStatements()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_BoolMethodWithStatements()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     bool M(object p1, out object p2, out object p3)
@@ -105,12 +105,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_BoolMethodWithReturnStatements()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_BoolMethodWithReturnStatements()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     bool M(bool f, out object p2, out object p3)
@@ -139,12 +139,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_MethodWithExpressionBody()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_MethodWithExpressionBody()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     object M(object p1, out object p2, out object p3, out object p4) => p1 = p2 = null;
@@ -160,14 +160,14 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        // Flow analysis APIs do not work with local functions: https://github.com/dotnet/roslyn/issues/14214
+    // Flow analysis APIs do not work with local functions: https://github.com/dotnet/roslyn/issues/14214
 #pragma warning disable xUnit1013
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_VoidLocalFunctionWithTwoOutParameters()
-        {
-            await VerifyFixAsync(@"
+    //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_VoidLocalFunctionWithTwoOutParameters()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -190,12 +190,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_VoidLocalFunctionWithStatement()
-        {
-            await VerifyFixAsync(@"
+    //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_VoidLocalFunctionWithStatement()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -220,12 +220,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_BoolLocalFunctionWithReturnStatement()
-        {
-            await VerifyFixAsync(@"
+    //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_BoolLocalFunctionWithReturnStatement()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -250,12 +250,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_BoolLocalFunctionWithStatements()
-        {
-            await VerifyFixAsync(@"
+    //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_BoolLocalFunctionWithStatements()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -283,12 +283,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_BoolLocalFunctionWithReturnStatements()
-        {
-            await VerifyFixAsync(@"
+    //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_BoolLocalFunctionWithReturnStatements()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -323,12 +323,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task Test_LocalFunctionWithExpressionBody()
-        {
-            await VerifyFixAsync(@"
+    //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task Test_LocalFunctionWithExpressionBody()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -350,24 +350,24 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 #pragma warning restore xUnit1013
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task TestNoFix_MethodWithoutBody()
-        {
-            await VerifyNoFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task TestNoFix_MethodWithoutBody()
+    {
+        await VerifyNoFixAsync(@"
 class C
 {
     void M(object p1, out object p2, out object p3)
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
-        public async Task TestNoFix_LocalFunctionWithoutBody()
-        {
-            await VerifyNoFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+    public async Task TestNoFix_LocalFunctionWithoutBody()
+    {
+        await VerifyNoFixAsync(@"
 class C
 {
     void M()
@@ -376,6 +376,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

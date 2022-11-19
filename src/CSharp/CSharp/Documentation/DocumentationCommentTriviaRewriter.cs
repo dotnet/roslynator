@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Documentation
         {
             INamedTypeSymbol typeSymbol = _semanticModel.GetTypeByMetadataName(metadataName);
 
-            if (typeSymbol != null)
+            if (typeSymbol is not null)
             {
                 return SymbolDisplay.ToMinimalDisplayString(typeSymbol, _semanticModel, _position, SymbolDisplayFormats.DisplayName)
                     .Replace('<', '{')

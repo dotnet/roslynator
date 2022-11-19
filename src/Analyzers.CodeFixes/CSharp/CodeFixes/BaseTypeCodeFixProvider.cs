@@ -10,30 +10,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BaseTypeCodeFixProvider))]
+[Shared]
+public sealed class BaseTypeCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BaseTypeCodeFixProvider))]
-    [Shared]
-    public sealed class BaseTypeCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantBaseInterface); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantBaseInterface); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseTypeSyntax baseType))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseTypeSyntax baseType))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove redundant base interface",
-                ct => RemoveRedundantBaseInterfaceRefactoring.RefactorAsync(context.Document, baseType, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantBaseInterface));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove redundant base interface",
+            ct => RemoveRedundantBaseInterfaceRefactoring.RefactorAsync(context.Document, baseType, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantBaseInterface));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

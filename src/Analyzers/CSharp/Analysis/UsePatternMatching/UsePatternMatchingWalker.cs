@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
 
             if (string.Equals(node.Identifier.ValueText, _name))
             {
-                if (_symbol == null)
+                if (_symbol is null)
                 {
                     _symbol = _semanticModel.GetSymbol(_identifierName, _cancellationToken);
 
@@ -84,11 +84,11 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
         {
             UsePatternMatchingWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker._symbol == null);
-                Debug.Assert(walker._identifierName == null);
-                Debug.Assert(walker._semanticModel == null);
+                Debug.Assert(walker._symbol is null);
+                Debug.Assert(walker._identifierName is null);
+                Debug.Assert(walker._semanticModel is null);
                 Debug.Assert(walker._cancellationToken == default);
 
                 _cachedInstance = null;

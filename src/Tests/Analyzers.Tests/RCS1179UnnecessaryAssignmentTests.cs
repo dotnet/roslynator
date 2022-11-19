@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1179UnnecessaryAssignmentTests : AbstractCSharpDiagnosticVerifier<UnnecessaryAssignmentAnalyzer, UnnecessaryAssignmentCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryAssignment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
-        public async Task Test_IfStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1179UnnecessaryAssignmentTests : AbstractCSharpDiagnosticVerifier<UnnecessaryAssignmentAnalyzer, UnnecessaryAssignmentCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryAssignment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
+    public async Task Test_IfStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int M()
@@ -53,12 +53,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
-        public async Task Test_IfStatement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
+    public async Task Test_IfStatement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int M()
@@ -100,12 +100,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
-        public async Task Test_IfStatement_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
+    public async Task Test_IfStatement_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -156,12 +156,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
-        public async Task Test_SwitchStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
+    public async Task Test_SwitchStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int M()
@@ -203,12 +203,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
-        public async Task Test_SwitchStatement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
+    public async Task Test_SwitchStatement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int M()
@@ -254,12 +254,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
-        public async Task Test_SwitchStatement_Throw()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
+    public async Task Test_SwitchStatement_Throw()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -310,6 +310,5 @@ class C
     }
 }
 ");
-        }
     }
 }

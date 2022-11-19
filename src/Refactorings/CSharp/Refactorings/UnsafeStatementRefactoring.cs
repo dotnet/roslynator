@@ -2,14 +2,13 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UnsafeStatementRefactoring
 {
-    internal static class UnsafeStatementRefactoring
+    internal static void ComputeRefactorings(RefactoringContext context, UnsafeStatementSyntax node)
     {
-        internal static void ComputeRefactorings(RefactoringContext context, UnsafeStatementSyntax node)
-        {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.MoveUnsafeContextToContainingDeclaration))
-                MoveUnsafeContextToContainingDeclarationRefactoring.ComputeRefactoring(context, node);
-        }
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.MoveUnsafeContextToContainingDeclaration))
+            MoveUnsafeContextToContainingDeclarationRefactoring.ComputeRefactoring(context, node);
     }
 }

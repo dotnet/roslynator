@@ -6,96 +6,95 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class MergeLocalDeclarationsRefactoring
 {
-    internal static class MergeLocalDeclarationsRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementListSelection selectedStatements)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementListSelection selectedStatements)
+        if (selectedStatements.Count <= 1)
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        if (!AreLocalDeclarations(selectedStatements, semanticModel, context.CancellationToken))
+            return;
+
+        context.RegisterRefactoring(
+            "Merge local declarations",
+            ct => RefactorAsync(context.Document, selectedStatements, ct),
+            RefactoringDescriptors.MergeLocalDeclarations);
+    }
+
+    private static bool AreLocalDeclarations(
+        StatementListSelection statements,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        ITypeSymbol prevTypeSymbol = null;
+
+        for (int i = 0; i < statements.Count; i++)
         {
-            if (selectedStatements.Count <= 1)
-                return;
+            StatementSyntax statement = statements[i];
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            if (statement is not LocalDeclarationStatementSyntax localDeclaration)
+                return false;
 
-            if (!AreLocalDeclarations(selectedStatements, semanticModel, context.CancellationToken))
-                return;
+            TypeSyntax type = localDeclaration.Declaration?.Type;
 
-            context.RegisterRefactoring(
-                "Merge local declarations",
-                ct => RefactorAsync(context.Document, selectedStatements, ct),
-                RefactoringDescriptors.MergeLocalDeclarations);
+            if (type is null)
+                return false;
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+
+            if (typeSymbol is null)
+                return false;
+
+            if (typeSymbol.IsErrorType())
+                return false;
+
+            if (prevTypeSymbol is not null && !SymbolEqualityComparer.Default.Equals(prevTypeSymbol, typeSymbol))
+                return false;
+
+            prevTypeSymbol = typeSymbol;
         }
 
-        private static bool AreLocalDeclarations(
-            StatementListSelection statements,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ITypeSymbol prevTypeSymbol = null;
+        return true;
+    }
 
-            for (int i = 0; i < statements.Count; i++)
-            {
-                StatementSyntax statement = statements[i];
+    private static Task<Document> RefactorAsync(
+        Document document,
+        StatementListSelection selectedStatements,
+        CancellationToken cancellationToken = default)
+    {
+        LocalDeclarationStatementSyntax[] localDeclarations = selectedStatements
+            .Cast<LocalDeclarationStatementSyntax>()
+            .ToArray();
 
-                if (statement is not LocalDeclarationStatementSyntax localDeclaration)
-                    return false;
+        LocalDeclarationStatementSyntax localDeclaration = localDeclarations[0];
 
-                TypeSyntax type = localDeclaration.Declaration?.Type;
+        SyntaxList<StatementSyntax> statements = selectedStatements.UnderlyingList;
 
-                if (type == null)
-                    return false;
+        int index = statements.IndexOf(localDeclaration);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+        VariableDeclaratorSyntax[] variables = localDeclarations
+            .Skip(1)
+            .Select(f => f.Declaration)
+            .SelectMany(f => f.Variables)
+            .ToArray();
 
-                if (typeSymbol == null)
-                    return false;
+        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration
+            .AddDeclarationVariables(variables)
+            .WithTrailingTrivia(localDeclarations[localDeclarations.Length - 1].GetTrailingTrivia())
+            .WithFormatterAnnotation();
 
-                if (typeSymbol.IsErrorType())
-                    return false;
+        SyntaxList<StatementSyntax> newStatements = statements.Replace(
+            localDeclaration,
+            newLocalDeclaration);
 
-                if (prevTypeSymbol != null && !SymbolEqualityComparer.Default.Equals(prevTypeSymbol, typeSymbol))
-                    return false;
+        for (int i = 1; i < localDeclarations.Length; i++)
+            newStatements = newStatements.RemoveAt(index + 1);
 
-                prevTypeSymbol = typeSymbol;
-            }
-
-            return true;
-        }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            StatementListSelection selectedStatements,
-            CancellationToken cancellationToken = default)
-        {
-            LocalDeclarationStatementSyntax[] localDeclarations = selectedStatements
-                .Cast<LocalDeclarationStatementSyntax>()
-                .ToArray();
-
-            LocalDeclarationStatementSyntax localDeclaration = localDeclarations[0];
-
-            SyntaxList<StatementSyntax> statements = selectedStatements.UnderlyingList;
-
-            int index = statements.IndexOf(localDeclaration);
-
-            VariableDeclaratorSyntax[] variables = localDeclarations
-                .Skip(1)
-                .Select(f => f.Declaration)
-                .SelectMany(f => f.Variables)
-                .ToArray();
-
-            LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration
-                .AddDeclarationVariables(variables)
-                .WithTrailingTrivia(localDeclarations[localDeclarations.Length - 1].GetTrailingTrivia())
-                .WithFormatterAnnotation();
-
-            SyntaxList<StatementSyntax> newStatements = statements.Replace(
-                localDeclaration,
-                newLocalDeclaration);
-
-            for (int i = 1; i < localDeclarations.Length; i++)
-                newStatements = newStatements.RemoveAt(index + 1);
-
-            return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
-        }
+        return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
     }
 }

@@ -3,33 +3,32 @@
 using System.Collections.Generic;
 using Microsoft.Build.Locator;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+public sealed class VisualStudioInstanceComparer : EqualityComparer<VisualStudioInstance>
 {
-    public sealed class VisualStudioInstanceComparer : EqualityComparer<VisualStudioInstance>
+    public static VisualStudioInstanceComparer MSBuildPath { get; } = new();
+
+    private VisualStudioInstanceComparer()
     {
-        public static VisualStudioInstanceComparer MSBuildPath { get; } = new();
+    }
 
-        private VisualStudioInstanceComparer()
-        {
-        }
+    public override bool Equals(VisualStudioInstance x, VisualStudioInstance y)
+    {
+        if (object.ReferenceEquals(x, y))
+            return true;
 
-        public override bool Equals(VisualStudioInstance x, VisualStudioInstance y)
-        {
-            if (object.ReferenceEquals(x, y))
-                return true;
+        if (x is null)
+            return false;
 
-            if (x == null)
-                return false;
+        if (y is null)
+            return false;
 
-            if (y == null)
-                return false;
+        return FileSystemHelpers.Comparer.Equals(x.MSBuildPath, y.MSBuildPath);
+    }
 
-            return FileSystemHelpers.Comparer.Equals(x.MSBuildPath, y.MSBuildPath);
-        }
-
-        public override int GetHashCode(VisualStudioInstance obj)
-        {
-            return (obj == null) ? 0 : FileSystemHelpers.Comparer.GetHashCode(obj.MSBuildPath);
-        }
+    public override int GetHashCode(VisualStudioInstance obj)
+    {
+        return (obj is null) ? 0 : FileSystemHelpers.Comparer.GetHashCode(obj.MSBuildPath);
     }
 }

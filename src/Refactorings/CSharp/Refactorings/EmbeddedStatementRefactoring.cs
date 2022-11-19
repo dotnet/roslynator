@@ -3,30 +3,29 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.WrapStatements;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class EmbeddedStatementRefactoring
 {
-    internal static class EmbeddedStatementRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
     {
-        public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
+        if (!statement.IsEmbedded(canBeIfInsideElse: false, canBeUsingInsideUsing: false))
+            return;
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInCondition))
         {
-            if (!statement.IsEmbedded(canBeIfInsideElse: false, canBeUsingInsideUsing: false))
-                return;
+            context.RegisterRefactoring(
+                WrapInIfStatementRefactoring.Title,
+                ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
+                RefactoringDescriptors.WrapStatementsInCondition);
+        }
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInCondition))
-            {
-                context.RegisterRefactoring(
-                    WrapInIfStatementRefactoring.Title,
-                    ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
-                    RefactoringDescriptors.WrapStatementsInCondition);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInTryCatch))
-            {
-                context.RegisterRefactoring(
-                    WrapLinesInTryCatchRefactoring.Title,
-                    ct => WrapLinesInTryCatchRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
-                    RefactoringDescriptors.WrapLinesInTryCatch);
-            }
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInTryCatch))
+        {
+            context.RegisterRefactoring(
+                WrapLinesInTryCatchRefactoring.Title,
+                ct => WrapLinesInTryCatchRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
+                RefactoringDescriptors.WrapLinesInTryCatch);
         }
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1089UseUnaryOperatorInsteadOfAssignmentTests : AbstractCSharpDiagnosticVerifier<UseUnaryOperatorInsteadOfAssignmentAnalyzer, AssignmentExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseUnaryOperatorInsteadOfAssignment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task Test_PostIncrement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1089UseUnaryOperatorInsteadOfAssignmentTests : AbstractCSharpDiagnosticVerifier<UseUnaryOperatorInsteadOfAssignmentAnalyzer, AssignmentExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseUnaryOperatorInsteadOfAssignment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task Test_PostIncrement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int i;
@@ -36,12 +36,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task Test_PostIncrement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task Test_PostIncrement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int i;
@@ -62,12 +62,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task Test_PostDecrement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task Test_PostDecrement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int i;
@@ -88,12 +88,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task Test_PostDecrement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task Test_PostDecrement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int i;
@@ -114,12 +114,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task Test_PreIncrement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task Test_PreIncrement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int i;
@@ -140,12 +140,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task Test_PreIncrement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task Test_PreIncrement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int i;
@@ -166,12 +166,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task Test_PreDecrement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task Test_PreDecrement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int i;
@@ -192,12 +192,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task Test_PreDecrement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task Test_PreDecrement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int i;
@@ -218,12 +218,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -234,12 +234,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task TestNoDiagnostic_ObjectInitializer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task TestNoDiagnostic_ObjectInitializer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public int P { get; set; }
@@ -252,12 +252,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
-        public async Task TestNoDiagnostic_PointerIndirection()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+    public async Task TestNoDiagnostic_PointerIndirection()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
 
@@ -278,6 +278,5 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(enabled: true));
-        }
     }
 }

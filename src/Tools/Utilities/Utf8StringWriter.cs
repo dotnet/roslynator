@@ -3,13 +3,12 @@
 using System.IO;
 using System.Text;
 
-namespace Roslynator.Utilities
+namespace Roslynator.Utilities;
+
+public class Utf8StringWriter : StringWriter
 {
-    public class Utf8StringWriter : StringWriter
+    public override Encoding Encoding
     {
-        public override Encoding Encoding
-        {
-            get { return Encoding.UTF8; }
-        }
+        get { return Encoding.UTF8; }
     }
 }

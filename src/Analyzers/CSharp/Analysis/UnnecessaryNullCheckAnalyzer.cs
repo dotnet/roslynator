@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!AreEquivalent(expression, memberAccessExpression.Expression))
                     return;
 
-                if (expression3 != null)
+                if (expression3 is not null)
                 {
                     switch (expression3.Kind())
                     {

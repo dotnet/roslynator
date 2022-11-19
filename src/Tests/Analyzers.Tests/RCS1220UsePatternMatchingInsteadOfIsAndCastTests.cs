@@ -7,16 +7,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1220UsePatternMatchingInsteadOfIsAndCastTests : AbstractCSharpDiagnosticVerifier<UsePatternMatchingInsteadOfIsAndCastAnalyzer, UsePatternMatchingInsteadOfIsAndCastCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_LogicalAndExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1220UsePatternMatchingInsteadOfIsAndCastTests : AbstractCSharpDiagnosticVerifier<UsePatternMatchingInsteadOfIsAndCastAnalyzer, UsePatternMatchingInsteadOfIsAndCastCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_LogicalAndExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public void M()
@@ -41,12 +41,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_LogicalAndExpression2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_LogicalAndExpression2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public void M()
@@ -67,12 +67,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_LogicalAndExpression3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_LogicalAndExpression3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -99,12 +99,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_LogicalAndExpression4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_LogicalAndExpression4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -131,12 +131,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_LogicalAndExpression5()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_LogicalAndExpression5()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -163,12 +163,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_LogicalAndExpression6()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_LogicalAndExpression6()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -195,12 +195,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_LogicalAndExpression7()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_LogicalAndExpression7()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -225,12 +225,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_LogicalAndExpression_Enum()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_LogicalAndExpression_Enum()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -261,12 +261,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement1()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement1()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public void M()
@@ -295,12 +295,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     public void M()
@@ -327,12 +327,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -365,12 +365,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -403,12 +403,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement5()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement5()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -441,12 +441,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement6()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement6()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -481,12 +481,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement7()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement7()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private readonly object _f = false;
@@ -517,12 +517,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement8()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement8()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Dynamic;
 using System.Collections.Generic;
 
@@ -551,12 +551,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task Test_IfStatement_Enum()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task Test_IfStatement_Enum()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -587,12 +587,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task TestNoDiagnostic_LogicalAndExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task TestNoDiagnostic_LogicalAndExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public void M()
@@ -609,12 +609,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task TestNoDiagnostic_IfStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task TestNoDiagnostic_IfStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public void M()
@@ -640,12 +640,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task TestNoDiagnostic_LogicalAnd_ExpressionTree()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task TestNoDiagnostic_LogicalAnd_ExpressionTree()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq.Expressions;
 
@@ -660,12 +660,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task TestNoDiagnostic_NullableType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task TestNoDiagnostic_NullableType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(int? p)
@@ -681,12 +681,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
-        public async Task TestNoDiagnostic_LanguageVersion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+    public async Task TestNoDiagnostic_LanguageVersion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public void M()
@@ -698,6 +698,5 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp6);
-        }
     }
 }

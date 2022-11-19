@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "Any"))
@@ -36,12 +36,12 @@ namespace Roslynator.CSharp.Analysis
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return;
 
             string propertyName = SymbolUtility.GetCountOrLengthPropertyName(typeSymbol, semanticModel, expression.SpanStart);
 
-            if (propertyName == null)
+            if (propertyName is null)
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(

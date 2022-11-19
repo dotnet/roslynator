@@ -24,10 +24,10 @@ namespace Roslynator
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             int diff;
@@ -179,10 +179,10 @@ namespace Roslynator
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             int diff = ((int)x.RefKind).CompareTo((int)y.RefKind);

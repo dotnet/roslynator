@@ -9,88 +9,87 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseEnumeratorExplicitlyRefactoring
 {
-    internal static class UseEnumeratorExplicitlyRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, ForEachStatementSyntax forEachStatement)
     {
-        public static void ComputeRefactoring(RefactoringContext context, ForEachStatementSyntax forEachStatement)
+        if (forEachStatement.Expression?.IsMissing != false)
+            return;
+
+        if (forEachStatement.Statement?.IsMissing != false)
+            return;
+
+        context.RegisterRefactoring(
+            "Use enumerator explicitly",
+            ct => RefactorAsync(context.Document, forEachStatement, ct),
+            RefactoringDescriptors.UseEnumeratorExplicitly);
+    }
+
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        ForEachStatementSyntax forEachStatement,
+        CancellationToken cancellationToken)
+    {
+        int position = forEachStatement.SpanStart;
+
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.EnumeratorVariable, semanticModel, position, cancellationToken: cancellationToken);
+
+        InvocationExpressionSyntax expression = SimpleMemberInvocationExpression(forEachStatement.Expression.Parenthesize(), IdentifierName(WellKnownMemberNames.GetEnumeratorMethodName));
+
+        VariableDeclarationSyntax variableDeclaration = VariableDeclaration(VarType(), Identifier(name).WithRenameAnnotation(), expression);
+
+        MemberAccessExpressionSyntax currentExpression = SimpleMemberAccessExpression(IdentifierName(name), IdentifierName("Current"));
+
+        ILocalSymbol localSymbol = semanticModel.GetDeclaredSymbol(forEachStatement, cancellationToken);
+
+        StatementSyntax statement = forEachStatement.Statement;
+
+        StatementSyntax newStatement = statement.ReplaceNodes(
+            statement
+                .DescendantNodes()
+                .Where(node => node.IsKind(SyntaxKind.IdentifierName) && SymbolEqualityComparer.Default.Equals(localSymbol, semanticModel.GetSymbol(node, cancellationToken))),
+            (node, _) => currentExpression.WithTriviaFrom(node));
+
+        WhileStatementSyntax whileStatement = WhileStatement(
+            SimpleMemberInvocationExpression(IdentifierName(name), IdentifierName("MoveNext")),
+            newStatement);
+
+        if (semanticModel
+            .GetSpeculativeMethodSymbol(position, expression)?
+            .ReturnType
+            .Implements(SpecialType.System_IDisposable, allInterfaces: true) == true)
         {
-            if (forEachStatement.Expression?.IsMissing != false)
-                return;
+            UsingStatementSyntax usingStatement = UsingStatement(
+                variableDeclaration,
+                default(ExpressionSyntax),
+                Block(whileStatement));
 
-            if (forEachStatement.Statement?.IsMissing != false)
-                return;
+            usingStatement = usingStatement
+                .WithLeadingTrivia(forEachStatement.GetLeadingTrivia())
+                .WithFormatterAnnotation();
 
-            context.RegisterRefactoring(
-                "Use enumerator explicitly",
-                ct => RefactorAsync(context.Document, forEachStatement, ct),
-                RefactoringDescriptors.UseEnumeratorExplicitly);
+            return await document.ReplaceNodeAsync(forEachStatement, usingStatement, cancellationToken).ConfigureAwait(false);
         }
-
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            ForEachStatementSyntax forEachStatement,
-            CancellationToken cancellationToken)
+        else
         {
-            int position = forEachStatement.SpanStart;
+            LocalDeclarationStatementSyntax localDeclaration = LocalDeclarationStatement(variableDeclaration)
+                .WithLeadingTrivia(forEachStatement.GetLeadingTrivia())
+                .WithFormatterAnnotation();
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            var newStatements = new StatementSyntax[] { localDeclaration, whileStatement.WithFormatterAnnotation() };
 
-            string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.EnumeratorVariable, semanticModel, position, cancellationToken: cancellationToken);
-
-            InvocationExpressionSyntax expression = SimpleMemberInvocationExpression(forEachStatement.Expression.Parenthesize(), IdentifierName(WellKnownMemberNames.GetEnumeratorMethodName));
-
-            VariableDeclarationSyntax variableDeclaration = VariableDeclaration(VarType(), Identifier(name).WithRenameAnnotation(), expression);
-
-            MemberAccessExpressionSyntax currentExpression = SimpleMemberAccessExpression(IdentifierName(name), IdentifierName("Current"));
-
-            ILocalSymbol localSymbol = semanticModel.GetDeclaredSymbol(forEachStatement, cancellationToken);
-
-            StatementSyntax statement = forEachStatement.Statement;
-
-            StatementSyntax newStatement = statement.ReplaceNodes(
-                statement
-                    .DescendantNodes()
-                    .Where(node => node.IsKind(SyntaxKind.IdentifierName) && SymbolEqualityComparer.Default.Equals(localSymbol, semanticModel.GetSymbol(node, cancellationToken))),
-                (node, _) => currentExpression.WithTriviaFrom(node));
-
-            WhileStatementSyntax whileStatement = WhileStatement(
-                SimpleMemberInvocationExpression(IdentifierName(name), IdentifierName("MoveNext")),
-                newStatement);
-
-            if (semanticModel
-                .GetSpeculativeMethodSymbol(position, expression)?
-                .ReturnType
-                .Implements(SpecialType.System_IDisposable, allInterfaces: true) == true)
+            if (forEachStatement.IsEmbedded())
             {
-                UsingStatementSyntax usingStatement = UsingStatement(
-                    variableDeclaration,
-                    default(ExpressionSyntax),
-                    Block(whileStatement));
+                BlockSyntax block = Block(newStatements).WithFormatterAnnotation();
 
-                usingStatement = usingStatement
-                    .WithLeadingTrivia(forEachStatement.GetLeadingTrivia())
-                    .WithFormatterAnnotation();
-
-                return await document.ReplaceNodeAsync(forEachStatement, usingStatement, cancellationToken).ConfigureAwait(false);
+                return await document.ReplaceNodeAsync(forEachStatement, block, cancellationToken).ConfigureAwait(false);
             }
-            else
-            {
-                LocalDeclarationStatementSyntax localDeclaration = LocalDeclarationStatement(variableDeclaration)
-                    .WithLeadingTrivia(forEachStatement.GetLeadingTrivia())
-                    .WithFormatterAnnotation();
 
-                var newStatements = new StatementSyntax[] { localDeclaration, whileStatement.WithFormatterAnnotation() };
-
-                if (forEachStatement.IsEmbedded())
-                {
-                    BlockSyntax block = Block(newStatements).WithFormatterAnnotation();
-
-                    return await document.ReplaceNodeAsync(forEachStatement, block, cancellationToken).ConfigureAwait(false);
-                }
-
-                return await document.ReplaceNodeAsync(forEachStatement, newStatements, cancellationToken).ConfigureAwait(false);
-            }
+            return await document.ReplaceNodeAsync(forEachStatement, newStatements, cancellationToken).ConfigureAwait(false);
         }
     }
 }

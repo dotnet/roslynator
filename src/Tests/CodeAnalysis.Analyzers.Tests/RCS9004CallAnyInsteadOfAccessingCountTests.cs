@@ -6,16 +6,16 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS9004CallAnyInsteadOfAccessingCountTests : AbstractCSharpDiagnosticVerifier<SimpleMemberAccessExpressionAnalyzer, BinaryExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.CallAnyInsteadOfAccessingCount;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_SyntaxList_Equals()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS9004CallAnyInsteadOfAccessingCountTests : AbstractCSharpDiagnosticVerifier<SimpleMemberAccessExpressionAnalyzer, BinaryExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.CallAnyInsteadOfAccessingCount;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_SyntaxList_Equals()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -40,12 +40,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_SyntaxList_Equals2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_SyntaxList_Equals2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -70,12 +70,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_SyntaxList_NotEquals()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_SyntaxList_NotEquals()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -100,12 +100,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_SyntaxList_GreaterThan()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_SyntaxList_GreaterThan()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -130,12 +130,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_SeparatedSyntaxList_GreaterThan()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_SeparatedSyntaxList_GreaterThan()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -160,12 +160,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_SyntaxTokenList_GreaterThan()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_SyntaxTokenList_GreaterThan()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -190,12 +190,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_SyntaxTriviaList_GreaterThan()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_SyntaxTriviaList_GreaterThan()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -220,12 +220,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_ChildSyntaxList_GreaterThan()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_ChildSyntaxList_GreaterThan()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -250,12 +250,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task Test_SyntaxNodeOrTokenList_GreaterThan()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task Test_SyntaxNodeOrTokenList_GreaterThan()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -280,12 +280,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task TestNoDiagnostic_LessThanExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task TestNoDiagnostic_LessThanExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -298,12 +298,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task TestNoDiagnostic_NotNumericLiteralExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task TestNoDiagnostic_NotNumericLiteralExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -317,12 +317,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task TestNoDiagnostic_NotZeroNumericLiteralExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task TestNoDiagnostic_NotZeroNumericLiteralExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -335,12 +335,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
-        public async Task TestNoDiagnostic_NotSyntaxList()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount)]
+    public async Task TestNoDiagnostic_NotSyntaxList()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
@@ -354,6 +354,5 @@ class C
     }
 }
 ");
-        }
     }
 }

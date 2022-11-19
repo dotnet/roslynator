@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1228UnusedElementInDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, XmlNodeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnusedElementInDocumentationComment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_FirstElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1228UnusedElementInDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<SingleLineDocumentationCommentTriviaAnalyzer, XmlNodeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnusedElementInDocumentationComment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_FirstElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// [|<returns></returns>|]
@@ -35,12 +35,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_LastElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_LastElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -60,12 +60,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_EmptyElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_EmptyElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -85,12 +85,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_ReturnsIsOnlyElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_ReturnsIsOnlyElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// [|<returns></returns>|]
@@ -106,12 +106,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_ExampleElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_ExampleElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -125,12 +125,12 @@ class C
     void M() => M();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_RemarksElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_RemarksElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -144,12 +144,12 @@ class C
     void M() => M();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_ValueElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_ValueElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -163,12 +163,12 @@ class C
     void M() => M();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_ParamElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_ParamElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -182,12 +182,12 @@ class C
     void M(object p1, object p2) => M(p1, p2);
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_ParamElement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_ParamElement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -201,12 +201,12 @@ class C
     void M() => M();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_ParamElement_Empty()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_ParamElement_Empty()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -220,12 +220,12 @@ class C
     void M(object p1, object p2) => M(p1, p2);
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_TypeParamElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_TypeParamElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -239,12 +239,12 @@ class C
     void M<T1, T2>() => M<T1, T2>();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_TypeParamElement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_TypeParamElement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -258,12 +258,12 @@ class C
     void M() => M();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_TypeParamElement_Empty()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_TypeParamElement_Empty()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -277,12 +277,12 @@ class C
     void M<T1, T2>() => M<T1, T2>();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_NoReturnsElement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_NoReturnsElement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary>
@@ -292,12 +292,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_NonEmpty()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_NonEmpty()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     /// <summary>
@@ -308,30 +308,29 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_Record()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_Record()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// x
 /// </summary>
 /// <param name=""Bar"">bar</param>
 public record Foo(string Bar);
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_RecordStruct()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_RecordStruct()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// x
 /// </summary>
 /// <param name=""Bar"">bar</param>
 public record struct Foo(string Bar);
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
-        }
     }
 }

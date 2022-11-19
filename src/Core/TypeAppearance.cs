@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator
+namespace Roslynator;
+
+internal enum TypeAppearance
 {
-    internal enum TypeAppearance
-    {
-        None = 0,
-        Obvious = 1,
-        NotObvious = 2,
-    }
+    None = 0,
+    Obvious = 1,
+    NotObvious = 2,
 }

@@ -6,44 +6,43 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AddNewLineBeforeStatementRefactoring
 {
-    internal static class AddNewLineBeforeStatementRefactoring
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        StatementSyntax statement,
+        CancellationToken cancellationToken)
     {
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken)
+        StatementSyntax newStatement = statement
+            .WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine()))
+            .WithFormatterAnnotation();
+
+        if (statement.IsParentKind(SyntaxKind.Block))
         {
-            StatementSyntax newStatement = statement
-                .WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine()))
-                .WithFormatterAnnotation();
+            var block = (BlockSyntax)statement.Parent;
 
-            if (statement.IsParentKind(SyntaxKind.Block))
+            if (block.IsSingleLine(includeExteriorTrivia: false))
             {
-                var block = (BlockSyntax)statement.Parent;
+                SyntaxTriviaList triviaList = block.CloseBraceToken.LeadingTrivia
+                    .Add(CSharpFactory.NewLine());
 
-                if (block.IsSingleLine(includeExteriorTrivia: false))
-                {
-                    SyntaxTriviaList triviaList = block.CloseBraceToken.LeadingTrivia
-                        .Add(CSharpFactory.NewLine());
+                BlockSyntax newBlock = block
+                    .WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(triviaList))
+                    .WithStatements(block.Statements.Replace(statement, newStatement))
+                    .WithFormatterAnnotation();
 
-                    BlockSyntax newBlock = block
-                        .WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(triviaList))
-                        .WithStatements(block.Statements.Replace(statement, newStatement))
-                        .WithFormatterAnnotation();
-
-                    return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
-                }
+                return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
             }
             else
             {
                 return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
             }
+        }
+        else
+        {
+            return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

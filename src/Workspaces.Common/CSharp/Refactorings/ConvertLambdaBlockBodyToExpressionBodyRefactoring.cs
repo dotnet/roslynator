@@ -8,71 +8,70 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConvertLambdaBlockBodyToExpressionBodyRefactoring
 {
-    internal static class ConvertLambdaBlockBodyToExpressionBodyRefactoring
+    public const string Title = "Use expression-bodied lambda";
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        LambdaExpressionSyntax lambda,
+        CancellationToken cancellationToken = default)
     {
-        public const string Title = "Use expression-bodied lambda";
+        var block = (BlockSyntax)lambda.Body;
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            LambdaExpressionSyntax lambda,
-            CancellationToken cancellationToken = default)
+        ExpressionSyntax expression = GetExpression(block.Statements[0]).WithoutTrivia();
+
+        LambdaExpressionSyntax newLambda = GetNewLambda()
+            .WithTriviaFrom(lambda)
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(lambda, newLambda, cancellationToken);
+
+        static ExpressionSyntax GetExpression(StatementSyntax statement)
         {
-            var block = (BlockSyntax)lambda.Body;
-
-            ExpressionSyntax expression = GetExpression(block.Statements[0]).WithoutTrivia();
-
-            LambdaExpressionSyntax newLambda = GetNewLambda()
-                .WithTriviaFrom(lambda)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(lambda, newLambda, cancellationToken);
-
-            static ExpressionSyntax GetExpression(StatementSyntax statement)
+            switch (statement.Kind())
             {
-                switch (statement.Kind())
-                {
-                    case SyntaxKind.ReturnStatement:
-                        {
-                            return ((ReturnStatementSyntax)statement).Expression;
-                        }
-                    case SyntaxKind.ExpressionStatement:
-                        {
-                            return ((ExpressionStatementSyntax)statement).Expression;
-                        }
-                    case SyntaxKind.ThrowStatement:
-                        {
-                            return ThrowExpression(
-                                Token(SyntaxTriviaList.Empty, SyntaxKind.ThrowKeyword, TriviaList(Space)),
-                                ((ThrowStatementSyntax)statement).Expression);
-                        }
-                }
-
-                return null;
+                case SyntaxKind.ReturnStatement:
+                    {
+                        return ((ReturnStatementSyntax)statement).Expression;
+                    }
+                case SyntaxKind.ExpressionStatement:
+                    {
+                        return ((ExpressionStatementSyntax)statement).Expression;
+                    }
+                case SyntaxKind.ThrowStatement:
+                    {
+                        return ThrowExpression(
+                            Token(SyntaxTriviaList.Empty, SyntaxKind.ThrowKeyword, TriviaList(Space)),
+                            ((ThrowStatementSyntax)statement).Expression);
+                    }
             }
 
-            LambdaExpressionSyntax GetNewLambda()
+            return null;
+        }
+
+        LambdaExpressionSyntax GetNewLambda()
+        {
+            switch (lambda.Kind())
             {
-                switch (lambda.Kind())
-                {
-                    case SyntaxKind.SimpleLambdaExpression:
-                        {
-                            return ((SimpleLambdaExpressionSyntax)lambda)
-                                .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
-                                .WithBody(expression);
-                        }
-                    case SyntaxKind.ParenthesizedLambdaExpression:
-                        {
-                            return ((ParenthesizedLambdaExpressionSyntax)lambda)
-                                .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
-                                .WithBody(expression);
-                        }
-                    default:
-                        {
-                            throw new InvalidOperationException();
-                        }
-                }
+                case SyntaxKind.SimpleLambdaExpression:
+                    {
+                        return ((SimpleLambdaExpressionSyntax)lambda)
+                            .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
+                            .WithBody(expression);
+                    }
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                    {
+                        return ((ParenthesizedLambdaExpressionSyntax)lambda)
+                            .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
+                            .WithBody(expression);
+                    }
+                default:
+                    {
+                        throw new InvalidOperationException();
+                    }
             }
         }
     }

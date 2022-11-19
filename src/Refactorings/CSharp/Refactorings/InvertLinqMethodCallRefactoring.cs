@@ -6,83 +6,82 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InvertLinqMethodCallRefactoring
 {
-    internal static class InvertLinqMethodCallRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, InvocationExpressionSyntax invocation, SemanticModel semanticModel)
     {
-        public static void ComputeRefactoring(RefactoringContext context, InvocationExpressionSyntax invocation, SemanticModel semanticModel)
+        if (!ComputeRefactoring(context, invocation, semanticModel, "Any", "All"))
+            ComputeRefactoring(context, invocation, semanticModel, "All", "Any");
+    }
+
+    private static bool ComputeRefactoring(
+        RefactoringContext context,
+        InvocationExpressionSyntax invocation,
+        SemanticModel semanticModel,
+        string fromMethodName,
+        string toMethodName)
+    {
+        IMethodSymbol methodSymbol = semanticModel.GetExtensionMethodInfo(invocation, context.CancellationToken).Symbol;
+
+        if (methodSymbol is null)
+            return false;
+
+        if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol, fromMethodName))
+            return false;
+
+        ExpressionSyntax expression = GetExpression(invocation);
+
+        if (expression is null)
+            return false;
+
+        context.RegisterRefactoring(
+            $"Invert '{fromMethodName}'",
+            ct => RefactorAsync(context.Document, invocation, toMethodName, expression, ct),
+            RefactoringDescriptors.InvertLinqMethodCall);
+
+        return true;
+    }
+
+    private static ExpressionSyntax GetExpression(InvocationExpressionSyntax invocation)
+    {
+        ExpressionSyntax expression = invocation
+            .ArgumentList?
+            .Arguments
+            .Last()
+            .Expression;
+
+        switch (expression?.Kind())
         {
-            if (!ComputeRefactoring(context, invocation, semanticModel, "Any", "All"))
-                ComputeRefactoring(context, invocation, semanticModel, "All", "Any");
+            case SyntaxKind.SimpleLambdaExpression:
+            case SyntaxKind.ParenthesizedLambdaExpression:
+                {
+                    return ((LambdaExpressionSyntax)expression).Body as ExpressionSyntax;
+                }
         }
 
-        private static bool ComputeRefactoring(
-            RefactoringContext context,
-            InvocationExpressionSyntax invocation,
-            SemanticModel semanticModel,
-            string fromMethodName,
-            string toMethodName)
-        {
-            IMethodSymbol methodSymbol = semanticModel.GetExtensionMethodInfo(invocation, context.CancellationToken).Symbol;
+        return null;
+    }
 
-            if (methodSymbol == null)
-                return false;
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        InvocationExpressionSyntax invocationExpression,
+        string memberName,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
 
-            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol, fromMethodName))
-                return false;
+        MemberAccessExpressionSyntax newMemberAccessExpression = memberAccessExpression
+            .WithName(SyntaxFactory.IdentifierName(memberName).WithTriviaFrom(memberAccessExpression.Name));
 
-            ExpressionSyntax expression = GetExpression(invocation);
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            if (expression == null)
-                return false;
+        InvocationExpressionSyntax newNode = invocationExpression
+            .ReplaceNode(expression, SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(expression, semanticModel, cancellationToken))
+            .WithExpression(newMemberAccessExpression);
 
-            context.RegisterRefactoring(
-                $"Invert '{fromMethodName}'",
-                ct => RefactorAsync(context.Document, invocation, toMethodName, expression, ct),
-                RefactoringDescriptors.InvertLinqMethodCall);
-
-            return true;
-        }
-
-        private static ExpressionSyntax GetExpression(InvocationExpressionSyntax invocation)
-        {
-            ExpressionSyntax expression = invocation
-                .ArgumentList?
-                .Arguments
-                .Last()
-                .Expression;
-
-            switch (expression?.Kind())
-            {
-                case SyntaxKind.SimpleLambdaExpression:
-                case SyntaxKind.ParenthesizedLambdaExpression:
-                    {
-                        return ((LambdaExpressionSyntax)expression).Body as ExpressionSyntax;
-                    }
-            }
-
-            return null;
-        }
-
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            InvocationExpressionSyntax invocationExpression,
-            string memberName,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
-        {
-            var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
-
-            MemberAccessExpressionSyntax newMemberAccessExpression = memberAccessExpression
-                .WithName(SyntaxFactory.IdentifierName(memberName).WithTriviaFrom(memberAccessExpression.Name));
-
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            InvocationExpressionSyntax newNode = invocationExpression
-                .ReplaceNode(expression, SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(expression, semanticModel, cancellationToken))
-                .WithExpression(newMemberAccessExpression);
-
-            return await document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken).ConfigureAwait(false);
-        }
+        return await document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken).ConfigureAwait(false);
     }
 }
