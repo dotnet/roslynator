@@ -2510,15 +2510,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1256</summary>
-        public static readonly DiagnosticDescriptor InvalidNullCheck = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.InvalidNullCheck, 
-            title:              "Invalid null check.", 
-            messageFormat:      "Invalid null check.", 
+        public static readonly DiagnosticDescriptor InvalidArgumentNullCheck = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.InvalidArgumentNullCheck, 
+            title:              "Invalid argument null check.", 
+            messageFormat:      "Invalid argument null check.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.InvalidNullCheck, 
+            helpLinkUri:        DiagnosticIdentifiers.InvalidArgumentNullCheck, 
             customTags:         Array.Empty<string>());
 
     }

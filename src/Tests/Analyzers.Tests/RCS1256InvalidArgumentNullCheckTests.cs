@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1256InvalidNullCheckTests : AbstractCSharpDiagnosticVerifier<InvalidNullCheckAnalyzer, IfStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InvalidNullCheck;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidNullCheck)]
-        public async Task Test_Method_OptionalParameter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1256InvalidArgumentNullCheckTests : AbstractCSharpDiagnosticVerifier<InvalidArgumentNullCheckAnalyzer, IfStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InvalidArgumentNullCheck;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
+    public async Task Test_Method_OptionalParameter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -42,12 +42,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidNullCheck)]
-        public async Task Test_Method_NullableReferenceTypeParameter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
+    public async Task Test_Method_NullableReferenceTypeParameter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 #nullable enable
@@ -78,12 +78,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidNullCheck)]
-        public async Task Test_Constructor_OptionalParameter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
+    public async Task Test_Constructor_OptionalParameter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -110,12 +110,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidNullCheck)]
-        public async Task Test_Constructor_NullableReferenceTypeParameter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
+    public async Task Test_Constructor_NullableReferenceTypeParameter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 #nullable enable
@@ -146,6 +146,5 @@ class C
     }
 }
 ");
-        }
     }
 }
