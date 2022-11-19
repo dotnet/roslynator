@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
-using Roslynator.CSharp.SyntaxRewriters.SortMembers;
 
 namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations;
 
