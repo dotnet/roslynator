@@ -56,6 +56,14 @@ public sealed class SimplifyArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
         if (throwStatement.Expression is not ObjectCreationExpressionSyntax objectCreation)
             return;
 
+        ExpressionSyntax expression = objectCreation.ArgumentList?.Arguments.SingleOrDefault(shouldThrow: false)?.Expression;
+
+        if (expression is null)
+            return;
+
+        if (ifStatement.ContainsUnbalancedIfElseDirectives())
+            return;
+
         INamedTypeSymbol containingTypeSymbol = context.SemanticModel
             .GetSymbol(objectCreation, context.CancellationToken)?
             .ContainingType;
@@ -64,11 +72,6 @@ public sealed class SimplifyArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
             return;
 
         if (!containingTypeSymbol.GetMembers("ThrowIfNull").Any(f => f.IsKind(SymbolKind.Method)))
-            return;
-
-        ExpressionSyntax expression = objectCreation.ArgumentList?.Arguments.FirstOrDefault()?.Expression;
-
-        if (expression is null)
             return;
 
         if (IsFixable())

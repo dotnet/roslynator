@@ -96,4 +96,23 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
+    public async Task TestNoDiagnostic_TwoArguments()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    C(string x)
+    {
+        if (x is null)
+        {
+            throw new ArgumentNullException(nameof(x), ""message"");
+        }
+    }
+}
+");
+    }
 }

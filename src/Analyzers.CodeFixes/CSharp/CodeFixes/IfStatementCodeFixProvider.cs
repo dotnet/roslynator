@@ -117,22 +117,22 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                    case DiagnosticIdentifiers.SimplifyArgumentNullCheck:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Call ArgumentNullException.ThrowIfNull",
-                                ct =>
-                                {
-                                    return UseArgumentNullExceptionThrowIfNullAsync(
-                                        context.Document,
-                                        ifStatement,
-                                        cancellationToken: ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                case DiagnosticIdentifiers.SimplifyArgumentNullCheck:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call ArgumentNullException.ThrowIfNull",
+                            ct =>
+                            {
+                                return CallArgumentNullExceptionThrowIfNullAsync(
+                                    context.Document,
+                                    ifStatement,
+                                    cancellationToken: ct);
+                            },
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }
@@ -176,7 +176,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
         CatchClauseSyntax newCatchClause = catchClause.Update(
             catchKeyword: catchClause.CatchKeyword,
             declaration: catchClause.Declaration,
-            filter: SyntaxFactory.CatchFilterClause(filterExpression.WalkDownParentheses()),
+            filter: CatchFilterClause(filterExpression.WalkDownParentheses()),
             block: catchClause.Block.WithStatements(newStatements));
 
         newCatchClause = newCatchClause.WithFormatterAnnotation();
@@ -209,7 +209,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
         if (!right.IsKind(SyntaxKind.LogicalAndExpression))
             right = right.Parenthesize();
 
-        BinaryExpressionSyntax newCondition = CSharpFactory.LogicalAndExpression(left, right);
+        BinaryExpressionSyntax newCondition = LogicalAndExpression(left, right);
 
         IfStatementSyntax newNode = GetNewIfStatement(ifStatement, nestedIf)
             .WithCondition(newCondition)
@@ -235,22 +235,22 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
         {
             return ifStatement.ReplaceNode(ifStatement.Statement, ifStatement2.Statement);
         }
-        }
+    }
 
-        private Task<Document> UseArgumentNullExceptionThrowIfNullAsync(
-            Document document,
-            IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken)
-        {
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition);
+    private Task<Document> CallArgumentNullExceptionThrowIfNullAsync(
+        Document document,
+        IfStatementSyntax ifStatement,
+        CancellationToken cancellationToken)
+    {
+        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition);
 
-            ExpressionStatementSyntax newStatement = ExpressionStatement(
-                SimpleMemberInvocationExpression(
-                    ParseExpression("global::System.ArgumentNullException").WithSimplifierAnnotation(),
-                    IdentifierName("ThrowIfNull"),
-                    Argument(nullCheck.Expression.WithoutTrivia())))
-                .WithTriviaFrom(ifStatement);
+        ExpressionStatementSyntax newStatement = ExpressionStatement(
+            SimpleMemberInvocationExpression(
+                ParseExpression("global::System.ArgumentNullException").WithSimplifierAnnotation(),
+                IdentifierName("ThrowIfNull"),
+                Argument(nullCheck.Expression.WithoutTrivia())))
+            .WithTriviaFrom(ifStatement);
 
-            return document.ReplaceNodeAsync(ifStatement, newStatement, cancellationToken);
+        return document.ReplaceNodeAsync(ifStatement, newStatement, cancellationToken);
     }
 }
