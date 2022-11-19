@@ -2498,15 +2498,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1255</summary>
-        public static readonly DiagnosticDescriptor SimplifyNullCheck = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.SimplifyNullCheck, 
-            title:              "Simplify null check.", 
-            messageFormat:      "Simplify null check.", 
+        public static readonly DiagnosticDescriptor SimplifyArgumentNullCheck = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
+            title:              "Simplify argument null check.", 
+            messageFormat:      "Simplify argument null check.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SimplifyNullCheck, 
+            helpLinkUri:        DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
             customTags:         Array.Empty<string>());
 
     }

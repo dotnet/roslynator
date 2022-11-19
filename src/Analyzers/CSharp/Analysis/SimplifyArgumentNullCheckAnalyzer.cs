@@ -11,7 +11,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class SimplifyNullCheckAnalyzer2 : BaseDiagnosticAnalyzer
+    public sealed class SimplifyArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.SimplifyNullCheck);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.SimplifyArgumentNullCheck);
 
                 return _supportedDiagnostics;
             }
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             if (IsFixable())
-                context.ReportDiagnostic(DiagnosticRules.SimplifyNullCheck, ifStatement.IfKeyword);
+                context.ReportDiagnostic(DiagnosticRules.SimplifyArgumentNullCheck, ifStatement.IfKeyword);
 
             bool IsFixable()
             {

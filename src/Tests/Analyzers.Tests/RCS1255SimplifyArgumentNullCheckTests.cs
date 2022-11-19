@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1255SimplifyNullCheckTests : AbstractCSharpDiagnosticVerifier<SimplifyNullCheckAnalyzer2, IfStatementCodeFixProvider>
+    public class RCS1255SimplifyArgumentNullCheckTests : AbstractCSharpDiagnosticVerifier<SimplifyArgumentNullCheckAnalyzer, IfStatementCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNullCheck;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyArgumentNullCheck;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullCheck)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
         public async Task Test_IfStatement_Block_Nameof()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullCheck)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
         public async Task Test_IfStatement_Block_Literal()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullCheck)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
         public async Task Test_IfStatement_Embedded_Nameof()
         {
             await VerifyDiagnosticAndFixAsync(@"

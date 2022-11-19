@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.ConvertIfToAssignment,
                     DiagnosticIdentifiers.ReduceIfNesting,
                     DiagnosticIdentifiers.UseExceptionFilter,
-                    DiagnosticIdentifiers.SimplifyNullCheck);
+                    DiagnosticIdentifiers.SimplifyArgumentNullCheck);
             }
         }
 
@@ -117,10 +117,10 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.SimplifyNullCheck:
+                    case DiagnosticIdentifiers.SimplifyArgumentNullCheck:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Use ArgumentNullException.ThrowIfNull",
+                                "Call ArgumentNullException.ThrowIfNull",
                                 ct =>
                                 {
                                     return UseArgumentNullExceptionThrowIfNullAsync(
