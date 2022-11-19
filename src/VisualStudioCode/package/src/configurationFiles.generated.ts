@@ -117,9 +117,6 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_suppress_unity_script_methods = true|false
 # Applicable to: rcs1213
 
-#roslynator_trailing_comma_style = include|omit
-# Applicable to: rcs1260
-
 #roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: rcs1207
 
@@ -907,10 +904,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Normalize format of enum flag value
 #dotnet_diagnostic.rcs1254.severity = suggestion
 # Options: roslynator_enum_flag_value_style
-
-# Add/remove trailing comma
-#dotnet_diagnostic.rcs1260.severity = suggestion
-# Options: roslynator_trailing_comma_style
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

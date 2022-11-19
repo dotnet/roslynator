@@ -207,7 +207,6 @@
 | RCS1252 | [Normalize usage of infinite loop](../../docs/analyzers/RCS1252.md) | None |
 | RCS1253 | [Format documentation comment summary](../../docs/analyzers/RCS1253.md) | None |
 | RCS1254 | [Normalize format of enum flag value](../../docs/analyzers/RCS1254.md) | Info |
-| RCS1260 | [Add/remove trailing comma](../../docs/analyzers/RCS1260.md) | Info |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
