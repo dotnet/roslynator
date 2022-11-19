@@ -11,7 +11,7 @@ internal static class XElementExtensions
     {
         XAttribute x = element.Attributes(name).FirstOrDefault();
 
-        if (x != null)
+        if (x is not null)
         {
             value = x.Value;
             return true;

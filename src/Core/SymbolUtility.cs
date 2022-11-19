@@ -213,7 +213,6 @@ internal static class SymbolUtility
 
                 typeSymbol = typeSymbol.BaseType;
             }
-
         }
 
         return null;

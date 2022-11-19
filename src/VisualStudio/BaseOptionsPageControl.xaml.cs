@@ -93,7 +93,7 @@ public partial class BaseOptionsPageControl : UserControl
             columnHeader.Column.HeaderTemplate = Resources["gridViewHeaderArrowDownTemplate"] as DataTemplate;
         }
 
-        if (_lastClickedHeader != null
+        if (_lastClickedHeader is not null
             && _lastClickedHeader != columnHeader)
         {
             _lastClickedHeader.Column.HeaderTemplate = null;
@@ -122,7 +122,7 @@ public partial class BaseOptionsPageControl : UserControl
 
     private void EnableDisableAllButton_Click(object sender, RoutedEventArgs e)
     {
-        if (Items.All(f => f.Enabled == null))
+        if (Items.All(f => f.Enabled is null))
         {
             SetAll(false);
         }
@@ -153,7 +153,7 @@ public partial class BaseOptionsPageControl : UserControl
 
     private void ListView_Loaded(object sender, RoutedEventArgs e)
     {
-        if (_lastClickedHeader == null)
+        if (_lastClickedHeader is null)
             Sort(checkBoxGridViewColumnHeader, DefaultSortDirection);
     }
 }

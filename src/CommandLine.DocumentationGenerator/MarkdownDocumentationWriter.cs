@@ -133,8 +133,8 @@ public class MarkdownDocumentationWriter
                     CommandArgument argument = en.Current;
 
                     WriteArgument(argument);
-
-                } while (en.MoveNext());
+                }
+                while (en.MoveNext());
             }
         }
     }
@@ -166,8 +166,8 @@ public class MarkdownDocumentationWriter
                 do
                 {
                     WriteOption(en.Current);
-
-                } while (en.MoveNext());
+                }
+                while (en.MoveNext());
             }
         }
     }
