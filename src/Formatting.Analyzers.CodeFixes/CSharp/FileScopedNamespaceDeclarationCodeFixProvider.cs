@@ -34,53 +34,43 @@ public sealed class FileScopedNamespaceDeclarationCodeFixProvider : BaseCodeFixP
 
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
+        MemberDeclarationSyntax member = fileScopedNamespace.Members[0];
+        BlankLineStyle style = BlankLineAfterFileScopedNamespaceDeclarationAnalyzer.GetCurrentStyle(fileScopedNamespace, member);
 
-        switch (diagnostic.Id)
+        if (style == BlankLineStyle.Add)
         {
-            case DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration:
+            CodeAction codeAction = CodeAction.Create(
+                CodeFixTitles.AddBlankLine,
+                ct =>
                 {
-                    MemberDeclarationSyntax member = fileScopedNamespace.Members[0];
-
-                    BlankLineStyle style = BlankLineAfterFileScopedNamespaceDeclarationAnalyzer.GetCurrentStyle(fileScopedNamespace, member);
-
-                    if (style == BlankLineStyle.Add)
+                    MemberDeclarationSyntax newMember;
+                    if (!fileScopedNamespace.SemicolonToken.TrailingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
                     {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddBlankLine,
-                            ct =>
-                            {
-                                MemberDeclarationSyntax newMember;
-                                if (!fileScopedNamespace.SemicolonToken.TrailingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
-                                {
-                                    newMember = member.PrependToLeadingTrivia(new SyntaxTrivia[] { CSharpFactory.NewLine(), CSharpFactory.NewLine() });
-                                }
-                                else
-                                {
-                                    newMember = member.PrependEndOfLineToLeadingTrivia();
-                                }
-
-                                return document.ReplaceNodeAsync(member, newMember, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else if (style == BlankLineStyle.Remove)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.RemoveBlankLine,
-                            ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, member.GetFirstToken(), ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
+                        newMember = member.PrependToLeadingTrivia(new SyntaxTrivia[] { CSharpFactory.NewLine(), CSharpFactory.NewLine() });
                     }
                     else
                     {
-                        Debug.Fail("");
+                        newMember = member.PrependEndOfLineToLeadingTrivia();
                     }
 
-                    break;
-                }
+                    return document.ReplaceNodeAsync(member, newMember, ct);
+                },
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+        else if (style == BlankLineStyle.Remove)
+        {
+            CodeAction codeAction = CodeAction.Create(
+                CodeFixTitles.RemoveBlankLine,
+                ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, member.GetFirstToken(), ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+        else
+        {
+            Debug.Fail("");
         }
     }
 }
