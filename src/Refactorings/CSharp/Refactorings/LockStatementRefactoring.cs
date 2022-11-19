@@ -14,7 +14,7 @@ internal static class LockStatementRefactoring
         {
             ExpressionSyntax expression = lockStatement.Expression;
 
-            if (expression != null)
+            if (expression is not null)
             {
                 if (expression.IsMissing || expression.IsKind(SyntaxKind.ThisExpression))
                 {

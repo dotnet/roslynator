@@ -93,7 +93,7 @@ internal static class ExpandInitializerRefactoring
     {
         var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
 
-        if (objectCreationExpression.Type != null)
+        if (objectCreationExpression.Type is not null)
         {
             ExpressionSyntax expression = initializer.Expressions[0];
 
@@ -156,7 +156,7 @@ internal static class ExpandInitializerRefactoring
 
                     IParameterSymbol parameter = methodSymbol.Parameters.SingleOrDefault(shouldThrow: false);
 
-                    if (parameter != null)
+                    if (parameter is not null)
                     {
                         TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
@@ -189,7 +189,7 @@ internal static class ExpandInitializerRefactoring
                 {
                     IParameterSymbol parameter = propertySymbol.Parameters.SingleOrDefault(shouldThrow: false);
 
-                    if (parameter != null)
+                    if (parameter is not null)
                     {
                         TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
@@ -220,7 +220,7 @@ internal static class ExpandInitializerRefactoring
 
         ObjectCreationExpressionSyntax newObjectCreationExpression = objectCreationExpression.WithInitializer(null);
 
-        if (newObjectCreationExpression.ArgumentList == null)
+        if (newObjectCreationExpression.ArgumentList is null)
         {
             TypeSyntax type = newObjectCreationExpression.Type;
 

@@ -274,7 +274,7 @@ public sealed class ExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvide
                             {
                                 SyntaxNode invocationExpression = InvocationExpression(expression);
 
-                                if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) != null)
+                                if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) is not null)
                                 {
                                     CodeAction codeAction = CodeAction.Create(
                                         "Add argument list",
@@ -315,13 +315,13 @@ public sealed class ExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvide
 
                             if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse, context.Document, root.SyntaxTree)
                                 && (expression is ConditionalExpressionSyntax conditionalExpression)
-                                && conditionalExpression.Condition != null)
+                                && conditionalExpression.Condition is not null)
                             {
                                 ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
                                 ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
 
-                                if (whenTrue != null
-                                    && whenFalse != null
+                                if (whenTrue is not null
+                                    && whenFalse is not null
                                     && semanticModel.GetTypeSymbol(whenTrue, context.CancellationToken)?.SpecialType == SpecialType.System_Void
                                     && semanticModel.GetTypeSymbol(whenFalse, context.CancellationToken)?.SpecialType == SpecialType.System_Void)
                                 {
@@ -685,9 +685,9 @@ public sealed class ExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvide
             SyntaxNode nodeToRemove,
             SyntaxNode newNode) where TRoot : SyntaxNode
         {
-            if (newNode == null)
+            if (newNode is null)
             {
-                if (nodeToRemove == null)
+                if (nodeToRemove is null)
                     return root;
 
                 if (nodeToRemove is StatementSyntax statement)

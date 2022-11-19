@@ -57,7 +57,7 @@ public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
 
         ConstructorInitializerSyntax initializer = constructor.Initializer;
 
-        if (initializer != null
+        if (initializer is not null
             && initializer.ArgumentList?.Arguments.Any() != false)
         {
             return;

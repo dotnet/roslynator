@@ -38,7 +38,7 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
     /// </summary>
     public bool Success
     {
-        get { return Parent != null; }
+        get { return Parent is not null; }
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
 
     internal static UsingDirectiveListInfo Create(NamespaceDeclarationSyntax namespaceDeclaration)
     {
-        if (namespaceDeclaration == null)
+        if (namespaceDeclaration is null)
             return default;
 
         return new UsingDirectiveListInfo(namespaceDeclaration, namespaceDeclaration.Usings);
@@ -93,7 +93,7 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
 
     internal static UsingDirectiveListInfo Create(CompilationUnitSyntax compilationUnit)
     {
-        if (compilationUnit == null)
+        if (compilationUnit is null)
             return default;
 
         return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
@@ -368,7 +368,7 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
 
     private void ThrowInvalidOperationIfNotInitialized()
     {
-        if (Parent == null)
+        if (Parent is null)
             throw new InvalidOperationException($"{nameof(UsingDirectiveListInfo)} is not initalized.");
     }
 }

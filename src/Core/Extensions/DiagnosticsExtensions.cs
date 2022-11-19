@@ -28,7 +28,7 @@ public static class DiagnosticsExtensions
         SyntaxNode node,
         params object[] messageArgs)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         ReportDiagnostic(
@@ -181,7 +181,7 @@ public static class DiagnosticsExtensions
         SyntaxNode node,
         params object[] messageArgs)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         ReportDiagnostic(
@@ -334,7 +334,7 @@ public static class DiagnosticsExtensions
         SyntaxNode node,
         params object[] messageArgs)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         ReportDiagnostic(

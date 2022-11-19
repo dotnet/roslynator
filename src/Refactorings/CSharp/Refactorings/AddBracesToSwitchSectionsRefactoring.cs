@@ -26,7 +26,7 @@ internal static class AddBracesToSwitchSectionsRefactoring
             .Sections
             .Select(section =>
             {
-                if ((sections == null || Array.IndexOf(sections, section) != -1)
+                if ((sections is null || Array.IndexOf(sections, section) != -1)
                     && AddBracesToSwitchSectionAnalysis.CanAddBraces(section))
                 {
                     return section.WithStatements(SingletonList<StatementSyntax>(Block(section.Statements)));

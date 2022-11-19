@@ -37,7 +37,7 @@ public sealed class ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvi
 
         var methodSymbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(node, context.CancellationToken);
 
-        SyntaxDebug.Assert(methodSymbol != null, node);
+        SyntaxDebug.Assert(methodSymbol is not null, node);
 
         ITypeSymbol typeSymbol = methodSymbol.ReturnType;
 
@@ -69,7 +69,7 @@ public sealed class ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvi
         {
             ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
-            if (expressionBody != null)
+            if (expressionBody is not null)
                 return (expressionBody.Expression?.Kind() == SyntaxKind.AwaitExpression, false);
 
             node = methodDeclaration.Body;
@@ -80,13 +80,13 @@ public sealed class ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvi
 
             ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
 
-            if (expressionBody != null)
+            if (expressionBody is not null)
                 return (expressionBody.Expression?.Kind() == SyntaxKind.AwaitExpression, false);
 
             node = localFunction.Body;
         }
 
-        if (node == null)
+        if (node is null)
             return (false, false);
 
         var containsReturnAwait = false;

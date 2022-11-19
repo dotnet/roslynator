@@ -86,7 +86,7 @@ public sealed class AddParenthesesWhenNecessaryAnalyzer : BaseDiagnosticAnalyzer
 
     private static bool IsNestedDiagnostic(SyntaxNode node)
     {
-        for (SyntaxNode current = node.Parent; current != null; current = current.Parent)
+        for (SyntaxNode current = node.Parent; current is not null; current = current.Parent)
         {
             if (IsFixable(current))
                 return true;
@@ -99,7 +99,7 @@ public sealed class AddParenthesesWhenNecessaryAnalyzer : BaseDiagnosticAnalyzer
     {
         SyntaxNode parent = node.Parent;
 
-        return parent != null
+        return parent is not null
             && IsFixable(node, parent.Kind());
     }
 

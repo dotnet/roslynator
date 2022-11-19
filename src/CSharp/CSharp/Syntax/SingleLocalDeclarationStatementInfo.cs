@@ -109,7 +109,7 @@ public readonly struct SingleLocalDeclarationStatementInfo
     /// </summary>
     public bool Success
     {
-        get { return Statement != null; }
+        get { return Statement is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]

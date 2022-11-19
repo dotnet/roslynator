@@ -143,11 +143,11 @@ internal abstract class IntroduceAndInitializeRefactoring
     {
         IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(constructor, cancellationToken);
 
-        if (methodSymbol != null)
+        if (methodSymbol is not null)
         {
             INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
-            if (containingType != null)
+            if (containingType is not null)
             {
                 ImmutableArray<ISymbol> members = containingType.GetMembers();
 
@@ -162,7 +162,7 @@ internal abstract class IntroduceAndInitializeRefactoring
 
     private static bool IsValid(ParameterSyntax parameter)
     {
-        if (parameter.Type == null)
+        if (parameter.Type is null)
             return false;
 
         if (parameter.Identifier.IsMissing)
@@ -179,7 +179,7 @@ internal abstract class IntroduceAndInitializeRefactoring
 
         ArgumentListSyntax argumentList = constructorDeclaration.Initializer?.ArgumentList;
 
-        if (argumentList != null)
+        if (argumentList is not null)
         {
             foreach (ArgumentSyntax argument in argumentList.Arguments)
             {

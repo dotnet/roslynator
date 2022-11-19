@@ -11,120 +11,103 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.ReduceIfNesting;
-
-internal static partial class ReduceIfNestingRefactoring
+namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 {
-    private class ReduceIfStatementRewriter : CSharpSyntaxRewriter
+    internal static partial class ReduceIfNestingRefactoring
     {
-        private readonly StatementSyntax _jumpStatement;
-        private readonly bool _recursive;
-        private readonly SyntaxLogicalInverter _logicalInverter;
-        private readonly SyntaxKind _jumpKind;
-        private StatementListInfo _statementsInfo;
-        private readonly SemanticModel _semanticModel;
-        private readonly CancellationToken _cancellationToken;
-
-        public ReduceIfStatementRewriter(
-            SyntaxKind jumpKind,
-            bool recursive,
-            SyntaxLogicalInverter logicalInverter,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private class ReduceIfStatementRewriter : CSharpSyntaxRewriter
         {
-            _jumpKind = jumpKind;
-            _recursive = recursive;
-            _logicalInverter = logicalInverter;
-            _jumpStatement = CreateJumpStatement(jumpKind);
-            _semanticModel = semanticModel;
-            _cancellationToken = cancellationToken;
-        }
+            private readonly StatementSyntax _jumpStatement;
+            private readonly bool _recursive;
+            private readonly SyntaxLogicalInverter _logicalInverter;
+            private readonly SyntaxKind _jumpKind;
+            private StatementListInfo _statementsInfo;
+            private readonly SemanticModel _semanticModel;
+            private readonly CancellationToken _cancellationToken;
 
-        private static StatementSyntax CreateJumpStatement(SyntaxKind jumpKind)
-        {
-            switch (jumpKind)
+            public ReduceIfStatementRewriter(
+                SyntaxKind jumpKind,
+                bool recursive,
+                SyntaxLogicalInverter logicalInverter,
+                SemanticModel semanticModel,
+                CancellationToken cancellationToken)
             {
-                case SyntaxKind.ReturnStatement:
-                    return ReturnStatement();
-                case SyntaxKind.NullLiteralExpression:
-                    return ReturnStatement(NullLiteralExpression());
-                case SyntaxKind.FalseLiteralExpression:
-                    return ReturnStatement(FalseLiteralExpression());
-                case SyntaxKind.TrueLiteralExpression:
-                    return ReturnStatement(TrueLiteralExpression());
-                case SyntaxKind.DefaultLiteralExpression:
-                    return ReturnStatement(DefaultLiteralExpression());
-                case SyntaxKind.BreakStatement:
-                    return BreakStatement();
-                case SyntaxKind.ContinueStatement:
-                    return ContinueStatement();
-                case SyntaxKind.ThrowStatement:
-                    return ThrowStatement();
-                case SyntaxKind.YieldBreakStatement:
-                    return YieldBreakStatement();
-                default:
-                    throw new ArgumentException(jumpKind.ToString(), nameof(jumpKind));
-            }
-        }
-
-        public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
-        {
-            if (node.Parent == _statementsInfo.Parent)
-            {
-                return base.VisitIfStatement(node);
+                _jumpKind = jumpKind;
+                _recursive = recursive;
+                _logicalInverter = logicalInverter;
+                _jumpStatement = CreateJumpStatement(jumpKind);
+                _semanticModel = semanticModel;
+                _cancellationToken = cancellationToken;
             }
 
-            return node;
-        }
-
-        public override SyntaxNode VisitSwitchSection(SwitchSectionSyntax node)
-        {
-            if (_statementsInfo.Parent == null)
+            private static StatementSyntax CreateJumpStatement(SyntaxKind jumpKind)
             {
-                return Rewrite(new StatementListInfo(node));
+                switch (jumpKind)
+                {
+                    case SyntaxKind.ReturnStatement:
+                        return ReturnStatement();
+                    case SyntaxKind.NullLiteralExpression:
+                        return ReturnStatement(NullLiteralExpression());
+                    case SyntaxKind.FalseLiteralExpression:
+                        return ReturnStatement(FalseLiteralExpression());
+                    case SyntaxKind.TrueLiteralExpression:
+                        return ReturnStatement(TrueLiteralExpression());
+                    case SyntaxKind.DefaultLiteralExpression:
+                        return ReturnStatement(DefaultLiteralExpression());
+                    case SyntaxKind.BreakStatement:
+                        return BreakStatement();
+                    case SyntaxKind.ContinueStatement:
+                        return ContinueStatement();
+                    case SyntaxKind.ThrowStatement:
+                        return ThrowStatement();
+                    case SyntaxKind.YieldBreakStatement:
+                        return YieldBreakStatement();
+                    default:
+                        throw new ArgumentException(jumpKind.ToString(), nameof(jumpKind));
+                }
             }
 
-            return node;
-        }
-
-        public override SyntaxNode VisitBlock(BlockSyntax node)
-        {
-            if (_statementsInfo.Parent == null
-                && node.IsParentKind(SyntaxKind.SwitchSection))
+            public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
             {
-                return Rewrite(new StatementListInfo(node));
+                if (node.Parent == _statementsInfo.Parent)
+                {
+                    return base.VisitIfStatement(node);
+                }
+
+                return node;
             }
 
-            _statementsInfo = new StatementListInfo(node);
-
-            IfStatementSyntax ifStatement = FindFixableIfStatement(_statementsInfo.Statements, _jumpKind);
-
-            if (ReduceIfNestingAnalysis.IsFixable(ifStatement))
-                return Rewrite(_statementsInfo, ifStatement);
-
-            return node;
-        }
-
-        private static IfStatementSyntax FindFixableIfStatement(SyntaxList<StatementSyntax> statements, SyntaxKind jumpKind)
-        {
-            int i = statements.Count - 1;
-
-            while (i >= 0
-                && statements[i].Kind() == SyntaxKind.LocalFunctionStatement)
+            public override SyntaxNode VisitSwitchSection(SwitchSectionSyntax node)
             {
-                i--;
+                if (_statementsInfo.Parent is null)
+                {
+                    return Rewrite(new StatementListInfo(node));
+                }
+
+                return node;
             }
 
-            if (i == -1)
-                return null;
+            public override SyntaxNode VisitBlock(BlockSyntax node)
+            {
+                if (_statementsInfo.Parent is null
+                    && node.IsParentKind(SyntaxKind.SwitchSection))
+                {
+                    return Rewrite(new StatementListInfo(node));
+                }
 
-            if (statements[i] is IfStatementSyntax ifStatement)
-            {
-                return ifStatement;
+                _statementsInfo = new StatementListInfo(node);
+
+                IfStatementSyntax ifStatement = FindFixableIfStatement(_statementsInfo.Statements, _jumpKind);
+
+                if (ReduceIfNestingAnalysis.IsFixable(ifStatement))
+                    return Rewrite(_statementsInfo, ifStatement);
+
+                return node;
             }
-            else if (ReduceIfNestingAnalysis.GetJumpKind(statements[i]) == jumpKind)
+
+            private static IfStatementSyntax FindFixableIfStatement(SyntaxList<StatementSyntax> statements, SyntaxKind jumpKind)
             {
-                i--;
+                int i = statements.Count - 1;
 
                 while (i >= 0
                     && statements[i].Kind() == SyntaxKind.LocalFunctionStatement)
@@ -135,63 +118,81 @@ internal static partial class ReduceIfNestingRefactoring
                 if (i == -1)
                     return null;
 
-                if (statements[i] is IfStatementSyntax ifStatement2)
+                if (statements[i] is IfStatementSyntax ifStatement)
                 {
-                    return ifStatement2;
+                    return ifStatement;
                 }
+                else if (ReduceIfNestingAnalysis.GetJumpKind(statements[i]) == jumpKind)
+                {
+                    i--;
+
+                    while (i >= 0
+                        && statements[i].Kind() == SyntaxKind.LocalFunctionStatement)
+                    {
+                        i--;
+                    }
+
+                    if (i == -1)
+                        return null;
+
+                    if (statements[i] is IfStatementSyntax ifStatement2)
+                    {
+                        return ifStatement2;
+                    }
+                }
+
+                return null;
             }
 
-            return null;
-        }
-
-        private SyntaxNode Rewrite(in StatementListInfo statementsInfo)
-        {
-            _statementsInfo = statementsInfo;
-
-            var ifStatement = (IfStatementSyntax)_statementsInfo.Statements.LastButOne();
-
-            return Rewrite(_statementsInfo, ifStatement);
-        }
-
-        private SyntaxNode Rewrite(in StatementListInfo statementsInfo, IfStatementSyntax ifStatement)
-        {
-            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
-
-            int index = statements.IndexOf(ifStatement);
-
-            ExpressionSyntax newCondition = _logicalInverter.LogicallyInvert(ifStatement.Condition, _semanticModel, _cancellationToken);
-
-            if (_recursive)
-                ifStatement = (IfStatementSyntax)VisitIfStatement(ifStatement);
-
-            var block = (BlockSyntax)ifStatement.Statement;
-
-            BlockSyntax newBlock = block.WithStatements(SingletonList(_jumpStatement));
-
-            if (!block
-                .Statements[0]
-                .GetLeadingTrivia()
-                .Any(f => f.IsEndOfLineTrivia()))
+            private SyntaxNode Rewrite(in StatementListInfo statementsInfo)
             {
-                newBlock = newBlock.WithCloseBraceToken(newBlock.CloseBraceToken.AppendToTrailingTrivia(NewLine()));
+                _statementsInfo = statementsInfo;
+
+                var ifStatement = (IfStatementSyntax)_statementsInfo.Statements.LastButOne();
+
+                return Rewrite(_statementsInfo, ifStatement);
             }
 
-            IfStatementSyntax newIfStatement = ifStatement
-                .WithCondition(newCondition)
-                .WithStatement(newBlock)
-                .WithFormatterAnnotation();
-
-            if (CSharpFacts.IsJumpStatementOrYieldBreakStatement(statements.Last().Kind())
-                && CSharpFacts.IsJumpStatementOrYieldBreakStatement(block.Statements.Last().Kind()))
+            private SyntaxNode Rewrite(in StatementListInfo statementsInfo, IfStatementSyntax ifStatement)
             {
-                statements = statements.RemoveAt(statements.Count - 1);
+                SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
+
+                int index = statements.IndexOf(ifStatement);
+
+                ExpressionSyntax newCondition = _logicalInverter.LogicallyInvert(ifStatement.Condition, _semanticModel, _cancellationToken);
+
+                if (_recursive)
+                    ifStatement = (IfStatementSyntax)VisitIfStatement(ifStatement);
+
+                var block = (BlockSyntax)ifStatement.Statement;
+
+                BlockSyntax newBlock = block.WithStatements(SingletonList(_jumpStatement));
+
+                if (!block
+                    .Statements[0]
+                    .GetLeadingTrivia()
+                    .Any(f => f.IsEndOfLineTrivia()))
+                {
+                    newBlock = newBlock.WithCloseBraceToken(newBlock.CloseBraceToken.AppendToTrailingTrivia(NewLine()));
+                }
+
+                IfStatementSyntax newIfStatement = ifStatement
+                    .WithCondition(newCondition)
+                    .WithStatement(newBlock)
+                    .WithFormatterAnnotation();
+
+                if (CSharpFacts.IsJumpStatementOrYieldBreakStatement(statements.Last().Kind())
+                    && CSharpFacts.IsJumpStatementOrYieldBreakStatement(block.Statements.Last().Kind()))
+                {
+                    statements = statements.RemoveAt(statements.Count - 1);
+                }
+
+                SyntaxList<StatementSyntax> newStatements = statements
+                    .ReplaceAt(index, newIfStatement)
+                    .InsertRange(index + 1, block.Statements.Select(f => f.WithFormatterAnnotation()));
+
+                return statementsInfo.WithStatements(newStatements).Parent;
             }
-
-            SyntaxList<StatementSyntax> newStatements = statements
-                .ReplaceAt(index, newIfStatement)
-                .InsertRange(index + 1, block.Statements.Select(f => f.WithFormatterAnnotation()));
-
-            return statementsInfo.WithStatements(newStatements).Parent;
         }
     }
 }

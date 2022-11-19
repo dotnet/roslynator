@@ -48,7 +48,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
 
         SyntaxNode nodeToFix = wrapLineNodeFinder.FindNodeToFix(root);
 
-        if (nodeToFix == null)
+        if (nodeToFix is null)
             return;
 
         CodeAction codeAction = CodeAction.Create(

@@ -203,7 +203,7 @@ internal static class UnusedSymbolUtility
                 .Value?
                 .ToString();
 
-            return value != null
+            return value is not null
                 && IsReferencedInDebuggerDisplayAttribute(value);
         }
 

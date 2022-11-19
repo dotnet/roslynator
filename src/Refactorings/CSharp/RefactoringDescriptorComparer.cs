@@ -21,10 +21,10 @@ internal abstract class RefactoringDescriptorComparer : IComparer<RefactoringDes
         if (x == y)
             return 0;
 
-        if (x == null)
+        if (x is null)
             return -1;
 
-        if (y == null)
+        if (y is null)
             return 1;
 
         if (x is RefactoringDescriptor a
@@ -41,10 +41,10 @@ internal abstract class RefactoringDescriptorComparer : IComparer<RefactoringDes
         if (x == y)
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (x is RefactoringDescriptor a
@@ -58,7 +58,7 @@ internal abstract class RefactoringDescriptorComparer : IComparer<RefactoringDes
 
     public int GetHashCode(object obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 0;
 
         if (obj is RefactoringDescriptor descriptor)
@@ -74,10 +74,10 @@ internal abstract class RefactoringDescriptorComparer : IComparer<RefactoringDes
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x.Id == null)
+            if (x.Id is null)
                 return -1;
 
-            if (y.Id == null)
+            if (y.Id is null)
                 return 1;
 
             return string.CompareOrdinal(x.Id, y.Id);
@@ -88,10 +88,10 @@ internal abstract class RefactoringDescriptorComparer : IComparer<RefactoringDes
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x.Id == null)
+            if (x.Id is null)
                 return false;
 
-            if (y.Id == null)
+            if (y.Id is null)
                 return false;
 
             return string.Equals(x.Id, y.Id, StringComparison.Ordinal);
@@ -99,7 +99,7 @@ internal abstract class RefactoringDescriptorComparer : IComparer<RefactoringDes
 
         public override int GetHashCode(RefactoringDescriptor obj)
         {
-            if (obj.Id == null)
+            if (obj.Id is null)
                 return 0;
 
             return StringComparer.Ordinal.GetHashCode(obj.Id);

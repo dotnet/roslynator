@@ -228,7 +228,7 @@ public sealed class BinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
 
             VariableDeclarationSyntax declaration = forStatement.Declaration;
 
-            if (declaration == null)
+            if (declaration is null)
                 return false;
 
             string name = identifierName.Identifier.ValueText;
@@ -325,7 +325,7 @@ public sealed class BinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
 
         ExpressionSyntax expression = nullCheck.Expression;
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         ExpressionSyntax right = binaryExpression.Right.WalkDownParentheses();

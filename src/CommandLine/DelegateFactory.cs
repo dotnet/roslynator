@@ -29,7 +29,7 @@ internal static class DelegateFactory
             parameterTypeName,
             parameterName);
 
-        if (assembly == null)
+        if (assembly is null)
         {
             result = null;
             return false;
@@ -42,7 +42,7 @@ internal static class DelegateFactory
             $"Roslynator.Runtime.{className}",
             methodName);
 
-        return result != null;
+        return result is not null;
     }
 
     public static bool TryCreateFromSourceText<TDelegate>(
@@ -53,14 +53,14 @@ internal static class DelegateFactory
     {
         Assembly assembly = AssemblyFactory.FromSourceText(sourceText);
 
-        if (assembly == null)
+        if (assembly is null)
         {
             result = null;
             return false;
         }
 
         result = CreateDelegateAndCatchIfThrows<TDelegate>(assembly, returnType, new Type[] { parameterType });
-        return result != null;
+        return result is not null;
     }
 
     public static bool TryCreateFromCodeFile<TDelegate>(
@@ -77,14 +77,14 @@ internal static class DelegateFactory
 
         Assembly assembly = AssemblyFactory.FromSourceText(content);
 
-        if (assembly == null)
+        if (assembly is null)
         {
             result = null;
             return false;
         }
 
         result = CreateDelegateAndCatchIfThrows<TDelegate>(assembly, returnType, new Type[] { parameterType });
-        return result != null;
+        return result is not null;
     }
 
     public static bool TryCreateFromAssembly<TDelegate>(
@@ -104,7 +104,7 @@ internal static class DelegateFactory
     {
         result = default;
 
-        if (path == null)
+        if (path is null)
             return false;
 
         int index = path.LastIndexOf(',');
@@ -153,7 +153,7 @@ internal static class DelegateFactory
 
         result = CreateDelegateAndCatchIfThrows<TDelegate>(assembly, returnType, parameters, typeName, methodName);
 
-        return result != null;
+        return result is not null;
     }
 
     private static TDelegate CreateDelegateAndCatchIfThrows<TDelegate>(
@@ -189,21 +189,21 @@ internal static class DelegateFactory
         Type type;
         MethodInfo method;
 
-        if (typeName != null)
+        if (typeName is not null)
         {
             type = assembly.GetType(typeName);
 
-            if (type == null)
+            if (type is null)
             {
                 WriteError($"Cannot find type '{typeName}' in assembly '{assembly.FullName}'");
                 return null;
             }
 
-            if (methodName != null)
+            if (methodName is not null)
             {
                 method = type.GetMethod(methodName, parameters);
 
-                if (method == null)
+                if (method is null)
                 {
                     WriteError($"Cannot find method '{methodName}' in type '{typeName}'");
                     return null;
@@ -213,7 +213,7 @@ internal static class DelegateFactory
             {
                 method = FindMethod(type, returnType, parameters);
 
-                if (method == null)
+                if (method is null)
                 {
                     WriteError("Cannot find public method with signature "
                         + $"'{returnType.Name} M({string.Join(", ", parameters.Select(f => f.Name))})'"
@@ -229,7 +229,7 @@ internal static class DelegateFactory
         {
             method = FindMethod(assembly, returnType, parameters, methodName);
 
-            if (method == null)
+            if (method is null)
             {
                 WriteError("Cannot find public method with signature "
                     + $"'{returnType.Name} {methodName ?? "M"}({string.Join(", ", parameters.Select(f => f.Name))})'");
@@ -250,7 +250,7 @@ internal static class DelegateFactory
         {
             object typeInstance = Activator.CreateInstance(type!);
 
-            if (typeInstance == null)
+            if (typeInstance is null)
             {
                 WriteError($"Cannot create instance of '{typeName}'");
                 return null;
@@ -268,11 +268,11 @@ internal static class DelegateFactory
     {
         foreach (Type type in assembly.GetTypes())
         {
-            MethodInfo method = (methodName != null)
+            MethodInfo method = (methodName is not null)
                 ? type.GetMethod(methodName, parameters)
                 : FindMethod(type, returnType, parameters);
 
-            if (method != null)
+            if (method is not null)
                 return method;
         }
 

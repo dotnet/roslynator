@@ -20,7 +20,7 @@ internal abstract class ConsoleDialogDefinition
     {
         get
         {
-            if (_default == null)
+            if (_default is null)
                 Interlocked.CompareExchange(ref _default, CreateDefaultDefinition(), null);
 
             return _default;

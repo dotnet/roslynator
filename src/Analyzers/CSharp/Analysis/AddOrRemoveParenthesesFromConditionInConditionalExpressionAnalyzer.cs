@@ -43,7 +43,7 @@ public sealed class AddOrRemoveParenthesesFromConditionInConditionalExpressionAn
 
         ExpressionSyntax condition = conditionalExpression.Condition;
 
-        if (condition == null)
+        if (condition is null)
             return;
 
         ConditionalExpressionParenthesesStyle style = context.GetConditionalExpressionParenthesesStyle();

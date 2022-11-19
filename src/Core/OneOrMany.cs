@@ -15,7 +15,7 @@ internal static class OneOrMany
 
     public static OneOrMany<T> Create<T>(IEnumerable<T> values)
     {
-        if (values == null)
+        if (values is null)
             throw new ArgumentNullException(nameof(values));
 
         return Create(values.ToImmutableArray());

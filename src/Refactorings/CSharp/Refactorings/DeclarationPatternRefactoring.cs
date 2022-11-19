@@ -42,7 +42,7 @@ internal static class DeclarationPatternRefactoring
                             singleVariableDesignation.SpanStart,
                             cancellationToken: context.CancellationToken);
 
-                        if (newName != null)
+                        if (newName is not null)
                         {
                             context.RegisterRefactoring(
                                 $"Rename '{oldName}' to '{newName}'",

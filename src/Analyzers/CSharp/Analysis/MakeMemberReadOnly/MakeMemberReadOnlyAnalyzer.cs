@@ -67,7 +67,7 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
         }
         finally
         {
-            if (walker != null)
+            if (walker is not null)
                 MakeMemberReadOnlyWalker.Free(walker);
         }
     }
@@ -98,7 +98,7 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
                         AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
 
                         if (setter?.IsKind(SyntaxKind.InitAccessorDeclaration) == false
-                            && setter.BodyOrExpressionBody() == null
+                            && setter.BodyOrExpressionBody() is null
                             && !setter.AttributeLists.Any()
                             && !setter.SpanContainsDirectives())
                         {

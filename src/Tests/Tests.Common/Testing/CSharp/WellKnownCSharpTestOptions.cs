@@ -20,7 +20,7 @@ public static class WellKnownCSharpTestOptions
     {
         get
         {
-            if (_default_CSharp5 == null)
+            if (_default_CSharp5 is null)
                 Interlocked.CompareExchange(ref _default_CSharp5, Create(), null);
 
             return _default_CSharp5;
@@ -33,7 +33,7 @@ public static class WellKnownCSharpTestOptions
     {
         get
         {
-            if (_default_CSharp6 == null)
+            if (_default_CSharp6 is null)
                 Interlocked.CompareExchange(ref _default_CSharp6, Create(), null);
 
             return _default_CSharp6;
@@ -46,7 +46,7 @@ public static class WellKnownCSharpTestOptions
     {
         get
         {
-            if (_default_CSharp7 == null)
+            if (_default_CSharp7 is null)
                 Interlocked.CompareExchange(ref _default_CSharp7, Create(), null);
 
             return _default_CSharp7;
@@ -59,7 +59,7 @@ public static class WellKnownCSharpTestOptions
     {
         get
         {
-            if (_default_CSharp7_3 == null)
+            if (_default_CSharp7_3 is null)
                 Interlocked.CompareExchange(ref _default_CSharp7_3, Create(), null);
 
             return _default_CSharp7_3;
@@ -72,7 +72,7 @@ public static class WellKnownCSharpTestOptions
     {
         get
         {
-            if (_default_CSharp8 == null)
+            if (_default_CSharp8 is null)
                 Interlocked.CompareExchange(ref _default_CSharp8, Create(), null);
 
             return _default_CSharp8;
@@ -85,7 +85,7 @@ public static class WellKnownCSharpTestOptions
     {
         get
         {
-            if (_default_CSharp9 == null)
+            if (_default_CSharp9 is null)
                 Interlocked.CompareExchange(ref _default_CSharp9, Create(), null);
 
             return _default_CSharp9;
@@ -98,7 +98,7 @@ public static class WellKnownCSharpTestOptions
     {
         get
         {
-            if (_default_NullableReferenceTypes == null)
+            if (_default_NullableReferenceTypes is null)
                 Interlocked.CompareExchange(ref _default_NullableReferenceTypes, Create(), null);
 
             return _default_NullableReferenceTypes;

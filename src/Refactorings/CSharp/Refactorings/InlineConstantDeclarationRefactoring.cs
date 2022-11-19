@@ -53,7 +53,7 @@ internal static class InlineConstantDeclarationRefactoring
 
             SyntaxNode nodeToRemove = newRoot.GetAnnotatedNodes(_removeAnnotation).FirstOrDefault();
 
-            if (nodeToRemove != null)
+            if (nodeToRemove is not null)
                 newRoot = newRoot.RemoveNode(nodeToRemove);
 
             newDocuments.Add(new KeyValuePair<DocumentId, SyntaxNode>(grouping.Key.Id, newRoot));

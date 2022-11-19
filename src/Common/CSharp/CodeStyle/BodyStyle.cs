@@ -16,7 +16,7 @@ internal readonly struct BodyStyle
         UseBlockWhenExpressionIsMultiLine = useBlockWhenExpressionIsMultiLine;
     }
 
-    public bool IsDefault => _option == BodyStyleOption.None && UseBlockWhenDeclarationIsMultiLine == null && UseBlockWhenExpressionIsMultiLine == null;
+    public bool IsDefault => _option == BodyStyleOption.None && UseBlockWhenDeclarationIsMultiLine is null && UseBlockWhenExpressionIsMultiLine is null;
 
     public bool UseExpression => _option == BodyStyleOption.Expression;
 

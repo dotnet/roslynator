@@ -47,10 +47,10 @@ internal static class ConditionalExpressionRefactoring
                     semanticModel,
                     context.CancellationToken);
 
-                if (codeAction != null)
+                if (codeAction is not null)
                     context.RegisterRefactoring(codeAction);
 
-                if (recursiveCodeAction != null)
+                if (recursiveCodeAction is not null)
                     context.RegisterRefactoring(recursiveCodeAction);
             }
         }

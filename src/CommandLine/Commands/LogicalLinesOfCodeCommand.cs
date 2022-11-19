@@ -35,7 +35,7 @@ internal class LogicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCod
 
             ICodeMetricsService service = MefWorkspaceServices.Default.GetService<ICodeMetricsService>(project.Language);
 
-            if (service != null)
+            if (service is not null)
             {
                 codeMetrics = await CountLogicalLinesAsync(project, service, codeMetricsOptions, cancellationToken);
             }

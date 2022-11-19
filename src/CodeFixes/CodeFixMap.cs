@@ -55,7 +55,7 @@ internal static class CodeFixMap
     {
         get
         {
-            if (_codeFixDescriptorsById == null)
+            if (_codeFixDescriptorsById is null)
                 Interlocked.CompareExchange(ref _codeFixDescriptorsById, LoadCodeFixDescriptorsById(), null);
 
             return _codeFixDescriptorsById;
@@ -76,7 +76,7 @@ internal static class CodeFixMap
     {
         get
         {
-            if (_codeFixDescriptorsByCompilerDiagnosticId == null)
+            if (_codeFixDescriptorsByCompilerDiagnosticId is null)
                 Interlocked.CompareExchange(ref _codeFixDescriptorsByCompilerDiagnosticId, LoadCodeFixDescriptorsByCompilerDiagnosticId(), null);
 
             return _codeFixDescriptorsByCompilerDiagnosticId;
@@ -99,7 +99,7 @@ internal static class CodeFixMap
     {
         get
         {
-            if (_compilerDiagnosticsById == null)
+            if (_compilerDiagnosticsById is null)
                 Interlocked.CompareExchange(ref _compilerDiagnosticsById, LoadCompilerDiagnosticsById(), null);
 
             return _compilerDiagnosticsById;

@@ -4,129 +4,130 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator;
-
-internal sealed class NamedTypeSymbolDefinitionComparer : IComparer<INamedTypeSymbol>
+namespace Roslynator
 {
-    internal NamedTypeSymbolDefinitionComparer(SymbolDefinitionComparer symbolComparer)
+    internal sealed class NamedTypeSymbolDefinitionComparer : IComparer<INamedTypeSymbol>
     {
-        SymbolComparer = symbolComparer;
-    }
-
-    public SymbolDefinitionComparer SymbolComparer { get; }
-
-    public int Compare(INamedTypeSymbol x, INamedTypeSymbol y)
-    {
-        if (object.ReferenceEquals(x, y))
-            return 0;
-
-        if (x == null)
-            return -1;
-
-        if (y == null)
-            return 1;
-
-        int diff;
-
-        if ((SymbolComparer.Options & SymbolDefinitionSortOptions.OmitContainingNamespace) == 0)
+        internal NamedTypeSymbolDefinitionComparer(SymbolDefinitionComparer symbolComparer)
         {
-            diff = SymbolComparer.CompareContainingNamespace(x, y);
-
-            if (diff != 0)
-                return diff;
+            SymbolComparer = symbolComparer;
         }
 
-        diff = GetRank(x).CompareTo(GetRank(y));
+        public SymbolDefinitionComparer SymbolComparer { get; }
 
-        if (diff != 0)
-            return diff;
-
-        int count1 = CountContainingTypes(x);
-        int count2 = CountContainingTypes(y);
-
-        while (true)
+        public int Compare(INamedTypeSymbol x, INamedTypeSymbol y)
         {
-            INamedTypeSymbol containingType1 = GetContainingType(x, count1);
-            INamedTypeSymbol containingType2 = GetContainingType(y, count2);
+            if (object.ReferenceEquals(x, y))
+                return 0;
 
-            diff = SymbolDefinitionComparer.CompareName(containingType1, containingType2);
+            if (x is null)
+                return -1;
 
-            if (diff != 0)
-                return diff;
-
-            diff = containingType1.TypeParameters.Length.CompareTo(containingType2.TypeParameters.Length);
-
-            if (diff != 0)
-                return diff;
-
-            if (count1 == 0)
-            {
-                if (count2 == 0)
-                {
-                    return SymbolComparer.CompareContainingNamespace(x, y);
-                }
-                else
-                {
-                    return -1;
-                }
-            }
-
-            if (count2 == 0)
+            if (y is null)
                 return 1;
 
-            count1--;
-            count2--;
-        }
+            int diff;
 
-        static int CountContainingTypes(INamedTypeSymbol namedType)
-        {
-            int count = 0;
+            if ((SymbolComparer.Options & SymbolDefinitionSortOptions.OmitContainingNamespace) == 0)
+            {
+                diff = SymbolComparer.CompareContainingNamespace(x, y);
+
+                if (diff != 0)
+                    return diff;
+            }
+
+            diff = GetRank(x).CompareTo(GetRank(y));
+
+            if (diff != 0)
+                return diff;
+
+            int count1 = CountContainingTypes(x);
+            int count2 = CountContainingTypes(y);
 
             while (true)
             {
-                namedType = namedType.ContainingType;
+                INamedTypeSymbol containingType1 = GetContainingType(x, count1);
+                INamedTypeSymbol containingType2 = GetContainingType(y, count2);
 
-                if (namedType == null)
-                    break;
+                diff = SymbolDefinitionComparer.CompareName(containingType1, containingType2);
 
-                count++;
-            }
+                if (diff != 0)
+                    return diff;
 
-            return count;
-        }
+                diff = containingType1.TypeParameters.Length.CompareTo(containingType2.TypeParameters.Length);
 
-        static INamedTypeSymbol GetContainingType(INamedTypeSymbol namedType, int count)
-        {
-            while (count > 0)
-            {
-                namedType = namedType.ContainingType;
-                count--;
-            }
+                if (diff != 0)
+                    return diff;
 
-            return namedType;
-        }
+                if (count1 == 0)
+                {
+                    if (count2 == 0)
+                    {
+                        return SymbolComparer.CompareContainingNamespace(x, y);
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
 
-        static int GetRank(INamedTypeSymbol symbol)
-        {
-            switch (symbol.TypeKind)
-            {
-                case TypeKind.Module:
+                if (count2 == 0)
                     return 1;
-                case TypeKind.Class:
-                    return 2;
-                case TypeKind.Struct:
-                    return 3;
-                case TypeKind.Interface:
-                    return 4;
-                case TypeKind.Enum:
-                    return 5;
-                case TypeKind.Delegate:
-                    return 6;
+
+                count1--;
+                count2--;
             }
 
-            Debug.Fail(symbol.ToDisplayString(SymbolDisplayFormats.Test));
+            static int CountContainingTypes(INamedTypeSymbol namedType)
+            {
+                int count = 0;
 
-            return 0;
+                while (true)
+                {
+                    namedType = namedType.ContainingType;
+
+                    if (namedType is null)
+                        break;
+
+                    count++;
+                }
+
+                return count;
+            }
+
+            static INamedTypeSymbol GetContainingType(INamedTypeSymbol namedType, int count)
+            {
+                while (count > 0)
+                {
+                    namedType = namedType.ContainingType;
+                    count--;
+                }
+
+                return namedType;
+            }
+
+            static int GetRank(INamedTypeSymbol symbol)
+            {
+                switch (symbol.TypeKind)
+                {
+                    case TypeKind.Module:
+                        return 1;
+                    case TypeKind.Class:
+                        return 2;
+                    case TypeKind.Struct:
+                        return 3;
+                    case TypeKind.Interface:
+                        return 4;
+                    case TypeKind.Enum:
+                        return 5;
+                    case TypeKind.Delegate:
+                        return 6;
+                }
+
+                Debug.Fail(symbol.ToDisplayString(SymbolDisplayFormats.Test));
+
+                return 0;
+            }
         }
     }
 }

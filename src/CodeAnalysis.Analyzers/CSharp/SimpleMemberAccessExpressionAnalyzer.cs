@@ -61,7 +61,7 @@ public sealed class SimpleMemberAccessExpressionAnalyzer : BaseDiagnosticAnalyze
 
                                 ISymbol symbol = context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
 
-                                if (symbol == null)
+                                if (symbol is null)
                                     break;
 
                                 if (!symbol.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_Text_TextSpan))
@@ -79,7 +79,7 @@ public sealed class SimpleMemberAccessExpressionAnalyzer : BaseDiagnosticAnalyze
 
                                 ISymbol symbol2 = context.SemanticModel.GetSymbol(expression, context.CancellationToken);
 
-                                if (symbol2 == null)
+                                if (symbol2 is null)
                                     break;
 
                                 if (!symbol2.ContainingType.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))

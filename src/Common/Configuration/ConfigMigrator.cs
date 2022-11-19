@@ -47,13 +47,13 @@ internal static class ConfigMigrator
                 writer.WriteGlobalDirective();
                 writer.WriteLine();
 
-                if (config.MaxLineLength != null)
+                if (config.MaxLineLength is not null)
                     writer.WriteEntry(ConfigOptionKeys.MaxLineLength, config.MaxLineLength.ToString());
 
-                if (config.PrefixFieldIdentifierWithUnderscore != null)
+                if (config.PrefixFieldIdentifierWithUnderscore is not null)
                     writer.WriteEntry(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, config.PrefixFieldIdentifierWithUnderscore.Value);
 
-                writer.WriteLineIf(config.MaxLineLength != null || config.PrefixFieldIdentifierWithUnderscore != null);
+                writer.WriteLineIf(config.MaxLineLength is not null || config.PrefixFieldIdentifierWithUnderscore is not null);
 
                 writer.WriteRefactorings(config.Refactorings.OrderBy(f => f.Key));
                 writer.WriteLineIf(config.Refactorings.Count > 0);
@@ -79,9 +79,9 @@ internal static class ConfigMigrator
                 {
                 }
 
-                if (ruleSet != null)
+                if (ruleSet is not null)
                 {
-                    if (writer == null)
+                    if (writer is null)
                     {
                         writer = new EditorConfigWriter(new StringWriter());
 
@@ -105,11 +105,11 @@ internal static class ConfigMigrator
                         {
                             (string key, string value) = MapRuleSetOptionToEditorConfigOption(kvp);
 
-                            return (key != null)
+                            return (key is not null)
                                 ? new KeyValuePair<string, string>(key, value)
                                 : default;
                         })
-                        .Where(f => f.Key != null)
+                        .Where(f => f.Key is not null)
                         .OrderBy(f => f.Key))
                     {
                         writer.WriteEntry(kvp);
@@ -126,7 +126,7 @@ internal static class ConfigMigrator
                 }
             }
 
-            if (writer != null)
+            if (writer is not null)
             {
                 File.WriteAllText(editorConfigPath, writer.ToString());
 

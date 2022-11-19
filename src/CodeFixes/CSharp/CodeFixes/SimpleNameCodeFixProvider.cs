@@ -77,7 +77,7 @@ public sealed class SimpleNameCodeFixProvider : CompilerDiagnosticCodeFixProvide
             {
                 ExpressionSyntax expression = arrayCreation.Initializer?.Expressions.FirstOrDefault();
 
-                if (expression != null)
+                if (expression is not null)
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -104,7 +104,7 @@ public sealed class SimpleNameCodeFixProvider : CompilerDiagnosticCodeFixProvide
             {
                 ExpressionSyntax expression = GetReturnExpression(simpleName);
 
-                if (expression != null)
+                if (expression is not null)
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -124,7 +124,7 @@ public sealed class SimpleNameCodeFixProvider : CompilerDiagnosticCodeFixProvide
                     {
                         ExpressionSyntax expression = methodDeclaration.ExpressionBody?.Expression;
 
-                        if (expression != null)
+                        if (expression is not null)
                             return expression;
 
                         StatementSyntax statement = methodDeclaration.Body?.SingleNonBlockStatementOrDefault();
@@ -140,7 +140,7 @@ public sealed class SimpleNameCodeFixProvider : CompilerDiagnosticCodeFixProvide
                     {
                         ExpressionSyntax expression = localFunction.ExpressionBody?.Expression;
 
-                        if (expression != null)
+                        if (expression is not null)
                             return expression;
 
                         StatementSyntax statement = localFunction.Body?.SingleNonBlockStatementOrDefault();

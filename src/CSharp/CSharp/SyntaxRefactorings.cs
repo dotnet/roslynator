@@ -33,10 +33,10 @@ internal static class SyntaxRefactorings
         bool keepDocumentationCommentOnTop,
         params AttributeListSyntax[] attributeLists) where T : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        if (attributeLists == null)
+        if (attributeLists is null)
             throw new ArgumentNullException(nameof(attributeLists));
 
         switch (node.Kind())
@@ -155,7 +155,7 @@ internal static class SyntaxRefactorings
 
     internal static MemberDeclarationSyntax RemoveSingleLineDocumentationComment(MemberDeclarationSyntax declaration)
     {
-        if (declaration == null)
+        if (declaration is null)
             throw new ArgumentNullException(nameof(declaration));
 
         SyntaxTriviaList leadingTrivia = declaration.GetLeadingTrivia();
@@ -187,7 +187,7 @@ internal static class SyntaxRefactorings
 
     internal static TNode RemoveSingleLineDocumentationComment<TNode>(TNode node, DocumentationCommentTriviaSyntax documentationComment) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         if (!documentationComment.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
@@ -217,7 +217,7 @@ internal static class SyntaxRefactorings
 
     public static TNode RemoveComments<TNode>(TNode node, CommentFilter comments) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return RemoveComments(node, node.FullSpan, comments);
@@ -225,7 +225,7 @@ internal static class SyntaxRefactorings
 
     public static TNode RemoveComments<TNode>(TNode node, TextSpan span, CommentFilter comments) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         List<SyntaxTrivia> commentsToRemove = null;
@@ -304,7 +304,7 @@ internal static class SyntaxRefactorings
             }
         }
 
-        return (commentsToRemove != null)
+        return (commentsToRemove is not null)
             ? node.ReplaceTrivia(commentsToRemove, (_, __) => EmptyWhitespace())
             : node;
 
@@ -352,7 +352,7 @@ internal static class SyntaxRefactorings
 
     public static TNode RemoveTrivia<TNode>(TNode node, TextSpan? span = null) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return (TNode)TriviaRemover.GetInstance(span).Visit(node);
@@ -360,7 +360,7 @@ internal static class SyntaxRefactorings
 
     public static TNode RemoveWhitespace<TNode>(TNode node, TextSpan? span = null) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return (TNode)WhitespaceRemover.GetInstance(span).Visit(node);
@@ -368,10 +368,10 @@ internal static class SyntaxRefactorings
 
     public static ClassDeclarationSyntax RemoveMember(ClassDeclarationSyntax classDeclaration, MemberDeclarationSyntax member)
     {
-        if (classDeclaration == null)
+        if (classDeclaration is null)
             throw new ArgumentNullException(nameof(classDeclaration));
 
-        if (member == null)
+        if (member is null)
             throw new ArgumentNullException(nameof(member));
 
         int index = classDeclaration.Members.IndexOf(member);
@@ -385,10 +385,10 @@ internal static class SyntaxRefactorings
 
     public static CompilationUnitSyntax RemoveMember(CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax member)
     {
-        if (compilationUnit == null)
+        if (compilationUnit is null)
             throw new ArgumentNullException(nameof(compilationUnit));
 
-        if (member == null)
+        if (member is null)
             throw new ArgumentNullException(nameof(member));
 
         int index = compilationUnit.Members.IndexOf(member);
@@ -402,10 +402,10 @@ internal static class SyntaxRefactorings
 
     public static InterfaceDeclarationSyntax RemoveMember(InterfaceDeclarationSyntax interfaceDeclaration, MemberDeclarationSyntax member)
     {
-        if (interfaceDeclaration == null)
+        if (interfaceDeclaration is null)
             throw new ArgumentNullException(nameof(interfaceDeclaration));
 
-        if (member == null)
+        if (member is null)
             throw new ArgumentNullException(nameof(member));
 
         int index = interfaceDeclaration.Members.IndexOf(member);
@@ -419,10 +419,10 @@ internal static class SyntaxRefactorings
 
     public static BaseNamespaceDeclarationSyntax RemoveMember(BaseNamespaceDeclarationSyntax namespaceDeclaration, MemberDeclarationSyntax member)
     {
-        if (namespaceDeclaration == null)
+        if (namespaceDeclaration is null)
             throw new ArgumentNullException(nameof(namespaceDeclaration));
 
-        if (member == null)
+        if (member is null)
             throw new ArgumentNullException(nameof(member));
 
         int index = namespaceDeclaration.Members.IndexOf(member);
@@ -443,10 +443,10 @@ internal static class SyntaxRefactorings
 
     public static StructDeclarationSyntax RemoveMember(StructDeclarationSyntax structDeclaration, MemberDeclarationSyntax member)
     {
-        if (structDeclaration == null)
+        if (structDeclaration is null)
             throw new ArgumentNullException(nameof(structDeclaration));
 
-        if (member == null)
+        if (member is null)
             throw new ArgumentNullException(nameof(member));
 
         int index = structDeclaration.Members.IndexOf(member);
@@ -460,10 +460,10 @@ internal static class SyntaxRefactorings
 
     public static RecordDeclarationSyntax RemoveMember(RecordDeclarationSyntax recordDeclaration, MemberDeclarationSyntax member)
     {
-        if (recordDeclaration == null)
+        if (recordDeclaration is null)
             throw new ArgumentNullException(nameof(recordDeclaration));
 
-        if (member == null)
+        if (member is null)
             throw new ArgumentNullException(nameof(member));
 
         int index = recordDeclaration.Members.IndexOf(member);
@@ -477,10 +477,10 @@ internal static class SyntaxRefactorings
 
     public static TypeDeclarationSyntax RemoveMember(TypeDeclarationSyntax typeDeclaration, MemberDeclarationSyntax member)
     {
-        if (typeDeclaration == null)
+        if (typeDeclaration is null)
             throw new ArgumentNullException(nameof(typeDeclaration));
 
-        if (member == null)
+        if (member is null)
             throw new ArgumentNullException(nameof(member));
 
         int index = typeDeclaration.Members.IndexOf(member);
@@ -571,7 +571,7 @@ internal static class SyntaxRefactorings
     {
         ExpressionSyntax expression = invocationExpression.Expression;
 
-        if (expression != null)
+        if (expression is not null)
         {
             SyntaxKind kind = expression.Kind();
 
@@ -580,7 +580,7 @@ internal static class SyntaxRefactorings
                 var memberAccess = (MemberAccessExpressionSyntax)expression;
                 SimpleNameSyntax simpleName = memberAccess.Name;
 
-                if (simpleName != null)
+                if (simpleName is not null)
                 {
                     SimpleNameSyntax newSimpleName = ChangeName(simpleName);
 
@@ -592,7 +592,7 @@ internal static class SyntaxRefactorings
                 var memberBinding = (MemberBindingExpressionSyntax)expression;
                 SimpleNameSyntax simpleName = memberBinding.Name;
 
-                if (simpleName != null)
+                if (simpleName is not null)
                 {
                     SimpleNameSyntax newSimpleName = ChangeName(simpleName);
 
@@ -693,7 +693,7 @@ internal static class SyntaxRefactorings
 
                     ExpressionSyntax expression = expressionStatement.Expression;
 
-                    if (expression == null
+                    if (expression is null
                         || !CSharpFacts.IsIncrementOrDecrementExpression(expression.Kind()))
                     {
                         break;

@@ -52,7 +52,7 @@ public readonly struct SimpleAssignmentExpressionInfo
     /// </summary>
     public bool Success
     {
-        get { return AssignmentExpression != null; }
+        get { return AssignmentExpression is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -79,12 +79,12 @@ public readonly struct SimpleAssignmentExpressionInfo
 
         ExpressionSyntax left = WalkAndCheck(assignmentExpression.Left, walkDownParentheses, allowMissing);
 
-        if (left == null)
+        if (left is null)
             return default;
 
         ExpressionSyntax right = WalkAndCheck(assignmentExpression.Right, walkDownParentheses, allowMissing);
 
-        if (right == null)
+        if (right is null)
             return default;
 
         return new SimpleAssignmentExpressionInfo(assignmentExpression, left, right);

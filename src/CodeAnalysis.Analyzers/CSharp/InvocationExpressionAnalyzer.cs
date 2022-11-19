@@ -190,7 +190,7 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
 
         void UseReturnValue()
         {
-            if (symbol == null)
+            if (symbol is null)
                 symbol = context.SemanticModel.GetSymbol(invocationExpression, context.CancellationToken);
 
             if (symbol?.Kind != SymbolKind.Method)

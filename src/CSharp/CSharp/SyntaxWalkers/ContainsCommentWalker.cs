@@ -61,7 +61,7 @@ internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
     {
         ContainsCommentWalker walker = _cachedInstance;
 
-        if (walker != null)
+        if (walker is not null)
         {
             _cachedInstance = null;
             walker.Result = false;

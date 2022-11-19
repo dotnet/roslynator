@@ -55,7 +55,7 @@ internal readonly struct IsKindExpressionInfo
     {
         ExpressionSyntax expression = WalkAndCheck(node, walkDownParentheses, allowMissing);
 
-        if (expression == null)
+        if (expression is null)
             return default;
 
         SyntaxKind kind = expression.Kind();
@@ -69,12 +69,12 @@ internal readonly struct IsKindExpressionInfo
 
                     ExpressionSyntax left = WalkAndCheck(binaryExpression.Left, walkDownParentheses, allowMissing);
 
-                    if (left == null)
+                    if (left is null)
                         break;
 
                     ExpressionSyntax right = WalkAndCheck(binaryExpression.Right, walkDownParentheses, allowMissing);
 
-                    if (right == null)
+                    if (right is null)
                         break;
 
                     IsKindExpressionInfo info = Create(binaryExpression, kind, left, right, semanticModel, cancellationToken);

@@ -35,7 +35,7 @@ public sealed class SymbolDocumentationProvider
         _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
         _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
 
-        if (additionalXmlDocumentationPaths != null)
+        if (additionalXmlDocumentationPaths is not null)
             _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
     }
 
@@ -52,7 +52,7 @@ public sealed class SymbolDocumentationProvider
         {
             ISymbol symbol = DocumentationCommentId.GetFirstSymbolForDeclarationId(id, compilation);
 
-            if (symbol != null)
+            if (symbol is not null)
                 return symbol;
         }
 
@@ -68,7 +68,7 @@ public sealed class SymbolDocumentationProvider
         {
             ISymbol symbol = DocumentationCommentId.GetFirstSymbolForReferenceId(id, compilation);
 
-            if (symbol != null)
+            if (symbol is not null)
                 return symbol;
         }
 
@@ -78,7 +78,7 @@ public sealed class SymbolDocumentationProvider
     public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string preferredCultureName = null)
     {
         if (_symbolData.TryGetValue(symbol, out SymbolDocumentationData data)
-            && data.XmlDocumentation != null)
+            && data.XmlDocumentation is not null)
         {
             if (object.ReferenceEquals(data.XmlDocumentation, SymbolXmlDocumentation.Default))
                 return null;
@@ -88,11 +88,11 @@ public sealed class SymbolDocumentationProvider
 
         IAssemblySymbol assembly = symbol.ContainingAssembly;
 
-        if (assembly != null)
+        if (assembly is not null)
         {
             SymbolXmlDocumentation xmlDocumentation = GetXmlDocumentation(assembly, preferredCultureName)?.GetXmlDocumentation(symbol);
 
-            if (xmlDocumentation != null)
+            if (xmlDocumentation is not null)
             {
                 _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
                 return xmlDocumentation;
@@ -100,7 +100,7 @@ public sealed class SymbolDocumentationProvider
 
             CultureInfo preferredCulture = null;
 
-            if (preferredCultureName != null
+            if (preferredCultureName is not null
                 && !_cultures.TryGetValue(preferredCultureName, out preferredCulture))
             {
                 preferredCulture = ImmutableInterlocked.GetOrAdd(ref _cultures, preferredCultureName, f => new CultureInfo(f));
@@ -139,7 +139,7 @@ public sealed class SymbolDocumentationProvider
             {
                 SymbolXmlDocumentation documentation = xmlDocumentation.GetXmlDocumentation(symbol, commentId);
 
-                if (documentation != null)
+                if (documentation is not null)
                 {
                     _symbolData[symbol] = data.WithXmlDocumentation(documentation);
                     return documentation;
@@ -161,7 +161,7 @@ public sealed class SymbolDocumentationProvider
             {
                 string path = portableExecutableReference.FilePath;
 
-                if (preferredCultureName != null)
+                if (preferredCultureName is not null)
                 {
                     path = Path.GetDirectoryName(path);
 
@@ -178,7 +178,7 @@ public sealed class SymbolDocumentationProvider
                     }
                 }
 
-                if (xmlDocumentation == null)
+                if (xmlDocumentation is null)
                 {
                     path = Path.ChangeExtension(path, "xml");
 
@@ -195,7 +195,7 @@ public sealed class SymbolDocumentationProvider
 
     private MetadataReference FindMetadataReference(IAssemblySymbol assembly)
     {
-        if (_assemblyToReferenceMap == null)
+        if (_assemblyToReferenceMap is null)
             Interlocked.CompareExchange(ref _assemblyToReferenceMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f.GetMetadataReference(f.Assembly)), null);
 
         if (_assemblyToReferenceMap.TryGetValue(assembly, out MetadataReference metadataReference))

@@ -36,7 +36,7 @@ public sealed class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
         var recordDeclaration = (RecordDeclarationSyntax)context.Node;
 
         if (!recordDeclaration.Members.Any()
-            && recordDeclaration.ParameterList != null)
+            && recordDeclaration.ParameterList is not null)
         {
             SyntaxToken openBrace = recordDeclaration.OpenBraceToken;
 

@@ -149,18 +149,18 @@ internal static class ChangeAccessibilityAnalysis
     {
         ISymbol symbol = GetDeclaredSymbol();
 
-        if (symbol != null)
+        if (symbol is not null)
         {
             if (!symbol.IsOverride)
                 return symbol;
 
             symbol = symbol.BaseOverriddenSymbol();
 
-            if (symbol != null)
+            if (symbol is not null)
             {
                 SyntaxNode syntax = symbol.GetSyntaxOrDefault(cancellationToken);
 
-                if (syntax != null)
+                if (syntax is not null)
                 {
                     if (syntax is MemberDeclarationSyntax
                         || syntax.IsKind(SyntaxKind.VariableDeclarator))
@@ -179,7 +179,7 @@ internal static class ChangeAccessibilityAnalysis
             {
                 VariableDeclaratorSyntax declarator = eventFieldDeclaration.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
 
-                if (declarator != null)
+                if (declarator is not null)
                     return semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
 
                 return null;

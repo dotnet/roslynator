@@ -59,7 +59,7 @@ internal class ConsoleHelpWriter : HelpWriter
 
             WriteEndCommands(commands);
         }
-        else if (Options.Filter != null)
+        else if (Options.Filter is not null)
         {
             WriteLine("No command found");
         }
@@ -115,11 +115,11 @@ internal class ConsoleHelpWriter : HelpWriter
     {
         string value = helpItem.Text;
 
-        if (Filter != null)
+        if (Filter is not null)
         {
             Match match = Filter.Match(value);
 
-            if (match != null)
+            if (match is not null)
             {
                 int prevIndex = 0;
 

@@ -41,7 +41,7 @@ internal static class PrefixUnaryExpressionRefactoring
 
         ExpressionSyntax operand = preIncrement.Operand;
 
-        if (operand == null)
+        if (operand is null)
             return;
 
         PostfixUnaryExpressionSyntax postIncrement = PostIncrementExpression(operand.WithoutTrivia())
@@ -77,7 +77,7 @@ internal static class PrefixUnaryExpressionRefactoring
 
         ExpressionSyntax operand = preDecrement.Operand;
 
-        if (operand == null)
+        if (operand is null)
             return;
 
         PostfixUnaryExpressionSyntax postDecrement = PostDecrementExpression(operand.WithoutTrivia())

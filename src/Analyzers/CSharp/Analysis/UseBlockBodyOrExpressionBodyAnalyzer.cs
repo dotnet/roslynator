@@ -8,220 +8,123 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
-namespace Roslynator.CSharp.Analysis;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyzer
+namespace Roslynator.CSharp.Analysis
 {
-    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyzer
     {
-        get
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            if (_supportedDiagnostics.IsDefault)
+            get
             {
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseBlockBodyOrExpressionBody);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseBlockBodyOrExpressionBody);
+                }
+
+                return _supportedDiagnostics;
             }
-
-            return _supportedDiagnostics;
         }
-    }
 
-    public override void Initialize(AnalysisContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterCompilationStartAction(startContext =>
+        public override void Initialize(AnalysisContext context)
         {
-            if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp6)
-                return;
+            base.Initialize(context);
 
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
-            startContext.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeOperatorDeclaration(f), SyntaxKind.OperatorDeclaration);
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeConversionOperatorDeclaration(f), SyntaxKind.ConversionOperatorDeclaration);
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeDestructorDeclaration(f), SyntaxKind.DestructorDeclaration);
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeLocalFunctionStatement(f), SyntaxKind.LocalFunctionStatement);
-
-            startContext.RegisterSyntaxNodeAction(
-                f => AnalyzeAccessorDeclaration(f),
-                SyntaxKind.GetAccessorDeclaration,
-                SyntaxKind.SetAccessorDeclaration,
-                SyntaxKind.AddAccessorDeclaration,
-                SyntaxKind.RemoveAccessorDeclaration,
-                SyntaxKind.InitAccessorDeclaration);
-        });
-    }
-
-    private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var methodDeclaration = (MethodDeclarationSyntax)context.Node;
-
-        BlockSyntax body = methodDeclaration.Body;
-        if (body != null)
-        {
-            if (body.ContainsDirectives)
-                return;
-
-            BodyStyle style = context.GetBodyStyle();
-
-            if (style.IsDefault)
-                return;
-
-            BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
-
-            if (!analysis.Success)
-                return;
-
-            if (!style.UseExpression)
-                return;
-
-            if (style.UseBlockWhenDeclarationIsMultiLine == true
-                && methodDeclaration.SyntaxTree.IsMultiLineSpan(methodDeclaration.HeaderSpan()))
+            context.RegisterCompilationStartAction(startContext =>
             {
-                return;
-            }
+                if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp6)
+                    return;
 
-            AnalyzeBlock(context, body, analysis, style);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeOperatorDeclaration(f), SyntaxKind.OperatorDeclaration);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeConversionOperatorDeclaration(f), SyntaxKind.ConversionOperatorDeclaration);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeDestructorDeclaration(f), SyntaxKind.DestructorDeclaration);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeLocalFunctionStatement(f), SyntaxKind.LocalFunctionStatement);
+
+                startContext.RegisterSyntaxNodeAction(
+                    f => AnalyzeAccessorDeclaration(f),
+                    SyntaxKind.GetAccessorDeclaration,
+                    SyntaxKind.SetAccessorDeclaration,
+                    SyntaxKind.AddAccessorDeclaration,
+                    SyntaxKind.RemoveAccessorDeclaration,
+                    SyntaxKind.InitAccessorDeclaration);
+            });
         }
-        else
-        {
-            ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
-            if (expressionBody?.ContainsDirectives == false)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+
+            BlockSyntax body = methodDeclaration.Body;
+            if (body is not null)
             {
+                if (body.ContainsDirectives)
+                    return;
+
                 BodyStyle style = context.GetBodyStyle();
 
                 if (style.IsDefault)
                     return;
 
-                if (style.UseBlock)
-                {
-                    ReportDiagnostic(context, expressionBody);
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
+
+                if (!analysis.Success)
                     return;
-                }
+
+                if (!style.UseExpression)
+                    return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && methodDeclaration.SyntaxTree.IsMultiLineSpan(methodDeclaration.HeaderSpan()))
                 {
-                    ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (style.UseBlockWhenExpressionIsMultiLine == true
-                    && expressionBody.Expression?.IsMultiLine() == true)
+                AnalyzeBlock(context, body, analysis, style);
+            }
+            else
+            {
+                ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
+
+                if (expressionBody?.ContainsDirectives == false)
                 {
-                    ReportDiagnostic(context, expressionBody);
+                    BodyStyle style = context.GetBodyStyle();
+
+                    if (style.IsDefault)
+                        return;
+
+                    if (style.UseBlock)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
+                        && methodDeclaration.SyntaxTree.IsMultiLineSpan(methodDeclaration.HeaderSpan()))
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
+                        && expressionBody.Expression?.IsMultiLine() == true)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                    }
                 }
             }
         }
-    }
 
-    private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
-
-        ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
-
-        if (expressionBody?.ContainsDirectives == false)
+        private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            BodyStyle style = context.GetBodyStyle();
+            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
-            if (style.IsDefault)
-                return;
-
-            if (style.UseBlock)
-            {
-                ReportDiagnostic(context, expressionBody);
-                return;
-            }
-
-            if (style.UseBlockWhenDeclarationIsMultiLine == true
-                && propertyDeclaration.SyntaxTree.IsMultiLineSpan(propertyDeclaration.HeaderSpan()))
-            {
-                ReportDiagnostic(context, expressionBody);
-                return;
-            }
-
-            if (style.UseBlockWhenExpressionIsMultiLine == true
-                && expressionBody.Expression?.IsMultiLine() == true)
-            {
-                ReportDiagnostic(context, expressionBody);
-            }
-        }
-    }
-
-    private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
-
-        ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
-
-        if (expressionBody?.ContainsDirectives == false)
-        {
-            BodyStyle style = context.GetBodyStyle();
-
-            if (style.IsDefault)
-                return;
-
-            if (style.UseBlock)
-            {
-                ReportDiagnostic(context, expressionBody);
-                return;
-            }
-
-            if (style.UseBlockWhenDeclarationIsMultiLine == true
-                && indexerDeclaration.SyntaxTree.IsMultiLineSpan(indexerDeclaration.HeaderSpan()))
-            {
-                ReportDiagnostic(context, expressionBody);
-                return;
-            }
-
-            if (style.UseBlockWhenExpressionIsMultiLine == true
-                && expressionBody.Expression?.IsMultiLine() == true)
-            {
-                ReportDiagnostic(context, expressionBody);
-            }
-        }
-    }
-
-    private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
-
-        BlockSyntax body = operatorDeclaration.Body;
-        if (body != null)
-        {
-            if (body.ContainsDirectives)
-                return;
-
-            BodyStyle style = context.GetBodyStyle();
-
-            if (style.IsDefault)
-                return;
-
-            BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: false);
-
-            if (!analysis.Success)
-                return;
-
-            if (!style.UseExpression)
-                return;
-
-            if (style.UseBlockWhenDeclarationIsMultiLine == true
-                && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
-            {
-                return;
-            }
-
-            AnalyzeBlock(context, body, analysis, style);
-        }
-        else
-        {
-            ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
+            ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
             if (expressionBody?.ContainsDirectives == false)
             {
@@ -237,7 +140,7 @@ public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyze
                 }
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
-                    && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
+                    && propertyDeclaration.SyntaxTree.IsMultiLineSpan(propertyDeclaration.HeaderSpan()))
                 {
                     ReportDiagnostic(context, expressionBody);
                     return;
@@ -250,42 +153,12 @@ public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyze
                 }
             }
         }
-    }
 
-    private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var operatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
-
-        BlockSyntax body = operatorDeclaration.Body;
-        if (body != null)
+        private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (body.ContainsDirectives)
-                return;
+            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
-            BodyStyle style = context.GetBodyStyle();
-
-            if (style.IsDefault)
-                return;
-
-            BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: false);
-
-            if (!analysis.Success)
-                return;
-
-            if (!style.UseExpression)
-                return;
-
-            if (style.UseBlockWhenDeclarationIsMultiLine == true
-                && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
-            {
-                return;
-            }
-
-            AnalyzeBlock(context, body, analysis, style);
-        }
-        else
-        {
-            ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
+            ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
 
             if (expressionBody?.ContainsDirectives == false)
             {
@@ -301,7 +174,7 @@ public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyze
                 }
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
-                    && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
+                    && indexerDeclaration.SyntaxTree.IsMultiLineSpan(indexerDeclaration.HeaderSpan()))
                 {
                     ReportDiagnostic(context, expressionBody);
                     return;
@@ -314,144 +187,372 @@ public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyze
                 }
             }
         }
-    }
 
-    private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
-
-        BlockSyntax body = constructorDeclaration.Body;
-        if (body != null)
+        private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (body.ContainsDirectives)
-                return;
+            var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
 
-            BodyStyle style = context.GetBodyStyle();
-
-            if (style.IsDefault)
-                return;
-
-            BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
-
-            if (!analysis.Success)
-                return;
-
-            if (!style.UseExpression)
-                return;
-
-            if (style.UseBlockWhenDeclarationIsMultiLine == true
-                && constructorDeclaration.SyntaxTree.IsMultiLineSpan(constructorDeclaration.HeaderSpan()))
+            BlockSyntax body = operatorDeclaration.Body;
+            if (body is not null)
             {
-                return;
-            }
+                if (body.ContainsDirectives)
+                    return;
 
-            AnalyzeBlock(context, body, analysis, style);
-        }
-        else
-        {
-            ArrowExpressionClauseSyntax expressionBody = constructorDeclaration.ExpressionBody;
-
-            if (expressionBody?.ContainsDirectives == false)
-            {
                 BodyStyle style = context.GetBodyStyle();
 
                 if (style.IsDefault)
                     return;
 
-                if (style.UseBlock)
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: false);
+
+                if (!analysis.Success)
+                    return;
+
+                if (!style.UseExpression)
+                    return;
+
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
+                    && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                 {
-                    ReportDiagnostic(context, expressionBody);
                     return;
                 }
+
+                AnalyzeBlock(context, body, analysis, style);
+            }
+            else
+            {
+                ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
+
+                if (expressionBody?.ContainsDirectives == false)
+                {
+                    BodyStyle style = context.GetBodyStyle();
+
+                    if (style.IsDefault)
+                        return;
+
+                    if (style.UseBlock)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
+                        && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
+                        && expressionBody.Expression?.IsMultiLine() == true)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                    }
+                }
+            }
+        }
+
+        private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var operatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
+
+            BlockSyntax body = operatorDeclaration.Body;
+            if (body is not null)
+            {
+                if (body.ContainsDirectives)
+                    return;
+
+                BodyStyle style = context.GetBodyStyle();
+
+                if (style.IsDefault)
+                    return;
+
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: false);
+
+                if (!analysis.Success)
+                    return;
+
+                if (!style.UseExpression)
+                    return;
+
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
+                    && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
+                {
+                    return;
+                }
+
+                AnalyzeBlock(context, body, analysis, style);
+            }
+            else
+            {
+                ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
+
+                if (expressionBody?.ContainsDirectives == false)
+                {
+                    BodyStyle style = context.GetBodyStyle();
+
+                    if (style.IsDefault)
+                        return;
+
+                    if (style.UseBlock)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
+                        && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
+                        && expressionBody.Expression?.IsMultiLine() == true)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                    }
+                }
+            }
+        }
+
+        private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+
+            BlockSyntax body = constructorDeclaration.Body;
+            if (body is not null)
+            {
+                if (body.ContainsDirectives)
+                    return;
+
+                BodyStyle style = context.GetBodyStyle();
+
+                if (style.IsDefault)
+                    return;
+
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
+
+                if (!analysis.Success)
+                    return;
+
+                if (!style.UseExpression)
+                    return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && constructorDeclaration.SyntaxTree.IsMultiLineSpan(constructorDeclaration.HeaderSpan()))
                 {
-                    ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (style.UseBlockWhenExpressionIsMultiLine == true
-                    && expressionBody.Expression?.IsMultiLine() == true)
+                AnalyzeBlock(context, body, analysis, style);
+            }
+            else
+            {
+                ArrowExpressionClauseSyntax expressionBody = constructorDeclaration.ExpressionBody;
+
+                if (expressionBody?.ContainsDirectives == false)
                 {
-                    ReportDiagnostic(context, expressionBody);
+                    BodyStyle style = context.GetBodyStyle();
+
+                    if (style.IsDefault)
+                        return;
+
+                    if (style.UseBlock)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
+                        && constructorDeclaration.SyntaxTree.IsMultiLineSpan(constructorDeclaration.HeaderSpan()))
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
+                        && expressionBody.Expression?.IsMultiLine() == true)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                    }
                 }
             }
         }
-    }
 
-    private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
-
-        BlockSyntax body = destructorDeclaration.Body;
-        if (body != null)
+        private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (body.ContainsDirectives)
-                return;
+            var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
 
-            BodyStyle style = context.GetBodyStyle();
-
-            if (style.IsDefault)
-                return;
-
-            BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
-
-            if (!analysis.Success)
-                return;
-
-            if (!style.UseExpression)
-                return;
-
-            if (style.UseBlockWhenDeclarationIsMultiLine == true
-                && destructorDeclaration.SyntaxTree.IsMultiLineSpan(destructorDeclaration.HeaderSpan()))
+            BlockSyntax body = destructorDeclaration.Body;
+            if (body is not null)
             {
-                return;
-            }
+                if (body.ContainsDirectives)
+                    return;
 
-            AnalyzeBlock(context, body, analysis, style);
-        }
-        else
-        {
-            ArrowExpressionClauseSyntax expressionBody = destructorDeclaration.ExpressionBody;
-
-            if (expressionBody?.ContainsDirectives == false)
-            {
                 BodyStyle style = context.GetBodyStyle();
 
                 if (style.IsDefault)
                     return;
 
-                if (style.UseBlock)
-                {
-                    ReportDiagnostic(context, expressionBody);
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
+
+                if (!analysis.Success)
                     return;
-                }
+
+                if (!style.UseExpression)
+                    return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && destructorDeclaration.SyntaxTree.IsMultiLineSpan(destructorDeclaration.HeaderSpan()))
                 {
-                    ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (style.UseBlockWhenExpressionIsMultiLine == true
-                    && expressionBody.Expression?.IsMultiLine() == true)
+                AnalyzeBlock(context, body, analysis, style);
+            }
+            else
+            {
+                ArrowExpressionClauseSyntax expressionBody = destructorDeclaration.ExpressionBody;
+
+                if (expressionBody?.ContainsDirectives == false)
                 {
-                    ReportDiagnostic(context, expressionBody);
+                    BodyStyle style = context.GetBodyStyle();
+
+                    if (style.IsDefault)
+                        return;
+
+                    if (style.UseBlock)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
+                        && destructorDeclaration.SyntaxTree.IsMultiLineSpan(destructorDeclaration.HeaderSpan()))
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
+                        && expressionBody.Expression?.IsMultiLine() == true)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                    }
                 }
             }
         }
-    }
 
-    private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
-    {
-        var localFunction = (LocalFunctionStatementSyntax)context.Node;
+        private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
+        {
+            var localFunction = (LocalFunctionStatementSyntax)context.Node;
 
-        BlockSyntax body = localFunction.Body;
-        if (body != null)
+            BlockSyntax body = localFunction.Body;
+            if (body is not null)
+            {
+                if (body.ContainsDirectives)
+                    return;
+
+                BodyStyle style = context.GetBodyStyle();
+
+                if (style.IsDefault)
+                    return;
+
+                BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
+
+                if (!analysis.Success)
+                    return;
+
+                if (!style.UseExpression)
+                    return;
+
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
+                    && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
+                {
+                    return;
+                }
+
+                AnalyzeBlock(context, body, analysis, style);
+            }
+            else
+            {
+                ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
+
+                if (expressionBody?.ContainsDirectives == false)
+                {
+                    BodyStyle style = context.GetBodyStyle();
+
+                    if (style.IsDefault)
+                        return;
+
+                    if (style.UseBlock)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
+                        && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
+                        && expressionBody.Expression?.IsMultiLine() == true)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                    }
+                }
+            }
+        }
+
+        private static void AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var accessor = (AccessorDeclarationSyntax)context.Node;
+
+            BlockSyntax body = accessor.Body;
+
+            if (body is not null)
+            {
+                AnalyzeAccessorDeclarationBlock(context, accessor, body);
+            }
+            else
+            {
+                ArrowExpressionClauseSyntax expressionBody = accessor.ExpressionBody;
+
+                if (expressionBody?.ContainsDirectives == false)
+                {
+                    BodyStyle style = context.GetBodyStyle();
+
+                    if (style.IsDefault)
+                        return;
+
+                    if (style.UseBlock)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                        return;
+                    }
+
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
+                        && expressionBody.Expression?.IsMultiLine() == true)
+                    {
+                        ReportDiagnostic(context, expressionBody);
+                    }
+                }
+            }
+        }
+
+        private static void AnalyzeAccessorDeclarationBlock(
+            SyntaxNodeAnalysisContext context,
+            AccessorDeclarationSyntax accessor,
+            BlockSyntax body)
         {
             if (body.ContainsDirectives)
+                return;
+
+            if (accessor.AttributeLists.Any())
                 return;
 
             BodyStyle style = context.GetBodyStyle();
@@ -459,214 +560,114 @@ public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyze
             if (style.IsDefault)
                 return;
 
-            BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body);
+            bool isGetter = accessor.IsKind(SyntaxKind.GetAccessorDeclaration);
 
-            if (!analysis.Success)
+            BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: !isGetter);
+
+            ExpressionSyntax expression = analysis.Expression;
+
+            if (expression is null)
                 return;
 
             if (!style.UseExpression)
                 return;
 
-            if (style.UseBlockWhenDeclarationIsMultiLine == true
-                && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
+            if (style.UseBlockWhenExpressionIsMultiLine == true
+                && expression.IsMultiLine())
             {
                 return;
             }
 
-            AnalyzeBlock(context, body, analysis, style);
-        }
-        else
-        {
-            ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
-
-            if (expressionBody?.ContainsDirectives == false)
+            if (isGetter
+                && accessor.Parent is AccessorListSyntax accessorList
+                && accessorList.Accessors.Count == 1)
             {
-                BodyStyle style = context.GetBodyStyle();
-
-                if (style.IsDefault)
+                if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(accessorList.OpenBraceToken))
                     return;
 
-                if (style.UseBlock)
-                {
-                    ReportDiagnostic(context, expressionBody);
-                    return;
-                }
-
-                if (style.UseBlockWhenDeclarationIsMultiLine == true
-                    && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
-                {
-                    ReportDiagnostic(context, expressionBody);
-                    return;
-                }
-
-                if (style.UseBlockWhenExpressionIsMultiLine == true
-                    && expressionBody.Expression?.IsMultiLine() == true)
-                {
-                    ReportDiagnostic(context, expressionBody);
-                }
-            }
-        }
-    }
-
-    private static void AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
-    {
-        var accessor = (AccessorDeclarationSyntax)context.Node;
-
-        BlockSyntax body = accessor.Body;
-
-        if (body != null)
-        {
-            AnalyzeAccessorDeclarationBlock(context, accessor, body);
-        }
-        else
-        {
-            ArrowExpressionClauseSyntax expressionBody = accessor.ExpressionBody;
-
-            if (expressionBody?.ContainsDirectives == false)
-            {
-                BodyStyle style = context.GetBodyStyle();
-
-                if (style.IsDefault)
+                if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(accessor.Keyword))
                     return;
 
-                if (style.UseBlock)
+                if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(body.OpenBraceToken))
+                    return;
+
+                if (style.UseBlockWhenDeclarationIsMultiLine == true)
                 {
-                    ReportDiagnostic(context, expressionBody);
+                    switch (accessorList.Parent.Kind())
+                    {
+                        case SyntaxKind.PropertyDeclaration:
+                            {
+                                if (accessor.SyntaxTree.IsMultiLineSpan(((PropertyDeclarationSyntax)accessorList.Parent).HeaderSpan()))
+                                    return;
+
+                                break;
+                            }
+                        case SyntaxKind.IndexerDeclaration:
+                            {
+                                if (accessor.SyntaxTree.IsMultiLineSpan(((IndexerDeclarationSyntax)accessorList.Parent).HeaderSpan()))
+                                    return;
+
+                                break;
+                            }
+                        default:
+                            {
+                                SyntaxDebug.Fail(accessorList.Parent);
+                                break;
+                            }
+                    }
+
                     return;
                 }
 
-                if (style.UseBlockWhenExpressionIsMultiLine == true
-                    && expressionBody.Expression?.IsMultiLine() == true)
-                {
-                    ReportDiagnostic(context, expressionBody);
-                }
-            }
-        }
-    }
-
-    private static void AnalyzeAccessorDeclarationBlock(
-        SyntaxNodeAnalysisContext context,
-        AccessorDeclarationSyntax accessor,
-        BlockSyntax body)
-    {
-        if (body.ContainsDirectives)
-            return;
-
-        if (accessor.AttributeLists.Any())
-            return;
-
-        BodyStyle style = context.GetBodyStyle();
-
-        if (style.IsDefault)
-            return;
-
-        bool isGetter = accessor.IsKind(SyntaxKind.GetAccessorDeclaration);
-
-        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(body, allowExpressionStatement: !isGetter);
-
-        ExpressionSyntax expression = analysis.Expression;
-
-        if (expression == null)
-            return;
-
-        if (!style.UseExpression)
-            return;
-
-        if (style.UseBlockWhenExpressionIsMultiLine == true
-            && expression.IsMultiLine())
-        {
-            return;
-        }
-
-        if (isGetter
-            && accessor.Parent is AccessorListSyntax accessorList
-            && accessorList.Accessors.Count == 1)
-        {
-            if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(accessorList.OpenBraceToken))
+                ReportDiagnostic(context, accessorList);
                 return;
+            }
 
-            if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(accessor.Keyword))
+            if (!accessor.Keyword.TrailingTrivia.IsEmptyOrWhitespace())
                 return;
 
             if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(body.OpenBraceToken))
                 return;
 
-            if (style.UseBlockWhenDeclarationIsMultiLine == true)
+            if (!accessor.Keyword.LeadingTrivia.IsEmptyOrWhitespace())
+                return;
+
+            ReportDiagnostic(context, body);
+        }
+
+        private static void AnalyzeBlock(SyntaxNodeAnalysisContext context, BlockSyntax block, BlockExpressionAnalysis analysis, BodyStyle style)
+        {
+            if (style.UseBlockWhenExpressionIsMultiLine == true
+                && analysis.Expression.IsMultiLine())
             {
-                switch (accessorList.Parent.Kind())
-                {
-                    case SyntaxKind.PropertyDeclaration:
-                        {
-                            if (accessor.SyntaxTree.IsMultiLineSpan(((PropertyDeclarationSyntax)accessorList.Parent).HeaderSpan()))
-                                return;
-
-                            break;
-                        }
-                    case SyntaxKind.IndexerDeclaration:
-                        {
-                            if (accessor.SyntaxTree.IsMultiLineSpan(((IndexerDeclarationSyntax)accessorList.Parent).HeaderSpan()))
-                                return;
-
-                            break;
-                        }
-                    default:
-                        {
-                            SyntaxDebug.Fail(accessorList.Parent);
-                            break;
-                        }
-                }
-
                 return;
             }
 
-            ReportDiagnostic(context, accessorList);
-            return;
+            if (!style.UseExpression)
+                return;
+
+            if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(block.OpenBraceToken))
+                return;
+
+            if (!analysis.ReturnOrThrowKeyword.LeadingTrivia.IsEmptyOrWhitespace())
+                return;
+
+            ReportDiagnostic(context, analysis.Block);
         }
 
-        if (!accessor.Keyword.TrailingTrivia.IsEmptyOrWhitespace())
-            return;
-
-        if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(body.OpenBraceToken))
-            return;
-
-        if (!accessor.Keyword.LeadingTrivia.IsEmptyOrWhitespace())
-            return;
-
-        ReportDiagnostic(context, body);
-    }
-
-    private static void AnalyzeBlock(SyntaxNodeAnalysisContext context, BlockSyntax block, BlockExpressionAnalysis analysis, BodyStyle style)
-    {
-        if (style.UseBlockWhenExpressionIsMultiLine == true
-            && analysis.Expression.IsMultiLine())
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
         {
-            return;
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, accessorList, "expression");
         }
 
-        if (!style.UseExpression)
-            return;
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, BlockSyntax block)
+        {
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, block, "expression");
+        }
 
-        if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(block.OpenBraceToken))
-            return;
-
-        if (!analysis.ReturnOrThrowKeyword.LeadingTrivia.IsEmptyOrWhitespace())
-            return;
-
-        ReportDiagnostic(context, analysis.Block);
-    }
-
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
-    {
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, accessorList, "expression");
-    }
-
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, BlockSyntax block)
-    {
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, block, "expression");
-    }
-
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ArrowExpressionClauseSyntax expressionBody)
-    {
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, expressionBody, "block");
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ArrowExpressionClauseSyntax expressionBody)
+        {
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBlockBodyOrExpressionBody, expressionBody, "block");
+        }
     }
 }

@@ -185,7 +185,7 @@ internal class RefactoringContext
             return enabled;
         }
 
-        if (_globalIsEnabled != null)
+        if (_globalIsEnabled is not null)
             return _globalIsEnabled.Value;
 
         if (CodeAnalysisConfig.Instance.Refactorings.TryGetValue(refactoring.OptionKey, out enabled))
@@ -290,7 +290,7 @@ internal class RefactoringContext
     {
         SyntaxNode node = Root.FindNode(Span, findInsideTrivia: true, getInnermostNodeForTie: true);
 
-        for (; node != null; node = node.Parent)
+        for (; node is not null; node = node.Parent)
         {
             if (node is DirectiveTriviaSyntax directiveTrivia)
             {
@@ -415,7 +415,7 @@ internal class RefactoringContext
     {
         SyntaxNode node = Root.FindNode(Span, findInsideTrivia: false, getInnermostNodeForTie: true);
 
-        if (node == null)
+        if (node is null)
             return;
 
         RefactoringFlags flags = RefactoringFlagsCache.GetInstance();
@@ -423,7 +423,7 @@ internal class RefactoringContext
 
         SyntaxNode firstNode = node;
 
-        for (; node != null; node = node.GetParent(ascendOutOfTrivia: true))
+        for (; node is not null; node = node.GetParent(ascendOutOfTrivia: true))
         {
             SyntaxKind kind = node.Kind();
 
@@ -1081,7 +1081,7 @@ internal class RefactoringContext
         {
             RefactoringFlags instance = _cachedInstance;
 
-            if (instance != null)
+            if (instance is not null)
             {
                 _cachedInstance = null;
                 return instance;

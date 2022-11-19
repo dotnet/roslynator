@@ -89,12 +89,12 @@ public sealed class VariableDeclarationCodeFixProvider : CompilerDiagnosticCodeF
 
                         VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
 
-                        if (variableDeclarator == null)
+                        if (variableDeclarator is null)
                             break;
 
                         ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
-                        if (value == null)
+                        if (value is null)
                             break;
 
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

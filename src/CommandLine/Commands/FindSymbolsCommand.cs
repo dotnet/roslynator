@@ -90,7 +90,7 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
                     ImmutableDictionary<string, ISymbol> symbolsById = ignoredSymbolIds
                         .Select(f => (id: f, symbol: DocumentationCommentId.GetFirstSymbolForDeclarationId(f, compilation)))
-                        .Where(f => f.id != null)
+                        .Where(f => f.id is not null)
                         .ToImmutableDictionary(f => f.id, f => f.symbol);
 
                     ignoredSymbolIds.ExceptWith(symbolsById.Select(f => f.Key));

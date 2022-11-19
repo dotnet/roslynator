@@ -38,7 +38,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
     /// </summary>
     public bool Success
     {
-        get { return Parent != null; }
+        get { return Parent is not null; }
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     internal static MemberDeclarationListInfo Create(CompilationUnitSyntax compilationUnit)
     {
-        if (compilationUnit == null)
+        if (compilationUnit is null)
             return default;
 
         return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
@@ -125,7 +125,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     internal static MemberDeclarationListInfo Create(NamespaceDeclarationSyntax namespaceDeclaration)
     {
-        if (namespaceDeclaration == null)
+        if (namespaceDeclaration is null)
             return default;
 
         return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
@@ -133,7 +133,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     internal static MemberDeclarationListInfo Create(BaseNamespaceDeclarationSyntax namespaceDeclaration)
     {
-        if (namespaceDeclaration == null)
+        if (namespaceDeclaration is null)
             return default;
 
         return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
@@ -141,7 +141,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     internal static MemberDeclarationListInfo Create(TypeDeclarationSyntax typeDeclaration)
     {
-        if (typeDeclaration == null)
+        if (typeDeclaration is null)
             return default;
 
         return new MemberDeclarationListInfo(typeDeclaration, typeDeclaration.Members);
@@ -149,7 +149,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     internal static MemberDeclarationListInfo Create(ClassDeclarationSyntax classDeclaration)
     {
-        if (classDeclaration == null)
+        if (classDeclaration is null)
             return default;
 
         return new MemberDeclarationListInfo(classDeclaration, classDeclaration.Members);
@@ -157,7 +157,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     internal static MemberDeclarationListInfo Create(StructDeclarationSyntax structDeclaration)
     {
-        if (structDeclaration == null)
+        if (structDeclaration is null)
             return default;
 
         return new MemberDeclarationListInfo(structDeclaration, structDeclaration.Members);
@@ -165,7 +165,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     internal static MemberDeclarationListInfo Create(InterfaceDeclarationSyntax interfaceDeclaration)
     {
-        if (interfaceDeclaration == null)
+        if (interfaceDeclaration is null)
             return default;
 
         return new MemberDeclarationListInfo(interfaceDeclaration, interfaceDeclaration.Members);
@@ -539,7 +539,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     private void ThrowInvalidOperationIfNotInitialized()
     {
-        if (Parent == null)
+        if (Parent is null)
             throw new InvalidOperationException($"{nameof(MemberDeclarationListInfo)} is not initalized.");
     }
 }

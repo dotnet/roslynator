@@ -23,7 +23,7 @@ internal static class UseElementAccessAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         if (!IsLinqElementAt(methodSymbol, allowImmutableArrayExtension: true))
@@ -55,7 +55,7 @@ internal static class UseElementAccessAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         if (!IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "First", allowImmutableArrayExtension: true))
@@ -76,7 +76,7 @@ internal static class UseElementAccessAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         if (!IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "Last", allowImmutableArrayExtension: true))
@@ -95,7 +95,7 @@ internal static class UseElementAccessAnalysis
     {
         ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
-        if (symbol != null)
+        if (symbol is not null)
         {
             IPropertySymbol propertySymbol = null;
 

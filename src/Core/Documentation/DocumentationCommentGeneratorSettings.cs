@@ -13,7 +13,7 @@ internal class DocumentationCommentGeneratorSettings
         string indentation = null,
         bool singleLineSummary = false)
     {
-        Summary = (summary != null) ? ImmutableArray.CreateRange(summary) : ImmutableArray<string>.Empty;
+        Summary = (summary is not null) ? ImmutableArray.CreateRange(summary) : ImmutableArray<string>.Empty;
         IgnoredTags = ignoredTags?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
         Indentation = indentation ?? "";
         SingleLineSummary = singleLineSummary;

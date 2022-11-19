@@ -46,7 +46,7 @@ internal static class FileSystemHelpers
     {
         try
         {
-            if (basePath != null
+            if (basePath is not null
                 && !Path.IsPathRooted(path))
             {
                 path = Path.Combine(basePath, path);

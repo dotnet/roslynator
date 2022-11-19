@@ -19,7 +19,7 @@ internal static class ChangeMethodReturnTypeToVoidRefactoring
 
         BlockSyntax body = methodDeclaration.Body;
 
-        if (body == null)
+        if (body is null)
             return;
 
         SyntaxList<StatementSyntax> statements = body.Statements;
@@ -49,7 +49,7 @@ internal static class ChangeMethodReturnTypeToVoidRefactoring
 
         BlockSyntax body = localFunction.Body;
 
-        if (body == null)
+        if (body is null)
             return;
 
         SyntaxList<StatementSyntax> statements = body.Statements;
@@ -94,7 +94,7 @@ internal static class ChangeMethodReturnTypeToVoidRefactoring
         if (!analysis.Succeeded)
             return;
 
-        if (!analysis.ReturnStatements.All(f => (f as ReturnStatementSyntax)?.Expression == null))
+        if (!analysis.ReturnStatements.All(f => (f as ReturnStatementSyntax)?.Expression is null))
             return;
 
         Document document = context.Document;

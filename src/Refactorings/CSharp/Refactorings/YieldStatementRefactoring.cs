@@ -27,9 +27,9 @@ internal static class YieldStatementRefactoring
         {
             SyntaxNode declaration = yieldStatement.FirstAncestor(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement, SyntaxKind.GetAccessorDeclaration, ascendOutOfTrivia: false);
 
-            Debug.Assert(declaration != null);
+            Debug.Assert(declaration is not null);
 
-            if (declaration != null)
+            if (declaration is not null)
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

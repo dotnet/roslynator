@@ -57,7 +57,7 @@ public abstract class NameGenerator
         int position,
         bool isCaseSensitive = true)
     {
-        if (semanticModel == null)
+        if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
         return EnsureUniqueName(baseName, semanticModel.LookupSymbols(position), isCaseSensitive);
@@ -74,7 +74,7 @@ public abstract class NameGenerator
         INamedTypeSymbol enumType,
         bool isCaseSensitive = true)
     {
-        if (enumType == null)
+        if (enumType is null)
             throw new ArgumentNullException(nameof(enumType));
 
         if (enumType.TypeKind != TypeKind.Enum)
@@ -98,7 +98,7 @@ public abstract class NameGenerator
         bool isCaseSensitive = true,
         CancellationToken cancellationToken = default)
     {
-        if (semanticModel == null)
+        if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
         ImmutableArray<ISymbol> symbols = GetSymbolsForUniqueLocalName(semanticModel, position, cancellationToken);
@@ -123,7 +123,7 @@ public abstract class NameGenerator
         bool isCaseSensitive = true,
         CancellationToken cancellationToken = default)
     {
-        if (semanticModel == null)
+        if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
         if (count < 1)
@@ -179,10 +179,10 @@ public abstract class NameGenerator
         bool isCaseSensitive = true,
         CancellationToken cancellationToken = default)
     {
-        if (containingSymbol == null)
+        if (containingSymbol is null)
             throw new ArgumentNullException(nameof(containingSymbol));
 
-        if (semanticModel == null)
+        if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
         if (containingSymbol.Kind == SymbolKind.Method)
@@ -248,7 +248,7 @@ public abstract class NameGenerator
     {
         string name = CreateNameFromTypeSymbolHelper.CreateName(typeSymbol);
 
-        if (name != null
+        if (name is not null
             && firstCharToLower)
         {
             return StringUtility.FirstCharToLower(name);
@@ -264,11 +264,11 @@ public abstract class NameGenerator
         bool isCaseSensitive = true,
         CancellationToken cancellationToken = default)
     {
-        if (typeSymbol != null)
+        if (typeSymbol is not null)
         {
             string name = CreateName(typeSymbol, firstCharToLower: true);
 
-            if (name != null)
+            if (name is not null)
                 return EnsureUniqueLocalName(name, semanticModel, position, isCaseSensitive, cancellationToken);
         }
 
@@ -285,7 +285,7 @@ public abstract class NameGenerator
     {
         string newName = CreateName(typeSymbol, firstCharToLower: true);
 
-        if (newName != null
+        if (newName is not null
             && !string.Equals(oldName, newName, StringComparison.Ordinal))
         {
             string uniqueName = EnsureUniqueLocalName(newName, semanticModel, position, isCaseSensitive, cancellationToken);
@@ -306,7 +306,7 @@ public abstract class NameGenerator
     {
         string newName = CreateName(parameterSymbol.Type, firstCharToLower: true);
 
-        if (newName != null
+        if (newName is not null
             && !string.Equals(oldName, newName, StringComparison.Ordinal))
         {
             string uniqueName = EnsureUniqueParameterName(newName, parameterSymbol.ContainingSymbol, semanticModel, isCaseSensitive, cancellationToken);

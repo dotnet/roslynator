@@ -38,12 +38,12 @@ public sealed class AddNewLineAfterSwitchLabelAnalyzer : BaseDiagnosticAnalyzer
 
         SwitchLabelSyntax label = switchSection.Labels.LastOrDefault();
 
-        if (label == null)
+        if (label is null)
             return;
 
         StatementSyntax statement = switchSection.Statements.FirstOrDefault();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         if (!switchSection.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(label.Span.End, statement.SpanStart)))

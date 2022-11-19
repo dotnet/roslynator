@@ -27,7 +27,7 @@ internal static class ImplementCustomEnumeratorRefactoring
 
         INamedTypeSymbol ienumerableOfT = symbol.Interfaces.FirstOrDefault(f => f.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T));
 
-        if (ienumerableOfT == null)
+        if (ienumerableOfT is null)
             return;
 
         INamedTypeSymbol enumerator = symbol.FindTypeMember(
@@ -37,7 +37,7 @@ internal static class ImplementCustomEnumeratorRefactoring
                 && f.Arity == 0,
             includeBaseTypes: true);
 
-        if (enumerator != null)
+        if (enumerator is not null)
             return;
 
         context.RegisterRefactoring(

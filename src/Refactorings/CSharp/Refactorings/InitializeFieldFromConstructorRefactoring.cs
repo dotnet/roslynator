@@ -23,7 +23,7 @@ internal static class InitializeFieldFromConstructorRefactoring
 
         SeparatedSyntaxList<VariableDeclaratorSyntax> variables = fieldDeclaration.Declaration.Variables;
 
-        if (variables.Any(f => f.Initializer != null))
+        if (variables.Any(f => f.Initializer is not null))
             return;
 
         context.RegisterRefactoring(
@@ -43,7 +43,7 @@ internal static class InitializeFieldFromConstructorRefactoring
 
             var fieldDeclaration = (FieldDeclarationSyntax)selectedMember;
 
-            if (fieldDeclaration.Declaration.Variables.Any(f => f.Initializer != null))
+            if (fieldDeclaration.Declaration.Variables.Any(f => f.Initializer is not null))
                 return;
 
             if (!CanRefactor(fieldDeclaration))
@@ -67,7 +67,7 @@ internal static class InitializeFieldFromConstructorRefactoring
 
     public static void ComputeRefactoring(RefactoringContext context, VariableDeclaratorSyntax variableDeclarator)
     {
-        if (variableDeclarator.Initializer != null)
+        if (variableDeclarator.Initializer is not null)
             return;
 
         if (variableDeclarator.Parent is not VariableDeclarationSyntax variableDeclaration)
@@ -151,12 +151,12 @@ internal static class InitializeFieldFromConstructorRefactoring
 
             ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
 
-            if (parameterList == null)
+            if (parameterList is null)
                 continue;
 
             BlockSyntax body = constructorDeclaration.Body;
 
-            if (body == null)
+            if (body is null)
                 continue;
 
             SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
@@ -168,7 +168,7 @@ internal static class InitializeFieldFromConstructorRefactoring
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList?.Arguments ?? default;
 
             bool addToInitializer = initializer?.Kind() == SyntaxKind.ThisConstructorInitializer
-                && argumentList != null;
+                && argumentList is not null;
 
             SyntaxList<StatementSyntax> statements = body.Statements;
 
@@ -235,7 +235,7 @@ internal static class InitializeFieldFromConstructorRefactoring
         if (!isConflict)
             return name;
 
-        if (reservedNames == null)
+        if (reservedNames is null)
             reservedNames = new HashSet<string>();
 
         foreach (ParameterSyntax parameter in parameters)

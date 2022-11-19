@@ -114,10 +114,10 @@ internal static class GenerateBaseConstructorsAnalysis
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             ImmutableArray<IParameterSymbol> parameters1 = x.Parameters;

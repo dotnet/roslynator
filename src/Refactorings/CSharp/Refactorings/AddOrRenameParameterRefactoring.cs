@@ -22,7 +22,7 @@ internal static class AddOrRenameParameterRefactoring
 
         IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
 
-        if (parameterSymbol?.Type == null)
+        if (parameterSymbol?.Type is null)
             return;
 
         if (!parameter.Identifier.IsMissing
@@ -37,7 +37,7 @@ internal static class AddOrRenameParameterRefactoring
                 semanticModel,
                 cancellationToken: context.CancellationToken);
 
-            if (newName != null)
+            if (newName is not null)
             {
                 context.RegisterRefactoring(
                     $"Rename '{oldName}' to '{newName}'",

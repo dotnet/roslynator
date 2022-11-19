@@ -60,7 +60,7 @@ public abstract class CodeVerifier
     {
         var s = "";
 
-        if (codeActions != null)
+        if (codeActions is not null)
             s = string.Join(NewLine, codeActions.Select(a => $"\"{a.Title}\", EquivalenceKey: {a.EquivalenceKey}"));
 
         if (s.Length == 0)
@@ -142,7 +142,7 @@ public abstract class CodeVerifier
         CodeAction codeAction,
         string title)
     {
-        if (title != null)
+        if (title is not null)
             Assert.Equal(title, codeAction.Title);
 
         ImmutableArray<CodeActionOperation> operations = await codeAction.GetOperationsAsync(CancellationToken.None);
@@ -251,7 +251,7 @@ public abstract class CodeVerifier
                     expectedSpan.ToLinePositionSpan(source),
                     actualSpan.ToLinePositionSpan(source));
 
-                if (message != null)
+                if (message is not null)
                     Fail($"Annotation '{kind}'{message}");
             }
         }
@@ -328,7 +328,7 @@ public abstract class CodeVerifier
             project = configFile.Project;
         }
 
-        if (descriptor != null)
+        if (descriptor is not null)
         {
             CompilationOptions newCompilationOptions = project.CompilationOptions.EnsureDiagnosticEnabled(descriptor);
 
@@ -358,7 +358,7 @@ public abstract class CodeVerifier
 
                 string expectedSource = additionalFiles[i].ExpectedSource;
 
-                if (expectedSource != null)
+                if (expectedSource is not null)
                     expectedDocuments.Add(new ExpectedDocument(additionalDocument.Id, expectedSource));
 
                 project = additionalDocument.Project;

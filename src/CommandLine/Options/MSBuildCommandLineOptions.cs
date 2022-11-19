@@ -43,7 +43,7 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
 
     internal bool TryGetLanguage(out string value)
     {
-        if (Language != null)
+        if (Language is not null)
             return ParseHelpers.TryParseLanguage(Language, out value);
 
         value = null;
@@ -56,7 +56,7 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
 
         string language = null;
 
-        if (Language != null
+        if (Language is not null
             && !ParseHelpers.TryParseLanguage(Language, out language))
         {
             return false;

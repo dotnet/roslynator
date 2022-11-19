@@ -108,7 +108,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(AccessorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             SyntaxNode containingDeclaration = declaration.Parent?.Parent;
@@ -123,21 +123,21 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
                     return SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetDefaultAccessibility((EventDeclarationSyntax)containingDeclaration);
             }
 
-            SyntaxDebug.Assert(containingDeclaration == null, containingDeclaration);
+            SyntaxDebug.Assert(containingDeclaration is null, containingDeclaration);
 
             return Accessibility.NotApplicable;
         }
 
         public override Accessibility GetAccessibility(AccessorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
 
             SyntaxNode containingDeclaration = declaration.Parent?.Parent;
 
-            if (containingDeclaration == null)
+            if (containingDeclaration is null)
                 return accessibility;
 
             Accessibility containingAccessibility = GetAccessibility();
@@ -169,7 +169,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(AccessorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -185,7 +185,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public static Accessibility GetDefaultAccessibility(BaseTypeDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
@@ -195,7 +195,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public static Accessibility GetDefaultExplicitAccessibility(BaseTypeDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
@@ -218,7 +218,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(ClassDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -230,7 +230,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(ClassDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -241,7 +241,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(ConstructorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
@@ -251,7 +251,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(ConstructorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
@@ -261,7 +261,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(ConstructorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -278,7 +278,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(ConstructorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -289,7 +289,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(ConversionOperatorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -297,7 +297,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(ConversionOperatorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -305,7 +305,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(ConversionOperatorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -313,7 +313,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(ConversionOperatorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -324,7 +324,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(DelegateDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
@@ -334,7 +334,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(DelegateDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
@@ -344,7 +344,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(DelegateDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -356,7 +356,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(DelegateDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -367,7 +367,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(DestructorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -375,7 +375,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(DestructorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.NotApplicable;
@@ -383,7 +383,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(DestructorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -391,7 +391,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(DestructorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -412,7 +412,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(EnumDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -424,7 +424,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(EnumDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -435,7 +435,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(EnumMemberDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -443,7 +443,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(EnumMemberDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.NotApplicable;
@@ -451,7 +451,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(EnumMemberDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -467,7 +467,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(EventDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Private;
@@ -475,20 +475,20 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(EventDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            return (declaration.ExplicitInterfaceSpecifier != null)
+            return (declaration.ExplicitInterfaceSpecifier is not null)
                 ? Accessibility.NotApplicable
                 : Accessibility.Private;
         }
 
         public override Accessibility GetAccessibility(EventDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            if (declaration.ExplicitInterfaceSpecifier != null)
+            if (declaration.ExplicitInterfaceSpecifier is not null)
                 return Accessibility.Private;
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -500,7 +500,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(EventDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -511,7 +511,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(EventFieldDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -521,7 +521,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(EventFieldDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -531,7 +531,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(EventFieldDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -546,7 +546,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(EventFieldDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -557,7 +557,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(FieldDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Private;
@@ -565,7 +565,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(FieldDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Private;
@@ -573,7 +573,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(FieldDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -585,7 +585,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(FieldDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -596,7 +596,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(IndexerDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -606,10 +606,10 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(IndexerDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            if (declaration.ExplicitInterfaceSpecifier != null
+            if (declaration.ExplicitInterfaceSpecifier is not null
                 || declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
             {
                 return Accessibility.NotApplicable;
@@ -622,10 +622,10 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(IndexerDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            if (declaration.ExplicitInterfaceSpecifier != null)
+            if (declaration.ExplicitInterfaceSpecifier is not null)
                 return Accessibility.Private;
 
             if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -640,7 +640,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(IndexerDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -661,7 +661,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(InterfaceDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -673,7 +673,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(InterfaceDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -684,7 +684,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(MethodDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -694,11 +694,11 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(MethodDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             if (declaration.Modifiers.Contains(SyntaxKind.PartialKeyword)
-                || declaration.ExplicitInterfaceSpecifier != null
+                || declaration.ExplicitInterfaceSpecifier is not null
                 || declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
             {
                 return Accessibility.NotApplicable;
@@ -711,7 +711,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(MethodDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -719,7 +719,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (modifiers.Contains(SyntaxKind.PartialKeyword))
                 return Accessibility.Private;
 
-            if (declaration.ExplicitInterfaceSpecifier != null)
+            if (declaration.ExplicitInterfaceSpecifier is not null)
                 return Accessibility.Private;
 
             if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -734,7 +734,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(MethodDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -745,7 +745,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(NamespaceDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -753,7 +753,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(NamespaceDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.NotApplicable;
@@ -761,7 +761,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(NamespaceDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -777,7 +777,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(OperatorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -785,7 +785,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(OperatorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -793,7 +793,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(OperatorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.Public;
@@ -801,7 +801,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(OperatorDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -812,7 +812,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(PropertyDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -822,10 +822,10 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(PropertyDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            if (declaration.ExplicitInterfaceSpecifier != null
+            if (declaration.ExplicitInterfaceSpecifier is not null
                 || declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
             {
                 return Accessibility.NotApplicable;
@@ -838,10 +838,10 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(PropertyDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            if (declaration.ExplicitInterfaceSpecifier != null)
+            if (declaration.ExplicitInterfaceSpecifier is not null)
                 return Accessibility.Private;
 
             if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -856,7 +856,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(PropertyDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -877,7 +877,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(StructDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -889,7 +889,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(StructDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -910,7 +910,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(RecordDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -922,7 +922,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(RecordDeclarationSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
@@ -933,7 +933,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
     {
         public override Accessibility GetDefaultAccessibility(IncompleteMemberSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -943,7 +943,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetDefaultExplicitAccessibility(IncompleteMemberSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return Accessibility.NotApplicable;
@@ -951,7 +951,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetAccessibility(IncompleteMemberSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
@@ -966,7 +966,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         public override Accessibility GetExplicitAccessibility(IncompleteMemberSyntax declaration)
         {
-            if (declaration == null)
+            if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
             return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);

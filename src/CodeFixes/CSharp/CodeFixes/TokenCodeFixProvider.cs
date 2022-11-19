@@ -118,7 +118,7 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                     ExpressionSyntax value = parameter.Default?.Value;
 
-                    if (value == null)
+                    if (value is null)
                         break;
 
                     if (value.IsKind(SyntaxKind.NullLiteralExpression))
@@ -162,7 +162,7 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                     ISymbol symbol = semanticModel.GetEnclosingSymbol(token.SpanStart, context.CancellationToken);
 
-                    if (symbol == null)
+                    if (symbol is null)
                         break;
 
                     SymbolKind symbolKind = symbol.Kind;
@@ -193,7 +193,7 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                         Debug.Fail(symbolKind.ToString());
                     }
 
-                    if (typeSymbol == null)
+                    if (typeSymbol is null)
                         break;
 
                     if (typeSymbol.Kind == SymbolKind.ErrorType)
@@ -280,7 +280,7 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                             {
                                 BlockSyntax body = methodDeclaration.Body;
 
-                                if (body == null)
+                                if (body is null)
                                     break;
 
                                 CodeAction codeAction = CodeAction.Create(
@@ -308,7 +308,7 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                             {
                                 AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
 
-                                if (accessorList == null)
+                                if (accessorList is null)
                                     break;
 
                                 CodeAction codeAction = CodeAction.Create(
@@ -336,7 +336,7 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                             {
                                 BlockSyntax body = accessorDeclaration.Body;
 
-                                if (body == null)
+                                if (body is null)
                                     break;
 
                                 CodeAction codeAction = CodeAction.Create(

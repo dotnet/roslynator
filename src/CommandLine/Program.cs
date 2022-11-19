@@ -41,7 +41,7 @@ internal static class Program
         {
             parser = CreateParser(ignoreUnknownArguments: true);
 
-            if (args == null
+            if (args is null
                 || args.Length == 0)
             {
                 HelpCommand.WriteCommandsHelp();
@@ -58,7 +58,7 @@ internal static class Program
                         return;
 
                     string commandName = args?.FirstOrDefault();
-                    Command command = (commandName != null)
+                    Command command = (commandName is not null)
                         ? CommandLoader.LoadCommand(typeof(Program).Assembly, commandName)
                         : null;
 
@@ -70,7 +70,7 @@ internal static class Program
 
                     WriteArgs(args, Verbosity.Diagnostic);
 
-                    if (command != null)
+                    if (command is not null)
                     {
                         HelpCommand.WriteCommandHelp(command);
                     }
@@ -131,7 +131,7 @@ internal static class Program
 
                 VerbAttribute verbAttribute = parserResult.TypeInfo.Current.GetCustomAttribute<VerbAttribute>();
 
-                if (verbAttribute != null)
+                if (verbAttribute is not null)
                 {
                     helpText.AddPreOptionsText(Environment.NewLine + HelpCommand.GetFooterText(verbAttribute.Name));
                 }
@@ -270,7 +270,7 @@ internal static class Program
     {
         var defaultVerbosity = Verbosity.Normal;
 
-        if (options.Verbosity != null
+        if (options.Verbosity is not null
             && !TryParseVerbosity(options.Verbosity, out defaultVerbosity))
         {
             return false;
@@ -282,13 +282,13 @@ internal static class Program
         {
             Verbosity fileLogVerbosity = defaultVerbosity;
 
-            if (baseOptions.FileLogVerbosity != null
+            if (baseOptions.FileLogVerbosity is not null
                 && !TryParseVerbosity(baseOptions.FileLogVerbosity, out fileLogVerbosity))
             {
                 return false;
             }
 
-            if (baseOptions.FileLog != null)
+            if (baseOptions.FileLog is not null)
             {
                 var fs = new FileStream(baseOptions.FileLog, FileMode.Create, FileAccess.Write, FileShare.Read);
                 var sw = new StreamWriter(fs, Encoding.UTF8, bufferSize: 4096, leaveOpen: false);
@@ -302,7 +302,7 @@ internal static class Program
     [Conditional("DEBUG")]
     private static void WriteArgs(string[] args, Verbosity verbosity)
     {
-        if (args != null
+        if (args is not null
             && ShouldWrite(verbosity))
         {
             WriteLine("--- ARGS ---", verbosity);
@@ -369,7 +369,7 @@ internal static class Program
     {
         string language = null;
 
-        if (options.Language != null
+        if (options.Language is not null
             && !TryParseLanguage(options.Language, out language))
         {
             return ExitCodes.Error;
@@ -476,8 +476,8 @@ internal static class Program
 
         string newNameFrom = options.NewNameFrom;
 
-        if (newNameFrom == null
-            && options.NewName == null)
+        if (newNameFrom is null
+            && options.NewName is null)
         {
             newNameFrom = options.MatchFrom;
         }
@@ -621,7 +621,7 @@ internal static class Program
         if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
             return ExitCodes.Error;
 
-        if (options.EndOfLine != null)
+        if (options.EndOfLine is not null)
         {
             WriteLine($"Option '--{OptionNames.EndOfLine}' is obsolete.", ConsoleColors.Yellow);
             CommandLineHelpers.WaitForKeyPress();
@@ -981,9 +981,9 @@ internal static class Program
             return false;
         }
 
-        if (solutionPath != null)
+        if (solutionPath is not null)
         {
-            if (projectPath != null)
+            if (projectPath is not null)
             {
                 WriteLine($"Both MSBuild project file and solution file found in '{directoryPath}'", Verbosity.Quiet);
                 return false;
@@ -992,7 +992,7 @@ internal static class Program
             paths = ImmutableArray.Create(solutionPath);
             return true;
         }
-        else if (projectPath != null)
+        else if (projectPath is not null)
         {
             paths = ImmutableArray.Create(projectPath);
             return true;

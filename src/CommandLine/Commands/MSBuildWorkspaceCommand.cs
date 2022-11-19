@@ -33,7 +33,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
     public async Task<CommandStatus> ExecuteAsync(IEnumerable<string> paths, string msbuildPath = null, IEnumerable<string> properties = null)
     {
-        if (paths == null)
+        if (paths is null)
             throw new ArgumentNullException(nameof(paths));
 
         if (!paths.Any())
@@ -45,7 +45,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         {
             workspace = CreateMSBuildWorkspace(msbuildPath, properties);
 
-            if (workspace == null)
+            if (workspace is null)
                 return CommandStatus.Fail;
 
             workspace.WorkspaceFailed += (sender, args) => WorkspaceFailed(sender, args);
@@ -105,7 +105,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
             {
                 OperationCanceledException operationCanceledException = ex.GetOperationCanceledException();
 
-                if (operationCanceledException != null)
+                if (operationCanceledException is not null)
                 {
                     OperationCanceled(operationCanceledException);
                 }
@@ -130,14 +130,14 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
         TCommandResult result = await ExecuteAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
 
-        if (result != null)
+        if (result is not null)
             return result;
 
         ProjectOrSolution projectOrSolution = await OpenProjectOrSolutionAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
 
         Solution solution = projectOrSolution.AsSolution();
 
-        if (solution != null
+        if (solution is not null
             && !VerifyProjectNames(solution))
         {
             return null;
@@ -162,7 +162,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
                 foreach (string moniker in grouping
                     .Select(f => f.Moniker)
-                    .Where(f => f != null)
+                    .Where(f => f is not null)
                     .OrderBy(f => f))
                 {
                     WriteLine($"    {moniker}", Verbosity.Detailed);
@@ -245,7 +245,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
     private static MSBuildWorkspace CreateMSBuildWorkspace(string msbuildPath, IEnumerable<string> rawProperties)
     {
-        if (msbuildPath != null)
+        if (msbuildPath is not null)
         {
             MSBuildLocator.RegisterMSBuildPath(msbuildPath);
         }
@@ -264,7 +264,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         if (!ParseHelpers.TryParseMSBuildProperties(rawProperties, out Dictionary<string, string> properties))
             return null;
 
-        if (properties == null)
+        if (properties is null)
             properties = new Dictionary<string, string>();
 
         // https://github.com/Microsoft/MSBuildLocator/issues/16
@@ -330,7 +330,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
     {
         Workspace workspace = solution.Workspace;
 
-        foreach (ProjectId projectId in (getProjects != null) ? getProjects(solution) : solution.ProjectIds)
+        foreach (ProjectId projectId in (getProjects is not null) ? getProjects(solution) : solution.ProjectIds)
         {
             Project project = workspace.CurrentSolution.GetProject(projectId);
 
@@ -415,20 +415,20 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
             {
                 string targetFramework = value.TargetFramework;
 
-                if (targetFramework != null)
+                if (targetFramework is not null)
                     text += $" ({targetFramework})";
 
-                if (Projects != null)
+                if (Projects is not null)
                 {
                     if (!Projects.TryGetValue(value.FilePath, out List<string> targetFrameworks))
                     {
-                        if (targetFramework != null)
+                        if (targetFramework is not null)
                             targetFrameworks = new List<string>();
 
                         Projects[value.FilePath] = targetFrameworks;
                     }
 
-                    if (targetFramework != null)
+                    if (targetFramework is not null)
                         targetFrameworks.Add(targetFramework);
                 }
             }

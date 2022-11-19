@@ -38,7 +38,7 @@ public static class DiagnosticIdentifiersGenerator
         string id = analyzer.Id;
         string identifier = analyzer.Identifier;
 
-        if (id != null)
+        if (id is not null)
             yield return CreateMember(id, identifier, analyzer.IsObsolete);
     }
 

@@ -16,7 +16,7 @@ internal static class QualifiedNameRefactoring
             IdentifierNameSyntax identifierName = qualifiedName.Left as IdentifierNameSyntax
                 ?? qualifiedName.Right as IdentifierNameSyntax;
 
-            if (identifierName != null)
+            if (identifierName is not null)
                 await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, identifierName).ConfigureAwait(false);
         }
     }

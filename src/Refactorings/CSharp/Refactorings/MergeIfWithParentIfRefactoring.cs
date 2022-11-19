@@ -33,7 +33,7 @@ internal static class MergeIfWithParentIfRefactoring
 
             parentIf = block.Parent as IfStatementSyntax;
 
-            if (parentIf == null)
+            if (parentIf is null)
                 return;
         }
 

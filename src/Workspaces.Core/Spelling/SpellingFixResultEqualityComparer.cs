@@ -22,10 +22,10 @@ internal abstract class SpellingFixResultEqualityComparer : IEqualityComparer<Sp
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return StringComparer.CurrentCulture.Equals(x.Value, y.Value)
@@ -34,7 +34,7 @@ internal abstract class SpellingFixResultEqualityComparer : IEqualityComparer<Sp
 
         public override int GetHashCode(SpellingFixResult obj)
         {
-            if (obj == null)
+            if (obj is null)
                 throw new ArgumentNullException(nameof(obj));
 
             return Hash.Combine(
@@ -50,10 +50,10 @@ internal abstract class SpellingFixResultEqualityComparer : IEqualityComparer<Sp
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return StringComparer.CurrentCulture.Equals(x.Value, y.Value)
@@ -62,7 +62,7 @@ internal abstract class SpellingFixResultEqualityComparer : IEqualityComparer<Sp
 
         public override int GetHashCode(SpellingFixResult obj)
         {
-            if (obj == null)
+            if (obj is null)
                 throw new ArgumentNullException(nameof(obj));
 
             return Hash.Combine(

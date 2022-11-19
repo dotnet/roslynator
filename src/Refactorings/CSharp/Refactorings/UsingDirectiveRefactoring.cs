@@ -15,11 +15,11 @@ internal static class UsingDirectiveRefactoring
         {
             NameEqualsSyntax alias = usingDirective.Alias;
 
-            if (alias != null)
+            if (alias is not null)
             {
                 IdentifierNameSyntax name = alias.Name;
 
-                if (name != null
+                if (name is not null
                     && context.Span.IsContainedInSpanOrBetweenSpans(name))
                 {
                     context.RegisterRefactoring(

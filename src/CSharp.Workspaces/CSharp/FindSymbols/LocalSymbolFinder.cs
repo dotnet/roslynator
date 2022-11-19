@@ -7,172 +7,173 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.FindSymbols;
-
-internal static class LocalSymbolFinder
+namespace Roslynator.CSharp.FindSymbols
 {
-    public static ImmutableArray<ISymbol> FindLocalSymbols(
-        SyntaxNode node,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken = default)
+    internal static class LocalSymbolFinder
     {
-        var walker = new LocalSymbolCollector(semanticModel, cancellationToken);
-
-        switch (node.Kind())
-        {
-            case SyntaxKind.ConstructorDeclaration:
-                {
-                    var constructor = (ConstructorDeclarationSyntax)node;
-                    walker.Visit(constructor.BodyOrExpressionBody());
-
-                    break;
-                }
-            case SyntaxKind.EventDeclaration:
-                {
-                    var eventDeclaration = (EventDeclarationSyntax)node;
-
-                    foreach (AccessorDeclarationSyntax accessor in eventDeclaration.AccessorList.Accessors)
-                        walker.Visit(accessor.BodyOrExpressionBody());
-
-                    break;
-                }
-            case SyntaxKind.IndexerDeclaration:
-                {
-                    var indexerDeclaration = (IndexerDeclarationSyntax)node;
-
-                    foreach (AccessorDeclarationSyntax accessor in indexerDeclaration.AccessorList.Accessors)
-                        walker.Visit(accessor.BodyOrExpressionBody());
-
-                    break;
-                }
-            case SyntaxKind.MethodDeclaration:
-                {
-                    var methodDeclaration = (MethodDeclarationSyntax)node;
-
-                    walker.Visit(methodDeclaration.BodyOrExpressionBody());
-
-                    break;
-                }
-            case SyntaxKind.PropertyDeclaration:
-                {
-                    var propertyDeclaration = (PropertyDeclarationSyntax)node;
-
-                    ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
-
-                    if (expressionBody != null)
-                    {
-                        walker.Visit(expressionBody);
-                    }
-                    else
-                    {
-                        foreach (AccessorDeclarationSyntax accessor in propertyDeclaration.AccessorList.Accessors)
-                            walker.Visit(accessor.BodyOrExpressionBody());
-                    }
-
-                    break;
-                }
-            case SyntaxKind.VariableDeclarator:
-                {
-                    var declarator = (VariableDeclaratorSyntax)node;
-
-                    ExpressionSyntax expression = declarator.Initializer?.Value;
-
-                    if (expression != null)
-                        walker.Visit(expression);
-
-                    break;
-                }
-            case SyntaxKind.OperatorDeclaration:
-                {
-                    var declaration = (OperatorDeclarationSyntax)node;
-
-                    walker.Visit(declaration.BodyOrExpressionBody());
-                    break;
-                }
-            case SyntaxKind.ConversionOperatorDeclaration:
-                {
-                    var declaration = (ConversionOperatorDeclarationSyntax)node;
-
-                    walker.Visit(declaration.BodyOrExpressionBody());
-                    break;
-                }
-            case SyntaxKind.Parameter:
-            case SyntaxKind.RecordDeclaration:
-                {
-                    break;
-                }
-            default:
-                {
-                    SyntaxDebug.Fail(node);
-
-                    walker.Visit(node);
-                    break;
-                }
-        }
-
-        return walker.Definitions.ToImmutableArray();
-    }
-
-    private class LocalSymbolCollector : LocalWalker
-    {
-        public LocalSymbolCollector(
+        public static ImmutableArray<ISymbol> FindLocalSymbols(
+            SyntaxNode node,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
-            SemanticModel = semanticModel;
-            CancellationToken = cancellationToken;
+            var walker = new LocalSymbolCollector(semanticModel, cancellationToken);
 
-            Definitions = ImmutableArray.CreateBuilder<ISymbol>();
+            switch (node.Kind())
+            {
+                case SyntaxKind.ConstructorDeclaration:
+                    {
+                        var constructor = (ConstructorDeclarationSyntax)node;
+                        walker.Visit(constructor.BodyOrExpressionBody());
+
+                        break;
+                    }
+                case SyntaxKind.EventDeclaration:
+                    {
+                        var eventDeclaration = (EventDeclarationSyntax)node;
+
+                        foreach (AccessorDeclarationSyntax accessor in eventDeclaration.AccessorList.Accessors)
+                            walker.Visit(accessor.BodyOrExpressionBody());
+
+                        break;
+                    }
+                case SyntaxKind.IndexerDeclaration:
+                    {
+                        var indexerDeclaration = (IndexerDeclarationSyntax)node;
+
+                        foreach (AccessorDeclarationSyntax accessor in indexerDeclaration.AccessorList.Accessors)
+                            walker.Visit(accessor.BodyOrExpressionBody());
+
+                        break;
+                    }
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        var methodDeclaration = (MethodDeclarationSyntax)node;
+
+                        walker.Visit(methodDeclaration.BodyOrExpressionBody());
+
+                        break;
+                    }
+                case SyntaxKind.PropertyDeclaration:
+                    {
+                        var propertyDeclaration = (PropertyDeclarationSyntax)node;
+
+                        ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
+
+                        if (expressionBody is not null)
+                        {
+                            walker.Visit(expressionBody);
+                        }
+                        else
+                        {
+                            foreach (AccessorDeclarationSyntax accessor in propertyDeclaration.AccessorList.Accessors)
+                                walker.Visit(accessor.BodyOrExpressionBody());
+                        }
+
+                        break;
+                    }
+                case SyntaxKind.VariableDeclarator:
+                    {
+                        var declarator = (VariableDeclaratorSyntax)node;
+
+                        ExpressionSyntax expression = declarator.Initializer?.Value;
+
+                        if (expression is not null)
+                            walker.Visit(expression);
+
+                        break;
+                    }
+                case SyntaxKind.OperatorDeclaration:
+                    {
+                        var declaration = (OperatorDeclarationSyntax)node;
+
+                        walker.Visit(declaration.BodyOrExpressionBody());
+                        break;
+                    }
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    {
+                        var declaration = (ConversionOperatorDeclarationSyntax)node;
+
+                        walker.Visit(declaration.BodyOrExpressionBody());
+                        break;
+                    }
+                case SyntaxKind.Parameter:
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        SyntaxDebug.Fail(node);
+
+                        walker.Visit(node);
+                        break;
+                    }
+            }
+
+            return walker.Definitions.ToImmutableArray();
         }
 
-        public SemanticModel SemanticModel { get; }
-
-        public CancellationToken CancellationToken { get; }
-
-        public ImmutableArray<ISymbol>.Builder Definitions { get; }
-
-        public override void VisitLocal(SyntaxNode node)
+        private class LocalSymbolCollector : LocalWalker
         {
-            ISymbol symbol = SemanticModel.GetDeclaredSymbol(node, CancellationToken);
-
-            if (symbol != null)
+            public LocalSymbolCollector(
+                SemanticModel semanticModel,
+                CancellationToken cancellationToken)
             {
-                Debug.Assert(symbol.IsKind(SymbolKind.Local, SymbolKind.Method), symbol.Kind.ToString());
+                SemanticModel = semanticModel;
+                CancellationToken = cancellationToken;
 
-                if (symbol.Kind == SymbolKind.Local)
+                Definitions = ImmutableArray.CreateBuilder<ISymbol>();
+            }
+
+            public SemanticModel SemanticModel { get; }
+
+            public CancellationToken CancellationToken { get; }
+
+            public ImmutableArray<ISymbol>.Builder Definitions { get; }
+
+            public override void VisitLocal(SyntaxNode node)
+            {
+                ISymbol symbol = SemanticModel.GetDeclaredSymbol(node, CancellationToken);
+
+                if (symbol is not null)
                 {
-                    VisitSymbol(symbol);
+                    Debug.Assert(symbol.IsKind(SymbolKind.Local, SymbolKind.Method), symbol.Kind.ToString());
+
+                    if (symbol.Kind == SymbolKind.Local)
+                    {
+                        VisitSymbol(symbol);
+                    }
+                    else if (symbol is IMethodSymbol methodSymbol
+                        && methodSymbol.MethodKind == MethodKind.LocalFunction)
+                    {
+                        VisitSymbol(symbol);
+
+                        foreach (IParameterSymbol parameterSymbol in methodSymbol.Parameters)
+                            VisitSymbol(parameterSymbol);
+
+                        foreach (ITypeParameterSymbol typeParameterSymbol in methodSymbol.TypeParameters)
+                            VisitSymbol(typeParameterSymbol);
+                    }
                 }
-                else if (symbol is IMethodSymbol methodSymbol
-                    && methodSymbol.MethodKind == MethodKind.LocalFunction)
+                else
                 {
-                    VisitSymbol(symbol);
+                    symbol = SemanticModel.GetSymbol(node, CancellationToken);
 
-                    foreach (IParameterSymbol parameterSymbol in methodSymbol.Parameters)
-                        VisitSymbol(parameterSymbol);
-
-                    foreach (ITypeParameterSymbol typeParameterSymbol in methodSymbol.TypeParameters)
-                        VisitSymbol(typeParameterSymbol);
+                    if (symbol is IMethodSymbol methodSymbol
+                        && methodSymbol.MethodKind == MethodKind.AnonymousFunction)
+                    {
+                        foreach (IParameterSymbol parameterSymbol in methodSymbol.Parameters)
+                            VisitSymbol(parameterSymbol);
+                    }
                 }
             }
-            else
+
+            private void VisitSymbol(ISymbol symbol)
             {
-                symbol = SemanticModel.GetSymbol(node, CancellationToken);
+                CancellationToken.ThrowIfCancellationRequested();
 
-                if (symbol is IMethodSymbol methodSymbol
-                    && methodSymbol.MethodKind == MethodKind.AnonymousFunction)
-                {
-                    foreach (IParameterSymbol parameterSymbol in methodSymbol.Parameters)
-                        VisitSymbol(parameterSymbol);
-                }
+                Definitions.Add(symbol);
             }
-        }
-
-        private void VisitSymbol(ISymbol symbol)
-        {
-            CancellationToken.ThrowIfCancellationRequested();
-
-            Definitions.Add(symbol);
         }
     }
 }

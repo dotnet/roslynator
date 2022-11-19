@@ -9,68 +9,69 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 using static Roslynator.CSharp.CSharpTypeFactory;
 
-namespace Roslynator.CSharp.Refactorings;
-
-internal static class IntroduceFieldToLockOnRefactoring
+namespace Roslynator.CSharp.Refactorings
 {
-    private const string LockObjectName = "_lockObject";
-
-    public static async Task<Document> RefactorAsync(
-        Document document,
-        LockStatementSyntax lockStatement,
-        CancellationToken cancellationToken = default)
+    internal static class IntroduceFieldToLockOnRefactoring
     {
-        MemberDeclarationSyntax containingMember = lockStatement.FirstAncestor<MemberDeclarationSyntax>();
+        private const string LockObjectName = "_lockObject";
 
-        Debug.Assert(containingMember != null);
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            LockStatementSyntax lockStatement,
+            CancellationToken cancellationToken = default)
+        {
+            MemberDeclarationSyntax containingMember = lockStatement.FirstAncestor<MemberDeclarationSyntax>();
 
-        if (containingMember == null)
-            return document;
+            Debug.Assert(containingMember is not null);
 
-        TypeDeclarationSyntax containingType = containingMember.FirstAncestor<TypeDeclarationSyntax>();
+            if (containingMember is null)
+                return document;
 
-        Debug.Assert(containingType != null);
+            TypeDeclarationSyntax containingType = containingMember.FirstAncestor<TypeDeclarationSyntax>();
 
-        if (containingType == null)
-            return document;
+            Debug.Assert(containingType is not null);
 
-        SyntaxList<MemberDeclarationSyntax> members = containingType.Members;
+            if (containingType is null)
+                return document;
 
-        int index = members.IndexOf(containingMember);
+            SyntaxList<MemberDeclarationSyntax> members = containingType.Members;
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            int index = members.IndexOf(containingMember);
 
-        string name = NameGenerator.Default.EnsureUniqueLocalName(
-            LockObjectName,
-            semanticModel,
-            lockStatement.Expression.SpanStart,
-            cancellationToken: cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        LockStatementSyntax newLockStatement = lockStatement
-            .WithExpression(IdentifierName(Identifier(name).WithRenameAnnotation()));
+            string name = NameGenerator.Default.EnsureUniqueLocalName(
+                LockObjectName,
+                semanticModel,
+                lockStatement.Expression.SpanStart,
+                cancellationToken: cancellationToken);
 
-        MemberDeclarationSyntax newContainingMember = containingMember
-            .ReplaceNode(lockStatement, newLockStatement);
+            LockStatementSyntax newLockStatement = lockStatement
+                .WithExpression(IdentifierName(Identifier(name).WithRenameAnnotation()));
 
-        bool isStatic = SyntaxInfo.ModifierListInfo(containingMember).IsStatic;
+            MemberDeclarationSyntax newContainingMember = containingMember
+                .ReplaceNode(lockStatement, newLockStatement);
 
-        FieldDeclarationSyntax field = CreateFieldDeclaration(name, isStatic).WithFormatterAnnotation();
+            bool isStatic = SyntaxInfo.ModifierListInfo(containingMember).IsStatic;
 
-        SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(index, newContainingMember);
+            FieldDeclarationSyntax field = CreateFieldDeclaration(name, isStatic).WithFormatterAnnotation();
 
-        newMembers = MemberDeclarationInserter.Default.Insert(newMembers, field);
+            SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(index, newContainingMember);
 
-        MemberDeclarationSyntax newNode = containingType.WithMembers(newMembers);
+            newMembers = MemberDeclarationInserter.Default.Insert(newMembers, field);
 
-        return await document.ReplaceNodeAsync(containingType, newNode, cancellationToken).ConfigureAwait(false);
-    }
+            MemberDeclarationSyntax newNode = containingType.WithMembers(newMembers);
 
-    private static FieldDeclarationSyntax CreateFieldDeclaration(string name, bool isStatic)
-    {
-        return FieldDeclaration(
-            (isStatic) ? Modifiers.Private_Static_ReadOnly() : Modifiers.Private_ReadOnly(),
-            ObjectType(),
-            Identifier(name),
-            ObjectCreationExpression(ObjectType(), ArgumentList()));
+            return await document.ReplaceNodeAsync(containingType, newNode, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static FieldDeclarationSyntax CreateFieldDeclaration(string name, bool isStatic)
+        {
+            return FieldDeclaration(
+                (isStatic) ? Modifiers.Private_Static_ReadOnly() : Modifiers.Private_ReadOnly(),
+                ObjectType(),
+                Identifier(name),
+                ObjectCreationExpression(ObjectType(), ArgumentList()));
+        }
     }
 }

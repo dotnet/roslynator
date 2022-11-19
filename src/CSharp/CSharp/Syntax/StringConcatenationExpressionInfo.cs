@@ -45,7 +45,7 @@ public readonly struct StringConcatenationExpressionInfo
     /// </summary>
     public bool Success
     {
-        get { return BinaryExpression != null; }
+        get { return BinaryExpression is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -223,7 +223,7 @@ public readonly struct StringConcatenationExpressionInfo
 
     private void ThrowInvalidOperationIfNotInitialized()
     {
-        if (BinaryExpression == null)
+        if (BinaryExpression is null)
             throw new InvalidOperationException($"{nameof(StringConcatenationExpressionInfo)} is not initalized.");
     }
 

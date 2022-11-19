@@ -46,7 +46,7 @@ public sealed class RemoveRedundantDisposeOrCloseCallAnalyzer : BaseDiagnosticAn
 
         StatementSyntax lastStatement = block.Statements.LastOrDefault();
 
-        if (lastStatement == null)
+        if (lastStatement is null)
             return;
 
         if (lastStatement.SpanContainsDirectives())
@@ -67,7 +67,7 @@ public sealed class RemoveRedundantDisposeOrCloseCallAnalyzer : BaseDiagnosticAn
 
         ExpressionSyntax usingExpression = usingStatement.Expression;
 
-        if (usingExpression != null)
+        if (usingExpression is not null)
         {
             if (CSharpFactory.AreEquivalent(info.Expression, usingExpression))
                 ReportDiagnostic(context, info.Statement, methodName);
@@ -76,14 +76,14 @@ public sealed class RemoveRedundantDisposeOrCloseCallAnalyzer : BaseDiagnosticAn
         {
             VariableDeclarationSyntax usingDeclaration = usingStatement.Declaration;
 
-            if (usingDeclaration != null
+            if (usingDeclaration is not null
                 && info.Expression.Kind() == SyntaxKind.IdentifierName)
             {
                 var identifierName = (IdentifierNameSyntax)info.Expression;
 
                 VariableDeclaratorSyntax declarator = usingDeclaration.Variables.LastOrDefault();
 
-                if (declarator != null
+                if (declarator is not null
                     && declarator.Identifier.ValueText == identifierName.Identifier.ValueText)
                 {
                     ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);

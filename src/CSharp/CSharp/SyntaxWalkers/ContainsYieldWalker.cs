@@ -22,7 +22,7 @@ internal sealed class ContainsYieldWalker : StatementWalker
 
     public override bool ShouldVisit
     {
-        get { return YieldStatement == null; }
+        get { return YieldStatement is null; }
     }
 
     public bool SearchForYieldBreak { get; private set; }
@@ -33,7 +33,7 @@ internal sealed class ContainsYieldWalker : StatementWalker
 
     public static bool ContainsYield(StatementSyntax statement, bool searchForYieldReturn = true, bool searchForYieldBreak = true)
     {
-        if (statement == null)
+        if (statement is null)
             throw new ArgumentNullException(nameof(statement));
 
         ContainsYieldWalker walker = GetInstance();
@@ -42,7 +42,7 @@ internal sealed class ContainsYieldWalker : StatementWalker
 
         walker.VisitStatement(statement);
 
-        bool success = walker.YieldStatement != null;
+        bool success = walker.YieldStatement is not null;
 
         Free(walker);
 
@@ -75,9 +75,9 @@ internal sealed class ContainsYieldWalker : StatementWalker
     {
         ContainsYieldWalker walker = _cachedInstance;
 
-        if (walker != null)
+        if (walker is not null)
         {
-            Debug.Assert(walker.YieldStatement == null);
+            Debug.Assert(walker.YieldStatement is null);
 
             _cachedInstance = null;
             return walker;

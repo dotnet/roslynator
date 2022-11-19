@@ -43,7 +43,7 @@ public sealed class RemoveRedundantDefaultSwitchSectionAnalyzer : BaseDiagnostic
 
         SwitchSectionSyntax defaultSection = switchStatement.DefaultSection();
 
-        if (defaultSection == null)
+        if (defaultSection is null)
             return;
 
         if (!ContainsOnlyBreakStatement(defaultSection))

@@ -48,7 +48,7 @@ public sealed class TypeParameterCodeFixProvider : CompilerDiagnosticCodeFixProv
 
                 TypeParameterConstraintClauseSyntax constraintClause = genericInfo.FindConstraintClause(name);
 
-                if (constraintClause != null)
+                if (constraintClause is not null)
                     newGenericInfo = newGenericInfo.RemoveConstraintClause(constraintClause);
 
                 return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, ct);

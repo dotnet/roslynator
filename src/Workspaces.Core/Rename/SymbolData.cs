@@ -22,5 +22,5 @@ internal readonly struct SymbolData
     public DocumentId DocumentId { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => (Symbol != null) ? $"{Symbol.Name}  {Id}" : "Uninitialized";
+    private string DebuggerDisplay => (Symbol is not null) ? $"{Symbol.Name}  {Id}" : "Uninitialized";
 }

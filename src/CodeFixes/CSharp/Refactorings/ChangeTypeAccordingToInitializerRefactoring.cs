@@ -98,7 +98,7 @@ internal static class ChangeTypeAccordingToInitializerRefactoring
                 semanticModel,
                 context.CancellationToken);
 
-            if (createChangedDocument == null)
+            if (createChangedDocument is null)
                 return default;
 
             ITypeSymbol typeArgument = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
@@ -123,7 +123,7 @@ internal static class ChangeTypeAccordingToInitializerRefactoring
     {
         TypeSyntax type = propertyDeclaration.Type;
 
-        if (type == null)
+        if (type is null)
             return default;
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);

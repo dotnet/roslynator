@@ -88,7 +88,7 @@ internal static class InheritDocUtility
     {
         INamedTypeSymbol containingType = symbol.ContainingType;
 
-        if (containingType != null)
+        if (containingType is not null)
         {
             foreach (INamedTypeSymbol interfaceSymbol in containingType.Interfaces)
             {

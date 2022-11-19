@@ -47,7 +47,7 @@ public sealed class MergeSwitchSectionsAnalyzer : BaseDiagnosticAnalyzer
 
         SwitchSectionSyntax section = FindFixableSection(sections);
 
-        if (section == null)
+        if (section is null)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
@@ -114,15 +114,15 @@ public sealed class MergeSwitchSectionsAnalyzer : BaseDiagnosticAnalyzer
                 }
             case ReturnStatementSyntax returnStatement:
                 {
-                    return returnStatement.Expression == null
+                    return returnStatement.Expression is null
                         && (statement2 is ReturnStatementSyntax returnStatement2)
-                        && returnStatement2.Expression == null;
+                        && returnStatement2.Expression is null;
                 }
             case ThrowStatementSyntax throwStatement:
                 {
-                    return throwStatement.Expression == null
+                    return throwStatement.Expression is null
                         && (statement2 is ThrowStatementSyntax throwStatement2)
-                        && throwStatement2.Expression == null;
+                        && throwStatement2.Expression is null;
                 }
         }
 

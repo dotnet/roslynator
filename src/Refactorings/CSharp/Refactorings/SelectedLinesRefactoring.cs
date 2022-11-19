@@ -132,7 +132,7 @@ internal abstract class SelectedLinesRefactoring
             {
                 n = n.Parent;
 
-                if (n == null)
+                if (n is null)
                     return false;
             }
 
@@ -155,7 +155,7 @@ internal abstract class SelectedLinesRefactoring
     {
         SyntaxToken token = root.FindToken(position, findInsideTrivia: true);
 
-        for (SyntaxNode node = token.Parent; node != null; node = node.Parent)
+        for (SyntaxNode node = token.Parent; node is not null; node = node.Parent)
         {
             if (node.IsKind(SyntaxKind.MultiLineDocumentationCommentTrivia))
                 return true;

@@ -87,7 +87,7 @@ internal static class GenerateEnumMemberRefactoring
     {
         EqualsValueClauseSyntax equalsValue = null;
 
-        if (value != null)
+        if (value is not null)
             equalsValue = EqualsValueClause(CSharpFactory.NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType));
 
         string name = NameGenerator.Default.EnsureUniqueEnumMemberName(DefaultNames.EnumMember, enumSymbol);

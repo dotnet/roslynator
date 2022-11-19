@@ -13,7 +13,7 @@ internal static class WrapBinaryExpressionRefactoring
     {
         binaryExpression = GetBinaryExpression(binaryExpression, context.Span);
 
-        if (binaryExpression == null)
+        if (binaryExpression is null)
             return;
 
         if (!IsFormattableKind(binaryExpression.Kind()))
@@ -66,7 +66,7 @@ internal static class WrapBinaryExpressionRefactoring
         {
             success = false;
 
-            if (binaryExpression.Parent != null
+            if (binaryExpression.Parent is not null
                 && IsFormattableKind(binaryExpression.Parent.Kind()))
             {
                 var parent = (BinaryExpressionSyntax)binaryExpression.Parent;

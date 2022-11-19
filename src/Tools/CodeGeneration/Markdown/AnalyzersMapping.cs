@@ -38,7 +38,7 @@ RCS1185;FormatSingleLineBlock;RCS0021;AddNewLineAfterOpeningBraceOfBlock
     {
         get
         {
-            if (_mapping == null)
+            if (_mapping is null)
                 Interlocked.CompareExchange(ref _mapping, LoadMapping(), null);
 
             return _mapping;
@@ -53,7 +53,7 @@ RCS1185;FormatSingleLineBlock;RCS0021;AddNewLineAfterOpeningBraceOfBlock
         {
             string line = null;
 
-            while ((line = sr.ReadLine()) != null)
+            while ((line = sr.ReadLine()) is not null)
             {
                 if (line.Length > 0)
                 {

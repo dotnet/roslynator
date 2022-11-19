@@ -125,7 +125,7 @@ internal class Spellchecker
             if (match.Length >= Options.MinWordLength
                 && match.Length <= Options.MaxWordLength)
             {
-                if (_splitRegex == null)
+                if (_splitRegex is null)
                 {
                     AnalyzeValue(match.Value, match.Index, null, 0, ref builder);
                 }

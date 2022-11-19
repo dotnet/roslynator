@@ -95,7 +95,7 @@ public sealed class XmlDocumentation
 
     internal SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string commentId)
     {
-        if (_elementsById == null)
+        if (_elementsById is null)
         {
             Interlocked.CompareExchange(ref _elementsById, LoadElements(), null);
         }

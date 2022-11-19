@@ -41,7 +41,7 @@ internal static class MoveUnsafeContextToContainingDeclarationRefactoring
 
         SyntaxNode parent = node.FirstAncestor(f => CSharpFacts.CanHaveUnsafeModifier(f.Kind()));
 
-        if (parent == null)
+        if (parent is null)
             return;
 
         ModifierListInfo modifiersInfo = SyntaxInfo.ModifierListInfo(parent);
@@ -67,7 +67,7 @@ internal static class MoveUnsafeContextToContainingDeclarationRefactoring
 
         SyntaxNode parent = unsafeStatement.FirstAncestor(f => CSharpFacts.CanHaveUnsafeModifier(f.Kind()));
 
-        if (parent == null)
+        if (parent is null)
             return;
 
         ModifierListInfo modifiersInfo = SyntaxInfo.ModifierListInfo(parent);

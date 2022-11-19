@@ -132,7 +132,7 @@ internal static class ForEachStatementRefactoring
     {
         TypeSyntax type = forEachStatement.Type;
 
-        if (type == null)
+        if (type is null)
             return;
 
         SyntaxToken identifier = forEachStatement.Identifier;
@@ -156,7 +156,7 @@ internal static class ForEachStatementRefactoring
             forEachStatement.SpanStart,
             cancellationToken: context.CancellationToken);
 
-        if (newName == null)
+        if (newName is null)
             return;
 
         ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);

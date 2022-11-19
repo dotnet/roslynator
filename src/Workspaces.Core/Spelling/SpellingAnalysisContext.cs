@@ -64,7 +64,7 @@ internal class SpellingAnalysisContext
 
             ImmutableDictionary<string, string> properties;
 
-            if (match.Parent != null)
+            if (match.Parent is not null)
             {
                 properties = ImmutableDictionary.CreateRange(new[]
                     {

@@ -20,7 +20,7 @@ internal static class StatementRefactoring
         {
             StatementSyntax statement = GetStatement(context, block, block.Parent);
 
-            if (statement != null)
+            if (statement is not null)
                 RegisterRefactoring(context, statement);
         }
     }
@@ -122,7 +122,7 @@ internal static class StatementRefactoring
                         return ifStatement;
                     }
 
-                    if (ifStatement.Else == null
+                    if (ifStatement.Else is null
                         && block.CloseBraceToken.Span.Contains(context.Span))
                     {
                         return ifStatement.GetTopmostIf();
@@ -147,7 +147,7 @@ internal static class StatementRefactoring
                     {
                         var tryStatement = (TryStatementSyntax)catchClause.Parent;
 
-                        if (tryStatement.Finally == null
+                        if (tryStatement.Finally is null
                             && catchClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
                         {
                             return tryStatement;

@@ -23,7 +23,7 @@ internal static class ConvertForToWhileRefactoring
 
         VariableDeclarationSyntax declaration = forStatement.Declaration;
 
-        if (declaration != null)
+        if (declaration is not null)
         {
             statements.Add(LocalDeclarationStatement(declaration));
         }

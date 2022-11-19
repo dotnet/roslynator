@@ -41,7 +41,7 @@ internal static class SymbolDefinitionDisplay
         INamedTypeSymbol baseType = null;
         ImmutableArray<INamedTypeSymbol> interfaces = ImmutableArray<INamedTypeSymbol>.Empty;
 
-        if (typeSymbol != null
+        if (typeSymbol is not null
             && (typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.BaseList) != 0)
         {
             if ((typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.BaseType) != 0
@@ -67,7 +67,7 @@ internal static class SymbolDefinitionDisplay
 
         int baseListCount = interfaces.Length;
 
-        if (baseType != null)
+        if (baseType is not null)
             baseListCount++;
 
         int constraintCount = 0;
@@ -101,7 +101,7 @@ internal static class SymbolDefinitionDisplay
             builder.AddPunctuation(":");
             builder.AddSpace();
 
-            if (baseType != null)
+            if (baseType is not null)
             {
                 builder.AddDisplayParts(baseType, format, additionalOptions);
 
@@ -187,7 +187,7 @@ internal static class SymbolDefinitionDisplay
             }
         }
 
-        if (builder == null
+        if (builder is null
             && attributes.Any())
         {
             builder = ImmutableArray.CreateBuilder<SymbolDisplayPart>(parts.Length);
@@ -206,7 +206,7 @@ internal static class SymbolDefinitionDisplay
                 var propertySymbol = (IPropertySymbol)symbol;
 
                 IMethodSymbol getMethod = propertySymbol.GetMethod;
-                if (getMethod != null)
+                if (getMethod is not null)
                 {
                     builder ??= parts.ToBuilder();
 
@@ -214,7 +214,7 @@ internal static class SymbolDefinitionDisplay
                 }
 
                 IMethodSymbol setMethod = propertySymbol.SetMethod;
-                if (setMethod != null)
+                if (setMethod is not null)
                 {
                     builder ??= parts.ToBuilder();
 
@@ -260,7 +260,7 @@ internal static class SymbolDefinitionDisplay
 
         if (ShouldAddTrailingSemicolon())
         {
-            if (builder == null)
+            if (builder is null)
             {
                 parts = parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.Punctuation, null, ";"));
             }
@@ -274,7 +274,7 @@ internal static class SymbolDefinitionDisplay
 
         void InitializeBuilder()
         {
-            if (builder == null)
+            if (builder is null)
             {
                 builder = ImmutableArray.CreateBuilder<SymbolDisplayPart>(parts.Length);
 
@@ -531,7 +531,7 @@ internal static class SymbolDefinitionDisplay
                     }
                 case TypedConstantKind.Type:
                     {
-                        if (typedConstant.Value == null)
+                        if (typedConstant.Value is null)
                         {
                             parts.AddKeyword("null");
                         }
@@ -1160,12 +1160,12 @@ internal static class SymbolDefinitionDisplay
 
     private static IEnumerable<AttributeData> GetAttributes(ISymbol symbol, Func<ISymbol, AttributeData, bool> predicate)
     {
-        if (symbol == null)
+        if (symbol is null)
             return ImmutableArray<AttributeData>.Empty;
 
         ImmutableArray<AttributeData> attributes = symbol.GetAttributes();
 
-        if (predicate != null)
+        if (predicate is not null)
             return attributes.Where(f => predicate(symbol, f));
 
         return attributes;

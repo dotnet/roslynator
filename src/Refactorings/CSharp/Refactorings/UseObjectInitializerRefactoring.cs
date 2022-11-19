@@ -36,7 +36,7 @@ internal static class UseObjectInitializerRefactoring
 
             objectCreation = variable?.Initializer?.Value as ObjectCreationExpressionSyntax;
 
-            if (objectCreation != null)
+            if (objectCreation is not null)
             {
                 semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -51,7 +51,7 @@ internal static class UseObjectInitializerRefactoring
             {
                 objectCreation = assignment.Right as ObjectCreationExpressionSyntax;
 
-                if (objectCreation != null)
+                if (objectCreation is not null)
                 {
                     semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -60,7 +60,7 @@ internal static class UseObjectInitializerRefactoring
             }
         }
 
-        if (objectCreation == null)
+        if (objectCreation is null)
             return;
 
         if (symbol?.IsErrorType() != false)

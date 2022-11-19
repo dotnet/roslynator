@@ -154,7 +154,7 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
     {
         if (HasContent(typeSymbol))
         {
-            if (typeSymbol != null)
+            if (typeSymbol is not null)
             {
                 WritePropertyName("type");
                 WriteDefinition(typeSymbol, format);
@@ -170,7 +170,7 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
                 WriteProperty("type", "");
             }
         }
-        else if (typeSymbol != null)
+        else if (typeSymbol is not null)
         {
             WriteDefinition(typeSymbol, format);
         }
@@ -296,7 +296,7 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
 
     public override void WriteAttribute(AttributeData attribute)
     {
-        if (_definitionWriter == null)
+        if (_definitionWriter is null)
         {
             _attributeStringBuilder = new StringBuilder();
             var stringWriter = new StringWriter(_attributeStringBuilder);
@@ -423,7 +423,7 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
 
             WriteEndObject();
         }
-        else if (typeSymbol != null)
+        else if (typeSymbol is not null)
         {
             WriteDefinition(typeSymbol, DefinitionFormat);
         }
@@ -441,7 +441,7 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
 
     private bool HasContent(INamedTypeSymbol typeSymbol)
     {
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return true;
 
         if (Format.Includes(SymbolDefinitionPartFilter.Attributes)
@@ -498,7 +498,7 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
 
     public override void WriteDefinition(ISymbol symbol, ImmutableArray<SymbolDisplayPart> parts)
     {
-        if (_definitionWriter == null)
+        if (_definitionWriter is null)
         {
             _attributeStringBuilder = new StringBuilder();
             var stringWriter = new StringWriter(_attributeStringBuilder);
@@ -585,7 +585,7 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
 
     public override void Close()
     {
-        if (_writer != null)
+        if (_writer is not null)
         {
             try
             {

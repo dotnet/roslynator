@@ -28,7 +28,7 @@ internal static class CommaTokenRefactoring
                 .FindNode(new TextSpan(context.Span.Start - 1, 1))?
                 .FirstAncestorOrSelf<ParameterSyntax>();
 
-            if (parameter != null)
+            if (parameter is not null)
                 await ParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
         }
 
@@ -38,7 +38,7 @@ internal static class CommaTokenRefactoring
                 .Arguments
                 .FirstOrDefault(f => f.FullSpan.End == commaToken.FullSpan.Start);
 
-            if (argument != null)
+            if (argument is not null)
                 ArgumentRefactoring.ComputeRefactorings(context, argument);
         }
     }

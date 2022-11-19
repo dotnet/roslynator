@@ -11,192 +11,193 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis;
-
-[DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class UseExceptionFilterAnalyzer : BaseDiagnosticAnalyzer
+namespace Roslynator.CSharp.Analysis
 {
-    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class UseExceptionFilterAnalyzer : BaseDiagnosticAnalyzer
     {
-        get
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseExceptionFilter);
-
-            return _supportedDiagnostics;
-        }
-    }
-
-    public override void Initialize(AnalysisContext context)
-    {
-        base.Initialize(context);
-
-        context.RegisterCompilationStartAction(startContext =>
-        {
-            if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp6)
-                return;
-
-            startContext.RegisterSyntaxNodeAction(f => AnalyzeCatchClause(f), SyntaxKind.CatchClause);
-        });
-    }
-
-    private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
-    {
-        var catchClause = (CatchClauseSyntax)context.Node;
-
-        if (catchClause.Filter != null)
-            return;
-
-        if (catchClause.Block.Statements.FirstOrDefault() is not IfStatementSyntax ifStatement)
-            return;
-
-        if (IsThrowStatementWithoutExpression(ifStatement.Statement.SingleNonBlockStatementOrDefault())
-            ^ IsThrowStatementWithoutExpression(ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault()))
-        {
-            bool canUseExceptionFilter;
-            UseExceptionFilterWalker walker = null;
-
-            try
+            get
             {
-                walker = UseExceptionFilterWalker.GetInstance();
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseExceptionFilter);
 
-                walker.SemanticModel = context.SemanticModel;
-                walker.CancellationToken = context.CancellationToken;
-
-                walker.Visit(ifStatement.Condition);
-
-                canUseExceptionFilter = walker.CanUseExceptionFilter;
+                return _supportedDiagnostics;
             }
-            finally
-            {
-                if (walker != null)
-                    UseExceptionFilterWalker.Free(walker);
-            }
-
-            if (!canUseExceptionFilter)
-                return;
-
-            if (ifStatement.ContainsUnbalancedIfElseDirectives())
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseExceptionFilter, ifStatement.IfKeyword);
-        }
-    }
-
-    private static bool IsThrowStatementWithoutExpression(StatementSyntax statement)
-    {
-        return (statement is ThrowStatementSyntax throwStatement)
-            && throwStatement.Expression == null;
-    }
-
-    private class UseExceptionFilterWalker : CSharpSyntaxNodeWalker
-    {
-        [ThreadStatic]
-        private static UseExceptionFilterWalker _cachedInstance;
-
-        private static readonly Regex _exceptionElementRegex = new(@"\<(?i:exception)\ +cref=(?:""|')");
-
-        public bool CanUseExceptionFilter { get; set; } = true;
-
-        public SemanticModel SemanticModel { get; set; }
-
-        public CancellationToken CancellationToken { get; set; }
-
-        protected override bool ShouldVisit => CanUseExceptionFilter;
-
-        public override void VisitInvocationExpression(InvocationExpressionSyntax node)
-        {
-            switch (node.Expression)
-            {
-                case SimpleNameSyntax simpleName:
-                    {
-                        AnalyzeSimpleName(simpleName);
-                        break;
-                    }
-                case MemberBindingExpressionSyntax memberBindingExpression:
-                    {
-                        AnalyzeSimpleName(memberBindingExpression.Name);
-                        break;
-                    }
-                case MemberAccessExpressionSyntax memberAccessExpression:
-                    {
-                        AnalyzeSimpleName(memberAccessExpression.Name);
-                        break;
-                    }
-                default:
-                    {
-                        SyntaxDebug.Fail(node);
-                        break;
-                    }
-            }
-
-            base.VisitInvocationExpression(node);
         }
 
-        private void AnalyzeSimpleName(SimpleNameSyntax simpleName)
+        public override void Initialize(AnalysisContext context)
         {
-            if (simpleName.Identifier.ValueText.StartsWith("ThrowIf", StringComparison.Ordinal))
+            base.Initialize(context);
+
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp6)
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeCatchClause(f), SyntaxKind.CatchClause);
+            });
+        }
+
+        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
+        {
+            var catchClause = (CatchClauseSyntax)context.Node;
+
+            if (catchClause.Filter is not null)
+                return;
+
+            if (catchClause.Block.Statements.FirstOrDefault() is not IfStatementSyntax ifStatement)
+                return;
+
+            if (IsThrowStatementWithoutExpression(ifStatement.Statement.SingleNonBlockStatementOrDefault())
+                ^ IsThrowStatementWithoutExpression(ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault()))
+            {
+                bool canUseExceptionFilter;
+                UseExceptionFilterWalker walker = null;
+
+                try
+                {
+                    walker = UseExceptionFilterWalker.GetInstance();
+
+                    walker.SemanticModel = context.SemanticModel;
+                    walker.CancellationToken = context.CancellationToken;
+
+                    walker.Visit(ifStatement.Condition);
+
+                    canUseExceptionFilter = walker.CanUseExceptionFilter;
+                }
+                finally
+                {
+                    if (walker is not null)
+                        UseExceptionFilterWalker.Free(walker);
+                }
+
+                if (!canUseExceptionFilter)
+                    return;
+
+                if (ifStatement.ContainsUnbalancedIfElseDirectives())
+                    return;
+
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseExceptionFilter, ifStatement.IfKeyword);
+            }
+        }
+
+        private static bool IsThrowStatementWithoutExpression(StatementSyntax statement)
+        {
+            return (statement is ThrowStatementSyntax throwStatement)
+                && throwStatement.Expression is null;
+        }
+
+        private class UseExceptionFilterWalker : CSharpSyntaxNodeWalker
+        {
+            [ThreadStatic]
+            private static UseExceptionFilterWalker _cachedInstance;
+
+            private static readonly Regex _exceptionElementRegex = new(@"\<(?i:exception)\ +cref=(?:""|')");
+
+            public bool CanUseExceptionFilter { get; set; } = true;
+
+            public SemanticModel SemanticModel { get; set; }
+
+            public CancellationToken CancellationToken { get; set; }
+
+            protected override bool ShouldVisit => CanUseExceptionFilter;
+
+            public override void VisitInvocationExpression(InvocationExpressionSyntax node)
+            {
+                switch (node.Expression)
+                {
+                    case SimpleNameSyntax simpleName:
+                        {
+                            AnalyzeSimpleName(simpleName);
+                            break;
+                        }
+                    case MemberBindingExpressionSyntax memberBindingExpression:
+                        {
+                            AnalyzeSimpleName(memberBindingExpression.Name);
+                            break;
+                        }
+                    case MemberAccessExpressionSyntax memberAccessExpression:
+                        {
+                            AnalyzeSimpleName(memberAccessExpression.Name);
+                            break;
+                        }
+                    default:
+                        {
+                            SyntaxDebug.Fail(node);
+                            break;
+                        }
+                }
+
+                base.VisitInvocationExpression(node);
+            }
+
+            private void AnalyzeSimpleName(SimpleNameSyntax simpleName)
+            {
+                if (simpleName.Identifier.ValueText.StartsWith("ThrowIf", StringComparison.Ordinal))
+                    CanUseExceptionFilter = false;
+
+                ISymbol symbol = SemanticModel.GetSymbol(simpleName, CancellationToken);
+
+                string xml = symbol?.GetDocumentationCommentXml(cancellationToken: CancellationToken);
+
+                if (xml is not null
+                    && _exceptionElementRegex.IsMatch(xml))
+                {
+                    CanUseExceptionFilter = false;
+                }
+            }
+
+            public override void VisitAwaitExpression(AwaitExpressionSyntax node)
+            {
                 CanUseExceptionFilter = false;
+            }
 
-            ISymbol symbol = SemanticModel.GetSymbol(simpleName, CancellationToken);
-
-            string xml = symbol?.GetDocumentationCommentXml(cancellationToken: CancellationToken);
-
-            if (xml != null
-                && _exceptionElementRegex.IsMatch(xml))
+            public override void VisitThrowExpression(ThrowExpressionSyntax node)
             {
                 CanUseExceptionFilter = false;
             }
-        }
 
-        public override void VisitAwaitExpression(AwaitExpressionSyntax node)
-        {
-            CanUseExceptionFilter = false;
-        }
-
-        public override void VisitThrowExpression(ThrowExpressionSyntax node)
-        {
-            CanUseExceptionFilter = false;
-        }
-
-        public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
-        {
-        }
-
-        public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
-        {
-        }
-
-        public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
-        {
-        }
-
-        public static UseExceptionFilterWalker GetInstance()
-        {
-            UseExceptionFilterWalker walker = _cachedInstance;
-
-            if (walker != null)
+            public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
             {
-                Debug.Assert(walker.CanUseExceptionFilter = true);
-                Debug.Assert(walker.SemanticModel == null);
-                Debug.Assert(walker.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
             }
 
-            return new UseExceptionFilterWalker();
-        }
+            public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
+            {
+            }
 
-        public static void Free(UseExceptionFilterWalker walker)
-        {
-            walker.CanUseExceptionFilter = true;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
+            public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
+            {
+            }
 
-            _cachedInstance = walker;
+            public static UseExceptionFilterWalker GetInstance()
+            {
+                UseExceptionFilterWalker walker = _cachedInstance;
+
+                if (walker is not null)
+                {
+                    Debug.Assert(walker.CanUseExceptionFilter = true);
+                    Debug.Assert(walker.SemanticModel is null);
+                    Debug.Assert(walker.CancellationToken == default);
+
+                    _cachedInstance = null;
+                    return walker;
+                }
+
+                return new UseExceptionFilterWalker();
+            }
+
+            public static void Free(UseExceptionFilterWalker walker)
+            {
+                walker.CanUseExceptionFilter = true;
+                walker.SemanticModel = null;
+                walker.CancellationToken = default;
+
+                _cachedInstance = walker;
+            }
         }
     }
 }

@@ -91,9 +91,9 @@ public sealed class UseSpacesInsteadOfTabAnalyzer : BaseDiagnosticAnalyzer
         {
             UseSpacesInsteadOfTabWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker.AnalysisContext.Tree == null);
+                Debug.Assert(walker.AnalysisContext.Tree is null);
                 Debug.Assert(walker.AnalysisContext.CancellationToken == default);
 
                 _cachedInstance = null;

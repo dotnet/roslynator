@@ -23,15 +23,15 @@ internal static class UseRegexInstanceInsteadOfStaticMethodRefactoring
 
         MemberDeclarationSyntax memberDeclaration = invocationExpression.FirstAncestor<MemberDeclarationSyntax>();
 
-        Debug.Assert(memberDeclaration != null, "");
+        Debug.Assert(memberDeclaration is not null, "");
 
-        if (memberDeclaration != null)
+        if (memberDeclaration is not null)
         {
             TypeDeclarationSyntax typeDeclaration = memberDeclaration.FirstAncestor<TypeDeclarationSyntax>();
 
-            Debug.Assert(typeDeclaration != null, "");
+            Debug.Assert(typeDeclaration is not null, "");
 
-            if (typeDeclaration != null)
+            if (typeDeclaration is not null)
             {
                 SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
 
@@ -84,11 +84,11 @@ internal static class UseRegexInstanceInsteadOfStaticMethodRefactoring
         {
             IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(arguments[i], cancellationToken: cancellationToken);
 
-            Debug.Assert(parameterSymbol != null, "");
+            Debug.Assert(parameterSymbol is not null, "");
 
-            if (parameterSymbol != null)
+            if (parameterSymbol is not null)
             {
-                if (pattern == null
+                if (pattern is null
                     && parameterSymbol.Type.IsString()
                     && parameterSymbol.Name == "pattern")
                 {
@@ -96,14 +96,14 @@ internal static class UseRegexInstanceInsteadOfStaticMethodRefactoring
                     newArguments = newArguments.RemoveAt(i);
                 }
 
-                if (regexOptions == null
+                if (regexOptions is null
                     && parameterSymbol.Type.HasMetadataName(MetadataNames.System_Text_RegularExpressions_RegexOptions))
                 {
                     regexOptions = arguments[i];
                     newArguments = newArguments.RemoveAt(i);
                 }
 
-                if (matchTimeout == null
+                if (matchTimeout is null
                     && parameterSymbol.Type.HasMetadataName(MetadataNames.System_TimeSpan))
                 {
                     matchTimeout = arguments[i];
@@ -116,13 +116,13 @@ internal static class UseRegexInstanceInsteadOfStaticMethodRefactoring
 
         var arguments2 = new List<ArgumentSyntax>();
 
-        if (pattern != null)
+        if (pattern is not null)
             arguments2.Add(pattern);
 
-        if (regexOptions != null)
+        if (regexOptions is not null)
             arguments2.Add(regexOptions);
 
-        if (matchTimeout != null)
+        if (matchTimeout is not null)
             arguments2.Add(matchTimeout);
 
         return new ArgumentListPair(argumentList, ArgumentList(arguments2.ToArray()));

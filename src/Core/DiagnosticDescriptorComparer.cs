@@ -24,10 +24,10 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
         if (x == y)
             return 0;
 
-        if (x == null)
+        if (x is null)
             return -1;
 
-        if (y == null)
+        if (y is null)
             return 1;
 
         if (x is DiagnosticDescriptor a
@@ -44,10 +44,10 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
         if (x == y)
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (x is DiagnosticDescriptor a
@@ -61,7 +61,7 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
 
     public int GetHashCode(object obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 0;
 
         if (obj is DiagnosticDescriptor descriptor)
@@ -77,10 +77,10 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             return string.CompareOrdinal(x.Id, y.Id);
@@ -91,10 +91,10 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return string.Equals(x.Id, y.Id, StringComparison.Ordinal);
@@ -102,7 +102,7 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
 
         public override int GetHashCode(DiagnosticDescriptor obj)
         {
-            if (obj == null)
+            if (obj is null)
                 return 0;
 
             return StringComparer.Ordinal.GetHashCode(obj.Id);

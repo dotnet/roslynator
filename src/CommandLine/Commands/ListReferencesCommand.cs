@@ -42,7 +42,7 @@ internal class ListReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
         foreach (string display in compilations
             .SelectMany(compilation => compilation.ExternalReferences.Select(reference => (compilation, reference)))
             .Select(f => GetDisplay(f.compilation, f.reference))
-            .Where(f => f != null)
+            .Where(f => f is not null)
             .Distinct()
             .OrderBy(f => f, StringComparer.InvariantCulture))
         {

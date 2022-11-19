@@ -86,7 +86,7 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
         }
         finally
         {
-            if (walker != null)
+            if (walker is not null)
                 MakeClassStaticWalker.Free(walker);
         }
 
@@ -217,10 +217,10 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
         {
             MakeClassStaticWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker.Symbol == null);
-                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.Symbol is null);
+                Debug.Assert(walker.SemanticModel is null);
                 Debug.Assert(walker.CancellationToken == default);
 
                 _cachedInstance = null;

@@ -128,7 +128,7 @@ public sealed class LocalDeclarationStatementAnalyzer : BaseDiagnosticAnalyzer
         }
         finally
         {
-            if (walker != null)
+            if (walker is not null)
                 MarkLocalVariableAsConstWalker.Free(walker);
         }
 

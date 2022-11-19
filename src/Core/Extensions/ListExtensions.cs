@@ -10,7 +10,7 @@ internal static class ListExtensions
 {
     public static T SingleOrDefault<T>(this IReadOnlyList<T> list, bool shouldThrow)
     {
-        if (list == null)
+        if (list is null)
             throw new ArgumentNullException(nameof(list));
 
         if (shouldThrow)
@@ -25,7 +25,7 @@ internal static class ListExtensions
 
     public static T SingleOrDefault<T>(this IReadOnlyList<T> list, Func<T, bool> predicate, bool shouldThrow)
     {
-        if (list == null)
+        if (list is null)
             throw new ArgumentNullException(nameof(list));
 
         if (shouldThrow)

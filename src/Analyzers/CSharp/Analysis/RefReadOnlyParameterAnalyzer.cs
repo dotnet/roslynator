@@ -99,10 +99,10 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         ParameterListSyntax parameterList,
         CSharpSyntaxNode bodyOrExpressionBody)
     {
-        if (parameterList == null)
+        if (parameterList is null)
             return;
 
-        if (bodyOrExpressionBody == null)
+        if (bodyOrExpressionBody is null)
             return;
 
         if (!parameterList.Parameters.Any())
@@ -145,7 +145,7 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
             if (parameter.RefKind != RefKind.None)
                 continue;
 
-            if (walker == null)
+            if (walker is null)
             {
                 if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                     break;
@@ -161,7 +161,7 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
             walker.Parameters.Add(parameter.Name, parameter);
         }
 
-        if (walker == null)
+        if (walker is null)
             return;
 
         try
@@ -326,10 +326,10 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         {
             SyntaxWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
                 Debug.Assert(walker.Parameters.Count == 0);
-                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.SemanticModel is null);
                 Debug.Assert(walker.CancellationToken == default);
 
                 _cachedInstance = null;

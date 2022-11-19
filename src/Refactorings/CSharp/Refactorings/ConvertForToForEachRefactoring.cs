@@ -54,9 +54,9 @@ internal static class ConvertForToForEachRefactoring
                 f => f.Parameters.SingleOrDefault(shouldThrow: false)?.Type.SpecialType == SpecialType.System_Int32,
                 includeBaseTypes: true);
 
-            Debug.Assert(member != null, "");
+            Debug.Assert(member is not null, "");
 
-            if (member != null)
+            if (member is not null)
                 type = member.Type.ToTypeSyntax().WithSimplifierAnnotation();
         }
 
@@ -80,7 +80,7 @@ internal static class ConvertForToForEachRefactoring
             .Variables
             .SingleOrDefault(shouldThrow: false);
 
-        if (variableDeclarator == null)
+        if (variableDeclarator is null)
             return false;
 
         if (variableDeclarator.Initializer?.Value?.IsNumericLiteralExpression("0") != true)
@@ -105,7 +105,7 @@ internal static class ConvertForToForEachRefactoring
 
         ExpressionSyntax expression = memberAccessExpression.Expression;
 
-        if (expression == null)
+        if (expression is null)
             return false;
 
         if (forStatement.Incrementors.SingleOrDefault(shouldThrow: false)?.IsKind(SyntaxKind.PostIncrementExpression) != true)
@@ -115,7 +115,7 @@ internal static class ConvertForToForEachRefactoring
 
         ISymbol symbol = semanticModel.GetSymbol(expression, context.CancellationToken);
 
-        if (symbol == null)
+        if (symbol is null)
             return false;
 
         ISymbol variableSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
@@ -162,7 +162,7 @@ internal static class ConvertForToForEachRefactoring
 
         ExpressionSyntax expression = elementAccess.Expression;
 
-        if (expression == null)
+        if (expression is null)
             return false;
 
         ISymbol expressionSymbol = semanticModel.GetSymbol(expression, cancellationToken);

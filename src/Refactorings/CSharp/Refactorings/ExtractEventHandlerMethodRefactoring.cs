@@ -39,7 +39,7 @@ internal static class ExtractEventHandlerMethodRefactoring
 
         MemberDeclarationSyntax memberDeclaration = assignmentExpression.FirstAncestor<MemberDeclarationSyntax>();
 
-        if (memberDeclaration == null)
+        if (memberDeclaration is null)
             return;
 
         Debug.Assert(memberDeclaration.Parent is TypeDeclarationSyntax);

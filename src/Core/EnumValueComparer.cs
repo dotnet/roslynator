@@ -46,10 +46,10 @@ internal static class EnumValueComparer
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             if (x is sbyte xvalue
@@ -75,10 +75,10 @@ internal static class EnumValueComparer
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             if (x is byte xvalue
@@ -104,10 +104,10 @@ internal static class EnumValueComparer
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             if (x is short xvalue
@@ -133,10 +133,10 @@ internal static class EnumValueComparer
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             if (x is ushort xvalue
@@ -162,10 +162,10 @@ internal static class EnumValueComparer
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             if (x is int xvalue
@@ -191,10 +191,10 @@ internal static class EnumValueComparer
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             if (x is uint xvalue
@@ -220,10 +220,10 @@ internal static class EnumValueComparer
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             if (x is long xvalue
@@ -249,10 +249,10 @@ internal static class EnumValueComparer
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             if (x is ulong xvalue

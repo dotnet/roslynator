@@ -170,7 +170,7 @@ public sealed class EnumMemberDeclarationCodeFixProvider : BaseCodeFixProvider
 
         EnumMemberDeclarationSyntax newEnumMember;
 
-        if (equalsValue != null)
+        if (equalsValue is not null)
         {
             IdentifierNameSyntax newValue = IdentifierName(Identifier(equalsValue.Value.GetLeadingTrivia(), valueText, equalsValue.Value.GetTrailingTrivia()));
             newEnumMember = enumMember.WithEqualsValue(equalsValue.WithValue(newValue));

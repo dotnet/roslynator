@@ -21,10 +21,10 @@ internal abstract class TypeComparer : IComparer<Type>, IEqualityComparer<Type>,
         if (x == y)
             return 0;
 
-        if (x == null)
+        if (x is null)
             return -1;
 
-        if (y == null)
+        if (y is null)
             return 1;
 
         if (x is Type a
@@ -41,10 +41,10 @@ internal abstract class TypeComparer : IComparer<Type>, IEqualityComparer<Type>,
         if (x == y)
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (x is Type a
@@ -58,7 +58,7 @@ internal abstract class TypeComparer : IComparer<Type>, IEqualityComparer<Type>,
 
     public int GetHashCode(object obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 0;
 
         if (obj is Type type)
@@ -74,10 +74,10 @@ internal abstract class TypeComparer : IComparer<Type>, IEqualityComparer<Type>,
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             int result = CompareNamespace(x.Namespace, y.Namespace);
@@ -132,10 +132,10 @@ internal abstract class TypeComparer : IComparer<Type>, IEqualityComparer<Type>,
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return string.Equals(x.FullName, y.FullName, StringComparison.Ordinal);
@@ -143,7 +143,7 @@ internal abstract class TypeComparer : IComparer<Type>, IEqualityComparer<Type>,
 
         public override int GetHashCode(Type obj)
         {
-            if (obj == null)
+            if (obj is null)
                 throw new ArgumentNullException(nameof(obj));
 
             return StringComparer.Ordinal.GetHashCode(obj.FullName);

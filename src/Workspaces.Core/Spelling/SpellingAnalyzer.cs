@@ -32,7 +32,7 @@ internal sealed class SpellingAnalyzer
     {
         ISpellingService service = MefWorkspaceServices.Default.GetService<ISpellingService>(project.Language);
 
-        if (service == null)
+        if (service is null)
             return ImmutableArray<Diagnostic>.Empty;
 
         ImmutableArray<Diagnostic>.Builder diagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
@@ -65,7 +65,7 @@ internal sealed class SpellingAnalyzer
     {
         SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
 
-        if (tree == null)
+        if (tree is null)
             return ImmutableArray<Diagnostic>.Empty;
 
         if (!options.IncludeGeneratedCode

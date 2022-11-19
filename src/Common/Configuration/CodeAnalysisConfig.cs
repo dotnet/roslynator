@@ -20,7 +20,7 @@ public sealed class CodeAnalysisConfig
         EditorConfigCodeAnalysisConfig editorConfig = null,
         VisualStudioCodeAnalysisConfig visualStudioConfig = null)
     {
-        if (xmlConfig != null)
+        if (xmlConfig is not null)
         {
             XmlConfig = xmlConfig;
         }
@@ -33,7 +33,7 @@ public sealed class CodeAnalysisConfig
                 : XmlCodeAnalysisConfig.Empty;
         }
 
-        if (editorConfig != null)
+        if (editorConfig is not null)
         {
             EditorConfig = editorConfig;
         }
@@ -60,7 +60,7 @@ public sealed class CodeAnalysisConfig
 
                 return default;
             })
-            .Where(f => f.key != null)
+            .Where(f => f.key is not null)
             .ToImmutableDictionary(f => f.key, f => f.value);
 
         VisualStudioConfig = visualStudioConfig ?? VisualStudioCodeAnalysisConfig.Empty;
@@ -73,7 +73,7 @@ public sealed class CodeAnalysisConfig
 
         PrefixFieldIdentifierWithUnderscore = XmlConfig.PrefixFieldIdentifierWithUnderscore;
 
-        if (EditorConfig.PrefixFieldIdentifierWithUnderscore != null)
+        if (EditorConfig.PrefixFieldIdentifierWithUnderscore is not null)
             PrefixFieldIdentifierWithUnderscore = EditorConfig.PrefixFieldIdentifierWithUnderscore;
 
         if (VisualStudioConfig.PrefixFieldIdentifierWithUnderscore != ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore)
@@ -81,7 +81,7 @@ public sealed class CodeAnalysisConfig
 
         MaxLineLength = XmlConfig.MaxLineLength;
 
-        if (EditorConfig.MaxLineLength != null)
+        if (EditorConfig.MaxLineLength is not null)
             MaxLineLength = EditorConfig.MaxLineLength;
 
         var refactorings = new Dictionary<string, bool>();

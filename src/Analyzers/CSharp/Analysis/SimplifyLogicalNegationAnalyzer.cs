@@ -181,7 +181,7 @@ public sealed class SimplifyLogicalNegationAnalyzer : BaseDiagnosticAnalyzer
 
         IMethodSymbol methodSymbol = context.SemanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, context.CancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol))

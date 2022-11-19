@@ -52,7 +52,7 @@ public sealed class AddOrRemoveParenthesesWhenCreatingNewObjectAnalyzer : BaseDi
 
         ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
 
-        if (argumentList == null)
+        if (argumentList is null)
         {
             if (style == ObjectCreationParenthesesStyle.Include)
             {

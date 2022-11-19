@@ -51,7 +51,7 @@ public sealed class AddBodyCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
         Func<CancellationToken, Task<Document>> createChangedDocument = GetCreateChangedDocument(context, node);
 
-        if (createChangedDocument == null)
+        if (createChangedDocument is null)
             return;
 
         CodeAction codeAction = CodeAction.Create(
@@ -77,7 +77,7 @@ public sealed class AddBodyCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                     ParameterListSyntax parameterList = methodDeclaration.ParameterList;
 
-                    if (parameterList == null)
+                    if (parameterList is null)
                         break;
 
                     return ct =>
@@ -102,7 +102,7 @@ public sealed class AddBodyCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                     ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
 
-                    if (parameterList == null)
+                    if (parameterList is null)
                         break;
 
                     return ct =>
@@ -127,7 +127,7 @@ public sealed class AddBodyCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                     ParameterListSyntax parameterList = destructorDeclaration.ParameterList;
 
-                    if (parameterList == null)
+                    if (parameterList is null)
                         break;
 
                     return ct =>
@@ -152,7 +152,7 @@ public sealed class AddBodyCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                     ParameterListSyntax parameterList = operatorDeclaration.ParameterList;
 
-                    if (parameterList == null)
+                    if (parameterList is null)
                         break;
 
                     return ct =>
@@ -177,7 +177,7 @@ public sealed class AddBodyCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                     ParameterListSyntax parameterList = conversionOperatorDeclaration.ParameterList;
 
-                    if (parameterList == null)
+                    if (parameterList is null)
                         break;
 
                     return ct =>
@@ -229,7 +229,7 @@ public sealed class AddBodyCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                     ParameterListSyntax parameterList = localFunction.ParameterList;
 
-                    if (parameterList == null)
+                    if (parameterList is null)
                         break;
 
                     return ct =>

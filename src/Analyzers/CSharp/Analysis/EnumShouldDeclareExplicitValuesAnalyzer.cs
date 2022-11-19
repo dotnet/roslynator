@@ -38,7 +38,7 @@ public sealed class EnumShouldDeclareExplicitValuesAnalyzer : BaseDiagnosticAnal
 
         foreach (EnumMemberDeclarationSyntax enumMember in enumDeclaration.Members)
         {
-            if (enumMember.EqualsValue == null
+            if (enumMember.EqualsValue is null
                 && context.SemanticModel.GetDeclaredSymbol(enumMember, context.CancellationToken)?.HasConstantValue == true)
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.EnumShouldDeclareExplicitValues, enumDeclaration.Identifier);

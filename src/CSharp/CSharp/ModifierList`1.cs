@@ -8,771 +8,772 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp;
-
-/// <summary>
-/// Represents a list of modifiers.
-/// </summary>
-/// <typeparam name="TNode"></typeparam>
-[SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.")]
-public abstract class ModifierList<TNode> where TNode : SyntaxNode
+namespace Roslynator.CSharp
 {
-    internal ModifierList()
-    {
-    }
-
-    internal abstract SyntaxList<AttributeListSyntax> GetAttributeLists(TNode node);
-
-    internal abstract SyntaxTokenList GetModifiers(TNode node);
-
-    internal abstract TNode WithModifiers(TNode node, SyntaxTokenList modifiers);
-
     /// <summary>
-    /// Gets an instance of the <see cref="ModifierList{TNode}"/> for a syntax specified by the generic argument.
+    /// Represents a list of modifiers.
     /// </summary>
-    public static ModifierList<TNode> Instance { get; } = (ModifierList<TNode>)GetInstance();
-
-    private static object GetInstance()
+    /// <typeparam name="TNode"></typeparam>
+    [SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.")]
+    public abstract class ModifierList<TNode> where TNode : SyntaxNode
     {
-        if (typeof(TNode) == typeof(ClassDeclarationSyntax))
-            return new ClassDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(ConstructorDeclarationSyntax))
-            return new ConstructorDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(ConversionOperatorDeclarationSyntax))
-            return new ConversionOperatorDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(DelegateDeclarationSyntax))
-            return new DelegateDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(DestructorDeclarationSyntax))
-            return new DestructorDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(EnumDeclarationSyntax))
-            return new EnumDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(EventDeclarationSyntax))
-            return new EventDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(EventFieldDeclarationSyntax))
-            return new EventFieldDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(FieldDeclarationSyntax))
-            return new FieldDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(IndexerDeclarationSyntax))
-            return new IndexerDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(InterfaceDeclarationSyntax))
-            return new InterfaceDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(MethodDeclarationSyntax))
-            return new MethodDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(OperatorDeclarationSyntax))
-            return new OperatorDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(PropertyDeclarationSyntax))
-            return new PropertyDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(StructDeclarationSyntax))
-            return new StructDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(AccessorDeclarationSyntax))
-            return new AccessorDeclarationModifierList();
-
-        if (typeof(TNode) == typeof(LocalDeclarationStatementSyntax))
-            return new LocalDeclarationStatementModifierList();
-
-        if (typeof(TNode) == typeof(LocalFunctionStatementSyntax))
-            return new LocalFunctionStatementModifierList();
-
-        if (typeof(TNode) == typeof(ParameterSyntax))
-            return new ParameterModifierList();
-
-        if (typeof(TNode) == typeof(IncompleteMemberSyntax))
-            return new IncompleteMemberModifierList();
-
-        if (typeof(TNode) == typeof(RecordDeclarationSyntax))
-            return new RecordDeclarationModifierList();
-
-        throw new InvalidOperationException();
-    }
-
-    /// <summary>
-    /// Creates a new node with a modifier of the specified kind inserted.
-    /// </summary>
-    /// <param name="node"></param>
-    /// <param name="kind"></param>
-    /// <param name="comparer"></param>
-    public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
-    {
-        if (node == null)
-            throw new ArgumentNullException(nameof(node));
-
-        SyntaxTokenList modifiers = GetModifiers(node);
-
-        int index = ModifierList.GetInsertIndex(modifiers, kind, comparer);
-
-        return InsertModifier(node, modifiers, Token(kind), index);
-    }
-
-    /// <summary>
-    /// Creates a new node with the specified modifier inserted.
-    /// </summary>
-    /// <param name="node"></param>
-    /// <param name="modifier"></param>
-    /// <param name="comparer"></param>
-    public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null)
-    {
-        if (node == null)
-            throw new ArgumentNullException(nameof(node));
-
-        SyntaxTokenList modifiers = GetModifiers(node);
-
-        int index = ModifierList.GetInsertIndex(modifiers, modifier, comparer);
-
-        return InsertModifier(node, modifiers, modifier, index);
-    }
-
-    private TNode InsertModifier(TNode node, SyntaxTokenList modifiers, SyntaxToken modifier, int index)
-    {
-        SyntaxToken token;
-
-        if (!modifiers.Any()
-            || index == modifiers.Count)
+        internal ModifierList()
         {
-            if (modifiers.Any())
+        }
+
+        internal abstract SyntaxList<AttributeListSyntax> GetAttributeLists(TNode node);
+
+        internal abstract SyntaxTokenList GetModifiers(TNode node);
+
+        internal abstract TNode WithModifiers(TNode node, SyntaxTokenList modifiers);
+
+        /// <summary>
+        /// Gets an instance of the <see cref="ModifierList{TNode}"/> for a syntax specified by the generic argument.
+        /// </summary>
+        public static ModifierList<TNode> Instance { get; } = (ModifierList<TNode>)GetInstance();
+
+        private static object GetInstance()
+        {
+            if (typeof(TNode) == typeof(ClassDeclarationSyntax))
+                return new ClassDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(ConstructorDeclarationSyntax))
+                return new ConstructorDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(ConversionOperatorDeclarationSyntax))
+                return new ConversionOperatorDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(DelegateDeclarationSyntax))
+                return new DelegateDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(DestructorDeclarationSyntax))
+                return new DestructorDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(EnumDeclarationSyntax))
+                return new EnumDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(EventDeclarationSyntax))
+                return new EventDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(EventFieldDeclarationSyntax))
+                return new EventFieldDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(FieldDeclarationSyntax))
+                return new FieldDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(IndexerDeclarationSyntax))
+                return new IndexerDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(InterfaceDeclarationSyntax))
+                return new InterfaceDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(MethodDeclarationSyntax))
+                return new MethodDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(OperatorDeclarationSyntax))
+                return new OperatorDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(PropertyDeclarationSyntax))
+                return new PropertyDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(StructDeclarationSyntax))
+                return new StructDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(AccessorDeclarationSyntax))
+                return new AccessorDeclarationModifierList();
+
+            if (typeof(TNode) == typeof(LocalDeclarationStatementSyntax))
+                return new LocalDeclarationStatementModifierList();
+
+            if (typeof(TNode) == typeof(LocalFunctionStatementSyntax))
+                return new LocalFunctionStatementModifierList();
+
+            if (typeof(TNode) == typeof(ParameterSyntax))
+                return new ParameterModifierList();
+
+            if (typeof(TNode) == typeof(IncompleteMemberSyntax))
+                return new IncompleteMemberModifierList();
+
+            if (typeof(TNode) == typeof(RecordDeclarationSyntax))
+                return new RecordDeclarationModifierList();
+
+            throw new InvalidOperationException();
+        }
+
+        /// <summary>
+        /// Creates a new node with a modifier of the specified kind inserted.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="kind"></param>
+        /// <param name="comparer"></param>
+        public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
+        {
+            if (node is null)
+                throw new ArgumentNullException(nameof(node));
+
+            SyntaxTokenList modifiers = GetModifiers(node);
+
+            int index = ModifierList.GetInsertIndex(modifiers, kind, comparer);
+
+            return InsertModifier(node, modifiers, Token(kind), index);
+        }
+
+        /// <summary>
+        /// Creates a new node with the specified modifier inserted.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="modifier"></param>
+        /// <param name="comparer"></param>
+        public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null)
+        {
+            if (node is null)
+                throw new ArgumentNullException(nameof(node));
+
+            SyntaxTokenList modifiers = GetModifiers(node);
+
+            int index = ModifierList.GetInsertIndex(modifiers, modifier, comparer);
+
+            return InsertModifier(node, modifiers, modifier, index);
+        }
+
+        private TNode InsertModifier(TNode node, SyntaxTokenList modifiers, SyntaxToken modifier, int index)
+        {
+            SyntaxToken token;
+
+            if (!modifiers.Any()
+                || index == modifiers.Count)
             {
-                token = modifiers.Last().GetNextToken();
+                if (modifiers.Any())
+                {
+                    token = modifiers.Last().GetNextToken();
+                }
+                else
+                {
+                    AttributeListSyntax attributeList = GetAttributeLists(node).LastOrDefault();
+
+                    if (attributeList is not null)
+                    {
+                        token = attributeList.GetLastToken().GetNextToken();
+                    }
+                    else
+                    {
+                        token = node.GetFirstToken();
+                    }
+                }
             }
             else
             {
-                AttributeListSyntax attributeList = GetAttributeLists(node).LastOrDefault();
-
-                if (attributeList != null)
-                {
-                    token = attributeList.GetLastToken().GetNextToken();
-                }
-                else
-                {
-                    token = node.GetFirstToken();
-                }
+                token = modifiers[index];
             }
-        }
-        else
-        {
-            token = modifiers[index];
-        }
 
-        if (token != default)
-        {
-            SyntaxTriviaList newLeadingTrivia = token.LeadingTrivia;
-
-            if (newLeadingTrivia.Any())
+            if (token != default)
             {
-                SyntaxTriviaList leadingTrivia = modifier.LeadingTrivia;
+                SyntaxTriviaList newLeadingTrivia = token.LeadingTrivia;
 
-                if (!leadingTrivia.IsSingleElasticMarker())
-                    newLeadingTrivia = newLeadingTrivia.AddRange(leadingTrivia);
-
-                modifier = modifier.WithLeadingTrivia(newLeadingTrivia);
-
-                SyntaxToken newToken = token.WithoutLeadingTrivia();
-
-                if (!modifiers.Any()
-                    || index == modifiers.Count)
+                if (newLeadingTrivia.Any())
                 {
-                    node = node.ReplaceToken(token, newToken);
+                    SyntaxTriviaList leadingTrivia = modifier.LeadingTrivia;
+
+                    if (!leadingTrivia.IsSingleElasticMarker())
+                        newLeadingTrivia = newLeadingTrivia.AddRange(leadingTrivia);
+
+                    modifier = modifier.WithLeadingTrivia(newLeadingTrivia);
+
+                    SyntaxToken newToken = token.WithoutLeadingTrivia();
+
+                    if (!modifiers.Any()
+                        || index == modifiers.Count)
+                    {
+                        node = node.ReplaceToken(token, newToken);
+                    }
+                    else
+                    {
+                        modifiers = modifiers.ReplaceAt(index, newToken);
+                    }
+                }
+
+                if (modifier.TrailingTrivia.IsSingleElasticMarker())
+                    modifier = modifier.WithTrailingTrivia(TriviaList(Space));
+            }
+
+            modifiers = modifiers.Insert(index, modifier);
+
+            return WithModifiers(node, modifiers);
+        }
+
+        /// <summary>
+        /// Creates a new node with a modifier of the specified kind removed.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="kind"></param>
+        public TNode Remove(TNode node, SyntaxKind kind)
+        {
+            if (node is null)
+                throw new ArgumentNullException(nameof(node));
+
+            SyntaxTokenList modifiers = GetModifiers(node);
+
+            int i = modifiers.IndexOf(kind);
+
+            if (i != -1)
+            {
+                return Remove(node, modifiers, modifiers[i], i);
+            }
+            else
+            {
+                return node;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new node with the specified modifier removed.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="modifier"></param>
+        public TNode Remove(TNode node, SyntaxToken modifier)
+        {
+            if (node is null)
+                throw new ArgumentNullException(nameof(node));
+
+            SyntaxTokenList modifiers = GetModifiers(node);
+
+            int i = modifiers.IndexOf(modifier);
+
+            if (i != -1)
+            {
+                return Remove(node, modifiers, modifier, i);
+            }
+            else
+            {
+                return node;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new node with a modifier at the specified index removed.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="index"></param>
+        public TNode RemoveAt(TNode node, int index)
+        {
+            if (node is null)
+                throw new ArgumentNullException(nameof(node));
+
+            SyntaxTokenList modifiers = GetModifiers(node);
+
+            return Remove(node, modifiers, modifiers[index], index);
+        }
+
+        private TNode Remove(
+            TNode node,
+            SyntaxTokenList modifiers,
+            SyntaxToken modifier,
+            int index)
+        {
+            SyntaxTriviaList leading = modifier.LeadingTrivia;
+            SyntaxTriviaList trailing = modifier.TrailingTrivia;
+
+            if (modifiers.Count == 1)
+            {
+                SyntaxToken nextToken = modifier.GetNextToken();
+
+                if (!nextToken.IsKind(SyntaxKind.None))
+                {
+                    SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(leading, trailing, nextToken.LeadingTrivia);
+
+                    node = node.ReplaceToken(nextToken, nextToken.WithLeadingTrivia(trivia));
                 }
                 else
                 {
-                    modifiers = modifiers.ReplaceAt(index, newToken);
+                    SyntaxToken previousToken = modifier.GetPreviousToken();
+
+                    if (!previousToken.IsKind(SyntaxKind.None))
+                    {
+                        SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(previousToken.TrailingTrivia, leading, trailing);
+
+                        node = node.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(trivia));
+                    }
                 }
             }
+            else if (index == 0)
+            {
+                SyntaxToken nextModifier = modifiers[index + 1];
 
-            if (modifier.TrailingTrivia.IsSingleElasticMarker())
-                modifier = modifier.WithTrailingTrivia(TriviaList(Space));
+                SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(leading, trailing, nextModifier.LeadingTrivia);
+
+                modifiers = modifiers.Replace(nextModifier, nextModifier.WithLeadingTrivia(trivia));
+            }
+            else
+            {
+                SyntaxToken previousModifier = modifiers[index - 1];
+
+                SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(previousModifier.TrailingTrivia, leading, trailing);
+
+                modifiers = modifiers.Replace(previousModifier, previousModifier.WithTrailingTrivia(trivia));
+            }
+
+            modifiers = modifiers.RemoveAt(index);
+
+            return WithModifiers(node, modifiers);
         }
 
-        modifiers = modifiers.Insert(index, modifier);
-
-        return WithModifiers(node, modifiers);
-    }
-
-    /// <summary>
-    /// Creates a new node with a modifier of the specified kind removed.
-    /// </summary>
-    /// <param name="node"></param>
-    /// <param name="kind"></param>
-    public TNode Remove(TNode node, SyntaxKind kind)
-    {
-        if (node == null)
-            throw new ArgumentNullException(nameof(node));
-
-        SyntaxTokenList modifiers = GetModifiers(node);
-
-        int i = modifiers.IndexOf(kind);
-
-        if (i != -1)
+        private static SyntaxTriviaList AddIfNotEmptyOrWhitespace(SyntaxTriviaList trivia, SyntaxTriviaList triviaToAdd)
         {
-            return Remove(node, modifiers, modifiers[i], i);
+            return (triviaToAdd.IsEmptyOrWhitespace()) ? trivia : trivia.AddRange(triviaToAdd);
         }
-        else
+
+        private static SyntaxTriviaList AddIfNotEmptyOrWhitespace(SyntaxTriviaList trivia, SyntaxTriviaList triviaToAdd1, SyntaxTriviaList triviaToAdd2)
         {
-            return node;
+            trivia = AddIfNotEmptyOrWhitespace(trivia, triviaToAdd1);
+
+            return AddIfNotEmptyOrWhitespace(trivia, triviaToAdd2);
         }
-    }
 
-    /// <summary>
-    /// Creates a new node with the specified modifier removed.
-    /// </summary>
-    /// <param name="node"></param>
-    /// <param name="modifier"></param>
-    public TNode Remove(TNode node, SyntaxToken modifier)
-    {
-        if (node == null)
-            throw new ArgumentNullException(nameof(node));
-
-        SyntaxTokenList modifiers = GetModifiers(node);
-
-        int i = modifiers.IndexOf(modifier);
-
-        if (i != -1)
+        /// <summary>
+        /// Creates a new node with all modifiers removed.
+        /// </summary>
+        /// <param name="node"></param>
+        public TNode RemoveAll(TNode node)
         {
-            return Remove(node, modifiers, modifier, i);
-        }
-        else
-        {
-            return node;
-        }
-    }
+            SyntaxTokenList modifiers = GetModifiers(node);
 
-    /// <summary>
-    /// Creates a new node with a modifier at the specified index removed.
-    /// </summary>
-    /// <param name="node"></param>
-    /// <param name="index"></param>
-    public TNode RemoveAt(TNode node, int index)
-    {
-        if (node == null)
-            throw new ArgumentNullException(nameof(node));
+            if (!modifiers.Any())
+                return node;
 
-        SyntaxTokenList modifiers = GetModifiers(node);
+            SyntaxToken firstModifier = modifiers[0];
 
-        return Remove(node, modifiers, modifiers[index], index);
-    }
+            if (modifiers.Count == 1)
+                return Remove(node, firstModifier);
 
-    private TNode Remove(
-        TNode node,
-        SyntaxTokenList modifiers,
-        SyntaxToken modifier,
-        int index)
-    {
-        SyntaxTriviaList leading = modifier.LeadingTrivia;
-        SyntaxTriviaList trailing = modifier.TrailingTrivia;
-
-        if (modifiers.Count == 1)
-        {
-            SyntaxToken nextToken = modifier.GetNextToken();
+            SyntaxToken nextToken = modifiers.Last().GetNextToken();
 
             if (!nextToken.IsKind(SyntaxKind.None))
             {
-                SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(leading, trailing, nextToken.LeadingTrivia);
+                SyntaxTriviaList trivia = firstModifier.LeadingTrivia;
+
+                trivia = trivia.AddRange(firstModifier.TrailingTrivia.EmptyIfWhitespace());
+
+                for (int i = 1; i < modifiers.Count; i++)
+                    trivia = trivia.AddRange(modifiers[i].LeadingAndTrailingTrivia().EmptyIfWhitespace());
+
+                trivia = trivia.AddRange(nextToken.LeadingTrivia.EmptyIfWhitespace());
 
                 node = node.ReplaceToken(nextToken, nextToken.WithLeadingTrivia(trivia));
             }
             else
             {
-                SyntaxToken previousToken = modifier.GetPreviousToken();
+                SyntaxToken previousToken = firstModifier.GetPreviousToken();
 
                 if (!previousToken.IsKind(SyntaxKind.None))
                 {
-                    SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(previousToken.TrailingTrivia, leading, trailing);
+                    SyntaxTriviaList trivia = firstModifier.LeadingAndTrailingTrivia();
 
-                    node = node.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(trivia));
+                    for (int i = 1; i < modifiers.Count; i++)
+                        trivia = trivia.AddRange(modifiers[i].LeadingAndTrailingTrivia().EmptyIfWhitespace());
+
+                    node = node.ReplaceToken(nextToken, nextToken.AppendToTrailingTrivia(trivia));
                 }
             }
-        }
-        else if (index == 0)
-        {
-            SyntaxToken nextModifier = modifiers[index + 1];
 
-            SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(leading, trailing, nextModifier.LeadingTrivia);
-
-            modifiers = modifiers.Replace(nextModifier, nextModifier.WithLeadingTrivia(trivia));
-        }
-        else
-        {
-            SyntaxToken previousModifier = modifiers[index - 1];
-
-            SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(previousModifier.TrailingTrivia, leading, trailing);
-
-            modifiers = modifiers.Replace(previousModifier, previousModifier.WithTrailingTrivia(trivia));
+            return WithModifiers(node, default(SyntaxTokenList));
         }
 
-        modifiers = modifiers.RemoveAt(index);
-
-        return WithModifiers(node, modifiers);
-    }
-
-    private static SyntaxTriviaList AddIfNotEmptyOrWhitespace(SyntaxTriviaList trivia, SyntaxTriviaList triviaToAdd)
-    {
-        return (triviaToAdd.IsEmptyOrWhitespace()) ? trivia : trivia.AddRange(triviaToAdd);
-    }
-
-    private static SyntaxTriviaList AddIfNotEmptyOrWhitespace(SyntaxTriviaList trivia, SyntaxTriviaList triviaToAdd1, SyntaxTriviaList triviaToAdd2)
-    {
-        trivia = AddIfNotEmptyOrWhitespace(trivia, triviaToAdd1);
-
-        return AddIfNotEmptyOrWhitespace(trivia, triviaToAdd2);
-    }
-
-    /// <summary>
-    /// Creates a new node with all modifiers removed.
-    /// </summary>
-    /// <param name="node"></param>
-    public TNode RemoveAll(TNode node)
-    {
-        SyntaxTokenList modifiers = GetModifiers(node);
-
-        if (!modifiers.Any())
-            return node;
-
-        SyntaxToken firstModifier = modifiers[0];
-
-        if (modifiers.Count == 1)
-            return Remove(node, firstModifier);
-
-        SyntaxToken nextToken = modifiers.Last().GetNextToken();
-
-        if (!nextToken.IsKind(SyntaxKind.None))
+        /// <summary>
+        /// Creates a new node with modifiers that matches the predicate removed.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="predicate"></param>
+        public TNode RemoveAll(TNode node, Func<SyntaxToken, bool> predicate)
         {
-            SyntaxTriviaList trivia = firstModifier.LeadingTrivia;
+            SyntaxTokenList modifiers = GetModifiers(node);
 
-            trivia = trivia.AddRange(firstModifier.TrailingTrivia.EmptyIfWhitespace());
-
-            for (int i = 1; i < modifiers.Count; i++)
-                trivia = trivia.AddRange(modifiers[i].LeadingAndTrailingTrivia().EmptyIfWhitespace());
-
-            trivia = trivia.AddRange(nextToken.LeadingTrivia.EmptyIfWhitespace());
-
-            node = node.ReplaceToken(nextToken, nextToken.WithLeadingTrivia(trivia));
-        }
-        else
-        {
-            SyntaxToken previousToken = firstModifier.GetPreviousToken();
-
-            if (!previousToken.IsKind(SyntaxKind.None))
+            for (int i = modifiers.Count - 1; i >= 0; i--)
             {
-                SyntaxTriviaList trivia = firstModifier.LeadingAndTrailingTrivia();
+                SyntaxToken modifier = modifiers[i];
 
-                for (int i = 1; i < modifiers.Count; i++)
-                    trivia = trivia.AddRange(modifiers[i].LeadingAndTrailingTrivia().EmptyIfWhitespace());
+                if (predicate(modifier))
+                    node = Remove(node, modifiers, modifier, i);
+            }
 
-                node = node.ReplaceToken(nextToken, nextToken.AppendToTrailingTrivia(trivia));
+            return node;
+        }
+
+        private class AccessorDeclarationModifierList : ModifierList<AccessorDeclarationSyntax>
+        {
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(AccessorDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(AccessorDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override AccessorDeclarationSyntax WithModifiers(AccessorDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
             }
         }
 
-        return WithModifiers(node, default(SyntaxTokenList));
-    }
-
-    /// <summary>
-    /// Creates a new node with modifiers that matches the predicate removed.
-    /// </summary>
-    /// <param name="node"></param>
-    /// <param name="predicate"></param>
-    public TNode RemoveAll(TNode node, Func<SyntaxToken, bool> predicate)
-    {
-        SyntaxTokenList modifiers = GetModifiers(node);
-
-        for (int i = modifiers.Count - 1; i >= 0; i--)
+        private class ClassDeclarationModifierList : ModifierList<ClassDeclarationSyntax>
         {
-            SyntaxToken modifier = modifiers[i];
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(ClassDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-            if (predicate(modifier))
-                node = Remove(node, modifiers, modifier, i);
+            internal override SyntaxTokenList GetModifiers(ClassDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override ClassDeclarationSyntax WithModifiers(ClassDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        return node;
-    }
-
-    private class AccessorDeclarationModifierList : ModifierList<AccessorDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(AccessorDeclarationSyntax node)
+        private class ConstructorDeclarationModifierList : ModifierList<ConstructorDeclarationSyntax>
         {
-            return node.AttributeLists;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(ConstructorDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(ConstructorDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override ConstructorDeclarationSyntax WithModifiers(ConstructorDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(AccessorDeclarationSyntax node)
+        private class ConversionOperatorDeclarationModifierList : ModifierList<ConversionOperatorDeclarationSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(ConversionOperatorDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(ConversionOperatorDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override ConversionOperatorDeclarationSyntax WithModifiers(ConversionOperatorDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override AccessorDeclarationSyntax WithModifiers(AccessorDeclarationSyntax node, SyntaxTokenList modifiers)
+        private class DelegateDeclarationModifierList : ModifierList<DelegateDeclarationSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(DelegateDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-    private class ClassDeclarationModifierList : ModifierList<ClassDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(ClassDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
+            internal override SyntaxTokenList GetModifiers(DelegateDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(ClassDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override ClassDeclarationSyntax WithModifiers(ClassDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class ConstructorDeclarationModifierList : ModifierList<ConstructorDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(ConstructorDeclarationSyntax node)
-        {
-            return node.AttributeLists;
+            internal override DelegateDeclarationSyntax WithModifiers(DelegateDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(ConstructorDeclarationSyntax node)
+        private class DestructorDeclarationModifierList : ModifierList<DestructorDeclarationSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(DestructorDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(DestructorDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override DestructorDeclarationSyntax WithModifiers(DestructorDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override ConstructorDeclarationSyntax WithModifiers(ConstructorDeclarationSyntax node, SyntaxTokenList modifiers)
+        private class EnumDeclarationModifierList : ModifierList<EnumDeclarationSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(EnumDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-    private class ConversionOperatorDeclarationModifierList : ModifierList<ConversionOperatorDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(ConversionOperatorDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
+            internal override SyntaxTokenList GetModifiers(EnumDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(ConversionOperatorDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override ConversionOperatorDeclarationSyntax WithModifiers(ConversionOperatorDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class DelegateDeclarationModifierList : ModifierList<DelegateDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(DelegateDeclarationSyntax node)
-        {
-            return node.AttributeLists;
+            internal override EnumDeclarationSyntax WithModifiers(EnumDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(DelegateDeclarationSyntax node)
+        private class EventDeclarationModifierList : ModifierList<EventDeclarationSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(EventDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(EventDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override EventDeclarationSyntax WithModifiers(EventDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override DelegateDeclarationSyntax WithModifiers(DelegateDeclarationSyntax node, SyntaxTokenList modifiers)
+        private class EventFieldDeclarationModifierList : ModifierList<EventFieldDeclarationSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(EventFieldDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-    private class DestructorDeclarationModifierList : ModifierList<DestructorDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(DestructorDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
+            internal override SyntaxTokenList GetModifiers(EventFieldDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(DestructorDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override DestructorDeclarationSyntax WithModifiers(DestructorDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class EnumDeclarationModifierList : ModifierList<EnumDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(EnumDeclarationSyntax node)
-        {
-            return node.AttributeLists;
+            internal override EventFieldDeclarationSyntax WithModifiers(EventFieldDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(EnumDeclarationSyntax node)
+        private class FieldDeclarationModifierList : ModifierList<FieldDeclarationSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(FieldDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(FieldDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override FieldDeclarationSyntax WithModifiers(FieldDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override EnumDeclarationSyntax WithModifiers(EnumDeclarationSyntax node, SyntaxTokenList modifiers)
+        private class IncompleteMemberModifierList : ModifierList<IncompleteMemberSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(IncompleteMemberSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-    private class EventDeclarationModifierList : ModifierList<EventDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(EventDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
+            internal override SyntaxTokenList GetModifiers(IncompleteMemberSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(EventDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override EventDeclarationSyntax WithModifiers(EventDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class EventFieldDeclarationModifierList : ModifierList<EventFieldDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(EventFieldDeclarationSyntax node)
-        {
-            return node.AttributeLists;
+            internal override IncompleteMemberSyntax WithModifiers(IncompleteMemberSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(EventFieldDeclarationSyntax node)
+        private class IndexerDeclarationModifierList : ModifierList<IndexerDeclarationSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(IndexerDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(IndexerDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override IndexerDeclarationSyntax WithModifiers(IndexerDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override EventFieldDeclarationSyntax WithModifiers(EventFieldDeclarationSyntax node, SyntaxTokenList modifiers)
+        private class InterfaceDeclarationModifierList : ModifierList<InterfaceDeclarationSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(InterfaceDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-    private class FieldDeclarationModifierList : ModifierList<FieldDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(FieldDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
+            internal override SyntaxTokenList GetModifiers(InterfaceDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(FieldDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override FieldDeclarationSyntax WithModifiers(FieldDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class IncompleteMemberModifierList : ModifierList<IncompleteMemberSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(IncompleteMemberSyntax node)
-        {
-            return node.AttributeLists;
+            internal override InterfaceDeclarationSyntax WithModifiers(InterfaceDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(IncompleteMemberSyntax node)
+        private class LocalDeclarationStatementModifierList : ModifierList<LocalDeclarationStatementSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LocalDeclarationStatementSyntax node)
+            {
+                return default;
+            }
+
+            internal override SyntaxTokenList GetModifiers(LocalDeclarationStatementSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override LocalDeclarationStatementSyntax WithModifiers(LocalDeclarationStatementSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override IncompleteMemberSyntax WithModifiers(IncompleteMemberSyntax node, SyntaxTokenList modifiers)
+        private class LocalFunctionStatementModifierList : ModifierList<LocalFunctionStatementSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LocalFunctionStatementSyntax node)
+            {
+                return default;
+            }
 
-    private class IndexerDeclarationModifierList : ModifierList<IndexerDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(IndexerDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
+            internal override SyntaxTokenList GetModifiers(LocalFunctionStatementSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(IndexerDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override IndexerDeclarationSyntax WithModifiers(IndexerDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class InterfaceDeclarationModifierList : ModifierList<InterfaceDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(InterfaceDeclarationSyntax node)
-        {
-            return node.AttributeLists;
+            internal override LocalFunctionStatementSyntax WithModifiers(LocalFunctionStatementSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(InterfaceDeclarationSyntax node)
+        private class MethodDeclarationModifierList : ModifierList<MethodDeclarationSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(MethodDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(MethodDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override MethodDeclarationSyntax WithModifiers(MethodDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override InterfaceDeclarationSyntax WithModifiers(InterfaceDeclarationSyntax node, SyntaxTokenList modifiers)
+        private class OperatorDeclarationModifierList : ModifierList<OperatorDeclarationSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(OperatorDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-    private class LocalDeclarationStatementModifierList : ModifierList<LocalDeclarationStatementSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LocalDeclarationStatementSyntax node)
-        {
-            return default;
-        }
+            internal override SyntaxTokenList GetModifiers(OperatorDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(LocalDeclarationStatementSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override LocalDeclarationStatementSyntax WithModifiers(LocalDeclarationStatementSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class LocalFunctionStatementModifierList : ModifierList<LocalFunctionStatementSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LocalFunctionStatementSyntax node)
-        {
-            return default;
+            internal override OperatorDeclarationSyntax WithModifiers(OperatorDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(LocalFunctionStatementSyntax node)
+        private class ParameterModifierList : ModifierList<ParameterSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(ParameterSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(ParameterSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override ParameterSyntax WithModifiers(ParameterSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override LocalFunctionStatementSyntax WithModifiers(LocalFunctionStatementSyntax node, SyntaxTokenList modifiers)
+        private class PropertyDeclarationModifierList : ModifierList<PropertyDeclarationSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(PropertyDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-    private class MethodDeclarationModifierList : ModifierList<MethodDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(MethodDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
+            internal override SyntaxTokenList GetModifiers(PropertyDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(MethodDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override MethodDeclarationSyntax WithModifiers(MethodDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class OperatorDeclarationModifierList : ModifierList<OperatorDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(OperatorDeclarationSyntax node)
-        {
-            return node.AttributeLists;
+            internal override PropertyDeclarationSyntax WithModifiers(PropertyDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override SyntaxTokenList GetModifiers(OperatorDeclarationSyntax node)
+        private class StructDeclarationModifierList : ModifierList<StructDeclarationSyntax>
         {
-            return node.Modifiers;
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(StructDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(StructDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override StructDeclarationSyntax WithModifiers(StructDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
 
-        internal override OperatorDeclarationSyntax WithModifiers(OperatorDeclarationSyntax node, SyntaxTokenList modifiers)
+        private class RecordDeclarationModifierList : ModifierList<RecordDeclarationSyntax>
         {
-            return node.WithModifiers(modifiers);
-        }
-    }
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(RecordDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
 
-    private class ParameterModifierList : ModifierList<ParameterSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(ParameterSyntax node)
-        {
-            return node.AttributeLists;
-        }
+            internal override SyntaxTokenList GetModifiers(RecordDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
 
-        internal override SyntaxTokenList GetModifiers(ParameterSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override ParameterSyntax WithModifiers(ParameterSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class PropertyDeclarationModifierList : ModifierList<PropertyDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(PropertyDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
-
-        internal override SyntaxTokenList GetModifiers(PropertyDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override PropertyDeclarationSyntax WithModifiers(PropertyDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class StructDeclarationModifierList : ModifierList<StructDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(StructDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
-
-        internal override SyntaxTokenList GetModifiers(StructDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override StructDeclarationSyntax WithModifiers(StructDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
-        }
-    }
-
-    private class RecordDeclarationModifierList : ModifierList<RecordDeclarationSyntax>
-    {
-        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(RecordDeclarationSyntax node)
-        {
-            return node.AttributeLists;
-        }
-
-        internal override SyntaxTokenList GetModifiers(RecordDeclarationSyntax node)
-        {
-            return node.Modifiers;
-        }
-
-        internal override RecordDeclarationSyntax WithModifiers(RecordDeclarationSyntax node, SyntaxTokenList modifiers)
-        {
-            return node.WithModifiers(modifiers);
+            internal override RecordDeclarationSyntax WithModifiers(RecordDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
         }
     }
 }

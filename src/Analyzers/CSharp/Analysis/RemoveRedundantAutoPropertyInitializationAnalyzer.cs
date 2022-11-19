@@ -43,7 +43,7 @@ public sealed class RemoveRedundantAutoPropertyInitializationAnalyzer : BaseDiag
 
         ExpressionSyntax value = initializer?.Value?.WalkDownParentheses();
 
-        if (value == null)
+        if (value is null)
             return;
 
         if (!CanBeConstantValue(value))
@@ -57,7 +57,7 @@ public sealed class RemoveRedundantAutoPropertyInitializationAnalyzer : BaseDiag
 
         ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(propertyDeclaration.Type, context.CancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         if (!context.SemanticModel.IsDefaultValue(typeSymbol, value, context.CancellationToken))

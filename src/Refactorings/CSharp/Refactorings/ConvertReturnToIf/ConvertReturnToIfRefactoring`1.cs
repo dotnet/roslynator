@@ -22,7 +22,7 @@ internal abstract class ConvertReturnToIfRefactoring<TStatement> where TStatemen
     {
         ExpressionSyntax expression = GetExpression(statement);
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         if (CSharpFacts.IsBooleanLiteralExpression(expression.Kind()))
@@ -71,7 +71,7 @@ internal abstract class ConvertReturnToIfRefactoring<TStatement> where TStatemen
             {
                 ExpressionSyntax right = binaryExpression.Right;
 
-                if (right != null)
+                if (right is not null)
                     return CreateIfStatement(statement, left, TrueLiteralExpression(), right.WithoutTrivia());
             }
         }

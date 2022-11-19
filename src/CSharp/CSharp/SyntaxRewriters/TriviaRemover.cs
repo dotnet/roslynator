@@ -21,7 +21,7 @@ internal sealed class TriviaRemover : CSharpSyntaxRewriter
 
     public static TriviaRemover GetInstance(TextSpan? span = null)
     {
-        if (span != null)
+        if (span is not null)
         {
             return new TriviaRemover(span);
         }

@@ -24,7 +24,7 @@ public sealed class AddOrRemoveAccessibilityModifiersAnalyzer : BaseDiagnosticAn
     {
         get
         {
-            if (_properties == null)
+            if (_properties is null)
                 Interlocked.CompareExchange(ref _properties, CreateProperties(), null);
 
             return _properties;
@@ -203,7 +203,7 @@ public sealed class AddOrRemoveAccessibilityModifiersAnalyzer : BaseDiagnosticAn
 
             Location location = GetLocation(declaration);
 
-            if (location == null)
+            if (location is null)
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(
@@ -240,7 +240,7 @@ public sealed class AddOrRemoveAccessibilityModifiersAnalyzer : BaseDiagnosticAn
             {
                 Accessibility? accessibility = GetPartialAccessibility(context, declaration);
 
-                if (accessibility != null)
+                if (accessibility is not null)
                 {
                     if (accessibility == Accessibility.NotApplicable)
                     {
@@ -269,7 +269,7 @@ public sealed class AddOrRemoveAccessibilityModifiersAnalyzer : BaseDiagnosticAn
 
         ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
-        if (symbol != null)
+        if (symbol is not null)
         {
             foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
             {

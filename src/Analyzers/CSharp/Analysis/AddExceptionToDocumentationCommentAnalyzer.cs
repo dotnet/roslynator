@@ -35,7 +35,7 @@ public sealed class AddExceptionToDocumentationCommentAnalyzer : BaseDiagnosticA
         {
             INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Exception");
 
-            if (exceptionSymbol == null)
+            if (exceptionSymbol is null)
                 return;
 
             startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowStatement(f, exceptionSymbol), SyntaxKind.ThrowStatement);

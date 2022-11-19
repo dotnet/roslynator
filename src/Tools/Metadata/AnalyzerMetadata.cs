@@ -55,7 +55,7 @@ public class AnalyzerMetadata
         Kind = kind;
         Parent = parent;
 
-        if (Parent != null)
+        if (Parent is not null)
             _optionAnalyzers = new ReadOnlyCollection<AnalyzerMetadata>(new List<AnalyzerMetadata>());
     }
 
@@ -99,7 +99,7 @@ public class AnalyzerMetadata
     {
         get
         {
-            if (_optionAnalyzers == null)
+            if (_optionAnalyzers is null)
             {
                 Interlocked.CompareExchange(
                     ref _optionAnalyzers,

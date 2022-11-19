@@ -52,7 +52,7 @@ internal static class TextProcessor
 
             string identifier = match.Groups["identifier"].Value;
 
-            if (annotationIdentifier == null
+            if (annotationIdentifier is null
                 || string.Equals(annotationIdentifier, identifier, StringComparison.Ordinal))
             {
                 var span = new TextSpan(match.Index - offset, content.Length);
@@ -123,7 +123,7 @@ internal static class TextProcessor
 
                             var start2 = new LinePositionInfo(sb.Length, line, column);
 
-                            if (stack != null)
+                            if (stack is not null)
                             {
                                 stack.Push(start2);
                             }
@@ -202,7 +202,7 @@ internal static class TextProcessor
 
         void CloseSpan()
         {
-            if (stack != null)
+            if (stack is not null)
             {
                 start = stack.Pop();
             }
@@ -238,7 +238,7 @@ internal static class TextProcessor
         if (spans.Length > 1)
             throw new InvalidOperationException("Text contains more than one span.");
 
-        string expected = (replacement2 != null)
+        string expected = (replacement2 is not null)
             ? source.Remove(spans[0].Start) + replacement2 + source.Substring(spans[0].End)
             : null;
 

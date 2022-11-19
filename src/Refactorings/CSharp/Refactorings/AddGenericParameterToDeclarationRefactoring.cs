@@ -18,7 +18,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
     {
         TypeParameterListSyntax typeParameterList = classDeclaration.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
         {
             if (context.Span.IsEmptyAndContainedInSpan(typeParameterList))
                 RegisterRefactoring(context, classDeclaration);
@@ -41,7 +41,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
     {
         TypeParameterListSyntax typeParameterList = recordDeclaration.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
         {
             if (context.Span.IsEmptyAndContainedInSpan(typeParameterList))
                 RegisterRefactoring(context, recordDeclaration);
@@ -64,7 +64,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
     {
         TypeParameterListSyntax typeParameterList = structDeclaration.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
         {
             if (context.Span.IsEmptyAndContainedInSpan(typeParameterList))
                 RegisterRefactoring(context, structDeclaration);
@@ -89,7 +89,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
     {
         TypeParameterListSyntax typeParameterList = interfaceDeclaration.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
         {
             if (context.Span.IsEmptyAndContainedInSpan(typeParameterList))
                 RegisterRefactoring(context, interfaceDeclaration);
@@ -114,7 +114,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
     {
         TypeParameterListSyntax typeParameterList = delegateDeclaration.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
         {
             if (context.Span.IsEmptyAndContainedInSpan(typeParameterList))
                 RegisterRefactoring(context, delegateDeclaration);
@@ -131,7 +131,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
             {
                 ParameterListSyntax parameterList = delegateDeclaration.ParameterList;
 
-                if (parameterList != null
+                if (parameterList is not null
                     && span.End <= parameterList.SpanStart)
                 {
                     RegisterRefactoring(context, delegateDeclaration);
@@ -144,7 +144,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
     {
         TypeParameterListSyntax typeParameterList = methodDeclaration.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
         {
             if (context.Span.IsEmptyAndContainedInSpan(typeParameterList))
                 RegisterRefactoring(context, methodDeclaration);
@@ -161,9 +161,9 @@ internal static class AddGenericParameterToDeclarationRefactoring
             {
                 ParameterListSyntax parameterList = methodDeclaration.ParameterList;
 
-                if (parameterList != null
+                if (parameterList is not null
                     && span.End <= parameterList.SpanStart
-                    && methodDeclaration.BodyOrExpressionBody() != null)
+                    && methodDeclaration.BodyOrExpressionBody() is not null)
                 {
                     RegisterRefactoring(context, methodDeclaration);
                 }
@@ -175,7 +175,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
     {
         TypeParameterListSyntax typeParameterList = localFunctionStatement.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
         {
             if (context.Span.IsEmptyAndContainedInSpan(typeParameterList))
                 RegisterRefactoring(context, localFunctionStatement);
@@ -192,7 +192,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
             {
                 ParameterListSyntax parameterList = localFunctionStatement.ParameterList;
 
-                if (parameterList != null
+                if (parameterList is not null
                     && span.End <= parameterList.SpanStart)
                 {
                     RegisterRefactoring(context, localFunctionStatement);
@@ -300,7 +300,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
 
         MethodDeclarationSyntax newNode = methodDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
-        if (constraint != null)
+        if (constraint is not null)
             newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, constraint));
 
         return newNode;
@@ -315,7 +315,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
 
         ClassDeclarationSyntax newNode = classDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
-        if (constraint != null)
+        if (constraint is not null)
             newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, constraint));
 
         return newNode;
@@ -334,7 +334,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
 
         RecordDeclarationSyntax newNode = recordDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
-        if (constraint != null)
+        if (constraint is not null)
             newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, constraint));
 
         return newNode;
@@ -349,7 +349,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
 
         StructDeclarationSyntax newNode = structDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
-        if (typeParameterConstraint != null)
+        if (typeParameterConstraint is not null)
             newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, typeParameterConstraint));
 
         return newNode;
@@ -364,7 +364,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
 
         InterfaceDeclarationSyntax newNode = interfaceDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
-        if (constraint != null)
+        if (constraint is not null)
             newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, constraint));
 
         return newNode;
@@ -377,7 +377,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
     {
         TypeParameterListSyntax typeParameterList = delegateDeclaration.TypeParameterList;
 
-        int position = (typeParameterList != null)
+        int position = (typeParameterList is not null)
             ? typeParameterList.SpanStart
             : delegateDeclaration.Identifier.SpanStart;
 
@@ -385,7 +385,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
 
         DelegateDeclarationSyntax newNode = delegateDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
-        if (constraint != null)
+        if (constraint is not null)
             newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, constraint));
 
         return newNode;
@@ -401,7 +401,7 @@ internal static class AddGenericParameterToDeclarationRefactoring
 
         LocalFunctionStatementSyntax newNode = localFunctionStatement.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
-        if (constraint != null)
+        if (constraint is not null)
             newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, constraint));
 
         return newNode;

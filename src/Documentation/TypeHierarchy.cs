@@ -30,7 +30,7 @@ internal sealed class TypeHierarchy
     {
         get
         {
-            if (_interfaceRoot == null)
+            if (_interfaceRoot is null)
                 Interlocked.CompareExchange(ref _interfaceRoot, LoadInterfaceHierarchy(), null);
 
             return _interfaceRoot;
@@ -41,7 +41,7 @@ internal sealed class TypeHierarchy
     {
         get
         {
-            if (_enumRoot == null)
+            if (_enumRoot is null)
                 Interlocked.CompareExchange(ref _enumRoot, GetEnumRoot(), null);
 
             return _enumRoot;
@@ -65,7 +65,7 @@ internal sealed class TypeHierarchy
     {
         get
         {
-            if (_valueTypeRoot == null)
+            if (_valueTypeRoot is null)
                 Interlocked.CompareExchange(ref _valueTypeRoot, GetValueTypeRoot(), null);
 
             return _valueTypeRoot;
@@ -159,7 +159,7 @@ internal sealed class TypeHierarchy
     {
         Func<INamedTypeSymbol, bool> predicate = null;
 
-        if (filter != null)
+        if (filter is not null)
             predicate = t => filter.IsMatch(t);
 
         IEnumerable<INamedTypeSymbol> types = assemblies.SelectMany(a => a.GetTypes(predicate));
@@ -169,14 +169,14 @@ internal sealed class TypeHierarchy
 
     public static TypeHierarchy Create(IEnumerable<INamedTypeSymbol> types, INamedTypeSymbol root = null, IComparer<INamedTypeSymbol> comparer = null)
     {
-        if (comparer == null)
+        if (comparer is null)
             comparer = SymbolDefinitionComparer.SystemFirst.TypeComparer;
 
-        if (root == null)
+        if (root is null)
         {
             root = FindObjectType();
 
-            if (root == null)
+            if (root is null)
                 throw new InvalidOperationException("Object type not found.");
         }
 
@@ -189,7 +189,7 @@ internal sealed class TypeHierarchy
         {
             INamedTypeSymbol t = type.BaseType;
 
-            while (t != null)
+            while (t is not null)
             {
                 if (!allItems.ContainsKey(t.OriginalDefinition))
                     allItems[t.OriginalDefinition] = new TypeHierarchyItem(t.OriginalDefinition, isExternal: true);
@@ -272,7 +272,7 @@ internal sealed class TypeHierarchy
 
                     t = t.BaseType;
                 }
-                while (t != null);
+                while (t is not null);
             }
 
             return null;

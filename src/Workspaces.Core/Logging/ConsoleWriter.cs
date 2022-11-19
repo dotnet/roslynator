@@ -2,95 +2,96 @@
 
 using System;
 
-namespace Roslynator;
-
-internal sealed class ConsoleWriter : TextWriterWithVerbosity
+namespace Roslynator
 {
-    public static ConsoleWriter Instance { get; } = new();
-
-    private ConsoleWriter() : base(Console.Out, Console.Out.FormatProvider)
+    internal sealed class ConsoleWriter : TextWriterWithVerbosity
     {
-    }
+        public static ConsoleWriter Instance { get; } = new();
 
-    public ConsoleColors Colors
-    {
-        get { return new ConsoleColors(Console.ForegroundColor, Console.BackgroundColor); }
-        set
+        private ConsoleWriter() : base(Console.Out, Console.Out.FormatProvider)
         {
-            if (value.Foreground != null)
-                Console.ForegroundColor = value.Foreground.Value;
-
-            if (value.Background != null)
-                Console.BackgroundColor = value.Background.Value;
         }
-    }
 
-    public void Write(string value, ConsoleColors colors)
-    {
-        if (!colors.IsDefault)
+        public ConsoleColors Colors
         {
-            ConsoleColors tmp = Colors;
-            Colors = colors;
-            Write(value);
-            Colors = tmp;
+            get { return new ConsoleColors(Console.ForegroundColor, Console.BackgroundColor); }
+            set
+            {
+                if (value.Foreground is not null)
+                    Console.ForegroundColor = value.Foreground.Value;
+
+                if (value.Background is not null)
+                    Console.BackgroundColor = value.Background.Value;
+            }
         }
-        else
+
+        public void Write(string value, ConsoleColors colors)
         {
-            Write(value);
+            if (!colors.IsDefault)
+            {
+                ConsoleColors tmp = Colors;
+                Colors = colors;
+                Write(value);
+                Colors = tmp;
+            }
+            else
+            {
+                Write(value);
+            }
         }
-    }
 
-    public void Write(string value, ConsoleColors colors, Verbosity verbosity)
-    {
-        WriteIf(ShouldWrite(verbosity), value, colors);
-    }
-
-    public void WriteIf(bool condition, string value, ConsoleColors colors)
-    {
-        if (condition)
-            Write(value, colors);
-    }
-
-    public void WriteLine(string value, ConsoleColors colors)
-    {
-        if (!colors.IsDefault)
+        public void Write(string value, ConsoleColors colors, Verbosity verbosity)
         {
-            ConsoleColors tmp = Colors;
-            Colors = colors;
-            Write(value);
-            Colors = tmp;
-            WriteLine();
+            WriteIf(ShouldWrite(verbosity), value, colors);
         }
-        else
+
+        public void WriteIf(bool condition, string value, ConsoleColors colors)
         {
-            WriteLine(value);
+            if (condition)
+                Write(value, colors);
         }
-    }
 
-    public void WriteLine(string value, ConsoleColors colors, Verbosity verbosity)
-    {
-        WriteLineIf(ShouldWrite(verbosity), value, colors);
-    }
-
-    public override void WriteLine(LogMessage message)
-    {
-        if (message.Colors != null)
+        public void WriteLine(string value, ConsoleColors colors)
         {
-            WriteLineIf(ShouldWrite(message.Verbosity), message.Text, message.Colors.Value);
+            if (!colors.IsDefault)
+            {
+                ConsoleColors tmp = Colors;
+                Colors = colors;
+                Write(value);
+                Colors = tmp;
+                WriteLine();
+            }
+            else
+            {
+                WriteLine(value);
+            }
         }
-        else
+
+        public void WriteLine(string value, ConsoleColors colors, Verbosity verbosity)
         {
-            base.WriteLine(message);
+            WriteLineIf(ShouldWrite(verbosity), value, colors);
         }
-    }
 
-    public void WriteLineIf(bool condition, string value, ConsoleColors colors)
-    {
-        if (condition)
-            WriteLine(value, colors);
-    }
+        public override void WriteLine(LogMessage message)
+        {
+            if (message.Colors is not null)
+            {
+                WriteLineIf(ShouldWrite(message.Verbosity), message.Text, message.Colors.Value);
+            }
+            else
+            {
+                base.WriteLine(message);
+            }
+        }
 
-    protected override void Dispose(bool disposing)
-    {
+        public void WriteLineIf(bool condition, string value, ConsoleColors colors)
+        {
+            if (condition)
+                WriteLine(value, colors);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+        }
     }
 }

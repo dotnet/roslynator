@@ -39,7 +39,7 @@ public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAna
 
         MemberDeclarationSyntax declaration = compilationUnit.Members.FirstOrDefault();
 
-        if (declaration == null)
+        if (declaration is null)
             return;
 
         if (!SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(declaration.GetLeadingTrivia()))
@@ -49,7 +49,7 @@ public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAna
             ?? (SyntaxNode)compilationUnit.Usings.LastOrDefault()
             ?? compilationUnit.Externs.LastOrDefault();
 
-        if (node == null)
+        if (node is null)
             return;
 
         if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(node.GetTrailingTrivia()))

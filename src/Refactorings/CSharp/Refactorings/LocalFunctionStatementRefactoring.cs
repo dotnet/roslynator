@@ -14,7 +14,7 @@ internal static class LocalFunctionStatementRefactoring
         {
             BlockSyntax body = localFunctionStatement.Body;
 
-            if (body != null)
+            if (body is not null)
             {
                 if (body.OpenBraceToken.Span.Contains(context.Span)
                     || body.CloseBraceToken.Span.Contains(context.Span))

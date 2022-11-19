@@ -32,7 +32,7 @@ internal static class FieldDeclarationRefactoring
                     .Variables
                     .FirstOrDefault(f => context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(f.Identifier));
 
-                if (variableDeclarator != null)
+                if (variableDeclarator is not null)
                 {
                     context.RegisterRefactoring(
                         "Inline constant",

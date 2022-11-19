@@ -76,12 +76,12 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
 
         IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
 
-        if (overriddenMethod == null)
+        if (overriddenMethod is null)
             return;
 
         ISymbol symbol = semanticModel.GetSymbol(invocationInfo.Name, cancellationToken);
@@ -153,7 +153,7 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
 
     private static IParameterSymbol GetParameterSymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        if (expression == null)
+        if (expression is null)
             return null;
 
         ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
@@ -217,11 +217,11 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
     {
         BlockSyntax body = methodDeclaration.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
-            if (statement != null)
+            if (statement is not null)
             {
                 if (methodDeclaration.ReturnsVoid())
                 {
@@ -266,7 +266,7 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
 
         AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
 
-        if (accessorList == null)
+        if (accessorList is null)
             return;
 
         foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
@@ -306,12 +306,12 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
 
                     IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-                    if (propertySymbol == null)
+                    if (propertySymbol is null)
                         return false;
 
                     IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                    if (overriddenProperty == null)
+                    if (overriddenProperty is null)
                         return false;
 
                     ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
@@ -345,17 +345,17 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
 
                     SimpleNameSyntax simpleName = memberAccess.Name;
 
-                    if (simpleName == null)
+                    if (simpleName is null)
                         return false;
 
                     IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-                    if (propertySymbol == null)
+                    if (propertySymbol is null)
                         return false;
 
                     IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                    if (overriddenProperty == null)
+                    if (overriddenProperty is null)
                         return false;
 
                     ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
@@ -398,7 +398,7 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
 
         AccessorListSyntax accessorList = indexerDeclaration.AccessorList;
 
-        if (accessorList == null)
+        if (accessorList is null)
             return;
 
         foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
@@ -432,17 +432,17 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
                     if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
                         return false;
 
-                    if (elementAccess.ArgumentList == null)
+                    if (elementAccess.ArgumentList is null)
                         return false;
 
                     IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
 
-                    if (propertySymbol == null)
+                    if (propertySymbol is null)
                         return false;
 
                     IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                    if (overriddenProperty == null)
+                    if (overriddenProperty is null)
                         return false;
 
                     ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
@@ -468,7 +468,7 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
                     if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
                         return false;
 
-                    if (elementAccess.ArgumentList == null)
+                    if (elementAccess.ArgumentList is null)
                         return false;
 
                     if (assignment.Right.Kind() != SyntaxKind.IdentifierName)
@@ -481,12 +481,12 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
 
                     IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
 
-                    if (propertySymbol == null)
+                    if (propertySymbol is null)
                         return false;
 
                     IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                    if (overriddenProperty == null)
+                    if (overriddenProperty is null)
                         return false;
 
                     ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
@@ -511,7 +511,7 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
     {
         BlockSyntax body = accessor.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
@@ -530,7 +530,7 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
     {
         BlockSyntax body = accessor.Body;
 
-        if (body != null)
+        if (body is not null)
         {
             StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 

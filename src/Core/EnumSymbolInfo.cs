@@ -74,7 +74,7 @@ internal readonly struct EnumSymbolInfo
 
     public static EnumSymbolInfo Create(INamedTypeSymbol symbol)
     {
-        if (symbol == null)
+        if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
 
         if (!TryCreate(symbol, out EnumSymbolInfo enumInfo))

@@ -61,7 +61,7 @@ internal class DefaultUrlSegmentProvider : UrlSegmentProvider
         {
             ISymbol explicitImplementation = symbol.GetFirstExplicitInterfaceImplementation();
 
-            if (explicitImplementation != null)
+            if (explicitImplementation is not null)
             {
                 string name = explicitImplementation
                     .ToDisplayParts(DocumentationDisplayFormats.ExplicitImplementationFullName, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName)
@@ -97,7 +97,7 @@ internal class DefaultUrlSegmentProvider : UrlSegmentProvider
 
         INamedTypeSymbol containingType = symbol.ContainingType;
 
-        while (containingType != null)
+        while (containingType is not null)
         {
             int arity = containingType.Arity;
 
@@ -108,9 +108,9 @@ internal class DefaultUrlSegmentProvider : UrlSegmentProvider
 
         namespaceSymbol = (symbol as INamespaceSymbol) ?? symbol.ContainingNamespace;
 
-        Debug.Assert(namespaceSymbol != null, symbol.ToDisplayString(SymbolDisplayFormats.Test));
+        Debug.Assert(namespaceSymbol is not null, symbol.ToDisplayString(SymbolDisplayFormats.Test));
 
-        if (namespaceSymbol != null)
+        if (namespaceSymbol is not null)
         {
             if (namespaceSymbol.IsGlobalNamespace)
             {

@@ -58,7 +58,7 @@ public sealed class NormalizeFormatOfEnumFlagValueAnalyzer : BaseDiagnosticAnaly
         {
             ExpressionSyntax value = member.EqualsValue?.Value.WalkDownParentheses();
 
-            if (value != null)
+            if (value is not null)
             {
                 if (value.IsKind(SyntaxKind.NumericLiteralExpression))
                 {

@@ -66,7 +66,7 @@ public sealed class AvoidNullReferenceExceptionCodeFixProvider : BaseCodeFixProv
 
         bool IsPartOfLeftSideOfAssignment()
         {
-            for (SyntaxNode node = expression; node != null; node = node.Parent)
+            for (SyntaxNode node = expression; node is not null; node = node.Parent)
             {
                 var assignmentExpression = node.Parent as AssignmentExpressionSyntax;
 

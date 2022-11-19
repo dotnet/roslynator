@@ -34,7 +34,7 @@ public sealed class SyntaxErrorCharExpectedCodeFixProvider : CompilerDiagnosticC
 
         ExpressionSyntax expression = root.FindNode(context.Span).FirstAncestorOrSelf<ExpressionSyntax>();
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         int position = -1;

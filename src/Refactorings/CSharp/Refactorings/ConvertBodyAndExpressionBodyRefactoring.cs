@@ -17,7 +17,7 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
 
         RefactoringDescriptor refactoring = GetRefactoringDescriptor(selectedMembers.First());
 
-        if (refactoring.Id == null)
+        if (refactoring.Id is null)
             return;
 
         if (!RefactoringDescriptorComparer.Id.Equals(refactoring, GetRefactoringDescriptor(selectedMembers.Last())))
@@ -48,7 +48,7 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
                 {
                     ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
-                    if (expressionBody != null)
+                    if (expressionBody is not null)
                     {
                         if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                             return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
@@ -64,7 +64,7 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
                 {
                     ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-                    if (expressionBody != null)
+                    if (expressionBody is not null)
                     {
                         if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                             return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
@@ -80,7 +80,7 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
                 {
                     ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
 
-                    if (expressionBody != null)
+                    if (expressionBody is not null)
                     {
                         if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                             return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
@@ -96,7 +96,7 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
                 {
                     ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
 
-                    if (expressionBody != null)
+                    if (expressionBody is not null)
                     {
                         if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                             return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
@@ -112,7 +112,7 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
                 {
                     ArrowExpressionClauseSyntax expressionBody = conversionOperatorDeclaration.ExpressionBody;
 
-                    if (expressionBody != null)
+                    if (expressionBody is not null)
                     {
                         if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                             return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
@@ -128,7 +128,7 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
                 {
                     ArrowExpressionClauseSyntax expressionBody = constructorDeclaration.ExpressionBody;
 
-                    if (expressionBody != null)
+                    if (expressionBody is not null)
                     {
                         if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                             return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
@@ -144,7 +144,7 @@ internal static class ConvertBodyAndExpressionBodyRefactoring
                 {
                     ArrowExpressionClauseSyntax expressionBody = destructorDeclaration.ExpressionBody;
 
-                    if (expressionBody != null)
+                    if (expressionBody is not null)
                     {
                         if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                             return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;

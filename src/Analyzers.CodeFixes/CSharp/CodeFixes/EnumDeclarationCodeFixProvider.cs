@@ -66,7 +66,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
 
                         ImmutableArray<ulong> values = enumInfo
                             .Fields
-                            .Where(f => f.HasValue && ((EnumMemberDeclarationSyntax)f.Symbol.GetSyntax(context.CancellationToken)).EqualsValue != null)
+                            .Where(f => f.HasValue && ((EnumMemberDeclarationSyntax)f.Symbol.GetSyntax(context.CancellationToken)).EqualsValue is not null)
                             .Select(f => f.Value)
                             .ToImmutableArray();
 
@@ -209,7 +209,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
 
         for (int i = 0; i < members.Count; i++)
         {
-            if (members[i].EqualsValue == null)
+            if (members[i].EqualsValue is null)
             {
                 IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(members[i], cancellationToken);
 
@@ -230,7 +230,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
                     value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumSymbol);
                 }
 
-                if (value != null)
+                if (value is not null)
                 {
                     reservedValues.Add(value.Value);
 
@@ -292,7 +292,7 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
             {
                 ExpressionSyntax expression = member.EqualsValue?.Value.WalkDownParentheses();
 
-                if (expression != null
+                if (expression is not null
                     && semanticModel.GetDeclaredSymbol(member, cancellationToken) is IFieldSymbol fieldSymbol
                     && fieldSymbol.HasConstantValue)
                 {

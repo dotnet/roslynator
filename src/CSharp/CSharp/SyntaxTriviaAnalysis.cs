@@ -211,7 +211,7 @@ internal static class SyntaxTriviaAnalysis
     {
         SyntaxTree tree = nodeOrToken.SyntaxTree;
 
-        if (tree == null)
+        if (tree is null)
             return CSharpFactory.EmptyWhitespace();
 
         TextSpan span = nodeOrToken.Span;
@@ -272,7 +272,7 @@ internal static class SyntaxTriviaAnalysis
         {
             node = node.Parent;
 
-            while (node != null)
+            while (node is not null)
             {
                 if (IsMemberDeclarationOrStatementOrAccessorDeclaration(node))
                 {

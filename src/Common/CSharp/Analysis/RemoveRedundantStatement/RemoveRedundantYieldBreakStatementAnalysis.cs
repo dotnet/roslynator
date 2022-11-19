@@ -39,7 +39,7 @@ internal sealed class RemoveRedundantYieldBreakStatementAnalysis : RemoveRedunda
         {
             walker.VisitStatement(statements[i]);
 
-            success = walker.YieldStatement != null;
+            success = walker.YieldStatement is not null;
 
             if (success)
                 break;

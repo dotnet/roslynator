@@ -52,14 +52,14 @@ public sealed class ChangeTypeOfLocalVariableCodeFixProvider : CompilerDiagnosti
 
         ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
-        if (value == null)
+        if (value is null)
             return;
 
         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
         SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(value, context.CancellationToken);
 
-        if (symbolInfo.Symbol != null)
+        if (symbolInfo.Symbol is not null)
         {
             ComputeCodeFix(context, diagnostic, variableDeclarator, symbolInfo.Symbol, semanticModel);
         }

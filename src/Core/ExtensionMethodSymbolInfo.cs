@@ -42,7 +42,7 @@ public readonly struct ExtensionMethodSymbolInfo : IEquatable<ExtensionMethodSym
     /// </summary>
     public bool IsReduced
     {
-        get { return Symbol != null && !object.ReferenceEquals(ReducedSymbol, Symbol); }
+        get { return Symbol is not null && !object.ReferenceEquals(ReducedSymbol, Symbol); }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -50,7 +50,7 @@ public readonly struct ExtensionMethodSymbolInfo : IEquatable<ExtensionMethodSym
     {
         get
         {
-            return (Symbol != null)
+            return (Symbol is not null)
               ? $"{Symbol.MethodKind} {Symbol.ToDisplayString(SymbolDisplayFormats.Test)}"
               : "Uninitialized";
         }

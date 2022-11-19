@@ -22,7 +22,7 @@ internal readonly struct OverriddenSymbolInfo : IEquatable<OverriddenSymbolInfo>
 
     public bool Success
     {
-        get { return Symbol != null; }
+        get { return Symbol is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]

@@ -60,7 +60,7 @@ internal class SpellingFixer
 
             Project project = CurrentSolution.GetProject(projects[i]);
 
-            if (predicate == null || predicate(project))
+            if (predicate is null || predicate(project))
             {
                 WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
@@ -95,7 +95,7 @@ internal class SpellingFixer
 
         ISpellingService service = MefWorkspaceServices.Default.GetService<ISpellingService>(project.Language);
 
-        if (service == null)
+        if (service is null)
             return ImmutableArray<SpellingFixResult>.Empty;
 
         ImmutableArray<Diagnostic> previousDiagnostics = ImmutableArray<Diagnostic>.Empty;
@@ -273,7 +273,7 @@ internal class SpellingFixer
                 }
             }
 
-            if (textChanges != null)
+            if (textChanges is not null)
             {
                 document = await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
                 project = document.Project;
@@ -322,19 +322,19 @@ internal class SpellingFixer
 
             foreach (SpellingDiagnostic diagnostic in diagnostics)
             {
-                if (diagnostic != null)
+                if (diagnostic is not null)
                 {
                     node = syntaxFacts.GetSymbolDeclaration(diagnostic.Identifier);
                     break;
                 }
             }
 
-            if (node == null)
+            if (node is null)
                 continue;
 
             Document document = project.GetDocument(documentId);
 
-            if (document == null)
+            if (document is null)
             {
                 Debug.Fail(identifier.GetLocation().ToString());
 
@@ -377,7 +377,7 @@ internal class SpellingFixer
             ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken)
                 ?? semanticModel.GetSymbol(node, cancellationToken);
 
-            if (symbol == null)
+            if (symbol is null)
             {
                 // 8925 - C# tuple element
                 Debug.Assert(identifier.Parent.RawKind == 8925, identifier.ToString());
@@ -388,7 +388,7 @@ internal class SpellingFixer
 
                     string locationText = GetLocationText(identifier.GetLocation(), project);
 
-                    if (locationText != null)
+                    if (locationText is not null)
                         message += $" at {locationText}";
 
                     WriteLine(message, ConsoleColors.Yellow, Verbosity.Detailed);
@@ -413,7 +413,7 @@ internal class SpellingFixer
             {
                 SpellingDiagnostic diagnostic = diagnostics[j];
 
-                if (diagnostic == null)
+                if (diagnostic is null)
                     continue;
 
                 LogHelpers.WriteSpellingDiagnostic(diagnostic, Options, sourceText, Path.GetDirectoryName(project.FilePath), "    ", Verbosity.Normal);
@@ -490,7 +490,7 @@ internal class SpellingFixer
                 }
             }
 
-            if (newSolution != null)
+            if (newSolution is not null)
             {
                 if (Workspace.TryApplyChanges(newSolution))
                 {
@@ -521,7 +521,7 @@ internal class SpellingFixer
             SourceText sourceText,
             ref string sourceTextText)
         {
-            if (sourceTextText == null)
+            if (sourceTextText is null)
                 sourceTextText = (ShouldWrite(Verbosity.Detailed)) ? sourceText.ToString() : "";
 
             SpellingFixResult result = SpellingFixResult.Create(
@@ -538,7 +538,7 @@ internal class SpellingFixer
         string containingValue = diagnostic.Parent;
 
         if (Options.Autofix
-            && containingValue != null
+            && containingValue is not null
             && SpellingData.Fixes.TryGetKey(containingValue, out string actualKey)
             && string.Equals(containingValue, actualKey, StringComparison.Ordinal))
         {
@@ -607,7 +607,7 @@ internal class SpellingFixer
     {
         string message = $"    Replace '{diagnostic.Value}' with '{fix.Value}'";
 
-        if (colors != null)
+        if (colors is not null)
         {
             WriteLine(message, colors.Value, Verbosity.Minimal);
         }

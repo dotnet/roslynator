@@ -104,7 +104,7 @@ internal class SymbolDefinitionTextWriter : AbstractSymbolDefinitionTextWriter
     {
         IEnumerable<string> elements = DocumentationProvider?.GetXmlDocumentation(symbol)?.GetElementsAsText(skipEmptyElement: true, makeSingleLine: true);
 
-        if (elements == null)
+        if (elements is null)
             return;
 
         foreach (string element in elements)
@@ -116,7 +116,7 @@ internal class SymbolDefinitionTextWriter : AbstractSymbolDefinitionTextWriter
             {
                 string line = null;
 
-                while ((line = sr.ReadLine()) != null)
+                while ((line = sr.ReadLine()) is not null)
                 {
                     WriteLine(line);
                     WriteIndentation();
@@ -127,7 +127,7 @@ internal class SymbolDefinitionTextWriter : AbstractSymbolDefinitionTextWriter
 
     public override void Close()
     {
-        if (_writer != null)
+        if (_writer is not null)
         {
             try
             {

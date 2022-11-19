@@ -39,7 +39,7 @@ public sealed class AddBracesToIfElseWhenMultiLineAnalyzer : BaseDiagnosticAnaly
         if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
             return;
 
-        if (ifStatement.Else == null)
+        if (ifStatement.Else is null)
             return;
 
         if (ifStatement.Else.ContainsDirectives)

@@ -64,7 +64,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
         var fieldSymbol = (IFieldSymbol)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
 
-        if (fieldSymbol == null)
+        if (fieldSymbol is null)
             return false;
 
         if (!fieldSymbol.Type.SupportsConstantValue())
@@ -74,7 +74,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
         {
             ExpressionSyntax value = declarator.Initializer?.Value;
 
-            if (value == null)
+            if (value is null)
                 return false;
 
             if (value.WalkDownParentheses().IsKind(SyntaxKind.InterpolatedStringExpression))
@@ -95,7 +95,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
                 BlockSyntax body = constructorDeclaration.Body;
 
-                if (body != null)
+                if (body is not null)
                 {
                     bool canBeConvertedToConstant;
                     UseConstantInsteadOfFieldWalker walker = null;
@@ -114,7 +114,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
                     }
                     finally
                     {
-                        if (walker != null)
+                        if (walker is not null)
                             UseConstantInsteadOfFieldWalker.Free(walker);
                     }
 
@@ -194,10 +194,10 @@ internal static class UseConstantInsteadOfFieldAnalysis
         {
             UseConstantInsteadOfFieldWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker.FieldSymbol == null);
-                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.FieldSymbol is null);
+                Debug.Assert(walker.SemanticModel is null);
                 Debug.Assert(walker.CancellationToken == default);
 
                 _cachedInstance = null;

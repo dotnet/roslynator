@@ -76,7 +76,7 @@ internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
     {
         MarkLocalVariableAsConstWalker walker = _cachedInstance;
 
-        if (walker != null)
+        if (walker is not null)
         {
             Debug.Assert(walker.Identifiers.Count == 0);
             Debug.Assert(!walker.Result);

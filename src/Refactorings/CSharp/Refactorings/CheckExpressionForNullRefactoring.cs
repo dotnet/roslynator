@@ -59,7 +59,7 @@ internal static class CheckExpressionForNullRefactoring
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return false;
 
         return typeSymbol.IsReferenceTypeOrNullableType();
@@ -100,7 +100,7 @@ internal static class CheckExpressionForNullRefactoring
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(localInfo.Type, cancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return false;
 
         return typeSymbol.IsReferenceTypeOrNullableType();
@@ -359,13 +359,13 @@ internal static class CheckExpressionForNullRefactoring
             {
                 VariableDeclarationSyntax declaration = localDeclaration.Declaration;
 
-                if (declaration != null)
+                if (declaration is not null)
                 {
                     foreach (VariableDeclaratorSyntax variable in declaration.Variables)
                     {
                         ISymbol symbol = semanticModel.GetDeclaredSymbol(variable, cancellationToken);
 
-                        if (symbol != null)
+                        if (symbol is not null)
                         {
                             int index = IncludeAllReferencesOfSymbol(symbol, SyntaxKind.IdentifierName, statements, i + 1, semanticModel, cancellationToken);
 

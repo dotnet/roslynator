@@ -52,7 +52,7 @@ RCS1245;SimplifyConditionalExpression2;RCS1104a;SimplifyConditionalExpressionWhe
     {
         get
         {
-            if (_mapping == null)
+            if (_mapping is null)
                 Interlocked.CompareExchange(ref _mapping, LoadMapping(), null);
 
             return _mapping;
@@ -67,7 +67,7 @@ RCS1245;SimplifyConditionalExpression2;RCS1104a;SimplifyConditionalExpressionWhe
         {
             string line = null;
 
-            while ((line = sr.ReadLine()) != null)
+            while ((line = sr.ReadLine()) is not null)
             {
                 if (line.Length > 0)
                 {

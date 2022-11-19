@@ -83,7 +83,7 @@ internal static class RemoveRedundantToStringCallAnalysis
         {
             IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
 
-            while (overriddenMethod != null)
+            while (overriddenMethod is not null)
             {
                 if (overriddenMethod.ContainingType?.SpecialType == SpecialType.System_Object)
                     return true;

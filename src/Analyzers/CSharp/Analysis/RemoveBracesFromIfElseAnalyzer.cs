@@ -50,7 +50,7 @@ public sealed class RemoveBracesFromIfElseAnalyzer : BaseDiagnosticAnalyzer
         if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
             return;
 
-        if (ifStatement.Else == null)
+        if (ifStatement.Else is null)
             return;
 
         BracesAnalysis analysis = BracesAnalysis.AnalyzeBraces(ifStatement);

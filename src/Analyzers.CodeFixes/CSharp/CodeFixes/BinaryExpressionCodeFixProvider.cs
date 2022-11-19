@@ -78,7 +78,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                     {
                         ExpressionSyntax expression = binaryExpression.Left;
 
-                        if (expression == null
+                        if (expression is null
                             || !context.Span.Contains(expression.Span))
                         {
                             expression = binaryExpression.Right;
@@ -348,11 +348,11 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
         }
 
         BinaryExpressionSyntax newBinaryExpression = BinaryExpression(
-            (binaryExpression != null)
+            (binaryExpression is not null)
                 ? right.Kind()
                 : SyntaxKind.EqualsExpression,
             nullCheck.Expression.WithLeadingTrivia(logicalAnd.GetLeadingTrivia()),
-            (binaryExpression != null)
+            (binaryExpression is not null)
                 ? ((BinaryExpressionSyntax)right).OperatorToken
                 : Token(SyntaxKind.EqualsEqualsToken).WithTriviaFrom(logicalAnd.OperatorToken),
             newRight)

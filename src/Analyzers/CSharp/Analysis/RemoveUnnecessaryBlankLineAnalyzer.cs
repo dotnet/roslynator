@@ -182,7 +182,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
 
         BlockSyntax block = tryStatement.Block;
 
-        if (block != null)
+        if (block is not null)
         {
             SyntaxList<CatchClauseSyntax> catches = tryStatement.Catches;
 
@@ -199,7 +199,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
 
                 FinallyClauseSyntax finallyClause = tryStatement.Finally;
 
-                if (finallyClause != null)
+                if (finallyClause is not null)
                     Analyze(context, previousNode, finallyClause);
             }
         }
@@ -215,12 +215,12 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
         {
             StatementSyntax statement = ifStatement.Statement;
 
-            if (statement != null)
+            if (statement is not null)
                 Analyze(context, statement, elseClause);
 
             statement = elseClause.Statement;
 
-            if (statement != null)
+            if (statement is not null)
                 Analyze(context, elseClause.ElseKeyword, statement);
         }
     }
@@ -465,7 +465,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
 
         ExpressionSyntax first = expressions.FirstOrDefault();
 
-        if (first == null)
+        if (first is null)
             return;
 
         if (IsExpectedTrailingTrivia(initializer.OpenBraceToken.TrailingTrivia))
@@ -476,7 +476,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
             {
                 TextSpan? span = GetEmptyLineSpan(leading, isEnd: false);
 
-                if (span != null)
+                if (span is not null)
                     ReportDiagnostic(context, span.Value);
             }
         }
@@ -489,7 +489,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
             {
                 TextSpan? span = GetEmptyLineSpan(leading, isEnd: true);
 
-                if (span != null)
+                if (span is not null)
                     ReportDiagnostic(context, span.Value);
             }
         }
@@ -584,7 +584,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
 
         TextSpan? span = GetEmptyLineSpan(node.GetLeadingTrivia(), isEnd: false);
 
-        if (span == null)
+        if (span is null)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
@@ -609,7 +609,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
 
         TextSpan? span = GetEmptyLineSpan(brace.LeadingTrivia, isEnd: true);
 
-        if (span == null)
+        if (span is null)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
@@ -636,7 +636,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
 
         TextSpan? span = GetEmptyLineSpan(closeBrace.LeadingTrivia, isEnd: true);
 
-        if (span == null)
+        if (span is null)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(

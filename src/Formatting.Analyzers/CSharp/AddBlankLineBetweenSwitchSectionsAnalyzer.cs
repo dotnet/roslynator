@@ -57,7 +57,7 @@ public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAn
 
                 if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia)
                     && (context.GetBlankLineBetweenClosingBraceAndSwitchSection() != false
-                        || previousBlock == null))
+                        || previousBlock is null))
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,

@@ -38,7 +38,7 @@ public sealed class AddOrRemoveRegionNameAnalyzer : BaseDiagnosticAnalyzer
 
         RegionDirectiveTriviaSyntax regionDirective = endRegionDirective.GetRegionDirective();
 
-        if (regionDirective == null)
+        if (regionDirective is null)
             return;
 
         SyntaxTrivia trivia = regionDirective.GetPreprocessingMessageTrivia();

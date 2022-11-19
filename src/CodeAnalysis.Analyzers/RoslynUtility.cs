@@ -16,7 +16,7 @@ internal static class RoslynUtility
     {
         get
         {
-            if (_wellKnownLanguageNames == null)
+            if (_wellKnownLanguageNames is null)
                 Interlocked.CompareExchange(ref _wellKnownLanguageNames, LoadLanguageNames(), null);
 
             return _wellKnownLanguageNames;

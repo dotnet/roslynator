@@ -75,7 +75,7 @@ internal class MigrateCommand
         {
             OperationCanceledException operationCanceledException = ex.GetOperationCanceledException();
 
-            if (operationCanceledException != null)
+            if (operationCanceledException is not null)
             {
                 OperationCanceled(operationCanceledException);
             }
@@ -220,7 +220,7 @@ internal class MigrateCommand
             {
                 string packageId = e.Attribute("Include")?.Value;
 
-                if (packageId == null)
+                if (packageId is null)
                     continue;
 
                 if (packageId == "Roslynator.Formatting.Analyzers")
@@ -230,20 +230,20 @@ internal class MigrateCommand
                     analyzers = e;
             }
 
-            if (analyzers == null)
+            if (analyzers is null)
                 continue;
 
-            if (formattingAnalyzers != null)
+            if (formattingAnalyzers is not null)
             {
                 string versionText = formattingAnalyzers.Attribute("Version")?.Value;
 
-                if (versionText == null)
+                if (versionText is null)
                 {
                     WriteXmlError(formattingAnalyzers, "Version attribute not found");
                     continue;
                 }
 
-                if (versionText != null)
+                if (versionText is not null)
                 {
                     Match match = _versionRegex.Match(versionText);
 
@@ -269,7 +269,7 @@ internal class MigrateCommand
                 }
             }
 
-            if (formattingAnalyzers != null)
+            if (formattingAnalyzers is not null)
             {
                 var message = new LogMessage("Update package 'Roslynator.Formatting.Analyzers' to '1.0.0'", Colors.Message_OK, Verbosity.Normal);
 
@@ -286,7 +286,7 @@ internal class MigrateCommand
                 XText whitespace = null;
 
                 if (analyzers.NodesBeforeSelf().LastOrDefault() is XText xtext
-                    && xtext != null
+                    && xtext is not null
                     && string.IsNullOrWhiteSpace(xtext.Value))
                 {
                     whitespace = xtext;
@@ -296,7 +296,7 @@ internal class MigrateCommand
             }
         }
 
-        if (messages != null)
+        if (messages is not null)
         {
             WriteUpdateMessages(path, messages);
 
@@ -339,7 +339,7 @@ internal class MigrateCommand
         {
             string id = element.Attribute("Id")?.Value;
 
-            if (id != null)
+            if (id is not null)
                 ids[id] = element;
         }
 
@@ -347,7 +347,7 @@ internal class MigrateCommand
 
         XElement formattingAnalyzers = rules.FirstOrDefault(f => f.Attribute("AnalyzerId")?.Value == "Roslynator.Formatting.Analyzers");
 
-        if (formattingAnalyzers == null)
+        if (formattingAnalyzers is null)
         {
             formattingAnalyzers = new XElement(
                 "Rules",
@@ -381,12 +381,12 @@ internal class MigrateCommand
 
                 formattingAnalyzers.Add(newRule);
 
-                if (kvp.Value.Parent != null)
+                if (kvp.Value.Parent is not null)
                     kvp.Value.Remove();
             }
         }
 
-        if (messages != null)
+        if (messages is not null)
         {
             WriteUpdateMessages(path, messages);
 
@@ -478,7 +478,7 @@ internal class MigrateCommand
                 return newValue;
             });
 
-        if (messages != null)
+        if (messages is not null)
         {
             WriteUpdateMessages(path, messages);
 
@@ -529,7 +529,7 @@ internal class MigrateCommand
         {
             Encoding encodingFromBom = EncodingHelpers.DetectEncoding(stream);
 
-            if (encodingFromBom != null)
+            if (encodingFromBom is not null)
                 encoding = encodingFromBom;
 
             stream.Position = 0;
@@ -537,7 +537,7 @@ internal class MigrateCommand
             using (var reader = new StreamReader(
                 stream,
                 encoding ?? Encodings.UTF8NoBom,
-                detectEncodingFromByteOrderMarks: encodingFromBom == null))
+                detectEncodingFromByteOrderMarks: encodingFromBom is null))
             {
                 return reader.ReadToEnd();
             }

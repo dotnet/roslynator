@@ -67,7 +67,7 @@ public readonly struct ConditionalExpressionInfo
     /// </summary>
     public bool Success
     {
-        get { return Condition != null; }
+        get { return Condition is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -81,22 +81,22 @@ public readonly struct ConditionalExpressionInfo
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
-        if (conditionalExpression == null)
+        if (conditionalExpression is null)
             return default;
 
         ExpressionSyntax condition = WalkAndCheck(conditionalExpression.Condition, walkDownParentheses, allowMissing);
 
-        if (condition == null)
+        if (condition is null)
             return default;
 
         ExpressionSyntax whenTrue = WalkAndCheck(conditionalExpression.WhenTrue, walkDownParentheses, allowMissing);
 
-        if (whenTrue == null)
+        if (whenTrue is null)
             return default;
 
         ExpressionSyntax whenFalse = WalkAndCheck(conditionalExpression.WhenFalse, walkDownParentheses, allowMissing);
 
-        if (whenFalse == null)
+        if (whenFalse is null)
             return default;
 
         return new ConditionalExpressionInfo(condition, whenTrue, whenFalse);

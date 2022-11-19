@@ -59,7 +59,7 @@ internal readonly struct ConditionalStatementInfo
     /// </summary>
     public bool Success
     {
-        get { return IfStatement != null; }
+        get { return IfStatement is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -91,7 +91,7 @@ internal readonly struct ConditionalStatementInfo
 
         ExpressionSyntax condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
 
-        if (condition == null)
+        if (condition is null)
             return default;
 
         return new ConditionalStatementInfo(ifStatement, condition, whenTrue, whenFalse);

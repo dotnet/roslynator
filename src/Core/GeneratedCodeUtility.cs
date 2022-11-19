@@ -34,7 +34,7 @@ internal static class GeneratedCodeUtility
 
                 SyntaxTree tree = node.SyntaxTree;
 
-                if (tree != null
+                if (tree is not null
                     && IsGeneratedCode(tree, isComment, cancellationToken))
                 {
                     return true;
@@ -113,7 +113,7 @@ internal static class GeneratedCodeUtility
 
         ISymbol containingSymbol = symbol.ContainingSymbol;
 
-        return containingSymbol != null
+        return containingSymbol is not null
             && IsMarkedWithGeneratedCodeAttribute(containingSymbol, generatedCodeAttribute);
     }
 }

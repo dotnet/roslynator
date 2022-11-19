@@ -61,14 +61,14 @@ internal readonly struct TypeParameterConstraintInfo
     /// </summary>
     public bool Success
     {
-        get { return Constraint != null; }
+        get { return Constraint is not null; }
     }
 
     internal bool IsDuplicateConstraint
     {
         get
         {
-            if (Constraint == null)
+            if (Constraint is null)
                 return false;
 
             SeparatedSyntaxList<TypeParameterConstraintSyntax> constraints = Constraints;

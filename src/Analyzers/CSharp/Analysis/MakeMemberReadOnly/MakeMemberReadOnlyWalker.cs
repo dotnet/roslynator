@@ -32,10 +32,10 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
     {
         MakeMemberReadOnlyWalker walker = _cachedInstance;
 
-        if (walker != null)
+        if (walker is not null)
         {
             Debug.Assert(walker.Symbols.Count == 0);
-            Debug.Assert(walker.SemanticModel == null);
+            Debug.Assert(walker.SemanticModel is null);
             Debug.Assert(walker.CancellationToken == default);
 
             _cachedInstance = null;
@@ -126,7 +126,7 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
     {
         ExpressionSyntax expression = node.Expression;
 
-        if (expression != null)
+        if (expression is not null)
         {
             VisitAssignedExpression(expression);
         }

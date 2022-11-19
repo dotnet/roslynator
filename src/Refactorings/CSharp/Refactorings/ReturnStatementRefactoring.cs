@@ -12,7 +12,7 @@ internal static class ReturnStatementRefactoring
     {
         ExpressionSyntax expression = returnStatement.Expression;
 
-        if (expression != null
+        if (expression is not null
             && context.IsRefactoringEnabled(RefactoringDescriptors.ConvertReturnStatementToIf)
             && (context.Span.IsEmptyAndContainedInSpan(returnStatement.ReturnKeyword)
                 || context.Span.IsBetweenSpans(returnStatement)))

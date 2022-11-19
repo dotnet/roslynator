@@ -23,7 +23,7 @@ internal static class RemoveUnnecessaryAssignmentRefactoring
         if (selectedStatements.Last() is not ReturnStatementSyntax returnStatement)
             return;
 
-        if (returnStatement.Expression == null)
+        if (returnStatement.Expression is null)
             return;
 
         if (!CSharpFactory.AreEquivalent(simpleAssignment.Left, returnStatement.Expression))

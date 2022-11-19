@@ -52,7 +52,7 @@ public sealed class SimplifyLazyInitializationAnalyzer : BaseDiagnosticAnalyzer
 
     private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxNode node, BlockSyntax body)
     {
-        if (body == null)
+        if (body is null)
             return;
 
         if (body.ContainsDiagnostics)
@@ -87,7 +87,7 @@ public sealed class SimplifyLazyInitializationAnalyzer : BaseDiagnosticAnalyzer
 
         StatementSyntax statement = simpleIf.IfStatement.SingleNonBlockStatementOrDefault();
 
-        if (statement == null)
+        if (statement is null)
             return;
 
         SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);

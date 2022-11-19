@@ -35,7 +35,7 @@ internal static class MakePropertyAbstractRefactoring
     {
         AccessorListSyntax accessorList = AccessorList();
 
-        if (propertyDeclaration.ExpressionBody != null)
+        if (propertyDeclaration.ExpressionBody is not null)
         {
             accessorList = accessorList
                 .AddAccessors(AutoGetAccessorDeclaration());
@@ -43,7 +43,7 @@ internal static class MakePropertyAbstractRefactoring
         else
         {
             AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
-            if (getter != null)
+            if (getter is not null)
             {
                 if (SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetExplicitAccessibility(getter) == Accessibility.Private)
                     getter = SyntaxAccessibility.WithExplicitAccessibility(getter, Accessibility.Protected);
@@ -54,7 +54,7 @@ internal static class MakePropertyAbstractRefactoring
             }
 
             AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
-            if (setter != null)
+            if (setter is not null)
             {
                 if (SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetExplicitAccessibility(setter) == Accessibility.Private)
                     setter = SyntaxAccessibility.WithExplicitAccessibility(setter, Accessibility.Protected);

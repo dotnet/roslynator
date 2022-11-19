@@ -139,7 +139,7 @@ internal class StatementWalker : CSharpSyntaxWalker
 
         FinallyClauseSyntax finallyClause = node.Finally;
 
-        if (finallyClause != null)
+        if (finallyClause is not null)
             VisitBlockIfNotNull(finallyClause.Block);
     }
 
@@ -164,7 +164,7 @@ internal class StatementWalker : CSharpSyntaxWalker
 
     private void VisitBlockIfNotNull(BlockSyntax node)
     {
-        if (node != null
+        if (node is not null
             && ShouldVisit)
         {
             VisitBlock(node);
@@ -173,7 +173,7 @@ internal class StatementWalker : CSharpSyntaxWalker
 
     private void VisitStatementIfNotNull(StatementSyntax node)
     {
-        if (node != null
+        if (node is not null
             && ShouldVisit)
         {
             VisitStatement(node);

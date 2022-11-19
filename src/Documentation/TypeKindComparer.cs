@@ -17,10 +17,10 @@ internal class TypeKindComparer : IComparer<TypeKind>, IEqualityComparer<TypeKin
         if (x == y)
             return 0;
 
-        if (x == null)
+        if (x is null)
             return -1;
 
-        if (y == null)
+        if (y is null)
             return 1;
 
         if (x is TypeKind a
@@ -37,10 +37,10 @@ internal class TypeKindComparer : IComparer<TypeKind>, IEqualityComparer<TypeKin
         if (x == y)
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (x is TypeKind a
@@ -54,7 +54,7 @@ internal class TypeKindComparer : IComparer<TypeKind>, IEqualityComparer<TypeKin
 
     public int GetHashCode(object obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 0;
 
         if (obj is TypeKind symbol)

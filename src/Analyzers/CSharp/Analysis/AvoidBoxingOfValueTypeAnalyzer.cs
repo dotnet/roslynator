@@ -38,15 +38,15 @@ public sealed class AvoidBoxingOfValueTypeAnalyzer : BaseDiagnosticAnalyzer
         if (interpolation.ContainsDiagnostics)
             return;
 
-        if (interpolation.AlignmentClause != null)
+        if (interpolation.AlignmentClause is not null)
             return;
 
-        if (interpolation.FormatClause != null)
+        if (interpolation.FormatClause is not null)
             return;
 
         ExpressionSyntax expression = interpolation.Expression?.WalkDownParentheses();
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);

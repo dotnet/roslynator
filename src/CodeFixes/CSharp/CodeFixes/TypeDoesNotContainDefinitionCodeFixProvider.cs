@@ -132,11 +132,11 @@ public sealed class TypeDoesNotContainDefinitionCodeFixProvider : CompilerDiagno
 
         string newName = GetNewName();
 
-        if (newName != null)
+        if (newName is not null)
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-            if (typeSymbol != null)
+            if (typeSymbol is not null)
             {
                 if (typeSymbol is IArrayTypeSymbol arrayType)
                     typeSymbol = arrayType.ElementType;

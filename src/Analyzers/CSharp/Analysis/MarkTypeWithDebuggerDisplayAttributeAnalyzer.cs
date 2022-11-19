@@ -32,7 +32,7 @@ public sealed class MarkTypeWithDebuggerDisplayAttributeAnalyzer : BaseDiagnosti
         {
             INamedTypeSymbol debuggerDisplayAttributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.Diagnostics.DebuggerDisplayAttribute");
 
-            if (debuggerDisplayAttributeSymbol != null)
+            if (debuggerDisplayAttributeSymbol is not null)
             {
                 startContext.RegisterSymbolAction(
                     nodeContext => AnalyzerNamedTypeSymbol(nodeContext, debuggerDisplayAttributeSymbol),

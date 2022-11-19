@@ -19,7 +19,7 @@ internal class BinaryExpressionToMultiLineRewriter : CSharpSyntaxRewriter
 
     public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
     {
-        if (_previous == null
+        if (_previous is null
             || (_previous.Equals(node.Parent) && node.IsKind(_previous.Kind())))
         {
             node = node

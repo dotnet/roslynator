@@ -82,7 +82,7 @@ public sealed class SourceReferenceProvider
 
             XElement membersElements = repositoryElement.Element("members");
 
-            if (membersElements != null)
+            if (membersElements is not null)
             {
                 foreach (XElement memberElement in membersElements.Elements("member"))
                 {
@@ -93,7 +93,7 @@ public sealed class SourceReferenceProvider
                     string path = null;
                     string line = null;
 
-                    if (locationElement != null)
+                    if (locationElement is not null)
                     {
                         path = locationElement.Attribute("path").Value;
                         line = locationElement.Attribute("line").Value;
@@ -136,7 +136,7 @@ public sealed class SourceReferenceProvider
 
         public Uri GetUrl(string url, string line)
         {
-            if (FullUrl == null)
+            if (FullUrl is null)
                 FullUrl = new Uri(Url, $"blob/{Commit}/");
 
             string relativeUrl = (!string.IsNullOrEmpty(line)) ? $"{url}#L{line}" : url;
@@ -162,7 +162,7 @@ public sealed class SourceReferenceProvider
 
         public Uri GetUrl()
         {
-            return (Path != null) ? Repository.GetUrl(Path, Line) : null;
+            return (Path is not null) ? Repository.GetUrl(Path, Line) : null;
         }
     }
 }

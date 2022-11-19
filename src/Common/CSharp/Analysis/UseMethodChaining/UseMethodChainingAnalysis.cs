@@ -83,7 +83,7 @@ internal abstract class UseMethodChainingAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         ITypeSymbol returnType = methodSymbol.ReturnType;

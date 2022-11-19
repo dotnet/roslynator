@@ -11,7 +11,7 @@ internal static class CreateNameFromTypeSymbolHelper
 {
     public static string CreateName(ITypeSymbol typeSymbol)
     {
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));
 
         if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))

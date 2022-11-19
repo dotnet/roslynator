@@ -25,7 +25,7 @@ internal static class SyntaxUtility
     {
         var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(node, cancellationToken);
 
-        if (enumTypeSymbol.EnumUnderlyingType != null)
+        if (enumTypeSymbol.EnumUnderlyingType is not null)
         {
             Optional<object> constantValue = semanticModel.GetConstantValue(node, cancellationToken);
 

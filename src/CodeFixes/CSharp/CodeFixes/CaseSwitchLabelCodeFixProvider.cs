@@ -66,7 +66,7 @@ public sealed class CaseSwitchLabelCodeFixProvider : CompilerDiagnosticCodeFixPr
                 if (semanticModel.GetDiagnostic(
                     CompilerDiagnosticIdentifiers.CS0152_SwitchStatementContainsMultipleCasesWithSameLabelValue,
                     label.Span,
-                    cancellationToken) != null)
+                    cancellationToken) is not null)
                 {
                     labelsToRemove.Add(label);
                 }

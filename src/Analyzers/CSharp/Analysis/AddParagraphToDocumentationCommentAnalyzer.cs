@@ -121,7 +121,7 @@ public sealed class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticA
                 name = xmlEmptyElement.Name?.LocalName.ValueText;
             }
 
-            if (name != null)
+            if (name is not null)
             {
                 if (string.Equals(name, "code", StringComparison.OrdinalIgnoreCase)
                     || string.Equals(name, "inheritdoc", StringComparison.OrdinalIgnoreCase)
@@ -264,7 +264,7 @@ public sealed class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticA
 
                                                 if (!stopOnFirstMatch)
                                                 {
-                                                    if (spans == null)
+                                                    if (spans is null)
                                                         spans = new List<TextSpan>() { TextSpan.FromBounds(index, endIndex) };
 
                                                     spans.Add(TextSpan.FromBounds(index2, endIndex2));
@@ -309,7 +309,7 @@ public sealed class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticA
             if (stopOnFirstMatch)
                 return (TextSpan.FromBounds(index, endIndex), TextSpan.FromBounds(index2, endIndex2), default);
 
-            if (spans == null)
+            if (spans is null)
                 spans = new List<TextSpan>() { TextSpan.FromBounds(index, endIndex) };
 
             spans.Add(TextSpan.FromBounds(index2, endIndex2));

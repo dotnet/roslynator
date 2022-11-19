@@ -116,7 +116,7 @@ public sealed class MemberDeclarationCodeFixProvider : CompilerDiagnosticCodeFix
 
                         MethodDeclarationSyntax otherPart = semanticModel.GetOtherPart(methodDeclaration, context.CancellationToken);
 
-                        if (otherPart == null)
+                        if (otherPart is null)
                             break;
 
                         CodeAction codeAction = CodeAction.Create(
@@ -208,9 +208,9 @@ public sealed class MemberDeclarationCodeFixProvider : CompilerDiagnosticCodeFix
                                 }
                         }
 
-                        SyntaxDebug.Assert(node != null, memberDeclaration);
+                        SyntaxDebug.Assert(node is not null, memberDeclaration);
 
-                        if (node == null)
+                        if (node is null)
                             break;
 
                         ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.PartialKeyword, title: $"Make {CSharpFacts.GetTitle(node)} partial");
@@ -433,7 +433,7 @@ public sealed class MemberDeclarationCodeFixProvider : CompilerDiagnosticCodeFix
 
                         CodeAction codeAction = AddParameterToInterfaceMemberRefactoring.ComputeRefactoringForExplicitImplementation(context2, memberDeclaration);
 
-                        if (codeAction != null)
+                        if (codeAction is not null)
                             context.RegisterCodeFix(codeAction, diagnostic);
 
                         break;

@@ -35,10 +35,10 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
         TestOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        if (data == null)
+        if (data is null)
             throw new ArgumentNullException(nameof(data));
 
-        if (expected == null)
+        if (expected is null)
             throw new ArgumentNullException(nameof(expected));
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -87,7 +87,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
                 Diagnostic diagnostic = FindDiagnosticToFix(diagnostics);
 
-                if (diagnostic == null)
+                if (diagnostic is null)
                 {
                     if (!fixRegistered)
                         Fail($"No compiler diagnostic with ID '{data.DiagnosticId}' found.", diagnostics);
@@ -103,11 +103,11 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                     diagnostic,
                     (a, d) =>
                     {
-                        if ((data.EquivalenceKey == null
+                        if ((data.EquivalenceKey is null
                             || string.Equals(data.EquivalenceKey, a.EquivalenceKey, StringComparison.Ordinal))
                             && d.Contains(diagnostic))
                         {
-                            if (action != null)
+                            if (action is not null)
                                 Fail($"Multiple fixes registered by '{fixProvider.GetType().Name}'.", new CodeAction[] { action, a });
 
                             action = a;
@@ -121,7 +121,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
                 await fixProvider.RegisterCodeFixesAsync(context);
 
-                if (action == null)
+                if (action is null)
                     Fail("No code fix has been registered.", candidateActions);
 
                 fixRegistered = true;
@@ -145,7 +145,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
             {
                 if (string.Equals(diagnostic.Id, data.DiagnosticId, StringComparison.Ordinal))
                 {
-                    if (match == null
+                    if (match is null
                         || diagnostic.Location.SourceSpan.Start > match.Location.SourceSpan.Start)
                     {
                         match = diagnostic;
@@ -168,7 +168,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
         TestOptions options = null,
         CancellationToken cancellationToken = default)
     {
-        if (data == null)
+        if (data is null)
             throw new ArgumentNullException(nameof(data));
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -196,7 +196,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                     diagnostic,
                     (a, d) =>
                     {
-                        if (data.EquivalenceKey != null
+                        if (data.EquivalenceKey is not null
                             && !string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
                         {
                             return;

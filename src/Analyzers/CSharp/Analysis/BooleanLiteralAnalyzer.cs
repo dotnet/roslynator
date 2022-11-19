@@ -295,11 +295,11 @@ public sealed class BooleanLiteralAnalyzer : BaseDiagnosticAnalyzer
 
                     ExpressionSyntax operand = logicalNot.Operand;
 
-                    if (operand != null)
+                    if (operand is not null)
                     {
                         ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType;
 
-                        if (typeSymbol != null)
+                        if (typeSymbol is not null)
                         {
                             if (typeSymbol.SpecialType == SpecialType.System_Boolean)
                             {

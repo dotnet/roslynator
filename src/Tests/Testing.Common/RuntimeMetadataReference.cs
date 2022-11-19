@@ -21,7 +21,7 @@ internal static class RuntimeMetadataReference
     {
         get
         {
-            if (_trustedPlatformAssemblyMap == null)
+            if (_trustedPlatformAssemblyMap is null)
                 Interlocked.CompareExchange(ref _trustedPlatformAssemblyMap, CreateTrustedPlatformAssemblies(), null);
 
             return _trustedPlatformAssemblyMap;
@@ -41,7 +41,7 @@ internal static class RuntimeMetadataReference
     {
         get
         {
-            if (_metadataReferences == null)
+            if (_metadataReferences is null)
                 Interlocked.CompareExchange(ref _metadataReferences, CreateMetadataReferences(), null);
 
             return _metadataReferences;

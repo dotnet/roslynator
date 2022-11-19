@@ -59,7 +59,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static bool Any<TNode>(this SeparatedSyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         for (int i = 0; i < list.Count; i++)
@@ -79,7 +79,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static bool All<TNode>(this SeparatedSyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         for (int i = 0; i < list.Count; i++)
@@ -152,7 +152,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     public static SeparatedSyntaxList<TNode> WithTriviaFrom<TNode>(this SeparatedSyntaxList<TNode> list, SyntaxNode node) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         int count = list.Count;
@@ -309,7 +309,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static bool Any<TNode>(this SyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         for (int i = 0; i < list.Count; i++)
@@ -329,7 +329,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static bool All<TNode>(this SyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         for (int i = 0; i < list.Count; i++)
@@ -422,7 +422,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     public static SyntaxList<TNode> WithTriviaFrom<TNode>(this SyntaxList<TNode> list, SyntaxNode node) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         int count = list.Count;
@@ -515,7 +515,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     public static SyntaxTriviaList GetLeadingAndTrailingTrivia(this SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
@@ -543,10 +543,10 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static TNode PrependToLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        if (trivia == null)
+        if (trivia is null)
             throw new ArgumentNullException(nameof(trivia));
 
         return node.WithLeadingTrivia(node.GetLeadingTrivia().InsertRange(0, trivia));
@@ -560,7 +560,7 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static TNode PrependToLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.WithLeadingTrivia(node.GetLeadingTrivia().Insert(0, trivia));
@@ -574,10 +574,10 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static TNode PrependToTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        if (trivia == null)
+        if (trivia is null)
             throw new ArgumentNullException(nameof(trivia));
 
         return node.WithTrailingTrivia(node.GetTrailingTrivia().InsertRange(0, trivia));
@@ -591,7 +591,7 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static TNode PrependToTrailingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.WithTrailingTrivia(node.GetTrailingTrivia().Insert(0, trivia));
@@ -605,10 +605,10 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static TNode AppendToLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        if (trivia == null)
+        if (trivia is null)
             throw new ArgumentNullException(nameof(trivia));
 
         return node.WithLeadingTrivia(node.GetLeadingTrivia().AddRange(trivia));
@@ -622,7 +622,7 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static TNode AppendToLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.WithLeadingTrivia(node.GetLeadingTrivia().Add(trivia));
@@ -636,10 +636,10 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static TNode AppendToTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        if (trivia == null)
+        if (trivia is null)
             throw new ArgumentNullException(nameof(trivia));
 
         return node.WithTrailingTrivia(node.GetTrailingTrivia().AddRange(trivia));
@@ -653,7 +653,7 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static TNode AppendToTrailingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.WithTrailingTrivia(node.GetTrailingTrivia().Add(trivia));
@@ -665,7 +665,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     public static bool SpanContainsDirectives(this SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
@@ -675,7 +675,7 @@ public static class SyntaxExtensions
 
     internal static bool SpanOrLeadingTriviaContainsDirectives(this SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
@@ -684,7 +684,7 @@ public static class SyntaxExtensions
 
     internal static bool SpanOrTrailingTriviaContainsDirectives(this SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
@@ -698,7 +698,7 @@ public static class SyntaxExtensions
     /// <param name="span"></param>
     public static bool ContainsDirectives(this SyntaxNode node, TextSpan span)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
@@ -713,7 +713,7 @@ public static class SyntaxExtensions
     /// <param name="token"></param>
     public static TNode WithTriviaFrom<TNode>(this TNode node, SyntaxToken token) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node
@@ -753,7 +753,7 @@ public static class SyntaxExtensions
         Func<TNode, bool> predicate = null,
         bool ascendOutOfTrivia = true) where TNode : SyntaxNode
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return GetParent(node, ascendOutOfTrivia: ascendOutOfTrivia)?.FirstAncestorOrSelf(predicate, ascendOutOfTrivia: ascendOutOfTrivia);
@@ -761,7 +761,7 @@ public static class SyntaxExtensions
 
     internal static string ToString(this SyntaxNode node, TextSpan span)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         TextSpan nodeFullSpan = node.FullSpan;
@@ -789,7 +789,7 @@ public static class SyntaxExtensions
 
     internal static TextSpan LeadingTriviaSpan(this SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return TextSpan.FromBounds(node.FullSpan.Start, node.SpanStart);
@@ -797,7 +797,7 @@ public static class SyntaxExtensions
 
     internal static TextSpan TrailingTriviaSpan(this SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return TextSpan.FromBounds(node.Span.End, node.FullSpan.End);
@@ -895,7 +895,7 @@ public static class SyntaxExtensions
     {
         SyntaxNode parent = node.Parent;
 
-        if (parent == null
+        if (parent is null
             && ascendOutOfTrivia
             && (node is IStructuredTriviaSyntax structuredTrivia))
         {
@@ -911,7 +911,7 @@ public static class SyntaxExtensions
         {
             SyntaxNode parent = node.Parent;
 
-            if (parent != null
+            if (parent is not null
                 && predicate(parent))
             {
                 node = parent;
@@ -984,7 +984,7 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static SyntaxToken PrependToLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
     {
-        if (trivia == null)
+        if (trivia is null)
             throw new ArgumentNullException(nameof(trivia));
 
         return token.WithLeadingTrivia(token.LeadingTrivia.InsertRange(0, trivia));
@@ -1007,7 +1007,7 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static SyntaxToken PrependToTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
     {
-        if (trivia == null)
+        if (trivia is null)
             throw new ArgumentNullException(nameof(trivia));
 
         return token.WithTrailingTrivia(token.TrailingTrivia.InsertRange(0, trivia));
@@ -1030,7 +1030,7 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static SyntaxToken AppendToTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
     {
-        if (trivia == null)
+        if (trivia is null)
             throw new ArgumentNullException(nameof(trivia));
 
         return token.WithTrailingTrivia(token.TrailingTrivia.AddRange(trivia));
@@ -1053,7 +1053,7 @@ public static class SyntaxExtensions
     /// <param name="trivia"></param>
     public static SyntaxToken AppendToLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
     {
-        if (trivia == null)
+        if (trivia is null)
             throw new ArgumentNullException(nameof(trivia));
 
         return token.WithLeadingTrivia(token.LeadingTrivia.AddRange(trivia));
@@ -1137,7 +1137,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     public static SyntaxToken WithTriviaFrom(this SyntaxToken token, SyntaxNode node)
     {
-        if (node == null)
+        if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return token
@@ -1200,7 +1200,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static bool Any(this SyntaxTokenList list, Func<SyntaxToken, bool> predicate)
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         for (int i = 0; i < list.Count; i++)
@@ -1219,7 +1219,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static bool All(this SyntaxTokenList list, Func<SyntaxToken, bool> predicate)
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         for (int i = 0; i < list.Count; i++)
@@ -1248,7 +1248,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static int IndexOf(this SyntaxTokenList tokens, Func<SyntaxToken, bool> predicate)
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         int index = 0;
@@ -1377,7 +1377,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static bool Any(this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         for (int i = 0; i < list.Count; i++)
@@ -1396,7 +1396,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static bool All(this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         for (int i = 0; i < list.Count; i++)
@@ -1415,7 +1415,7 @@ public static class SyntaxExtensions
     /// <param name="predicate"></param>
     public static int IndexOf(this SyntaxTriviaList triviaList, Func<SyntaxTrivia, bool> predicate)
     {
-        if (predicate == null)
+        if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
         int index = 0;

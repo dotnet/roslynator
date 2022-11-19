@@ -118,7 +118,7 @@ internal class GenerateSourceReferencesCommand : MSBuildWorkspaceCommand<Command
                 if (Path.DirectorySeparatorChar == '\\')
                     path = path.Replace(Path.DirectorySeparatorChar, '/');
 
-                Debug.Assert(path != null, symbol.ToDisplayString());
+                Debug.Assert(path is not null, symbol.ToDisplayString());
 
                 writer.WriteAttributeString("path", path);
 

@@ -9,198 +9,199 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator;
-
-internal class AnalyzerLoader
+namespace Roslynator
 {
-    private readonly Dictionary<string, AnalyzerAssembly> _cache = new();
-    private readonly Dictionary<string, AnalyzerAssembly> _defaultAssemblies = new();
-    private readonly Dictionary<string, ImmutableArray<DiagnosticAnalyzer>> _defaultAnalyzers = new();
-    private readonly Dictionary<string, ImmutableArray<CodeFixProvider>> _defaultFixers = new();
-
-    public AnalyzerLoader(IEnumerable<AnalyzerAssembly> defaultAssemblies, CodeAnalysisOptions options)
+    internal class AnalyzerLoader
     {
-        DefaultAssemblies = ImmutableArray<AnalyzerAssembly>.Empty;
+        private readonly Dictionary<string, AnalyzerAssembly> _cache = new();
+        private readonly Dictionary<string, AnalyzerAssembly> _defaultAssemblies = new();
+        private readonly Dictionary<string, ImmutableArray<DiagnosticAnalyzer>> _defaultAnalyzers = new();
+        private readonly Dictionary<string, ImmutableArray<CodeFixProvider>> _defaultFixers = new();
 
-        if (defaultAssemblies != null)
+        public AnalyzerLoader(IEnumerable<AnalyzerAssembly> defaultAssemblies, CodeAnalysisOptions options)
         {
-            foreach (AnalyzerAssembly analyzerAssembly in defaultAssemblies)
+            DefaultAssemblies = ImmutableArray<AnalyzerAssembly>.Empty;
+
+            if (defaultAssemblies is not null)
             {
-                if (!_defaultAssemblies.ContainsKey(analyzerAssembly.FullName))
+                foreach (AnalyzerAssembly analyzerAssembly in defaultAssemblies)
                 {
-                    _defaultAssemblies.Add(analyzerAssembly.FullName, analyzerAssembly);
-                    OnAnalyzerAssemblyAdded(new AnalyzerAssemblyEventArgs(analyzerAssembly));
+                    if (!_defaultAssemblies.ContainsKey(analyzerAssembly.FullName))
+                    {
+                        _defaultAssemblies.Add(analyzerAssembly.FullName, analyzerAssembly);
+                        OnAnalyzerAssemblyAdded(new AnalyzerAssemblyEventArgs(analyzerAssembly));
+                    }
                 }
+
+                DefaultAssemblies = _defaultAssemblies.Select(f => f.Value).ToImmutableArray();
             }
 
-            DefaultAssemblies = _defaultAssemblies.Select(f => f.Value).ToImmutableArray();
+            Options = options;
         }
 
-        Options = options;
-    }
+        public ImmutableArray<AnalyzerAssembly> DefaultAssemblies { get; }
 
-    public ImmutableArray<AnalyzerAssembly> DefaultAssemblies { get; }
+        public CodeAnalysisOptions Options { get; }
 
-    public CodeAnalysisOptions Options { get; }
+        public event EventHandler<AnalyzerAssemblyEventArgs> AnalyzerAssemblyAdded;
 
-    public event EventHandler<AnalyzerAssemblyEventArgs> AnalyzerAssemblyAdded;
-
-    protected virtual void OnAnalyzerAssemblyAdded(AnalyzerAssemblyEventArgs e)
-    {
-        AnalyzerAssemblyAdded?.Invoke(this, e);
-    }
-
-    public ImmutableArray<DiagnosticAnalyzer> GetAnalyzers(Project project)
-    {
-        (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> _) = GetAnalyzersAndFixers(project: project, loadFixers: false);
-
-        return analyzers;
-    }
-
-    public (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> fixers) GetAnalyzersAndFixers(Project project)
-    {
-        return GetAnalyzersAndFixers(project: project, loadFixers: true);
-    }
-
-    private (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> fixers) GetAnalyzersAndFixers(
-        Project project,
-        bool loadFixers = true)
-    {
-        string language = project.Language;
-
-        ImmutableArray<DiagnosticAnalyzer>.Builder analyzers = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>();
-        ImmutableArray<CodeFixProvider>.Builder fixers = ImmutableArray.CreateBuilder<CodeFixProvider>();
-
-        if (_defaultAnalyzers.TryGetValue(language, out ImmutableArray<DiagnosticAnalyzer> defaultAnalyzers))
+        protected virtual void OnAnalyzerAssemblyAdded(AnalyzerAssemblyEventArgs e)
         {
-            analyzers.AddRange(defaultAnalyzers);
-        }
-        else
-        {
-            foreach (AnalyzerAssembly analyzerAssembly in DefaultAssemblies)
-                LoadAnalyzers(analyzerAssembly, language, ref analyzers);
-
-            _defaultAnalyzers.Add(language, analyzers.ToImmutableArray());
+            AnalyzerAssemblyAdded?.Invoke(this, e);
         }
 
-        if (loadFixers)
+        public ImmutableArray<DiagnosticAnalyzer> GetAnalyzers(Project project)
         {
-            if (_defaultFixers.TryGetValue(language, out ImmutableArray<CodeFixProvider> defaultFixers))
+            (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> _) = GetAnalyzersAndFixers(project: project, loadFixers: false);
+
+            return analyzers;
+        }
+
+        public (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> fixers) GetAnalyzersAndFixers(Project project)
+        {
+            return GetAnalyzersAndFixers(project: project, loadFixers: true);
+        }
+
+        private (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> fixers) GetAnalyzersAndFixers(
+            Project project,
+            bool loadFixers = true)
+        {
+            string language = project.Language;
+
+            ImmutableArray<DiagnosticAnalyzer>.Builder analyzers = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>();
+            ImmutableArray<CodeFixProvider>.Builder fixers = ImmutableArray.CreateBuilder<CodeFixProvider>();
+
+            if (_defaultAnalyzers.TryGetValue(language, out ImmutableArray<DiagnosticAnalyzer> defaultAnalyzers))
             {
-                fixers.AddRange(defaultFixers);
+                analyzers.AddRange(defaultAnalyzers);
             }
             else
             {
                 foreach (AnalyzerAssembly analyzerAssembly in DefaultAssemblies)
-                    LoadFixers(analyzerAssembly, language, ref fixers);
+                    LoadAnalyzers(analyzerAssembly, language, ref analyzers);
 
-                _defaultFixers.Add(language, fixers.ToImmutableArray());
+                _defaultAnalyzers.Add(language, analyzers.ToImmutableArray());
+            }
+
+            if (loadFixers)
+            {
+                if (_defaultFixers.TryGetValue(language, out ImmutableArray<CodeFixProvider> defaultFixers))
+                {
+                    fixers.AddRange(defaultFixers);
+                }
+                else
+                {
+                    foreach (AnalyzerAssembly analyzerAssembly in DefaultAssemblies)
+                        LoadFixers(analyzerAssembly, language, ref fixers);
+
+                    _defaultFixers.Add(language, fixers.ToImmutableArray());
+                }
+            }
+
+            if (!Options.IgnoreAnalyzerReferences)
+            {
+                foreach (Assembly assembly in project.AnalyzerReferences
+                    .Distinct()
+                    .OfType<AnalyzerFileReference>()
+                    .Select(f => f.GetAssembly())
+                    .Where(f => !_defaultAssemblies.ContainsKey(f.FullName)))
+                {
+                    if (!_cache.TryGetValue(assembly.FullName, out AnalyzerAssembly analyzerAssembly))
+                    {
+                        analyzerAssembly = AnalyzerAssembly.Load(assembly);
+                        _cache.Add(analyzerAssembly.FullName, analyzerAssembly);
+
+                        OnAnalyzerAssemblyAdded(new AnalyzerAssemblyEventArgs(analyzerAssembly));
+                    }
+
+                    LoadAnalyzers(analyzerAssembly, language, ref analyzers);
+
+                    if (loadFixers)
+                        LoadFixers(analyzerAssembly, language, ref fixers);
+                }
+            }
+
+            return (analyzers.ToImmutableArray(), fixers.ToImmutableArray());
+        }
+
+        private void LoadAnalyzers(AnalyzerAssembly analyzerAssembly, string language, ref ImmutableArray<DiagnosticAnalyzer>.Builder builder)
+        {
+            if (analyzerAssembly.AnalyzersByLanguage.TryGetValue(language, out ImmutableArray<DiagnosticAnalyzer> analyzers))
+            {
+                foreach (DiagnosticAnalyzer analyzer in analyzers)
+                {
+                    if (ShouldIncludeAnalyzer(analyzer))
+                        builder.Add(analyzer);
+                }
             }
         }
 
-        if (!Options.IgnoreAnalyzerReferences)
+        private bool ShouldIncludeAnalyzer(DiagnosticAnalyzer analyzer)
         {
-            foreach (Assembly assembly in project.AnalyzerReferences
-                .Distinct()
-                .OfType<AnalyzerFileReference>()
-                .Select(f => f.GetAssembly())
-                .Where(f => !_defaultAssemblies.ContainsKey(f.FullName)))
+            if (Options.SupportedDiagnosticIds.Count > 0)
             {
-                if (!_cache.TryGetValue(assembly.FullName, out AnalyzerAssembly analyzerAssembly))
+                foreach (DiagnosticDescriptor supportedDiagnostic in analyzer.SupportedDiagnostics)
                 {
-                    analyzerAssembly = AnalyzerAssembly.Load(assembly);
-                    _cache.Add(analyzerAssembly.FullName, analyzerAssembly);
-
-                    OnAnalyzerAssemblyAdded(new AnalyzerAssemblyEventArgs(analyzerAssembly));
+                    if (Options.SupportedDiagnosticIds.Contains(supportedDiagnostic.Id))
+                        return true;
                 }
 
-                LoadAnalyzers(analyzerAssembly, language, ref analyzers);
-
-                if (loadFixers)
-                    LoadFixers(analyzerAssembly, language, ref fixers);
+                return false;
             }
-        }
-
-        return (analyzers.ToImmutableArray(), fixers.ToImmutableArray());
-    }
-
-    private void LoadAnalyzers(AnalyzerAssembly analyzerAssembly, string language, ref ImmutableArray<DiagnosticAnalyzer>.Builder builder)
-    {
-        if (analyzerAssembly.AnalyzersByLanguage.TryGetValue(language, out ImmutableArray<DiagnosticAnalyzer> analyzers))
-        {
-            foreach (DiagnosticAnalyzer analyzer in analyzers)
+            else if (Options.IgnoredDiagnosticIds.Count > 0)
             {
-                if (ShouldIncludeAnalyzer(analyzer))
-                    builder.Add(analyzer);
-            }
-        }
-    }
+                foreach (DiagnosticDescriptor supportedDiagnostic in analyzer.SupportedDiagnostics)
+                {
+                    if (!Options.IgnoredDiagnosticIds.Contains(supportedDiagnostic.Id))
+                        return true;
+                }
 
-    private bool ShouldIncludeAnalyzer(DiagnosticAnalyzer analyzer)
-    {
-        if (Options.SupportedDiagnosticIds.Count > 0)
-        {
-            foreach (DiagnosticDescriptor supportedDiagnostic in analyzer.SupportedDiagnostics)
+                return false;
+            }
+            else
             {
-                if (Options.SupportedDiagnosticIds.Contains(supportedDiagnostic.Id))
-                    return true;
+                return true;
             }
-
-            return false;
         }
-        else if (Options.IgnoredDiagnosticIds.Count > 0)
+
+        private void LoadFixers(AnalyzerAssembly analyzerAssembly, string language, ref ImmutableArray<CodeFixProvider>.Builder builder)
         {
-            foreach (DiagnosticDescriptor supportedDiagnostic in analyzer.SupportedDiagnostics)
+            if (analyzerAssembly.FixersByLanguage.TryGetValue(language, out ImmutableArray<CodeFixProvider> fixers))
             {
-                if (!Options.IgnoredDiagnosticIds.Contains(supportedDiagnostic.Id))
-                    return true;
+                foreach (CodeFixProvider fixer in fixers)
+                {
+                    if (ShouldIncludeFixer(fixer))
+                        builder.Add(fixer);
+                }
             }
-
-            return false;
         }
-        else
-        {
-            return true;
-        }
-    }
 
-    private void LoadFixers(AnalyzerAssembly analyzerAssembly, string language, ref ImmutableArray<CodeFixProvider>.Builder builder)
-    {
-        if (analyzerAssembly.FixersByLanguage.TryGetValue(language, out ImmutableArray<CodeFixProvider> fixers))
+        private bool ShouldIncludeFixer(CodeFixProvider fixer)
         {
-            foreach (CodeFixProvider fixer in fixers)
+            if (Options.SupportedDiagnosticIds.Count > 0)
             {
-                if (ShouldIncludeFixer(fixer))
-                    builder.Add(fixer);
-            }
-        }
-    }
+                foreach (string fixableDiagnosticId in fixer.FixableDiagnosticIds)
+                {
+                    if (Options.SupportedDiagnosticIds.Contains(fixableDiagnosticId))
+                        return true;
+                }
 
-    private bool ShouldIncludeFixer(CodeFixProvider fixer)
-    {
-        if (Options.SupportedDiagnosticIds.Count > 0)
-        {
-            foreach (string fixableDiagnosticId in fixer.FixableDiagnosticIds)
+                return false;
+            }
+            else if (Options.IgnoredDiagnosticIds.Count > 0)
             {
-                if (Options.SupportedDiagnosticIds.Contains(fixableDiagnosticId))
-                    return true;
-            }
+                foreach (string fixableDiagnosticId in fixer.FixableDiagnosticIds)
+                {
+                    if (!Options.IgnoredDiagnosticIds.Contains(fixableDiagnosticId))
+                        return true;
+                }
 
-            return false;
-        }
-        else if (Options.IgnoredDiagnosticIds.Count > 0)
-        {
-            foreach (string fixableDiagnosticId in fixer.FixableDiagnosticIds)
+                return false;
+            }
+            else
             {
-                if (!Options.IgnoredDiagnosticIds.Contains(fixableDiagnosticId))
-                    return true;
+                return true;
             }
-
-            return false;
-        }
-        else
-        {
-            return true;
         }
     }
 }

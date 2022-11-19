@@ -65,7 +65,7 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
 
         ExpressionSyntax value = localDeclarationInfo.Value;
 
-        if (value == null)
+        if (value is null)
             return;
 
         SyntaxList<StatementSyntax> statements = SyntaxInfo.StatementListInfo(localDeclarationStatement).Statements;
@@ -171,7 +171,7 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
                     }
                     finally
                     {
-                        if (walker != null)
+                        if (walker is not null)
                             ContainsLocalOrParameterReferenceWalker.Free(walker);
                     }
 
@@ -211,7 +211,7 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
                     }
                     finally
                     {
-                        if (walker != null)
+                        if (walker is not null)
                             ContainsLocalOrParameterReferenceWalker.Free(walker);
                     }
 
@@ -267,7 +267,7 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
         }
         finally
         {
-            if (walker != null)
+            if (walker is not null)
                 ContainsLocalOrParameterReferenceWalker.Free(walker);
         }
     }
@@ -317,7 +317,7 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
             }
             finally
             {
-                if (walker != null)
+                if (walker is not null)
                     ContainsLocalOrParameterReferenceWalker.Free(walker);
             }
         }

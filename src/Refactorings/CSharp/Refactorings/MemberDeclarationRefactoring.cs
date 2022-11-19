@@ -42,7 +42,7 @@ internal static class MemberDeclarationRefactoring
                             || (!closeBrace.IsKind(SyntaxKind.None)
                                 && closeBrace.Span.Contains(context.Span)))
                         {
-                            if (member.Parent != null
+                            if (member.Parent is not null
                                 && CSharpFacts.CanHaveMembers(member.Parent.Kind()))
                             {
                                 if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclaration))
@@ -305,14 +305,14 @@ internal static class MemberDeclarationRefactoring
 
         (SyntaxToken openBrace, SyntaxToken closeBrace) FromBody(BlockSyntax body)
         {
-            return (body != null)
+            return (body is not null)
                 ? (body.OpenBraceToken, body.CloseBraceToken)
                 : default;
         }
 
         (SyntaxToken openBrace, SyntaxToken closeBrace) FromAccessorList(AccessorListSyntax accessorList)
         {
-            return (accessorList != null)
+            return (accessorList is not null)
                 ? (accessorList.OpenBraceToken, accessorList.CloseBraceToken)
                 : default;
         }

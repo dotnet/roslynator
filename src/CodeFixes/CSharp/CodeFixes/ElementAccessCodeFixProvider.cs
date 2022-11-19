@@ -48,7 +48,7 @@ public sealed class ElementAccessCodeFixProvider : CompilerDiagnosticCodeFixProv
                 argumentList.Arguments,
                 Token(closeBracket.LeadingTrivia, SyntaxKind.CloseParenToken, closeBracket.TrailingTrivia)));
 
-        if (semanticModel.GetSpeculativeMethodSymbol(elementAccess.SpanStart, invocationExpression) == null)
+        if (semanticModel.GetSpeculativeMethodSymbol(elementAccess.SpanStart, invocationExpression) is null)
             return;
 
         CodeAction codeAction = CodeAction.Create(

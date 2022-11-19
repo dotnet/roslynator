@@ -116,7 +116,7 @@ public class TextLineCollectionSelection : ISelection<TextLine>
     /// <param name="span"></param>
     public static TextLineCollectionSelection Create(TextLineCollection lines, TextSpan span)
     {
-        if (lines == null)
+        if (lines is null)
             throw new ArgumentNullException(nameof(lines));
 
         SelectionResult result = SelectionResult.Create(lines, span);
@@ -134,24 +134,24 @@ public class TextLineCollectionSelection : ISelection<TextLine>
     public static bool TryCreate(TextLineCollection lines, TextSpan span, out TextLineCollectionSelection selectedLines)
     {
         selectedLines = Create(lines, span, 1, int.MaxValue);
-        return selectedLines != null;
+        return selectedLines is not null;
     }
 
     internal static bool TryCreate(TextLineCollection lines, TextSpan span, int minCount, out TextLineCollectionSelection selectedLines)
     {
         selectedLines = Create(lines, span, minCount, int.MaxValue);
-        return selectedLines != null;
+        return selectedLines is not null;
     }
 
     internal static bool TryCreate(TextLineCollection lines, TextSpan span, int minCount, int maxCount, out TextLineCollectionSelection selectedLines)
     {
         selectedLines = Create(lines, span, minCount, maxCount);
-        return selectedLines != null;
+        return selectedLines is not null;
     }
 
     private static TextLineCollectionSelection Create(TextLineCollection lines, TextSpan span, int minCount, int maxCount)
     {
-        if (lines == null)
+        if (lines is null)
             return null;
 
         SelectionResult result = SelectionResult.Create(lines, span, minCount, maxCount);

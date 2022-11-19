@@ -21,7 +21,7 @@ internal static class ReplaceAsWithCastAnalysis
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(info.Type, cancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return false;
 
         if (!semanticModel.IsExplicitConversion(info.Expression, typeSymbol))

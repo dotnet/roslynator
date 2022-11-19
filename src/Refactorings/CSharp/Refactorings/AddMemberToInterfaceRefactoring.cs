@@ -56,7 +56,7 @@ internal static class AddMemberToInterfaceRefactoring
 
         BaseListSyntax baseList = GetBaseList(memberDeclaration.Parent);
 
-        if (baseList == null)
+        if (baseList is null)
             return;
 
         SeparatedSyntaxList<BaseTypeSyntax> types = baseList.Types;
@@ -66,7 +66,7 @@ internal static class AddMemberToInterfaceRefactoring
 
         NameSyntax explicitInterfaceName = explicitInterfaceSpecifier?.Name;
 
-        ITypeSymbol explicitInterfaceSymbol = (explicitInterfaceName != null)
+        ITypeSymbol explicitInterfaceSymbol = (explicitInterfaceName is not null)
             ? semanticModel.GetTypeSymbol(explicitInterfaceName, context.CancellationToken)?.OriginalDefinition
             : null;
 
@@ -74,7 +74,7 @@ internal static class AddMemberToInterfaceRefactoring
             ? semanticModel.GetDeclaredSymbol(eventFieldDeclaration.Declaration.Variables[0])
             : semanticModel.GetDeclaredSymbol(memberDeclaration);
 
-        if (memberSymbol == null)
+        if (memberSymbol is null)
             return;
 
         int count = 0;
@@ -101,7 +101,7 @@ internal static class AddMemberToInterfaceRefactoring
     {
         TypeSyntax type = baseType.Type;
 
-        if (type == null)
+        if (type is null)
             return false;
 
         var interfaceSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken) as INamedTypeSymbol;
@@ -281,7 +281,7 @@ internal static class AddMemberToInterfaceRefactoring
 
     private static AccessorListSyntax CreateInterfaceAccessorList(AccessorListSyntax accessorList)
     {
-        if (accessorList != null)
+        if (accessorList is not null)
         {
             return AccessorList(accessorList
                 .Accessors

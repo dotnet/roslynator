@@ -142,7 +142,7 @@ internal static class AnalyzerAssemblyXmlSerializer
             {
                 FixAllProvider fixAllProvider = fixer.GetFixAllProvider();
 
-                if (fixAllProvider != null)
+                if (fixAllProvider is not null)
                 {
                     return new XElement("FixAllProvider", new XAttribute("Name", fixAllProvider.GetType().FullName));
                 }
@@ -175,7 +175,7 @@ internal static class AnalyzerAssemblyXmlSerializer
     {
         var element = new XElement("Diagnostic", new XAttribute("Id", diagnosticId));
 
-        if (descriptor != null)
+        if (descriptor is not null)
         {
             string title = descriptor.Title?.ToString(formatProvider);
             string messageFormat = descriptor.MessageFormat?.ToString(formatProvider);

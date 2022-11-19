@@ -43,15 +43,15 @@ internal static class Hash
     {
         hash = unchecked(hash * Prime);
 
-        return (value != null) ? unchecked(hash + value.GetHashCode()) : hash;
+        return (value is not null) ? unchecked(hash + value.GetHashCode()) : hash;
     }
 
     public static int CombineValues<T>(IEnumerable<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
     {
-        if (values == null)
+        if (values is null)
             return 0;
 
-        if (comparer == null)
+        if (comparer is null)
             comparer = EqualityComparer<T>.Default;
 
         int hash = 0;
@@ -73,10 +73,10 @@ internal static class Hash
 
     public static int CombineValues<T>(T[] values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
     {
-        if (values == null)
+        if (values is null)
             return 0;
 
-        if (comparer == null)
+        if (comparer is null)
             comparer = EqualityComparer<T>.Default;
 
         int hash = 0;
@@ -99,7 +99,7 @@ internal static class Hash
         if (values.IsDefaultOrEmpty)
             return 0;
 
-        if (comparer == null)
+        if (comparer is null)
             comparer = EqualityComparer<T>.Default;
 
         int hash = 0;
@@ -122,7 +122,7 @@ internal static class Hash
         StringComparer stringComparer,
         int maxItemsToHash = int.MaxValue)
     {
-        if (values == null)
+        if (values is null)
             return 0;
 
         int hash = 0;
@@ -133,7 +133,7 @@ internal static class Hash
             if (count >= maxItemsToHash)
                 break;
 
-            if (value != null)
+            if (value is not null)
                 hash = Combine(stringComparer.GetHashCode(value), hash);
 
             count++;
@@ -147,7 +147,7 @@ internal static class Hash
         StringComparer stringComparer,
         int maxItemsToHash = int.MaxValue)
     {
-        if (values == null)
+        if (values is null)
             return 0;
 
         int hash = 0;
@@ -158,7 +158,7 @@ internal static class Hash
         {
             string value = values[i];
 
-            if (value != null)
+            if (value is not null)
                 hash = Combine(stringComparer.GetHashCode(values[i]), hash);
         }
 
@@ -181,7 +181,7 @@ internal static class Hash
         {
             string value = values[i];
 
-            if (value != null)
+            if (value is not null)
                 hash = Combine(stringComparer.GetHashCode(value), hash);
         }
 

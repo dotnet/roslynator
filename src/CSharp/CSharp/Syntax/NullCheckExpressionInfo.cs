@@ -99,7 +99,7 @@ public readonly struct NullCheckExpressionInfo
         bool allowMissing = false,
         CancellationToken cancellationToken = default)
     {
-        if (semanticModel == null)
+        if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
         return CreateImpl(node, semanticModel, allowedStyles, walkDownParentheses, allowMissing, cancellationToken);
@@ -115,7 +115,7 @@ public readonly struct NullCheckExpressionInfo
     {
         ExpressionSyntax expression = WalkAndCheck(node, walkDownParentheses, allowMissing);
 
-        if (expression == null)
+        if (expression is null)
             return default;
 
         SyntaxKind kind = expression.Kind();
@@ -129,12 +129,12 @@ public readonly struct NullCheckExpressionInfo
 
                     ExpressionSyntax left = WalkAndCheck(binaryExpression.Left, walkDownParentheses, allowMissing);
 
-                    if (left == null)
+                    if (left is null)
                         break;
 
                     ExpressionSyntax right = WalkAndCheck(binaryExpression.Right, walkDownParentheses, allowMissing);
 
-                    if (right == null)
+                    if (right is null)
                         break;
 
                     NullCheckExpressionInfo info = Create(binaryExpression, kind, left, right, allowedStyles, allowMissing, semanticModel, cancellationToken);
@@ -191,7 +191,7 @@ public readonly struct NullCheckExpressionInfo
 
                     ExpressionSyntax e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
 
-                    if (e == null)
+                    if (e is null)
                         break;
 
                     return new NullCheckExpressionInfo(
@@ -211,7 +211,7 @@ public readonly struct NullCheckExpressionInfo
 
                     ExpressionSyntax operand = WalkAndCheck(logicalNotExpression.Operand, walkDownParentheses, allowMissing);
 
-                    if (operand == null)
+                    if (operand is null)
                         break;
 
                     switch (operand.Kind())
@@ -243,7 +243,7 @@ public readonly struct NullCheckExpressionInfo
 
                                 ExpressionSyntax e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
 
-                                if (e == null)
+                                if (e is null)
                                     break;
 
                                 return new NullCheckExpressionInfo(expression, e, NullCheckStyles.NotIsNull);
@@ -374,7 +374,7 @@ public readonly struct NullCheckExpressionInfo
                 }
             case SyntaxKind.DefaultExpression:
                 {
-                    if (semanticModel == null)
+                    if (semanticModel is null)
                         return false;
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);

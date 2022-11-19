@@ -36,7 +36,7 @@ public static partial class ConfigOptions
             ?? CodeAnalysisConfig.Instance.EditorConfig.Options.GetValueOrDefault(option.Key)
             ?? option.DefaultValue;
 
-        return value != null;
+        return value is not null;
     }
 
     public static string GetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, string defaultValue = null)
@@ -62,7 +62,7 @@ public static partial class ConfigOptions
             ?? CodeAnalysisConfig.Instance.GetOptionAsBool(option.Key)
             ?? option.DefaultValueAsBool;
 
-        if (maybeValue != null)
+        if (maybeValue is not null)
         {
             value = maybeValue.Value;
             return true;

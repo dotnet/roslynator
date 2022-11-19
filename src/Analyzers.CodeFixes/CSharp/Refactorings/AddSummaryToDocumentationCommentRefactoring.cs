@@ -57,7 +57,7 @@ internal static class AddSummaryToDocumentationCommentRefactoring
         sb.Append(indent);
         sb.AppendLine("/// </summary>");
 
-        if (text == null)
+        if (text is null)
             sb.Append(indent);
 
         return sb.ToString();

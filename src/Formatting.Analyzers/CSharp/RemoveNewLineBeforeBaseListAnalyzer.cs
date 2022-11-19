@@ -46,7 +46,7 @@ public sealed class RemoveNewLineBeforeBaseListAnalyzer : BaseDiagnosticAnalyzer
 
         BaseListSyntax baseList = typeDeclaration.BaseList;
 
-        if (baseList == null)
+        if (baseList is null)
             return;
 
         if (!baseList.Types.Any())
@@ -63,7 +63,7 @@ public sealed class RemoveNewLineBeforeBaseListAnalyzer : BaseDiagnosticAnalyzer
 
         BaseListSyntax baseList = enumDeclaration.BaseList;
 
-        if (baseList == null)
+        if (baseList is null)
             return;
 
         if (!baseList.Types.Any())

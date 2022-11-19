@@ -29,7 +29,7 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
             .Expression?
             .WalkDownParentheses();
 
-        if (expression == null)
+        if (expression is null)
             return Fail;
 
         if (!allowAnyExpression)
@@ -51,7 +51,7 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationExpression, cancellationToken);
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return Fail;
 
         if (!methodSymbol.IsOrdinaryExtensionMethod())
@@ -59,7 +59,7 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
 
         InvocationExpressionSyntax newInvocationExpression = GetNewInvocation(invocationExpression);
 
-        if (newInvocationExpression == null)
+        if (newInvocationExpression is null)
             return Fail;
 
         if (!SymbolEqualityComparer.Default.Equals(
@@ -96,7 +96,7 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
 
         MemberAccessExpressionSyntax newMemberAccess = CreateNewMemberAccessExpression();
 
-        if (newMemberAccess == null)
+        if (newMemberAccess is null)
             return null;
 
         return invocation

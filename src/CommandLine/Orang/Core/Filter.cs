@@ -62,7 +62,7 @@ public class Filter
 
     internal Match Match(Match match)
     {
-        if (Predicate != null)
+        if (Predicate is not null)
         {
             if (GroupNumber < 1)
             {
@@ -110,11 +110,11 @@ public class Filter
 
     internal bool IsMatch(string input)
     {
-        return Match(input) != null;
+        return Match(input) is not null;
     }
 
     internal bool IsMatch(Match match)
     {
-        return Match(match) != null;
+        return Match(match) is not null;
     }
 }

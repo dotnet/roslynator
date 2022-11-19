@@ -106,7 +106,7 @@ internal static partial class Symbols
         string name = null,
         bool skipObsolete = true)
     {
-        foreach (ISymbol symbol in (name != null)
+        foreach (ISymbol symbol in (name is not null)
             ? typeSymbol.GetMembers(name)
             : typeSymbol.GetMembers())
         {

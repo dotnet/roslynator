@@ -26,10 +26,10 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
         if (x == y)
             return 0;
 
-        if (x == null)
+        if (x is null)
             return -1;
 
-        if (y == null)
+        if (y is null)
             return 1;
 
         if (x is Diagnostic a
@@ -46,10 +46,10 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
         if (x == y)
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (x is Diagnostic a
@@ -63,7 +63,7 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
 
     public int GetHashCode(object obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 0;
 
         if (obj is Diagnostic diagnostic)
@@ -79,10 +79,10 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             return string.CompareOrdinal(x.Id, y.Id);
@@ -93,10 +93,10 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return string.Equals(x.Id, y.Id, StringComparison.Ordinal);
@@ -104,7 +104,7 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
 
         public override int GetHashCode(Diagnostic obj)
         {
-            if (obj == null)
+            if (obj is null)
                 return 0;
 
             return StringComparer.Ordinal.GetHashCode(obj.Id);
@@ -118,10 +118,10 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             return x.Location.SourceSpan.Start.CompareTo(y.Location.SourceSpan.Start);
@@ -132,10 +132,10 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return x.Location.SourceSpan.Start == y.Location.SourceSpan.Start;
@@ -143,7 +143,7 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
 
         public override int GetHashCode(Diagnostic obj)
         {
-            if (obj == null)
+            if (obj is null)
                 return 0;
 
             return obj.Location.SourceSpan.Start.GetHashCode();
@@ -157,10 +157,10 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             int result = x.Id.CompareTo(y.Id);
@@ -181,10 +181,10 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return x.Id == y.Id
@@ -194,7 +194,7 @@ internal abstract class DiagnosticComparer : IComparer<Diagnostic>, IEqualityCom
 
         public override int GetHashCode(Diagnostic obj)
         {
-            if (obj == null)
+            if (obj is null)
                 return 0;
 
             return Hash.Combine(

@@ -33,10 +33,10 @@ internal sealed class SplitData
         bool omitGroups = false,
         CancellationToken cancellationToken = default)
     {
-        if (regex == null)
+        if (regex is null)
             throw new ArgumentNullException(nameof(regex));
 
-        if (input == null)
+        if (input is null)
             throw new ArgumentNullException(nameof(input));
 
         var groupDefinitions = new GroupDefinitionCollection(regex);

@@ -276,7 +276,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
 
     private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
     {
-        if (accessorList == null)
+        if (accessorList is null)
             return;
 
         foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
@@ -295,7 +295,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
     {
         AttributeListSyntax first = attributeLists.FirstOrDefault();
 
-        if (first == null)
+        if (first is null)
             return;
 
         for (int i = 1; i < attributeLists.Count; i++)

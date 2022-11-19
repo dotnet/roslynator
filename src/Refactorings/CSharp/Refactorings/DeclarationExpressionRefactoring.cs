@@ -25,7 +25,7 @@ internal static class DeclarationExpressionRefactoring
     {
         TypeSyntax type = declarationExpression.Type;
 
-        if (type == null)
+        if (type is null)
             return;
 
         VariableDesignationSyntax designation = declarationExpression.Designation;
@@ -56,7 +56,7 @@ internal static class DeclarationExpressionRefactoring
             singleVariableDesignation.SpanStart,
             cancellationToken: context.CancellationToken);
 
-        if (newName == null)
+        if (newName is null)
             return;
 
         context.RegisterRefactoring(

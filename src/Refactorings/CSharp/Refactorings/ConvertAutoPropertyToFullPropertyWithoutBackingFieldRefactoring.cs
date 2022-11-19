@@ -19,7 +19,7 @@ internal static class ConvertAutoPropertyToFullPropertyWithoutBackingFieldRefact
             && propertyDeclaration
                 .AccessorList?
                 .Accessors
-                .All(f => f.BodyOrExpressionBody() == null) == true;
+                .All(f => f.BodyOrExpressionBody() is null) == true;
     }
 
     public static Task<Document> RefactorAsync(
@@ -53,7 +53,7 @@ internal static class ConvertAutoPropertyToFullPropertyWithoutBackingFieldRefact
                 {
                     ExpressionSyntax value = propertyDeclaration.Initializer?.Value;
 
-                    if (value != null)
+                    if (value is not null)
                     {
                         yield return accessor
                             .WithBody(Block(ReturnStatement(value)))

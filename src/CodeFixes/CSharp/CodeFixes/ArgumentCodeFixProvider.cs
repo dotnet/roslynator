@@ -49,7 +49,7 @@ public sealed class ArgumentCodeFixProvider : CompilerDiagnosticCodeFixProvider
 
                         IParameterSymbol parameter = semanticModel.DetermineParameter(argument, allowCandidate: true, cancellationToken: context.CancellationToken);
 
-                        if (parameter == null)
+                        if (parameter is null)
                             return;
 
                         SyntaxToken refOrOutKeyword = default;

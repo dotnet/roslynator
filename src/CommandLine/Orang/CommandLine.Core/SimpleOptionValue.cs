@@ -32,7 +32,7 @@ public class SimpleOptionValue : OptionValue
 
     public bool IsValueOrShortValue(string value)
     {
-        return value == Value || (ShortValue != null && value == ShortValue);
+        return value == Value || (ShortValue is not null && value == ShortValue);
     }
 
     public static SimpleOptionValue Create<TEnum>(
@@ -64,7 +64,7 @@ public class SimpleOptionValue : OptionValue
         value ??= _lowerLetterUpperLetterRegex.Replace(name, e => e.Value.Insert(1, "-")).ToLowerInvariant();
         shortValue ??= value.Substring(0, 1);
 
-        if (helpValue == null)
+        if (helpValue is null)
         {
             if (!string.IsNullOrEmpty(shortValue))
             {

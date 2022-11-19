@@ -24,7 +24,7 @@ internal static class ChangeMemberTypeRefactoring
 
         ITypeSymbol expressionTypeSymbol = typeInfo.Type;
 
-        if (expressionTypeSymbol == null)
+        if (expressionTypeSymbol is null)
             return;
 
         if (!expressionTypeSymbol.SupportsExplicitDeclaration())
@@ -32,9 +32,9 @@ internal static class ChangeMemberTypeRefactoring
 
         (ISymbol symbol, ITypeSymbol typeSymbol) = GetContainingSymbolAndType(expression, semanticModel, context.CancellationToken);
 
-        SyntaxDebug.Assert(symbol != null, expression);
+        SyntaxDebug.Assert(symbol is not null, expression);
 
-        if (symbol == null)
+        if (symbol is null)
             return;
 
         if (symbol.IsOverride)
@@ -50,7 +50,7 @@ internal static class ChangeMemberTypeRefactoring
 
         TypeSyntax type = CSharpUtility.GetTypeOrReturnType(node);
 
-        if (type == null)
+        if (type is null)
             return;
 
         ITypeSymbol newTypeSymbol = expressionTypeSymbol;
@@ -67,7 +67,7 @@ internal static class ChangeMemberTypeRefactoring
 
             INamedTypeSymbol taskOfT = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
 
-            if (taskOfT == null)
+            if (taskOfT is null)
                 return;
 
             if (expression.Kind() == SyntaxKind.AwaitExpression)
@@ -193,7 +193,7 @@ internal static class ChangeMemberTypeRefactoring
                     }
 
                     if (methodKind == MethodKind.Ordinary
-                        && methodSymbol.PartialImplementationPart != null)
+                        && methodSymbol.PartialImplementationPart is not null)
                     {
                         methodSymbol = methodSymbol.PartialImplementationPart;
                     }

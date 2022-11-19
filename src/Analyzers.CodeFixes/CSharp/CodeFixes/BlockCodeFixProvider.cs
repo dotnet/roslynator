@@ -154,7 +154,7 @@ public sealed class BlockCodeFixProvider : BaseCodeFixProvider
         {
             ExpressionSyntax right = SimpleAssignmentExpression(expression, assignment.Right.WithoutTrivia()).Parenthesize();
 
-            if (valueName != null)
+            if (valueName is not null)
                 right = SimpleMemberAccessExpression(right.Parenthesize(), valueName);
 
             coalesceExpression = CoalesceExpression(expression, right);

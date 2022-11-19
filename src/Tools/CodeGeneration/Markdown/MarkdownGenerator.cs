@@ -243,7 +243,7 @@ public static class MarkdownGenerator
 
     private static IEnumerable<MElement> CreateAppliesTo(IEnumerable<(string title, string url)> appliesTo)
     {
-        if (appliesTo != null)
+        if (appliesTo is not null)
         {
             yield return Heading2("Applies to");
             yield return BulletList(appliesTo.Select(f => LinkOrText(f.title, f.url)));

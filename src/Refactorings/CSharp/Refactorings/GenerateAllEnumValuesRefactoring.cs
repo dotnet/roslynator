@@ -26,7 +26,7 @@ internal static class GenerateAllEnumValuesRefactoring
         if (!members.Any())
             return;
 
-        if (members.All(f => f.EqualsValue?.Value == null))
+        if (members.All(f => f.EqualsValue?.Value is null))
             return;
 
         INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
@@ -150,7 +150,7 @@ internal static class GenerateAllEnumValuesRefactoring
             Token(TriviaList(ElasticSpace), SyntaxKind.EqualsToken, TriviaList(ElasticSpace)),
             NumericLiteralExpression(value, numericType));
 
-        if (enumMember.EqualsValue != null)
+        if (enumMember.EqualsValue is not null)
             equalsValue = equalsValue.WithTriviaFrom(enumMember.EqualsValue);
 
         return enumMember.WithEqualsValue(equalsValue);

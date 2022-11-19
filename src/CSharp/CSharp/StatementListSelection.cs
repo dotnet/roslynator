@@ -30,7 +30,7 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <param name="span"></param>
     public static StatementListSelection Create(BlockSyntax block, TextSpan span)
     {
-        if (block == null)
+        if (block is null)
             throw new ArgumentNullException(nameof(block));
 
         return CreateImpl(block.Statements, span);
@@ -43,7 +43,7 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <param name="span"></param>
     public static StatementListSelection Create(SwitchSectionSyntax switchSection, TextSpan span)
     {
-        if (switchSection == null)
+        if (switchSection is null)
             throw new ArgumentNullException(nameof(switchSection));
 
         return CreateImpl(switchSection.Statements, span);
@@ -79,24 +79,24 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     public static bool TryCreate(BlockSyntax block, TextSpan span, out StatementListSelection selectedStatements)
     {
         selectedStatements = Create(block, span, 1, int.MaxValue);
-        return selectedStatements != null;
+        return selectedStatements is not null;
     }
 
     internal static bool TryCreate(BlockSyntax block, TextSpan span, int minCount, out StatementListSelection selectedStatements)
     {
         selectedStatements = Create(block, span, minCount, int.MaxValue);
-        return selectedStatements != null;
+        return selectedStatements is not null;
     }
 
     internal static bool TryCreate(BlockSyntax block, TextSpan span, int minCount, int maxCount, out StatementListSelection selectedStatements)
     {
         selectedStatements = Create(block, span, minCount, maxCount);
-        return selectedStatements != null;
+        return selectedStatements is not null;
     }
 
     private static StatementListSelection Create(BlockSyntax block, TextSpan span, int minCount, int maxCount)
     {
-        if (block == null)
+        if (block is null)
             return null;
 
         return Create(block.Statements, span, minCount, maxCount);
@@ -112,24 +112,24 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     public static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, out StatementListSelection selectedStatements)
     {
         selectedStatements = Create(switchSection, span, 1, int.MaxValue);
-        return selectedStatements != null;
+        return selectedStatements is not null;
     }
 
     internal static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, int minCount, out StatementListSelection selectedStatements)
     {
         selectedStatements = Create(switchSection, span, minCount, int.MaxValue);
-        return selectedStatements != null;
+        return selectedStatements is not null;
     }
 
     internal static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, int minCount, int maxCount, out StatementListSelection selectedStatements)
     {
         selectedStatements = Create(switchSection, span, minCount, maxCount);
-        return selectedStatements != null;
+        return selectedStatements is not null;
     }
 
     private static StatementListSelection Create(SwitchSectionSyntax switchSection, TextSpan span, int minCount, int maxCount)
     {
-        if (switchSection == null)
+        if (switchSection is null)
             return null;
 
         return Create(switchSection.Statements, span, minCount, maxCount);

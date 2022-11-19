@@ -55,7 +55,7 @@ internal static class OptimizeLinqMethodCallAnalysis
             ? conditionalExpression.WhenTrue?.WalkDownParentheses()
             : conditionalExpression.WhenFalse?.WalkDownParentheses();
 
-        if (secondExpression == null)
+        if (secondExpression is null)
             return;
 
         SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo((InvocationExpressionSyntax)firstExpression);
@@ -68,7 +68,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         ExtensionMethodSymbolInfo extensionMethodSymbolInfo = semanticModel.GetExtensionMethodInfo(invocationExpression, cancellationToken);
 
-        if (extensionMethodSymbolInfo.Symbol == null)
+        if (extensionMethodSymbolInfo.Symbol is null)
             return;
 
         if (!extensionMethodSymbolInfo.IsReduced)
@@ -79,7 +79,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol2 = semanticModel.GetExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol2 == null)
+        if (methodSymbol2 is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol2, "First"))
@@ -151,7 +151,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetExtensionMethodInfo(invocation, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, invocationInfo.NameText))
@@ -159,7 +159,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol2 = semanticModel.GetExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol2 == null)
+        if (methodSymbol2 is null)
             return;
 
         switch (methodName)
@@ -207,7 +207,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = extensionMethodSymbolInfo.Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (methodSymbol.DeclaredAccessibility != Accessibility.Public)
@@ -215,7 +215,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
-        if (containingType == null)
+        if (containingType is null)
             return;
 
         var success = false;
@@ -233,7 +233,7 @@ internal static class OptimizeLinqMethodCallAnalysis
                 {
                     ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(invocationInfo.Expression, context.CancellationToken);
 
-                    if (typeSymbol != null)
+                    if (typeSymbol is not null)
                     {
                         if (typeSymbol.Kind == SymbolKind.ArrayType)
                         {
@@ -318,7 +318,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         ArgumentSyntax argument2 = invocationInfo2.Arguments.SingleOrDefault(shouldThrow: false);
 
-        if (argument2 == null)
+        if (argument2 is null)
             return;
 
         SemanticModel semanticModel = context.SemanticModel;
@@ -328,7 +328,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol, "Any"))
@@ -336,7 +336,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol2 = semanticModel.GetExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol2 == null)
+        if (methodSymbol2 is null)
             return;
 
         if (!SymbolUtility.IsLinqWhere(methodSymbol2, allowImmutableArrayExtension: true))
@@ -373,7 +373,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         ArgumentSyntax argument = invocationInfo2.Arguments.SingleOrDefault(shouldThrow: false);
 
-        if (argument == null)
+        if (argument is null)
             return;
 
         if (!string.Equals(invocationInfo2.NameText, "Where", StringComparison.Ordinal))
@@ -385,7 +385,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqCast(methodSymbol))
@@ -393,7 +393,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol2 = semanticModel.GetReducedExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol2 == null)
+        if (methodSymbol2 is null)
             return;
 
         if (!SymbolUtility.IsLinqWhere(methodSymbol2))
@@ -406,12 +406,12 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         TypeSyntax type2 = (invocationInfo.Name as GenericNameSyntax)?.TypeArgumentList?.Arguments.SingleOrDefault(shouldThrow: false);
 
-        if (type2 == null)
+        if (type2 is null)
             return;
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(type2, cancellationToken);
@@ -433,7 +433,7 @@ internal static class OptimizeLinqMethodCallAnalysis
             .Arguments
             .SingleOrDefault(shouldThrow: false);
 
-        if (typeArgument == null)
+        if (typeArgument is null)
             return;
 
         SemanticModel semanticModel = context.SemanticModel;
@@ -443,7 +443,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = extensionMethodSymbolInfo.Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqOfType(methodSymbol))
@@ -472,7 +472,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = extensionMethodSymbolInfo.Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "First"))
@@ -501,7 +501,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "Count"))
@@ -511,12 +511,12 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         string propertyName = SymbolUtility.GetCountOrLengthPropertyName(typeSymbol, semanticModel, expression.SpanStart);
 
-        if (propertyName != null)
+        if (propertyName is not null)
         {
             if (CanBeReplacedWithMemberAccessExpression(invocationExpression)
                 && CheckInfiniteRecursion(typeSymbol, propertyName, invocationExpression.SpanStart, semanticModel, cancellationToken))
@@ -635,7 +635,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol, "Where", parameterCount: 2))
@@ -643,7 +643,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol2 = semanticModel.GetReducedExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol2 == null)
+        if (methodSymbol2 is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol2, name2, new Interval(2, 3)))
@@ -664,7 +664,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         ArgumentSyntax argument = invocationInfo2.Arguments.SingleOrDefault(shouldThrow: false);
 
-        if (argument == null)
+        if (argument is null)
             return;
 
         if (!string.Equals(invocationInfo2.NameText, "OrderBy", StringComparison.Ordinal))
@@ -677,7 +677,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "Reverse"))
@@ -685,7 +685,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol2 = semanticModel.GetReducedExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol2 == null)
+        if (methodSymbol2 is null)
             return;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol2, "OrderBy", parameterCount: 2))
@@ -706,7 +706,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         ArgumentSyntax argument = invocationInfo2.Arguments.SingleOrDefault(shouldThrow: false);
 
-        if (argument == null)
+        if (argument is null)
             return false;
 
         if (!string.Equals(invocationInfo2.NameText, "SelectMany", StringComparison.Ordinal))
@@ -719,7 +719,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol == null)
+        if (methodSymbol is null)
             return false;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "Count"))
@@ -727,7 +727,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol methodSymbol2 = semanticModel.GetReducedExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
 
-        if (methodSymbol2 == null)
+        if (methodSymbol2 is null)
             return false;
 
         if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol2, "SelectMany", parameterCount: 2))
@@ -735,17 +735,17 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         ExpressionSyntax expression = GetLambdaExpression(argument.Expression);
 
-        if (expression == null)
+        if (expression is null)
             return false;
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return false;
 
         string propertyName = SymbolUtility.GetCountOrLengthPropertyName(typeSymbol, semanticModel, expression.SpanStart);
 
-        if (propertyName != null
+        if (propertyName is not null
             && CheckInfiniteRecursion(typeSymbol, propertyName, invocationExpression.SpanStart, semanticModel, cancellationToken))
         {
             TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocationExpression.Span.End);
@@ -785,7 +785,7 @@ internal static class OptimizeLinqMethodCallAnalysis
     {
         ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
-        if (symbol != null)
+        if (symbol is not null)
         {
             IPropertySymbol propertySymbol = null;
 

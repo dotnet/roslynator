@@ -12,7 +12,7 @@ internal static class ExpandExpressionBodyAnalysis
     {
         SyntaxNode parent = arrowExpressionClause.Parent;
 
-        return parent != null
+        return parent is not null
             && CSharpFacts.CanHaveExpressionBody(parent.Kind());
     }
 }

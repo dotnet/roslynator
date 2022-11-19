@@ -26,7 +26,7 @@ internal class ReplaceMethodWithPropertySyntaxRewriter : CSharpSyntaxRewriter
     {
         ExpressionSyntax expression = node.Expression;
 
-        if (expression != null)
+        if (expression is not null)
         {
             if (_nodes.Contains(expression))
             {
@@ -40,7 +40,7 @@ internal class ReplaceMethodWithPropertySyntaxRewriter : CSharpSyntaxRewriter
 
                 SimpleNameSyntax name = memberAccess.Name;
 
-                if (name != null && _nodes.Contains(name))
+                if (name is not null && _nodes.Contains(name))
                 {
                     expression = (ExpressionSyntax)base.Visit(memberAccess.Expression);
 
@@ -60,7 +60,7 @@ internal class ReplaceMethodWithPropertySyntaxRewriter : CSharpSyntaxRewriter
     {
         ArgumentListSyntax argumentList = invocation.ArgumentList;
 
-        if (argumentList != null)
+        if (argumentList is not null)
         {
             node = node.AppendToTrailingTrivia(
                 argumentList.OpenParenToken.GetAllTrivia()

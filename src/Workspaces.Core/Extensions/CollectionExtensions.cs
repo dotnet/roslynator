@@ -4,55 +4,56 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Roslynator;
-
-internal static class CollectionExtensions
+namespace Roslynator
 {
-    public static T SingleOrDefault<T>(this IReadOnlyCollection<T> values, bool shouldThrow)
+    internal static class CollectionExtensions
     {
-        if (values == null)
-            throw new ArgumentNullException(nameof(values));
-
-        if (shouldThrow)
+        public static T SingleOrDefault<T>(this IReadOnlyCollection<T> values, bool shouldThrow)
         {
-            return values.SingleOrDefault();
-        }
-        else
-        {
-            return (values.Count == 1) ? values.First() : default;
-        }
-    }
+            if (values is null)
+                throw new ArgumentNullException(nameof(values));
 
-    public static T SingleOrDefault<T>(
-        this IReadOnlyCollection<T> list,
-        Func<T, bool> predicate,
-        bool shouldThrow)
-    {
-        if (list == null)
-            throw new ArgumentNullException(nameof(list));
-
-        if (shouldThrow)
-            return list.SingleOrDefault(predicate);
-
-        using (IEnumerator<T> en = list.GetEnumerator())
-        {
-            while (en.MoveNext())
+            if (shouldThrow)
             {
-                T item = en.Current;
-
-                if (predicate(item))
-                {
-                    while (en.MoveNext())
-                    {
-                        if (predicate(en.Current))
-                            return default;
-                    }
-
-                    return item;
-                }
+                return values.SingleOrDefault();
+            }
+            else
+            {
+                return (values.Count == 1) ? values.First() : default;
             }
         }
 
-        return default;
+        public static T SingleOrDefault<T>(
+            this IReadOnlyCollection<T> list,
+            Func<T, bool> predicate,
+            bool shouldThrow)
+        {
+            if (list is null)
+                throw new ArgumentNullException(nameof(list));
+
+            if (shouldThrow)
+                return list.SingleOrDefault(predicate);
+
+            using (IEnumerator<T> en = list.GetEnumerator())
+            {
+                while (en.MoveNext())
+                {
+                    T item = en.Current;
+
+                    if (predicate(item))
+                    {
+                        while (en.MoveNext())
+                        {
+                            if (predicate(en.Current))
+                                return default;
+                        }
+
+                        return item;
+                    }
+                }
+            }
+
+            return default;
+        }
     }
 }

@@ -51,7 +51,7 @@ public sealed class SimplifyNestedUsingStatementAnalyzer : BaseDiagnosticAnalyze
         if (!ContainsEmbeddableUsingStatement(usingStatement))
             return;
 
-        for (SyntaxNode parent = usingStatement.Parent; parent != null; parent = parent.Parent)
+        for (SyntaxNode parent = usingStatement.Parent; parent is not null; parent = parent.Parent)
         {
             if (parent.IsKind(SyntaxKind.UsingStatement)
                 && ContainsEmbeddableUsingStatement((UsingStatementSyntax)parent))

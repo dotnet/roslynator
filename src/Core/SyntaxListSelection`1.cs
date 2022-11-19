@@ -136,19 +136,19 @@ public class SyntaxListSelection<TNode> : ISelection<TNode> where TNode : Syntax
     public static bool TryCreate(SyntaxList<TNode> list, TextSpan span, out SyntaxListSelection<TNode> selection)
     {
         selection = Create(list, span, 1, int.MaxValue);
-        return selection != null;
+        return selection is not null;
     }
 
     internal static bool TryCreate(SyntaxList<TNode> list, TextSpan span, int minCount, out SyntaxListSelection<TNode> selection)
     {
         selection = Create(list, span, minCount, int.MaxValue);
-        return selection != null;
+        return selection is not null;
     }
 
     internal static bool TryCreate(SyntaxList<TNode> list, TextSpan span, int minCount, int maxCount, out SyntaxListSelection<TNode> selection)
     {
         selection = Create(list, span, minCount, maxCount);
-        return selection != null;
+        return selection is not null;
     }
 
     private static SyntaxListSelection<TNode> Create(SyntaxList<TNode> list, TextSpan span, int minCount, int maxCount)

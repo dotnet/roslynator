@@ -29,8 +29,8 @@ public readonly struct CallExtensionMethodAsInstanceMethodAnalysisResult : IEqua
     {
         get
         {
-            return InvocationExpression != null
-                && NewInvocationExpression != null;
+            return InvocationExpression is not null
+                && NewInvocationExpression is not null;
         }
     }
 

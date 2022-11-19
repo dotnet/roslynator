@@ -43,7 +43,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
 
         SyntaxToken semicolon = declaration.SemicolonToken;
 
-        if (semicolon.Parent != null
+        if (semicolon.Parent is not null
             && !semicolon.IsMissing)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
@@ -56,7 +56,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
 
         SyntaxToken semicolon = declaration.SemicolonToken;
 
-        if (semicolon.Parent != null
+        if (semicolon.Parent is not null
             && !semicolon.IsMissing)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
@@ -69,7 +69,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
 
         SyntaxToken semicolon = declaration.SemicolonToken;
 
-        if (semicolon.Parent != null
+        if (semicolon.Parent is not null
             && !semicolon.IsMissing)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
@@ -82,7 +82,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
 
         SyntaxToken semicolon = declaration.SemicolonToken;
 
-        if (semicolon.Parent != null
+        if (semicolon.Parent is not null
             && !semicolon.IsMissing)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
@@ -97,7 +97,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
         {
             SyntaxToken semicolon = declaration.SemicolonToken;
 
-            if (semicolon.Parent != null
+            if (semicolon.Parent is not null
                 && !semicolon.IsMissing)
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
@@ -111,7 +111,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
 
         SyntaxToken semicolon = declaration.SemicolonToken;
 
-        if (semicolon.Parent != null
+        if (semicolon.Parent is not null
             && !semicolon.IsMissing)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);

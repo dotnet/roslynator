@@ -28,7 +28,7 @@ internal class StringLiteralTextBuilder
 
     public void Append(InterpolatedStringExpressionSyntax interpolatedString)
     {
-        if (interpolatedString == null)
+        if (interpolatedString is null)
             return;
 
         if (!IsInterpolated)
@@ -68,7 +68,7 @@ internal class StringLiteralTextBuilder
 
     public void Append(LiteralExpressionSyntax stringLiteral)
     {
-        if (stringLiteral == null)
+        if (stringLiteral is null)
             return;
 
         if (!stringLiteral.IsKind(SyntaxKind.StringLiteralExpression))

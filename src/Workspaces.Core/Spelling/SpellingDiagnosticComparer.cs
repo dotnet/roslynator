@@ -25,10 +25,10 @@ internal abstract class SpellingDiagnosticComparer :
         if (x == y)
             return 0;
 
-        if (x == null)
+        if (x is null)
             return -1;
 
-        if (y == null)
+        if (y is null)
             return 1;
 
         if (x is SpellingDiagnostic a
@@ -45,10 +45,10 @@ internal abstract class SpellingDiagnosticComparer :
         if (x == y)
             return true;
 
-        if (x == null)
+        if (x is null)
             return false;
 
-        if (y == null)
+        if (y is null)
             return false;
 
         if (x is SpellingDiagnostic a
@@ -62,7 +62,7 @@ internal abstract class SpellingDiagnosticComparer :
 
     public int GetHashCode(object obj)
     {
-        if (obj == null)
+        if (obj is null)
             return 0;
 
         if (obj is SpellingDiagnostic diagnostic)
@@ -78,10 +78,10 @@ internal abstract class SpellingDiagnosticComparer :
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             int result = StringComparer.OrdinalIgnoreCase.Compare(
@@ -99,10 +99,10 @@ internal abstract class SpellingDiagnosticComparer :
             if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
             return StringComparer.OrdinalIgnoreCase.Equals(
@@ -113,7 +113,7 @@ internal abstract class SpellingDiagnosticComparer :
 
         public override int GetHashCode(SpellingDiagnostic obj)
         {
-            if (obj == null)
+            if (obj is null)
                 throw new ArgumentNullException(nameof(obj));
 
             return Hash.Combine(

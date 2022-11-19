@@ -23,7 +23,7 @@ public static class SyntaxTreeExtensions
         TextSpan span,
         CancellationToken cancellationToken = default)
     {
-        if (syntaxTree == null)
+        if (syntaxTree is null)
             throw new ArgumentNullException(nameof(syntaxTree));
 
         return syntaxTree.GetLineSpan(span, cancellationToken).StartLine();
@@ -40,7 +40,7 @@ public static class SyntaxTreeExtensions
         TextSpan span,
         CancellationToken cancellationToken = default)
     {
-        if (syntaxTree == null)
+        if (syntaxTree is null)
             throw new ArgumentNullException(nameof(syntaxTree));
 
         return syntaxTree.GetLineSpan(span, cancellationToken).EndLine();
@@ -57,7 +57,7 @@ public static class SyntaxTreeExtensions
         TextSpan span,
         CancellationToken cancellationToken = default)
     {
-        if (syntaxTree == null)
+        if (syntaxTree is null)
             throw new ArgumentNullException(nameof(syntaxTree));
 
         return syntaxTree.GetLineSpan(span, cancellationToken).IsMultiLine();
@@ -74,7 +74,7 @@ public static class SyntaxTreeExtensions
         TextSpan span,
         CancellationToken cancellationToken = default)
     {
-        if (syntaxTree == null)
+        if (syntaxTree is null)
             throw new ArgumentNullException(nameof(syntaxTree));
 
         return syntaxTree.GetLineSpan(span, cancellationToken).IsSingleLine();
@@ -85,7 +85,7 @@ public static class SyntaxTreeExtensions
         TextSpan span,
         CancellationToken cancellationToken = default)
     {
-        if (syntaxTree == null)
+        if (syntaxTree is null)
             throw new ArgumentNullException(nameof(syntaxTree));
 
         return syntaxTree.GetLineSpan(span, cancellationToken).GetLineCount();

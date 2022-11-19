@@ -157,7 +157,7 @@ public sealed class RemoveRedundantAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantAsyncAwait, asyncKeyword);
         DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantAsyncAwaitFadeOut, asyncKeyword);
 
-        if (analysis.AwaitExpression != null)
+        if (analysis.AwaitExpression is not null)
         {
             ReportAwaitAndConfigureAwait(analysis.AwaitExpression);
         }

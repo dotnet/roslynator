@@ -61,7 +61,7 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
         if (statement is BlockSyntax block)
             statement = block.Statements.LastOrDefault();
 
-        return statement != null
+        return statement is not null
             && CSharpFacts.IsJumpStatement(statement.Kind());
     }
 }

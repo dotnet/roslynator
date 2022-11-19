@@ -45,7 +45,7 @@ public sealed class NormalizeWhitespaceAtEndOfFileAnalyzer : BaseDiagnosticAnaly
 
         bool? preferNewLineAtEndOfFile = context.PreferNewLineAtEndOfFile();
 
-        if (preferNewLineAtEndOfFile == null)
+        if (preferNewLineAtEndOfFile is null)
             return;
 
         if (preferNewLineAtEndOfFile == false)

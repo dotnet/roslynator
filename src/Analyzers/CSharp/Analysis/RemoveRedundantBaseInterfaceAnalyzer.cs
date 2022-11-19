@@ -88,7 +88,7 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
                 {
                     var baseInterfaceInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
 
-                    if (baseInterfaceInfos == null)
+                    if (baseInterfaceInfos is null)
                     {
                         if (allInterfaces.Any())
                             baseInterfaceInfos = new List<SymbolInterfaceInfo>() { baseInterfaceInfo };
@@ -102,9 +102,9 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
                         }
                     }
 
-                    if (baseClassInfo.Symbol != null)
+                    if (baseClassInfo.Symbol is not null)
                     {
-                        if (typeSymbol == null)
+                        if (typeSymbol is null)
                             typeSymbol = context.SemanticModel.GetDeclaredSymbol((TypeDeclarationSyntax)baseList.Parent, context.CancellationToken);
 
                         Analyze(baseInterfaceInfo, baseClassInfo);
@@ -126,7 +126,7 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
             {
                 if (SymbolEqualityComparer.Default.Equals(interfaceInfo.Symbol, interfaceSymbol))
                 {
-                    if (typeSymbol != null)
+                    if (typeSymbol is not null)
                     {
                         if (members.IsDefault)
                             members = typeSymbol.GetMembers();
@@ -228,7 +228,7 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
 
             ISymbol symbol = typeSymbol.FindImplementationForInterfaceMember(member);
 
-            if (symbol != null)
+            if (symbol is not null)
             {
                 foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
                 {

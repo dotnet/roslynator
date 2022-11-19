@@ -40,7 +40,7 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
         {
             INamedTypeSymbol asyncAction = startContext.Compilation.GetTypeByMetadataName("Windows.Foundation.IAsyncAction");
 
-            bool shouldCheckWindowsRuntimeTypes = asyncAction != null;
+            bool shouldCheckWindowsRuntimeTypes = asyncAction is not null;
 
             startContext.RegisterSyntaxNodeAction(
                 c =>

@@ -28,7 +28,7 @@ internal static class AddBracesRefactoring
             {
                 IfStatementSyntax topmostIf = GetTopmostIf(statement);
 
-                if (topmostIf?.Else != null
+                if (topmostIf?.Else is not null
                     && GetEmbeddedStatements(topmostIf).Any(f => f != statement))
                 {
                     context.RegisterRefactoring(
@@ -69,7 +69,7 @@ internal static class AddBracesRefactoring
     {
         SyntaxNode parent = statement.Parent;
 
-        if (parent != null)
+        if (parent is not null)
         {
             if (parent.IsKind(SyntaxKind.ElseClause))
             {

@@ -94,7 +94,7 @@ public sealed class RemoveRedundantAssignmentCodeFixProvider : BaseCodeFixProvid
 
         ExpressionSyntax value = initializer?.Value;
 
-        VariableDeclaratorSyntax newDeclarator = (value != null)
+        VariableDeclaratorSyntax newDeclarator = (value is not null)
             ? declarator.ReplaceNode(value, right)
             : declarator.WithInitializer(EqualsValueClause(right));
 

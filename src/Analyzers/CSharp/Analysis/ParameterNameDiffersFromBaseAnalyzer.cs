@@ -44,7 +44,7 @@ public sealed class ParameterNameDiffersFromBaseAnalyzer : BaseDiagnosticAnalyze
         {
             IMethodSymbol baseSymbol = methodSymbol.OverriddenMethod ?? methodSymbol.FindFirstImplementedInterfaceMember<IMethodSymbol>();
 
-            if (baseSymbol != null)
+            if (baseSymbol is not null)
                 Analyze(context, parameters, baseSymbol.Parameters);
         }
     }
@@ -61,7 +61,7 @@ public sealed class ParameterNameDiffersFromBaseAnalyzer : BaseDiagnosticAnalyze
             {
                 IPropertySymbol baseSymbol = propertySymbol.OverriddenProperty ?? propertySymbol.FindFirstImplementedInterfaceMember<IPropertySymbol>();
 
-                if (baseSymbol != null)
+                if (baseSymbol is not null)
                     Analyze(context, parameters, baseSymbol.Parameters);
             }
         }

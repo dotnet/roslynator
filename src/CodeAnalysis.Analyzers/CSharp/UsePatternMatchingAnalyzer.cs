@@ -42,13 +42,13 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
 
         context.RegisterCompilationStartAction(startContext =>
         {
-            if (_syntaxKindNames == null)
+            if (_syntaxKindNames is null)
             {
                 Compilation compilation = startContext.Compilation;
 
                 INamedTypeSymbol csharpSyntaxNodeSymbol = compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
 
-                if (csharpSyntaxNodeSymbol == null)
+                if (csharpSyntaxNodeSymbol is null)
                     return;
 
                 Dictionary<string, string> kindsToNames = compilation
@@ -105,7 +105,7 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
 
         string name = GetName();
 
-        if (name == null)
+        if (name is null)
             return;
 
         ITypeSymbol kindSymbol = context.SemanticModel.GetTypeSymbol(switchExpression, context.CancellationToken);
@@ -117,7 +117,7 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
         {
             SwitchLabelSyntax label = section.Labels.SingleOrDefault(shouldThrow: false);
 
-            if (label == null)
+            if (label is null)
                 return;
 
             SyntaxKind labelKind = label.Kind();
@@ -152,7 +152,7 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
 
             StatementSyntax statement = statements.FirstOrDefault();
 
-            if (statement == null)
+            if (statement is null)
                 return;
 
             if (statement is BlockSyntax block)
@@ -288,12 +288,12 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
             case IsKindExpressionStyle.NotKind:
             case IsKindExpressionStyle.NotKindConditional:
                 {
-                    if (ifStatement.Else != null)
+                    if (ifStatement.Else is not null)
                         return;
 
                     StatementSyntax statement = ifStatement.Statement.SingleNonBlockStatementOrDefault();
 
-                    if (statement == null)
+                    if (statement is null)
                         return;
 
                     if (!CSharpFacts.IsJumpStatement(statement.Kind()))
@@ -387,7 +387,7 @@ public sealed class UsePatternMatchingAnalyzer : BaseDiagnosticAnalyzer
             }
             finally
             {
-                if (walker != null)
+                if (walker is not null)
                     ContainsLocalOrParameterReferenceWalker.Free(walker);
             }
 

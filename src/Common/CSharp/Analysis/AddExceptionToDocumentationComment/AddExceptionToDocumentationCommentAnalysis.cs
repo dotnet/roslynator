@@ -68,7 +68,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
 
         DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
 
-        if (comment == null)
+        if (comment is null)
             return Fail;
 
         if (!CanAddExceptionToComment(comment, typeSymbol, semanticModel, cancellationToken))
@@ -145,7 +145,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
     {
         XmlElementStartTagSyntax startTag = xmlElement.StartTag;
 
-        return startTag != null
+        return startTag is not null
             && ContainsException(startTag.Attributes, exceptionSymbol, semanticModel, cancellationToken);
     }
 
@@ -164,7 +164,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
 
                 CrefSyntax cref = xmlCrefAttribute.Cref;
 
-                if (cref != null
+                if (cref is not null
                     && (semanticModel.GetSymbol(cref, cancellationToken) is INamedTypeSymbol symbol))
                 {
                     if (SymbolEqualityComparer.Default.Equals(exceptionSymbol, symbol))

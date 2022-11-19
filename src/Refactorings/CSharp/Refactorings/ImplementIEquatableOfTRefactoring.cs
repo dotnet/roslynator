@@ -26,12 +26,12 @@ internal static class ImplementIEquatableOfTRefactoring
 
         BaseListSyntax baseList = classDeclaration.BaseList;
 
-        if (baseList != null)
+        if (baseList is not null)
             span = TextSpan.FromBounds(span.Start, baseList.Span.End);
 
         TypeParameterListSyntax typeParameterList = classDeclaration.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
             span = TextSpan.FromBounds(span.Start, typeParameterList.Span.End);
 
         if (!span.Contains(context.Span))
@@ -58,7 +58,7 @@ internal static class ImplementIEquatableOfTRefactoring
 
         INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName("System.IEquatable`1");
 
-        if (equatableSymbol == null)
+        if (equatableSymbol is null)
             return;
 
         equatableSymbol = equatableSymbol.Construct(classSymbol);
@@ -80,12 +80,12 @@ internal static class ImplementIEquatableOfTRefactoring
 
         BaseListSyntax baseList = structDeclaration.BaseList;
 
-        if (baseList != null)
+        if (baseList is not null)
             span = TextSpan.FromBounds(span.Start, baseList.Span.End);
 
         TypeParameterListSyntax typeParameterList = structDeclaration.TypeParameterList;
 
-        if (typeParameterList != null)
+        if (typeParameterList is not null)
             span = TextSpan.FromBounds(span.Start, typeParameterList.Span.End);
 
         if (!span.Contains(context.Span))
@@ -109,7 +109,7 @@ internal static class ImplementIEquatableOfTRefactoring
 
         INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName("System.IEquatable`1");
 
-        if (equatableSymbol == null)
+        if (equatableSymbol is null)
             return;
 
         equatableSymbol = equatableSymbol.Construct(typeSymbol);
@@ -150,13 +150,13 @@ internal static class ImplementIEquatableOfTRefactoring
     {
         BaseListSyntax baseList = classDeclaration.BaseList;
 
-        if (baseList == null)
+        if (baseList is null)
         {
             baseList = BaseList(baseType);
 
             TypeParameterListSyntax typeParameterList = classDeclaration.TypeParameterList;
 
-            if (typeParameterList != null)
+            if (typeParameterList is not null)
             {
                 return classDeclaration
                     .WithTypeParameterList(typeParameterList.WithoutTrailingTrivia())
@@ -177,7 +177,7 @@ internal static class ImplementIEquatableOfTRefactoring
 
             BaseTypeSyntax lastType = types.LastOrDefault();
 
-            if (lastType == null
+            if (lastType is null
                 || (types.Count == 1 && types[0].IsMissing))
             {
                 SyntaxToken colonToken = baseList.ColonToken;
@@ -228,13 +228,13 @@ internal static class ImplementIEquatableOfTRefactoring
     {
         BaseListSyntax baseList = structDeclaration.BaseList;
 
-        if (baseList == null)
+        if (baseList is null)
         {
             baseList = BaseList(baseType);
 
             TypeParameterListSyntax typeParameterList = structDeclaration.TypeParameterList;
 
-            if (typeParameterList != null)
+            if (typeParameterList is not null)
             {
                 return structDeclaration
                     .WithTypeParameterList(typeParameterList.WithoutTrailingTrivia())
@@ -255,7 +255,7 @@ internal static class ImplementIEquatableOfTRefactoring
 
             BaseTypeSyntax lastType = types.LastOrDefault();
 
-            if (lastType == null
+            if (lastType is null
                 || (types.Count == 1 && types[0].IsMissing))
             {
                 SyntaxToken colonToken = baseList.ColonToken;

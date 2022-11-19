@@ -13,7 +13,7 @@ internal static class RemoveConditionFromLastElseRefactoring
     public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
     {
         if (elseClause.Statement?.Kind() == SyntaxKind.IfStatement
-            && ((IfStatementSyntax)elseClause.Statement).Else == null)
+            && ((IfStatementSyntax)elseClause.Statement).Else is null)
         {
             context.RegisterRefactoring(
                 "Remove condition",

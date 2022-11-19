@@ -51,7 +51,7 @@ public sealed class RemoveEmptyElseClauseAnalyzer : BaseDiagnosticAnalyzer
         {
             var parentIf = (IfStatementSyntax)topmostIf.Parent;
 
-            if (parentIf.Else != null)
+            if (parentIf.Else is not null)
                 return;
         }
 

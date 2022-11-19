@@ -15,7 +15,7 @@ public static class ConvertMethodGroupToAnonymousFunctionAnalysis
         {
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(identifierName, cancellationToken);
 
-            if (methodSymbol != null)
+            if (methodSymbol is not null)
                 return true;
         }
 
@@ -28,7 +28,7 @@ public static class ConvertMethodGroupToAnonymousFunctionAnalysis
         {
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(memberAccessExpression, cancellationToken);
 
-            if (methodSymbol != null)
+            if (methodSymbol is not null)
                 return true;
         }
 

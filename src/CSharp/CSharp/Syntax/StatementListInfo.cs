@@ -19,7 +19,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
 {
     internal StatementListInfo(BlockSyntax block)
     {
-        Debug.Assert(block != null);
+        Debug.Assert(block is not null);
 
         Parent = block;
         Statements = block.Statements;
@@ -27,7 +27,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
 
     internal StatementListInfo(SwitchSectionSyntax switchSection)
     {
-        Debug.Assert(switchSection != null);
+        Debug.Assert(switchSection is not null);
 
         Parent = switchSection;
         Statements = switchSection.Statements;
@@ -88,7 +88,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// </summary>
     public bool Success
     {
-        get { return Parent != null; }
+        get { return Parent is not null; }
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
 
     internal static StatementListInfo Create(StatementSyntax statementInList)
     {
-        if (statementInList == null)
+        if (statementInList is null)
             return default;
 
         SyntaxNode parent = statementInList.Parent;
@@ -379,7 +379,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
 
     private void ThrowInvalidOperationIfNotInitialized()
     {
-        if (Parent == null)
+        if (Parent is null)
             throw new InvalidOperationException($"{nameof(StatementListInfo)} is not initalized.");
     }
 }

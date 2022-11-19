@@ -63,12 +63,12 @@ internal static class SortCaseLabelsRefactoring
 
             string containingName = (memberAccess.Expression as IdentifierNameSyntax)?.Identifier.ValueText;
 
-            if (containingName == null)
+            if (containingName is null)
                 return;
 
             string name = (memberAccess.Name as IdentifierNameSyntax)?.Identifier.ValueText;
 
-            if (name == null)
+            if (name is null)
                 return;
 
             for (int i = firstIndex + 1; i <= selectedLabels.LastIndex; i++)
@@ -130,10 +130,10 @@ internal static class SortCaseLabelsRefactoring
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             var label1 = (CaseSwitchLabelSyntax)x;
@@ -155,10 +155,10 @@ internal static class SortCaseLabelsRefactoring
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             var label1 = (CaseSwitchLabelSyntax)x;

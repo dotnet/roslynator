@@ -24,9 +24,9 @@ internal readonly struct BlockExpressionAnalysis
 
     public SyntaxToken ReturnOrThrowKeyword { get; }
 
-    public BlockSyntax Block => (Statement != null) ? (BlockSyntax)Statement.Parent : default;
+    public BlockSyntax Block => (Statement is not null) ? (BlockSyntax)Statement.Parent : default;
 
-    public bool Success => Expression != null;
+    public bool Success => Expression is not null;
 
     public static bool SupportsExpressionBody(BlockSyntax block, bool allowExpressionStatement = true)
     {
@@ -47,7 +47,7 @@ internal readonly struct BlockExpressionAnalysis
     {
         StatementSyntax statement = block?.Statements.SingleOrDefault(shouldThrow: false);
 
-        if (statement == null)
+        if (statement is null)
             return default;
 
         switch (statement.Kind())

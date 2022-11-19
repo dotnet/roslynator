@@ -7,84 +7,85 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp;
-
-internal class EnumMemberDeclarationValueComparer : IComparer<EnumMemberDeclarationSyntax>
+namespace Roslynator.CSharp
 {
-    private readonly IComparer<object> _valueComparer;
-    private readonly SemanticModel _semanticModel;
-    private readonly CancellationToken _cancellationToken;
-
-    public EnumMemberDeclarationValueComparer(IComparer<object> valueComparer, SemanticModel semanticModel, CancellationToken cancellationToken = default)
+    internal class EnumMemberDeclarationValueComparer : IComparer<EnumMemberDeclarationSyntax>
     {
-        _valueComparer = valueComparer;
-        _semanticModel = semanticModel;
-        _cancellationToken = cancellationToken;
-    }
+        private readonly IComparer<object> _valueComparer;
+        private readonly SemanticModel _semanticModel;
+        private readonly CancellationToken _cancellationToken;
 
-    public int Compare(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
-    {
-        if (object.ReferenceEquals(x, y))
-            return 0;
-
-        if (x == null)
-            return -1;
-
-        if (y == null)
-            return 1;
-
-        return Compare(
-            _semanticModel.GetDeclaredSymbol(x, _cancellationToken),
-            _semanticModel.GetDeclaredSymbol(y, _cancellationToken),
-            _valueComparer);
-    }
-
-    private static int Compare(IFieldSymbol fieldSymbol1, IFieldSymbol fieldSymbol2, IComparer<object> comparer)
-    {
-        if (fieldSymbol1?.HasConstantValue == true
-            && fieldSymbol2?.HasConstantValue == true)
+        public EnumMemberDeclarationValueComparer(IComparer<object> valueComparer, SemanticModel semanticModel, CancellationToken cancellationToken = default)
         {
-            return comparer.Compare(fieldSymbol1.ConstantValue, fieldSymbol2.ConstantValue);
+            _valueComparer = valueComparer;
+            _semanticModel = semanticModel;
+            _cancellationToken = cancellationToken;
         }
-        else
+
+        public int Compare(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
         {
-            return 0;
+            if (object.ReferenceEquals(x, y))
+                return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            return Compare(
+                _semanticModel.GetDeclaredSymbol(x, _cancellationToken),
+                _semanticModel.GetDeclaredSymbol(y, _cancellationToken),
+                _valueComparer);
         }
-    }
 
-    public static bool IsSorted(
-        IEnumerable<EnumMemberDeclarationSyntax> enumMembers,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken = default)
-    {
-        if (enumMembers == null)
-            throw new ArgumentNullException(nameof(enumMembers));
-
-        if (semanticModel == null)
-            throw new ArgumentNullException(nameof(semanticModel));
-
-        using (IEnumerator<EnumMemberDeclarationSyntax> en = enumMembers.GetEnumerator())
+        private static int Compare(IFieldSymbol fieldSymbol1, IFieldSymbol fieldSymbol2, IComparer<object> comparer)
         {
-            if (en.MoveNext())
+            if (fieldSymbol1?.HasConstantValue == true
+                && fieldSymbol2?.HasConstantValue == true)
             {
-                IFieldSymbol fieldSymbol1 = semanticModel.GetDeclaredSymbol(en.Current, cancellationToken);
-
-                SpecialType enumSpecialType = fieldSymbol1.ContainingType.EnumUnderlyingType.SpecialType;
-
-                IComparer<object> comparer = EnumValueComparer.GetInstance(enumSpecialType);
-
-                while (en.MoveNext())
-                {
-                    IFieldSymbol fieldSymbol2 = semanticModel.GetDeclaredSymbol(en.Current, cancellationToken);
-
-                    if (Compare(fieldSymbol1, fieldSymbol2, comparer) > 0)
-                        return false;
-
-                    fieldSymbol1 = fieldSymbol2;
-                }
+                return comparer.Compare(fieldSymbol1.ConstantValue, fieldSymbol2.ConstantValue);
+            }
+            else
+            {
+                return 0;
             }
         }
 
-        return true;
+        public static bool IsSorted(
+            IEnumerable<EnumMemberDeclarationSyntax> enumMembers,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
+        {
+            if (enumMembers is null)
+                throw new ArgumentNullException(nameof(enumMembers));
+
+            if (semanticModel is null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            using (IEnumerator<EnumMemberDeclarationSyntax> en = enumMembers.GetEnumerator())
+            {
+                if (en.MoveNext())
+                {
+                    IFieldSymbol fieldSymbol1 = semanticModel.GetDeclaredSymbol(en.Current, cancellationToken);
+
+                    SpecialType enumSpecialType = fieldSymbol1.ContainingType.EnumUnderlyingType.SpecialType;
+
+                    IComparer<object> comparer = EnumValueComparer.GetInstance(enumSpecialType);
+
+                    while (en.MoveNext())
+                    {
+                        IFieldSymbol fieldSymbol2 = semanticModel.GetDeclaredSymbol(en.Current, cancellationToken);
+
+                        if (Compare(fieldSymbol1, fieldSymbol2, comparer) > 0)
+                            return false;
+
+                        fieldSymbol1 = fieldSymbol2;
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 }

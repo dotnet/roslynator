@@ -49,19 +49,19 @@ internal abstract class IfAnalysis
 
         ExpressionSyntax condition = ifStatement.Condition?.WalkDownParentheses();
 
-        if (condition == null)
+        if (condition is null)
             return Empty;
 
         ElseClauseSyntax elseClause = ifStatement.Else;
 
-        if (elseClause != null)
+        if (elseClause is not null)
         {
             if (!CheckDirectivesAndComments(ifStatement, options))
                 return Empty;
 
             StatementSyntax statement1 = ifStatement.SingleNonBlockStatementOrDefault();
 
-            if (statement1 == null)
+            if (statement1 is null)
                 return Empty;
 
             SyntaxKind kind1 = statement1.Kind();
@@ -181,7 +181,7 @@ internal abstract class IfAnalysis
                     semanticModel,
                     cancellationToken);
 
-                if (refactoring != null)
+                if (refactoring is not null)
                     return refactoring.ToImmutableArray();
             }
         }
@@ -306,7 +306,7 @@ internal abstract class IfAnalysis
                     semanticModel,
                     cancellationToken);
 
-                if (refactoring != null)
+                if (refactoring is not null)
                     return refactoring.ToImmutableArray();
             }
         }
@@ -423,7 +423,7 @@ internal abstract class IfAnalysis
             .Variables
             .SingleOrDefault(shouldThrow: false);
 
-        if (declarator == null)
+        if (declarator is null)
             return Empty;
 
         ElseClauseSyntax elseClause = ifStatement.Else;
@@ -489,7 +489,7 @@ internal abstract class IfAnalysis
 
         ExpressionSyntax whenFalse;
 
-        if (elseClause != null)
+        if (elseClause is not null)
         {
             if (elseClause.Statement.IsKind(SyntaxKind.IfStatement))
                 return Empty;
@@ -571,9 +571,9 @@ internal abstract class IfAnalysis
 
     private static ImmutableArray<IfAnalysis> ToImmutableArray(IfAnalysis refactoring1, IfAnalysis refactoring2)
     {
-        if (refactoring1 != null)
+        if (refactoring1 is not null)
         {
-            if (refactoring2 != null)
+            if (refactoring2 is not null)
             {
                 return ImmutableArray.Create(refactoring1, refactoring2);
             }
@@ -582,7 +582,7 @@ internal abstract class IfAnalysis
                 return refactoring1.ToImmutableArray();
             }
         }
-        else if (refactoring2 != null)
+        else if (refactoring2 is not null)
         {
             return refactoring2.ToImmutableArray();
         }

@@ -22,13 +22,13 @@ internal static class DetermineParameterTypeHelper
         {
             SyntaxNode parent = argumentList.Parent;
 
-            if (parent != null)
+            if (parent is not null)
             {
                 SymbolInfo symbolInfo = GetSymbolInfo(parent, semanticModel, cancellationToken);
 
                 ISymbol symbol = symbolInfo.Symbol;
 
-                if (symbol != null)
+                if (symbol is not null)
                 {
                     ITypeSymbol typeSymbol = DetermineParameterType(symbol, argument, argumentList);
 
@@ -49,7 +49,7 @@ internal static class DetermineParameterTypeHelper
                         }
                     }
 
-                    if (typeSymbols != null)
+                    if (typeSymbols is not null)
                         return typeSymbols.ToImmutableArray();
                 }
             }
@@ -76,7 +76,7 @@ internal static class DetermineParameterTypeHelper
     {
         IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
 
-        if (parameterSymbol == null)
+        if (parameterSymbol is null)
             return null;
 
         RefKind refKind = parameterSymbol.RefKind;
@@ -117,7 +117,7 @@ internal static class DetermineParameterTypeHelper
 
         string name = argument.NameColon?.Name?.Identifier.ValueText;
 
-        if (name != null)
+        if (name is not null)
             return parameters.FirstOrDefault(f => f.Name == name);
 
         int index = argumentList.Arguments.IndexOf(argument);

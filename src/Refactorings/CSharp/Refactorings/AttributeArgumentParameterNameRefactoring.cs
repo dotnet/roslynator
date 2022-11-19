@@ -34,14 +34,14 @@ internal static class AttributeArgumentParameterNameRefactoring
 
         foreach (AttributeArgumentSyntax argument in argumentList.Arguments)
         {
-            if (argument.Expression != null
+            if (argument.Expression is not null
                 && context.Span.Contains(argument.Expression.Span))
             {
                 (list ??= new List<AttributeArgumentSyntax>()).Add(argument);
             }
         }
 
-        if (list == null)
+        if (list is null)
             return;
 
         AttributeArgumentSyntax[] arguments = list.ToArray();
@@ -56,7 +56,7 @@ internal static class AttributeArgumentParameterNameRefactoring
         }
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveArgumentName)
-            && arguments.Any(f => f.NameColon != null))
+            && arguments.Any(f => f.NameColon is not null))
         {
             context.RegisterRefactoring(
                 "Remove argument name",
@@ -103,7 +103,7 @@ internal static class AttributeArgumentParameterNameRefactoring
                 allowParams: false,
                 cancellationToken: cancellationToken);
 
-            if (parameterSymbol != null)
+            if (parameterSymbol is not null)
             {
                 return argument
                     .WithNameColon(
@@ -131,7 +131,7 @@ internal static class AttributeArgumentParameterNameRefactoring
                     allowParams: false,
                     cancellationToken: context.CancellationToken);
 
-                if (parameterSymbol != null)
+                if (parameterSymbol is not null)
                     return true;
             }
         }
@@ -180,7 +180,7 @@ internal static class AttributeArgumentParameterNameRefactoring
 
         public static AttributeArgumentListSyntax VisitNode(AttributeArgumentListSyntax argumentList, AttributeArgumentSyntax[] arguments = null)
         {
-            if (arguments == null)
+            if (arguments is null)
             {
                 return (AttributeArgumentListSyntax)_instance.Visit(argumentList);
             }
@@ -193,7 +193,7 @@ internal static class AttributeArgumentParameterNameRefactoring
 
         public override SyntaxNode VisitAttributeArgument(AttributeArgumentSyntax node)
         {
-            if (_arguments == null || Array.IndexOf(_arguments, node) != -1)
+            if (_arguments is null || Array.IndexOf(_arguments, node) != -1)
             {
                 return node
                     .WithNameColon(null)

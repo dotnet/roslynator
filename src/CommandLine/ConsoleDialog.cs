@@ -24,7 +24,7 @@ internal class ConsoleDialog : IUserDialog
 
             string s = Console.ReadLine()?.Trim();
 
-            if (s != null)
+            if (s is not null)
             {
                 if (s.Length == 0)
                     return DialogResult.None;

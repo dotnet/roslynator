@@ -25,7 +25,7 @@ internal static class RemoveBracesFromSwitchSectionsRefactoring
             .Sections
             .Select(section =>
             {
-                if ((sections == null || Array.IndexOf(sections, section) != -1)
+                if ((sections is null || Array.IndexOf(sections, section) != -1)
                     && RemoveBracesFromSwitchSectionRefactoring.CanRemoveBraces(section))
                 {
                     var block = (BlockSyntax)section.Statements[0];

@@ -7,223 +7,224 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp;
-
-/// <summary>
-/// Enables to enumerate if statement cascade.
-/// </summary>
-[DebuggerDisplay("{DebuggerDisplay,nq}")]
-public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnumerable<IfStatementOrElseClause>
+namespace Roslynator.CSharp
 {
-    internal IfStatementCascade(IfStatementSyntax ifStatement)
-    {
-        IfStatement = ifStatement;
-    }
-
     /// <summary>
-    /// The if statement.
+    /// Enables to enumerate if statement cascade.
     /// </summary>
-    public IfStatementSyntax IfStatement { get; }
-
-    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnumerable<IfStatementOrElseClause>
     {
-        get { return IfStatement?.ToString() ?? "Uninitialized"; }
-    }
+        internal IfStatementCascade(IfStatementSyntax ifStatement)
+        {
+            IfStatement = ifStatement;
+        }
 
-    /// <summary>
-    /// Gets the enumerator for the if-else cascade.
-    /// </summary>
-    public Enumerator GetEnumerator()
-    {
-        return new Enumerator(IfStatement);
-    }
+        /// <summary>
+        /// The if statement.
+        /// </summary>
+        public IfStatementSyntax IfStatement { get; }
 
-    IEnumerator<IfStatementOrElseClause> IEnumerable<IfStatementOrElseClause>.GetEnumerator()
-    {
-        if (IfStatement != null)
-            return new EnumeratorImpl(IfStatement);
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return IfStatement?.ToString() ?? "Uninitialized"; }
+        }
 
-        return Empty.Enumerator<IfStatementOrElseClause>();
-    }
+        /// <summary>
+        /// Gets the enumerator for the if-else cascade.
+        /// </summary>
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(IfStatement);
+        }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        if (IfStatement != null)
-            return new EnumeratorImpl(IfStatement);
+        IEnumerator<IfStatementOrElseClause> IEnumerable<IfStatementOrElseClause>.GetEnumerator()
+        {
+            if (IfStatement is not null)
+                return new EnumeratorImpl(IfStatement);
 
-        return Empty.Enumerator<IfStatementOrElseClause>();
-    }
+            return Empty.Enumerator<IfStatementOrElseClause>();
+        }
 
-    /// <summary>
-    /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
-    /// </summary>
-    public override string ToString()
-    {
-        return IfStatement?.ToString() ?? "";
-    }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            if (IfStatement is not null)
+                return new EnumeratorImpl(IfStatement);
 
-    /// <summary>
-    /// Determines whether this instance and a specified object are equal.
-    /// </summary>
-    /// <param name="obj">The object to compare with the current instance. </param>
-    /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-    public override bool Equals(object obj)
-    {
-        return obj is IfStatementCascade other && Equals(other);
-    }
+            return Empty.Enumerator<IfStatementOrElseClause>();
+        }
 
-    /// <summary>
-    /// Determines whether this instance is equal to another object of the same type.
-    /// </summary>
-    /// <param name="other">An object to compare with this object.</param>
-    /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-    public bool Equals(IfStatementCascade other)
-    {
-        return EqualityComparer<IfStatementSyntax>.Default.Equals(IfStatement, other.IfStatement);
-    }
+        /// <summary>
+        /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
+        /// </summary>
+        public override string ToString()
+        {
+            return IfStatement?.ToString() ?? "";
+        }
 
-    /// <summary>
-    /// Returns the hash code for this instance.
-    /// </summary>
-    /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
-    public override int GetHashCode()
-    {
-        return EqualityComparer<IfStatementSyntax>.Default.GetHashCode(IfStatement);
-    }
+        /// <summary>
+        /// Determines whether this instance and a specified object are equal.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current instance. </param>
+        /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
+        public override bool Equals(object obj)
+        {
+            return obj is IfStatementCascade other && Equals(other);
+        }
+
+        /// <summary>
+        /// Determines whether this instance is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
+        public bool Equals(IfStatementCascade other)
+        {
+            return EqualityComparer<IfStatementSyntax>.Default.Equals(IfStatement, other.IfStatement);
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+        public override int GetHashCode()
+        {
+            return EqualityComparer<IfStatementSyntax>.Default.GetHashCode(IfStatement);
+        }
 
 #pragma warning disable CS1591
 
-    public static bool operator ==(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
-    {
-        return cascade1.Equals(cascade2);
-    }
-
-    public static bool operator !=(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
-    {
-        return !(cascade1 == cascade2);
-    }
-
-    [SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.")]
-    public struct Enumerator
-    {
-        private IfStatementOrElseClause _ifOrElse;
-        private int _count;
-
-        internal Enumerator(IfStatementSyntax ifStatement)
+        public static bool operator ==(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
         {
-            _ifOrElse = ifStatement;
-            _count = -1;
+            return cascade1.Equals(cascade2);
         }
 
-        public bool MoveNext()
+        public static bool operator !=(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
         {
-            if (_count == -1)
-            {
-                if (_ifOrElse != default)
-                {
-                    _count++;
-                    return true;
-                }
-            }
-            else if (_ifOrElse.IsIf)
-            {
-                ElseClauseSyntax elseClause = _ifOrElse.AsIf().Else;
+            return !(cascade1 == cascade2);
+        }
 
-                if (elseClause != null)
+        [SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.")]
+        public struct Enumerator
+        {
+            private IfStatementOrElseClause _ifOrElse;
+            private int _count;
+
+            internal Enumerator(IfStatementSyntax ifStatement)
+            {
+                _ifOrElse = ifStatement;
+                _count = -1;
+            }
+
+            public bool MoveNext()
+            {
+                if (_count == -1)
                 {
-                    if (elseClause.Statement is IfStatementSyntax nextIf)
+                    if (_ifOrElse != default)
                     {
-                        _ifOrElse = nextIf;
+                        _count++;
+                        return true;
+                    }
+                }
+                else if (_ifOrElse.IsIf)
+                {
+                    ElseClauseSyntax elseClause = _ifOrElse.AsIf().Else;
+
+                    if (elseClause is not null)
+                    {
+                        if (elseClause.Statement is IfStatementSyntax nextIf)
+                        {
+                            _ifOrElse = nextIf;
+                        }
+                        else
+                        {
+                            _ifOrElse = elseClause;
+                        }
+
+                        _count++;
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            public IfStatementOrElseClause Current
+            {
+                get { return (_count >= 0) ? _ifOrElse : throw new InvalidOperationException(); }
+            }
+
+            public void Reset()
+            {
+                int count = _count;
+
+                if (count >= 0)
+                {
+                    IfStatementSyntax ifStatement;
+                    if (_ifOrElse.IsElse)
+                    {
+                        ifStatement = (IfStatementSyntax)_ifOrElse.Parent;
                     }
                     else
                     {
-                        _ifOrElse = elseClause;
+                        ifStatement = _ifOrElse.AsIf();
                     }
 
-                    _count++;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public IfStatementOrElseClause Current
-        {
-            get { return (_count >= 0) ? _ifOrElse : throw new InvalidOperationException(); }
-        }
-
-        public void Reset()
-        {
-            int count = _count;
-
-            if (count >= 0)
-            {
-                IfStatementSyntax ifStatement;
-                if (_ifOrElse.IsElse)
-                {
-                    ifStatement = (IfStatementSyntax)_ifOrElse.Parent;
-                }
-                else
-                {
-                    ifStatement = _ifOrElse.AsIf();
-                }
-
-                count--;
-
-                while (count >= 0)
-                {
-                    ifStatement = (IfStatementSyntax)ifStatement.Parent.Parent;
                     count--;
-                }
 
-                _ifOrElse = ifStatement;
+                    while (count >= 0)
+                    {
+                        ifStatement = (IfStatementSyntax)ifStatement.Parent.Parent;
+                        count--;
+                    }
+
+                    _ifOrElse = ifStatement;
+                }
+            }
+
+            public override bool Equals(object obj)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override int GetHashCode()
+            {
+                throw new NotSupportedException();
             }
         }
 
-        public override bool Equals(object obj)
+        private class EnumeratorImpl : IEnumerator<IfStatementOrElseClause>
         {
-            throw new NotSupportedException();
-        }
+            private Enumerator _en;
 
-        public override int GetHashCode()
-        {
-            throw new NotSupportedException();
-        }
-    }
+            internal EnumeratorImpl(IfStatementSyntax ifStatement)
+            {
+                _en = new Enumerator(ifStatement);
+            }
 
-    private class EnumeratorImpl : IEnumerator<IfStatementOrElseClause>
-    {
-        private Enumerator _en;
+            public IfStatementOrElseClause Current
+            {
+                get { return _en.Current; }
+            }
 
-        internal EnumeratorImpl(IfStatementSyntax ifStatement)
-        {
-            _en = new Enumerator(ifStatement);
-        }
+            object IEnumerator.Current
+            {
+                get { return _en.Current; }
+            }
 
-        public IfStatementOrElseClause Current
-        {
-            get { return _en.Current; }
-        }
+            public bool MoveNext()
+            {
+                return _en.MoveNext();
+            }
 
-        object IEnumerator.Current
-        {
-            get { return _en.Current; }
-        }
+            public void Reset()
+            {
+                _en.Reset();
+            }
 
-        public bool MoveNext()
-        {
-            return _en.MoveNext();
-        }
-
-        public void Reset()
-        {
-            _en.Reset();
-        }
-
-        public void Dispose()
-        {
+            public void Dispose()
+            {
+            }
         }
     }
 }

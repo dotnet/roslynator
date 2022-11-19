@@ -53,12 +53,12 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
 
         AccessorDeclarationSyntax accessor1 = accessors[0];
 
-        if (accessor1.BodyOrExpressionBody() == null)
+        if (accessor1.BodyOrExpressionBody() is null)
             return;
 
         AccessorDeclarationSyntax accessor2 = accessors[1];
 
-        if (accessor2.BodyOrExpressionBody() == null)
+        if (accessor2.BodyOrExpressionBody() is null)
             return;
 
         SyntaxTriviaList trailingTrivia = accessor1.GetTrailingTrivia();

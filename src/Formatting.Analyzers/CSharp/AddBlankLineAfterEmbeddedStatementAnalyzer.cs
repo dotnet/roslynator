@@ -47,7 +47,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
     {
         var ifStatement = (IfStatementSyntax)context.Node;
 
-        if (ifStatement.Else != null)
+        if (ifStatement.Else is not null)
             return;
 
         Analyze(context, ifStatement.GetTopmostIf(), ifStatement.CloseParenToken, ifStatement.Statement);
@@ -107,7 +107,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         {
             IfStatementSyntax topmostIf = elseClause.GetTopmostIf();
 
-            if (topmostIf != null)
+            if (topmostIf is not null)
                 Analyze(context, topmostIf, elseKeyword, statement);
         }
     }
@@ -136,7 +136,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
 
         StatementSyntax nextStatement = containingStatement.NextStatement();
 
-        if (nextStatement == null)
+        if (nextStatement is null)
             return;
 
         if (syntaxTree.GetLineCount(TextSpan.FromBounds(statement.Span.End, nextStatement.SpanStart)) > 2)

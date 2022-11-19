@@ -125,7 +125,7 @@ public readonly struct StringLiteralExpressionInfo
     /// </summary>
     public bool Success
     {
-        get { return Expression != null; }
+        get { return Expression is not null; }
     }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]

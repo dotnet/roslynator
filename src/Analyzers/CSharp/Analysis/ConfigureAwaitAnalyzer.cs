@@ -43,7 +43,7 @@ public sealed class ConfigureAwaitAnalyzer : BaseDiagnosticAnalyzer
                     RemoveCallToConfigureAwait(c);
                 }
                 else if (style == ConfigureAwaitStyle.Include
-                    && c.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") != null)
+                    && c.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") is not null)
                 {
                     AddCallToConfigureAwait(c);
                 }
@@ -62,7 +62,7 @@ public sealed class ConfigureAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         if (!SymbolUtility.IsAwaitable(typeSymbol))
@@ -84,7 +84,7 @@ public sealed class ConfigureAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-        if (typeSymbol == null)
+        if (typeSymbol is null)
             return;
 
         switch (typeSymbol.MetadataName)

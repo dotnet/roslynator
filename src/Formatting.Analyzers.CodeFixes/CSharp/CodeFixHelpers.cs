@@ -1061,7 +1061,7 @@ internal static class CodeFixHelpers
                 {
                     LambdaBlock lambdaBlock = GetLambdaBlock(argument, lines ??= argument.SyntaxTree.GetText().Lines);
 
-                    if (lambdaBlock.Block != null)
+                    if (lambdaBlock.Block is not null)
                         increasedIndentation = indentationAnalysis.Indentation.ToString();
                 }
 
@@ -1099,7 +1099,7 @@ internal static class CodeFixHelpers
 
                 if (indentationAdded
                     && node is ArgumentSyntax argument
-                    && (argument.Expression as AnonymousFunctionExpressionSyntax)?.Block != null)
+                    && (argument.Expression as AnonymousFunctionExpressionSyntax)?.Block is not null)
                 {
                     indentationAdded = false;
                 }

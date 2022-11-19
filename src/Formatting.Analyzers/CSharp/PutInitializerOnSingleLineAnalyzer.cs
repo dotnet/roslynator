@@ -44,7 +44,7 @@ public sealed class PutInitializerOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
 
         ExpressionSyntax expression = expressions.SingleOrDefault(shouldThrow: false);
 
-        if (expression == null)
+        if (expression is null)
             return;
 
         if (initializer.SpanContainsDirectives())

@@ -24,18 +24,18 @@ internal static class ConvertStringFormatToInterpolatedStringRefactoring
 
         ImmutableArray<ISymbol> formatMethods;
 
-        while (invocation != null)
+        while (invocation is not null)
         {
             ArgumentListSyntax argumentList = invocation.ArgumentList;
 
-            if (argumentList != null)
+            if (argumentList is not null)
             {
                 SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
                 if (arguments.Count >= 2
                     && (arguments[0].Expression?.Kind() == SyntaxKind.StringLiteralExpression))
                 {
-                    if (semanticModel == null)
+                    if (semanticModel is null)
                         semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ISymbol invocationSymbol = semanticModel.GetSymbol(invocation, context.CancellationToken);
@@ -56,7 +56,7 @@ internal static class ConvertStringFormatToInterpolatedStringRefactoring
             invocation = invocation.FirstAncestor<InvocationExpressionSyntax>();
         }
 
-        if (invocation == null)
+        if (invocation is null)
             return;
 
         context.RegisterRefactoring(
@@ -69,7 +69,7 @@ internal static class ConvertStringFormatToInterpolatedStringRefactoring
     {
         INamedTypeSymbol stringType = semanticModel.Compilation.GetSpecialType(SpecialType.System_String);
 
-        if (stringType == null)
+        if (stringType is null)
             return ImmutableArray<ISymbol>.Empty;
 
         return stringType
@@ -211,7 +211,7 @@ internal static class ConvertStringFormatToInterpolatedStringRefactoring
 
             ITypeSymbol targetType = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
 
-            if (targetType != null)
+            if (targetType is not null)
             {
                 TypeSyntax type = targetType.ToMinimalTypeSyntax(semanticModel, expression.SpanStart);
 

@@ -52,7 +52,7 @@ public sealed class RemoveRedundantFieldInitializationAnalyzer : BaseDiagnosticA
 
         VariableDeclarationSyntax declaration = fieldDeclaration.Declaration;
 
-        if (declaration == null)
+        if (declaration is null)
             return;
 
         foreach (VariableDeclaratorSyntax declarator in declaration.Variables)
@@ -72,7 +72,7 @@ public sealed class RemoveRedundantFieldInitializationAnalyzer : BaseDiagnosticA
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(declaration.Type, cancellationToken);
 
-                    if (typeSymbol != null)
+                    if (typeSymbol is not null)
                     {
                         if (CSharpFacts.IsNumericType(typeSymbol.SpecialType)
                             && value.IsNumericLiteralExpression("0"))
