@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Disable [RCS1080](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1080.md) by default ([#980](https://github.com/josefpihrt/roslynator/pull/980)).
+- [CLI] Bump Roslyn to 4.4.0 ([#998](https://github.com/josefpihrt/roslynator/pull/998)).
 
 ### Fixed
 
