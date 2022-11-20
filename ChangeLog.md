@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - This analyzer reports null checks of arguments that are:
     - annotated as nullable reference type.
     - optional and its default value is `null`.
+- Add package `Roslynator.Testing.CSharp.MSTest` ([#997](https://github.com/JosefPihrt/Roslynator/pull/997)).
 
 ### Changed
 
