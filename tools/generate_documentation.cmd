@@ -56,7 +56,7 @@ set _rootDirectoryUrl="../../docs/api/"
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
  --properties %_msbuildProperties% ^
- --projects Testing.Common Testing.CSharp Testing.CSharp.Xunit ^
+ --projects Testing.Common Testing.CSharp Testing.CSharp.Xunit Testing.CSharp.MSTest ^
  -o "..\src\Tests\README.md" ^
  --host github ^
  --heading "Roslynator Testing Framework" ^
