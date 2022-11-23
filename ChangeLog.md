@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Disable [RCS1080](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1080.md) by default ([#980](https://github.com/josefpihrt/roslynator/pull/980)).
 - [CLI] Bump Roslyn to 4.4.0 ([#998](https://github.com/josefpihrt/roslynator/pull/998)).
+- [CLI] Add support for .NET 7 and remove support for .NET 5 ([#985](https://github.com/josefpihrt/roslynator/pull/985).
 
 ### Fixed
 
