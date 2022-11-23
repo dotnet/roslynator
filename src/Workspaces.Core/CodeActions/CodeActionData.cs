@@ -6,30 +6,29 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 
-namespace Roslynator.CodeActions
+namespace Roslynator.CodeActions;
+
+internal readonly struct CodeActionData
 {
-    internal readonly struct CodeActionData
+    public CodeActionData(string title, string equivalenceKey = null)
     {
-        public CodeActionData(string title, string equivalenceKey = null)
-        {
-            Title = title ?? throw new ArgumentNullException(nameof(title));
-            EquivalenceKey = equivalenceKey;
-        }
+        Title = title ?? throw new ArgumentNullException(nameof(title));
+        EquivalenceKey = equivalenceKey;
+    }
 
-        public string Title { get; }
+    public string Title { get; }
 
-        public string EquivalenceKey { get; }
+    public string EquivalenceKey { get; }
 
-        public bool IsDefault => Title is null;
+    public bool IsDefault => Title is null;
 
-        public CodeAction ToCodeAction(Func<CancellationToken, Task<Document>> createChangedDocument)
-        {
-            return CodeAction.Create(Title, createChangedDocument, EquivalenceKey);
-        }
+    public CodeAction ToCodeAction(Func<CancellationToken, Task<Document>> createChangedDocument)
+    {
+        return CodeAction.Create(Title, createChangedDocument, EquivalenceKey);
+    }
 
-        public CodeAction ToCodeAction(Func<CancellationToken, Task<Solution>> createChangedDocument)
-        {
-            return CodeAction.Create(Title, createChangedDocument, EquivalenceKey);
-        }
+    public CodeAction ToCodeAction(Func<CancellationToken, Task<Solution>> createChangedDocument)
+    {
+        return CodeAction.Create(Title, createChangedDocument, EquivalenceKey);
     }
 }

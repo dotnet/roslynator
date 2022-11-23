@@ -8,37 +8,36 @@ using System.Windows;
 using System.Windows.Controls;
 using Roslynator.Configuration;
 
-namespace Roslynator.VisualStudio
+namespace Roslynator.VisualStudio;
+
+/// <summary>
+/// Interaction logic for AnalyzersOptionsPageControl.xaml
+/// </summary>
+public partial class AnalyzersOptionsPageControl : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AnalyzersOptionsPageControl.xaml
-    /// </summary>
-    public partial class AnalyzersOptionsPageControl : UserControl
+    public AnalyzersOptionsPageControl()
     {
-        public AnalyzersOptionsPageControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void OpenLocation_Click(object sender, RoutedEventArgs e)
-        {
-            string filePath = EditorConfigCodeAnalysisConfig.CreateDefaultConfigFileIfNotExists();
+    private void OpenLocation_Click(object sender, RoutedEventArgs e)
+    {
+        string filePath = EditorConfigCodeAnalysisConfig.CreateDefaultConfigFileIfNotExists();
 
-            if (File.Exists(filePath))
+        if (File.Exists(filePath))
+        {
+            try
             {
-                try
-                {
-                    Process.Start("explorer.exe", $"/select, \"{filePath}\"");
-                }
-                catch (Exception ex) when (ex is InvalidOperationException
-                    || ex is FileNotFoundException
-                    || ex is Win32Exception)
-                {
-                    MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                Process.Start("explorer.exe", $"/select, \"{filePath}\"");
             }
-
-            e.Handled = true;
+            catch (Exception ex) when (ex is InvalidOperationException
+                || ex is FileNotFoundException
+                || ex is Win32Exception)
+            {
+                MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+        e.Handled = true;
     }
 }

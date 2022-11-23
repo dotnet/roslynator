@@ -2509,5 +2509,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1256</summary>
+        public static readonly DiagnosticDescriptor InvalidArgumentNullCheck = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.InvalidArgumentNullCheck, 
+            title:              "Invalid argument null check.", 
+            messageFormat:      "Invalid argument null check.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.InvalidArgumentNullCheck, 
+            customTags:         Array.Empty<string>());
+
     }
 }
