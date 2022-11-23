@@ -84,8 +84,8 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
         (ExpressionSyntax left, ExpressionSyntax right) = UseConditionalAccessAnalyzer.GetFixableExpressions(binaryExpression, kind, semanticModel, cancellationToken);
 
         NullCheckStyles allowedStyles = (kind == SyntaxKind.LogicalAndExpression)
-            ? NullCheckStyles.NotEqualsToNull
-            : NullCheckStyles.EqualsToNull;
+            ? (NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull)
+            : (NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);
 
         NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, semanticModel, allowedStyles: allowedStyles, cancellationToken: cancellationToken);
 

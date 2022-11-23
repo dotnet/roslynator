@@ -184,6 +184,32 @@ class Foo
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+    public async Task Test_LogicalAnd_ReferenceType_PatternMatching()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class Foo
+{
+    void M()
+    {
+        Foo x = null;
+
+        if ([|x is not null && !x.Equals(x)|]) { }
+    }
+}
+", @"
+class Foo
+{
+    void M()
+    {
+        Foo x = null;
+
+        if (x?.Equals(x) == false) { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalOr_ReferenceType()
     {
         await VerifyDiagnosticAndFixAsync(@"
