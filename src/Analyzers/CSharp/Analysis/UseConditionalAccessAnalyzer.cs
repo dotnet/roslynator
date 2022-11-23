@@ -58,7 +58,9 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
         if (ifStatement.SpanContainsDirectives())
             return;
 
-        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, allowedStyles: NullCheckStyles.NotEqualsToNull);
+        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(
+            ifStatement.Condition,
+            allowedStyles: NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull);
 
         ExpressionSyntax expression = nullCheck.Expression;
 
@@ -165,8 +167,8 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
         CancellationToken cancellationToken)
     {
         NullCheckStyles allowedStyles = (binaryExpressionKind == SyntaxKind.LogicalAndExpression)
-            ? NullCheckStyles.NotEqualsToNull
-            : NullCheckStyles.EqualsToNull;
+            ? (NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull)
+            : (NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);
 
         NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, semanticModel, allowedStyles: allowedStyles, cancellationToken: cancellationToken);
 

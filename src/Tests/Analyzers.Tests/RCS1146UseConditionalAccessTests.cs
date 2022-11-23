@@ -81,6 +81,35 @@ struct S
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+    public async Task Test_IfStatement_PatternMatching()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        C x = null;
+
+        [|if (x is not null)
+        {
+            x.M();
+        }|]
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        C x = null;
+
+        x?.M();
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_ReferenceType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -178,6 +207,32 @@ class Foo
         if (f &&
      /*lt*/ x?.Equals(""x"") == true /*tt*/
             && f) { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+    public async Task Test_LogicalAnd_ReferenceType_PatternMatching()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class Foo
+{
+    void M()
+    {
+        Foo x = null;
+
+        if ([|x is not null && !x.Equals(x)|]) { }
+    }
+}
+", @"
+class Foo
+{
+    void M()
+    {
+        Foo x = null;
+
+        if (x?.Equals(x) == false) { }
     }
 }
 ");
