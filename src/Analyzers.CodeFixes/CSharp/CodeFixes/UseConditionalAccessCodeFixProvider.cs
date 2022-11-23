@@ -190,7 +190,7 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
 
         StatementSyntax newStatement = statement;
 
-        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.NotEqualsToNull);
+        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull);
 
         SimpleMemberInvocationStatementInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationStatementInfo(statement);
 
