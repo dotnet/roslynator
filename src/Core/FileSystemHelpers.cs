@@ -5,63 +5,62 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class FileSystemHelpers
 {
-    internal static class FileSystemHelpers
+    public static bool IsCaseSensitive { get; } = GetIsCaseSensitive();
+
+    public static StringComparer Comparer { get; } = (IsCaseSensitive) ? StringComparer.CurrentCulture : StringComparer.CurrentCultureIgnoreCase;
+
+    public static StringComparison Comparison { get; } = (IsCaseSensitive) ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
+
+    private static bool GetIsCaseSensitive()
     {
-        public static bool IsCaseSensitive { get; } = GetIsCaseSensitive();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return false;
 
-        public static StringComparer Comparer { get; } = (IsCaseSensitive) ? StringComparer.CurrentCulture : StringComparer.CurrentCultureIgnoreCase;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            return true;
 
-        public static StringComparison Comparison { get; } = (IsCaseSensitive) ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return true;
 
-        private static bool GetIsCaseSensitive()
+        Debug.Fail(RuntimeInformation.OSDescription);
+
+        return true;
+    }
+
+    public static bool IsDirectorySeparator(char ch)
+    {
+        return ch == Path.DirectorySeparatorChar
+            || ch == Path.AltDirectorySeparatorChar;
+    }
+
+    public static bool TryGetNormalizedFullPath(string path, out string result)
+    {
+        return TryGetNormalizedFullPath(path, basePath: null, out result);
+    }
+
+    public static bool TryGetNormalizedFullPath(string path, string basePath, out string result)
+    {
+        try
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return false;
+            if (basePath is not null
+                && !Path.IsPathRooted(path))
+            {
+                path = Path.Combine(basePath, path);
+            }
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                return true;
+            path = Path.GetFullPath(path);
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                return true;
-
-            Debug.Fail(RuntimeInformation.OSDescription);
-
+            result = path;
             return true;
         }
-
-        public static bool IsDirectorySeparator(char ch)
+        catch (ArgumentException)
         {
-            return ch == Path.DirectorySeparatorChar
-                || ch == Path.AltDirectorySeparatorChar;
-        }
-
-        public static bool TryGetNormalizedFullPath(string path, out string result)
-        {
-            return TryGetNormalizedFullPath(path, basePath: null, out result);
-        }
-
-        public static bool TryGetNormalizedFullPath(string path, string basePath, out string result)
-        {
-            try
-            {
-                if (basePath != null
-                    && !Path.IsPathRooted(path))
-                {
-                    path = Path.Combine(basePath, path);
-                }
-
-                path = Path.GetFullPath(path);
-
-                result = path;
-                return true;
-            }
-            catch (ArgumentException)
-            {
-                result = null;
-                return false;
-            }
+            result = null;
+            return false;
         }
     }
 }

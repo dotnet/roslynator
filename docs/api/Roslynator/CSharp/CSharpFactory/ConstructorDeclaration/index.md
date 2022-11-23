@@ -12,10 +12,12 @@ sidebar_label: ConstructorDeclaration
 
 | Method | Summary |
 | ------ | ------- |
-| [ConstructorDeclaration(SyntaxTokenList, SyntaxToken, ParameterListSyntax, ArrowExpressionClauseSyntax)](#Roslynator_CSharp_CSharpFactory_ConstructorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_) | |
-| [ConstructorDeclaration(SyntaxTokenList, SyntaxToken, ParameterListSyntax, BlockSyntax)](#Roslynator_CSharp_CSharpFactory_ConstructorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_) | |
+| [ConstructorDeclaration(SyntaxTokenList, SyntaxToken, ParameterListSyntax, ArrowExpressionClauseSyntax)](#1635227640) | |
+| [ConstructorDeclaration(SyntaxTokenList, SyntaxToken, ParameterListSyntax, BlockSyntax)](#2744711094) | |
 
-## ConstructorDeclaration\(SyntaxTokenList, SyntaxToken, ParameterListSyntax, ArrowExpressionClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_ConstructorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_"></a>
+<a id="1635227640"></a>
+
+## ConstructorDeclaration\(SyntaxTokenList, SyntaxToken, ParameterListSyntax, ArrowExpressionClauseSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ConstructorDeclarationSyntax ConstructorDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax parameterList, Microsoft.CodeAnalysis.CSharp.Syntax.ArrowExpressionClauseSyntax expressionBody)
@@ -35,7 +37,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.ConstructorDeclarationSyntax 
 
 [ConstructorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.constructordeclarationsyntax)
 
-## ConstructorDeclaration\(SyntaxTokenList, SyntaxToken, ParameterListSyntax, BlockSyntax\) <a id="Roslynator_CSharp_CSharpFactory_ConstructorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_"></a>
+<a id="2744711094"></a>
+
+## ConstructorDeclaration\(SyntaxTokenList, SyntaxToken, ParameterListSyntax, BlockSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ConstructorDeclarationSyntax ConstructorDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax parameterList, Microsoft.CodeAnalysis.CSharp.Syntax.BlockSyntax body)

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1078UseEmptyStringLiteralOrStringEmptyTests : AbstractCSharpDiagnosticVerifier<UseEmptyStringLiteralOrStringEmptyAnalyzer, UseEmptyStringLiteralOrStringEmptyCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEmptyStringLiteralOrStringEmpty;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
-        public async Task Test_StringEmpty()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1078UseEmptyStringLiteralOrStringEmptyTests : AbstractCSharpDiagnosticVerifier<UseEmptyStringLiteralOrStringEmptyAnalyzer, UseEmptyStringLiteralOrStringEmptyCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEmptyStringLiteralOrStringEmpty;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
+    public async Task Test_StringEmpty()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -44,12 +44,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Literal));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
-        public async Task Test_EmptyString()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
+    public async Task Test_EmptyString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -76,12 +76,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -92,12 +92,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
-        public async Task TestNoDiagnostic_ExpressionMustBeConstant()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
+    public async Task TestNoDiagnostic_ExpressionMustBeConstant()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -117,6 +117,5 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
-        }
     }
 }

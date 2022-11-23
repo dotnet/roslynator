@@ -12,10 +12,12 @@ sidebar_label: NameOfExpression
 
 | Method | Summary |
 | ------ | ------- |
-| [NameOfExpression(ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_NameOfExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
-| [NameOfExpression(String)](#Roslynator_CSharp_CSharpFactory_NameOfExpression_System_String_) | |
+| [NameOfExpression(ExpressionSyntax)](#3310629376) | |
+| [NameOfExpression(String)](#3748210960) | |
 
-## NameOfExpression\(ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_NameOfExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
+<a id="3310629376"></a>
+
+## NameOfExpression\(ExpressionSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InvocationExpressionSyntax NameOfExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax expression)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.InvocationExpressionSyntax Na
 
 [InvocationExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.invocationexpressionsyntax)
 
-## NameOfExpression\(String\) <a id="Roslynator_CSharp_CSharpFactory_NameOfExpression_System_String_"></a>
+<a id="3748210960"></a>
+
+## NameOfExpression\(String\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InvocationExpressionSyntax NameOfExpression(string identifier)

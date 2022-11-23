@@ -8,94 +8,93 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator);
-                }
-
-                return _supportedDiagnostics;
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator);
             }
+
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(
+            f => AnalyzeBinaryExpression(f),
+            SyntaxKind.AddExpression,
+            SyntaxKind.SubtractExpression,
+            SyntaxKind.MultiplyExpression,
+            SyntaxKind.DivideExpression,
+            SyntaxKind.ModuloExpression,
+            SyntaxKind.LeftShiftExpression,
+            SyntaxKind.RightShiftExpression,
+            SyntaxKind.LogicalOrExpression,
+            SyntaxKind.LogicalAndExpression,
+            SyntaxKind.BitwiseOrExpression,
+            SyntaxKind.BitwiseAndExpression,
+            SyntaxKind.ExclusiveOrExpression,
+            SyntaxKind.EqualsExpression,
+            SyntaxKind.NotEqualsExpression,
+            SyntaxKind.LessThanExpression,
+            SyntaxKind.LessThanOrEqualExpression,
+            SyntaxKind.GreaterThanExpression,
+            SyntaxKind.GreaterThanOrEqualExpression,
+            SyntaxKind.IsExpression,
+            SyntaxKind.AsExpression);
+    }
+
+    private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
+    {
+        var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+        ExpressionSyntax left = binaryExpression.Left;
+
+        if (left.IsMissing)
+            return;
+
+        ExpressionSyntax right = binaryExpression.Right;
+
+        if (right.IsMissing)
+            return;
+
+        NewLinePosition newLinePosition = context.GetBinaryExpressionNewLinePosition();
+
+        if (newLinePosition == NewLinePosition.None)
+            return;
+
+        if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(left, binaryExpression.OperatorToken, right))
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(
-                f => AnalyzeBinaryExpression(f),
-                SyntaxKind.AddExpression,
-                SyntaxKind.SubtractExpression,
-                SyntaxKind.MultiplyExpression,
-                SyntaxKind.DivideExpression,
-                SyntaxKind.ModuloExpression,
-                SyntaxKind.LeftShiftExpression,
-                SyntaxKind.RightShiftExpression,
-                SyntaxKind.LogicalOrExpression,
-                SyntaxKind.LogicalAndExpression,
-                SyntaxKind.BitwiseOrExpression,
-                SyntaxKind.BitwiseAndExpression,
-                SyntaxKind.ExclusiveOrExpression,
-                SyntaxKind.EqualsExpression,
-                SyntaxKind.NotEqualsExpression,
-                SyntaxKind.LessThanExpression,
-                SyntaxKind.LessThanOrEqualExpression,
-                SyntaxKind.GreaterThanExpression,
-                SyntaxKind.GreaterThanOrEqualExpression,
-                SyntaxKind.IsExpression,
-                SyntaxKind.AsExpression);
-        }
-
-        private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
-        {
-            var binaryExpression = (BinaryExpressionSyntax)context.Node;
-
-            ExpressionSyntax left = binaryExpression.Left;
-
-            if (left.IsMissing)
-                return;
-
-            ExpressionSyntax right = binaryExpression.Right;
-
-            if (right.IsMissing)
-                return;
-
-            NewLinePosition newLinePosition = context.GetBinaryExpressionNewLinePosition();
-
-            if (newLinePosition == NewLinePosition.None)
-                return;
-
-            if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(left, binaryExpression.OperatorToken, right))
-            {
-                if (newLinePosition == NewLinePosition.Before)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
-                        Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
-                        "before");
-                }
-            }
-            else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(left, binaryExpression.OperatorToken, right)
-                && newLinePosition == NewLinePosition.After)
+            if (newLinePosition == NewLinePosition.Before)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
                     Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
-                    properties: DiagnosticProperties.AnalyzerOption_Invert,
-                    "after");
+                    "before");
             }
+        }
+        else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(left, binaryExpression.OperatorToken, right)
+            && newLinePosition == NewLinePosition.After)
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
+                Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
+                properties: DiagnosticProperties.AnalyzerOption_Invert,
+                "after");
         }
     }
 }

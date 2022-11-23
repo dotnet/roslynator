@@ -48,9 +48,9 @@ Value | Comment
 1 | Not a success\*\*
 2 | Error occurred or execution canceled
 
-\* A diagnostic was found (`analyze` command ) or a diagnostic was fixed (`fix` command) etc.
+\* No diagnostic was found (`analyze` command ) or all diagnostics were fixed (`fix` command) etc.
 
-\*\* No diagnostic was found (`analyze` command) or no diagnostic was fixed (`fix` command) etc.
+\*\* A diagnostic was found (`analyze` command) or not all diagnostics were fixed (`fix` command) etc.
 
 ## Which MSBuild Instance to Use
 

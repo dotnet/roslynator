@@ -12,20 +12,12 @@ sidebar_label: SyntaxNodeTextBuilder
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [SyntaxNodeTextBuilder(SyntaxNode)](#Roslynator_Text_SyntaxNodeTextBuilder__ctor_Microsoft_CodeAnalysis_SyntaxNode_) | |
-| [SyntaxNodeTextBuilder(SyntaxNode, StringBuilder)](#Roslynator_Text_SyntaxNodeTextBuilder__ctor_Microsoft_CodeAnalysis_SyntaxNode_System_Text_StringBuilder_) | |
+| [SyntaxNodeTextBuilder(SyntaxNode, StringBuilder)](#3805750387) | |
+| [SyntaxNodeTextBuilder(SyntaxNode)](#665445404) | |
 
-## SyntaxNodeTextBuilder\(SyntaxNode\) <a id="Roslynator_Text_SyntaxNodeTextBuilder__ctor_Microsoft_CodeAnalysis_SyntaxNode_"></a>
+<a id="3805750387"></a>
 
-```csharp
-public SyntaxNodeTextBuilder(Microsoft.CodeAnalysis.SyntaxNode node)
-```
-
-### Parameters
-
-**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
-
-## SyntaxNodeTextBuilder\(SyntaxNode, StringBuilder\) <a id="Roslynator_Text_SyntaxNodeTextBuilder__ctor_Microsoft_CodeAnalysis_SyntaxNode_System_Text_StringBuilder_"></a>
+## SyntaxNodeTextBuilder\(SyntaxNode, StringBuilder\) 
 
 ```csharp
 public SyntaxNodeTextBuilder(Microsoft.CodeAnalysis.SyntaxNode node, System.Text.StringBuilder stringBuilder)
@@ -35,4 +27,14 @@ public SyntaxNodeTextBuilder(Microsoft.CodeAnalysis.SyntaxNode node, System.Text
 
 **node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-**stringBuilder** &ensp; [StringBuilder](https://docs.microsoft.com/en-us/dotnet/api/system.text.stringbuilder)
+**stringBuilder** &ensp; [StringBuilder](https://docs.microsoft.com/en-us/dotnet/api/system.text.stringbuilder)<a id="665445404"></a>
+
+## SyntaxNodeTextBuilder\(SyntaxNode\) 
+
+```csharp
+public SyntaxNodeTextBuilder(Microsoft.CodeAnalysis.SyntaxNode node)
+```
+
+### Parameters
+
+**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)

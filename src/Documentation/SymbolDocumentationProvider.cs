@@ -9,235 +9,234 @@ using System.Threading;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+public sealed class SymbolDocumentationProvider
 {
-    public sealed class SymbolDocumentationProvider
+    private ImmutableDictionary<string, CultureInfo> _cultures = ImmutableDictionary<string, CultureInfo>.Empty;
+
+    private ImmutableDictionary<IAssemblySymbol, MetadataReference> _assemblyToReferenceMap;
+
+    private readonly Dictionary<ISymbol, SymbolDocumentationData> _symbolData;
+
+    private readonly Dictionary<IAssemblySymbol, XmlDocumentation> _xmlDocumentations;
+
+    private readonly ImmutableArray<string> _additionalXmlDocumentationPaths;
+
+    private ImmutableArray<XmlDocumentation> _additionalXmlDocumentations;
+
+    internal SymbolDocumentationProvider(
+        IEnumerable<Compilation> compilations,
+        IEnumerable<string> additionalXmlDocumentationPaths = null)
     {
-        private ImmutableDictionary<string, CultureInfo> _cultures = ImmutableDictionary<string, CultureInfo>.Empty;
+        Compilations = compilations.ToImmutableArray();
+        Assemblies = compilations.Select(f => f.Assembly).ToImmutableArray();
 
-        private ImmutableDictionary<IAssemblySymbol, MetadataReference> _assemblyToReferenceMap;
+        _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
+        _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
 
-        private readonly Dictionary<ISymbol, SymbolDocumentationData> _symbolData;
+        if (additionalXmlDocumentationPaths is not null)
+            _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
+    }
 
-        private readonly Dictionary<IAssemblySymbol, XmlDocumentation> _xmlDocumentations;
+    public ImmutableArray<Compilation> Compilations { get; }
 
-        private ImmutableArray<string> _additionalXmlDocumentationPaths;
+    public ImmutableArray<IAssemblySymbol> Assemblies { get; }
 
-        private ImmutableArray<XmlDocumentation> _additionalXmlDocumentations;
+    internal ISymbol GetFirstSymbolForDeclarationId(string id)
+    {
+        if (Compilations.Length == 1)
+            return DocumentationCommentId.GetFirstSymbolForDeclarationId(id, Compilations[0]);
 
-        internal SymbolDocumentationProvider(
-            IEnumerable<Compilation> compilations,
-            IEnumerable<string> additionalXmlDocumentationPaths = null)
+        foreach (Compilation compilation in Compilations)
         {
-            Compilations = compilations.ToImmutableArray();
-            Assemblies = compilations.Select(f => f.Assembly).ToImmutableArray();
+            ISymbol symbol = DocumentationCommentId.GetFirstSymbolForDeclarationId(id, compilation);
 
-            _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
-            _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
-
-            if (additionalXmlDocumentationPaths != null)
-                _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
+            if (symbol is not null)
+                return symbol;
         }
 
-        public ImmutableArray<Compilation> Compilations { get; }
+        return null;
+    }
 
-        public ImmutableArray<IAssemblySymbol> Assemblies { get; }
+    internal ISymbol GetFirstSymbolForReferenceId(string id)
+    {
+        if (Compilations.Length == 1)
+            return DocumentationCommentId.GetFirstSymbolForReferenceId(id, Compilations[0]);
 
-        internal ISymbol GetFirstSymbolForDeclarationId(string id)
+        foreach (Compilation compilation in Compilations)
         {
-            if (Compilations.Length == 1)
-                return DocumentationCommentId.GetFirstSymbolForDeclarationId(id, Compilations[0]);
+            ISymbol symbol = DocumentationCommentId.GetFirstSymbolForReferenceId(id, compilation);
 
-            foreach (Compilation compilation in Compilations)
-            {
-                ISymbol symbol = DocumentationCommentId.GetFirstSymbolForDeclarationId(id, compilation);
-
-                if (symbol != null)
-                    return symbol;
-            }
-
-            return null;
+            if (symbol is not null)
+                return symbol;
         }
 
-        internal ISymbol GetFirstSymbolForReferenceId(string id)
+        return null;
+    }
+
+    public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string preferredCultureName = null)
+    {
+        if (_symbolData.TryGetValue(symbol, out SymbolDocumentationData data)
+            && data.XmlDocumentation is not null)
         {
-            if (Compilations.Length == 1)
-                return DocumentationCommentId.GetFirstSymbolForReferenceId(id, Compilations[0]);
+            if (object.ReferenceEquals(data.XmlDocumentation, SymbolXmlDocumentation.Default))
+                return null;
 
-            foreach (Compilation compilation in Compilations)
-            {
-                ISymbol symbol = DocumentationCommentId.GetFirstSymbolForReferenceId(id, compilation);
-
-                if (symbol != null)
-                    return symbol;
-            }
-
-            return null;
+            return data.XmlDocumentation;
         }
 
-        public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string preferredCultureName = null)
-        {
-            if (_symbolData.TryGetValue(symbol, out SymbolDocumentationData data)
-                && data.XmlDocumentation != null)
-            {
-                if (object.ReferenceEquals(data.XmlDocumentation, SymbolXmlDocumentation.Default))
-                    return null;
+        IAssemblySymbol assembly = symbol.ContainingAssembly;
 
-                return data.XmlDocumentation;
+        if (assembly is not null)
+        {
+            SymbolXmlDocumentation xmlDocumentation = GetXmlDocumentation(assembly, preferredCultureName)?.GetXmlDocumentation(symbol);
+
+            if (xmlDocumentation is not null)
+            {
+                _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
+                return xmlDocumentation;
             }
 
-            IAssemblySymbol assembly = symbol.ContainingAssembly;
+            CultureInfo preferredCulture = null;
 
-            if (assembly != null)
+            if (preferredCultureName is not null
+                && !_cultures.TryGetValue(preferredCultureName, out preferredCulture))
             {
-                SymbolXmlDocumentation xmlDocumentation = GetXmlDocumentation(assembly, preferredCultureName)?.GetXmlDocumentation(symbol);
+                preferredCulture = ImmutableInterlocked.GetOrAdd(ref _cultures, preferredCultureName, f => new CultureInfo(f));
+            }
 
-                if (xmlDocumentation != null)
-                {
-                    _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
-                    return xmlDocumentation;
-                }
+            string xml = symbol.GetDocumentationCommentXml(preferredCulture: preferredCulture, expandIncludes: true);
 
-                CultureInfo preferredCulture = null;
-
-                if (preferredCultureName != null
-                    && !_cultures.TryGetValue(preferredCultureName, out preferredCulture))
-                {
-                    preferredCulture = ImmutableInterlocked.GetOrAdd(ref _cultures, preferredCultureName, f => new CultureInfo(f));
-                }
-
-                string xml = symbol.GetDocumentationCommentXml(preferredCulture: preferredCulture, expandIncludes: true);
+            if (!string.IsNullOrEmpty(xml))
+            {
+                xml = XmlDocumentation.Unindent(xml);
 
                 if (!string.IsNullOrEmpty(xml))
                 {
-                    xml = XmlDocumentation.Unindent(xml);
+                    var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
 
-                    if (!string.IsNullOrEmpty(xml))
-                    {
-                        var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
+                    xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
 
-                        xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
-
-                        _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
-                        return xmlDocumentation;
-                    }
+                    _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
+                    return xmlDocumentation;
                 }
             }
-
-            if (!_additionalXmlDocumentationPaths.IsDefault)
-            {
-                if (_additionalXmlDocumentations.IsDefault)
-                {
-                    _additionalXmlDocumentations = _additionalXmlDocumentationPaths
-                        .Select(f => XmlDocumentation.Load(f))
-                        .ToImmutableArray();
-                }
-
-                string commentId = symbol.GetDocumentationCommentId();
-
-                foreach (XmlDocumentation xmlDocumentation in _additionalXmlDocumentations)
-                {
-                    SymbolXmlDocumentation documentation = xmlDocumentation.GetXmlDocumentation(symbol, commentId);
-
-                    if (documentation != null)
-                    {
-                        _symbolData[symbol] = data.WithXmlDocumentation(documentation);
-                        return documentation;
-                    }
-                }
-            }
-
-            _symbolData[symbol] = data.WithXmlDocumentation(SymbolXmlDocumentation.Default);
-            return null;
         }
 
-        private XmlDocumentation GetXmlDocumentation(IAssemblySymbol assembly, string preferredCultureName = null)
+        if (!_additionalXmlDocumentationPaths.IsDefault)
         {
-            if (!_xmlDocumentations.TryGetValue(assembly, out XmlDocumentation xmlDocumentation))
+            if (_additionalXmlDocumentations.IsDefault)
             {
-                MetadataReference metadataReference = FindMetadataReference(assembly);
+                _additionalXmlDocumentations = _additionalXmlDocumentationPaths
+                    .Select(f => XmlDocumentation.Load(f))
+                    .ToImmutableArray();
+            }
 
-                if (metadataReference is PortableExecutableReference portableExecutableReference)
+            string commentId = symbol.GetDocumentationCommentId();
+
+            foreach (XmlDocumentation xmlDocumentation in _additionalXmlDocumentations)
+            {
+                SymbolXmlDocumentation documentation = xmlDocumentation.GetXmlDocumentation(symbol, commentId);
+
+                if (documentation is not null)
                 {
-                    string path = portableExecutableReference.FilePath;
+                    _symbolData[symbol] = data.WithXmlDocumentation(documentation);
+                    return documentation;
+                }
+            }
+        }
 
-                    if (preferredCultureName != null)
+        _symbolData[symbol] = data.WithXmlDocumentation(SymbolXmlDocumentation.Default);
+        return null;
+    }
+
+    private XmlDocumentation GetXmlDocumentation(IAssemblySymbol assembly, string preferredCultureName = null)
+    {
+        if (!_xmlDocumentations.TryGetValue(assembly, out XmlDocumentation xmlDocumentation))
+        {
+            MetadataReference metadataReference = FindMetadataReference(assembly);
+
+            if (metadataReference is PortableExecutableReference portableExecutableReference)
+            {
+                string path = portableExecutableReference.FilePath;
+
+                if (preferredCultureName is not null)
+                {
+                    path = Path.GetDirectoryName(path);
+
+                    path = Path.Combine(path, preferredCultureName);
+
+                    if (Directory.Exists(path))
                     {
-                        path = Path.GetDirectoryName(path);
+                        string fileName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(path), "xml");
 
-                        path = Path.Combine(path, preferredCultureName);
-
-                        if (Directory.Exists(path))
-                        {
-                            string fileName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(path), "xml");
-
-                            path = Path.Combine(path, fileName);
-
-                            if (File.Exists(path))
-                                xmlDocumentation = XmlDocumentation.Load(path);
-                        }
-                    }
-
-                    if (xmlDocumentation == null)
-                    {
-                        path = Path.ChangeExtension(path, "xml");
+                        path = Path.Combine(path, fileName);
 
                         if (File.Exists(path))
                             xmlDocumentation = XmlDocumentation.Load(path);
                     }
                 }
 
-                _xmlDocumentations[assembly] = xmlDocumentation;
-            }
-
-            return xmlDocumentation;
-        }
-
-        private MetadataReference FindMetadataReference(IAssemblySymbol assembly)
-        {
-            if (_assemblyToReferenceMap == null)
-                Interlocked.CompareExchange(ref _assemblyToReferenceMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f.GetMetadataReference(f.Assembly)), null);
-
-            if (_assemblyToReferenceMap.TryGetValue(assembly, out MetadataReference metadataReference))
-                return metadataReference;
-
-            foreach (Compilation compilation in Compilations)
-            {
-                foreach (MetadataReference externalReference in compilation.ExternalReferences)
+                if (xmlDocumentation is null)
                 {
-                    ISymbol assemblyOrModule = compilation.GetAssemblyOrModuleSymbol(externalReference);
+                    path = Path.ChangeExtension(path, "xml");
 
-                    if (SymbolEqualityComparer.Default.Equals(assembly, assemblyOrModule))
-                        return ImmutableInterlocked.GetOrAdd(ref _assemblyToReferenceMap, assembly, externalReference);
+                    if (File.Exists(path))
+                        xmlDocumentation = XmlDocumentation.Load(path);
                 }
             }
 
-            return null;
+            _xmlDocumentations[assembly] = xmlDocumentation;
         }
 
-        private readonly struct SymbolDocumentationData
+        return xmlDocumentation;
+    }
+
+    private MetadataReference FindMetadataReference(IAssemblySymbol assembly)
+    {
+        if (_assemblyToReferenceMap is null)
+            Interlocked.CompareExchange(ref _assemblyToReferenceMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f.GetMetadataReference(f.Assembly)), null);
+
+        if (_assemblyToReferenceMap.TryGetValue(assembly, out MetadataReference metadataReference))
+            return metadataReference;
+
+        foreach (Compilation compilation in Compilations)
         {
-            public SymbolDocumentationData(
-                object model,
-                SymbolXmlDocumentation xmlDocumentation)
+            foreach (MetadataReference externalReference in compilation.ExternalReferences)
             {
-                Model = model;
-                XmlDocumentation = xmlDocumentation;
+                ISymbol assemblyOrModule = compilation.GetAssemblyOrModuleSymbol(externalReference);
+
+                if (SymbolEqualityComparer.Default.Equals(assembly, assemblyOrModule))
+                    return ImmutableInterlocked.GetOrAdd(ref _assemblyToReferenceMap, assembly, externalReference);
             }
+        }
 
-            public object Model { get; }
+        return null;
+    }
 
-            public SymbolXmlDocumentation XmlDocumentation { get; }
+    private readonly struct SymbolDocumentationData
+    {
+        public SymbolDocumentationData(
+            object model,
+            SymbolXmlDocumentation xmlDocumentation)
+        {
+            Model = model;
+            XmlDocumentation = xmlDocumentation;
+        }
 
-            public SymbolDocumentationData WithModel(object model)
-            {
-                return new SymbolDocumentationData(model, XmlDocumentation);
-            }
+        public object Model { get; }
 
-            public SymbolDocumentationData WithXmlDocumentation(SymbolXmlDocumentation xmlDocumentation)
-            {
-                return new SymbolDocumentationData(Model, xmlDocumentation);
-            }
+        public SymbolXmlDocumentation XmlDocumentation { get; }
+
+        public SymbolDocumentationData WithModel(object model)
+        {
+            return new SymbolDocumentationData(model, XmlDocumentation);
+        }
+
+        public SymbolDocumentationData WithXmlDocumentation(SymbolXmlDocumentation xmlDocumentation)
+        {
+            return new SymbolDocumentationData(Model, xmlDocumentation);
         }
     }
 }

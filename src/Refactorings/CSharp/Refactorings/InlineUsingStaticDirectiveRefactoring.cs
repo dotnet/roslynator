@@ -9,86 +9,86 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InlineUsingStaticDirectiveRefactoring
 {
-    internal static class InlineUsingStaticDirectiveRefactoring
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        UsingDirectiveSyntax usingDirective,
+        CancellationToken cancellationToken)
     {
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            UsingDirectiveSyntax usingDirective,
-            CancellationToken cancellationToken)
-        {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var classSymbol = (INamedTypeSymbol)semanticModel.GetSymbol(usingDirective.Name, cancellationToken);
+        var classSymbol = (INamedTypeSymbol)semanticModel.GetSymbol(usingDirective.Name, cancellationToken);
 
-            SyntaxNode parent = usingDirective.Parent;
+        SyntaxNode parent = usingDirective.Parent;
 
-            Debug.Assert(parent.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration));
+        Debug.Assert(parent.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration));
 
-            int index = SyntaxInfo.UsingDirectiveListInfo(parent).IndexOf(usingDirective);
+        int index = SyntaxInfo.UsingDirectiveListInfo(parent).IndexOf(usingDirective);
 
-            List<SimpleNameSyntax> names = CollectNames(parent, classSymbol, semanticModel, cancellationToken);
+        List<SimpleNameSyntax> names = CollectNames(parent, classSymbol, semanticModel, cancellationToken);
 
-            TypeSyntax type = classSymbol.ToTypeSyntax();
+        TypeSyntax type = classSymbol.ToTypeSyntax();
 
-            SyntaxNode newNode = parent.ReplaceNodes(
-                names,
-                (node, _) =>
-                {
-                    return SimpleMemberAccessExpression(type, node.WithoutTrivia())
-                        .WithTriviaFrom(node)
-                        .WithSimplifierAnnotation();
-                });
-
-            newNode = RemoveUsingDirective(newNode, index);
-
-            return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static List<SimpleNameSyntax> CollectNames(
-            SyntaxNode node,
-            INamedTypeSymbol classSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            var names = new List<SimpleNameSyntax>();
-
-            foreach (SyntaxNode descendant in node.DescendantNodes())
+        SyntaxNode newNode = parent.ReplaceNodes(
+            names,
+            (node, _) =>
             {
-                if (!descendant.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
-                    && (descendant is SimpleNameSyntax name))
-                {
-                    ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
+                return SimpleMemberAccessExpression(type, node.WithoutTrivia())
+                    .WithTriviaFrom(node)
+                    .WithSimplifierAnnotation();
+            });
 
-                    if (symbol.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property)
-                        && SymbolEqualityComparer.Default.Equals(symbol.ContainingType, classSymbol))
-                    {
-                        names.Add(name);
-                    }
+        newNode = RemoveUsingDirective(newNode, index);
+
+        return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static List<SimpleNameSyntax> CollectNames(
+        SyntaxNode node,
+        INamedTypeSymbol classSymbol,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        var names = new List<SimpleNameSyntax>();
+
+        foreach (SyntaxNode descendant in node.DescendantNodes())
+        {
+            if ((!descendant.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                || ((MemberAccessExpressionSyntax)descendant.Parent).Name != descendant)
+                && (descendant is SimpleNameSyntax name))
+            {
+                ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
+
+                if (symbol.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property)
+                    && SymbolEqualityComparer.Default.Equals(symbol.ContainingType, classSymbol))
+                {
+                    names.Add(name);
                 }
             }
-
-            return names;
         }
 
-        private static SyntaxNode RemoveUsingDirective(SyntaxNode node, int index)
+        return names;
+    }
+
+    private static SyntaxNode RemoveUsingDirective(SyntaxNode node, int index)
+    {
+        switch (node)
         {
-            switch (node)
-            {
-                case CompilationUnitSyntax compilationUnit:
-                    {
-                        UsingDirectiveSyntax usingDirective = compilationUnit.Usings[index];
-                        return compilationUnit.RemoveNode(usingDirective);
-                    }
-                case NamespaceDeclarationSyntax namespaceDeclaration:
-                    {
-                        UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings[index];
-                        return namespaceDeclaration.RemoveNode(usingDirective);
-                    }
-            }
-
-            return node;
+            case CompilationUnitSyntax compilationUnit:
+                {
+                    UsingDirectiveSyntax usingDirective = compilationUnit.Usings[index];
+                    return compilationUnit.RemoveNode(usingDirective);
+                }
+            case NamespaceDeclarationSyntax namespaceDeclaration:
+                {
+                    UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings[index];
+                    return namespaceDeclaration.RemoveNode(usingDirective);
+                }
         }
+
+        return node;
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1073ConvertIfToReturnStatementTests : AbstractCSharpDiagnosticVerifier<IfStatementAnalyzer, IfStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertIfToReturnStatement;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
-        public async Task Test_IfElse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1073ConvertIfToReturnStatementTests : AbstractCSharpDiagnosticVerifier<IfStatementAnalyzer, IfStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertIfToReturnStatement;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    public async Task Test_IfElse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     bool M()
@@ -43,12 +43,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
-        public async Task Test_IfReturn()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    public async Task Test_IfReturn()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     bool M()
@@ -74,12 +74,78 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
-        public async Task TestNoDiagnostic_IfElseContainsComment()
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    public async Task Test_IfReturn_EqualsToNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        [|if (x == null)
         {
-            await VerifyNoDiagnosticAsync(@"
+            return null;
+        }
+        else
+        {
+            return x;
+        }|]
+    }
+}
+", @"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        return x;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    public async Task Test_IfReturn_IsNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        [|if (x is null)
+        {
+            return null;
+        }
+        else
+        {
+            return x;
+        }|]
+    }
+}
+", @"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        return x;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    public async Task TestNoDiagnostic_IfElseContainsComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     bool M()
@@ -97,12 +163,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
-        public async Task TestNoDiagnostic_IfElseContainsDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    public async Task TestNoDiagnostic_IfElseContainsDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     bool M()
@@ -121,12 +187,12 @@ class C
     }
 }
 ", options: Options.WithDebugPreprocessorSymbol());
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
-        public async Task TestNoDiagnostic_IfReturnContainsComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    public async Task TestNoDiagnostic_IfReturnContainsComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     bool M()
@@ -142,12 +208,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
-        public async Task TestNoDiagnostic_IfReturnContainsDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+    public async Task TestNoDiagnostic_IfReturnContainsDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     bool M()
@@ -164,6 +230,5 @@ class C
     }
 }
 ", options: Options.WithDebugPreprocessorSymbol());
-        }
     }
 }

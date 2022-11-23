@@ -6,38 +6,37 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using Microsoft.VisualStudio.Shell;
 
-namespace Roslynator.VisualStudio
+namespace Roslynator.VisualStudio;
+
+[ClassInterface(ClassInterfaceType.AutoDual)]
+public class GeneralOptionsPage : UIElementDialogPage
 {
-    [ClassInterface(ClassInterfaceType.AutoDual)]
-    public class GeneralOptionsPage : UIElementDialogPage
+    private bool _isActive;
+
+    private readonly GeneralOptionsPageControl _control = new();
+
+    protected override UIElement Child
     {
-        private bool _isActive;
+        get { return _control; }
+    }
 
-        private readonly GeneralOptionsPageControl _control = new();
+    [Category("General")]
+    [Browsable(false)]
+    public string ApplicationVersion { get; set; }
 
-        protected override UIElement Child
+    protected override void OnActivate(CancelEventArgs e)
+    {
+        base.OnActivate(e);
+
+        if (!_isActive)
         {
-            get { return _control; }
+            _isActive = true;
         }
+    }
 
-        [Category("General")]
-        [Browsable(false)]
-        public string ApplicationVersion { get; set; }
-
-        protected override void OnActivate(CancelEventArgs e)
-        {
-            base.OnActivate(e);
-
-            if (!_isActive)
-            {
-                _isActive = true;
-            }
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-            _isActive = false;
-        }
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        _isActive = false;
     }
 }

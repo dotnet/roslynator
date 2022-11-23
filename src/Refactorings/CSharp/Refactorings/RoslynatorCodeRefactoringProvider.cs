@@ -5,32 +5,30 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
-using Roslynator.Configuration;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+[ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(RoslynatorCodeRefactoringProvider))]
+public sealed class RoslynatorCodeRefactoringProvider : CodeRefactoringProvider
 {
-    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(RoslynatorCodeRefactoringProvider))]
-    public sealed class RoslynatorCodeRefactoringProvider : CodeRefactoringProvider
+    public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
     {
-        public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
+        SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+
+#if DEBUG
+        try
         {
-            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-
-#if DEBUG
-            try
-            {
 #endif
-                var refactoringContext = new RefactoringContext(context, root);
+            var refactoringContext = new RefactoringContext(context, root);
 
-                await refactoringContext.ComputeRefactoringsAsync().ConfigureAwait(false);
+            await refactoringContext.ComputeRefactoringsAsync().ConfigureAwait(false);
 #if DEBUG
-            }
-            catch (Exception ex) when (ex is not OperationCanceledException)
-            {
-                Debug.Fail(nameof(RoslynatorCodeRefactoringProvider));
-                throw;
-            }
-#endif
         }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            Debug.Fail(nameof(RoslynatorCodeRefactoringProvider));
+            throw;
+        }
+#endif
     }
 }

@@ -12,10 +12,12 @@ sidebar_label: ParameterList
 
 | Method | Summary |
 | ------ | ------- |
-| [ParameterList(ParameterSyntax)](#Roslynator_CSharp_CSharpFactory_ParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterSyntax_) | |
-| [ParameterList(ParameterSyntax\[\])](#Roslynator_CSharp_CSharpFactory_ParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterSyntax___) | |
+| [ParameterList(ParameterSyntax)](#3481786152) | |
+| [ParameterList(ParameterSyntax\[\])](#1814588885) | |
 
-## ParameterList\(ParameterSyntax\) <a id="Roslynator_CSharp_CSharpFactory_ParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterSyntax_"></a>
+<a id="3481786152"></a>
+
+## ParameterList\(ParameterSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax ParameterList(Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax parameter)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax Parameter
 
 [ParameterListSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.parameterlistsyntax)
 
-## ParameterList\(ParameterSyntax\[\]\) <a id="Roslynator_CSharp_CSharpFactory_ParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterSyntax___"></a>
+<a id="1814588885"></a>
+
+## ParameterList\(ParameterSyntax\[\]\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax ParameterList(params Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax[] parameters)

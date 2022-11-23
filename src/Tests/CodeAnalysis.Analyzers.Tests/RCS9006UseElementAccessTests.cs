@@ -6,16 +6,16 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS9006UseElementAccessTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseElementAccess;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task Test_SyntaxList_First()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS9006UseElementAccessTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseElementAccess;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_SyntaxList_First()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -40,12 +40,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task Test_SyntaxList_First_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_SyntaxList_First_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -71,12 +71,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task Test_SyntaxTriviaList_ElementAt()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_SyntaxTriviaList_ElementAt()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -101,12 +101,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_FirstWithPredicate()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_FirstWithPredicate()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
@@ -120,12 +120,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_NotSyntaxList()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_NotSyntaxList()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -140,12 +140,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_TrailingTrivia()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_TrailingTrivia()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -159,6 +159,5 @@ class C
     }
 }
 ");
-        }
     }
 }

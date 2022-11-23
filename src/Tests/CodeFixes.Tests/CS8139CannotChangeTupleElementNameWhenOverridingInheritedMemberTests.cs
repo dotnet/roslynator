@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS8139CannotChangeTupleElementNameWhenOverridingInheritedMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember)]
-        public async Task Test_Method()
-        {
-            await VerifyFixAsync(@"
+public class CS8139CannotChangeTupleElementNameWhenOverridingInheritedMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember)]
+    public async Task Test_Method()
+    {
+        await VerifyFixAsync(@"
 class C : B
 {
     public override (string x, string yy, string z) M()
@@ -46,12 +46,12 @@ class B
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember)]
-        public async Task Test_Property()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember)]
+    public async Task Test_Property()
+    {
+        await VerifyFixAsync(@"
 class C : B
 {
     public override (string x, string yy, string z) P
@@ -82,6 +82,5 @@ class B
         get { return default; }
     }
 }", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

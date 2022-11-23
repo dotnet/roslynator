@@ -4,95 +4,93 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 using System.Collections.Generic;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+internal class WrapRewriter : CSharpSyntaxRewriter
 {
-    internal class WrapRewriter : CSharpSyntaxRewriter
+    private int _classDeclarationDepth;
+    private int _maxArgumentNameLength;
+    private int _maxFieldDeclarationLength;
+
+    public WrapRewriter(WrapRewriterOptions options)
     {
-        private int _classDeclarationDepth;
-        private int _maxArgumentNameLength;
-        private int _maxFieldDeclarationLength;
+        Options = options;
+    }
 
-        public WrapRewriter(WrapRewriterOptions options)
+    public WrapRewriterOptions Options { get; }
+
+    public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
+    {
+        IEnumerable<MemberDeclarationSyntax> fields = node.Members.Where(f => f.IsKind(SyntaxKind.FieldDeclaration));
+
+        if (fields.Any())
         {
-            Options = options;
+            _maxFieldDeclarationLength = fields
+                .Cast<FieldDeclarationSyntax>()
+                .Max(f => f.Declaration.Variables[0].Initializer.EqualsToken.SpanStart - f.SpanStart);
         }
 
-        public WrapRewriterOptions Options { get; }
+        _classDeclarationDepth++;
+        SyntaxNode result = base.VisitClassDeclaration(node);
+        _classDeclarationDepth--;
+        _maxFieldDeclarationLength = 0;
 
-        public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
+        return result;
+    }
+
+    public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
+    {
+        node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
+
+        if ((Options & WrapRewriterOptions.IndentFieldInitializer) != 0)
         {
-            IEnumerable<MemberDeclarationSyntax> fields = node.Members.Where(f => f.IsKind(SyntaxKind.FieldDeclaration));
+            SyntaxToken equalsToken = node.Declaration.Variables[0].Initializer.EqualsToken;
 
-            if (fields.Any())
-            {
-                _maxFieldDeclarationLength = fields
-                    .Cast<FieldDeclarationSyntax>()
-                    .Max(f => f.Declaration.Variables[0].Initializer.EqualsToken.SpanStart - f.SpanStart);
-            }
+            int count = _maxFieldDeclarationLength - (equalsToken.SpanStart - node.SpanStart);
 
-            _classDeclarationDepth++;
-            SyntaxNode result = base.VisitClassDeclaration(node);
-            _classDeclarationDepth--;
-            _maxFieldDeclarationLength = 0;
+            SyntaxToken newEqualsToken = equalsToken.AppendToLeadingTrivia(Whitespace(new string(' ', count)));
 
-            return result;
+            node = node.ReplaceToken(equalsToken, newEqualsToken);
         }
 
-        public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
+        if ((Options & WrapRewriterOptions.WrapArguments) != 0)
         {
-            node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
-
-            if ((Options & WrapRewriterOptions.IndentFieldInitializer) != 0)
-            {
-                SyntaxToken equalsToken = node.Declaration.Variables[0].Initializer.EqualsToken;
-
-                int count = _maxFieldDeclarationLength - (equalsToken.SpanStart - node.SpanStart);
-
-                SyntaxToken newEqualsToken = equalsToken.AppendToLeadingTrivia(Whitespace(new string(' ', count)));
-
-                node = node.ReplaceToken(equalsToken, newEqualsToken);
-            }
-
-            if ((Options & WrapRewriterOptions.WrapArguments) != 0)
-            {
-                return node.AppendToTrailingTrivia(NewLine());
-            }
-            else
-            {
-                return node;
-            }
+            return node.AppendToTrailingTrivia(NewLine());
         }
-
-        public override SyntaxNode VisitArgument(ArgumentSyntax node)
-        {
-            if ((Options & WrapRewriterOptions.WrapArguments) != 0
-                && node.NameColon != null)
-            {
-                return node
-                    .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace(new string(' ', 4 * (2 + _classDeclarationDepth))))))
-                    .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', _maxArgumentNameLength - node.NameColon.Name.Identifier.ValueText.Length))));
-            }
-
-            return node;
-        }
-
-        public override SyntaxNode VisitArgumentList(ArgumentListSyntax node)
-        {
-            _maxArgumentNameLength = node.Arguments.Max(f => f.NameColon?.Name.Identifier.ValueText.Length ?? 0);
-            SyntaxNode result = base.VisitArgumentList(node);
-            _maxArgumentNameLength = 0;
-
-            return result;
-        }
-
-        public override SyntaxNode VisitAttribute(AttributeSyntax node)
+        else
         {
             return node;
         }
+    }
+
+    public override SyntaxNode VisitArgument(ArgumentSyntax node)
+    {
+        if ((Options & WrapRewriterOptions.WrapArguments) != 0
+            && node.NameColon is not null)
+        {
+            return node
+                .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace(new string(' ', 4 * (2 + _classDeclarationDepth))))))
+                .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', _maxArgumentNameLength - node.NameColon.Name.Identifier.ValueText.Length))));
+        }
+
+        return node;
+    }
+
+    public override SyntaxNode VisitArgumentList(ArgumentListSyntax node)
+    {
+        _maxArgumentNameLength = node.Arguments.Max(f => f.NameColon?.Name.Identifier.ValueText.Length ?? 0);
+        SyntaxNode result = base.VisitArgumentList(node);
+        _maxArgumentNameLength = 0;
+
+        return result;
+    }
+
+    public override SyntaxNode VisitAttribute(AttributeSyntax node)
+    {
+        return node;
     }
 }

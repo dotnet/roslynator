@@ -1,6 +1,10 @@
+<<<<<<<< HEAD:docs/api/Roslynator/CSharp/ModifierList/RemoveAt/index.md
 ---
 sidebar_label: RemoveAt
 ---
+========
+# ModifierList\.RemoveAt\<TNode\>\(TNode, Int32\) Method
+>>>>>>>> main:docs/api/Roslynator/CSharp/ModifierList/RemoveAt/README.md
 
 # ModifierList\.RemoveAt&lt;TNode&gt;\(TNode, Int32\) Method
 

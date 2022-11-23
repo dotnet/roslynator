@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1198AvoidBoxingOfValueTypeTests : AbstractCSharpDiagnosticVerifier<AvoidBoxingOfValueTypeAnalyzer, AvoidBoxingOfValueTypeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidBoxingOfValueType;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-        public async Task Test_Interpolation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1198AvoidBoxingOfValueTypeTests : AbstractCSharpDiagnosticVerifier<AvoidBoxingOfValueTypeAnalyzer, AvoidBoxingOfValueTypeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidBoxingOfValueType;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+    public async Task Test_Interpolation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -44,12 +44,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-        public async Task Test_Interpolation_NullableType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+    public async Task Test_Interpolation_NullableType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -70,13 +70,13 @@ class C
     }
 }
 ");
-        }
+    }
 
-        // https://github.com/dotnet/roslyn/pull/35006
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-        public async Task TestNoDiagnostic_StringConcatenation()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    // https://github.com/dotnet/roslyn/pull/35006
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+    public async Task TestNoDiagnostic_StringConcatenation()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -86,13 +86,13 @@ class C
     }
 }
 ");
-        }
+    }
 
-        // https://github.com/dotnet/roslyn/pull/35006
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-        public async Task TestNoDiagnostic_InterpolatedString()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    // https://github.com/dotnet/roslyn/pull/35006
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+    public async Task TestNoDiagnostic_InterpolatedString()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -106,6 +106,5 @@ class C
     }
 }
 ");
-        }
     }
 }

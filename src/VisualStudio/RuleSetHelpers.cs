@@ -5,45 +5,44 @@ using System.IO;
 using System.Text;
 using System.Windows;
 
-namespace Roslynator.VisualStudio
+namespace Roslynator.VisualStudio;
+
+internal static partial class DefaultRuleSet
 {
-    internal static partial class DefaultRuleSet
+    private const string FileName = "roslynator.ruleset";
+
+    public static string GetDirectoryPath()
     {
-        private const string FileName = "roslynator.ruleset";
+        return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "JosefPihrt",
+            "Roslynator");
+    }
 
-        public static string GetDirectoryPath()
+    public static string GetFilePath()
+    {
+        return Path.Combine(GetDirectoryPath(), FileName);
+    }
+
+    public static void CreateFileIfNotExists(bool showErrorMessage = false)
+    {
+        string directoryPath = GetDirectoryPath();
+
+        string ruleSetPath = Path.Combine(directoryPath, FileName);
+
+        if (!File.Exists(ruleSetPath))
         {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "JosefPihrt",
-                "Roslynator");
-        }
-
-        public static string GetFilePath()
-        {
-            return Path.Combine(GetDirectoryPath(), FileName);
-        }
-
-        public static void CreateFileIfNotExists(bool showErrorMessage = false)
-        {
-            string directoryPath = GetDirectoryPath();
-
-            string ruleSetPath = Path.Combine(directoryPath, FileName);
-
-            if (!File.Exists(ruleSetPath))
+            try
             {
-                try
-                {
-                    Directory.CreateDirectory(directoryPath);
+                Directory.CreateDirectory(directoryPath);
 
-                    File.WriteAllText(ruleSetPath, RuleSetXml, Encoding.UTF8);
-                }
-                catch (Exception ex) when (ex is IOException
-                    || ex is UnauthorizedAccessException)
-                {
-                    if (showErrorMessage)
-                        MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                File.WriteAllText(ruleSetPath, RuleSetXml, Encoding.UTF8);
+            }
+            catch (Exception ex) when (ex is IOException
+                || ex is UnauthorizedAccessException)
+            {
+                if (showErrorMessage)
+                    MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

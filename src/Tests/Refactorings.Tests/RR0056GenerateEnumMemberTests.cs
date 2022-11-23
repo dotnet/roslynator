@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0056GenerateEnumMemberTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.GenerateEnumMember;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumMember)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0056GenerateEnumMemberTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.GenerateEnumMember;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumMember)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 enum Foo
 {
     A = 1,
@@ -29,12 +29,12 @@ enum Foo
     EnumMember
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumMember)]
-        public async Task Test_Flags()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumMember)]
+    public async Task Test_Flags()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 [Flags]
@@ -58,6 +58,5 @@ enum Foo
     EnumMember = 8
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

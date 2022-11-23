@@ -10,59 +10,58 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceTabWithSpacesCodeFixProvider))]
+[Shared]
+public sealed class ReplaceTabWithSpacesCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceTabWithSpacesCodeFixProvider))]
-    [Shared]
-    public sealed class ReplaceTabWithSpacesCodeFixProvider : BaseCodeFixProvider
+    public ReplaceTabWithSpacesCodeFixProvider()
     {
-        public ReplaceTabWithSpacesCodeFixProvider()
-        {
-            TwoSpacesEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.UseSpacesInsteadOfTab, "TwoSpaces");
-            FourSpacesEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.UseSpacesInsteadOfTab, "FourSpaces");
-        }
+        TwoSpacesEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.UseSpacesInsteadOfTab, "TwoSpaces");
+        FourSpacesEquivalenceKey = GetEquivalenceKey(DiagnosticIdentifiers.UseSpacesInsteadOfTab, "FourSpaces");
+    }
 
-        internal string TwoSpacesEquivalenceKey { get; }
+    internal string TwoSpacesEquivalenceKey { get; }
 
-        internal string FourSpacesEquivalenceKey { get; }
+    internal string FourSpacesEquivalenceKey { get; }
 
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseSpacesInsteadOfTab); }
-        }
+    public override ImmutableArray<string> FixableDiagnosticIds
+    {
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseSpacesInsteadOfTab); }
+    }
 
-        public override Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+    public override Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                "Replace tab with 2 spaces",
-                ct => UseSpacesInsteadOfTabAsync(document, context.Span, 2, ct),
-                TwoSpacesEquivalenceKey);
+        CodeAction codeAction = CodeAction.Create(
+            "Replace tab with 2 spaces",
+            ct => UseSpacesInsteadOfTabAsync(document, context.Span, 2, ct),
+            TwoSpacesEquivalenceKey);
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+        context.RegisterCodeFix(codeAction, diagnostic);
 
-            codeAction = CodeAction.Create(
-                "Replace tab with 4 spaces",
-                ct => UseSpacesInsteadOfTabAsync(document, context.Span, 4, ct),
-                FourSpacesEquivalenceKey);
+        codeAction = CodeAction.Create(
+            "Replace tab with 4 spaces",
+            ct => UseSpacesInsteadOfTabAsync(document, context.Span, 4, ct),
+            FourSpacesEquivalenceKey);
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+        context.RegisterCodeFix(codeAction, diagnostic);
 
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
+    }
 
-        private static Task<Document> UseSpacesInsteadOfTabAsync(
-            Document document,
-            TextSpan span,
-            int numberOfSpaces,
-            CancellationToken cancellationToken = default)
-        {
-            return document.WithTextChangeAsync(
-                span,
-                new string(' ', span.Length * numberOfSpaces),
-                cancellationToken);
-        }
+    private static Task<Document> UseSpacesInsteadOfTabAsync(
+        Document document,
+        TextSpan span,
+        int numberOfSpaces,
+        CancellationToken cancellationToken = default)
+    {
+        return document.WithTextChangeAsync(
+            span,
+            new string(' ', span.Length * numberOfSpaces),
+            cancellationToken);
     }
 }

@@ -1,6 +1,10 @@
+<<<<<<<< HEAD:docs/api/Roslynator/CSharp/SyntaxAccessibility/WithoutExplicitAccessibility/index.md
 ---
 sidebar_label: WithoutExplicitAccessibility
 ---
+========
+# SyntaxAccessibility\.WithoutExplicitAccessibility\<TNode\>\(TNode\) Method
+>>>>>>>> main:docs/api/Roslynator/CSharp/SyntaxAccessibility/WithoutExplicitAccessibility/README.md
 
 # SyntaxAccessibility\.WithoutExplicitAccessibility&lt;TNode&gt;\(TNode\) Method
 

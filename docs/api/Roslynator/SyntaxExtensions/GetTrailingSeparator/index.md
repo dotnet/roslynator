@@ -1,6 +1,10 @@
+<<<<<<<< HEAD:docs/api/Roslynator/SyntaxExtensions/GetTrailingSeparator/index.md
 ---
 sidebar_label: GetTrailingSeparator
 ---
+========
+# SyntaxExtensions\.GetTrailingSeparator\<TNode\>\(SeparatedSyntaxList\<TNode\>\) Method
+>>>>>>>> main:docs/api/Roslynator/SyntaxExtensions/GetTrailingSeparator/README.md
 
 # SyntaxExtensions\.GetTrailingSeparator&lt;TNode&gt;\(SeparatedSyntaxList&lt;TNode&gt;\) Method
 
@@ -21,7 +25,11 @@ public static Microsoft.CodeAnalysis.SyntaxToken GetTrailingSeparator<TNode>(thi
 
 ### Parameters
 
+<<<<<<<< HEAD:docs/api/Roslynator/SyntaxExtensions/GetTrailingSeparator/index.md
 **list** &ensp; [SeparatedSyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.separatedsyntaxlist-1)&lt;TNode&gt;
+========
+**list** &ensp; [SeparatedSyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.separatedsyntaxlist-1)\<TNode\>
+>>>>>>>> main:docs/api/Roslynator/SyntaxExtensions/GetTrailingSeparator/README.md
 
 ### Returns
 

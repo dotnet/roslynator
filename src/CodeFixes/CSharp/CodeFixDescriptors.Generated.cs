@@ -162,11 +162,12 @@ namespace Roslynator.CSharp
             "CS0019", 
             "CS0266");
 
-        /// <summary>RCF0024 (fixes CS0573, CS8050)</summary>
+        /// <summary>RCF0024 (fixes CS0037, CS0573, CS8050)</summary>
         public static readonly CodeFixDescriptor RemovePropertyOrFieldInitializer = new CodeFixDescriptor(
             id:                 CodeFixIdentifiers.RemovePropertyOrFieldInitializer, 
             title:              "Remove property or field initializer", 
             isEnabledByDefault: true, 
+            "CS0037", 
             "CS0573", 
             "CS8050");
 

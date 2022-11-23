@@ -5,67 +5,66 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Documentation
+namespace Roslynator.CSharp.Documentation;
+
+internal class DocumentationCommentTriviaRewriter : CSharpSyntaxRewriter
 {
-    internal class DocumentationCommentTriviaRewriter : CSharpSyntaxRewriter
+    private readonly SemanticModel _semanticModel;
+
+    private readonly int _position;
+
+    public DocumentationCommentTriviaRewriter(int position, SemanticModel semanticModel)
+        : base(visitIntoStructuredTrivia: true)
     {
-        private readonly SemanticModel _semanticModel;
+        _semanticModel = semanticModel ?? throw new ArgumentNullException(nameof(semanticModel));
+        _position = position;
+    }
 
-        private readonly int _position;
-
-        public DocumentationCommentTriviaRewriter(int position, SemanticModel semanticModel)
-            : base(visitIntoStructuredTrivia: true)
+    public override SyntaxNode VisitXmlTextAttribute(XmlTextAttributeSyntax node)
+    {
+        if (node.Name?.IsLocalName("cref", StringComparison.OrdinalIgnoreCase) == true)
         {
-            _semanticModel = semanticModel ?? throw new ArgumentNullException(nameof(semanticModel));
-            _position = position;
-        }
+            SyntaxTokenList tokens = node.TextTokens;
 
-        public override SyntaxNode VisitXmlTextAttribute(XmlTextAttributeSyntax node)
-        {
-            if (node.Name?.IsLocalName("cref", StringComparison.OrdinalIgnoreCase) == true)
+            if (tokens.Count == 1)
             {
-                SyntaxTokenList tokens = node.TextTokens;
+                SyntaxToken token = tokens[0];
 
-                if (tokens.Count == 1)
-                {
-                    SyntaxToken token = tokens[0];
+                string text = token.Text;
 
-                    string text = token.Text;
+                string valueText = token.ValueText;
 
-                    string valueText = token.ValueText;
+                if (text.StartsWith("T:", StringComparison.Ordinal))
+                    text = GetMinimalDisplayString(text.Substring(2));
 
-                    if (text.StartsWith("T:", StringComparison.Ordinal))
-                        text = GetMinimalDisplayString(text.Substring(2));
+                if (valueText.StartsWith("T:", StringComparison.Ordinal))
+                    valueText = GetMinimalDisplayString(valueText.Substring(2));
 
-                    if (valueText.StartsWith("T:", StringComparison.Ordinal))
-                        valueText = GetMinimalDisplayString(valueText.Substring(2));
+                SyntaxToken newToken = SyntaxFactory.Token(
+                    default(SyntaxTriviaList),
+                    SyntaxKind.XmlTextLiteralToken,
+                    text,
+                    valueText,
+                    default(SyntaxTriviaList));
 
-                    SyntaxToken newToken = SyntaxFactory.Token(
-                        default(SyntaxTriviaList),
-                        SyntaxKind.XmlTextLiteralToken,
-                        text,
-                        valueText,
-                        default(SyntaxTriviaList));
-
-                    return node.WithTextTokens(tokens.Replace(token, newToken));
-                }
+                return node.WithTextTokens(tokens.Replace(token, newToken));
             }
-
-            return base.VisitXmlTextAttribute(node);
         }
 
-        private string GetMinimalDisplayString(string metadataName)
+        return base.VisitXmlTextAttribute(node);
+    }
+
+    private string GetMinimalDisplayString(string metadataName)
+    {
+        INamedTypeSymbol typeSymbol = _semanticModel.GetTypeByMetadataName(metadataName);
+
+        if (typeSymbol is not null)
         {
-            INamedTypeSymbol typeSymbol = _semanticModel.GetTypeByMetadataName(metadataName);
-
-            if (typeSymbol != null)
-            {
-                return SymbolDisplay.ToMinimalDisplayString(typeSymbol, _semanticModel, _position, SymbolDisplayFormats.DisplayName)
-                    .Replace('<', '{')
-                    .Replace('>', '}');
-            }
-
-            return metadataName;
+            return SymbolDisplay.ToMinimalDisplayString(typeSymbol, _semanticModel, _position, SymbolDisplayFormats.DisplayName)
+                .Replace('<', '{')
+                .Replace('>', '}');
         }
+
+        return metadataName;
     }
 }

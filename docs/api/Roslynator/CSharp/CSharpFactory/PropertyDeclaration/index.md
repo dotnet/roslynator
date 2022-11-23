@@ -12,10 +12,12 @@ sidebar_label: PropertyDeclaration
 
 | Method | Summary |
 | ------ | ------- |
-| [PropertyDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken, AccessorListSyntax, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_PropertyDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
-| [PropertyDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken, ArrowExpressionClauseSyntax)](#Roslynator_CSharp_CSharpFactory_PropertyDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_) | |
+| [PropertyDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken, AccessorListSyntax, ExpressionSyntax)](#951058213) | |
+| [PropertyDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken, ArrowExpressionClauseSyntax)](#1337449262) | |
 
-## PropertyDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken, AccessorListSyntax, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_PropertyDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
+<a id="951058213"></a>
+
+## PropertyDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken, AccessorListSyntax, ExpressionSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.PropertyDeclarationSyntax PropertyDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.AccessorListSyntax accessorList, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax value = null)
@@ -37,7 +39,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.PropertyDeclarationSyntax Pro
 
 [PropertyDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.propertydeclarationsyntax)
 
-## PropertyDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken, ArrowExpressionClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_PropertyDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_"></a>
+<a id="1337449262"></a>
+
+## PropertyDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken, ArrowExpressionClauseSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.PropertyDeclarationSyntax PropertyDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.ArrowExpressionClauseSyntax expressionBody)

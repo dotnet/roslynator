@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0215ExpandPositionalConstructorTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ExpandPositionalConstructor;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0215ExpandPositionalConstructorTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ExpandPositionalConstructor;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 public record R([||]string P, object O);
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
@@ -32,12 +32,12 @@ public record R
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_RecordStruct()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test_RecordStruct()
+    {
+        await VerifyRefactoringAsync(@"
 public record struct R([||]string P, object O);
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
@@ -56,12 +56,12 @@ public record struct R
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_ReadOnlyRecordStruct()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test_ReadOnlyRecordStruct()
+    {
+        await VerifyRefactoringAsync(@"
 public readonly record struct R([||]string P, object O);
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
@@ -80,12 +80,12 @@ public readonly record struct R
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_AttributeWithoutTarget()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test_AttributeWithoutTarget()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 public record R([||]string P, [Foo] object O);
@@ -113,13 +113,13 @@ public record R
 public sealed class FooAttribute : Attribute { }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0612"));
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_AttributeWithTarget()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test_AttributeWithTarget()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 public record R([||][property: Obsolete] string P, object O);
@@ -142,13 +142,13 @@ public record R
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0612"));
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_AttributeWithTarget_Multiline()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test_AttributeWithTarget_Multiline()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 namespace N
@@ -181,13 +181,13 @@ namespace N
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0612"));
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_WithOpenCloseBraces()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test_WithOpenCloseBraces()
+    {
+        await VerifyRefactoringAsync(@"
 public record R([|string P, object O|])
 {
 }
@@ -208,12 +208,12 @@ public record R
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_Multiline()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test_Multiline()
+    {
+        await VerifyRefactoringAsync(@"
 namespace N
 {
     public record R(
@@ -242,12 +242,12 @@ namespace N
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_BaseRecord()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+    public async Task Test_BaseRecord()
+    {
+        await VerifyRefactoringAsync(@"
 public record C([||]string P, object O) : B(P);
 
 public record B(string P);
@@ -269,6 +269,5 @@ public record B(string P);
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

@@ -2,19 +2,18 @@
 
 using Microsoft.CodeAnalysis.CodeFixes;
 
-namespace Roslynator.Testing.CSharp.Xunit
+namespace Roslynator.Testing.CSharp.Xunit;
+
+/// <summary>
+/// Represents a verifier for C# compiler diagnostics.
+/// </summary>
+public abstract class XunitCompilerDiagnosticFixVerifier<TFixProvider> : CSharpCompilerDiagnosticFixVerifier<TFixProvider>
+    where TFixProvider : CodeFixProvider, new()
 {
     /// <summary>
-    /// Represents a verifier for C# compiler diagnostics.
+    /// Initializes a new instance of <see cref="XunitCompilerDiagnosticFixVerifier{TFixProvider}"/>
     /// </summary>
-    public abstract class XunitCompilerDiagnosticFixVerifier<TFixProvider> : CSharpCompilerDiagnosticFixVerifier<TFixProvider>
-        where TFixProvider : CodeFixProvider, new()
+    protected XunitCompilerDiagnosticFixVerifier() : base(XunitAssert.Instance)
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="XunitCompilerDiagnosticFixVerifier{TFixProvider}"/>
-        /// </summary>
-        protected XunitCompilerDiagnosticFixVerifier() : base(XunitAssert.Instance)
-        {
-        }
     }
 }

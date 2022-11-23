@@ -2,23 +2,22 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf
+namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf;
+
+internal class ConvertYieldReturnToIfElseRefactoring : ConvertReturnToIfRefactoring<YieldStatementSyntax>
 {
-    internal class ConvertYieldReturnToIfElseRefactoring : ConvertReturnToIfRefactoring<YieldStatementSyntax>
+    protected override ExpressionSyntax GetExpression(YieldStatementSyntax statement)
     {
-        protected override ExpressionSyntax GetExpression(YieldStatementSyntax statement)
-        {
-            return statement.Expression;
-        }
+        return statement.Expression;
+    }
 
-        protected override YieldStatementSyntax SetExpression(YieldStatementSyntax statement, ExpressionSyntax expression)
-        {
-            return statement.WithExpression(expression);
-        }
+    protected override YieldStatementSyntax SetExpression(YieldStatementSyntax statement, ExpressionSyntax expression)
+    {
+        return statement.WithExpression(expression);
+    }
 
-        protected override string GetTitle(YieldStatementSyntax statement)
-        {
-            return "Convert to 'if'";
-        }
+    protected override string GetTitle(YieldStatementSyntax statement)
+    {
+        return "Convert to 'if'";
     }
 }

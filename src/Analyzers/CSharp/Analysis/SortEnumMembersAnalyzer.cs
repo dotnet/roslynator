@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -8,90 +7,89 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class SortEnumMembersAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class SortEnumMembersAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.SortEnumMembers);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.SortEnumMembers);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
+    }
+
+    private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+    {
+        var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+
+        if (IsListUnsorted(enumDeclaration.Members, context.SemanticModel, context.CancellationToken)
+            && !enumDeclaration.ContainsDirectives(enumDeclaration.BracesSpan()))
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
+            SyntaxToken identifier = enumDeclaration.Identifier;
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SortEnumMembers, identifier, identifier);
         }
+    }
 
-        private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+    private static bool IsListUnsorted(
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> members,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
+    {
+        int count = members.Count;
+
+        if (count > 1)
         {
-            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+            IFieldSymbol firstField = semanticModel.GetDeclaredSymbol(members[0], cancellationToken);
 
-            if (IsListUnsorted(enumDeclaration.Members, context.SemanticModel, context.CancellationToken)
-                && !enumDeclaration.ContainsDirectives(enumDeclaration.BracesSpan()))
+            if (firstField?.HasConstantValue == true)
             {
-                SyntaxToken identifier = enumDeclaration.Identifier;
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SortEnumMembers, identifier, identifier);
-            }
-        }
+                SpecialType enumSpecialType = firstField.ContainingType.EnumUnderlyingType.SpecialType;
 
-        private static bool IsListUnsorted(
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
-        {
-            int count = members.Count;
+                object previousValue = firstField.ConstantValue;
 
-            if (count > 1)
-            {
-                IFieldSymbol firstField = semanticModel.GetDeclaredSymbol(members[0], cancellationToken);
-
-                if (firstField?.HasConstantValue == true)
+                for (int i = 1; i < count - 1; i++)
                 {
-                    SpecialType enumSpecialType = firstField.ContainingType.EnumUnderlyingType.SpecialType;
+                    IFieldSymbol field = semanticModel.GetDeclaredSymbol(members[i], cancellationToken);
 
-                    object previousValue = firstField.ConstantValue;
+                    if (field?.HasConstantValue != true)
+                        return false;
 
-                    for (int i = 1; i < count - 1; i++)
+                    object value = field.ConstantValue;
+
+                    if (EnumValueComparer.GetInstance(enumSpecialType).Compare(previousValue, value) > 0)
                     {
-                        IFieldSymbol field = semanticModel.GetDeclaredSymbol(members[i], cancellationToken);
+                        i++;
 
-                        if (field?.HasConstantValue != true)
-                            return false;
-
-                        object value = field.ConstantValue;
-
-                        if (EnumValueComparer.GetInstance(enumSpecialType).Compare(previousValue, value) > 0)
+                        while (i < count)
                         {
+                            if (semanticModel.GetDeclaredSymbol(members[i], cancellationToken)?.HasConstantValue != true)
+                                return false;
+
                             i++;
-
-                            while (i < count)
-                            {
-                                if (semanticModel.GetDeclaredSymbol(members[i], cancellationToken)?.HasConstantValue != true)
-                                    return false;
-
-                                i++;
-                            }
-
-                            return true;
                         }
 
-                        previousValue = value;
+                        return true;
                     }
+
+                    previousValue = value;
                 }
             }
-
-            return false;
         }
+
+        return false;
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1124InlineLocalVariableTests : AbstractCSharpDiagnosticVerifier<InlineLocalVariableAnalyzer, LocalDeclarationStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InlineLocalVariable;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
-        public async Task Test_LocalDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1124InlineLocalVariableTests : AbstractCSharpDiagnosticVerifier<InlineLocalVariableAnalyzer, LocalDeclarationStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InlineLocalVariable;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    public async Task Test_LocalDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -37,12 +37,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
-        public async Task Test_YieldReturn()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    public async Task Test_YieldReturn()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -64,12 +64,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
-        public async Task Test_VarType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    public async Task Test_VarType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 class C
@@ -99,12 +99,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
-        public async Task TestNoDiagnostic_YieldReturnIsNotLastStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    public async Task TestNoDiagnostic_YieldReturnIsNotLastStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -117,12 +117,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
-        public async Task TestNoDiagnostic_ForEachWithAwait()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    public async Task TestNoDiagnostic_ForEachWithAwait()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -140,12 +140,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
-        public async Task TestNoDiagnostic_SwitchWithAwait()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    public async Task TestNoDiagnostic_SwitchWithAwait()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -164,6 +164,5 @@ class C
     }
 }
 ");
-        }
     }
 }

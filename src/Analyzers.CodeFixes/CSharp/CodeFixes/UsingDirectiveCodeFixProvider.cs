@@ -10,30 +10,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UsingDirectiveCodeFixProvider))]
+[Shared]
+public sealed class UsingDirectiveCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UsingDirectiveCodeFixProvider))]
-    [Shared]
-    public sealed class UsingDirectiveCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out UsingDirectiveSyntax usingDirective))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out UsingDirectiveSyntax usingDirective))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Inline alias expression",
-                ct => AvoidUsageOfUsingAliasDirectiveRefactoring.RefactorAsync(context.Document, usingDirective, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective));
+        CodeAction codeAction = CodeAction.Create(
+            "Inline alias expression",
+            ct => AvoidUsageOfUsingAliasDirectiveRefactoring.RefactorAsync(context.Document, usingDirective, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

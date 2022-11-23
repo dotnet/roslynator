@@ -12,24 +12,12 @@ sidebar_label: BitwiseNotExpression
 
 | Method | Summary |
 | ------ | ------- |
-| [BitwiseNotExpression(ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_BitwiseNotExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
-| [BitwiseNotExpression(ExpressionSyntax, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_BitwiseNotExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [BitwiseNotExpression(ExpressionSyntax, SyntaxToken)](#1945116086) | |
+| [BitwiseNotExpression(ExpressionSyntax)](#1717020951) | |
 
-## BitwiseNotExpression\(ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_BitwiseNotExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
+<a id="1945116086"></a>
 
-```csharp
-public static Microsoft.CodeAnalysis.CSharp.Syntax.PrefixUnaryExpressionSyntax BitwiseNotExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax operand)
-```
-
-### Parameters
-
-**operand** &ensp; [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
-
-### Returns
-
-[PrefixUnaryExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.prefixunaryexpressionsyntax)
-
-## BitwiseNotExpression\(ExpressionSyntax, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_BitwiseNotExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+## BitwiseNotExpression\(ExpressionSyntax, SyntaxToken\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.PrefixUnaryExpressionSyntax BitwiseNotExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax operand, Microsoft.CodeAnalysis.SyntaxToken operatorToken)
@@ -40,6 +28,22 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.PrefixUnaryExpressionSyntax B
 **operand** &ensp; [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
 
 **operatorToken** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
+
+### Returns
+
+[PrefixUnaryExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.prefixunaryexpressionsyntax)
+
+<a id="1717020951"></a>
+
+## BitwiseNotExpression\(ExpressionSyntax\) 
+
+```csharp
+public static Microsoft.CodeAnalysis.CSharp.Syntax.PrefixUnaryExpressionSyntax BitwiseNotExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax operand)
+```
+
+### Parameters
+
+**operand** &ensp; [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
 
 ### Returns
 

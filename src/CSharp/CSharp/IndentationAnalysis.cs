@@ -6,336 +6,347 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct IndentationAnalysis
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct IndentationAnalysis
+    private readonly int? _indentSize;
+    private readonly SyntaxTrivia? _singleIndentation;
+
+    private IndentationAnalysis(SyntaxTrivia indentation, int? indentSize, SyntaxTrivia? singleIndentation)
     {
-        private readonly SyntaxTrivia _indentation;
-        private readonly int _indentSize;
+        Indentation = indentation;
+        _indentSize = indentSize;
+        _singleIndentation = singleIndentation;
+    }
 
-        private IndentationAnalysis(SyntaxTrivia indentation, int indentSize)
+    public SyntaxTrivia Indentation { get; }
+
+    public int IndentSize => _indentSize ?? _singleIndentation?.Span.Length ?? 0;
+
+    public int IndentationLength => Indentation.Span.Length;
+
+    public int IncreasedIndentationLength => (IndentSize > 0) ? Indentation.Span.Length + IndentSize : 0;
+
+    public bool IsDefault
+    {
+        get
         {
-            _indentation = indentation;
-            _indentSize = indentSize;
+            return Indentation.IsKind(SyntaxKind.None)
+                && _indentSize is null
+                && _singleIndentation is null;
         }
+    }
 
-        public SyntaxTrivia Indentation => (_indentSize == -1) ? default : _indentation;
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"Length = {Indentation.Span.Length} {nameof(IndentSize)} = {IndentSize}";
 
-        public int IndentSize => (_indentSize == -1) ? _indentation.Span.Length : _indentSize;
+    public static IndentationAnalysis Create(SyntaxNode node, CancellationToken cancellationToken = default)
+    {
+        SyntaxTrivia indentation = SyntaxTriviaAnalysis.DetermineIndentation(node, cancellationToken);
 
-        public int IndentationLength => (_indentSize == -1) ? 0 : Indentation.Span.Length;
+        (SyntaxTrivia trivia1, SyntaxTrivia trivia2, bool isFromCompilationUnit) = DetermineSingleIndentation(node, cancellationToken);
 
-        public int IncreasedIndentationLength => (_indentSize == -1) ? _indentation.Span.Length : (Indentation.Span.Length + _indentSize);
-
-        public bool IsDefault => _indentation == default && _indentSize == 0;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"Length = {Indentation.Span.Length} {nameof(IndentSize)} = {IndentSize}";
-
-        public static IndentationAnalysis Create(SyntaxNode node, CancellationToken cancellationToken = default)
+        if (isFromCompilationUnit)
         {
-            SyntaxTrivia indentation = SyntaxTriviaAnalysis.DetermineIndentation(node, cancellationToken);
-
-            (SyntaxTrivia trivia1, SyntaxTrivia trivia2, bool isFromCompilationUnit) = DetermineSingleIndentation(node, cancellationToken);
-
-            if (isFromCompilationUnit)
-            {
-                return new IndentationAnalysis(indentation, trivia1.Span.Length - trivia2.Span.Length);
-            }
-            else if (indentation.Span.Length > 0)
-            {
-                return (trivia1.Span.Length > 0)
-                    ? new IndentationAnalysis(indentation, trivia1.Span.Length)
-                    : new IndentationAnalysis(indentation, indentation.Span.Length);
-            }
-            else if (trivia1.Span.Length > 0)
-            {
-                return new IndentationAnalysis(trivia1, -1);
-            }
-            else
-            {
-                return default;
-            }
+            return new IndentationAnalysis(indentation, trivia1.Span.Length - trivia2.Span.Length, null);
         }
-
-        public string GetIncreasedIndentation()
+        else if (indentation.Span.Length > 0)
         {
-            string singleIndentation = GetSingleIndentation();
-
-            return Indentation.ToString() + singleIndentation;
+            return (trivia1.Span.Length > 0)
+                ? new IndentationAnalysis(indentation, null, trivia1)
+                : new IndentationAnalysis(indentation, null, null);
         }
-
-        public SyntaxTrivia GetIncreasedIndentationTrivia()
+        else if (trivia1.Span.Length > 0)
         {
-            return SyntaxFactory.Whitespace(GetIncreasedIndentation());
+            return new IndentationAnalysis(indentation, null, trivia1);
         }
-
-        public SyntaxTriviaList GetIncreasedIndentationTriviaList()
+        else
         {
-            return SyntaxFactory.TriviaList(GetIncreasedIndentationTrivia());
-        }
-
-        public string GetSingleIndentation()
-        {
-            if (_indentSize == -1)
-                return _indentation.ToString();
-
-            if (_indentation.Span.Length == 0)
-                return "";
-
-            string indentation = _indentation.ToString();
-
-            if (indentation[indentation.Length - 1] == '\t')
-                return "\t";
-
-            return new string(indentation[0], IndentSize);
-        }
-
-        private static (SyntaxTrivia, SyntaxTrivia, bool isFromCompilationUnit) DetermineSingleIndentation(SyntaxNode node, CancellationToken cancellationToken = default)
-        {
-            do
-            {
-                switch (node)
-                {
-                    case MemberDeclarationSyntax member:
-                        {
-                            switch (node.Parent)
-                            {
-                                case NamespaceDeclarationSyntax @namespace:
-                                    {
-                                        (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(member, @namespace.CloseBraceToken);
-
-                                        if (trivia1.Span.Length > 0)
-                                            return (trivia1, trivia2, true);
-
-                                        break;
-                                    }
-                                case BaseTypeDeclarationSyntax baseType:
-                                    {
-                                        (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(member, baseType.CloseBraceToken);
-
-                                        if (trivia1.Span.Length > 0)
-                                            return (trivia1, trivia2, true);
-
-                                        break;
-                                    }
-                                case CompilationUnitSyntax compilationUnit:
-                                    {
-                                        SyntaxTrivia trivia = DetermineIndentationSize(compilationUnit);
-                                        return (trivia, default, false);
-                                    }
-                                default:
-                                    {
-                                        return default;
-                                    }
-                            }
-
-                            break;
-                        }
-                    case AccessorDeclarationSyntax accessor:
-                        {
-                            switch (node.Parent)
-                            {
-                                case AccessorListSyntax accessorList:
-                                    {
-                                        (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(accessor, accessorList.CloseBraceToken);
-
-                                        if (trivia1.Span.Length > 0)
-                                            return (trivia1, trivia2, true);
-
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        return default;
-                                    }
-                            }
-
-                            break;
-                        }
-                    case BlockSyntax _:
-                        {
-                            break;
-                        }
-                    case StatementSyntax statement:
-                        {
-                            switch (node.Parent)
-                            {
-                                case SwitchSectionSyntax switchSection:
-                                    {
-                                        (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(statement, switchSection);
-
-                                        if (trivia1.Span.Length > 0)
-                                            return (trivia1, trivia2, true);
-
-                                        break;
-                                    }
-                                case BlockSyntax block:
-                                    {
-                                        (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(statement, block.CloseBraceToken);
-
-                                        if (trivia1.Span.Length > 0)
-                                            return (trivia1, trivia2, true);
-
-                                        break;
-                                    }
-                                case StatementSyntax statement2:
-                                    {
-                                        (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(statement, statement2);
-
-                                        if (trivia1.Span.Length > 0)
-                                            return (trivia1, trivia2, true);
-
-                                        break;
-                                    }
-                                case ElseClauseSyntax elseClause:
-                                    {
-                                        (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(statement, elseClause);
-
-                                        if (trivia1.Span.Length > 0)
-                                            return (trivia1, trivia2, true);
-
-                                        break;
-                                    }
-                                case GlobalStatementSyntax:
-                                    {
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        return default;
-                                    }
-                            }
-
-                            break;
-                        }
-                    case CompilationUnitSyntax compilationUnit:
-                        {
-                            SyntaxTrivia trivia = DetermineIndentationSize(compilationUnit);
-                            return (trivia, default, false);
-                        }
-                }
-
-                node = node.Parent;
-            }
-            while (node != null);
-
             return default;
+        }
+    }
 
-            SyntaxTrivia DetermineIndentationSize(CompilationUnitSyntax compilationUnit)
+    public string GetIncreasedIndentation()
+    {
+        string singleIndentation = GetSingleIndentation();
+
+        return Indentation.ToString() + singleIndentation;
+    }
+
+    public SyntaxTrivia GetIncreasedIndentationTrivia()
+    {
+        return SyntaxFactory.Whitespace(GetIncreasedIndentation());
+    }
+
+    public SyntaxTriviaList GetIncreasedIndentationTriviaList()
+    {
+        return SyntaxFactory.TriviaList(GetIncreasedIndentationTrivia());
+    }
+
+    public string GetSingleIndentation()
+    {
+        if (_singleIndentation is not null)
+            return _singleIndentation.ToString();
+
+        if (_indentSize == -1)
+            return Indentation.ToString();
+
+        if (Indentation.Span.Length == 0)
+            return "";
+
+        string indentation = Indentation.ToString();
+
+        if (indentation[indentation.Length - 1] == '\t')
+            return "\t";
+
+        return new string(indentation[0], IndentSize);
+    }
+
+    private static (SyntaxTrivia, SyntaxTrivia, bool isFromCompilationUnit) DetermineSingleIndentation(SyntaxNode node, CancellationToken cancellationToken = default)
+    {
+        do
+        {
+            switch (node)
             {
-                foreach (MemberDeclarationSyntax member in compilationUnit.Members)
-                {
-                    if (member is NamespaceDeclarationSyntax namespaceDeclaration)
+                case MemberDeclarationSyntax member:
                     {
-                        MemberDeclarationSyntax member2 = namespaceDeclaration.Members.FirstOrDefault();
-
-                        if (member2 != null)
-                            return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
-                    }
-                    else if (member is TypeDeclarationSyntax typeDeclaration)
-                    {
-                        MemberDeclarationSyntax member2 = typeDeclaration.Members.FirstOrDefault();
-
-                        if (member2 != null)
-                            return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
-                    }
-                    else if (member is GlobalStatementSyntax globalStatement)
-                    {
-                        StatementSyntax statement2 = globalStatement.Statement;
-
-                        if (statement2 is SwitchStatementSyntax switchStatement)
+                        switch (node.Parent)
                         {
-                            SwitchSectionSyntax switchSection = switchStatement.Sections.FirstOrDefault();
+                            case NamespaceDeclarationSyntax @namespace:
+                                {
+                                    (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(member, @namespace.CloseBraceToken);
 
-                            if (switchSection is not null)
-                                return SyntaxTriviaAnalysis.DetermineIndentation(switchSection, cancellationToken);
+                                    if (trivia1.Span.Length > 0)
+                                        return (trivia1, trivia2, true);
 
-                            break;
+                                    break;
+                                }
+                            case BaseTypeDeclarationSyntax baseType:
+                                {
+                                    (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(member, baseType.CloseBraceToken);
+
+                                    if (trivia1.Span.Length > 0)
+                                        return (trivia1, trivia2, true);
+
+                                    break;
+                                }
+                            case CompilationUnitSyntax compilationUnit:
+                                {
+                                    SyntaxTrivia trivia = DetermineIndentationSize(compilationUnit);
+                                    return (trivia, default, false);
+                                }
+                            default:
+                                {
+                                    return default;
+                                }
                         }
-                        else
+
+                        break;
+                    }
+                case AccessorDeclarationSyntax accessor:
+                    {
+                        switch (node.Parent)
                         {
-                            StatementSyntax statement3 = GetContainedStatement(statement2);
+                            case AccessorListSyntax accessorList:
+                                {
+                                    (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(accessor, accessorList.CloseBraceToken);
+
+                                    if (trivia1.Span.Length > 0)
+                                        return (trivia1, trivia2, true);
+
+                                    break;
+                                }
+                            default:
+                                {
+                                    return default;
+                                }
+                        }
+
+                        break;
+                    }
+                case BlockSyntax _:
+                    {
+                        break;
+                    }
+                case StatementSyntax statement:
+                    {
+                        switch (node.Parent)
+                        {
+                            case SwitchSectionSyntax switchSection:
+                                {
+                                    (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(statement, switchSection);
+
+                                    if (trivia1.Span.Length > 0)
+                                        return (trivia1, trivia2, true);
+
+                                    break;
+                                }
+                            case BlockSyntax block:
+                                {
+                                    (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(statement, block.CloseBraceToken);
+
+                                    if (trivia1.Span.Length > 0)
+                                        return (trivia1, trivia2, true);
+
+                                    break;
+                                }
+                            case StatementSyntax statement2:
+                                {
+                                    (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(statement, statement2);
+
+                                    if (trivia1.Span.Length > 0)
+                                        return (trivia1, trivia2, true);
+
+                                    break;
+                                }
+                            case ElseClauseSyntax elseClause:
+                                {
+                                    (SyntaxTrivia trivia1, SyntaxTrivia trivia2) = GetIndentationSize(statement, elseClause);
+
+                                    if (trivia1.Span.Length > 0)
+                                        return (trivia1, trivia2, true);
+
+                                    break;
+                                }
+                            case GlobalStatementSyntax:
+                                {
+                                    break;
+                                }
+                            default:
+                                {
+                                    return default;
+                                }
+                        }
+
+                        break;
+                    }
+                case CompilationUnitSyntax compilationUnit:
+                    {
+                        SyntaxTrivia trivia = DetermineIndentationSize(compilationUnit);
+                        return (trivia, default, false);
+                    }
+            }
+
+            node = node.Parent;
+        }
+        while (node is not null);
+
+        return default;
+
+        SyntaxTrivia DetermineIndentationSize(CompilationUnitSyntax compilationUnit)
+        {
+            foreach (MemberDeclarationSyntax member in compilationUnit.Members)
+            {
+                if (member is NamespaceDeclarationSyntax namespaceDeclaration)
+                {
+                    MemberDeclarationSyntax member2 = namespaceDeclaration.Members.FirstOrDefault();
+
+                    if (member2 is not null)
+                        return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
+                }
+                else if (member is TypeDeclarationSyntax typeDeclaration)
+                {
+                    MemberDeclarationSyntax member2 = typeDeclaration.Members.FirstOrDefault();
+
+                    if (member2 is not null)
+                        return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
+                }
+                else if (member is GlobalStatementSyntax globalStatement)
+                {
+                    StatementSyntax statement2 = globalStatement.Statement;
+
+                    if (statement2 is SwitchStatementSyntax switchStatement)
+                    {
+                        SwitchSectionSyntax switchSection = switchStatement.Sections.FirstOrDefault();
+
+                        if (switchSection is not null)
+                            return SyntaxTriviaAnalysis.DetermineIndentation(switchSection, cancellationToken);
+
+                        break;
+                    }
+                    else
+                    {
+                        StatementSyntax statement3 = GetContainedStatement(statement2);
+
+                        if (statement3 is not null)
+                        {
+                            if (statement3 is BlockSyntax block)
+                                statement3 = block.Statements.FirstOrDefault();
 
                             if (statement3 is not null)
-                            {
-                                if (statement3 is BlockSyntax block)
-                                    statement3 = block.Statements.FirstOrDefault();
-
-                                if (statement3 is not null)
-                                    return SyntaxTriviaAnalysis.DetermineIndentation(statement3, cancellationToken);
-                            }
+                                return SyntaxTriviaAnalysis.DetermineIndentation(statement3, cancellationToken);
                         }
                     }
                 }
-
-                return default;
             }
 
-            (SyntaxTrivia, SyntaxTrivia) GetIndentationSize(SyntaxNodeOrToken nodeOrToken1, SyntaxNodeOrToken nodeOrToken2)
+            return default;
+        }
+
+        (SyntaxTrivia, SyntaxTrivia) GetIndentationSize(SyntaxNodeOrToken nodeOrToken1, SyntaxNodeOrToken nodeOrToken2)
+        {
+            SyntaxTrivia indentation1 = SyntaxTriviaAnalysis.DetermineIndentation(nodeOrToken1, cancellationToken);
+
+            int length1 = indentation1.Span.Length;
+
+            if (length1 > 0)
             {
-                SyntaxTrivia indentation1 = SyntaxTriviaAnalysis.DetermineIndentation(nodeOrToken1, cancellationToken);
+                SyntaxTrivia indentation2 = SyntaxTriviaAnalysis.DetermineIndentation(nodeOrToken2, cancellationToken);
 
-                int length1 = indentation1.Span.Length;
+                int length2 = indentation2.Span.Length;
 
-                if (length1 > 0)
+                if (length1 > length2)
                 {
-                    SyntaxTrivia indentation2 = SyntaxTriviaAnalysis.DetermineIndentation(nodeOrToken2, cancellationToken);
-
-                    int length2 = indentation2.Span.Length;
-
-                    if (length1 > length2)
-                    {
-                        return (indentation1, indentation2);
-                    }
+                    return (indentation1, indentation2);
                 }
-
-                return default;
             }
 
-            StatementSyntax GetContainedStatement(StatementSyntax statement)
+            return default;
+        }
+
+        StatementSyntax GetContainedStatement(StatementSyntax statement)
+        {
+            switch (statement.Kind())
             {
-                switch (statement.Kind())
-                {
-                    case SyntaxKind.WhileStatement:
-                        return ((WhileStatementSyntax)statement).Statement;
+                case SyntaxKind.WhileStatement:
+                    return ((WhileStatementSyntax)statement).Statement;
 
-                    case SyntaxKind.DoStatement:
-                        return ((DoStatementSyntax)statement).Statement;
+                case SyntaxKind.DoStatement:
+                    return ((DoStatementSyntax)statement).Statement;
 
-                    case SyntaxKind.ForStatement:
-                        return ((ForStatementSyntax)statement).Statement;
+                case SyntaxKind.ForStatement:
+                    return ((ForStatementSyntax)statement).Statement;
 
-                    case SyntaxKind.ForEachStatement:
-                    case SyntaxKind.ForEachVariableStatement:
-                        return ((CommonForEachStatementSyntax)statement).Statement;
+                case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
+                    return ((CommonForEachStatementSyntax)statement).Statement;
 
-                    case SyntaxKind.UsingStatement:
-                        return ((UsingStatementSyntax)statement).Statement;
+                case SyntaxKind.UsingStatement:
+                    return ((UsingStatementSyntax)statement).Statement;
 
-                    case SyntaxKind.FixedStatement:
-                        return ((FixedStatementSyntax)statement).Statement;
+                case SyntaxKind.FixedStatement:
+                    return ((FixedStatementSyntax)statement).Statement;
 
-                    case SyntaxKind.CheckedStatement:
-                    case SyntaxKind.UncheckedStatement:
-                        return ((CheckedStatementSyntax)statement).Block;
+                case SyntaxKind.CheckedStatement:
+                case SyntaxKind.UncheckedStatement:
+                    return ((CheckedStatementSyntax)statement).Block;
 
-                    case SyntaxKind.UnsafeStatement:
-                        return ((UnsafeStatementSyntax)statement).Block;
+                case SyntaxKind.UnsafeStatement:
+                    return ((UnsafeStatementSyntax)statement).Block;
 
-                    case SyntaxKind.LockStatement:
-                        return ((LockStatementSyntax)statement).Statement;
+                case SyntaxKind.LockStatement:
+                    return ((LockStatementSyntax)statement).Statement;
 
-                    case SyntaxKind.IfStatement:
-                        return ((IfStatementSyntax)statement).Statement;
+                case SyntaxKind.IfStatement:
+                    return ((IfStatementSyntax)statement).Statement;
 
-                    case SyntaxKind.TryStatement:
-                        return ((TryStatementSyntax)statement).Block;
+                case SyntaxKind.TryStatement:
+                    return ((TryStatementSyntax)statement).Block;
 
-                    default:
-                        return null;
-                }
+                default:
+                    return null;
             }
         }
     }

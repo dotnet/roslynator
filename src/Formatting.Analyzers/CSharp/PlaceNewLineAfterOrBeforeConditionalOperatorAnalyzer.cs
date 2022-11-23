@@ -8,97 +8,96 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class PlaceNewLineAfterOrBeforeConditionalOperatorAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class PlaceNewLineAfterOrBeforeConditionalOperatorAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator);
-                }
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator);
+            }
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeConditionalExpression(f), SyntaxKind.ConditionalExpression);
+    }
+
+    private static void AnalyzeConditionalExpression(SyntaxNodeAnalysisContext context)
+    {
+        var conditionalExpression = (ConditionalExpressionSyntax)context.Node;
+
+        ExpressionSyntax condition = conditionalExpression.Condition;
+
+        if (condition.IsMissing)
+            return;
+
+        ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
+
+        if (whenTrue.IsMissing)
+            return;
+
+        NewLinePosition newLinePosition = context.GetConditionalExpressionNewLinePosition();
+
+        if (newLinePosition == NewLinePosition.None)
+            return;
+
+        if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(condition, conditionalExpression.QuestionToken, whenTrue))
+        {
+            if (newLinePosition == NewLinePosition.Before)
+            {
+                ReportDiagnostic(conditionalExpression.QuestionToken, ImmutableDictionary<string, string>.Empty, "before");
+                return;
+            }
+        }
+        else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(condition, conditionalExpression.QuestionToken, whenTrue))
+        {
+            if (newLinePosition == NewLinePosition.After)
+            {
+                ReportDiagnostic(conditionalExpression.QuestionToken, DiagnosticProperties.AnalyzerOption_Invert, "after");
+                return;
             }
         }
 
-        public override void Initialize(AnalysisContext context)
+        ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
+
+        if (!whenFalse.IsMissing)
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeConditionalExpression(f), SyntaxKind.ConditionalExpression);
-        }
-
-        private static void AnalyzeConditionalExpression(SyntaxNodeAnalysisContext context)
-        {
-            var conditionalExpression = (ConditionalExpressionSyntax)context.Node;
-
-            ExpressionSyntax condition = conditionalExpression.Condition;
-
-            if (condition.IsMissing)
-                return;
-
-            ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
-
-            if (whenTrue.IsMissing)
-                return;
-
-            NewLinePosition newLinePosition = context.GetConditionalExpressionNewLinePosition();
-
-            if (newLinePosition == NewLinePosition.None)
-                return;
-
-            if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(condition, conditionalExpression.QuestionToken, whenTrue))
+            if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(whenTrue, conditionalExpression.ColonToken, whenFalse))
             {
                 if (newLinePosition == NewLinePosition.Before)
-                {
-                    ReportDiagnostic(conditionalExpression.QuestionToken, ImmutableDictionary<string, string>.Empty, "before");
-                    return;
-                }
+                    ReportDiagnostic(conditionalExpression.ColonToken, ImmutableDictionary<string, string>.Empty, "before");
             }
-            else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(condition, conditionalExpression.QuestionToken, whenTrue))
+            else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(whenTrue, conditionalExpression.ColonToken, whenFalse))
             {
                 if (newLinePosition == NewLinePosition.After)
-                {
-                    ReportDiagnostic(conditionalExpression.QuestionToken, DiagnosticProperties.AnalyzerOption_Invert, "after");
-                    return;
-                }
+                    ReportDiagnostic(conditionalExpression.ColonToken, DiagnosticProperties.AnalyzerOption_Invert, "after");
             }
+        }
 
-            ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
-
-            if (!whenFalse.IsMissing)
-            {
-                if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(whenTrue, conditionalExpression.ColonToken, whenFalse))
-                {
-                    if (newLinePosition == NewLinePosition.Before)
-                        ReportDiagnostic(conditionalExpression.ColonToken, ImmutableDictionary<string, string>.Empty, "before");
-                }
-                else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(whenTrue, conditionalExpression.ColonToken, whenFalse))
-                {
-                    if (newLinePosition == NewLinePosition.After)
-                        ReportDiagnostic(conditionalExpression.ColonToken, DiagnosticProperties.AnalyzerOption_Invert, "after");
-                }
-            }
-
-            void ReportDiagnostic(
-                SyntaxToken token,
-                ImmutableDictionary<string, string> properties,
-                string messageArg)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator,
-                    Location.Create(token.SyntaxTree, token.Span.WithLength(0)),
-                    properties: properties,
-                    messageArg);
-            }
+        void ReportDiagnostic(
+            SyntaxToken token,
+            ImmutableDictionary<string, string> properties,
+            string messageArg)
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator,
+                Location.Create(token.SyntaxTree, token.Span.WithLength(0)),
+                properties: properties,
+                messageArg);
         }
     }
 }

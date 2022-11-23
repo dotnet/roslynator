@@ -6,27 +6,26 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UnnecessaryInterpolationRefactoring
 {
-    internal static class UnnecessaryInterpolationRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        InterpolationSyntax interpolation,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InterpolationSyntax interpolation,
-            CancellationToken cancellationToken = default)
-        {
-            var interpolatedString = (InterpolatedStringExpressionSyntax)interpolation.Parent;
+        var interpolatedString = (InterpolatedStringExpressionSyntax)interpolation.Parent;
 
-            string s = interpolatedString.ToString();
+        string s = interpolatedString.ToString();
 
-            s = s.Substring(0, interpolation.SpanStart - interpolatedString.SpanStart)
-                + StringUtility.DoubleBraces(SyntaxInfo.StringLiteralExpressionInfo(interpolation.Expression).InnerText)
-                + s.Substring(interpolation.Span.End - interpolatedString.SpanStart);
+        s = s.Substring(0, interpolation.SpanStart - interpolatedString.SpanStart)
+            + StringUtility.DoubleBraces(SyntaxInfo.StringLiteralExpressionInfo(interpolation.Expression).InnerText)
+            + s.Substring(interpolation.Span.End - interpolatedString.SpanStart);
 
-            var newInterpolatedString = (InterpolatedStringExpressionSyntax)SyntaxFactory.ParseExpression(s)
-                .WithTriviaFrom(interpolatedString);
+        var newInterpolatedString = (InterpolatedStringExpressionSyntax)SyntaxFactory.ParseExpression(s)
+            .WithTriviaFrom(interpolatedString);
 
-            return document.ReplaceNodeAsync(interpolatedString, newInterpolatedString, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(interpolatedString, newInterpolatedString, cancellationToken);
     }
 }

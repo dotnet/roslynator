@@ -7,32 +7,31 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveRedundantDelegateCreationRefactoring
 {
-    internal static class RemoveRedundantDelegateCreationRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ObjectCreationExpressionSyntax objectCreation,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ObjectCreationExpressionSyntax objectCreation,
-            CancellationToken cancellationToken)
-        {
-            ExpressionSyntax expression = objectCreation
-                .ArgumentList
-                .Arguments[0]
-                .Expression;
+        ExpressionSyntax expression = objectCreation
+            .ArgumentList
+            .Arguments[0]
+            .Expression;
 
-            IEnumerable<SyntaxTrivia> leadingTrivia = objectCreation
-                .DescendantTrivia(TextSpan.FromBounds(objectCreation.FullSpan.Start, expression.SpanStart));
+        IEnumerable<SyntaxTrivia> leadingTrivia = objectCreation
+            .DescendantTrivia(TextSpan.FromBounds(objectCreation.FullSpan.Start, expression.SpanStart));
 
-            IEnumerable<SyntaxTrivia> trailingTrivia = objectCreation
-                .DescendantTrivia(TextSpan.FromBounds(expression.Span.End, objectCreation.FullSpan.End));
+        IEnumerable<SyntaxTrivia> trailingTrivia = objectCreation
+            .DescendantTrivia(TextSpan.FromBounds(expression.Span.End, objectCreation.FullSpan.End));
 
-            ExpressionSyntax newExpression = expression
-                .WithLeadingTrivia(leadingTrivia)
-                .WithTrailingTrivia(trailingTrivia)
-                .WithFormatterAnnotation();
+        ExpressionSyntax newExpression = expression
+            .WithLeadingTrivia(leadingTrivia)
+            .WithTrailingTrivia(trailingTrivia)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(objectCreation, newExpression, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(objectCreation, newExpression, cancellationToken);
     }
 }

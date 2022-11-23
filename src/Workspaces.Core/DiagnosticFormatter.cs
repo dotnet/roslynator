@@ -6,77 +6,76 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Text;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class DiagnosticFormatter
 {
-    internal static class DiagnosticFormatter
+    public static string FormatDiagnostic(
+        Diagnostic diagnostic,
+        string baseDirectoryPath = null,
+        IFormatProvider formatProvider = null)
     {
-        public static string FormatDiagnostic(
-            Diagnostic diagnostic,
-            string baseDirectoryPath = null,
-            IFormatProvider formatProvider = null)
+        StringBuilder sb = StringBuilderCache.GetInstance();
+
+        FormatLocation(diagnostic.Location, baseDirectoryPath, ref sb);
+
+        sb.Append(GetSeverityText(diagnostic.Severity));
+        sb.Append(' ');
+        sb.Append(diagnostic.Id);
+        sb.Append(": ");
+
+        string message = diagnostic.GetMessage(formatProvider);
+
+        sb.Append(message);
+
+        return StringBuilderCache.GetStringAndFree(sb);
+    }
+
+    internal static void FormatLocation(
+        Location location,
+        string baseDirectoryPath,
+        ref StringBuilder sb)
+    {
+        switch (location.Kind)
         {
-            StringBuilder sb = StringBuilderCache.GetInstance();
+            case LocationKind.SourceFile:
+            case LocationKind.XmlFile:
+            case LocationKind.ExternalFile:
+                {
+                    FileLinePositionSpan span = location.GetMappedLineSpan();
 
-            FormatLocation(diagnostic.Location, baseDirectoryPath, ref sb);
-
-            sb.Append(GetSeverityText(diagnostic.Severity));
-            sb.Append(' ');
-            sb.Append(diagnostic.Id);
-            sb.Append(": ");
-
-            string message = diagnostic.GetMessage(formatProvider);
-
-            sb.Append(message);
-
-            return StringBuilderCache.GetStringAndFree(sb);
-        }
-
-        internal static void FormatLocation(
-            Location location,
-            string baseDirectoryPath,
-            ref StringBuilder sb)
-        {
-            switch (location.Kind)
-            {
-                case LocationKind.SourceFile:
-                case LocationKind.XmlFile:
-                case LocationKind.ExternalFile:
+                    if (span.IsValid)
                     {
-                        FileLinePositionSpan span = location.GetMappedLineSpan();
+                        sb.Append(PathUtilities.TrimStart(span.Path, baseDirectoryPath));
 
-                        if (span.IsValid)
-                        {
-                            sb.Append(PathUtilities.TrimStart(span.Path, baseDirectoryPath));
+                        LinePosition linePosition = span.StartLinePosition;
 
-                            LinePosition linePosition = span.StartLinePosition;
-
-                            sb.Append('(');
-                            sb.Append(linePosition.Line + 1);
-                            sb.Append(',');
-                            sb.Append(linePosition.Character + 1);
-                            sb.Append("): ");
-                        }
-
-                        break;
+                        sb.Append('(');
+                        sb.Append(linePosition.Line + 1);
+                        sb.Append(',');
+                        sb.Append(linePosition.Character + 1);
+                        sb.Append("): ");
                     }
-            }
-        }
 
-        private static string GetSeverityText(DiagnosticSeverity diagnosticSeverity)
+                    break;
+                }
+        }
+    }
+
+    private static string GetSeverityText(DiagnosticSeverity diagnosticSeverity)
+    {
+        switch (diagnosticSeverity)
         {
-            switch (diagnosticSeverity)
-            {
-                case DiagnosticSeverity.Hidden:
-                    return "hidden";
-                case DiagnosticSeverity.Info:
-                    return "info";
-                case DiagnosticSeverity.Warning:
-                    return "warning";
-                case DiagnosticSeverity.Error:
-                    return "error";
-                default:
-                    throw new InvalidOperationException();
-            }
+            case DiagnosticSeverity.Hidden:
+                return "hidden";
+            case DiagnosticSeverity.Info:
+                return "info";
+            case DiagnosticSeverity.Warning:
+                return "warning";
+            case DiagnosticSeverity.Error:
+                return "error";
+            default:
+                throw new InvalidOperationException();
         }
     }
 }

@@ -7,16 +7,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1129RemoveRedundantFieldInitializationTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantFieldInitializationAnalyzer, VariableDeclaratorCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantFieldInitialization;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_MultipleDeclarations()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1129RemoveRedundantFieldInitializationTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantFieldInitializationAnalyzer, VariableDeclaratorCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantFieldInitialization;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_MultipleDeclarations()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     object _f [|= null|], _f2;
@@ -27,12 +27,12 @@ class C
     object _f, _f2;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_Number()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_Number()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     sbyte _sb [|= (sbyte)0|];
@@ -63,12 +63,12 @@ class C
     decimal _dl;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_Bool()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_Bool()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     bool _f [|= false|];
@@ -79,12 +79,12 @@ class C
     bool _f;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_Bool_Nullable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_Bool_Nullable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     bool? _f [|= null|];
@@ -97,12 +97,12 @@ class C
     bool? _f2;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_Char()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_Char()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     char _f [|= '\0'|];
@@ -113,12 +113,12 @@ class C
     char _f;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_Int()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_Int()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     int _f [|= 0|];
@@ -129,12 +129,12 @@ class C
     int _f;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_ULong()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_ULong()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     ulong _f [|= 0|];
@@ -145,12 +145,12 @@ class C
     ulong _f;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_Enum()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_Enum()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -173,12 +173,12 @@ class C
     RegexOptions _f3;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task TestString()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task TestString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     const string K = null;
@@ -195,12 +195,12 @@ class C
     string _s2;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_StructWithoutConstructor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task Test_StructWithoutConstructor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 struct C
 {
     private int _f [|= 0|];
@@ -211,12 +211,12 @@ struct C
     private int _f;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -227,12 +227,12 @@ const bool K = false;
     RegexOptions _r = RegexOptions.None;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task TestNoDiagnostic_StructWithConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task TestNoDiagnostic_StructWithConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 struct C
 {
     private int _f = 0;
@@ -242,19 +242,18 @@ struct C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task TestNoDiagnostic_SuppressNullableWarningExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task TestNoDiagnostic_SuppressNullableWarningExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string _f = null!;
 }
 ", options: CSharpTestOptions.Default
-                .AddAllowedCompilerDiagnosticId("CS0414")
-                .WithParseOptions(CSharpTestOptions.Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp9)));
-        }
+            .AddAllowedCompilerDiagnosticId("CS0414")
+            .WithParseOptions(CSharpTestOptions.Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp9)));
     }
 }

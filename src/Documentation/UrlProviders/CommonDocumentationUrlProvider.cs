@@ -7,141 +7,134 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Roslynator.Text;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+internal abstract class CommonDocumentationUrlProvider : DocumentationUrlProvider
 {
-    internal abstract class CommonDocumentationUrlProvider : DocumentationUrlProvider
+    protected CommonDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
+        : base(segmentProvider, externalProviders)
     {
-        protected CommonDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
-            : base(segmentProvider, externalProviders)
+    }
+
+    private string LinkToSelf => _linkToSelf ??= "./" + IndexFileName;
+
+    private static readonly Regex _notWordCharOrHyphenOrSpaceRegex = new(@"[^\w- ]");
+
+    private string _linkToSelf;
+
+    public override string GetFileName(DocumentationFileKind kind)
+    {
+        switch (kind)
         {
+            case DocumentationFileKind.Root:
+            case DocumentationFileKind.Namespace:
+            case DocumentationFileKind.Type:
+            case DocumentationFileKind.Member:
+                return IndexFileName;
+            case DocumentationFileKind.Extensions:
+                return ExtensionsFileName;
+            default:
+                throw new ArgumentException("", nameof(kind));
         }
+    }
 
-        private string LinkToSelf
+    public override DocumentationUrlInfo GetLocalUrl(ImmutableArray<string> folders, ImmutableArray<string> containingFolders = default, string fragment = null)
+    {
+        if (!string.IsNullOrEmpty(fragment))
+            fragment = "#" + fragment;
+
+        string url = CreateLocalUrl();
+
+        return new DocumentationUrlInfo(url, DocumentationUrlKind.Local);
+
+        string CreateLocalUrl()
         {
-            get
-            {
-                if (_linkToSelf == null)
-                    _linkToSelf = "./" + IndexFileName;
+            if (containingFolders.IsDefault)
+                return GetUrl(IndexFileName, folders, '/') + fragment;
 
-                return _linkToSelf;
+            if (FoldersEqual(containingFolders, folders))
+                return (string.IsNullOrEmpty(fragment)) ? LinkToSelf : fragment;
+
+            int count = 0;
+
+            int i = 0;
+            int j = 0;
+
+            while (i < folders.Length
+                && j < containingFolders.Length
+                && string.Equals(folders[i], containingFolders[j], StringComparison.Ordinal))
+            {
+                count++;
+                i++;
+                j++;
             }
-        }
 
-        private static readonly Regex _notWordCharOrHyphenOrSpaceRegex = new(@"[^\w- ]");
+            int diff = containingFolders.Length - count;
 
-        private string _linkToSelf;
+            StringBuilder sb = StringBuilderCache.GetInstance();
 
-        public override string GetFileName(DocumentationFileKind kind)
-        {
-            switch (kind)
+            if (diff > 0)
             {
-                case DocumentationFileKind.Root:
-                case DocumentationFileKind.Namespace:
-                case DocumentationFileKind.Type:
-                case DocumentationFileKind.Member:
-                    return IndexFileName;
-                case DocumentationFileKind.Extensions:
-                    return ExtensionsFileName;
-                default:
-                    throw new ArgumentException("", nameof(kind));
-            }
-        }
+                sb.Append("..");
+                diff--;
 
-        public override DocumentationUrlInfo GetLocalUrl(ImmutableArray<string> folders, ImmutableArray<string> containingFolders = default, string fragment = null)
-        {
-            string url = CreateLocalUrl();
-
-            return new DocumentationUrlInfo(url, DocumentationUrlKind.Local);
-
-            string CreateLocalUrl()
-            {
-                if (containingFolders.IsDefault)
-                    return GetUrl(IndexFileName, folders, '/') + fragment;
-
-                if (FoldersEqual(containingFolders, folders))
-                    return (string.IsNullOrEmpty(fragment)) ? LinkToSelf : fragment;
-
-                int count = 0;
-
-                int i = 0;
-                int j = 0;
-
-                while (i < folders.Length
-                    && j < containingFolders.Length
-                    && string.Equals(folders[i], containingFolders[j], StringComparison.Ordinal))
+                while (diff > 0)
                 {
-                    count++;
-                    i++;
-                    j++;
-                }
-
-                int diff = containingFolders.Length - count;
-
-                StringBuilder sb = StringBuilderCache.GetInstance();
-
-                if (diff > 0)
-                {
-                    sb.Append("..");
+                    sb.Append("/..");
                     diff--;
-
-                    while (diff > 0)
-                    {
-                        sb.Append("/..");
-                        diff--;
-                    }
                 }
+            }
 
-                i = count;
+            i = count;
 
-                if (i < folders.Length)
+            if (i < folders.Length)
+            {
+                if (sb.Length > 0)
+                    sb.Append("/");
+
+                sb.Append(folders[i]);
+                i++;
+
+                while (i < folders.Length)
                 {
-                    if (sb.Length > 0)
-                        sb.Append("/");
-
+                    sb.Append("/");
                     sb.Append(folders[i]);
                     i++;
-
-                    while (i < folders.Length)
-                    {
-                        sb.Append("/");
-                        sb.Append(folders[i]);
-                        i++;
-                    }
                 }
-
-                sb.Append("/");
-                sb.Append(IndexFileName);
-
-                return StringBuilderCache.GetStringAndFree(sb) + fragment;
             }
 
-            static bool FoldersEqual(ImmutableArray<string> folders1, ImmutableArray<string> folders2)
-            {
-                int length = folders1.Length;
+            sb.Append("/");
+            sb.Append(IndexFileName);
 
-                if (length != folders2.Length)
-                    return false;
-
-                for (int i = 0; i < length; i++)
-                {
-                    if (folders1[i] != folders2[i])
-                        return false;
-                }
-
-                return true;
-            }
+            return StringBuilderCache.GetStringAndFree(sb) + fragment;
         }
 
-        public override string GetFragment(string value)
+        static bool FoldersEqual(ImmutableArray<string> folders1, ImmutableArray<string> folders2)
         {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
+            int length = folders1.Length;
 
-            value = _notWordCharOrHyphenOrSpaceRegex.Replace(value, "");
+            if (length != folders2.Length)
+                return false;
 
-            value = value.Replace(' ', '-');
+            for (int i = 0; i < length; i++)
+            {
+                if (folders1[i] != folders2[i])
+                    return false;
+            }
 
-            return "#" + value.ToLowerInvariant();
+            return true;
         }
+    }
+
+    public override string GetFragment(string value)
+    {
+        if (value is null)
+            throw new ArgumentNullException(nameof(value));
+
+        value = _notWordCharOrHyphenOrSpaceRegex.Replace(value, "");
+
+        value = value.Replace(' ', '-');
+
+        return "#" + value.ToLowerInvariant();
     }
 }

@@ -1,6 +1,10 @@
+<<<<<<<< HEAD:docs/api/Roslynator/CSharp/SyntaxAccessibility/WithExplicitAccessibility/index.md
 ---
 sidebar_label: WithExplicitAccessibility
 ---
+========
+# SyntaxAccessibility\.WithExplicitAccessibility\<TNode\>\(TNode, Accessibility, IComparer\<SyntaxKind\>\) Method
+>>>>>>>> main:docs/api/Roslynator/CSharp/SyntaxAccessibility/WithExplicitAccessibility/README.md
 
 # SyntaxAccessibility\.WithExplicitAccessibility&lt;TNode&gt;\(TNode, Accessibility, IComparer&lt;SyntaxKind&gt;\) Method
 
@@ -25,7 +29,11 @@ public static TNode WithExplicitAccessibility<TNode>(TNode node, Microsoft.CodeA
 
 **newAccessibility** &ensp; [Accessibility](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.accessibility)
 
+<<<<<<<< HEAD:docs/api/Roslynator/CSharp/SyntaxAccessibility/WithExplicitAccessibility/index.md
 **comparer** &ensp; [IComparer](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.icomparer-1)&lt;[SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)&gt;
+========
+**comparer** &ensp; [IComparer](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.icomparer-1)\<[SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)\>
+>>>>>>>> main:docs/api/Roslynator/CSharp/SyntaxAccessibility/WithExplicitAccessibility/README.md
 
 ### Returns
 

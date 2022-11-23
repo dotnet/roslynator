@@ -2,51 +2,50 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class RoslynSymbolUtility
 {
-    internal static class RoslynSymbolUtility
+    public static bool IsList(INamedTypeSymbol typeSymbol)
     {
-        public static bool IsList(INamedTypeSymbol typeSymbol)
+        switch (typeSymbol?.MetadataName)
         {
-            switch (typeSymbol?.MetadataName)
-            {
-                case "ChildSyntaxList":
-                case "SeparatedSyntaxList`1":
-                case "SyntaxList`1":
-                case "SyntaxNodeOrTokenList":
-                case "SyntaxTokenList":
-                case "SyntaxTriviaList":
-                    {
-                        return typeSymbol.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis);
-                    }
-            }
-
-            return false;
-        }
-
-        public static bool IsRoslynType(ISymbol symbol)
-        {
-            INamespaceSymbol namespaceSymbol = symbol?.ContainingNamespace;
-
-            while (namespaceSymbol?.IsGlobalNamespace == false)
-            {
-                if (namespaceSymbol.Name == "CodeAnalysis")
+            case "ChildSyntaxList":
+            case "SeparatedSyntaxList`1":
+            case "SyntaxList`1":
+            case "SyntaxNodeOrTokenList":
+            case "SyntaxTokenList":
+            case "SyntaxTriviaList":
                 {
-                    INamespaceSymbol containingNamespace = namespaceSymbol.ContainingNamespace;
-
-                    if (containingNamespace?.Name == "Microsoft")
-                    {
-                        containingNamespace = containingNamespace.ContainingNamespace;
-
-                        if (containingNamespace?.IsGlobalNamespace == true)
-                            return true;
-                    }
+                    return typeSymbol.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis);
                 }
+        }
 
-                namespaceSymbol = namespaceSymbol.ContainingNamespace;
+        return false;
+    }
+
+    public static bool IsRoslynType(ISymbol symbol)
+    {
+        INamespaceSymbol namespaceSymbol = symbol?.ContainingNamespace;
+
+        while (namespaceSymbol?.IsGlobalNamespace == false)
+        {
+            if (namespaceSymbol.Name == "CodeAnalysis")
+            {
+                INamespaceSymbol containingNamespace = namespaceSymbol.ContainingNamespace;
+
+                if (containingNamespace?.Name == "Microsoft")
+                {
+                    containingNamespace = containingNamespace.ContainingNamespace;
+
+                    if (containingNamespace?.IsGlobalNamespace == true)
+                        return true;
+                }
             }
 
-            return false;
+            namespaceSymbol = namespaceSymbol.ContainingNamespace;
         }
+
+        return false;
     }
 }

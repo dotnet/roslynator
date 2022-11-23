@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0106ModifierIsNotValidForThisItemTests : AbstractCSharpCompilerDiagnosticFixVerifier<ModifiersCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem)]
-        public async Task Test_VirtualModifierInStruct()
-        {
-            await VerifyFixAsync(@"
+public class CS0106ModifierIsNotValidForThisItemTests : AbstractCSharpCompilerDiagnosticFixVerifier<ModifiersCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem)]
+    public async Task Test_VirtualModifierInStruct()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 struct S
@@ -40,12 +40,12 @@ struct S
     public event EventHandler E;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem)]
-        public async Task Test_AsyncModifier()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem)]
+    public async Task Test_AsyncModifier()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 struct S
@@ -68,6 +68,5 @@ struct S
     public event EventHandler E;
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

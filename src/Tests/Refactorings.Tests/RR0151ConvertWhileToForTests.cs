@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0151ConvertWhileToForTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertWhileToFor;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0151ConvertWhileToForTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertWhileToFor;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -46,12 +46,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task Test2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task Test2()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -88,12 +88,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task Test_WithContinue()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task Test_WithContinue()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -127,12 +127,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task Test_OnlyContinue()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task Test_OnlyContinue()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -165,12 +165,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task Test_TwoVariables()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task Test_TwoVariables()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -205,12 +205,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task Test_VariableReferencedInsideWhileStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task Test_VariableReferencedInsideWhileStatement()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -241,12 +241,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task Test_VariableReferencedAfterWhileStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task Test_VariableReferencedAfterWhileStatement()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -284,12 +284,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task Test_SelectedStatements()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task Test_SelectedStatements()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -325,12 +325,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task TestNoRefactoring_SelectedStatements_MixedStatements()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task TestNoRefactoring_SelectedStatements_MixedStatements()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -349,12 +349,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task TestNoRefactoring_SelectedStatements_MixedStatements2()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task TestNoRefactoring_SelectedStatements_MixedStatements2()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -373,12 +373,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task TestNoRefactoring_SelectedStatements_TypesAreNotEqual()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task TestNoRefactoring_SelectedStatements_TypesAreNotEqual()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -397,12 +397,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
-        public async Task TestNoRefactoring_SelectedStatements_VariableReferencedAfterWhileStatement()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+    public async Task TestNoRefactoring_SelectedStatements_VariableReferencedAfterWhileStatement()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -422,6 +422,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

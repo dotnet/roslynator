@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0169ConvertBlockBodyToExpressionBodyTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_Constructor()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0169ConvertBlockBodyToExpressionBodyTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Constructor()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public C()
@@ -31,12 +31,12 @@ class C
     void M() { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_Destructor()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Destructor()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     ~C()
@@ -54,12 +54,12 @@ class C
     void M() { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_Method()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Method()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string M()
@@ -73,12 +73,12 @@ class C
     string M() => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_VoidMethod()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_VoidMethod()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -92,12 +92,12 @@ class C
     void M() => M();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_LocalFunction()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_LocalFunction()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -117,12 +117,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_VoidLocalFunction()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_VoidLocalFunction()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -142,12 +142,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_PropertyWithGetter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_PropertyWithGetter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string P
@@ -161,12 +161,12 @@ class C
     string P => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_PropertyWithGetterAndSetter_Getter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_PropertyWithGetterAndSetter_Getter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -189,12 +189,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_PropertyWithGetterAndSetter_Setter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_PropertyWithGetterAndSetter_Setter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -217,12 +217,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_PropertyWithGetterAndInitSetter_InitSetter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_PropertyWithGetterAndInitSetter_InitSetter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -245,12 +245,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_IndexerWithGetter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_IndexerWithGetter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string this[int index]
@@ -264,12 +264,12 @@ class C
     string this[int index] => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_IndexerWithGetterAndSetter_Getter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_IndexerWithGetterAndSetter_Getter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -292,12 +292,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_IndexerWithGetterAndSetter_Setter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_IndexerWithGetterAndSetter_Setter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -320,12 +320,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_Operator()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Operator()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public static C operator !(C value)
@@ -339,12 +339,12 @@ class C
     public static C operator !(C value) => value;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_ConversionOperator()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_ConversionOperator()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public static explicit operator C(string value)
@@ -358,12 +358,12 @@ class C
     public static explicit operator C(string value) => new C();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_Constructor_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Constructor_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public C()
@@ -381,12 +381,12 @@ class C
     void M() { }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_Destructor_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Destructor_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     ~C()
@@ -400,12 +400,12 @@ class C
     ~C() => throw new System.NotImplementedException();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_Method_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Method_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string M()
@@ -419,12 +419,12 @@ class C
     string M() => throw new System.NotImplementedException();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_VoidMethod_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_VoidMethod_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -438,12 +438,12 @@ class C
     void M() => throw new System.NotImplementedException();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_LocalFunction_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_LocalFunction_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -463,12 +463,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_VoidLocalFunction_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_VoidLocalFunction_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -488,12 +488,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_PropertyWithGetter_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_PropertyWithGetter_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string P
@@ -507,12 +507,12 @@ class C
     string P => throw new System.NotImplementedException();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_PropertyWithGetterAndSetter_Getter_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_PropertyWithGetterAndSetter_Getter_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -535,12 +535,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_PropertyWithGetterAndSetter_Setter_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_PropertyWithGetterAndSetter_Setter_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -563,12 +563,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_IndexerWithGetter_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_IndexerWithGetter_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string this[int index]
@@ -582,12 +582,12 @@ class C
     string this[int index] => throw new System.NotImplementedException();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_IndexerWithGetterAndSetter_Getter_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_IndexerWithGetterAndSetter_Getter_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -610,12 +610,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_IndexerWithGetterAndSetter_Setter_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_IndexerWithGetterAndSetter_Setter_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -638,12 +638,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_Operator_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_Operator_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public static C operator !(C value)
@@ -657,12 +657,12 @@ class C
     public static C operator !(C value) => throw new System.NotImplementedException();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_ConversionOperator_Throw()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_ConversionOperator_Throw()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public static explicit operator C(string value)
@@ -676,12 +676,12 @@ class C
     public static explicit operator C(string value) => throw new System.NotImplementedException();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_MultipleMembers()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_MultipleMembers()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|    public C()
@@ -744,12 +744,12 @@ class C
     public static C operator !(C value) => default;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task Test_MultipleMembers_FirstAndLast()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task Test_MultipleMembers_FirstAndLast()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|    public C()
@@ -774,12 +774,12 @@ class C
     public string P => default;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task TestNoRefactoring_MultipleMembers()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task TestNoRefactoring_MultipleMembers()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
 [|    string M()
@@ -790,12 +790,12 @@ class C
     string M2() => default;|]
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task TestNoDiagnostic_MethodWithMultipleStatements()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task TestNoDiagnostic_MethodWithMultipleStatements()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     string M()
@@ -805,12 +805,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task TestNoDiagnostic_MethodWithLocalFunction()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task TestNoDiagnostic_MethodWithLocalFunction()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -819,12 +819,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task TestNoDiagnostic_VoidMethodWithNoStatements()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task TestNoDiagnostic_VoidMethodWithNoStatements()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -832,12 +832,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task TestNoDiagnostic_VoidMethodWithMultipleStatements()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task TestNoDiagnostic_VoidMethodWithMultipleStatements()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -847,12 +847,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task TestNoDiagnostic_PropertyWithMultipleStatement()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task TestNoDiagnostic_PropertyWithMultipleStatement()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     string P
@@ -867,12 +867,12 @@ class C
     string M() => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task TestNoDiagnostic_AccessorWithAttribute()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task TestNoDiagnostic_AccessorWithAttribute()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Diagnostics;
 
 class C
@@ -887,12 +887,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
-        public async Task TestNoDiagnostic_IndexerWithMultipleStatements()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+    public async Task TestNoDiagnostic_IndexerWithMultipleStatements()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Diagnostics;
 
 class C
@@ -909,6 +909,5 @@ class C
     string M() => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

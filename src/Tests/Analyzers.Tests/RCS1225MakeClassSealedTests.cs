@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1225MakeClassSealedTests : AbstractCSharpDiagnosticVerifier<MakeClassSealedAnalyzer, ClassDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeClassSealed;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task Test_ClassWithoutAccessibilityModifier()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1225MakeClassSealedTests : AbstractCSharpDiagnosticVerifier<MakeClassSealedAnalyzer, ClassDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeClassSealed;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task Test_ClassWithoutAccessibilityModifier()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class [|C|]
 {
     private C()
@@ -30,12 +30,12 @@ sealed class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task Test_ClassWithAccessibilityModifier()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task Test_ClassWithAccessibilityModifier()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class [|C|]
 {
     private C()
@@ -50,12 +50,12 @@ public sealed class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task Test_ClassWithTwoConstructors()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task Test_ClassWithTwoConstructors()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class [|C|]
 {
     private C()
@@ -78,12 +78,12 @@ public sealed class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task TestNoDiagnostic_StaticClass()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task TestNoDiagnostic_StaticClass()
+    {
+        await VerifyNoDiagnosticAsync(@"
 static class C
 {
     static C()
@@ -91,12 +91,12 @@ static class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task TestNoDiagnostic_SealedClass()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task TestNoDiagnostic_SealedClass()
+    {
+        await VerifyNoDiagnosticAsync(@"
 sealed class C
 {
     private C()
@@ -104,12 +104,12 @@ sealed class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task TestNoDiagnostic_ProtectedConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task TestNoDiagnostic_ProtectedConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     protected C()
@@ -117,22 +117,22 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task TestNoDiagnostic_NoExplicitConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task TestNoDiagnostic_NoExplicitConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task TestNoDiagnostic_VirtualMember()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task TestNoDiagnostic_VirtualMember()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     private C()
@@ -144,12 +144,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task TestNoDiagnostic_ContainsDerivedClass()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task TestNoDiagnostic_ContainsDerivedClass()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class B
 {
     private B()
@@ -164,12 +164,12 @@ class B
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
-        public async Task TestNoDiagnostic_ContainsDerivedClass2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+    public async Task TestNoDiagnostic_ContainsDerivedClass2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class B
 {
     private B()
@@ -187,6 +187,5 @@ class B
     }
 }
 ");
-        }
     }
 }

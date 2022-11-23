@@ -12,10 +12,12 @@ sidebar_label: BracketedParameterList
 
 | Method | Summary |
 | ------ | ------- |
-| [BracketedParameterList(ParameterSyntax)](#Roslynator_CSharp_CSharpFactory_BracketedParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterSyntax_) | |
-| [BracketedParameterList(ParameterSyntax\[\])](#Roslynator_CSharp_CSharpFactory_BracketedParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterSyntax___) | |
+| [BracketedParameterList(ParameterSyntax)](#2163265959) | |
+| [BracketedParameterList(ParameterSyntax\[\])](#2660101651) | |
 
-## BracketedParameterList\(ParameterSyntax\) <a id="Roslynator_CSharp_CSharpFactory_BracketedParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterSyntax_"></a>
+<a id="2163265959"></a>
+
+## BracketedParameterList\(ParameterSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BracketedParameterListSyntax BracketedParameterList(Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax parameter)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.BracketedParameterListSyntax 
 
 [BracketedParameterListSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.bracketedparameterlistsyntax)
 
-## BracketedParameterList\(ParameterSyntax\[\]\) <a id="Roslynator_CSharp_CSharpFactory_BracketedParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterSyntax___"></a>
+<a id="2660101651"></a>
+
+## BracketedParameterList\(ParameterSyntax\[\]\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BracketedParameterListSyntax BracketedParameterList(params Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax[] parameters)

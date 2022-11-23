@@ -4,85 +4,84 @@ using System;
 using System.Diagnostics;
 using System.Text;
 
-namespace Roslynator
+namespace Roslynator;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public class CommandOption
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class CommandOption
+    public CommandOption(
+        string name,
+        string shortName = null,
+        string metaValue = null,
+        string description = null,
+        string additionalDescription = null,
+        bool isRequired = false,
+        string valueProviderName = null)
     {
-        public CommandOption(
-            string name,
-            string shortName = null,
-            string metaValue = null,
-            string description = null,
-            string additionalDescription = null,
-            bool isRequired = false,
-            string valueProviderName = null)
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        ShortName = shortName;
+        Description = description;
+        AdditionalDescription = additionalDescription;
+        IsRequired = isRequired;
+        MetaValue = metaValue;
+        ValueProviderName = valueProviderName;
+    }
+
+    public string Name { get; }
+
+    public string ShortName { get; }
+
+    public string MetaValue { get; }
+
+    public string Description { get; }
+
+    public string AdditionalDescription { get; }
+
+    public string FullDescription => Description + AdditionalDescription;
+
+    public bool IsRequired { get; }
+
+    public string ValueProviderName { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            ShortName = shortName;
-            Description = description;
-            AdditionalDescription = additionalDescription;
-            IsRequired = isRequired;
-            MetaValue = metaValue;
-            ValueProviderName = valueProviderName;
-        }
+            var sb = new StringBuilder();
 
-        public string Name { get; }
+            if (!IsRequired)
+                sb.Append("[");
 
-        public string ShortName { get; }
-
-        public string MetaValue { get; }
-
-        public string Description { get; }
-
-        public string AdditionalDescription { get; }
-
-        public string FullDescription => Description + AdditionalDescription;
-
-        public bool IsRequired { get; }
-
-        public string ValueProviderName { get; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get
+            if (!string.IsNullOrEmpty(ShortName))
             {
-                var sb = new StringBuilder();
-
-                if (!IsRequired)
-                    sb.Append("[");
-
-                if (!string.IsNullOrEmpty(ShortName))
-                {
-                    sb.Append("-");
-                    sb.Append(ShortName);
-                    sb.Append("|");
-                }
-
-                if (!string.IsNullOrEmpty(Name))
-                {
-                    sb.Append("--");
-                    sb.Append(Name);
-                }
-
-                if (!IsRequired)
-                    sb.Append("]");
-
-                if (!string.IsNullOrEmpty(MetaValue))
-                {
-                    sb.Append("  ");
-                    sb.Append(MetaValue);
-                }
-
-                if (!string.IsNullOrEmpty(Description))
-                {
-                    sb.Append("  ");
-                    sb.Append(Description);
-                }
-
-                return sb.ToString();
+                sb.Append("-");
+                sb.Append(ShortName);
+                sb.Append("|");
             }
+
+            if (!string.IsNullOrEmpty(Name))
+            {
+                sb.Append("--");
+                sb.Append(Name);
+            }
+
+            if (!IsRequired)
+                sb.Append("]");
+
+            if (!string.IsNullOrEmpty(MetaValue))
+            {
+                sb.Append("  ");
+                sb.Append(MetaValue);
+            }
+
+            if (!string.IsNullOrEmpty(Description))
+            {
+                sb.Append("  ");
+                sb.Append(Description);
+            }
+
+            return sb.ToString();
         }
     }
 }

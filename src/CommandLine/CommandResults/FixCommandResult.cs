@@ -3,16 +3,15 @@
 using System.Collections.Immutable;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CommandLine
-{
-    internal class FixCommandResult : CommandResult
-    {
-        public FixCommandResult(CommandStatus status, ImmutableArray<ProjectFixResult> fixResults)
-            : base(status)
-        {
-            FixResults = fixResults;
-        }
+namespace Roslynator.CommandLine;
 
-        public ImmutableArray<ProjectFixResult> FixResults { get; }
+internal class FixCommandResult : CommandResult
+{
+    public FixCommandResult(CommandStatus status, ImmutableArray<ProjectFixResult> fixResults)
+        : base(status)
+    {
+        FixResults = fixResults;
     }
+
+    public ImmutableArray<ProjectFixResult> FixResults { get; }
 }

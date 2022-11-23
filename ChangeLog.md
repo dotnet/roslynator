@@ -9,10 +9,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add Arm64 VS 2022 extension support ([#990](https://github.com/JosefPihrt/Roslynator/pull/990) by @snickler).
+- Add analyzer "Add/remove blank line after file scoped namespace declaration" ([RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md)) ([#993](https://github.com/josefpihrt/roslynator/pull/993)).
+  - Required option: `roslynator_blank_line_after_file_scoped_namespace_declaration = true|false`
+  - Not enabled by default.
+- Add analyzer "Simplify argument null check" ([RCS1255](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1255.md)) ([#994](https://github.com/JosefPihrt/Roslynator/pull/994)).
+  - Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.
+  - Not enabled by default.
+- Add analyzer "Invalid argument null check" ([RCS1256](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#888](https://github.com/JosefPihrt/Roslynator/pull/888)).
+  - This analyzer reports null checks of arguments that are:
+    - annotated as nullable reference type.
+    - optional and its default value is `null`.
+- Add package `Roslynator.Testing.CSharp.MSTest` ([#997](https://github.com/JosefPihrt/Roslynator/pull/997)).
+
+### Changed
+
+- Disable [RCS1080](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1080.md) by default ([#980](https://github.com/josefpihrt/roslynator/pull/980)).
+- [CLI] Bump Roslyn to 4.4.0 ([#998](https://github.com/josefpihrt/roslynator/pull/998)).
+
+### Fixed
+
+- Fix [RCS1080](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1080.md) when collection is derived from `List<T>` ([#986](https://github.com/josefpihrt/roslynator/pull/986)).
+- Fix retrieving of trusted platform assemblies - separator differs by OS ([#987](https://github.com/josefpihrt/roslynator/pull/987)).
+- Fix refactoring ([RR0014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0014.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988)).
+- Fix refactoring ([RR0180](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0180.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988)).
+- Recognize `ArgumentNullException.ThrowIfNull` ([RCS1227](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1227.md)) ([#992](https://github.com/josefpihrt/roslynator/pull/992)).
+- Detect pattern matching in [RCS1146](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1146.md) ([#999](https://github.com/josefpihrt/roslynator/pull/999)).
+
+## [4.1.2] - 2022-10-31
+
+### Added
+
 - Convert more syntax to implicit object creation (RCS1250) ([#910](https://github.com/josefpihrt/roslynator/pull/910)).
 - Add code fix for CS0037 ([#929](https://github.com/josefpihrt/roslynator/pull/929)).
 - [CLI] Generate reference documentation that can be published with Docusaurus ([#918](https://github.com/josefpihrt/roslynator/pull/918)).
   - `roslynator generate-doc --host docusaurus`
+- [CLI] Generate reference documentation that can be published with Sphinx ([#961](https://github.com/josefpihrt/roslynator/pull/961)).
+  - `roslynator generate-doc --host sphinx`
+- [CLI] Basic support for `<inheritdoc />` when generating documentation (`generate-doc` command) ([#972](https://github.com/josefpihrt/roslynator/pull/972)).
+- [CLI] Add option `ignored-title-parts` (`generate-doc` command) ([#975](https://github.com/josefpihrt/roslynator/pull/975)).
+- Publish Roslynator to [Open VSX Registry](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) ([#820](https://github.com/JosefPihrt/Roslynator/issues/820)).
 
 ### Changed
 
@@ -20,6 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Format changelog according to 'Keep a Changelog' ([#915](https://github.com/josefpihrt/roslynator/pull/915)).
 - [CLI] Improve release build of command-line tool ([#912](https://github.com/josefpihrt/roslynator/pull/912)).
 - Do not sort properties in an initializer ([RR0216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0216.md)).
+- [CLI] Bump Roslyn to 4.3.1 ([#969](https://github.com/josefpihrt/roslynator/pull/969)).
+- [CLI] Bump Microsoft.Build.Locator to 1.5.5 ([#969](https://github.com/josefpihrt/roslynator/pull/969)).
 
 ### Fixed
 
@@ -28,6 +66,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add parentheses if necessary in a code fix for [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1197.md) ([#928](https://github.com/josefpihrt/roslynator/pull/928) by @karl-sjogren).
 - Do not simplify default expression if it would change semantics ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#939](https://github.com/josefpihrt/roslynator/pull/939).
 - Fix NullReferenceException in [RCS1198](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1198.md) ([#940](https://github.com/josefpihrt/roslynator/pull/940).
+- Order named arguments even if optional arguments are not specified [RCS1205](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1205.md) ([#941](https://github.com/josefpihrt/roslynator/pull/941), ([#965](https://github.com/josefpihrt/roslynator/pull/965).
+- Prefix identifier with `@` if necessary ([RCS1220](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1220.md)) ([#943](https://github.com/josefpihrt/roslynator/pull/943).
+- Do not suggest to make local variable a const when it is used in ref extension method ([RCS1118](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1118.md)) ([#948](https://github.com/josefpihrt/roslynator/pull/948).
+- Fix formatting of argument list ([#952](https://github.com/josefpihrt/roslynator/pull/952).
+- Do not remove async/await when 'using declaration' is used ([#953](https://github.com/josefpihrt/roslynator/pull/953).
+- Convert if-else to return statement when pattern matching is used ([RCS1073](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1073.md)) ([#956](https://github.com/josefpihrt/roslynator/pull/956).
+- [CLI] Include compiler diagnostics in the xml output file of the `roslynator analyze` command ([#964](https://github.com/JosefPihrt/Roslynator/pull/964) by @PeterKaszab).
+- Do not simplify 'default' expression if the type is inferred ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#966](https://github.com/josefpihrt/roslynator/pull/966).
+- Use explicit type from lambda expression ([RCS1008](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1008.md)) ([#967](https://github.com/josefpihrt/roslynator/pull/967).
+- Do not remove constructor if it is decorated with 'UsedImplicitlyAttribute' ([RCS1074](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1074.md)) ([#968](https://github.com/josefpihrt/roslynator/pull/968).
+- Detect argument null check in the form of `ArgumentNullException.ThrowIfNull` ([RR0025](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0025.md), [RCS1227](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1227.md)) ([#974](https://github.com/josefpihrt/roslynator/pull/974).
+- Do not make generic class static if it's inherited ([RCS1102](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1102.md)) ([#978](https://github.com/josefpihrt/roslynator/pull/978).
 
 -----
 <!-- Content below does not adhere to 'Keep a Changelog' format -->

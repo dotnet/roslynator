@@ -7,217 +7,216 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class StatementRefactoring
 {
-    internal static class StatementRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
     {
-        public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
+        if (context.IsAnyRefactoringEnabled(
+            RefactoringDescriptors.RemoveStatement,
+            RefactoringDescriptors.CopyStatement,
+            RefactoringDescriptors.CommentOutStatement))
         {
-            if (context.IsAnyRefactoringEnabled(
-                RefactoringDescriptors.RemoveStatement,
-                RefactoringDescriptors.CopyStatement,
-                RefactoringDescriptors.CommentOutStatement))
-            {
-                StatementSyntax statement = GetStatement(context, block, block.Parent);
+            StatementSyntax statement = GetStatement(context, block, block.Parent);
 
-                if (statement != null)
-                    RegisterRefactoring(context, statement);
-            }
+            if (statement is not null)
+                RegisterRefactoring(context, statement);
         }
+    }
 
-        public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
+    public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
+    {
+        if (switchStatement.OpenBraceToken.Span.Contains(context.Span)
+            || switchStatement.CloseBraceToken.Span.Contains(context.Span))
         {
-            if (switchStatement.OpenBraceToken.Span.Contains(context.Span)
-                || switchStatement.CloseBraceToken.Span.Contains(context.Span))
-            {
-                RegisterRefactoring(context, switchStatement);
+            RegisterRefactoring(context, switchStatement);
 
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveAllSwitchSections)
-                    && switchStatement.Sections.Any())
-                {
-                    context.RegisterRefactoring(
-                        "Remove all sections",
-                        ct => RemoveAllSwitchSectionsAsync(context.Document, switchStatement, ct),
-                        RefactoringDescriptors.RemoveAllSwitchSections);
-                }
-            }
-        }
-
-        private static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
-        {
-            bool isEmbedded = statement.IsEmbedded();
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveStatement)
-                && !isEmbedded)
-            {
-                context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, statement, "Remove statement", EquivalenceKey.Create(RefactoringDescriptors.RemoveStatement)));
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyStatement))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveAllSwitchSections)
+                && switchStatement.Sections.Any())
             {
                 context.RegisterRefactoring(
-                    "Copy statement",
-                    ct => CopyStatementAsync(context.Document, statement, ct),
-                    RefactoringDescriptors.CopyStatement);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutStatement)
-                && !isEmbedded)
-            {
-                CommentOutRefactoring.RegisterRefactoring(context, statement);
+                    "Remove all sections",
+                    ct => RemoveAllSwitchSectionsAsync(context.Document, switchStatement, ct),
+                    RefactoringDescriptors.RemoveAllSwitchSections);
             }
         }
+    }
 
-        private static StatementSyntax GetStatement(
-            RefactoringContext context,
-            BlockSyntax block,
-            SyntaxNode parent)
+    private static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
+    {
+        bool isEmbedded = statement.IsEmbedded();
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveStatement)
+            && !isEmbedded)
         {
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.WhileStatement:
-                case SyntaxKind.DoStatement:
-                case SyntaxKind.ForStatement:
-                case SyntaxKind.ForEachStatement:
-                case SyntaxKind.ForEachVariableStatement:
-                case SyntaxKind.FixedStatement:
-                case SyntaxKind.CheckedStatement:
-                case SyntaxKind.UncheckedStatement:
-                case SyntaxKind.UnsafeStatement:
-                case SyntaxKind.UsingStatement:
-                case SyntaxKind.LockStatement:
-                    {
-                        if (block.OpenBraceToken.Span.Contains(context.Span)
-                            || block.CloseBraceToken.Span.Contains(context.Span))
-                        {
-                            if (parent is UsingStatementSyntax usingStatement)
-                            {
-                                while (usingStatement.IsParentKind(SyntaxKind.UsingStatement))
-                                    usingStatement = (UsingStatementSyntax)usingStatement.Parent;
-
-                                return usingStatement;
-                            }
-
-                            return (StatementSyntax)parent;
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.TryStatement:
-                    {
-                        var tryStatement = (TryStatementSyntax)parent;
-
-                        if (tryStatement.Block?.OpenBraceToken.Span.Contains(context.Span) == true)
-                            return (StatementSyntax)parent;
-
-                        break;
-                    }
-                case SyntaxKind.IfStatement:
-                    {
-                        var ifStatement = (IfStatementSyntax)parent;
-
-                        if (ifStatement.IsTopmostIf()
-                            && block.OpenBraceToken.Span.Contains(context.Span))
-                        {
-                            return ifStatement;
-                        }
-
-                        if (ifStatement.Else == null
-                            && block.CloseBraceToken.Span.Contains(context.Span))
-                        {
-                            return ifStatement.GetTopmostIf();
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.ElseClause:
-                    {
-                        var elseClause = (ElseClauseSyntax)parent;
-
-                        if (block.CloseBraceToken.Span.Contains(context.Span))
-                            return elseClause.GetTopmostIf();
-
-                        break;
-                    }
-                case SyntaxKind.CatchClause:
-                    {
-                        var catchClause = (CatchClauseSyntax)parent;
-
-                        if (catchClause.IsParentKind(SyntaxKind.TryStatement))
-                        {
-                            var tryStatement = (TryStatementSyntax)catchClause.Parent;
-
-                            if (tryStatement.Finally == null
-                                && catchClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
-                            {
-                                return tryStatement;
-                            }
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.FinallyClause:
-                    {
-                        var finallyClause = (FinallyClauseSyntax)parent;
-
-                        if (finallyClause.IsParentKind(SyntaxKind.TryStatement))
-                        {
-                            var tryStatement = (TryStatementSyntax)finallyClause.Parent;
-
-                            if (finallyClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
-                                return tryStatement;
-                        }
-
-                        break;
-                    }
-            }
-
-            return null;
+            context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, statement, "Remove statement", EquivalenceKey.Create(RefactoringDescriptors.RemoveStatement)));
         }
 
-        private static Task<Document> CopyStatementAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken = default)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyStatement))
         {
-            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
-            if (statementsInfo.Success)
-            {
-                int index = statementsInfo.Statements.IndexOf(statement);
+            context.RegisterRefactoring(
+                "Copy statement",
+                ct => CopyStatementAsync(context.Document, statement, ct),
+                RefactoringDescriptors.CopyStatement);
+        }
 
-                if (index == 0
-                    && statementsInfo.Parent is BlockSyntax block
-                    && block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutStatement)
+            && !isEmbedded)
+        {
+            CommentOutRefactoring.RegisterRefactoring(context, statement);
+        }
+    }
+
+    private static StatementSyntax GetStatement(
+        RefactoringContext context,
+        BlockSyntax block,
+        SyntaxNode parent)
+    {
+        switch (parent?.Kind())
+        {
+            case SyntaxKind.WhileStatement:
+            case SyntaxKind.DoStatement:
+            case SyntaxKind.ForStatement:
+            case SyntaxKind.ForEachStatement:
+            case SyntaxKind.ForEachVariableStatement:
+            case SyntaxKind.FixedStatement:
+            case SyntaxKind.CheckedStatement:
+            case SyntaxKind.UncheckedStatement:
+            case SyntaxKind.UnsafeStatement:
+            case SyntaxKind.UsingStatement:
+            case SyntaxKind.LockStatement:
                 {
-                    statement = statement.PrependToLeadingTrivia(CSharpFactory.NewLine());
+                    if (block.OpenBraceToken.Span.Contains(context.Span)
+                        || block.CloseBraceToken.Span.Contains(context.Span))
+                    {
+                        if (parent is UsingStatementSyntax usingStatement)
+                        {
+                            while (usingStatement.IsParentKind(SyntaxKind.UsingStatement))
+                                usingStatement = (UsingStatementSyntax)usingStatement.Parent;
+
+                            return usingStatement;
+                        }
+
+                        return (StatementSyntax)parent;
+                    }
+
+                    break;
                 }
+            case SyntaxKind.TryStatement:
+                {
+                    var tryStatement = (TryStatementSyntax)parent;
 
-                SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.Insert(index + 1, statement.WithNavigationAnnotation());
+                    if (tryStatement.Block?.OpenBraceToken.Span.Contains(context.Span) == true)
+                        return (StatementSyntax)parent;
 
-                StatementListInfo newInfo = statementsInfo.WithStatements(newStatements);
+                    break;
+                }
+            case SyntaxKind.IfStatement:
+                {
+                    var ifStatement = (IfStatementSyntax)parent;
 
-                return document.ReplaceNodeAsync(statementsInfo.Parent, newInfo.Parent, cancellationToken);
-            }
-            else
-            {
-                SyntaxList<StatementSyntax> statements = SyntaxFactory.List(new StatementSyntax[] { statement, statement.WithNavigationAnnotation() });
+                    if (ifStatement.IsTopmostIf()
+                        && block.OpenBraceToken.Span.Contains(context.Span))
+                    {
+                        return ifStatement;
+                    }
 
-                BlockSyntax block = SyntaxFactory.Block(statements);
+                    if (ifStatement.Else is null
+                        && block.CloseBraceToken.Span.Contains(context.Span))
+                    {
+                        return ifStatement.GetTopmostIf();
+                    }
 
-                return document.ReplaceNodeAsync(statement, block, cancellationToken);
-            }
+                    break;
+                }
+            case SyntaxKind.ElseClause:
+                {
+                    var elseClause = (ElseClauseSyntax)parent;
+
+                    if (block.CloseBraceToken.Span.Contains(context.Span))
+                        return elseClause.GetTopmostIf();
+
+                    break;
+                }
+            case SyntaxKind.CatchClause:
+                {
+                    var catchClause = (CatchClauseSyntax)parent;
+
+                    if (catchClause.IsParentKind(SyntaxKind.TryStatement))
+                    {
+                        var tryStatement = (TryStatementSyntax)catchClause.Parent;
+
+                        if (tryStatement.Finally is null
+                            && catchClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
+                        {
+                            return tryStatement;
+                        }
+                    }
+
+                    break;
+                }
+            case SyntaxKind.FinallyClause:
+                {
+                    var finallyClause = (FinallyClauseSyntax)parent;
+
+                    if (finallyClause.IsParentKind(SyntaxKind.TryStatement))
+                    {
+                        var tryStatement = (TryStatementSyntax)finallyClause.Parent;
+
+                        if (finallyClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
+                            return tryStatement;
+                    }
+
+                    break;
+                }
         }
 
-        private static Task<Document> RemoveAllSwitchSectionsAsync(
-            Document document,
-            SwitchStatementSyntax switchStatement,
-            CancellationToken cancellationToken = default)
+        return null;
+    }
+
+    private static Task<Document> CopyStatementAsync(
+        Document document,
+        StatementSyntax statement,
+        CancellationToken cancellationToken = default)
+    {
+        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
+        if (statementsInfo.Success)
         {
-            SwitchStatementSyntax newSwitchStatement = switchStatement
-                .WithSections(default(SyntaxList<SwitchSectionSyntax>))
-                .WithFormatterAnnotation();
+            int index = statementsInfo.Statements.IndexOf(statement);
 
-            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
+            if (index == 0
+                && statementsInfo.Parent is BlockSyntax block
+                && block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
+            {
+                statement = statement.PrependToLeadingTrivia(CSharpFactory.NewLine());
+            }
+
+            SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.Insert(index + 1, statement.WithNavigationAnnotation());
+
+            StatementListInfo newInfo = statementsInfo.WithStatements(newStatements);
+
+            return document.ReplaceNodeAsync(statementsInfo.Parent, newInfo.Parent, cancellationToken);
         }
+        else
+        {
+            SyntaxList<StatementSyntax> statements = SyntaxFactory.List(new StatementSyntax[] { statement, statement.WithNavigationAnnotation() });
+
+            BlockSyntax block = SyntaxFactory.Block(statements);
+
+            return document.ReplaceNodeAsync(statement, block, cancellationToken);
+        }
+    }
+
+    private static Task<Document> RemoveAllSwitchSectionsAsync(
+        Document document,
+        SwitchStatementSyntax switchStatement,
+        CancellationToken cancellationToken = default)
+    {
+        SwitchStatementSyntax newSwitchStatement = switchStatement
+            .WithSections(default(SyntaxList<SwitchSectionSyntax>))
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
     }
 }

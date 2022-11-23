@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1101FormatDocumentationSummaryOnMultipleLinesTests : AbstractCSharpDiagnosticVerifier<FormatSummaryOnMultipleLinesAnalyzer, SingleLineDocumentationCommentTriviaCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatDocumentationSummaryOnMultipleLines;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1101FormatDocumentationSummaryOnMultipleLinesTests : AbstractCSharpDiagnosticVerifier<FormatSummaryOnMultipleLinesAnalyzer, SingleLineDocumentationCommentTriviaCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatDocumentationSummaryOnMultipleLines;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 /// [|<summary>a<code>b</code>c</summary>|]
 class C
 {
@@ -28,12 +28,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
-        public async Task Test_EmptySummary()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    public async Task Test_EmptySummary()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 /// [|<summary></summary>|]
 class C
 {
@@ -46,12 +46,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
-        public async Task Test_Tab()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    public async Task Test_Tab()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
 	/// [|<summary>x</summary>|]
@@ -70,12 +70,12 @@ class C
 	}
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// x
 /// </summary>
@@ -83,18 +83,17 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
-        public async Task TestNoDiagnostic_EmptySummary()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines)]
+    public async Task TestNoDiagnostic_EmptySummary()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// </summary>
 class C
 {
 }
 ");
-        }
     }
 }

@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,204 +9,202 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Testing.CSharp.Xunit;
-using Roslynator.Testing.Text;
 
-namespace Roslynator.Testing.CSharp
+namespace Roslynator.Testing.CSharp;
+
+public abstract class AbstractCSharpDiagnosticVerifier<TAnalyzer, TFixProvider> : XunitDiagnosticVerifier<TAnalyzer, TFixProvider>
+    where TAnalyzer : DiagnosticAnalyzer, new()
+    where TFixProvider : CodeFixProvider, new()
 {
-    public abstract class AbstractCSharpDiagnosticVerifier<TAnalyzer, TFixProvider> : XunitDiagnosticVerifier<TAnalyzer, TFixProvider>
-        where TAnalyzer : DiagnosticAnalyzer, new()
-        where TFixProvider : CodeFixProvider, new()
+    public abstract DiagnosticDescriptor Descriptor { get; }
+
+    public override CSharpTestOptions Options => DefaultCSharpTestOptions.Value;
+
+    public async Task VerifyDiagnosticAsync(
+        string source,
+        IEnumerable<string> additionalFiles = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
     {
-        public abstract DiagnosticDescriptor Descriptor { get; }
+        var code = TestCode.Parse(source);
 
-        public override CSharpTestOptions Options => DefaultCSharpTestOptions.Value;
+        var data = new DiagnosticTestData(
+            Descriptor,
+            code.Value,
+            code.Spans,
+            code.AdditionalSpans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles));
 
-        public async Task VerifyDiagnosticAsync(
-            string source,
-            IEnumerable<string> additionalFiles = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var code = TestCode.Parse(source);
+        await VerifyDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken: cancellationToken);
+    }
 
-            var data = new DiagnosticTestData(
-                Descriptor,
-                code.Value,
-                code.Spans,
-                code.AdditionalSpans,
-                additionalFiles: AdditionalFile.CreateRange(additionalFiles));
+    public async Task VerifyDiagnosticAsync(
+        string source,
+        string sourceData,
+        IEnumerable<string> additionalFiles = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source, sourceData);
 
-            await VerifyDiagnosticAsync(
-                data,
-                options: options,
-                cancellationToken: cancellationToken);
-        }
+        var data = new DiagnosticTestData(
+            Descriptor,
+            source,
+            code.Spans,
+            code.AdditionalSpans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles));
 
-        public async Task VerifyDiagnosticAsync(
-            string source,
-            string sourceData,
-            IEnumerable<string> additionalFiles = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var code = TestCode.Parse(source, sourceData);
+        await VerifyDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken: cancellationToken);
+    }
 
-            var data = new DiagnosticTestData(
-                Descriptor,
-                source,
-                code.Spans,
-                code.AdditionalSpans,
-                additionalFiles: AdditionalFile.CreateRange(additionalFiles));
+    internal async Task VerifyDiagnosticAsync(
+        string source,
+        TextSpan span,
+        IEnumerable<string> additionalFiles = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var data = new DiagnosticTestData(
+            Descriptor,
+            source,
+            ImmutableArray.Create(span),
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles));
 
-            await VerifyDiagnosticAsync(
-                data,
-                options: options,
-                cancellationToken: cancellationToken);
-        }
+        await VerifyDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken: cancellationToken);
+    }
 
-        internal async Task VerifyDiagnosticAsync(
-            string source,
-            TextSpan span,
-            IEnumerable<string> additionalFiles = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var data = new DiagnosticTestData(
-                Descriptor,
-                source,
-                ImmutableArray.Create(span),
-                additionalFiles: AdditionalFile.CreateRange(additionalFiles));
+    internal async Task VerifyDiagnosticAsync(
+        string source,
+        IEnumerable<TextSpan> spans,
+        IEnumerable<string> additionalFiles = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var data = new DiagnosticTestData(
+            Descriptor,
+            source,
+            spans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles));
 
-            await VerifyDiagnosticAsync(
-                data,
-                options: options,
-                cancellationToken: cancellationToken);
-        }
+        await VerifyDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken: cancellationToken);
+    }
 
-        internal async Task VerifyDiagnosticAsync(
-            string source,
-            IEnumerable<TextSpan> spans,
-            IEnumerable<string> additionalFiles = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var data = new DiagnosticTestData(
-                Descriptor,
-                source,
-                spans,
-                additionalFiles: AdditionalFile.CreateRange(additionalFiles));
+    public async Task VerifyNoDiagnosticAsync(
+        string source,
+        string sourceData,
+        IEnumerable<string> additionalFiles = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source, sourceData);
 
-            await VerifyDiagnosticAsync(
-                data,
-                options: options,
-                cancellationToken: cancellationToken);
-        }
+        var data = new DiagnosticTestData(
+            Descriptor,
+            code.Value,
+            spans: null,
+            code.AdditionalSpans,
+            AdditionalFile.CreateRange(additionalFiles));
 
-        public async Task VerifyNoDiagnosticAsync(
-            string source,
-            string sourceData,
-            IEnumerable<string> additionalFiles = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var code = TestCode.Parse(source, sourceData);
+        await VerifyNoDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken);
+    }
 
-            var data = new DiagnosticTestData(
-                Descriptor,
-                code.Value,
-                spans: null,
-                code.AdditionalSpans,
-                AdditionalFile.CreateRange(additionalFiles));
+    public async Task VerifyNoDiagnosticAsync(
+        string source,
+        IEnumerable<string> additionalFiles = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var data = new DiagnosticTestData(
+            Descriptor,
+            source,
+            spans: null,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles));
 
-            await VerifyNoDiagnosticAsync(
-                data,
-                options: options,
-                cancellationToken);
-        }
+        await VerifyNoDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken);
+    }
 
-        public async Task VerifyNoDiagnosticAsync(
-            string source,
-            IEnumerable<string> additionalFiles = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var data = new DiagnosticTestData(
-                Descriptor,
-                source,
-                spans: null,
-                additionalFiles: AdditionalFile.CreateRange(additionalFiles));
+    public async Task VerifyDiagnosticAndFixAsync(
+        string source,
+        string expectedSource,
+        IEnumerable<(string source, string expectedSource)> additionalFiles = null,
+        string equivalenceKey = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source);
 
-            await VerifyNoDiagnosticAsync(
-                data,
-                options: options,
-                cancellationToken);
-        }
+        var expected = ExpectedTestState.Parse(expectedSource);
 
-        public async Task VerifyDiagnosticAndFixAsync(
-            string source,
-            string expectedSource,
-            IEnumerable<(string source, string expectedSource)> additionalFiles = null,
-            string equivalenceKey = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var code = TestCode.Parse(source);
+        var data = new DiagnosticTestData(
+            Descriptor,
+            code.Value,
+            code.Spans,
+            additionalSpans: code.AdditionalSpans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
 
-            var expected = ExpectedTestState.Parse(expectedSource);
+        await VerifyDiagnosticAndFixAsync(data, expected, options, cancellationToken);
+    }
 
-            var data = new DiagnosticTestData(
-                Descriptor,
-                code.Value,
-                code.Spans,
-                additionalSpans: code.AdditionalSpans,
-                additionalFiles: AdditionalFile.CreateRange(additionalFiles),
-                equivalenceKey: equivalenceKey);
+    public async Task VerifyDiagnosticAndNoFixAsync(
+        string source,
+        IEnumerable<(string source, string expectedSource)> additionalFiles = null,
+        string equivalenceKey = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source);
 
-            await VerifyDiagnosticAndFixAsync(data, expected, options, cancellationToken);
-        }
+        var data = new DiagnosticTestData(
+            Descriptor,
+            code.Value,
+            code.Spans,
+            additionalSpans: code.AdditionalSpans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
 
-        public async Task VerifyDiagnosticAndNoFixAsync(
-            string source,
-            IEnumerable<(string source, string expectedSource)> additionalFiles = null,
-            string equivalenceKey = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var code = TestCode.Parse(source);
+        await VerifyDiagnosticAndNoFixAsync(data, options, cancellationToken);
+    }
 
-            var data = new DiagnosticTestData(
-                Descriptor,
-                code.Value,
-                code.Spans,
-                additionalSpans: code.AdditionalSpans,
-                additionalFiles: AdditionalFile.CreateRange(additionalFiles),
-                equivalenceKey: equivalenceKey);
+    public async Task VerifyDiagnosticAndFixAsync(
+        string source,
+        string sourceData,
+        string expectedData,
+        IEnumerable<(string source, string expectedSource)> additionalFiles = null,
+        string equivalenceKey = null,
+        TestOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source, sourceData, expectedData);
 
-            await VerifyDiagnosticAndNoFixAsync(data, options, cancellationToken);
-        }
+        var expected = ExpectedTestState.Parse(code.ExpectedValue);
 
-        public async Task VerifyDiagnosticAndFixAsync(
-            string source,
-            string sourceData,
-            string expectedData,
-            IEnumerable<(string source, string expectedSource)> additionalFiles = null,
-            string equivalenceKey = null,
-            TestOptions options = null,
-            CancellationToken cancellationToken = default)
-        {
-            var code = TestCode.Parse(source, sourceData, expectedData);
+        var data = new DiagnosticTestData(
+            Descriptor,
+            code.Value,
+            code.Spans,
+            code.AdditionalSpans,
+            AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
 
-            var expected = ExpectedTestState.Parse(code.ExpectedValue);
-
-            var data = new DiagnosticTestData(
-                Descriptor,
-                code.Value,
-                code.Spans,
-                code.AdditionalSpans,
-                AdditionalFile.CreateRange(additionalFiles),
-                equivalenceKey: equivalenceKey);
-
-            await VerifyDiagnosticAndFixAsync(data, expected, options, cancellationToken);
-        }
+        await VerifyDiagnosticAndFixAsync(data, expected, options, cancellationToken);
     }
 }

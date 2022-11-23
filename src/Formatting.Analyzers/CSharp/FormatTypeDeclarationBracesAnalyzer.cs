@@ -7,52 +7,51 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class FormatTypeDeclarationBracesAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class FormatTypeDeclarationBracesAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FormatTypeDeclarationBraces);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FormatTypeDeclarationBraces);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(
-                f => AnalyzeTypeDeclaration(f),
-                SyntaxKind.ClassDeclaration,
-                SyntaxKind.StructDeclaration,
-                SyntaxKind.RecordStructDeclaration,
-                SyntaxKind.InterfaceDeclaration);
-        }
+        context.RegisterSyntaxNodeAction(
+            f => AnalyzeTypeDeclaration(f),
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+            SyntaxKind.RecordStructDeclaration,
+            SyntaxKind.InterfaceDeclaration);
+    }
 
-        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+    private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
+    {
+        var typeDeclaration = (TypeDeclarationSyntax)context.Node;
 
-            SyntaxToken openBrace = typeDeclaration.OpenBraceToken;
+        SyntaxToken openBrace = typeDeclaration.OpenBraceToken;
 
-            if (openBrace.IsMissing)
-                return;
+        if (openBrace.IsMissing)
+            return;
 
-            if (!typeDeclaration.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(openBrace.Span.End, openBrace.GetNextToken().SpanStart)))
-                return;
+        if (!typeDeclaration.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(openBrace.Span.End, openBrace.GetNextToken().SpanStart)))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.FormatTypeDeclarationBraces,
-                openBrace);
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.FormatTypeDeclarationBraces,
+            openBrace);
     }
 }

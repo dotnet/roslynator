@@ -6,50 +6,49 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.ExtractCondition
+namespace Roslynator.CSharp.Refactorings.ExtractCondition;
+
+internal sealed class ExtractConditionFromIfToNestedIfRefactoring : ExtractConditionFromIfRefactoring
 {
-    internal sealed class ExtractConditionFromIfToNestedIfRefactoring : ExtractConditionFromIfRefactoring
+    private ExtractConditionFromIfToNestedIfRefactoring()
     {
-        private ExtractConditionFromIfToNestedIfRefactoring()
-        {
-        }
+    }
 
-        public static ExtractConditionFromIfToNestedIfRefactoring Instance { get; } = new();
+    public static ExtractConditionFromIfToNestedIfRefactoring Instance { get; } = new();
 
-        public override string Title
-        {
-            get { return "Extract condition to nested if"; }
-        }
+    public override string Title
+    {
+        get { return "Extract condition to nested if"; }
+    }
 
-        public Task<Document> RefactorAsync(
-            Document document,
-            BinaryExpressionSyntax condition,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default)
-        {
-            var ifStatement = (IfStatementSyntax)condition.Parent;
+    public Task<Document> RefactorAsync(
+        Document document,
+        BinaryExpressionSyntax condition,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken = default)
+    {
+        var ifStatement = (IfStatementSyntax)condition.Parent;
 
-            IfStatementSyntax newIfStatement = RemoveExpressionFromCondition(ifStatement, condition, expression);
+        IfStatementSyntax newIfStatement = RemoveExpressionFromCondition(ifStatement, condition, expression);
 
-            IfStatementSyntax newNode = AddNestedIf(newIfStatement, expression).WithFormatterAnnotation();
+        IfStatementSyntax newNode = AddNestedIf(newIfStatement, expression).WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
+    }
 
-        public Task<Document> RefactorAsync(
-            Document document,
-            IfStatementSyntax ifStatement,
-            BinaryExpressionSyntax condition,
-            in ExpressionChain expressionChain,
-            CancellationToken cancellationToken)
-        {
-            IfStatementSyntax newNode = RemoveExpressionsFromCondition(ifStatement, condition, expressionChain);
+    public Task<Document> RefactorAsync(
+        Document document,
+        IfStatementSyntax ifStatement,
+        BinaryExpressionSyntax condition,
+        in ExpressionChain expressionChain,
+        CancellationToken cancellationToken)
+    {
+        IfStatementSyntax newNode = RemoveExpressionsFromCondition(ifStatement, condition, expressionChain);
 
-            ExpressionSyntax expression = SyntaxFactory.ParseExpression(expressionChain.ToString());
+        ExpressionSyntax expression = SyntaxFactory.ParseExpression(expressionChain.ToString());
 
-            newNode = AddNestedIf(newNode, expression).WithFormatterAnnotation();
+        newNode = AddNestedIf(newNode, expression).WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
     }
 }

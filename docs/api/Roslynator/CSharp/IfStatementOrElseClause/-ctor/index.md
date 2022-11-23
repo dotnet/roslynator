@@ -12,10 +12,12 @@ sidebar_label: IfStatementOrElseClause
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [IfStatementOrElseClause(ElseClauseSyntax)](#Roslynator_CSharp_IfStatementOrElseClause__ctor_Microsoft_CodeAnalysis_CSharp_Syntax_ElseClauseSyntax_) | |
-| [IfStatementOrElseClause(IfStatementSyntax)](#Roslynator_CSharp_IfStatementOrElseClause__ctor_Microsoft_CodeAnalysis_CSharp_Syntax_IfStatementSyntax_) | |
+| [IfStatementOrElseClause(ElseClauseSyntax)](#3645664103) | |
+| [IfStatementOrElseClause(IfStatementSyntax)](#100512352) | |
 
-## IfStatementOrElseClause\(ElseClauseSyntax\) <a id="Roslynator_CSharp_IfStatementOrElseClause__ctor_Microsoft_CodeAnalysis_CSharp_Syntax_ElseClauseSyntax_"></a>
+<a id="3645664103"></a>
+
+## IfStatementOrElseClause\(ElseClauseSyntax\) 
 
 ```csharp
 public IfStatementOrElseClause(Microsoft.CodeAnalysis.CSharp.Syntax.ElseClauseSyntax elseClause)
@@ -23,9 +25,9 @@ public IfStatementOrElseClause(Microsoft.CodeAnalysis.CSharp.Syntax.ElseClauseSy
 
 ### Parameters
 
-**elseClause** &ensp; [ElseClauseSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.elseclausesyntax)
+**elseClause** &ensp; [ElseClauseSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.elseclausesyntax)<a id="100512352"></a>
 
-## IfStatementOrElseClause\(IfStatementSyntax\) <a id="Roslynator_CSharp_IfStatementOrElseClause__ctor_Microsoft_CodeAnalysis_CSharp_Syntax_IfStatementSyntax_"></a>
+## IfStatementOrElseClause\(IfStatementSyntax\) 
 
 ```csharp
 public IfStatementOrElseClause(Microsoft.CodeAnalysis.CSharp.Syntax.IfStatementSyntax ifStatement)

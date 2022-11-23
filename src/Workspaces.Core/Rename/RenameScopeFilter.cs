@@ -2,15 +2,14 @@
 
 using System;
 
-namespace Roslynator.Rename
+namespace Roslynator.Rename;
+
+[Flags]
+internal enum RenameScopeFilter
 {
-    [Flags]
-    internal enum RenameScopeFilter
-    {
-        None = 0,
-        Type = 1,
-        Member = 1 << 1,
-        Local = 1 << 2,
-        All = Type | Member | Local,
-    }
+    None = 0,
+    Type = 1,
+    Member = 1 << 1,
+    Local = 1 << 2,
+    All = Type | Member | Local,
 }

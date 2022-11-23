@@ -10,127 +10,126 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
+namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty;
+
+internal static class ReplaceMethodWithPropertyRefactoring
 {
-    internal static class ReplaceMethodWithPropertyRefactoring
+    public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
     {
-        public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
+        return methodDeclaration.ReturnType?.IsVoid() == false
+            && methodDeclaration.ParameterList?.Parameters.Count == 0
+            && methodDeclaration.TypeParameterList is null
+            && !methodDeclaration.Modifiers.ContainsAny(SyntaxKind.OverrideKeyword, SyntaxKind.AsyncKeyword);
+    }
+
+    public static async Task<Solution> RefactorAsync(
+        Document document,
+        MethodDeclarationSyntax methodDeclaration,
+        CancellationToken cancellationToken = default)
+    {
+        Solution solution = document.Solution();
+
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+
+        string propertyName = methodDeclaration.Identifier.ValueText;
+
+        ImmutableArray<DocumentReferenceInfo> infos = await SyntaxFinder.FindReferencesByDocumentAsync(methodSymbol, solution, allowCandidate: false, cancellationToken: cancellationToken).ConfigureAwait(false);
+
+        foreach (DocumentReferenceInfo info in infos)
         {
-            return methodDeclaration.ReturnType?.IsVoid() == false
-                && methodDeclaration.ParameterList?.Parameters.Count == 0
-                && methodDeclaration.TypeParameterList == null
-                && !methodDeclaration.Modifiers.ContainsAny(SyntaxKind.OverrideKeyword, SyntaxKind.AsyncKeyword);
+            var rewriter = new ReplaceMethodWithPropertySyntaxRewriter(info.References, propertyName, methodDeclaration);
+
+            SyntaxNode newRoot = rewriter.Visit(info.Root);
+
+            solution = solution.WithDocumentSyntaxRoot(info.Document.Id, newRoot);
         }
 
-        public static async Task<Solution> RefactorAsync(
-            Document document,
-            MethodDeclarationSyntax methodDeclaration,
-            CancellationToken cancellationToken = default)
+        if (!infos.Any(f => f.Document.Id == document.Id))
         {
-            Solution solution = document.Solution();
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode newRoot = root.ReplaceNode(methodDeclaration, ToPropertyDeclaration(methodDeclaration));
 
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
-
-            string propertyName = methodDeclaration.Identifier.ValueText;
-
-            ImmutableArray<DocumentReferenceInfo> infos = await SyntaxFinder.FindReferencesByDocumentAsync(methodSymbol, solution, allowCandidate: false, cancellationToken: cancellationToken).ConfigureAwait(false);
-
-            foreach (DocumentReferenceInfo info in infos)
-            {
-                var rewriter = new ReplaceMethodWithPropertySyntaxRewriter(info.References, propertyName, methodDeclaration);
-
-                SyntaxNode newRoot = rewriter.Visit(info.Root);
-
-                solution = solution.WithDocumentSyntaxRoot(info.Document.Id, newRoot);
-            }
-
-            if (!infos.Any(f => f.Document.Id == document.Id))
-            {
-                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-                SyntaxNode newRoot = root.ReplaceNode(methodDeclaration, ToPropertyDeclaration(methodDeclaration));
-
-                solution = solution.WithDocumentSyntaxRoot(document.Id, newRoot);
-            }
-
-            return solution;
+            solution = solution.WithDocumentSyntaxRoot(document.Id, newRoot);
         }
 
-        public static PropertyDeclarationSyntax ToPropertyDeclaration(MethodDeclarationSyntax methodDeclaration)
+        return solution;
+    }
+
+    public static PropertyDeclarationSyntax ToPropertyDeclaration(MethodDeclarationSyntax methodDeclaration)
+    {
+        return ToPropertyDeclarationCore(methodDeclaration)
+            .WithTriviaFrom(methodDeclaration)
+            .WithFormatterAnnotation();
+    }
+
+    private static PropertyDeclarationSyntax ToPropertyDeclarationCore(MethodDeclarationSyntax methodDeclaration)
+    {
+        SyntaxToken identifier = methodDeclaration.Identifier.WithTriviaFrom(methodDeclaration.Identifier);
+
+        ParameterListSyntax parameterList = methodDeclaration.ParameterList;
+
+        if (parameterList?.IsMissing == false)
         {
-            return ToPropertyDeclarationCore(methodDeclaration)
-                .WithTriviaFrom(methodDeclaration)
-                .WithFormatterAnnotation();
+            identifier = identifier.AppendToTrailingTrivia(
+                parameterList.OpenParenToken.GetAllTrivia().Concat(
+                    parameterList.CloseParenToken.GetAllTrivia()));
         }
 
-        private static PropertyDeclarationSyntax ToPropertyDeclarationCore(MethodDeclarationSyntax methodDeclaration)
+        if (methodDeclaration.ExpressionBody is not null)
         {
-            SyntaxToken identifier = methodDeclaration.Identifier.WithTriviaFrom(methodDeclaration.Identifier);
+            return PropertyDeclaration(
+                methodDeclaration.AttributeLists,
+                methodDeclaration.Modifiers,
+                methodDeclaration.ReturnType,
+                methodDeclaration.ExplicitInterfaceSpecifier,
+                identifier,
+                default(AccessorListSyntax),
+                methodDeclaration.ExpressionBody,
+                default(EqualsValueClauseSyntax),
+                methodDeclaration.SemicolonToken);
+        }
+        else
+        {
+            return PropertyDeclaration(
+                methodDeclaration.AttributeLists,
+                methodDeclaration.Modifiers,
+                methodDeclaration.ReturnType,
+                methodDeclaration.ExplicitInterfaceSpecifier,
+                identifier,
+                CreateAccessorList(methodDeclaration));
+        }
+    }
 
-            ParameterListSyntax parameterList = methodDeclaration.ParameterList;
+    private static AccessorListSyntax CreateAccessorList(MethodDeclarationSyntax method)
+    {
+        BlockSyntax body = method.Body;
 
-            if (parameterList?.IsMissing == false)
-            {
-                identifier = identifier.AppendToTrailingTrivia(
-                    parameterList.OpenParenToken.GetAllTrivia().Concat(
-                        parameterList.CloseParenToken.GetAllTrivia()));
-            }
+        if (body is not null)
+        {
+            SyntaxList<StatementSyntax> statements = body.Statements;
 
-            if (methodDeclaration.ExpressionBody != null)
-            {
-                return PropertyDeclaration(
-                    methodDeclaration.AttributeLists,
-                    methodDeclaration.Modifiers,
-                    methodDeclaration.ReturnType,
-                    methodDeclaration.ExplicitInterfaceSpecifier,
-                    identifier,
-                    default(AccessorListSyntax),
-                    methodDeclaration.ExpressionBody,
-                    default(EqualsValueClauseSyntax),
-                    methodDeclaration.SemicolonToken);
-            }
-            else
-            {
-                return PropertyDeclaration(
-                    methodDeclaration.AttributeLists,
-                    methodDeclaration.Modifiers,
-                    methodDeclaration.ReturnType,
-                    methodDeclaration.ExplicitInterfaceSpecifier,
-                    identifier,
-                    CreateAccessorList(methodDeclaration));
-            }
+            bool singleline = statements.Count == 1
+                && body.DescendantTrivia(body.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && statements[0].IsSingleLine();
+
+            return CreateAccessorList(Block(body.Statements), singleline)
+                .WithOpenBraceToken(body.OpenBraceToken)
+                .WithCloseBraceToken(body.CloseBraceToken);
         }
 
-        private static AccessorListSyntax CreateAccessorList(MethodDeclarationSyntax method)
-        {
-            BlockSyntax body = method.Body;
+        return CreateAccessorList(Block(), singleline: true);
+    }
 
-            if (body != null)
-            {
-                SyntaxList<StatementSyntax> statements = body.Statements;
+    private static AccessorListSyntax CreateAccessorList(BlockSyntax block, bool singleline)
+    {
+        AccessorListSyntax accessorList = AccessorList(GetAccessorDeclaration(block));
 
-                bool singleline = statements.Count == 1
-                    && body.DescendantTrivia(body.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && statements[0].IsSingleLine();
+        if (singleline)
+            accessorList = accessorList.RemoveWhitespace();
 
-                return CreateAccessorList(Block(body.Statements), singleline)
-                    .WithOpenBraceToken(body.OpenBraceToken)
-                    .WithCloseBraceToken(body.CloseBraceToken);
-            }
-
-            return CreateAccessorList(Block(), singleline: true);
-        }
-
-        private static AccessorListSyntax CreateAccessorList(BlockSyntax block, bool singleline)
-        {
-            AccessorListSyntax accessorList = AccessorList(GetAccessorDeclaration(block));
-
-            if (singleline)
-                accessorList = accessorList.RemoveWhitespace();
-
-            return accessorList;
-        }
+        return accessorList;
     }
 }

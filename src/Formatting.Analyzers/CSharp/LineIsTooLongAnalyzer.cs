@@ -5,154 +5,152 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Configuration;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting
+namespace Roslynator.Formatting;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.LineIsTooLong);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.LineIsTooLong);
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxTreeAction(f => AnalyzeSyntaxTree(f));
+    }
+
+    private static void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
+    {
+        SyntaxTree tree = context.Tree;
+
+        if (!tree.TryGetText(out SourceText sourceText))
+            return;
+
+        int maxLength = context.GetConfigOptions().GetMaxLineLength();
+
+        if (maxLength <= 0)
+            return;
+
+        SyntaxNode root = tree.GetRoot(context.CancellationToken);
+
+        int i = 0;
+
+        SyntaxTrivia trivia = root.FindTrivia(0);
+
+        if (trivia.SpanStart == 0
+            && trivia.IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia))
+        {
+            SyntaxTriviaList leadingTrivia = trivia.Token.LeadingTrivia;
+
+            int count = leadingTrivia.Count;
+
+            if (count > 1)
+            {
+                int j = 0;
+
+                while (j < leadingTrivia.Count - 1
+                    && leadingTrivia[j].IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia)
+                    && leadingTrivia[j + 1].IsKind(SyntaxKind.EndOfLineTrivia))
+                {
+                    i++;
+
+                    j += 2;
+                }
             }
         }
 
-        public override void Initialize(AnalysisContext context)
+        TextLineCollection lines = sourceText.Lines;
+
+        for (; i < lines.Count; i++)
         {
-            base.Initialize(context);
+            TextLine line = lines[i];
 
-            context.RegisterSyntaxTreeAction(f => AnalyzeSyntaxTree(f));
-        }
+            if (line.Span.Length <= maxLength)
+                continue;
 
-        private static void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
-        {
-            SyntaxTree tree = context.Tree;
+            int end = line.End;
 
-            if (!tree.TryGetText(out SourceText sourceText))
-                return;
+            SyntaxToken token = root.FindToken(end);
 
-            int maxLength = context.GetConfigOptions().GetMaxLineLength();
-
-            if (maxLength <= 0)
-                return;
-
-            SyntaxNode root = tree.GetRoot(context.CancellationToken);
-
-            int i = 0;
-
-            SyntaxTrivia trivia = root.FindTrivia(0);
-
-            if (trivia.SpanStart == 0
-                && trivia.IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia))
+            if (token.IsKind(SyntaxKind.StringLiteralToken))
             {
-                SyntaxTriviaList leadingTrivia = trivia.Token.LeadingTrivia;
+                TextSpan span = token.Span;
 
-                int count = leadingTrivia.Count;
-
-                if (count > 1)
+                if (span.End == end)
                 {
-                    int j = 0;
-
-                    while (j < leadingTrivia.Count - 1
-                        && leadingTrivia[j].IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia)
-                        && leadingTrivia[j + 1].IsKind(SyntaxKind.EndOfLineTrivia))
-                    {
-                        i++;
-
-                        j += 2;
-                    }
+                    if (span.Length >= maxLength)
+                        continue;
+                }
+                else if (span.Contains(end)
+                    && end - span.Start >= maxLength)
+                {
+                    continue;
                 }
             }
 
-            TextLineCollection lines = sourceText.Lines;
+            SyntaxTriviaList list = default;
 
-            for (; i < lines.Count; i++)
+            if (token.LeadingTrivia.Span.Contains(end))
             {
-                TextLine line = lines[i];
+                list = token.LeadingTrivia;
+            }
+            else if (token.TrailingTrivia.Span.Contains(end))
+            {
+                list = token.TrailingTrivia;
+            }
 
-                if (line.Span.Length <= maxLength)
-                    continue;
+            if (list.Any())
+            {
+                int index = -1;
 
-                int end = line.End;
-
-                SyntaxToken token = root.FindToken(end);
-
-                if (token.IsKind(SyntaxKind.StringLiteralToken))
+                for (int j = 0; j < list.Count; j++)
                 {
-                    TextSpan span = token.Span;
-
-                    if (span.End == end)
+                    if (list[j].Span.Contains(end))
                     {
-                        if (span.Length >= maxLength)
-                            continue;
+                        trivia = list[j];
+                        index = j;
                     }
-                    else if (span.Contains(end)
-                        && end - span.Start >= maxLength)
+                }
+
+                if (index >= 0)
+                {
+                    SyntaxKind kind = trivia.Kind();
+
+                    if (kind == SyntaxKind.MultiLineCommentTrivia
+                        || kind == SyntaxKind.SingleLineDocumentationCommentTrivia
+                        || kind == SyntaxKind.MultiLineDocumentationCommentTrivia)
+                    {
+                        continue;
+                    }
+
+                    if (kind == SyntaxKind.EndOfLineTrivia
+                        && index > 0
+                        && list[index - 1].IsKind(SyntaxKind.SingleLineCommentTrivia))
                     {
                         continue;
                     }
                 }
-
-                SyntaxTriviaList list = default;
-
-                if (token.LeadingTrivia.Span.Contains(end))
-                {
-                    list = token.LeadingTrivia;
-                }
-                else if (token.TrailingTrivia.Span.Contains(end))
-                {
-                    list = token.TrailingTrivia;
-                }
-
-                if (list.Any())
-                {
-                    int index = -1;
-
-                    for (int j = 0; j < list.Count; j++)
-                    {
-                        if (list[j].Span.Contains(end))
-                        {
-                            trivia = list[j];
-                            index = j;
-                        }
-                    }
-
-                    if (index >= 0)
-                    {
-                        SyntaxKind kind = trivia.Kind();
-
-                        if (kind == SyntaxKind.MultiLineCommentTrivia
-                            || kind == SyntaxKind.SingleLineDocumentationCommentTrivia
-                            || kind == SyntaxKind.MultiLineDocumentationCommentTrivia)
-                        {
-                            continue;
-                        }
-
-                        if (kind == SyntaxKind.EndOfLineTrivia
-                            && index > 0
-                            && list[index - 1].IsKind(SyntaxKind.SingleLineCommentTrivia))
-                        {
-                            continue;
-                        }
-                    }
-                }
-
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.LineIsTooLong,
-                    Location.Create(tree, line.Span),
-                    line.Span.Length);
             }
+
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.LineIsTooLong,
+                Location.Create(tree, line.Span),
+                line.Span.Length);
         }
     }
 }

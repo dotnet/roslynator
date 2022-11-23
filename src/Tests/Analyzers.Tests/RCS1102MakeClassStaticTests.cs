@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1102MakeClassStaticTests : AbstractCSharpDiagnosticVerifier<MakeClassStaticAnalyzer, ClassDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeClassStatic;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1102MakeClassStaticTests : AbstractCSharpDiagnosticVerifier<MakeClassStaticAnalyzer, ClassDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeClassStatic;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class [|C|]
 {
     static void M()
@@ -30,12 +30,12 @@ static class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
-        public async Task Test2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+    public async Task Test2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 public class [|C|]
@@ -106,23 +106,23 @@ public static class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
-        public async Task TestNoDiagnostic_SealedClass()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+    public async Task TestNoDiagnostic_SealedClass()
+    {
+        await VerifyNoDiagnosticAsync(@"
 sealed class C
 {
     const string K = null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
-        public async Task TestNoDiagnostic_ImplementsInterface()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+    public async Task TestNoDiagnostic_ImplementsInterface()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C : I
 {
     const string K = null;
@@ -132,12 +132,12 @@ interface I
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
-        public async Task TestNoDiagnostic_TypeArgument()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+    public async Task TestNoDiagnostic_TypeArgument()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -148,12 +148,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
-        public async Task TestNoDiagnostic_ReturnType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+    public async Task TestNoDiagnostic_ReturnType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     static C M()
@@ -162,6 +162,18 @@ class C
     }
 }
 ");
-        }
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+    public async Task TestNoDiagnostic_NestedClass()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public class Class1<T>
+{
+    public sealed class Class2 : Class1<T>
+    {
+    }
+}
+");
     }
 }

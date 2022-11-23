@@ -10,45 +10,44 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ForStatementCodeFixProvider))]
+[Shared]
+public sealed class ForStatementCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ForStatementCodeFixProvider))]
-    [Shared]
-    public sealed class ForStatementCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ForStatementSyntax forStatement))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop); }
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ForStatementSyntax forStatement))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Use while to create an infinite loop",
-                                ct =>
-                                {
-                                    return AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring.RefactorAsync(
-                                        context.Document,
-                                        forStatement,
-                                        ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                case DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Use while to create an infinite loop",
+                            ct =>
+                            {
+                                return AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring.RefactorAsync(
+                                    context.Document,
+                                    forStatement,
+                                    ct);
+                            },
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }

@@ -8,89 +8,88 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class ParameterNameDiffersFromBaseAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ParameterNameDiffersFromBaseAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ParameterNameDiffersFromBase);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ParameterNameDiffersFromBase);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSymbolAction(f => AnalyzeMethodSymbol(f), SymbolKind.Method);
+        context.RegisterSymbolAction(f => AnalyzePropertySymbol(f), SymbolKind.Property);
+    }
+
+    private static void AnalyzeMethodSymbol(SymbolAnalysisContext context)
+    {
+        var methodSymbol = (IMethodSymbol)context.Symbol;
+
+        ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+        if (parameters.Any())
         {
-            base.Initialize(context);
+            IMethodSymbol baseSymbol = methodSymbol.OverriddenMethod ?? methodSymbol.FindFirstImplementedInterfaceMember<IMethodSymbol>();
 
-            context.RegisterSymbolAction(f => AnalyzeMethodSymbol(f), SymbolKind.Method);
-            context.RegisterSymbolAction(f => AnalyzePropertySymbol(f), SymbolKind.Property);
+            if (baseSymbol is not null)
+                Analyze(context, parameters, baseSymbol.Parameters);
         }
+    }
 
-        private static void AnalyzeMethodSymbol(SymbolAnalysisContext context)
+    private static void AnalyzePropertySymbol(SymbolAnalysisContext context)
+    {
+        var propertySymbol = (IPropertySymbol)context.Symbol;
+
+        if (propertySymbol.IsIndexer)
         {
-            var methodSymbol = (IMethodSymbol)context.Symbol;
-
-            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+            ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
 
             if (parameters.Any())
             {
-                IMethodSymbol baseSymbol = methodSymbol.OverriddenMethod ?? methodSymbol.FindFirstImplementedInterfaceMember<IMethodSymbol>();
+                IPropertySymbol baseSymbol = propertySymbol.OverriddenProperty ?? propertySymbol.FindFirstImplementedInterfaceMember<IPropertySymbol>();
 
-                if (baseSymbol != null)
+                if (baseSymbol is not null)
                     Analyze(context, parameters, baseSymbol.Parameters);
             }
         }
+    }
 
-        private static void AnalyzePropertySymbol(SymbolAnalysisContext context)
+    private static void Analyze(
+        SymbolAnalysisContext context,
+        ImmutableArray<IParameterSymbol> parameters,
+        ImmutableArray<IParameterSymbol> parameters2)
+    {
+        Debug.Assert(parameters.Length == parameters2.Length, "");
+
+        if (parameters.Length == parameters2.Length)
         {
-            var propertySymbol = (IPropertySymbol)context.Symbol;
-
-            if (propertySymbol.IsIndexer)
+            for (int i = 0; i < parameters.Length; i++)
             {
-                ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
+                string name = parameters[i].Name;
 
-                if (parameters.Any())
+                if (!string.IsNullOrEmpty(name)
+                    && !string.Equals(name, parameters2[i].Name, StringComparison.Ordinal)
+                    && (parameters[i].GetSyntaxOrDefault(context.CancellationToken) is ParameterSyntax parameterSyntax))
                 {
-                    IPropertySymbol baseSymbol = propertySymbol.OverriddenProperty ?? propertySymbol.FindFirstImplementedInterfaceMember<IPropertySymbol>();
-
-                    if (baseSymbol != null)
-                        Analyze(context, parameters, baseSymbol.Parameters);
-                }
-            }
-        }
-
-        private static void Analyze(
-            SymbolAnalysisContext context,
-            ImmutableArray<IParameterSymbol> parameters,
-            ImmutableArray<IParameterSymbol> parameters2)
-        {
-            Debug.Assert(parameters.Length == parameters2.Length, "");
-
-            if (parameters.Length == parameters2.Length)
-            {
-                for (int i = 0; i < parameters.Length; i++)
-                {
-                    string name = parameters[i].Name;
-
-                    if (!string.IsNullOrEmpty(name)
-                        && !string.Equals(name, parameters2[i].Name, StringComparison.Ordinal)
-                        && (parameters[i].GetSyntaxOrDefault(context.CancellationToken) is ParameterSyntax parameterSyntax))
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.ParameterNameDiffersFromBase,
-                            parameterSyntax.Identifier,
-                            name,
-                            parameters2[i].Name);
-                    }
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.ParameterNameDiffersFromBase,
+                        parameterSyntax.Identifier,
+                        name,
+                        parameters2[i].Name);
                 }
             }
         }

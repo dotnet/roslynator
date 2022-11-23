@@ -7,34 +7,33 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ConvertReturnToIf;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class YieldStatementRefactoring
 {
-    internal static class YieldStatementRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertReturnStatementToIf)
+            && (context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword)
+                || context.Span.IsEmptyAndContainedInSpan(yieldStatement.ReturnOrBreakKeyword)
+                || context.Span.IsBetweenSpans(yieldStatement)))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertReturnStatementToIf)
-                && (context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword)
-                    || context.Span.IsEmptyAndContainedInSpan(yieldStatement.ReturnOrBreakKeyword)
-                    || context.Span.IsBetweenSpans(yieldStatement)))
+            await ConvertReturnStatementToIfRefactoring.ConvertYieldReturnToIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
+        }
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.UseListInsteadOfYield)
+            && yieldStatement.IsYieldReturn()
+            && context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword))
+        {
+            SyntaxNode declaration = yieldStatement.FirstAncestor(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement, SyntaxKind.GetAccessorDeclaration, ascendOutOfTrivia: false);
+
+            Debug.Assert(declaration is not null);
+
+            if (declaration is not null)
             {
-                await ConvertReturnStatementToIfRefactoring.ConvertYieldReturnToIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
-            }
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.UseListInsteadOfYield)
-                && yieldStatement.IsYieldReturn()
-                && context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword))
-            {
-                SyntaxNode declaration = yieldStatement.FirstAncestor(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement, SyntaxKind.GetAccessorDeclaration, ascendOutOfTrivia: false);
-
-                Debug.Assert(declaration != null);
-
-                if (declaration != null)
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, declaration, semanticModel);
-                }
+                UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, declaration, semanticModel);
             }
         }
     }

@@ -7,64 +7,63 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AddBracesToIfElseRefactoring
 {
-    internal static class AddBracesToIfElseRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        IfStatementSyntax ifStatement,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken = default)
+        var rewriter = new SyntaxRewriter();
+
+        var newNode = (IfStatementSyntax)rewriter.Visit(ifStatement)
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
+    }
+
+    private class SyntaxRewriter : CSharpSyntaxRewriter
+    {
+        private IfStatementSyntax _previousIf;
+
+        public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
         {
-            var rewriter = new SyntaxRewriter();
+            if (node is null)
+                throw new ArgumentNullException(nameof(node));
 
-            var newNode = (IfStatementSyntax)rewriter.Visit(ifStatement)
-                .WithFormatterAnnotation();
+            if (_previousIf?.Equals(node.GetPreviousIf()) != false)
+            {
+                if (node.Statement?.IsKind(SyntaxKind.Block) == false)
+                {
+                    IfStatementSyntax ifStatement = node.WithStatement(SyntaxFactory.Block(node.Statement));
 
-            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
+                    _previousIf = ifStatement;
+
+                    return base.VisitIfStatement(ifStatement);
+                }
+                else
+                {
+                    _previousIf = node;
+                }
+            }
+
+            return base.VisitIfStatement(node);
         }
 
-        private class SyntaxRewriter : CSharpSyntaxRewriter
+        public override SyntaxNode VisitElseClause(ElseClauseSyntax node)
         {
-            private IfStatementSyntax _previousIf;
+            if (node is null)
+                throw new ArgumentNullException(nameof(node));
 
-            public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
+            if (_previousIf.Equals(node.Parent)
+                && node.Statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false)
             {
-                if (node == null)
-                    throw new ArgumentNullException(nameof(node));
-
-                if (_previousIf?.Equals(node.GetPreviousIf()) != false)
-                {
-                    if (node.Statement?.IsKind(SyntaxKind.Block) == false)
-                    {
-                        IfStatementSyntax ifStatement = node.WithStatement(SyntaxFactory.Block(node.Statement));
-
-                        _previousIf = ifStatement;
-
-                        return base.VisitIfStatement(ifStatement);
-                    }
-                    else
-                    {
-                        _previousIf = node;
-                    }
-                }
-
-                return base.VisitIfStatement(node);
+                return node.WithStatement(SyntaxFactory.Block(node.Statement));
             }
 
-            public override SyntaxNode VisitElseClause(ElseClauseSyntax node)
-            {
-                if (node == null)
-                    throw new ArgumentNullException(nameof(node));
-
-                if (_previousIf.Equals(node.Parent)
-                    && node.Statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false)
-                {
-                    return node.WithStatement(SyntaxFactory.Block(node.Statement));
-                }
-
-                return base.VisitElseClause(node);
-            }
+            return base.VisitElseClause(node);
         }
     }
 }

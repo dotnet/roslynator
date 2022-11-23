@@ -3,103 +3,102 @@
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal sealed class NamespaceSymbolDefinitionComparer : IComparer<INamespaceSymbol>
 {
-    internal sealed class NamespaceSymbolDefinitionComparer : IComparer<INamespaceSymbol>
+    internal NamespaceSymbolDefinitionComparer(SymbolDefinitionComparer symbolComparer)
     {
-        internal NamespaceSymbolDefinitionComparer(SymbolDefinitionComparer symbolComparer)
+        SymbolComparer = symbolComparer;
+    }
+
+    public SymbolDefinitionComparer SymbolComparer { get; }
+
+    public int Compare(INamespaceSymbol x, INamespaceSymbol y)
+    {
+        if (object.ReferenceEquals(x, y))
+            return 0;
+
+        if (x is null)
+            return -1;
+
+        if (y is null)
+            return 1;
+
+        if (x.IsGlobalNamespace)
         {
-            SymbolComparer = symbolComparer;
+            return (y.IsGlobalNamespace) ? 0 : -1;
+        }
+        else if (y.IsGlobalNamespace)
+        {
+            return 1;
         }
 
-        public SymbolDefinitionComparer SymbolComparer { get; }
+        int count1 = CountContainingNamespaces(x);
+        int count2 = CountContainingNamespaces(y);
 
-        public int Compare(INamespaceSymbol x, INamespaceSymbol y)
+        if ((SymbolComparer.Options & SymbolDefinitionSortOptions.SystemFirst) != 0)
         {
-            if (object.ReferenceEquals(x, y))
-                return 0;
+            INamespaceSymbol namespaceSymbol1 = GetNamespaceSymbol(x, count1);
+            INamespaceSymbol namespaceSymbol2 = GetNamespaceSymbol(y, count2);
 
-            if (x == null)
-                return -1;
-
-            if (y == null)
-                return 1;
-
-            if (x.IsGlobalNamespace)
+            if (namespaceSymbol1.Name == "System")
             {
-                return (y.IsGlobalNamespace) ? 0 : -1;
+                if (namespaceSymbol2.Name != "System")
+                    return -1;
             }
-            else if (y.IsGlobalNamespace)
+            else if (namespaceSymbol2.Name == "System")
             {
                 return 1;
             }
+        }
 
-            int count1 = CountContainingNamespaces(x);
-            int count2 = CountContainingNamespaces(y);
+        while (true)
+        {
+            INamespaceSymbol namespaceSymbol1 = GetNamespaceSymbol(x, count1);
+            INamespaceSymbol namespaceSymbol2 = GetNamespaceSymbol(y, count2);
 
-            if ((SymbolComparer.Options & SymbolDefinitionSortOptions.SystemFirst) != 0)
-            {
-                INamespaceSymbol namespaceSymbol1 = GetNamespaceSymbol(x, count1);
-                INamespaceSymbol namespaceSymbol2 = GetNamespaceSymbol(y, count2);
+            int diff = SymbolDefinitionComparer.CompareName(namespaceSymbol1, namespaceSymbol2);
 
-                if (namespaceSymbol1.Name == "System")
-                {
-                    if (namespaceSymbol2.Name != "System")
-                        return -1;
-                }
-                else if (namespaceSymbol2.Name == "System")
-                {
-                    return 1;
-                }
-            }
+            if (diff != 0)
+                return diff;
+
+            if (count1 == 0)
+                return (count2 == 0) ? 0 : -1;
+
+            if (count2 == 0)
+                return 1;
+
+            count1--;
+            count2--;
+        }
+
+        static int CountContainingNamespaces(INamespaceSymbol namespaceSymbol)
+        {
+            int count = 0;
 
             while (true)
             {
-                INamespaceSymbol namespaceSymbol1 = GetNamespaceSymbol(x, count1);
-                INamespaceSymbol namespaceSymbol2 = GetNamespaceSymbol(y, count2);
+                namespaceSymbol = namespaceSymbol.ContainingNamespace;
 
-                int diff = SymbolDefinitionComparer.CompareName(namespaceSymbol1, namespaceSymbol2);
+                if (namespaceSymbol.IsGlobalNamespace)
+                    break;
 
-                if (diff != 0)
-                    return diff;
-
-                if (count1 == 0)
-                    return (count2 == 0) ? 0 : -1;
-
-                if (count2 == 0)
-                    return 1;
-
-                count1--;
-                count2--;
+                count++;
             }
 
-            static int CountContainingNamespaces(INamespaceSymbol namespaceSymbol)
+            return count;
+        }
+
+        static INamespaceSymbol GetNamespaceSymbol(INamespaceSymbol namespaceSymbol, int count)
+        {
+            while (count > 0)
             {
-                int count = 0;
-
-                while (true)
-                {
-                    namespaceSymbol = namespaceSymbol.ContainingNamespace;
-
-                    if (namespaceSymbol.IsGlobalNamespace)
-                        break;
-
-                    count++;
-                }
-
-                return count;
+                namespaceSymbol = namespaceSymbol.ContainingNamespace;
+                count--;
             }
 
-            static INamespaceSymbol GetNamespaceSymbol(INamespaceSymbol namespaceSymbol, int count)
-            {
-                while (count > 0)
-                {
-                    namespaceSymbol = namespaceSymbol.ContainingNamespace;
-                    count--;
-                }
-
-                return namespaceSymbol;
-            }
+            return namespaceSymbol;
         }
     }
 }

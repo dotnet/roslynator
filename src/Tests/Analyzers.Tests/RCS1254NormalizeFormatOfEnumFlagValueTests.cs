@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1254NormalizeFormatOfEnumFlagValueTests : AbstractCSharpDiagnosticVerifier<NormalizeFormatOfEnumFlagValueAnalyzer, EnumMemberDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeFormatOfEnumFlagValue;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task Test_DecimalToShift()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1254NormalizeFormatOfEnumFlagValueTests : AbstractCSharpDiagnosticVerifier<NormalizeFormatOfEnumFlagValueAnalyzer, EnumMemberDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeFormatOfEnumFlagValue;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task Test_DecimalToShift()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -40,12 +40,12 @@ enum Foo
     C = (1 << 2),
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumFlagValueStyle, ConfigOptionValues.EnumFlagValueStyle_ShiftOperator));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task Test_ShiftToDecimal()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task Test_ShiftToDecimal()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -70,12 +70,12 @@ enum Foo
     C = (4),
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumFlagValueStyle, ConfigOptionValues.EnumFlagValueStyle_DecimalNumber));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task Test_HexadecimalToShift()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task Test_HexadecimalToShift()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -98,12 +98,12 @@ enum Foo
     C = 1 << 2,
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumFlagValueStyle, ConfigOptionValues.EnumFlagValueStyle_ShiftOperator));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task Test_HexadecimalToDecimal()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task Test_HexadecimalToDecimal()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -126,12 +126,12 @@ enum Foo
     C = 4,
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumFlagValueStyle, ConfigOptionValues.EnumFlagValueStyle_DecimalNumber));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task Test_BinaryToShift()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task Test_BinaryToShift()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -154,12 +154,12 @@ enum Foo
     C = 1 << 2,
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumFlagValueStyle, ConfigOptionValues.EnumFlagValueStyle_ShiftOperator));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task Test_BinaryToDecimal()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task Test_BinaryToDecimal()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -182,12 +182,12 @@ enum Foo
     C = 4,
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumFlagValueStyle, ConfigOptionValues.EnumFlagValueStyle_DecimalNumber));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task TestNoDiagnostic_WithoutFlags()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task TestNoDiagnostic_WithoutFlags()
+    {
+        await VerifyNoDiagnosticAsync(@"
 enum Foo
 {
     _ = 0,
@@ -196,12 +196,12 @@ enum Foo
     C = 4,
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumFlagValueStyle, ConfigOptionValues.EnumFlagValueStyle_ShiftOperator));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task TestNoDiagnostic_BitShift()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task TestNoDiagnostic_BitShift()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Flags]
@@ -212,12 +212,12 @@ enum Foo
     B = 1 << 1,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
-        public async Task TestNoDiagnostic_CombinedValue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue)]
+    public async Task TestNoDiagnostic_CombinedValue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Flags]
@@ -234,6 +234,5 @@ enum Foo
     X = int.MaxValue,
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.EnumFlagValueStyle, ConfigOptionValues.EnumFlagValueStyle_ShiftOperator));
-        }
     }
 }

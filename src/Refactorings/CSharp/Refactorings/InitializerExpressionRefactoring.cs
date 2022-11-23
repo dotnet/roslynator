@@ -7,70 +7,69 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InitializerExpressionRefactoring
 {
-    internal static class InitializerExpressionRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
+        if (initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
+            && initializer.IsParentKind(SyntaxKind.CollectionInitializerExpression))
         {
-            if (initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
-                && initializer.IsParentKind(SyntaxKind.CollectionInitializerExpression))
+            initializer = (InitializerExpressionSyntax)initializer.Parent;
+        }
+
+        if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer)
+            || context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer.Expressions))
+        {
+            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapInitializerExpressions)
+                && expressions.Any()
+                && !initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
+                && initializer.IsParentKind(
+                    SyntaxKind.ArrayCreationExpression,
+                    SyntaxKind.ImplicitArrayCreationExpression,
+                    SyntaxKind.ObjectCreationExpression,
+                    SyntaxKind.CollectionInitializerExpression,
+                    SyntaxKind.WithExpression))
             {
-                initializer = (InitializerExpressionSyntax)initializer.Parent;
+                if (initializer.IsSingleLine(includeExteriorTrivia: false))
+                {
+                    context.RegisterRefactoring(
+                        "Wrap initializer expression",
+                        ct => SyntaxFormatter.ToMultiLineAsync(context.Document, initializer, ct),
+                        RefactoringDescriptors.WrapInitializerExpressions);
+                }
+                else if (expressions.All(expression => expression.IsSingleLine())
+                    && initializer.DescendantTrivia(initializer.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                {
+                    context.RegisterRefactoring(
+                        "Unwrap initializer expressions",
+                        ct => SyntaxFormatter.ToSingleLineAsync(
+                            context.Document,
+                            initializer.Parent,
+                            TextSpan.FromBounds(initializer.OpenBraceToken.GetPreviousToken().Span.End, initializer.CloseBraceToken.Span.End),
+                            ct),
+                        RefactoringDescriptors.WrapInitializerExpressions);
+                }
             }
 
-            if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer)
-                || context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer.Expressions))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddAllPropertiesToInitializer)
+                && initializer.IsKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.WithInitializerExpression)
+                && AddAllPropertiesToInitializerRefactoring.IsApplicableSpan(initializer, context.Span))
             {
-                SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+                SemanticModel semanticModdel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapInitializerExpressions)
-                    && expressions.Any()
-                    && !initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
-                    && initializer.IsParentKind(
-                        SyntaxKind.ArrayCreationExpression,
-                        SyntaxKind.ImplicitArrayCreationExpression,
-                        SyntaxKind.ObjectCreationExpression,
-                        SyntaxKind.CollectionInitializerExpression,
-                        SyntaxKind.WithExpression))
-                {
-                    if (initializer.IsSingleLine(includeExteriorTrivia: false))
-                    {
-                        context.RegisterRefactoring(
-                            "Wrap initializer expression",
-                            ct => SyntaxFormatter.ToMultiLineAsync(context.Document, initializer, ct),
-                            RefactoringDescriptors.WrapInitializerExpressions);
-                    }
-                    else if (expressions.All(expression => expression.IsSingleLine())
-                        && initializer.DescendantTrivia(initializer.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                    {
-                        context.RegisterRefactoring(
-                            "Unwrap initializer expressions",
-                            ct => SyntaxFormatter.ToSingleLineAsync(
-                                context.Document,
-                                initializer.Parent,
-                                TextSpan.FromBounds(initializer.OpenBraceToken.GetPreviousToken().Span.End, initializer.CloseBraceToken.Span.End),
-                                ct),
-                            RefactoringDescriptors.WrapInitializerExpressions);
-                    }
-                }
+                AddAllPropertiesToInitializerRefactoring.ComputeRefactorings(context, initializer, semanticModdel);
+            }
 
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.AddAllPropertiesToInitializer)
-                    && initializer.IsKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.WithInitializerExpression)
-                    && AddAllPropertiesToInitializerRefactoring.IsApplicableSpan(initializer, context.Span))
-                {
-                    SemanticModel semanticModdel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
 
-                    AddAllPropertiesToInitializerRefactoring.ComputeRefactorings(context, initializer, semanticModdel);
-                }
-
-                await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
-
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.UseIndexInitializer)
-                    && context.SupportsCSharp6)
-                {
-                    await UseIndexInitializerRefactoring.ComputeRefactoringAsync(context, initializer).ConfigureAwait(false);
-                }
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.UseIndexInitializer)
+                && context.SupportsCSharp6)
+            {
+                await UseIndexInitializerRefactoring.ComputeRefactoringAsync(context, initializer).ConfigureAwait(false);
             }
         }
     }

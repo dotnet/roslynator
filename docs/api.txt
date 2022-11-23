@@ -1,10 +1,11 @@
-﻿assembly Roslynator.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.CSharp, Version=4.1.1.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.CSharp.Workspaces, Version=4.1.1.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.Common, Version=4.1.1.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.CSharp, Version=4.1.1.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.CSharp.Xunit, Version=4.1.1.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Workspaces.Core, Version=4.1.1.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+﻿assembly Roslynator.Core, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.CSharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.CSharp.Workspaces, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.Common, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp.MSTest, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp.Xunit, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Workspaces.Core, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
 
 namespace Roslynator
 
@@ -1768,6 +1769,20 @@ namespace Roslynator.Testing.CSharp
     public CSharpTestOptions WithConfigOptions(IEnumerable<KeyValuePair<string, string>> values);
     public CSharpTestOptions WithMetadataReferences(IEnumerable<MetadataReference> values);
     public CSharpTestOptions WithParseOptions(CSharpParseOptions parseOptions);
+
+namespace Roslynator.Testing.CSharp.MSTest
+
+  public abstract class MSTestCompilerDiagnosticFixVerifier<TFixProvider> : CSharpCompilerDiagnosticFixVerifier<TFixProvider> where TFixProvider : CodeFixProvider, new()
+
+    protected MSTestCompilerDiagnosticFixVerifier();
+
+  public abstract class MSTestDiagnosticVerifier<TAnalyzer, TFixProvider> : CSharpDiagnosticVerifier<TAnalyzer, TFixProvider> where TAnalyzer : DiagnosticAnalyzer, new() where TFixProvider : CodeFixProvider, new()
+
+    protected MSTestDiagnosticVerifier();
+
+  public abstract class MSTestRefactoringVerifier<TRefactoringProvider> : CSharpRefactoringVerifier<TRefactoringProvider> where TRefactoringProvider : CodeRefactoringProvider, new()
+
+    protected MSTestRefactoringVerifier();
 
 namespace Roslynator.Testing.CSharp.Xunit
 

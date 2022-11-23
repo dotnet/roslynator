@@ -9,122 +9,121 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class MemberNameGenerator
 {
-    internal static class MemberNameGenerator
+    public static async Task<string> EnsureUniqueMemberNameAsync(
+        string baseName,
+        ISymbol memberSymbol,
+        Solution solution,
+        NameGenerator nameGenerator,
+        bool isCaseSensitive = true,
+        CancellationToken cancellationToken = default)
     {
-        public static async Task<string> EnsureUniqueMemberNameAsync(
-            string baseName,
-            ISymbol memberSymbol,
-            Solution solution,
-            NameGenerator nameGenerator,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default)
+        if (memberSymbol is null)
+            throw new ArgumentNullException(nameof(memberSymbol));
+
+        if (solution is null)
+            throw new ArgumentNullException(nameof(solution));
+
+        if (nameGenerator is null)
+            throw new ArgumentNullException(nameof(nameGenerator));
+
+        HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, isCaseSensitive, cancellationToken).ConfigureAwait(false);
+
+        return nameGenerator.EnsureUniqueName(baseName, reservedNames);
+    }
+
+    public static async Task<bool> IsUniqueMemberNameAsync(
+        string name,
+        ISymbol memberSymbol,
+        Solution solution,
+        bool isCaseSensitive = true,
+        CancellationToken cancellationToken = default)
+    {
+        if (memberSymbol is null)
+            throw new ArgumentNullException(nameof(memberSymbol));
+
+        if (solution is null)
+            throw new ArgumentNullException(nameof(solution));
+
+        HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, isCaseSensitive, cancellationToken).ConfigureAwait(false);
+
+        return !reservedNames.Contains(name);
+    }
+
+    private static async Task<HashSet<string>> GetReservedNamesAsync(
+        ISymbol memberSymbol,
+        Solution solution,
+        bool isCaseSensitive = true,
+        CancellationToken cancellationToken = default)
+    {
+        HashSet<string> reservedNames = GetMemberNames(memberSymbol, isCaseSensitive);
+
+        foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(memberSymbol, solution, cancellationToken).ConfigureAwait(false))
         {
-            if (memberSymbol == null)
-                throw new ArgumentNullException(nameof(memberSymbol));
-
-            if (solution == null)
-                throw new ArgumentNullException(nameof(solution));
-
-            if (nameGenerator == null)
-                throw new ArgumentNullException(nameof(nameGenerator));
-
-            HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, isCaseSensitive, cancellationToken).ConfigureAwait(false);
-
-            return nameGenerator.EnsureUniqueName(baseName, reservedNames);
-        }
-
-        public static async Task<bool> IsUniqueMemberNameAsync(
-            string name,
-            ISymbol memberSymbol,
-            Solution solution,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default)
-        {
-            if (memberSymbol == null)
-                throw new ArgumentNullException(nameof(memberSymbol));
-
-            if (solution == null)
-                throw new ArgumentNullException(nameof(solution));
-
-            HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, isCaseSensitive, cancellationToken).ConfigureAwait(false);
-
-            return !reservedNames.Contains(name);
-        }
-
-        private static async Task<HashSet<string>> GetReservedNamesAsync(
-            ISymbol memberSymbol,
-            Solution solution,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default)
-        {
-            HashSet<string> reservedNames = GetMemberNames(memberSymbol, isCaseSensitive);
-
-            foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(memberSymbol, solution, cancellationToken).ConfigureAwait(false))
+            foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
             {
-                foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
+                if (!referenceLocation.IsImplicit
+                    && !referenceLocation.IsCandidateLocation)
                 {
-                    if (!referenceLocation.IsImplicit
-                        && !referenceLocation.IsCandidateLocation)
-                    {
-                        SemanticModel semanticModel = await referenceLocation.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                    SemanticModel semanticModel = await referenceLocation.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                        foreach (ISymbol symbol in semanticModel.LookupSymbols(referenceLocation.Location.SourceSpan.Start))
-                        {
-                            if (!SymbolEqualityComparer.Default.Equals(memberSymbol, symbol))
-                                reservedNames.Add(symbol.Name);
-                        }
+                    foreach (ISymbol symbol in semanticModel.LookupSymbols(referenceLocation.Location.SourceSpan.Start))
+                    {
+                        if (!SymbolEqualityComparer.Default.Equals(memberSymbol, symbol))
+                            reservedNames.Add(symbol.Name);
                     }
                 }
             }
-
-            return reservedNames;
         }
 
-        private static HashSet<string> GetMemberNames(ISymbol memberSymbol, bool isCaseSensitive = true)
+        return reservedNames;
+    }
+
+    private static HashSet<string> GetMemberNames(ISymbol memberSymbol, bool isCaseSensitive = true)
+    {
+        INamedTypeSymbol containingType = memberSymbol.ContainingType;
+
+        Debug.Assert(containingType is not null);
+
+        if (containingType is not null)
         {
-            INamedTypeSymbol containingType = memberSymbol.ContainingType;
+            IEnumerable<string> memberNames = containingType
+                .GetMembers()
+                .Where(f => !SymbolEqualityComparer.Default.Equals(memberSymbol, f))
+                .Select(f => f.Name);
 
-            Debug.Assert(containingType != null);
-
-            if (containingType != null)
-            {
-                IEnumerable<string> memberNames = containingType
-                    .GetMembers()
-                    .Where(f => !SymbolEqualityComparer.Default.Equals(memberSymbol, f))
-                    .Select(f => f.Name);
-
-                return CreateHashSet(memberNames, isCaseSensitive);
-            }
-            else
-            {
-                return CreateHashSet(isCaseSensitive);
-            }
+            return CreateHashSet(memberNames, isCaseSensitive);
         }
-
-        private static HashSet<string> CreateHashSet(IEnumerable<string> names, bool isCaseSensitive = true)
+        else
         {
-            if (isCaseSensitive)
-            {
-                return new HashSet<string>(names, NameGenerator.OrdinalComparer);
-            }
-            else
-            {
-                return new HashSet<string>(names, NameGenerator.OrdinalIgnoreCaseComparer);
-            }
+            return CreateHashSet(isCaseSensitive);
         }
+    }
 
-        private static HashSet<string> CreateHashSet(bool isCaseSensitive = true)
+    private static HashSet<string> CreateHashSet(IEnumerable<string> names, bool isCaseSensitive = true)
+    {
+        if (isCaseSensitive)
         {
-            if (isCaseSensitive)
-            {
-                return new HashSet<string>(NameGenerator.OrdinalComparer);
-            }
-            else
-            {
-                return new HashSet<string>(NameGenerator.OrdinalIgnoreCaseComparer);
-            }
+            return new HashSet<string>(names, NameGenerator.OrdinalComparer);
+        }
+        else
+        {
+            return new HashSet<string>(names, NameGenerator.OrdinalIgnoreCaseComparer);
+        }
+    }
+
+    private static HashSet<string> CreateHashSet(bool isCaseSensitive = true)
+    {
+        if (isCaseSensitive)
+        {
+            return new HashSet<string>(NameGenerator.OrdinalComparer);
+        }
+        else
+        {
+            return new HashSet<string>(NameGenerator.OrdinalIgnoreCaseComparer);
         }
     }
 }

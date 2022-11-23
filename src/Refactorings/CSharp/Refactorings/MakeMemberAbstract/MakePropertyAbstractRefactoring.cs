@@ -8,73 +8,72 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract
+namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract;
+
+internal static class MakePropertyAbstractRefactoring
 {
-    internal static class MakePropertyAbstractRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
     {
-        public static void ComputeRefactoring(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
+        SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+
+        if (modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.StaticKeyword))
+            return;
+
+        if ((propertyDeclaration.Parent as ClassDeclarationSyntax)?.Modifiers.Contains(SyntaxKind.AbstractKeyword) != true)
+            return;
+
+        context.RegisterRefactoring(
+            "Make property abstract",
+            ct => RefactorAsync(context.Document, propertyDeclaration, ct),
+            RefactoringDescriptors.MakeMemberAbstract);
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        PropertyDeclarationSyntax propertyDeclaration,
+        CancellationToken cancellationToken = default)
+    {
+        AccessorListSyntax accessorList = AccessorList();
+
+        if (propertyDeclaration.ExpressionBody is not null)
         {
-            SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
-
-            if (modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.StaticKeyword))
-                return;
-
-            if ((propertyDeclaration.Parent as ClassDeclarationSyntax)?.Modifiers.Contains(SyntaxKind.AbstractKeyword) != true)
-                return;
-
-            context.RegisterRefactoring(
-                "Make property abstract",
-                ct => RefactorAsync(context.Document, propertyDeclaration, ct),
-                RefactoringDescriptors.MakeMemberAbstract);
+            accessorList = accessorList
+                .AddAccessors(AutoGetAccessorDeclaration());
         }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            PropertyDeclarationSyntax propertyDeclaration,
-            CancellationToken cancellationToken = default)
+        else
         {
-            AccessorListSyntax accessorList = AccessorList();
-
-            if (propertyDeclaration.ExpressionBody != null)
+            AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
+            if (getter is not null)
             {
-                accessorList = accessorList
-                    .AddAccessors(AutoGetAccessorDeclaration());
-            }
-            else
-            {
-                AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
-                if (getter != null)
-                {
-                    if (SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetExplicitAccessibility(getter) == Accessibility.Private)
-                        getter = SyntaxAccessibility.WithExplicitAccessibility(getter, Accessibility.Protected);
+                if (SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetExplicitAccessibility(getter) == Accessibility.Private)
+                    getter = SyntaxAccessibility.WithExplicitAccessibility(getter, Accessibility.Protected);
 
-                    accessorList = accessorList.AddAccessors(getter
-                        .WithBody(null)
-                        .WithSemicolonToken(SemicolonToken()));
-                }
-
-                AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
-                if (setter != null)
-                {
-                    if (SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetExplicitAccessibility(setter) == Accessibility.Private)
-                        setter = SyntaxAccessibility.WithExplicitAccessibility(setter, Accessibility.Protected);
-
-                    accessorList = accessorList.AddAccessors(setter
-                        .WithBody(null)
-                        .WithSemicolonToken(SemicolonToken()));
-                }
+                accessorList = accessorList.AddAccessors(getter
+                    .WithBody(null)
+                    .WithSemicolonToken(SemicolonToken()));
             }
 
-            PropertyDeclarationSyntax newNode = propertyDeclaration
-                .WithExpressionBody(null)
-                .WithSemicolonToken(default(SyntaxToken))
-                .WithAccessorList(accessorList)
-                .InsertModifier(SyntaxKind.AbstractKeyword)
-                .RemoveModifier(SyntaxKind.VirtualKeyword)
-                .WithTriviaFrom(propertyDeclaration)
-                .WithFormatterAnnotation();
+            AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
+            if (setter is not null)
+            {
+                if (SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetExplicitAccessibility(setter) == Accessibility.Private)
+                    setter = SyntaxAccessibility.WithExplicitAccessibility(setter, Accessibility.Protected);
 
-            return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
+                accessorList = accessorList.AddAccessors(setter
+                    .WithBody(null)
+                    .WithSemicolonToken(SemicolonToken()));
+            }
         }
+
+        PropertyDeclarationSyntax newNode = propertyDeclaration
+            .WithExpressionBody(null)
+            .WithSemicolonToken(default(SyntaxToken))
+            .WithAccessorList(accessorList)
+            .InsertModifier(SyntaxKind.AbstractKeyword)
+            .RemoveModifier(SyntaxKind.VirtualKeyword)
+            .WithTriviaFrom(propertyDeclaration)
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
     }
 }

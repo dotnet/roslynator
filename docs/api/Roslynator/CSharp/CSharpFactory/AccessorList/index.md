@@ -12,10 +12,12 @@ sidebar_label: AccessorList
 
 | Method | Summary |
 | ------ | ------- |
-| [AccessorList(AccessorDeclarationSyntax)](#Roslynator_CSharp_CSharpFactory_AccessorList_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorDeclarationSyntax_) | |
-| [AccessorList(AccessorDeclarationSyntax\[\])](#Roslynator_CSharp_CSharpFactory_AccessorList_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorDeclarationSyntax___) | |
+| [AccessorList(AccessorDeclarationSyntax)](#3317086704) | |
+| [AccessorList(AccessorDeclarationSyntax\[\])](#3016174058) | |
 
-## AccessorList\(AccessorDeclarationSyntax\) <a id="Roslynator_CSharp_CSharpFactory_AccessorList_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorDeclarationSyntax_"></a>
+<a id="3317086704"></a>
+
+## AccessorList\(AccessorDeclarationSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorListSyntax AccessorList(Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax accessor)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorListSyntax AccessorLi
 
 [AccessorListSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.accessorlistsyntax)
 
-## AccessorList\(AccessorDeclarationSyntax\[\]\) <a id="Roslynator_CSharp_CSharpFactory_AccessorList_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorDeclarationSyntax___"></a>
+<a id="3016174058"></a>
+
+## AccessorList\(AccessorDeclarationSyntax\[\]\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorListSyntax AccessorList(params Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax[] accessors)

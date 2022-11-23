@@ -3,71 +3,98 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
+namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst;
+
+internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
 {
-    internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
+    [ThreadStatic]
+    private static MarkLocalVariableAsConstWalker _cachedInstance;
+
+    public Dictionary<string, ILocalSymbol> Identifiers { get; } = new();
+
+    public SemanticModel SemanticModel { get; set; }
+
+    public CancellationToken CancellationToken { get; set; }
+
+    public bool Result { get; set; }
+
+    protected override bool ShouldVisit => !Result;
+
+    public override void VisitAssignedExpression(ExpressionSyntax expression)
     {
-        [ThreadStatic]
-        private static MarkLocalVariableAsConstWalker _cachedInstance;
+        if (IsLocalReference(expression))
+            Result = true;
+    }
 
-        public HashSet<string> Identifiers { get; } = new();
-
-        public bool Result { get; set; }
-
-        protected override bool ShouldVisit
+    public override void VisitIdentifierName(IdentifierNameSyntax node)
+    {
+        if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.AddressOfExpression)
+            && IsLocalReference(node))
         {
-            get { return !Result; }
-        }
+            if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+            {
+                var methodSymbol = SemanticModel.GetSymbol(node.Parent, CancellationToken) as IMethodSymbol;
 
-        public override void VisitAssignedExpression(ExpressionSyntax expression)
-        {
-            if (expression is IdentifierNameSyntax identifierName
-                && Identifiers.Contains(identifierName.Identifier.ValueText))
+                if (methodSymbol?
+                    .ReducedFrom?
+                    .Parameters
+                    .FirstOrDefault()?
+                    .IsRefOrOut() == true)
+                {
+                    Result = true;
+                }
+            }
+            else if (node.IsParentKind(SyntaxKind.AddressOfExpression))
             {
                 Result = true;
             }
         }
 
-        public override void VisitPrefixUnaryExpression(PrefixUnaryExpressionSyntax node)
+        base.VisitIdentifierName(node);
+    }
+
+    private bool IsLocalReference(SyntaxNode node)
+    {
+        return node is IdentifierNameSyntax identifierName
+            && IsLocalReference(identifierName);
+    }
+
+    private bool IsLocalReference(IdentifierNameSyntax identifierName)
+    {
+        return Identifiers.TryGetValue(identifierName.Identifier.ValueText, out ILocalSymbol symbol)
+            && SymbolEqualityComparer.Default.Equals(symbol, SemanticModel.GetSymbol(identifierName, CancellationToken));
+    }
+
+    public static MarkLocalVariableAsConstWalker GetInstance()
+    {
+        MarkLocalVariableAsConstWalker walker = _cachedInstance;
+
+        if (walker is not null)
         {
-            if (node.Kind() == SyntaxKind.AddressOfExpression
-                && node.Operand is IdentifierNameSyntax identifierName)
-            {
-                if (Identifiers.Contains(identifierName.Identifier.ValueText))
-                    Result = true;
-            }
-            else
-            {
-                base.VisitPrefixUnaryExpression(node);
-            }
+            Debug.Assert(walker.Identifiers.Count == 0);
+            Debug.Assert(!walker.Result);
+
+            _cachedInstance = null;
+            return walker;
         }
 
-        public static MarkLocalVariableAsConstWalker GetInstance()
-        {
-            MarkLocalVariableAsConstWalker walker = _cachedInstance;
+        return new MarkLocalVariableAsConstWalker();
+    }
 
-            if (walker != null)
-            {
-                Debug.Assert(walker.Identifiers.Count == 0);
-                Debug.Assert(!walker.Result);
+    public static void Free(MarkLocalVariableAsConstWalker walker)
+    {
+        walker.Identifiers.Clear();
+        walker.SemanticModel = null;
+        walker.CancellationToken = default;
+        walker.Result = false;
 
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new MarkLocalVariableAsConstWalker();
-        }
-
-        public static void Free(MarkLocalVariableAsConstWalker walker)
-        {
-            walker.Identifiers.Clear();
-            walker.Result = false;
-
-            _cachedInstance = walker;
-        }
+        _cachedInstance = walker;
     }
 }

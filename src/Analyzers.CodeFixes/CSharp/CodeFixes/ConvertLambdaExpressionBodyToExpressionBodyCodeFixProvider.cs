@@ -10,30 +10,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider))]
+[Shared]
+public sealed class ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider))]
-    [Shared]
-    public sealed class ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BlockSyntax block))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out BlockSyntax block))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                ConvertLambdaBlockBodyToExpressionBodyRefactoring.Title,
-                ct => ConvertLambdaBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, (LambdaExpressionSyntax)block.Parent, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody));
+        CodeAction codeAction = CodeAction.Create(
+            ConvertLambdaBlockBodyToExpressionBodyRefactoring.Title,
+            ct => ConvertLambdaBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, (LambdaExpressionSyntax)block.Parent, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

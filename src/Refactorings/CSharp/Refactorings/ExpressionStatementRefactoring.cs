@@ -4,46 +4,45 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ExpressionStatementRefactoring
 {
-    internal static class ExpressionStatementRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceLocalVariable))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceLocalVariable))
+            ExpressionSyntax expression = expressionStatement.Expression;
+
+            if (expression?.IsMissing == false
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression)
+                && !expressionStatement.IsEmbedded()
+                && expression is not AssignmentExpressionSyntax
+                && !CSharpFacts.IsIncrementOrDecrementExpression(expression.Kind()))
             {
-                ExpressionSyntax expression = expressionStatement.Expression;
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (expression?.IsMissing == false
-                    && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression)
-                    && !expressionStatement.IsEmbedded()
-                    && expression is not AssignmentExpressionSyntax
-                    && !CSharpFacts.IsIncrementOrDecrementExpression(expression.Kind()))
+                if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() == false)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                    if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() == false)
+                    if (typeSymbol?.IsErrorType() == false
+                        && !typeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)
+                        && !typeSymbol.IsVoid())
                     {
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+                        var addAwait = false;
 
-                        if (typeSymbol?.IsErrorType() == false
-                            && !typeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)
-                            && !typeSymbol.IsVoid())
+                        if (typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
                         {
-                            var addAwait = false;
+                            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken);
 
-                            if (typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
-                            {
-                                ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken);
-
-                                addAwait = enclosingSymbol.IsAsyncMethod();
-                            }
-
-                            context.RegisterRefactoring(
-                                IntroduceLocalVariableRefactoring.GetTitle(expression),
-                                ct => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, ct),
-                                RefactoringDescriptors.IntroduceLocalVariable);
+                            addAwait = enclosingSymbol.IsAsyncMethod();
                         }
+
+                        context.RegisterRefactoring(
+                            IntroduceLocalVariableRefactoring.GetTitle(expression),
+                            ct => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, ct),
+                            RefactoringDescriptors.IntroduceLocalVariable);
                     }
                 }
             }

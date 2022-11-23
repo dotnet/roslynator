@@ -12,10 +12,12 @@ sidebar_label: UsingStaticDirective
 
 | Method | Summary |
 | ------ | ------- |
-| [UsingStaticDirective(NameSyntax)](#Roslynator_CSharp_CSharpFactory_UsingStaticDirective_Microsoft_CodeAnalysis_CSharp_Syntax_NameSyntax_) | |
-| [UsingStaticDirective(SyntaxToken, SyntaxToken, NameSyntax, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_UsingStaticDirective_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_NameSyntax_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [UsingStaticDirective(NameSyntax)](#3383817532) | |
+| [UsingStaticDirective(SyntaxToken, SyntaxToken, NameSyntax, SyntaxToken)](#1460243000) | |
 
-## UsingStaticDirective\(NameSyntax\) <a id="Roslynator_CSharp_CSharpFactory_UsingStaticDirective_Microsoft_CodeAnalysis_CSharp_Syntax_NameSyntax_"></a>
+<a id="3383817532"></a>
+
+## UsingStaticDirective\(NameSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax UsingStaticDirective(Microsoft.CodeAnalysis.CSharp.Syntax.NameSyntax name)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax UsingSta
 
 [UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)
 
-## UsingStaticDirective\(SyntaxToken, SyntaxToken, NameSyntax, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_UsingStaticDirective_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_NameSyntax_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+<a id="1460243000"></a>
+
+## UsingStaticDirective\(SyntaxToken, SyntaxToken, NameSyntax, SyntaxToken\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax UsingStaticDirective(Microsoft.CodeAnalysis.SyntaxToken usingKeyword, Microsoft.CodeAnalysis.SyntaxToken staticKeyword, Microsoft.CodeAnalysis.CSharp.Syntax.NameSyntax name, Microsoft.CodeAnalysis.SyntaxToken semicolonToken)

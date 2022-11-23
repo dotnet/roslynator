@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1135DeclareEnumMemberWithZeroValueTests : AbstractCSharpDiagnosticVerifier<EnumSymbolAnalyzer, DeclareEnumMemberWithZeroValueCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareEnumMemberWithZeroValue;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1135DeclareEnumMemberWithZeroValueTests : AbstractCSharpDiagnosticVerifier<EnumSymbolAnalyzer, DeclareEnumMemberWithZeroValueCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareEnumMemberWithZeroValue;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -33,12 +33,12 @@ enum Foo
     A = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
-        public async Task TestNoDiagnostic_HasZeroValue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
+    public async Task TestNoDiagnostic_HasZeroValue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Flags]
@@ -49,18 +49,17 @@ enum Foo
     B = 2
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
-        public async Task TestNoDiagnostic_WithoutFlags()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue)]
+    public async Task TestNoDiagnostic_WithoutFlags()
+    {
+        await VerifyNoDiagnosticAsync(@"
 enum Foo
 {
     A = 1,
     B = 2
 }
 ");
-        }
     }
 }

@@ -3,31 +3,29 @@
 using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UncommentMultiLineCommentRefactoring
 {
-    internal static class UncommentMultiLineCommentRefactoring
+    public static void ComputeRefactoring(
+        RefactoringContext context,
+        SyntaxTrivia multiLineComment)
     {
-        public static void ComputeRefactoring(
-            RefactoringContext context,
-            SyntaxTrivia multiLineComment)
-        {
-            string s = multiLineComment.ToString();
+        string s = multiLineComment.ToString();
 
-            Debug.Assert(s.StartsWith("/*", StringComparison.Ordinal));
-            Debug.Assert(s.EndsWith("*/", StringComparison.Ordinal));
+        Debug.Assert(s.StartsWith("/*", StringComparison.Ordinal));
+        Debug.Assert(s.EndsWith("*/", StringComparison.Ordinal));
 
-            if (!s.StartsWith("/*", StringComparison.Ordinal))
-                return;
+        if (!s.StartsWith("/*", StringComparison.Ordinal))
+            return;
 
-            if (!s.EndsWith("*/", StringComparison.Ordinal))
-                return;
+        if (!s.EndsWith("*/", StringComparison.Ordinal))
+            return;
 
-            context.RegisterRefactoring(
-                "Uncomment",
-                ct => context.Document.WithTextChangeAsync(multiLineComment.Span, s.Substring(2, s.Length - 4), ct),
-                RefactoringDescriptors.UncommentMultiLineComment);
-        }
+        context.RegisterRefactoring(
+            "Uncomment",
+            ct => context.Document.WithTextChangeAsync(multiLineComment.Span, s.Substring(2, s.Length - 4), ct),
+            RefactoringDescriptors.UncommentMultiLineComment);
     }
 }

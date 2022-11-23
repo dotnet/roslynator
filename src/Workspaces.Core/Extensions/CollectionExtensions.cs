@@ -4,56 +4,55 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class CollectionExtensions
 {
-    internal static class CollectionExtensions
+    public static T SingleOrDefault<T>(this IReadOnlyCollection<T> values, bool shouldThrow)
     {
-        public static T SingleOrDefault<T>(this IReadOnlyCollection<T> values, bool shouldThrow)
-        {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
+        if (values is null)
+            throw new ArgumentNullException(nameof(values));
 
-            if (shouldThrow)
-            {
-                return values.SingleOrDefault();
-            }
-            else
-            {
-                return (values.Count == 1) ? values.First() : default;
-            }
+        if (shouldThrow)
+        {
+            return values.SingleOrDefault();
         }
-
-        public static T SingleOrDefault<T>(
-            this IReadOnlyCollection<T> list,
-            Func<T, bool> predicate,
-            bool shouldThrow)
+        else
         {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
+            return (values.Count == 1) ? values.First() : default;
+        }
+    }
 
-            if (shouldThrow)
-                return list.SingleOrDefault(predicate);
+    public static T SingleOrDefault<T>(
+        this IReadOnlyCollection<T> list,
+        Func<T, bool> predicate,
+        bool shouldThrow)
+    {
+        if (list is null)
+            throw new ArgumentNullException(nameof(list));
 
-            using (IEnumerator<T> en = list.GetEnumerator())
+        if (shouldThrow)
+            return list.SingleOrDefault(predicate);
+
+        using (IEnumerator<T> en = list.GetEnumerator())
+        {
+            while (en.MoveNext())
             {
-                while (en.MoveNext())
+                T item = en.Current;
+
+                if (predicate(item))
                 {
-                    T item = en.Current;
-
-                    if (predicate(item))
+                    while (en.MoveNext())
                     {
-                        while (en.MoveNext())
-                        {
-                            if (predicate(en.Current))
-                                return default;
-                        }
-
-                        return item;
+                        if (predicate(en.Current))
+                            return default;
                     }
+
+                    return item;
                 }
             }
-
-            return default;
         }
+
+        return default;
     }
 }

@@ -8,57 +8,56 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeTopDeclaration);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeTopDeclaration);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
+    }
 
-        private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
-        {
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
+    private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
+    {
+        var compilationUnit = (CompilationUnitSyntax)context.Node;
 
-            MemberDeclarationSyntax declaration = compilationUnit.Members.FirstOrDefault();
+        MemberDeclarationSyntax declaration = compilationUnit.Members.FirstOrDefault();
 
-            if (declaration == null)
-                return;
+        if (declaration is null)
+            return;
 
-            if (!SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(declaration.GetLeadingTrivia()))
-                return;
+        if (!SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(declaration.GetLeadingTrivia()))
+            return;
 
-            SyntaxNode node = compilationUnit.AttributeLists.LastOrDefault()
-                ?? (SyntaxNode)compilationUnit.Usings.LastOrDefault()
-                ?? compilationUnit.Externs.LastOrDefault();
+        SyntaxNode node = compilationUnit.AttributeLists.LastOrDefault()
+            ?? (SyntaxNode)compilationUnit.Usings.LastOrDefault()
+            ?? compilationUnit.Externs.LastOrDefault();
 
-            if (node == null)
-                return;
+        if (node is null)
+            return;
 
-            if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(node.GetTrailingTrivia()))
-                return;
+        if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(node.GetTrailingTrivia()))
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.AddBlankLineBeforeTopDeclaration,
-                Location.Create(compilationUnit.SyntaxTree, new TextSpan(node.GetTrailingTrivia().Last().SpanStart, 0)));
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AddBlankLineBeforeTopDeclaration,
+            Location.Create(compilationUnit.SyntaxTree, new TextSpan(node.GetTrailingTrivia().Last().SpanStart, 0)));
     }
 }

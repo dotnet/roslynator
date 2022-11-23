@@ -2,21 +2,20 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class DestructorDeclarationRefactoring
 {
-    internal static class DestructorDeclarationRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, DestructorDeclarationSyntax destructorDeclaration)
     {
-        public static void ComputeRefactorings(RefactoringContext context, DestructorDeclarationSyntax destructorDeclaration)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
+            && context.SupportsCSharp6
+            && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(destructorDeclaration, context.Span))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
-                && context.SupportsCSharp6
-                && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(destructorDeclaration, context.Span))
-            {
-                context.RegisterRefactoring(
-                    ConvertBlockBodyToExpressionBodyRefactoring.Title,
-                    ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, destructorDeclaration, ct),
-                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
-            }
+            context.RegisterRefactoring(
+                ConvertBlockBodyToExpressionBodyRefactoring.Title,
+                ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, destructorDeclaration, ct),
+                RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
         }
     }
 }

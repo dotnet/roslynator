@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0022ChangeTypeAccordingToExpressionTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeTypeAccordingToExpression;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
-        public async Task Test_LocalVariable()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0022ChangeTypeAccordingToExpressionTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeTypeAccordingToExpression;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
+    public async Task Test_LocalVariable()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -34,12 +34,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
-        public async Task Test_ForEachVariable()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
+    public async Task Test_ForEachVariable()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -66,12 +66,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
-        public async Task Test_NoRefactoring_NullLiteral()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
+    public async Task Test_NoRefactoring_NullLiteral()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -82,6 +82,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

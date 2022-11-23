@@ -11,6 +11,7 @@ dotnet nuget push "..\out\release\Roslynator.CSharp.Workspaces.*.nupkg" --source
 dotnet nuget push "..\out\release\Roslynator.Testing.Common.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
 dotnet nuget push "..\out\release\Roslynator.Testing.CSharp.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
 dotnet nuget push "..\out\release\Roslynator.Testing.CSharp.Xunit.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
+dotnet nuget push "..\out\release\Roslynator.Testing.CSharp.MSTest.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
 
 dotnet nuget push "..\out\release\Roslynator.Analyzers.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
 dotnet nuget push "..\out\release\Roslynator.Formatting.Analyzers.*.nupkg" --source %_nugetSource% --api-key %_apiKey%

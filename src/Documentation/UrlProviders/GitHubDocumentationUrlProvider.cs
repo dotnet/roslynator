@@ -2,15 +2,14 @@
 
 using System.Collections.Generic;
 
-namespace Roslynator.Documentation
-{
-    internal sealed class GitHubDocumentationUrlProvider : CommonDocumentationUrlProvider
-    {
-        public GitHubDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
-            : base(segmentProvider, externalProviders)
-        {
-        }
+namespace Roslynator.Documentation;
 
-        public override string IndexFileName => "README.md";
+internal sealed class GitHubDocumentationUrlProvider : CommonDocumentationUrlProvider
+{
+    public GitHubDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
+        : base(segmentProvider, externalProviders)
+    {
     }
+
+    public override string IndexFileName => "README.md";
 }

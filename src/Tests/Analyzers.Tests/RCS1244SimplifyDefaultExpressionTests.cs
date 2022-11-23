@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1244SimplifyDefaultExpressionTests : AbstractCSharpDiagnosticVerifier<DefaultExpressionAnalyzer, DefaultExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyDefaultExpression;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task Test_ParameterDefaultValue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1244SimplifyDefaultExpressionTests : AbstractCSharpDiagnosticVerifier<DefaultExpressionAnalyzer, DefaultExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyDefaultExpression;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task Test_ParameterDefaultValue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s = default[|(string)|])
@@ -30,12 +30,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task Test_ExpressionBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task Test_ExpressionBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M() => default[|(string)|];
@@ -46,12 +46,12 @@ class C
     string M() => default;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task Test_ReturnStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task Test_ReturnStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -68,12 +68,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task Test_ReturnStatement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task Test_ReturnStatement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -106,12 +106,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task Test_ReturnStatement3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task Test_ReturnStatement3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -156,12 +156,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task Test_YieldReturnStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task Test_YieldReturnStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -182,12 +182,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_NonObjectValueAssignedToObject()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_NonObjectValueAssignedToObject()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -198,12 +198,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_NonNullableValueAssignedToNullable()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_NonNullableValueAssignedToNullable()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -214,12 +214,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_ValueAssignedToDynamic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_ValueAssignedToDynamic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -230,12 +230,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_ConditionalExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_ConditionalExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -248,12 +248,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_ConditionalExpression_Nullable()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_ConditionalExpression_Nullable()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -266,12 +266,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_ReturnStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_ReturnStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object M()
@@ -280,12 +280,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_CoalesceExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_CoalesceExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -296,23 +296,23 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_ExpressionBody()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_ExpressionBody()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object M() => default(int);
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_ObjectInitializer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_ObjectInitializer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P { get; set; }
@@ -323,12 +323,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_ConstantPattern()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_ConstantPattern()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -341,12 +341,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_CaseSwitchLabel()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_CaseSwitchLabel()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -361,12 +361,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_Argument()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_Argument()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s)
@@ -375,12 +375,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_CSharp7()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_CSharp7()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string s = default(string))
@@ -388,12 +388,12 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp7);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_Nullable()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_Nullable()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -404,12 +404,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_TypeInferredFromReturnStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_TypeInferredFromReturnStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -426,12 +426,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_TypeInferredFromReturnStatement2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_TypeInferredFromReturnStatement2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -454,12 +454,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
-        public async Task TestNoDiagnostic_OverloadedEqualityOperator()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_OverloadedEqualityOperator()
+    {
+        await VerifyNoDiagnosticAsync(@"
 internal readonly struct C
 {
     public static implicit operator C(int i) => new C();
@@ -474,6 +474,22 @@ internal readonly struct C
     }
 }
 ");
-        }
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_LambdaExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        var x = () =>
+        {
+            return default(object);
+        };
+    }
+}
+");
     }
 }

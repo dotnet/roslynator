@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -8,54 +7,53 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class RemoveRedundantCommaInInitializerAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RemoveRedundantCommaInInitializerAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveRedundantCommaInInitializer);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveRedundantCommaInInitializer);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(
-                f => AnalyzeInitializerExpression(f),
-                SyntaxKind.ArrayInitializerExpression,
-                SyntaxKind.ObjectInitializerExpression,
-                SyntaxKind.CollectionInitializerExpression);
-        }
+        context.RegisterSyntaxNodeAction(
+            f => AnalyzeInitializerExpression(f),
+            SyntaxKind.ArrayInitializerExpression,
+            SyntaxKind.ObjectInitializerExpression,
+            SyntaxKind.CollectionInitializerExpression);
+    }
 
-        private static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
-        {
-            var initializer = (InitializerExpressionSyntax)context.Node;
+    private static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
+    {
+        var initializer = (InitializerExpressionSyntax)context.Node;
 
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+        SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-            if (!expressions.Any())
-                return;
+        if (!expressions.Any())
+            return;
 
-            int count = expressions.Count;
+        int count = expressions.Count;
 
-            if (count != expressions.SeparatorCount)
-                return;
+        if (count != expressions.SeparatorCount)
+            return;
 
-            SyntaxToken token = expressions.GetSeparator(count - 1);
+        SyntaxToken token = expressions.GetSeparator(count - 1);
 
-            Debug.Assert(!token.IsMissing);
+        Debug.Assert(!token.IsMissing);
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantCommaInInitializer, token);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantCommaInInitializer, token);
     }
 }

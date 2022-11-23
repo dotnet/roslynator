@@ -4,125 +4,124 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityComparer<string>, IComparer, IEqualityComparer
 {
-    internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityComparer<string>, IComparer, IEqualityComparer
+    public static DiagnosticIdComparer Prefix { get; } = new DiagnosticIdPrefixComparer();
+
+    public abstract int Compare(string x, string y);
+
+    public abstract bool Equals(string x, string y);
+
+    public abstract int GetHashCode(string obj);
+
+    public int Compare(object x, object y)
     {
-        public static DiagnosticIdComparer Prefix { get; } = new DiagnosticIdPrefixComparer();
+        if (x == y)
+            return 0;
 
-        public abstract int Compare(string x, string y);
+        if (x is null)
+            return -1;
 
-        public abstract bool Equals(string x, string y);
+        if (y is null)
+            return 1;
 
-        public abstract int GetHashCode(string obj);
-
-        public int Compare(object x, object y)
+        if (x is string a
+            && y is string b)
         {
-            if (x == y)
+            return Compare(a, b);
+        }
+
+        throw new ArgumentException("", nameof(x));
+    }
+
+    new public bool Equals(object x, object y)
+    {
+        if (x == y)
+            return true;
+
+        if (x is null)
+            return false;
+
+        if (y is null)
+            return false;
+
+        if (x is string a
+            && y is string b)
+        {
+            return Equals(a, b);
+        }
+
+        throw new ArgumentException("", nameof(x));
+    }
+
+    public int GetHashCode(object obj)
+    {
+        if (obj is null)
+            return 0;
+
+        if (obj is string descriptor)
+            return GetHashCode(descriptor);
+
+        throw new ArgumentException("", nameof(obj));
+    }
+
+    private class DiagnosticIdPrefixComparer : DiagnosticIdComparer
+    {
+        public override int Compare(string x, string y)
+        {
+            if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
-            if (x is string a
-                && y is string b)
-            {
-                return Compare(a, b);
-            }
+            int length1 = DiagnosticIdPrefix.GetPrefixLength(x);
+            int length2 = DiagnosticIdPrefix.GetPrefixLength(y);
 
-            throw new ArgumentException("", nameof(x));
+            if (length1 == length2)
+                return string.Compare(x, 0, y, 0, length1, StringComparison.Ordinal);
+
+            int length = Math.Min(length1, length2);
+
+            int result = string.Compare(x, 0, y, 0, length, StringComparison.Ordinal);
+
+            if (result != 0)
+                return result;
+
+            return length1.CompareTo(length2);
         }
 
-        new public bool Equals(object x, object y)
+        public override bool Equals(string x, string y)
         {
-            if (x == y)
+            if (object.ReferenceEquals(x, y))
                 return true;
 
-            if (x == null)
+            if (x is null)
                 return false;
 
-            if (y == null)
+            if (y is null)
                 return false;
 
-            if (x is string a
-                && y is string b)
-            {
-                return Equals(a, b);
-            }
+            int length1 = DiagnosticIdPrefix.GetPrefixLength(x);
+            int length2 = DiagnosticIdPrefix.GetPrefixLength(y);
 
-            throw new ArgumentException("", nameof(x));
+            return length1 == length2
+                && string.Compare(x, 0, y, 0, length1, StringComparison.Ordinal) == 0;
         }
 
-        public int GetHashCode(object obj)
+        public override int GetHashCode(string obj)
         {
-            if (obj == null)
-                return 0;
+            if (obj is null)
+                throw new ArgumentNullException(nameof(obj));
 
-            if (obj is string descriptor)
-                return GetHashCode(descriptor);
+            int length = DiagnosticIdPrefix.GetPrefixLength(obj);
 
-            throw new ArgumentException("", nameof(obj));
-        }
-
-        private class DiagnosticIdPrefixComparer : DiagnosticIdComparer
-        {
-            public override int Compare(string x, string y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                int length1 = DiagnosticIdPrefix.GetPrefixLength(x);
-                int length2 = DiagnosticIdPrefix.GetPrefixLength(y);
-
-                if (length1 == length2)
-                    return string.Compare(x, 0, y, 0, length1, StringComparison.Ordinal);
-
-                int length = Math.Min(length1, length2);
-
-                int result = string.Compare(x, 0, y, 0, length, StringComparison.Ordinal);
-
-                if (result != 0)
-                    return result;
-
-                return length1.CompareTo(length2);
-            }
-
-            public override bool Equals(string x, string y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return true;
-
-                if (x == null)
-                    return false;
-
-                if (y == null)
-                    return false;
-
-                int length1 = DiagnosticIdPrefix.GetPrefixLength(x);
-                int length2 = DiagnosticIdPrefix.GetPrefixLength(y);
-
-                return length1 == length2
-                    && string.Compare(x, 0, y, 0, length1, StringComparison.Ordinal) == 0;
-            }
-
-            public override int GetHashCode(string obj)
-            {
-                if (obj == null)
-                    throw new ArgumentNullException(nameof(obj));
-
-                int length = DiagnosticIdPrefix.GetPrefixLength(obj);
-
-                return StringComparer.Ordinal.GetHashCode(obj.Substring(0, length));
-            }
+            return StringComparer.Ordinal.GetHashCode(obj.Substring(0, length));
         }
     }
 }

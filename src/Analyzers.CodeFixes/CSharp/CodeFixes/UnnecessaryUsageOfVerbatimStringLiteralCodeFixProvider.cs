@@ -11,50 +11,49 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider))]
+[Shared]
+public sealed class UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider))]
-    [Shared]
-    public sealed class UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider : BaseCodeFixProvider
+    private const string Title = "Remove '@'";
+
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        private const string Title = "Remove '@'";
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral); }
+    }
 
-        public override ImmutableArray<string> FixableDiagnosticIds
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression)))
+            return;
+
+        CodeAction codeAction = CodeAction.Create(
+            Title,
+            ct => RefactorAsync(context.Document, node, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral));
+
+        context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        SyntaxNode node,
+        CancellationToken cancellationToken)
+    {
+        int start = node.SpanStart;
+
+        if (node is InterpolatedStringExpressionSyntax interpolatedString
+            && interpolatedString.StringStartToken.ValueText.StartsWith("$"))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral); }
+            start++;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        ExpressionSyntax newNode = SyntaxFactory.ParseExpression(node.ToFullString().Remove(start - node.FullSpan.Start, 1));
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression)))
-                return;
-
-            CodeAction codeAction = CodeAction.Create(
-                Title,
-                ct => RefactorAsync(context.Document, node, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral));
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
-        }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            SyntaxNode node,
-            CancellationToken cancellationToken)
-        {
-            int start = node.SpanStart;
-
-            if (node is InterpolatedStringExpressionSyntax interpolatedString
-                && interpolatedString.StringStartToken.ValueText.StartsWith("$"))
-            {
-                start++;
-            }
-
-            ExpressionSyntax newNode = SyntaxFactory.ParseExpression(node.ToFullString().Remove(start - node.FullSpan.Start, 1));
-
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(node, newNode, cancellationToken);
     }
 }
