@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix refactoring ([RR0180](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0180.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988)).
 - Recognize `ArgumentNullException.ThrowIfNull` ([RCS1227](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1227.md)) ([#992](https://github.com/josefpihrt/roslynator/pull/992)).
 - Detect pattern matching in [RCS1146](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1146.md) ([#999](https://github.com/josefpihrt/roslynator/pull/999)).
+- Handle `using` directive that starts with `global::` [RCS0015](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0015.md) ([#1000](https://github.com/josefpihrt/roslynator/pull/1000)).
 
 ## [4.1.2] - 2022-10-31
 
