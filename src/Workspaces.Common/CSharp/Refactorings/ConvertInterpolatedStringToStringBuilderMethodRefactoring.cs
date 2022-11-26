@@ -9,78 +9,77 @@ using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
 {
-    internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
+    public static (SyntaxKind contentKind, string methodName, ImmutableArray<ArgumentSyntax> arguments)
+        Refactor(InterpolatedStringContentSyntax content, bool isVerbatim)
     {
-        public static (SyntaxKind contentKind, string methodName, ImmutableArray<ArgumentSyntax> arguments)
-            Refactor(InterpolatedStringContentSyntax content, bool isVerbatim)
+        if (content is null)
+            throw new ArgumentNullException(nameof(content));
+
+        SyntaxKind kind = content.Kind();
+
+        switch (kind)
         {
-            if (content is null)
-                throw new ArgumentNullException(nameof(content));
+            case SyntaxKind.Interpolation:
+                {
+                    var interpolation = (InterpolationSyntax)content;
 
-            SyntaxKind kind = content.Kind();
+                    InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
+                    InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
 
-            switch (kind)
-            {
-                case SyntaxKind.Interpolation:
+                    if (alignmentClause is not null
+                        || formatClause is not null)
                     {
-                        var interpolation = (InterpolationSyntax)content;
+                        StringBuilder sb = StringBuilderCache.GetInstance();
 
-                        InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
-                        InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
+                        sb.Append("\"{0");
 
-                        if (alignmentClause is not null
-                            || formatClause is not null)
+                        if (alignmentClause is not null)
                         {
-                            StringBuilder sb = StringBuilderCache.GetInstance();
-
-                            sb.Append("\"{0");
-
-                            if (alignmentClause is not null)
-                            {
-                                sb.Append(',');
-                                sb.Append(alignmentClause.Value.ToString());
-                            }
-
-                            if (formatClause is not null)
-                            {
-                                sb.Append(':');
-                                sb.Append(formatClause.FormatStringToken.Text);
-                            }
-
-                            sb.Append("}\"");
-
-                            ExpressionSyntax expression = ParseExpression(StringBuilderCache.GetStringAndFree(sb));
-
-                            return (kind, "AppendFormat", ImmutableArray.Create(Argument(expression), Argument(interpolation.Expression)));
+                            sb.Append(',');
+                            sb.Append(alignmentClause.Value.ToString());
                         }
-                        else
+
+                        if (formatClause is not null)
                         {
-                            return (kind, "Append", ImmutableArray.Create(Argument(interpolation.Expression)));
+                            sb.Append(':');
+                            sb.Append(formatClause.FormatStringToken.Text);
                         }
+
+                        sb.Append("}\"");
+
+                        ExpressionSyntax expression = ParseExpression(StringBuilderCache.GetStringAndFree(sb));
+
+                        return (kind, "AppendFormat", ImmutableArray.Create(Argument(expression), Argument(interpolation.Expression)));
                     }
-                case SyntaxKind.InterpolatedStringText:
+                    else
                     {
-                        var interpolatedStringText = (InterpolatedStringTextSyntax)content;
-
-                        string text = interpolatedStringText.TextToken.Text;
-
-                        text = StringUtility.ReplaceDoubleBracesWithSingleBrace(text);
-
-                        text = (isVerbatim)
-                            ? "@\"" + text + "\""
-                            : "\"" + text + "\"";
-
-                        ExpressionSyntax stringLiteral = ParseExpression(text);
-
-                        return (kind, "Append", ImmutableArray.Create(Argument(stringLiteral)));
+                        return (kind, "Append", ImmutableArray.Create(Argument(interpolation.Expression)));
                     }
-                default:
-                    {
-                        throw new ArgumentException("", nameof(content));
-                    }
-            }
+                }
+            case SyntaxKind.InterpolatedStringText:
+                {
+                    var interpolatedStringText = (InterpolatedStringTextSyntax)content;
+
+                    string text = interpolatedStringText.TextToken.Text;
+
+                    text = StringUtility.ReplaceDoubleBracesWithSingleBrace(text);
+
+                    text = (isVerbatim)
+                        ? "@\"" + text + "\""
+                        : "\"" + text + "\"";
+
+                    ExpressionSyntax stringLiteral = ParseExpression(text);
+
+                    return (kind, "Append", ImmutableArray.Create(Argument(stringLiteral)));
+                }
+            default:
+                {
+                    throw new ArgumentException("", nameof(content));
+                }
         }
     }
 }

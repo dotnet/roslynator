@@ -2,17 +2,16 @@
 
 using DotMarkdown;
 
-namespace Roslynator.CommandLine.Documentation
-{
-    internal class DocumentationWriter : MarkdownDocumentationWriter
-    {
-        public DocumentationWriter(MarkdownWriter writer) : base(writer)
-        {
-        }
+namespace Roslynator.CommandLine.Documentation;
 
-        public override void WriteOptionDescription(CommandOption option)
-        {
-            _writer.WriteString(option.FullDescription);
-        }
+internal class DocumentationWriter : MarkdownDocumentationWriter
+{
+    public DocumentationWriter(MarkdownWriter writer) : base(writer)
+    {
+    }
+
+    public override void WriteOptionDescription(CommandOption option)
+    {
+        _writer.WriteString(option.FullDescription);
     }
 }

@@ -4,9 +4,8 @@
 
 using Roslynator.CSharp;
 
-namespace Roslynator.VisualStudio
+namespace Roslynator.VisualStudio;
+
+public partial class CodeFixesOptionsPage
 {
-    public partial class CodeFixesOptionsPage
-    {
-    }
 }
