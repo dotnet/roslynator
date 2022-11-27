@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Detect pattern matching in [RCS1146](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1146.md) ([#999](https://github.com/josefpihrt/roslynator/pull/999)).
 - Handle `using` directive that starts with `global::` [RCS0015](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0015.md) ([#1000](https://github.com/josefpihrt/roslynator/pull/1000)).
 - [VS Extension] Reference all assemblies as 'Analyzer' and 'MefComponent' in vsix manifest ([#1002](https://github.com/josefpihrt/roslynator/pull/1002)).
-  - Fixes  `AD0001` with `System.IO.FileNotFoundException` on Visual Studio 17.4 and later.
+  - Fixes `AD0001` with `System.IO.FileNotFoundException` on Visual Studio 17.4 and later.
 
 ## [4.1.2] - 2022-10-31
 
