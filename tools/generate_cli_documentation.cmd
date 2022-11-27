@@ -11,7 +11,7 @@ if errorlevel 1 (
  exit
 )
 
-"..\src\CommandLine.DocumentationGenerator\bin\Release\net6.0\Roslynator.CommandLine.DocumentationGenerator.exe" "..\docs\cli"
+"..\src\CommandLine.DocumentationGenerator\bin\Release\net7.0\Roslynator.CommandLine.DocumentationGenerator.exe" "..\docs\cli"
 
 if errorlevel 1 (
  pause

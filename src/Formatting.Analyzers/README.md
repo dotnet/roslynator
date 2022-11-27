@@ -55,6 +55,7 @@
 | RCS0057 | [Normalize whitespace at the beginning of a file](../../docs/analyzers/RCS0057.md) | None |
 | RCS0058 | [Normalize whitespace at the end of a file](../../docs/analyzers/RCS0058.md) | None |
 | RCS0059 | [Place new line after/before null-conditional operator](../../docs/analyzers/RCS0059.md) | None |
+| RCS0060 | [Add/remove line after file scoped namespace declaration](../../docs/analyzers/RCS0060.md) | None |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

@@ -2,12 +2,11 @@
 
 set _programFiles=%ProgramFiles%
 
-set _roslynatorExe="..\src\CommandLine\bin\Debug\net6.0\roslynator"
-set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin"
+set _roslynatorExe="..\src\CommandLine\bin\Debug\net7.0\roslynator"
 set _msbuildProperties="Configuration=Release"
 set _rootDirectoryUrl="../../docs/api/"
 
-%_msbuildPath%\msbuild "..\src\CommandLine.sln" /t:Clean,Build /p:Configuration=Debug /v:m /m
+dotnet build "..\src\CommandLine.sln" /t:Clean,Build /p:Configuration=Debug /v:m /m
 
 %_roslynatorExe% generate-doc "..\src\Core.sln" ^
  --properties %_msbuildProperties% ^
