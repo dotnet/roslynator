@@ -5,7 +5,7 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 ### Features
 
 * [Extensions for Visual Studio](#extensions-for-visual-studio)
-* [NuGet Analyzers](#nuget-analyzers)
+* [NuGet Analyzers](#nuget-packages)
 * [Roslynator Client Libraries](#roslynator-client-libraries)
 * [Roslynator Command Line Tool](#roslynator-command-line-tool)
 * [Roslynator for VS Code](#extensions-for-visual-studio-code)
