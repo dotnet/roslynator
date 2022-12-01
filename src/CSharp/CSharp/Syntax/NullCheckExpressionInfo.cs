@@ -314,6 +314,22 @@ public readonly struct NullCheckExpressionInfo
                 }
         }
 
+        //if (expression1.IsKind(SyntaxKind.DefaultExpression))
+        //{
+        //    NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression)
+        //        ? NullCheckStyles.EqualsToNull
+        //        : NullCheckStyles.NotEqualsToNull;
+
+        //    if ((allowedStyles & style) != 0
+        //        && IsNullOrDefault(expression2, expression1, semanticModel, cancellationToken))
+        //    {
+        //        return new NullCheckExpressionInfo(
+        //            binaryExpression,
+        //            expression2,
+        //            style);
+        //    }
+        //}
+
         return default;
     }
 
@@ -379,7 +395,7 @@ public readonly struct NullCheckExpressionInfo
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);
 
-                    if (!typeSymbol.IsReferenceType)
+                    if (typeSymbol?.IsReferenceType != true)
                         return false;
 
                     ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(right, cancellationToken);
