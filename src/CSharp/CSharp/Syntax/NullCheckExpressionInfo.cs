@@ -314,22 +314,6 @@ public readonly struct NullCheckExpressionInfo
                 }
         }
 
-        //if (expression1.IsKind(SyntaxKind.DefaultExpression))
-        //{
-        //    NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression)
-        //        ? NullCheckStyles.EqualsToNull
-        //        : NullCheckStyles.NotEqualsToNull;
-
-        //    if ((allowedStyles & style) != 0
-        //        && IsNullOrDefault(expression2, expression1, semanticModel, cancellationToken))
-        //    {
-        //        return new NullCheckExpressionInfo(
-        //            binaryExpression,
-        //            expression2,
-        //            style);
-        //    }
-        //}
-
         return default;
     }
 
