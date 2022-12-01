@@ -86,4 +86,19 @@ class C
 }
 ", options: Options.WithAllowUnsafe(true));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task TestNoDiagnostic_DefaultOfTEqualsToNull()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    T M<T>()
+    {
+        return default(T) == null ? (T)Convert.ChangeType("""", typeof(T)) : default(T);
+    }
+}", options: Options.WithAllowUnsafe(true));
+    }
 }
