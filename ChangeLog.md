@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix [RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md) ([#1007](https://github.com/josefpihrt/roslynator/pull/1007)).
+
 ## [4.2.0] - 2022-11-27
 
 ### Added
