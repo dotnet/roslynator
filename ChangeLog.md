@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix [RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md) ([#1007](https://github.com/josefpihrt/roslynator/pull/1007)).
 - [CLI] Add nullable reference type modifier when creating a list of symbols (`list-symbols` command) ([#1013](https://github.com/josefpihrt/roslynator/pull/1013)).
 - Add/remove blank line after file scoped namespace declaration ([RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md)) ([#1014](https://github.com/josefpihrt/roslynator/pull/1014)).
+- Do not remove overriding member in record ([RCS1132](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1132.md)) ([#1015](https://github.com/josefpihrt/roslynator/pull/1015)).
 
 ## [4.2.0] - 2022-11-27
 
