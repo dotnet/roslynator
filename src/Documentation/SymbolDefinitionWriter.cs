@@ -93,7 +93,8 @@ internal abstract class SymbolDefinitionWriter : IDisposable
                     kindOptions: SymbolDisplayKindOptions.IncludeNamespaceKeyword
                         | SymbolDisplayKindOptions.IncludeTypeKeyword
                         | SymbolDisplayKindOptions.IncludeMemberKeyword,
-                    miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+                    miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                        | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 
                 format = Format.Update(format);
 
