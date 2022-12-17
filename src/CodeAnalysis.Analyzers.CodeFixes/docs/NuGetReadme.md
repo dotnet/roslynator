@@ -14,7 +14,7 @@ The package is applicable for projects that reference Roslyn packages (Microsoft
 
 * Add package to your project:
    ```shell
-   dotnet add package roslynator.formatting.analyzers
+   dotnet add package roslynator.codeanalysis.analyzers
    ```
 
 * Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/main/docs/Configuration.md) analyzers.
