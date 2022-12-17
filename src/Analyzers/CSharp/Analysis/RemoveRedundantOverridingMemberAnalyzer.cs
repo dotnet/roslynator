@@ -87,6 +87,17 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
         if (!SymbolEqualityComparer.Default.Equals(overriddenMethod, symbol))
             return;
 
+        if (symbol.ContainingType?.IsRecord == true)
+        {
+            switch (symbol.Name)
+            {
+                case "ToString":
+                case "PrintMembers":
+                case "GetHashCode":
+                    return;
+            }
+        }
+
         if (!CheckParameters(methodDeclaration.ParameterList, invocationInfo.ArgumentList, semanticModel, cancellationToken))
             return;
 
