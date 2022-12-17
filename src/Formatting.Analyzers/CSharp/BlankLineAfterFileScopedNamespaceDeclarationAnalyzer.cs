@@ -135,12 +135,8 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
         MemberDeclarationSyntax memberDeclaration = namespaceDeclaration.Members.FirstOrDefault();
         UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings.FirstOrDefault();
 
-        if (usingDirective?.SpanStart > namespaceDeclaration.SpanStart)
-            return usingDirective;
-
-        if (memberDeclaration is not null)
-            return memberDeclaration;
-
-        return null;
+        return (usingDirective?.SpanStart > namespaceDeclaration.SpanStart)
+            ? usingDirective
+            : memberDeclaration;
     }
 }
