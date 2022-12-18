@@ -107,6 +107,12 @@ public sealed class DefaultExpressionAnalyzer : BaseDiagnosticAnalyzer
                     if (parent.IsParentKind(SyntaxKind.ObjectInitializerExpression))
                         return;
 
+                    if (parent is BinaryExpressionSyntax coalesceExpression
+                        && coalesceExpression.Left == defaultExpression)
+                    {
+                        return;
+                    }
+
                     TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
 
                     if (!SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType))

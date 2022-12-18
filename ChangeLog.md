@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix [RCS1084](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1084.md) ([#1006](https://github.com/josefpihrt/roslynator/pull/1006)).
+- Fix [RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md) ([#1007](https://github.com/josefpihrt/roslynator/pull/1007)).
+- [CLI] Add nullable reference type modifier when creating a list of symbols (`list-symbols` command) ([#1013](https://github.com/josefpihrt/roslynator/pull/1013)).
+- Add/remove blank line after file scoped namespace declaration ([RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md)) ([#1014](https://github.com/josefpihrt/roslynator/pull/1014)).
+- Do not remove overriding member in record ([RCS1132](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1132.md)) ([#1015](https://github.com/josefpihrt/roslynator/pull/1015)).
+
+## [4.2.0] - 2022-11-27
+
 ### Added
 
 - Add Arm64 VS 2022 extension support ([#990](https://github.com/JosefPihrt/Roslynator/pull/990) by @snickler).
@@ -46,6 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Recognize `ArgumentNullException.ThrowIfNull` ([RCS1227](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1227.md)) ([#992](https://github.com/josefpihrt/roslynator/pull/992)).
 - Detect pattern matching in [RCS1146](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1146.md) ([#999](https://github.com/josefpihrt/roslynator/pull/999)).
 - Handle `using` directive that starts with `global::` [RCS0015](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0015.md) ([#1000](https://github.com/josefpihrt/roslynator/pull/1000)).
+- [VS Extension] Reference all assemblies as 'Analyzer' and 'MefComponent' in vsix manifest ([#1002](https://github.com/josefpihrt/roslynator/pull/1002)).
+  - Fixes `AD0001` with `System.IO.FileNotFoundException` on Visual Studio 17.4 and later.
 
 ## [4.1.2] - 2022-10-31
 

@@ -65,7 +65,7 @@
 | RCS1077 | [Optimize LINQ method call](../../docs/analyzers/RCS1077.md) | Info |
 | RCS1078 | [Use "" or 'string.Empty'](../../docs/analyzers/RCS1078.md) | None |
 | RCS1079 | [Throwing of new NotImplementedException](../../docs/analyzers/RCS1079.md) | None |
-| RCS1080 | [Use 'Count/Length' property instead of 'Any' method](../../docs/analyzers/RCS1080.md) | Info |
+| RCS1080 | [Use 'Count/Length' property instead of 'Any' method](../../docs/analyzers/RCS1080.md) | None |
 | RCS1081 | [Split variable declaration](../../docs/analyzers/RCS1081.md) | None |
 | RCS1084 | [Use coalesce expression instead of conditional expression](../../docs/analyzers/RCS1084.md) | Info |
 | RCS1085 | [Use auto-implemented property](../../docs/analyzers/RCS1085.md) | Info |
@@ -207,6 +207,8 @@
 | RCS1252 | [Normalize usage of infinite loop](../../docs/analyzers/RCS1252.md) | None |
 | RCS1253 | [Format documentation comment summary](../../docs/analyzers/RCS1253.md) | None |
 | RCS1254 | [Normalize format of enum flag value](../../docs/analyzers/RCS1254.md) | Info |
+| RCS1255 | [Simplify argument null check](../../docs/analyzers/RCS1255.md) | None |
+| RCS1256 | [Invalid argument null check](../../docs/analyzers/RCS1256.md) | Info |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

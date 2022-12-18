@@ -75,6 +75,9 @@ roslynator_arrow_token_new_line = after|before
 roslynator_binary_operator_new_line = after|before
 # Applicable to: rcs0027
 
+roslynator_blank_line_after_file_scoped_namespace_declaration = true|false
+# Applicable to: rcs0060
+
 roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 # Applicable to: rcs0014, rcs1036
 
@@ -326,6 +329,10 @@ dotnet_diagnostic.rcs0058.severity = none
 dotnet_diagnostic.rcs0059.severity = none
 # Options: roslynator_null_conditional_operator_new_line
 
+# Add/remove line after file scoped namespace declaration
+dotnet_diagnostic.rcs0060.severity = none
+# Options: roslynator_blank_line_after_file_scoped_namespace_declaration
+
 # Add braces (when expression spans over multiple lines)
 dotnet_diagnostic.rcs1001.severity = suggestion
 
@@ -493,7 +500,7 @@ dotnet_diagnostic.rcs1078.severity = none
 dotnet_diagnostic.rcs1079.severity = none
 
 # Use 'Count/Length' property instead of 'Any' method
-dotnet_diagnostic.rcs1080.severity = suggestion
+dotnet_diagnostic.rcs1080.severity = none
 
 # Split variable declaration
 dotnet_diagnostic.rcs1081.severity = none
@@ -912,8 +919,14 @@ dotnet_diagnostic.rcs1253.severity = none
 dotnet_diagnostic.rcs1254.severity = suggestion
 # Options: roslynator_enum_flag_value_style
 
+# Simplify argument null check
+dotnet_diagnostic.rcs1255.severity = none
+
 # Remove empty syntax
 dotnet_diagnostic.rcs1255.severity = suggestion
+
+# Invalid argument null check
+dotnet_diagnostic.rcs1256.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent

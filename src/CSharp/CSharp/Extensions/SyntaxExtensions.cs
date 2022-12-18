@@ -3223,6 +3223,8 @@ public static class SyntaxExtensions
                 case SyntaxKind.IfDirectiveTrivia:
                 case SyntaxKind.ElifDirectiveTrivia:
                 case SyntaxKind.WhenClause:
+                case SyntaxKind.BaseConstructorInitializer:
+                case SyntaxKind.ThisConstructorInitializer:
                     {
                         return false;
                     }

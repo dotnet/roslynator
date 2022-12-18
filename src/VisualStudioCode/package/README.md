@@ -2,7 +2,7 @@
 
 A collection of 500+ [analyzers](https://github.com/JosefPihrt/Roslynator/blob/main/src/Analyzers/README.md), [refactorings](https://github.com/JosefPihrt/Roslynator/blob/main/src/Refactorings/README.md) and [fixes](https://github.com/JosefPihrt/Roslynator/blob/main/src/CodeFixes/README.md) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-For further information please with Roslynator [repo](https://github.com/JosefPihrt/Roslynator).
+For further information please visit Roslynator [repo](https://github.com/JosefPihrt/Roslynator).
 
 ## Configuration
 
