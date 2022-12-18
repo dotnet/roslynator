@@ -894,11 +894,11 @@ roslynator_analyzers.enabled_by_default = true|false
 # Simplify argument null check
 #dotnet_diagnostic.rcs1255.severity = none
 
-# Remove empty syntax
-#dotnet_diagnostic.rcs1255.severity = suggestion
-
 # Invalid argument null check
 #dotnet_diagnostic.rcs1256.severity = suggestion
+
+# Remove empty syntax
+#dotnet_diagnostic.rcs1257.severity = suggestion
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

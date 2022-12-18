@@ -2509,18 +2509,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1255</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptySyntax = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveEmptySyntax, 
-            title:              "Remove empty syntax.", 
-            messageFormat:      "Remove empty {0}.", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptySyntax, 
-            customTags:         WellKnownDiagnosticTags.Unnecessary);
-
         /// <summary>RCS1256</summary>
         public static readonly DiagnosticDescriptor InvalidArgumentNullCheck = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.InvalidArgumentNullCheck, 
@@ -2532,6 +2520,18 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.InvalidArgumentNullCheck, 
             customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1257</summary>
+        public static readonly DiagnosticDescriptor RemoveEmptySyntax = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveEmptySyntax, 
+            title:              "Remove empty syntax.", 
+            messageFormat:      "Remove empty {0}.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptySyntax, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
 
     }
 }

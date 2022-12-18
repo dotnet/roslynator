@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Analyzer 'Remove empty syntax' ([RCS1257](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1257.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
+  - This analyzer replaces following analyzers:
+    - Remove empty empty statement ([RCS1038](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1038.md))
+    - Remove empty 'else' clause ([RCS1040](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1040.md))
+    - Remove empty object initializer ([RCS1041](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1041.md))
+    - Remove empty 'finally' clause ([RCS1066](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1066.md))
+    - Remove empty namespace declaration ([RCS1072](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1072.md))
+    - Remove empty region directive ([RCS1091](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1091.md))
+    - Remove empty destructor ([RCS1106](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1106.md))
+
 ### Fixed
 
 - Fix [RCS1084](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1084.md) ([#1006](https://github.com/josefpihrt/roslynator/pull/1006)).
@@ -31,15 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - annotated as nullable reference type.
     - optional and its default value is `null`.
 - Add package `Roslynator.Testing.CSharp.MSTest` ([#997](https://github.com/JosefPihrt/Roslynator/pull/997)).
-- Analyzer 'Remove empty syntax' ([RCS1255](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1255.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
-  - This analyzer consolidates following existing analyzers:
-    - Remove empty empty statement ([RCS1038](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1038.md))
-    - Remove empty 'else' clause ([RCS1040](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1040.md))
-    - Remove empty object initializer ([RCS1041](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1041.md))
-    - Remove empty 'finally' clause ([RCS1066](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1066.md))
-    - Remove empty namespace declaration ([RCS1072](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1072.md))
-    - Remove empty region directive ([RCS1091](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1091.md))
-    - Remove empty destructor ([RCS1106](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1106.md))
 
 ### Changed
 
