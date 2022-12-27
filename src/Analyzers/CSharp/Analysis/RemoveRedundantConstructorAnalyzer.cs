@@ -37,8 +37,8 @@ public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
         var constructor = (ConstructorDeclarationSyntax)context.Node;
 
         if (!constructor.ContainsDiagnostics
-            && (constructor.ParameterList?.Parameters.Any()) == false
-            && (constructor.Body?.Statements.Any()) == false)
+            && constructor.ParameterList?.Parameters.Any() == false
+            && constructor.Body?.Statements.Any() == false)
         {
             SyntaxTokenList modifiers = constructor.Modifiers;
 
@@ -74,26 +74,22 @@ public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
 
         if (memberDeclaration is not null)
         {
-            if (memberDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
-                return false;
+            SyntaxList<MemberDeclarationSyntax> members;
 
-            SyntaxList<MemberDeclarationSyntax> members = GetMembers(memberDeclaration);
-
-            static SyntaxList<MemberDeclarationSyntax> GetMembers(MemberDeclarationSyntax memberDeclaration)
+            if (memberDeclaration is StructDeclarationSyntax structDeclaration)
             {
-                if (memberDeclaration is StructDeclarationSyntax structDeclaration)
-                {
-                    return structDeclaration.Members;
-                }
-                else if (memberDeclaration is RecordDeclarationSyntax recordDeclaration
-                    && recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword))
-                {
-                    return recordDeclaration.Members;
-                }
-                else
-                {
-                    return default;
-                }
+                if (memberDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                    return false;
+
+                members = structDeclaration.Members;
+            }
+            else if (memberDeclaration is RecordDeclarationSyntax recordDeclaration
+                && recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword))
+            {
+                if (memberDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                    return false;
+
+                members = recordDeclaration.Members;
             }
 
             foreach (MemberDeclarationSyntax member in members)
