@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add/remove blank line after file scoped namespace declaration ([RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md)) ([#1014](https://github.com/josefpihrt/roslynator/pull/1014)).
 - Do not remove overriding member in record ([RCS1132](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1132.md)) ([#1015](https://github.com/josefpihrt/roslynator/pull/1015)).
 - Do not remove parameterless empty constructor in a struct with field initializers ([RCS1074](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1074.md)) ([#1020](https://github.com/josefpihrt/roslynator/pull/1020)).
+- Do not suggest to use generic event handler ([RCS1159](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1159.md)) ([#1019](https://github.com/josefpihrt/roslynator/pull/1019)).
 
 ## [4.2.0] - 2022-11-27
 
