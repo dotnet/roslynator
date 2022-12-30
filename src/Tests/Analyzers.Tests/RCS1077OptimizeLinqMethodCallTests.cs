@@ -390,38 +390,6 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-    public async Task Test_OptimizeOfType_ReferenceType()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System.Collections.Generic;
-using System.Linq;
-
-class C
-{
-    void M()
-    {
-        var items = new List<C>();
-
-        var q = items.[|OfType<C>()|];
-    }
-}
-", @"
-using System.Collections.Generic;
-using System.Linq;
-
-class C
-{
-    void M()
-    {
-        var items = new List<C>();
-
-        var q = items.Where(f => f != null);
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     public async Task Test_OptimizeOfType_ValueType()
     {
         await VerifyDiagnosticAndFixAsync(@"

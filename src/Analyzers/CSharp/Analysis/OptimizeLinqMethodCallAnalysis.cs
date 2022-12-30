@@ -454,6 +454,9 @@ internal static class OptimizeLinqMethodCallAnalysis
         if (typeSymbol?.IsErrorType() != false)
             return;
 
+        if (!typeSymbol.IsValueType)
+            return;
+
         ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
         cancellationToken.ThrowIfCancellationRequested();
