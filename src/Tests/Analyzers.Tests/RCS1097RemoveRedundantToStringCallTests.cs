@@ -105,7 +105,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
-    public async Task TestNoDiagnostic_ValueType()
+    public async Task TestNoDiagnostic_int()
     {
         await VerifyNoDiagnosticAsync(@"
 class C
@@ -114,6 +114,22 @@ class C
     {
         int i = 10;
         string s = $""'{i.ToString()}'"";
+    }
+}
+");
+    }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    public async Task TestNoDiagnostic_struct()
+    {
+        await VerifyNoDiagnosticAsync(@"
+struct S{}
+class C
+{
+    void M()
+    {
+        S s = new S();
+        string str = $""'{s.ToString()}'"";
     }
 }
 ");
