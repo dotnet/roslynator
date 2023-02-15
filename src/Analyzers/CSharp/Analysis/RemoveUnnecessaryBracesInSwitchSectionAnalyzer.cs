@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -90,6 +91,11 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
         if (!AnalyzeTrivia(closeBrace.TrailingTrivia))
             return;
 
+        // If any of the other case blocks contain a definition for the same local variables then removing the brackets would introduce a new error.
+        if (switchSection.Parent is SwitchStatementSyntax switchStatement &&
+            LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(switchStatement, block, context.SemanticModel))
+            return;
+
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBracesInSwitchSection, openBrace);
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBracesInSwitchSectionFadeOut, closeBrace);
 
@@ -98,4 +104,26 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
             return trivia.All(f => f.IsKind(SyntaxKind.WhitespaceTrivia, SyntaxKind.EndOfLineTrivia, SyntaxKind.SingleLineCommentTrivia));
         }
     }
+    
+    private static bool LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax caseBlock, SemanticModel semanticModel)
+    {
+        var caseDeclaredLocalVars = semanticModel
+            .LookupSymbols(caseBlock.CloseBraceToken.SpanStart-1)
+            .Where(s => s.Kind == SymbolKind.Local)
+            .Where(s => s.Locations.All(l => caseBlock.Span.Contains(l.SourceSpan)))
+            .Select(s => s.Name)
+            .ToImmutableHashSet();
+
+        // Now check if any of the other case statements under the same switch contain definitions for the same local variable. 
+        return switchStatement.Sections.Any(section =>
+        {
+            if (section.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax block || block == caseBlock)
+                return false;
+
+            return semanticModel
+                .LookupSymbols(block.CloseBraceToken.SpanStart-1)
+                .Any(s => s.Kind == SymbolKind.Local && caseDeclaredLocalVars.Contains(s.Name));
+        });
+    }
+
 }
