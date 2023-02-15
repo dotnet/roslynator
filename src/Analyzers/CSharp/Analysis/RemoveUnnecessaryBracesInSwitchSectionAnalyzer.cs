@@ -107,22 +107,29 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
     
     private static bool LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax caseBlock, SemanticModel semanticModel)
     {
-        var caseDeclaredLocalVars = semanticModel
-            .LookupSymbols(caseBlock.CloseBraceToken.SpanStart-1)
-            .Where(s => s.Kind == SymbolKind.Local)
-            .Where(s => s.Locations.All(l => caseBlock.Span.Contains(l.SourceSpan)))
+        var caseVariablesDeclared = semanticModel.AnalyzeDataFlow(caseBlock)?
+            .VariablesDeclared;
+        
+        if (!caseVariablesDeclared.HasValue || caseVariablesDeclared.Value == ImmutableArray<ISymbol>.Empty)
+            return false;
+
+        var nameCaseDeclaredVariables = caseVariablesDeclared.Value
             .Select(s => s.Name)
             .ToImmutableHashSet();
 
+        
         // Now check if any of the other case statements under the same switch contain definitions for the same local variable. 
         return switchStatement.Sections.Any(section =>
         {
             if (section.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax block || block == caseBlock)
                 return false;
 
-            return semanticModel
-                .LookupSymbols(block.CloseBraceToken.SpanStart-1)
-                .Any(s => s.Kind == SymbolKind.Local && caseDeclaredLocalVars.Contains(s.Name));
+            var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(block)?.VariablesDeclared;
+            if (sectionVariablesDeclared is null || sectionVariablesDeclared.Value.IsEmpty)
+                return false;
+
+            return sectionVariablesDeclared.Value.Any(s => nameCaseDeclaredVariables.Contains(s.Name));
+
         });
     }
 

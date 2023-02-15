@@ -73,15 +73,22 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
 
     private static bool LocalDeclaredVariablesOverlap(BlockSyntax elseBlock, BlockSyntax ifBlock, SemanticModel semanticModel)
     {        
-        var elseDeclaredLocalVars = semanticModel
-            .LookupSymbols(elseBlock.CloseBraceToken.SpanStart-1)
-            .Where(s => s.Kind == SymbolKind.Local)
-            .Where(s => s.Locations.All(l => elseBlock.Span.Contains(l.SourceSpan)))
+        var elseVariablesDeclared = semanticModel.AnalyzeDataFlow(elseBlock)?
+            .VariablesDeclared;
+        
+        if (!elseVariablesDeclared.HasValue || elseVariablesDeclared.Value == ImmutableArray<ISymbol>.Empty)
+            return false;
+
+        var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifBlock)?
+            .VariablesDeclared;
+        
+        if (!ifVariablesDeclared.HasValue || ifVariablesDeclared.Value == ImmutableArray<ISymbol>.Empty)
+            return false;
+        var elseVariableNames = elseVariablesDeclared.Value
             .Select(s => s.Name)
             .ToImmutableHashSet();
         
-        return semanticModel
-            .LookupSymbols(ifBlock.CloseBraceToken.SpanStart-1)
-            .Any(s => s.Kind == SymbolKind.Local && elseDeclaredLocalVars.Contains(s.Name));
+        return ifVariablesDeclared.Value
+            .Any(s => elseVariableNames.Contains(s.Name));
     }
 }
