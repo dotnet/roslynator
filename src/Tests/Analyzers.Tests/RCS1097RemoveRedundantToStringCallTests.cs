@@ -120,7 +120,7 @@ class C
     }
     
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
-    public async Task TestNoDiagnostic_struct()
+    public async Task TestNoDiagnostic_Struct()
     {
         await VerifyNoDiagnosticAsync(@"
 struct S{}
