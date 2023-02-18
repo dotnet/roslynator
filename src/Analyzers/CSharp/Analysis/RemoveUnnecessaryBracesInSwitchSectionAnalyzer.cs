@@ -93,7 +93,7 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
         // If any of the other case blocks contain a definition for the same local variables then removing the brackets would introduce a new error.
         if (switchSection.Parent is SwitchStatementSyntax switchStatement &&
-            LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(switchStatement, block, context.SemanticModel))
+            LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(switchStatement, switchSection, context.SemanticModel))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBracesInSwitchSection, openBrace);
@@ -105,30 +105,25 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
         }
     }
     
-    private static bool LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax caseBlock, SemanticModel semanticModel)
+    private static bool LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, SwitchSectionSyntax switchSection, SemanticModel semanticModel)
     {
-        var caseVariablesDeclared = semanticModel.AnalyzeDataFlow(caseBlock)!
+        var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchSection)!
             .VariablesDeclared;
         
-        if (caseVariablesDeclared.IsEmpty)
+        if (sectionVariablesDeclared.IsEmpty)
             return false;
 
-        var nameCaseDeclaredVariables = caseVariablesDeclared
+        var sectionDeclaredVariablesName = sectionVariablesDeclared
             .Select(s => s.Name)
             .ToImmutableHashSet();
 
-        
-        return switchStatement.Sections.Any(section =>
+        return switchStatement.Sections.Any(otherSection =>
         {
-            if (section.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax block || block == caseBlock)
+            var otherSectionVariablesDeclared = semanticModel.AnalyzeDataFlow(otherSection)!.VariablesDeclared;
+            if (otherSectionVariablesDeclared.IsEmpty)
                 return false;
 
-            var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(block)!.VariablesDeclared;
-            if (sectionVariablesDeclared.IsEmpty)
-                return false;
-
-            return sectionVariablesDeclared.Any(s => nameCaseDeclaredVariables.Contains(s.Name));
-
+            return otherSectionVariablesDeclared.Any(s => sectionDeclaredVariablesName.Contains(s.Name));
         });
     }
 
