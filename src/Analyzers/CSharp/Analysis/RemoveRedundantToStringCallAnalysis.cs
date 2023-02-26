@@ -58,6 +58,7 @@ internal static class RemoveRedundantToStringCallAnalysis
             INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
             if (containingType?.IsReferenceType == true
+                && containingType.SpecialType != SpecialType.System_ValueType
                 && containingType.SpecialType != SpecialType.System_Enum)
             {
                 if (containingType.SpecialType == SpecialType.System_String)
