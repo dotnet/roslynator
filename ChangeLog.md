@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not suggest to use generic event handler ([RCS1159](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1159.md)) ([#1022](https://github.com/josefpihrt/roslynator/pull/1022)).
 - Fix ([RCS1077](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1077.md)) ([#1023](https://github.com/josefpihrt/roslynator/pull/1023)).
 - Fix ([RCS1097](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1097.md)) ([#1037](https://github.com/JosefPihrt/Roslynator/pull/1037)).
+- Do not report ([RCS1170](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1170.md)) when `Microsoft.AspNetCore.Components.InjectAttribute` is used ([#1046](https://github.com/JosefPihrt/Roslynator/pull/1046)).
 
 ## [4.2.0] - 2022-11-27
 
