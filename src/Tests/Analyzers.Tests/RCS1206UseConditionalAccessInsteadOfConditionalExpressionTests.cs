@@ -357,4 +357,27 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+    public async Task TestNoDiagnostic_ReadOnlyRefStruct()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+#nullable enable
+
+class C
+{
+    static ReadOnlySpan<byte> GetData(IDummy? dummy)
+    {
+        return dummy is not null ? dummy.Data : default;
+    }
+
+    interface IDummy
+    {
+        ReadOnlySpan<byte> Data { get; }
+    }
+}
+");
+    }
 }
