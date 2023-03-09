@@ -21,14 +21,7 @@ namespace Roslynator;
 
 class C
 {
-    static ReadOnlySpan<byte> GetData(IDummy? dummy)
+    void M()
     {
-        return dummy is not null ? dummy.Data : default;
-        //     ^ suggestion is here
-    }
-
-    interface IDummy
-    {
-        ReadOnlySpan<byte> Data { get; }
     }
 }
