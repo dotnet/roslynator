@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis;
 
@@ -357,11 +358,27 @@ internal static class OptimizeMethodCallAnalysis
                         && (block is null
                             || SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(block.OpenBraceToken)))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.OptimizeMethodCall,
-                            invocationInfo.Name,
-                            "Add");
+                        var forEachVariableSymbol = context.SemanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken) as ILocalSymbol;
+
+                        if (forEachVariableSymbol is not null)
+                        {
+                            ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(forEachVariableSymbol, context.SemanticModel, context.CancellationToken);
+
+                            walker.Visit(invocationInfo.Expression);
+
+                            bool containsReference = walker.Result;
+
+                            ContainsLocalOrParameterReferenceWalker.Free(walker);
+
+                            if (!containsReference)
+                            {
+                                DiagnosticHelpers.ReportDiagnostic(
+                                    context,
+                                    DiagnosticRules.OptimizeMethodCall,
+                                    invocationInfo.Name,
+                                    "Add");
+                            }
+                        }
 
                         break;
                     }

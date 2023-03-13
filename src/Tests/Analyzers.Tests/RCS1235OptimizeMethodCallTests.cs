@@ -603,4 +603,28 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    public async Task TestNoDiagnostic_ForEachVariableUsedInExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    (List<int>, List<int>) M(List<int> list)
+    {
+        var positive = new List<int>();
+        var negative = new List<int>();
+
+        foreach (int i in list)
+        {
+            ((i >= 0) ? positive : negative).Add(i);
+        }
+
+        return (positive, negative);
+    }
+}
+");
+    }
 }

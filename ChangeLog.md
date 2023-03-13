@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- [CLI] Bump Roslyn to 4.5.0 ([#1043](https://github.com/josefpihrt/roslynator/pull/1043)).
+
 ### Fixed
 
 - Fix [RCS1084](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1084.md) ([#1006](https://github.com/josefpihrt/roslynator/pull/1006)).
@@ -17,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not remove parameterless empty constructor in a struct with field initializers ([RCS1074](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1074.md)) ([#1021](https://github.com/josefpihrt/roslynator/pull/1021)).
 - Do not suggest to use generic event handler ([RCS1159](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1159.md)) ([#1022](https://github.com/josefpihrt/roslynator/pull/1022)).
 - Fix ([RCS1077](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1077.md)) ([#1023](https://github.com/josefpihrt/roslynator/pull/1023)).
+- Fix ([RCS1097](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1097.md)) ([#1037](https://github.com/JosefPihrt/Roslynator/pull/1037)).
+- Do not report ([RCS1170](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1170.md)) when `Microsoft.AspNetCore.Components.InjectAttribute` is used ([#1046](https://github.com/JosefPihrt/Roslynator/pull/1046)).
+- Fix ([RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md)) ([#1047](https://github.com/JosefPihrt/Roslynator/pull/1047)).
+- Fix ([RCS1206](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1206.md)) ([#1049](https://github.com/JosefPihrt/Roslynator/pull/1049)).
 - Do not remove braces in the cases where there are overlapping local variables. ([RCS1031](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1013.md), [RCS1211](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1211.md), [RCS1208](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1208.md)) ([#1039](https://github.com/JosefPihrt/Roslynator/pull/1039)).
 
 ## [4.2.0] - 2022-11-27

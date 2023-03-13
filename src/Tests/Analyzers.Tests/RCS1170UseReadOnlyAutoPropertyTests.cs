@@ -530,4 +530,27 @@ namespace Microsoft.AspNetCore.Components
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+    public async Task TestNoDiagnostic_InjectAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using Microsoft.AspNetCore.Components;
+
+class C
+{
+    [Inject]
+    private string P { get; set; }
+}
+
+namespace Microsoft.AspNetCore.Components
+{
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    class InjectAttribute : Attribute
+    {
+    }
+}
+");
+    }
 }
