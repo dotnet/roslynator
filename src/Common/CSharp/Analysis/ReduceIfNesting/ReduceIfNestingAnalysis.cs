@@ -294,15 +294,16 @@ internal static class ReduceIfNestingAnalysis
     {
         var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
             .VariablesDeclared;
+        
         if (ifVariablesDeclared.IsEmpty)
             return false;
 
         var parentStatementDeclared = semanticModel.AnalyzeDataFlow(parent)!
             .VariablesDeclared;
         
-        // The Parent's declared variables will include those from the if and so we have to check for any symbols occuring twice.
+        // The parent's declared variables will include those from the if and so we have to check for any symbols occurring twice.
         return ifVariablesDeclared.Any(variable =>
-            parentStatementDeclared.Count(pVar => pVar.Name == variable.Name) > 1
+            parentStatementDeclared.Count(s => s.Name == variable.Name) > 1
         );
     }
 

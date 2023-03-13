@@ -88,8 +88,13 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
         var elseVariableNames = elseVariablesDeclared
             .Select(s => s.Name)
             .ToImmutableHashSet();
-        
-        return ifVariablesDeclared
-            .Any(s => elseVariableNames.Contains(s.Name));
+
+        foreach (var v in ifVariablesDeclared)
+        {
+            if (elseVariableNames.Contains(v.Name))
+                return true;
+        }
+
+        return false;
     }
 }

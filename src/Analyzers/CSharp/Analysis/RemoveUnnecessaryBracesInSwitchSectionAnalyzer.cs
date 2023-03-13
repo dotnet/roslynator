@@ -91,10 +91,12 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
         if (!AnalyzeTrivia(closeBrace.TrailingTrivia))
             return;
 
-        // If any of the other case blocks contain a definition for the same local variables then removing the brackets would introduce a new error.
-        if (switchSection.Parent is SwitchStatementSyntax switchStatement &&
-            LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(switchStatement, switchSection, context.SemanticModel))
+        // If any of the other case blocks contain a definition for the same local variables then removing the braces would introduce a new error.
+        if (switchSection.Parent is SwitchStatementSyntax switchStatement
+            && LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(switchStatement, block, context.SemanticModel))
+        {
             return;
+        }
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBracesInSwitchSection, openBrace);
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBracesInSwitchSectionFadeOut, closeBrace);
@@ -104,27 +106,36 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
             return trivia.All(f => f.IsKind(SyntaxKind.WhitespaceTrivia, SyntaxKind.EndOfLineTrivia, SyntaxKind.SingleLineCommentTrivia));
         }
     }
-    
-    private static bool LocalDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, SwitchSectionSyntax switchSection, SemanticModel semanticModel)
+
+    private static bool LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax switchBlock, SemanticModel semanticModel)
     {
-        var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchSection)!
+        var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
             .VariablesDeclared;
         
         if (sectionVariablesDeclared.IsEmpty)
             return false;
 
-        var sectionDeclaredVariablesName = sectionVariablesDeclared
+        var sectionDeclaredVariablesNames = sectionVariablesDeclared
             .Select(s => s.Name)
             .ToImmutableHashSet();
 
-        return switchStatement.Sections.Any(otherSection =>
+        foreach (var otherSection in switchStatement.Sections)
         {
-            var otherSectionVariablesDeclared = semanticModel.AnalyzeDataFlow(otherSection)!.VariablesDeclared;
-            if (otherSectionVariablesDeclared.IsEmpty)
-                return false;
+            // If the other section is not a block then we do not need to check as if there were overlapping variables then there would already be a error.
+            if (otherSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax otherBlock)
+                continue;
 
-            return otherSectionVariablesDeclared.Any(s => sectionDeclaredVariablesName.Contains(s.Name));
-        });
+            if (otherBlock.Span == switchBlock.Span)
+                continue;
+
+            foreach (var v in semanticModel.AnalyzeDataFlow(otherBlock)!.VariablesDeclared)
+            {
+                if (sectionDeclaredVariablesNames.Contains(v.Name))
+                    return true;
+            }
+        }
+        return false;
     }
+
 
 }
