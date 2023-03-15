@@ -627,4 +627,24 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+    public async Task TestNoDiagnostic_Recursion()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+class MyCollection : Collection<string>
+{
+    public void AddRange(IEnumerable<string> data)
+    {
+        foreach (string item in data)
+        {
+            this.Add(item);
+        }
+    }
+}
+");
+    }
 }
