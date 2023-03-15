@@ -343,7 +343,9 @@ internal static class OptimizeMethodCallAnalysis
             && invocation.ArgumentList.Arguments[0].Expression is IdentifierNameSyntax identifierName
             && identifierName.Identifier.ValueText == forEachStatement.Identifier.ValueText)
         {
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(invocationInfo.Expression, context.CancellationToken);
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
             if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
             {
@@ -351,18 +353,21 @@ internal static class OptimizeMethodCallAnalysis
                 {
                     if (member is IMethodSymbol methodSymbol
                         && methodSymbol.Parameters.Length == 1
-                        && context.SemanticModel.IsAccessible(invocation.SpanStart, methodSymbol)
-                        && context.SemanticModel.IsImplicitConversion(forEachStatement.Expression, methodSymbol.Parameters[0].Type)
+                        && semanticModel.IsAccessible(invocation.SpanStart, methodSymbol)
+                        && semanticModel.IsImplicitConversion(forEachStatement.Expression, methodSymbol.Parameters[0].Type)
+                        && !SymbolEqualityComparer.Default.Equals(
+                            methodSymbol,
+                            semanticModel.GetEnclosingSymbol(forEachStatement.SpanStart, cancellationToken))
                         && forEachStatement.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace()
                         && invocation.GetLeadingTrivia().IsEmptyOrWhitespace()
                         && (block is null
                             || SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(block.OpenBraceToken)))
                     {
-                        var forEachVariableSymbol = context.SemanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken) as ILocalSymbol;
+                        var forEachVariableSymbol = semanticModel.GetDeclaredSymbol(forEachStatement, cancellationToken) as ILocalSymbol;
 
                         if (forEachVariableSymbol is not null)
                         {
-                            ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(forEachVariableSymbol, context.SemanticModel, context.CancellationToken);
+                            ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(forEachVariableSymbol, semanticModel, cancellationToken);
 
                             walker.Visit(invocationInfo.Expression);
 

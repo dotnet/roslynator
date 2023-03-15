@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not report ([RCS1170](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1170.md)) when `Microsoft.AspNetCore.Components.InjectAttribute` is used ([#1046](https://github.com/JosefPihrt/Roslynator/pull/1046)).
 - Fix ([RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md)) ([#1047](https://github.com/JosefPihrt/Roslynator/pull/1047)).
 - Fix ([RCS1206](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1206.md)) ([#1049](https://github.com/JosefPihrt/Roslynator/pull/1049)).
+- Prevent possible recursion in ([RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md)) ([#1054](https://github.com/JosefPihrt/Roslynator/pull/1054)).
 
 ## [4.2.0] - 2022-11-27
 
