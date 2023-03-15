@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix ([RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md)) ([#1047](https://github.com/JosefPihrt/Roslynator/pull/1047)).
 - Fix ([RCS1206](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1206.md)) ([#1049](https://github.com/JosefPihrt/Roslynator/pull/1049)).
 - Prevent possible recursion in ([RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md)) ([#1054](https://github.com/JosefPihrt/Roslynator/pull/1054)).
+- Fix ([RCS1223](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1223.md)) ([#1051](https://github.com/JosefPihrt/Roslynator/pull/1051)).
 
 ## [4.2.0] - 2022-11-27
 

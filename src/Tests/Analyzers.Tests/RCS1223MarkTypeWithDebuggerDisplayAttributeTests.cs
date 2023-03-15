@@ -287,4 +287,32 @@ public abstract class C
 }
 ");
     }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
+    public async Task Test_PublicRecord()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Diagnostics;
+
+public record [|R|]
+{
+}
+", @"
+using System.Diagnostics;
+
+[DebuggerDisplay(""{DebuggerDisplay,nq}"")]
+public record R
+{
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get
+        {
+            return ToString();
+        }
+    }
+}
+");
+    }
+
 }
