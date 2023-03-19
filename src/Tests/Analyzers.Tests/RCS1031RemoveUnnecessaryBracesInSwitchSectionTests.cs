@@ -141,6 +141,57 @@ class C
 }
 ");
     }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task Test_WithLocalVariablesThatDoNotOverlap()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+
+        switch (s)
+        {
+            case """":
+                [|{|]
+                    var x = 1;
+                    break;
+                }
+            default:
+                [|{|]
+                    var y = 1;
+                    break;
+                }
+        }
+    }
+}
+",@"
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+
+        switch (s)
+        {
+            case """":
+                var x = 1;
+                break;
+
+            default:
+                var y = 1;
+                break;
+        }
+    }
+}
+");
+    }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_SectionWithoutBlock()
@@ -179,6 +230,36 @@ class C
             case """":
                 {
                     using IDisposable disposable = default;
+                    break;
+                }
+        }
+    }
+}
+");
+    }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task TestNoDiagnostic_WhenOverlappingLocalVariableDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+
+        switch (s)
+        {
+            case """":
+                {
+                    var x = 1;
+                    break;
+                }
+            default:
+                {
+                    var x = 1;
                     break;
                 }
         }
