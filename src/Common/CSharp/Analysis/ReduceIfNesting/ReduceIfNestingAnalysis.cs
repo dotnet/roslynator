@@ -73,9 +73,7 @@ internal static class ReduceIfNestingAnalysis
             }
 
             if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, switchSection, semanticModel))
-            {
                 return Fail(switchSection);
-            }
 
             return Success(jumpKind, switchSection);
         }
@@ -111,9 +109,7 @@ internal static class ReduceIfNestingAnalysis
             }
 
             if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
-            {
                 return Fail(parent);
-            }
 
             return Success(jumpKind, parent);
         }
