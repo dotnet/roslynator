@@ -121,11 +121,20 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
         foreach (var otherSection in switchStatement.Sections)
         {
-            // If the other section is not a block then we do not need to check as if there were overlapping variables then there would already be a error.
-            if (otherSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax otherBlock)
+            if (otherSection.Span.Contains(switchBlock.Span))
                 continue;
 
-            if (otherBlock.Span == switchBlock.Span)
+            foreach (var label in otherSection.Labels)
+            {
+                if (label is not CasePatternSwitchLabelSyntax casePatternSwitchLabelSyntax)
+                    continue;
+
+                if (PattenMatchingVariableDeclarationHelper.GetVariablesDeclared(casePatternSwitchLabelSyntax.Pattern).Intersect(sectionDeclaredVariablesNames).Any())
+                    return true;
+            }
+            
+            // If the other section is not a block then we do not need to check as if there were overlapping variables then there would already be a error.
+            if (otherSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax otherBlock)
                 continue;
 
             foreach (var v in semanticModel.AnalyzeDataFlow(otherBlock)!.VariablesDeclared)
@@ -136,6 +145,5 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
         }
         return false;
     }
-
 
 }

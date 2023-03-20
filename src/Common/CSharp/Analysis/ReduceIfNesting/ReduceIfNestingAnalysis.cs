@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -137,20 +138,50 @@ internal static class ReduceIfNestingAnalysis
                     if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
                         return Fail(parent);
 
+                    var parentBody = parentKind switch
+                    {
+                        SyntaxKind.ConstructorDeclaration => ((ConstructorDeclarationSyntax)parent).Body,
+                        SyntaxKind.DestructorDeclaration => ((DestructorDeclarationSyntax)parent).Body,
+                        SyntaxKind.SetAccessorDeclaration => ((AccessorDeclarationSyntax)parent).Body,
+                        SyntaxKind.AddAccessorDeclaration => ((AccessorDeclarationSyntax)parent).Body,
+                        SyntaxKind.RemoveAccessorDeclaration => ((AccessorDeclarationSyntax)parent).Body,
+                        _ => throw new NotImplementedException()
+                    };
+
+                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parentBody, semanticModel))
+                        return Fail(parent);
+
                     return Success(jumpKind, parent);
                 }
             case SyntaxKind.OperatorDeclaration:
             case SyntaxKind.ConversionOperatorDeclaration:
-            case SyntaxKind.GetAccessorDeclaration:
                 {
                     if (jumpKind == SyntaxKind.None)
                         return Fail(parent);
                     
-                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
+                    var parentBody = parentKind switch
+                    {
+                        SyntaxKind.OperatorDeclaration => ((OperatorDeclarationSyntax)parent).Body,
+                        SyntaxKind.ConversionOperatorDeclaration => ((ConversionOperatorDeclarationSyntax)parent).Body,
+                        _ => throw new NotImplementedException()
+                    };
+
+                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parentBody, semanticModel))
                         return Fail(parent);
                     
                     return Success(jumpKind, parent);
                 }
+            case SyntaxKind.GetAccessorDeclaration:
+            { 
+                var accessorDeclaration = (AccessorDeclarationSyntax)parent;
+                if (jumpKind == SyntaxKind.None)
+                    return Fail(parent);
+                    
+                if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, accessorDeclaration.Body, semanticModel))
+                    return Fail(parent);
+                    
+                return Success(jumpKind, parent);
+            }
             case SyntaxKind.MethodDeclaration:
                 {
                     var methodDeclaration = (MethodDeclarationSyntax)parent;
