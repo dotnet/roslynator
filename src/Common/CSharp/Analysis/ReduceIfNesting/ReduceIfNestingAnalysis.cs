@@ -135,9 +135,6 @@ internal static class ReduceIfNestingAnalysis
                         return Fail(parent);
                     }
                     
-                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
-                        return Fail(parent);
-
                     var parentBody = parentKind switch
                     {
                         SyntaxKind.ConstructorDeclaration => ((ConstructorDeclarationSyntax)parent).Body,
@@ -155,7 +152,8 @@ internal static class ReduceIfNestingAnalysis
                 }
             case SyntaxKind.OperatorDeclaration:
             case SyntaxKind.ConversionOperatorDeclaration:
-                {
+            case SyntaxKind.GetAccessorDeclaration:
+            {
                     if (jumpKind == SyntaxKind.None)
                         return Fail(parent);
                     
@@ -163,6 +161,7 @@ internal static class ReduceIfNestingAnalysis
                     {
                         SyntaxKind.OperatorDeclaration => ((OperatorDeclarationSyntax)parent).Body,
                         SyntaxKind.ConversionOperatorDeclaration => ((ConversionOperatorDeclarationSyntax)parent).Body,
+                        SyntaxKind.GetAccessorDeclaration => ((AccessorDeclarationSyntax)parent).Body,
                         _ => throw new NotImplementedException()
                     };
 
@@ -171,17 +170,6 @@ internal static class ReduceIfNestingAnalysis
                     
                     return Success(jumpKind, parent);
                 }
-            case SyntaxKind.GetAccessorDeclaration:
-            { 
-                var accessorDeclaration = (AccessorDeclarationSyntax)parent;
-                if (jumpKind == SyntaxKind.None)
-                    return Fail(parent);
-                    
-                if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, accessorDeclaration.Body, semanticModel))
-                    return Fail(parent);
-                    
-                return Success(jumpKind, parent);
-            }
             case SyntaxKind.MethodDeclaration:
                 {
                     var methodDeclaration = (MethodDeclarationSyntax)parent;
