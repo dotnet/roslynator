@@ -84,7 +84,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
         }
 
         return new AnalyzeCommandResult(
-            (results.Any(f => f.Diagnostics.Length > 0)) ? CommandStatus.NotSuccess : CommandStatus.Success,
+            (results.Any(f => f.Diagnostics.Length > 0 || f.CompilerDiagnostics.Length > 0)) ? CommandStatus.NotSuccess : CommandStatus.Success,
             results);
     }
 
