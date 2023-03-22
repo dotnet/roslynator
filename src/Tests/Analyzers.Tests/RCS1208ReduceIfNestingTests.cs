@@ -49,4 +49,33 @@ class C
 }
 ");
     }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task TestNoDiagnostic_OverlappingLocalVariables()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(bool p, bool q)
+    {
+        if (p)
+        {
+            var x = 1;
+            M2();
+        }
+
+        if(q)
+        {
+            var x = 2;
+            M2();
+        }
+
+    }
+
+    void M2()
+    {
+    }
+}
+");
+    }
 }

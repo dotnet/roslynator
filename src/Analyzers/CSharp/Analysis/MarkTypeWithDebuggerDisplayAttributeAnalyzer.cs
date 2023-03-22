@@ -73,22 +73,12 @@ public sealed class MarkTypeWithDebuggerDisplayAttributeAnalyzer : BaseDiagnosti
 
         if (typeSymbol.OriginalDefinition.HasAttribute(debuggerDisplayAttributeSymbol, includeBaseTypes: true))
             return;
-
-        SyntaxToken identifier;
-
-        if (typeKind == TypeKind.Class)
-        {
-            var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
-
-            identifier = classDeclaration.Identifier;
-        }
-        else
-        {
-            var structDeclaration = (StructDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
-
-            identifier = structDeclaration.Identifier;
-        }
-
+        
+        if(typeSymbol.GetSyntax(context.CancellationToken) is not TypeDeclarationSyntax typeDeclaration)
+            return;
+        
+        var identifier = typeDeclaration.Identifier;
+        
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute, identifier, identifier.ValueText);
     }
 }

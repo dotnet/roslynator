@@ -175,6 +175,7 @@ public sealed class SimplifyNullCheckAnalyzer : BaseDiagnosticAnalyzer
 
             if (typeSymbol?.IsErrorType() == false
                 && (typeSymbol.IsReferenceType || typeSymbol.IsValueType)
+                && (!typeSymbol.IsValueType || !typeSymbol.IsRefLikeType)
                 && (semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
                     || IsDefaultOfNullableStruct(typeSymbol, whenNull, semanticModel, cancellationToken))
                 && !CSharpUtility.ContainsOutArgumentWithLocalOrParameter(whenNotNull, semanticModel, cancellationToken)
