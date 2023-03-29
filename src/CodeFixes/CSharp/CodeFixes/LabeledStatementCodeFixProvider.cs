@@ -32,12 +32,10 @@ public sealed class LabeledStatementCodeFixProvider : CompilerDiagnosticCodeFixP
 
         if (!TryFindFirstAncestorOrSelf(root, context.Span, out LabeledStatementSyntax labeledStatement))
             return;
-        
-        var child = labeledStatement.ChildNodes().First();
-        
+                
         var codeAction = CodeAction.Create(
             "Remove unused label",
-            ct => context.Document.ReplaceNodeAsync(labeledStatement, child, ct),
+            ct => context.Document.ReplaceNodeAsync(labeledStatement, labeledStatement.Statement, ct),
             EquivalenceKey.Create(diagnostic));
         
         context.RegisterCodeFix(codeAction, diagnostic);
