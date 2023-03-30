@@ -2,8 +2,10 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
@@ -30,7 +32,13 @@ public sealed class LabeledStatementCodeFixProvider : CompilerDiagnosticCodeFixP
 
         if (!TryFindFirstAncestorOrSelf(root, context.Span, out LabeledStatementSyntax labeledStatement))
             return;
+                
+        var codeAction = CodeAction.Create(
+            "Remove unused label",
+            ct => context.Document.ReplaceNodeAsync(labeledStatement, labeledStatement.Statement, ct),
+            EquivalenceKey.Create(diagnostic));
+        
+        context.RegisterCodeFix(codeAction, diagnostic);
 
-        CodeFixRegistrator.RemoveStatement(context, diagnostic, labeledStatement, title: "Remove unused label");
     }
 }
