@@ -121,21 +121,28 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
         foreach (var otherSection in switchStatement.Sections)
         {
-            // If the other section is not a block then we do not need to check as if there were overlapping variables then there would already be a error.
-            if (otherSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax otherBlock)
+            if (otherSection.Span.Contains(switchBlock.Span))
                 continue;
 
-            if (otherBlock.Span == switchBlock.Span)
-                continue;
-
-            foreach (var v in semanticModel.AnalyzeDataFlow(otherBlock)!.VariablesDeclared)
+            foreach (var label in otherSection.Labels)
             {
-                if (sectionDeclaredVariablesNames.Contains(v.Name))
+                if (label is not CasePatternSwitchLabelSyntax casePatternSwitchLabelSyntax)
+                    continue;
+
+                if (PattenMatchingVariableDeclarationHelper.GetVariablesDeclared(casePatternSwitchLabelSyntax.Pattern).Intersect(sectionDeclaredVariablesNames).Any())
                     return true;
+            }
+            
+            foreach (var statement in otherSection.Statements)
+            {
+                foreach (var v in semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared)
+                {
+                    if (sectionDeclaredVariablesNames.Contains(v.Name))
+                        return true;
+                }
             }
         }
         return false;
     }
-
 
 }
