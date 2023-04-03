@@ -133,14 +133,13 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
                     return true;
             }
             
-            // If the other section is not a block then we do not need to check as if there were overlapping variables then there would already be a error.
-            if (otherSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax otherBlock)
-                continue;
-
-            foreach (var v in semanticModel.AnalyzeDataFlow(otherBlock)!.VariablesDeclared)
+            foreach (var statement in otherSection.Statements)
             {
-                if (sectionDeclaredVariablesNames.Contains(v.Name))
-                    return true;
+                foreach (var v in semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared)
+                {
+                    if (sectionDeclaredVariablesNames.Contains(v.Name))
+                        return true;
+                }
             }
         }
         return false;
