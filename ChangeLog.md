@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [CLI] Fix exit code when multiple projects are processed ([#1061](https://github.com/JosefPihrt/Roslynator/pull/1061) by @PeterKaszab).
 - Fix code fix for CS0164 ([#1031](https://github.com/JosefPihrt/Roslynator/pull/1031)).
 - Fix RCS1032 ([#1064](https://github.com/JosefPihrt/Roslynator/pull/1064)).
+- Fix RCS1009 to handles discard designations ([#1063](https://github.com/JosefPihrt/Roslynator/pull/1063/files)).
 
 ## [4.2.0] - 2022-11-27
 
