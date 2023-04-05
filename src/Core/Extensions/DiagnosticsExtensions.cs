@@ -556,8 +556,8 @@ public static class DiagnosticsExtensions
         SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
 
         if (provider is not null
-            && !provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic)
-            && !provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out reportDiagnostic))
+            && !provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out reportDiagnostic)
+            && !provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic))
         {
             reportDiagnostic = compilationOptions.SpecificDiagnosticOptions.GetValueOrDefault(descriptor.Id);
         }
