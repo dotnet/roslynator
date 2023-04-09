@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [CLI] Fix exit code when multiple projects are processed ([#1061](https://github.com/JosefPihrt/Roslynator/pull/1061) by @PeterKaszab).
 - Fix code fix for CS0164 ([#1031](https://github.com/JosefPihrt/Roslynator/pull/1031)).
 - Do not report `System.Windows.DependencyPropertyChangedEventArgs` as unused parameter ([RCS1163](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1163.md)) ([#1068](https://github.com/JosefPihrt/Roslynator/pull/1068)).
+- Fix ([RCS1032](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1032.md)) ([#1064](https://github.com/JosefPihrt/Roslynator/pull/1064)).
 
 ## [4.2.0] - 2022-11-27
 
