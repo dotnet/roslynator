@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix code fix for CS0164 ([#1031](https://github.com/JosefPihrt/Roslynator/pull/1031)).
 - Do not report `System.Windows.DependencyPropertyChangedEventArgs` as unused parameter ([RCS1163](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1163.md)) ([#1068](https://github.com/JosefPihrt/Roslynator/pull/1068)).
 - Fix ([RCS1032](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1032.md)) ([#1064](https://github.com/JosefPihrt/Roslynator/pull/1064)).
-- Update processing of .gloabalconfig file to prioritize file-specific diagnostic severities over global diagnostic severities. [#1066](https://github.com/JosefPihrt/Roslynator/pull/1066/files)
+- Update processing of .globalconfig file to prioritize file-specific diagnostic severities over global diagnostic severities. [#1066](https://github.com/JosefPihrt/Roslynator/pull/1066/files)
 
 ## [4.2.0] - 2022-11-27
 
