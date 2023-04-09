@@ -231,7 +231,7 @@ public class Foo
 
 namespace System.Windows
 {
-    public class DependencyPropertyChangedEventArgs : EventArgs
+    public class DependencyPropertyChangedEventArgs
     {
     }
 }
