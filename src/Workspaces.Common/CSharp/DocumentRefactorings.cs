@@ -97,14 +97,11 @@ internal static class DocumentRefactorings
             {
                 if (f.Expression is DeclarationExpressionSyntax declarationExpression)
                     return f.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
-                if (f.Expression is PredefinedTypeSyntax predefinedTypeSyntax)
-                    return f.WithExpression(DeclarationExpression(predefinedTypeSyntax, DiscardDesignation()));
-                if (f.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
+                if (f.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
                 {
-                    TypeSyntax typeSyntax = GetQualifiedName(memberAccessExpressionSyntax).WithSimplifierAnnotation();
-                    return f.WithExpression(DeclarationExpression(typeSyntax, DiscardDesignation()));
+                    return f.WithExpression(DeclarationExpression(ParseTypeName(f.Expression.ToString()).WithSimplifierAnnotation(), DiscardDesignation()));
                 }
-
+                
                 SyntaxDebug.Fail(f.Expression);
 
                 return f;
@@ -113,23 +110,7 @@ internal static class DocumentRefactorings
 
         return tupleExpression.WithArguments(newArguments);
     }
-
-
-    private static QualifiedNameSyntax GetQualifiedName(MemberAccessExpressionSyntax memberAccessExpressionSyntax)
-    {
-        if (memberAccessExpressionSyntax.Expression is AliasQualifiedNameSyntax aliasQualifiedNameSyntax)
-        {
-            return QualifiedName(aliasQualifiedNameSyntax, memberAccessExpressionSyntax.Name);
-        }
-
-        if (memberAccessExpressionSyntax.Expression is MemberAccessExpressionSyntax left)
-        {
-            return QualifiedName(GetQualifiedName(left), memberAccessExpressionSyntax.Name);
-        }
-
-        throw new ArgumentException(nameof(memberAccessExpressionSyntax));
-    }
-
+    
     public static Task<Document> ChangeTypeToVarAsync(
         Document document,
         TypeSyntax type,
