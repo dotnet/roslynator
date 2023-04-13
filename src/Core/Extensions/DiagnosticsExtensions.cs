@@ -551,15 +551,12 @@ public static class DiagnosticsExtensions
         CompilationOptions compilationOptions,
         CancellationToken cancellationToken = default)
     {
-        var reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Default;
-
         SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
 
-        if (provider is not null
-            && !provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out reportDiagnostic)
-            && !provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic))
+        if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic reportDiagnostic) != true
+            && !compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out reportDiagnostic))
         {
-            reportDiagnostic = compilationOptions.SpecificDiagnosticOptions.GetValueOrDefault(descriptor.Id);
+            provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic);
         }
 
         return reportDiagnostic switch
@@ -577,18 +574,15 @@ public static class DiagnosticsExtensions
         CancellationToken cancellationToken = default)
     {
         SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
-
-        if (provider is not null)
-        {
-            if (provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out ReportDiagnostic globalReportDiagnostic))
-                return globalReportDiagnostic;
-
-            if (provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic))
-                return treeReportDiagnostic;
-        }
-
+        
+        if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic) == true)
+            return treeReportDiagnostic;
+        
         if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out ReportDiagnostic reportDiagnostic))
             return reportDiagnostic;
+
+        if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out ReportDiagnostic globalReportDiagnostic) == true)
+            return globalReportDiagnostic;
 
         return (descriptor.IsEnabledByDefault)
             ? descriptor.DefaultSeverity.ToReportDiagnostic()
