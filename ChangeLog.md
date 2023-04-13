@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add Custom FixAllProvider for [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014.md) ([#1070](https://github.com/JosefPihrt/Roslynator/pull/1070)).
+
 ### Changed
 
 - [CLI] Bump Roslyn to 4.5.0 ([#1043](https://github.com/josefpihrt/roslynator/pull/1043)).

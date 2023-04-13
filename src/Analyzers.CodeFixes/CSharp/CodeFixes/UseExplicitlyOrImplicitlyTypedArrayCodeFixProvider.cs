@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
+using Roslynator.CSharp.CSharp.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes;
@@ -21,6 +22,11 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
     public override ImmutableArray<string> FixableDiagnosticIds
     {
         get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray); }
+    }
+    
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return UseExplicitlyOrImplicitlyTypedArrayFixAllProvider.Instance;
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -39,29 +45,41 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
 
-        switch (node)
+        var title = node switch
         {
-            case ImplicitArrayCreationExpressionSyntax implicitArrayCreation:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use explicitly typed array",
-                        ct => ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, ct),
-                        GetEquivalenceKey(diagnostic));
+            ImplicitArrayCreationExpressionSyntax => "Use explicitly typed array",
+            ArrayCreationExpressionSyntax => "Use implicitly typed array",
+            _ => "",
+        };
+        
+        CodeAction codeAction = CodeAction.Create(
+            title,
+            ct => ApplyFixToDocument(document, diagnostic, ct),
+            GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
-            case ArrayCreationExpressionSyntax arrayCreation:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use implicitly typed array",
-                        ct => ChangeArrayTypeToImplicitAsync(document, arrayCreation, ct),
-                        GetEquivalenceKey(diagnostic));
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+    public async Task<Document> ApplyFixToDocument(Document document, Diagnostic diag, CancellationToken cancellationToken)
+    {
+        var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        
+        if (!TryFindFirstAncestorOrSelf(
+                root,
+                diag.Location.SourceSpan,
+                out SyntaxNode node,
+                predicate: f =>
+                    f.IsKind(SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.ArrayCreationExpression)))
+        {
+            return null;
         }
+
+        return node switch
+        {
+            ImplicitArrayCreationExpressionSyntax implicitArrayCreation => await ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, cancellationToken),
+            ArrayCreationExpressionSyntax arrayCreation => await ChangeArrayTypeToImplicitAsync(document, arrayCreation, cancellationToken),
+            _ => null
+        };
     }
 
     private static async Task<Document> ChangeArrayTypeToExplicitAsync(
@@ -101,13 +119,10 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         ArrayCreationExpressionSyntax arrayCreation,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
         ArrayTypeSyntax arrayType = arrayCreation.Type;
         SyntaxList<ArrayRankSpecifierSyntax> rankSpecifiers = arrayType.RankSpecifiers;
         InitializerExpressionSyntax initializer = arrayCreation.Initializer;
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayType.ElementType, cancellationToken);
         TypeSyntax castType;
 
         if (rankSpecifiers.Count > 1)
