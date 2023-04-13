@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not report `System.Windows.DependencyPropertyChangedEventArgs` as unused parameter ([RCS1163](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1163.md)) ([#1068](https://github.com/JosefPihrt/Roslynator/pull/1068)).
 - Fix ([RCS1032](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1032.md)) ([#1064](https://github.com/JosefPihrt/Roslynator/pull/1064)).
 - Update processing of .globalconfig file to prioritize file-specific diagnostic severities over global diagnostic severities. [#1066](https://github.com/JosefPihrt/Roslynator/pull/1066/files)
+- Improve support for coalesce expressions in code fixes that require computing the logical inversion of an expression, such as [RCS1208](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1208.md) ([#1069](https://github.com/JosefPihrt/Roslynator/pull/1069)).
+
 
 ## [4.2.0] - 2022-11-27
 
