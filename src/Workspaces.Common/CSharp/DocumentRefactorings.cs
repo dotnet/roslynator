@@ -110,7 +110,6 @@ internal static class DocumentRefactorings
 
         return tupleExpression.WithArguments(newArguments);
     }
-    
     public static Task<Document> ChangeTypeToVarAsync(
         Document document,
         TypeSyntax type,
