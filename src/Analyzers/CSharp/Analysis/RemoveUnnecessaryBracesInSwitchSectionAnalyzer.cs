@@ -109,17 +109,17 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
     private static bool LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax switchBlock, SemanticModel semanticModel)
     {
-        var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
+        ImmutableArray<ISymbol> sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
             .VariablesDeclared;
-        
+
         if (sectionVariablesDeclared.IsEmpty)
             return false;
 
-        var sectionDeclaredVariablesNames = sectionVariablesDeclared
+        ImmutableHashSet<string> sectionDeclaredVariablesNames = sectionVariablesDeclared
             .Select(s => s.Name)
             .ToImmutableHashSet();
 
-        foreach (var otherSection in switchStatement.Sections)
+        foreach (SwitchSectionSyntax otherSection in switchStatement.Sections)
         {
             // If the other section is not a block then we do not need to check as if there were overlapping variables then there would already be a error.
             if (otherSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax otherBlock)
@@ -128,14 +128,13 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
             if (otherBlock.Span == switchBlock.Span)
                 continue;
 
-            foreach (var v in semanticModel.AnalyzeDataFlow(otherBlock)!.VariablesDeclared)
+            foreach (ISymbol v in semanticModel.AnalyzeDataFlow(otherBlock)!.VariablesDeclared)
             {
                 if (sectionDeclaredVariablesNames.Contains(v.Name))
                     return true;
             }
         }
+
         return false;
     }
-
-
 }

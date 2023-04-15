@@ -373,7 +373,7 @@ public abstract class CodeVerifier
         {
             int index = fileName.LastIndexOf(".");
 
-            return fileName.Insert(index, (number).ToString(CultureInfo.InvariantCulture));
+            return fileName.Insert(index, number.ToString(CultureInfo.InvariantCulture));
         }
     }
 }
