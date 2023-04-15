@@ -109,17 +109,17 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
     private static bool LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax switchBlock, SemanticModel semanticModel)
     {
-        var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
+        ImmutableArray<ISymbol> sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
             .VariablesDeclared;
-        
+
         if (sectionVariablesDeclared.IsEmpty)
             return false;
 
-        var sectionDeclaredVariablesNames = sectionVariablesDeclared
+        ImmutableHashSet<string> sectionDeclaredVariablesNames = sectionVariablesDeclared
             .Select(s => s.Name)
             .ToImmutableHashSet();
 
-        foreach (var otherSection in switchStatement.Sections)
+        foreach (SwitchSectionSyntax otherSection in switchStatement.Sections)
         {
             if (otherSection.Span.Contains(switchBlock.Span))
                 continue;
@@ -142,7 +142,7 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
                 }
             }
         }
+
         return false;
     }
-
 }

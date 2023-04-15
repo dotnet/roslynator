@@ -98,6 +98,11 @@ internal static class DocumentRefactorings
                 if (f.Expression is DeclarationExpressionSyntax declarationExpression)
                     return f.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
 
+                if (f.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
+                {
+                    return f.WithExpression(DeclarationExpression(ParseTypeName(f.Expression.ToString()).WithSimplifierAnnotation(), DiscardDesignation()));
+                }
+
                 SyntaxDebug.Fail(f.Expression);
 
                 return f;

@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp;
 

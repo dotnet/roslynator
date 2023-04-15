@@ -269,8 +269,6 @@ class C
 ");
     }
     
-    
-    
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsConstructor()
     {

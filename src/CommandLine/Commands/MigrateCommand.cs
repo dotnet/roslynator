@@ -178,35 +178,6 @@ internal class MigrateCommand
         return CommandStatus.NotSuccess;
     }
 
-    private CommandStatus ExecuteProject(string path)
-    {
-        XDocument document;
-        try
-        {
-            document = XDocument.Load(path, LoadOptions.PreserveWhitespace | LoadOptions.SetLineInfo);
-        }
-        catch (XmlException ex)
-        {
-            WriteLine($"Cannot load '{path}'", Colors.Message_Warning, Verbosity.Minimal);
-            WriteError(ex, verbosity: Verbosity.Minimal);
-            return CommandStatus.NotSuccess;
-        }
-
-        XElement root = document.Root;
-
-        if (root.Attribute("Sdk")?.Value == "Microsoft.NET.Sdk")
-        {
-            WriteLine($"Analyze '{path}'", Verbosity.Detailed);
-            return ExecuteProject(path, document);
-        }
-        else
-        {
-            WriteLine($"Project does not support migration: '{path}'", Colors.Message_Warning, Verbosity.Detailed);
-
-            return CommandStatus.NotSuccess;
-        }
-    }
-
     private CommandStatus ExecuteProject(string path, XDocument document)
     {
         List<LogMessage> messages = null;
