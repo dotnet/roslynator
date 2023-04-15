@@ -211,16 +211,16 @@ public class SyntaxLogicalInverter
             case SyntaxKind.CoalesceExpression:
             {
                 var binaryExpression = (BinaryExpressionSyntax)expression;
-                if (binaryExpression.Right.Kind() == SyntaxKind.FalseLiteralExpression)
+                if (binaryExpression.Right.IsKind(SyntaxKind.FalseLiteralExpression))
                 {
                     // !(x ?? false) === (x != true)
-                    return BinaryExpression(SyntaxKind.NotEqualsExpression, binaryExpression.Left, LiteralExpression(SyntaxKind.TrueLiteralExpression));
+                    return NotEqualsExpression(binaryExpression.Left, TrueLiteralExpression());
                 }
                 
-                if (binaryExpression.Right.Kind() == SyntaxKind.TrueLiteralExpression)
+                if (binaryExpression.Right.IsKind(SyntaxKind.TrueLiteralExpression))
                 {
                     // !(x ?? true) === (x == false)
-                    return BinaryExpression(SyntaxKind.EqualsExpression, binaryExpression.Left, LiteralExpression(SyntaxKind.FalseLiteralExpression));
+                    return EqualsExpression(binaryExpression.Left, FalseLiteralExpression());
                 }
 
                 return DefaultInvert(expression);
