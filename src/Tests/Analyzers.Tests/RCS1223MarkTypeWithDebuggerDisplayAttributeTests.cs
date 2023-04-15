@@ -287,7 +287,7 @@ public abstract class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task Test_PublicRecord()
     {
@@ -314,5 +314,4 @@ public record R
 }
 ");
     }
-
 }

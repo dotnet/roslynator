@@ -207,9 +207,9 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
-        public async Task Test_TupleExpression_WithDiscardNonPredefinedType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    public async Task Test_TupleExpression_WithDiscardNonPredefinedType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -241,5 +241,4 @@ class C
 }
 ");
     }
-
 }

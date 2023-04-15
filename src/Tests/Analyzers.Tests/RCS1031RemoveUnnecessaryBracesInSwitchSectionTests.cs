@@ -141,7 +141,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_WithLocalVariablesThatDoNotOverlap()
     {
@@ -169,7 +169,7 @@ class C
         }
     }
 }
-",@"
+", @"
 using System;
 
 class C
@@ -237,7 +237,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_WhenOverlappingLocalVariableDeclaration()
     {

@@ -574,10 +574,10 @@ public static class DiagnosticsExtensions
         CancellationToken cancellationToken = default)
     {
         SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
-        
+
         if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic) == true)
             return treeReportDiagnostic;
-        
+
         if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out ReportDiagnostic reportDiagnostic))
             return reportDiagnostic;
 

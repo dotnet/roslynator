@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -133,7 +134,7 @@ internal static class ReduceIfNestingAnalysis
                     {
                         return Fail(parent);
                     }
-                    
+
                     if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
                         return Fail(parent);
 
@@ -145,16 +146,16 @@ internal static class ReduceIfNestingAnalysis
                 {
                     if (jumpKind == SyntaxKind.None)
                         return Fail(parent);
-                    
+
                     if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
                         return Fail(parent);
-                    
+
                     return Success(jumpKind, parent);
                 }
             case SyntaxKind.MethodDeclaration:
                 {
                     var methodDeclaration = (MethodDeclarationSyntax)parent;
-                    
+
                     if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, methodDeclaration.Body, semanticModel))
                         return Fail(parent);
 
@@ -188,7 +189,7 @@ internal static class ReduceIfNestingAnalysis
             case SyntaxKind.LocalFunctionStatement:
                 {
                     var localFunction = (LocalFunctionStatementSyntax)parent;
-                    
+
                     if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, localFunction.Body, semanticModel))
                         return Fail(parent);
 
@@ -288,15 +289,15 @@ internal static class ReduceIfNestingAnalysis
         SemanticModel semanticModel
     )
     {
-        var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
+        ImmutableArray<ISymbol> ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
             .VariablesDeclared;
-        
+
         if (ifVariablesDeclared.IsEmpty)
             return false;
 
-        var parentStatementDeclared = semanticModel.AnalyzeDataFlow(parent)!
+        ImmutableArray<ISymbol> parentStatementDeclared = semanticModel.AnalyzeDataFlow(parent)!
             .VariablesDeclared;
-        
+
         // The parent's declared variables will include those from the if and so we have to check for any symbols occurring twice.
         return ifVariablesDeclared.Any(variable =>
             parentStatementDeclared.Count(s => s.Name == variable.Name) > 1

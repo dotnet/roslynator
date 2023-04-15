@@ -18,8 +18,8 @@ using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
-using static Roslynator.CSharp.SyntaxRefactorings;
 using static Roslynator.CSharp.SyntaxInfo;
+using static Roslynator.CSharp.SyntaxRefactorings;
 
 namespace Roslynator.CSharp.CodeFixes;
 
