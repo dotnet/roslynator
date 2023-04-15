@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix ([RCS1032](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1032.md)) ([#1064](https://github.com/JosefPihrt/Roslynator/pull/1064)).
 - Update processing of .globalconfig file to prioritize file-specific diagnostic severities over global diagnostic severities. [#1066](https://github.com/JosefPihrt/Roslynator/pull/1066/files)
 - Fix RCS1009 to handles discard designations ([#1063](https://github.com/JosefPihrt/Roslynator/pull/1063/files)).
+- [CLI] Fix number of formatted documents, file banners added ([#1072](https://github.com/JosefPihrt/Roslynator/pull/1072)).
 
 ## [4.2.0] - 2022-11-27
 
