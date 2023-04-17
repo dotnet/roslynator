@@ -1,4 +1,7 @@
+// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -13,32 +16,29 @@ internal static class IfStatementLocalVariableAnalysis
         SemanticModel semanticModel
     )
     {
-        if (!TryGetOuterScope(ifStatement, out var outerScope))
-            return true;
         
         var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
             .VariablesDeclared;
         
         if (ifVariablesDeclared.IsEmpty)
             return false;
+        
+        var outerScope = GetOuterScope(ifStatement);
+        
+        if (outerScope == null)
+            return true;
 
-        IEnumerable<ISymbol> parentVariablesDeclared;
-        if (outerScope is SwitchSectionSyntax switchSectionSyntax)
+        IList<ISymbol> parentVariablesDeclared;
+        if (outerScope is SwitchSectionSyntax switchSection)
         {
-            var allDeclaredVariables = new List<ISymbol>();
-            foreach (var statement in switchSectionSyntax.Statements)
-            {
-                allDeclaredVariables.AddRange(semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared);
-            }
-
-            parentVariablesDeclared = allDeclaredVariables;
+            parentVariablesDeclared = switchSection.Statements.SelectMany(s => semanticModel.AnalyzeDataFlow(s)!.VariablesDeclared).ToList();
         }
         else
         {
-            parentVariablesDeclared = semanticModel.AnalyzeDataFlow(outerScope)!
-                .VariablesDeclared;
+            parentVariablesDeclared = semanticModel.AnalyzeDataFlow(outerScope)!.VariablesDeclared;
         }
 
+        Debug.Assert(parentVariablesDeclared.Count >= ifVariablesDeclared.Length);
         // The parent's declared variables will include those from the if and so we have to check for any symbols occurring twice.
         foreach (var variable in ifVariablesDeclared)
         {
@@ -49,56 +49,25 @@ internal static class IfStatementLocalVariableAnalysis
         return false;
     }
 
-    private static bool TryGetOuterScope(IfStatementSyntax ifStatement, out SyntaxNode outerScope)
+    private static SyntaxNode GetOuterScope(IfStatementSyntax ifStatement)
     {
-        switch (ifStatement.Parent)
+        return ifStatement.Parent switch
         {
-            case BlockSyntax blockSyntax:
-                outerScope = blockSyntax;
-                return true;
-            case ForStatementSyntax forStatementSyntax:
-                outerScope = forStatementSyntax.Statement;
-                return true;
-            case ForEachStatementSyntax forEachStatementSyntax:
-                outerScope = forEachStatementSyntax.Statement;
-                return true;
-            case DoStatementSyntax doStatementSyntax:
-                outerScope = doStatementSyntax.Statement;
-                return true;
-            case WhileStatementSyntax whileStatementSyntax:
-                outerScope = whileStatementSyntax.Statement;
-                return true;
-            case SwitchSectionSyntax switchSectionSyntax:
-                outerScope = switchSectionSyntax;
-                return true;
-            case ConstructorDeclarationSyntax constructorDeclarationSyntax:
-                outerScope = constructorDeclarationSyntax.Body;
-                return true;
-            case DestructorDeclarationSyntax destructorDeclarationSyntax:
-                outerScope = destructorDeclarationSyntax.Body;
-                return true;
-            case AccessorDeclarationSyntax accessorDeclarationSyntax:
-                outerScope = accessorDeclarationSyntax.Body;
-                return true;
-            case OperatorDeclarationSyntax operatorDeclarationSyntax:
-                outerScope = operatorDeclarationSyntax.Body;
-                return true;
-            case ConversionOperatorDeclarationSyntax conversionOperatorDeclarationSyntax:
-                outerScope = conversionOperatorDeclarationSyntax.Body;
-                return true;
-            case MethodDeclarationSyntax methodDeclarationSyntax:
-                outerScope = methodDeclarationSyntax.Body;
-                return true;
-            case LocalFunctionStatementSyntax localFunctionStatementSyntax:
-                outerScope = localFunctionStatementSyntax.Body;
-                return true;
-            case AnonymousFunctionExpressionSyntax anonymousFunctionExpressionSyntax:
-                outerScope = anonymousFunctionExpressionSyntax.Block;
-                return true;
-            default:
-                outerScope = null;
-                return false;
-        }
-
+            BlockSyntax block => block,
+            ForStatementSyntax forStatement => forStatement.Statement,
+            CommonForEachStatementSyntax forEachStatement => forEachStatement.Statement,
+            DoStatementSyntax doStatement => doStatement.Statement,
+            WhileStatementSyntax whileStatement => whileStatement.Statement,
+            SwitchSectionSyntax switchSection => switchSection,
+            ConstructorDeclarationSyntax constructorDeclaration => constructorDeclaration.Body,
+            DestructorDeclarationSyntax destructorDeclaration => destructorDeclaration.Body,
+            AccessorDeclarationSyntax accessorDeclaration => accessorDeclaration.Body,
+            OperatorDeclarationSyntax operatorDeclaration => operatorDeclaration.Body,
+            ConversionOperatorDeclarationSyntax conversionOperatorDeclaration => conversionOperatorDeclaration.Body,
+            MethodDeclarationSyntax methodDeclaration => methodDeclaration.Body,
+            LocalFunctionStatementSyntax localFunctionStatement => localFunctionStatement.Body,
+            AnonymousFunctionExpressionSyntax anonymousFunctionExpression => anonymousFunctionExpression.Block,
+            _ => null
+        };
     }
 }

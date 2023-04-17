@@ -126,10 +126,10 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
             foreach (var label in otherSection.Labels)
             {
-                if (label is not CasePatternSwitchLabelSyntax casePatternSwitchLabelSyntax)
+                if (label is not CasePatternSwitchLabelSyntax casePatternSwitchLabel)
                     continue;
 
-                if (PattenMatchingVariableDeclarationHelper.GetVariablesDeclared(casePatternSwitchLabelSyntax.Pattern).Intersect(sectionDeclaredVariablesNames).Any())
+                if (PattenMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(casePatternSwitchLabel.Pattern,sectionDeclaredVariablesNames))
                     return true;
             }
             
