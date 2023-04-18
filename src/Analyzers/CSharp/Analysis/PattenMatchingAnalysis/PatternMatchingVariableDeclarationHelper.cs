@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis;
 
-public static class PattenMatchingVariableDeclarationHelper
+public static class PatternMatchingVariableDeclarationHelper
 {
     public static bool AnyDeclaredVariablesMatch(PatternSyntax pattern, ImmutableHashSet<string> variableNames)
     {

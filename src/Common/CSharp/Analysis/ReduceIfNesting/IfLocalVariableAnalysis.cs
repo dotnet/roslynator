@@ -1,6 +1,7 @@
 // Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -31,14 +32,25 @@ internal static class IfStatementLocalVariableAnalysis
         IList<ISymbol> parentVariablesDeclared;
         if (outerScope is SwitchSectionSyntax switchSection)
         {
-            parentVariablesDeclared = switchSection.Statements.SelectMany(s => semanticModel.AnalyzeDataFlow(s)!.VariablesDeclared).ToList();
+            List<ISymbol> allDeclaredVariables = null;
+            foreach (StatementSyntax statement in switchSection.Statements)
+            {
+                ImmutableArray<ISymbol> variables = semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared;
+
+                if (variables.Any())
+                    (allDeclaredVariables ??= new List<ISymbol>()).AddRange(variables);
+            }
+
+            parentVariablesDeclared = allDeclaredVariables;
         }
         else
         {
             parentVariablesDeclared = semanticModel.AnalyzeDataFlow(outerScope)!.VariablesDeclared;
         }
 
-        Debug.Assert(parentVariablesDeclared.Count >= ifVariablesDeclared.Length);
+        if (parentVariablesDeclared.Count <= ifVariablesDeclared.Length)
+            return false;
+
         // The parent's declared variables will include those from the if and so we have to check for any symbols occurring twice.
         foreach (var variable in ifVariablesDeclared)
         {
