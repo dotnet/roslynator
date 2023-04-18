@@ -208,6 +208,23 @@ public class SyntaxLogicalInverter
                 {
                     return DefaultInvert(expression);
                 }
+            case SyntaxKind.CoalesceExpression:
+            {
+                var binaryExpression = (BinaryExpressionSyntax)expression;
+                if (binaryExpression.Right.IsKind(SyntaxKind.FalseLiteralExpression))
+                {
+                    // !(x ?? false) === (x != true)
+                    return NotEqualsExpression(binaryExpression.Left, TrueLiteralExpression());
+                }
+                
+                if (binaryExpression.Right.IsKind(SyntaxKind.TrueLiteralExpression))
+                {
+                    // !(x ?? true) === (x == false)
+                    return EqualsExpression(binaryExpression.Left, FalseLiteralExpression());
+                }
+
+                return DefaultInvert(expression);
+            }
         }
 
         Debug.Fail($"Logical inversion of unknown kind '{expression.Kind()}'");
