@@ -17,15 +17,15 @@ internal static class IfStatementLocalVariableAnalysis
         SemanticModel semanticModel
     )
     {
-        
+
         var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
             .VariablesDeclared;
-        
+
         if (ifVariablesDeclared.IsEmpty)
             return false;
-        
+
         var outerScope = GetOuterScope(ifStatement);
-        
+
         if (outerScope == null)
             return true;
 

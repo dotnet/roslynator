@@ -11,12 +11,12 @@ public static class PatternMatchingVariableDeclarationHelper
     {
         return pattern switch
         {
-            RecursivePatternSyntax { PositionalPatternClause: var positionalPatternClause, PropertyPatternClause: var propertyPatternClause, Designation: var designation } => 
-                (designation != null && AnyDeclaredVariablesMatch(designation, variableNames)) 
+            RecursivePatternSyntax { PositionalPatternClause: var positionalPatternClause, PropertyPatternClause: var propertyPatternClause, Designation: var designation } =>
+                (designation != null && AnyDeclaredVariablesMatch(designation, variableNames))
                 || (propertyPatternClause != null && propertyPatternClause.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames)))
                 || (positionalPatternClause != null && positionalPatternClause.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames))),
-            BinaryPatternSyntax binaryPattern => 
-                AnyDeclaredVariablesMatch(binaryPattern.Left, variableNames) 
+            BinaryPatternSyntax binaryPattern =>
+                AnyDeclaredVariablesMatch(binaryPattern.Left, variableNames)
                 || AnyDeclaredVariablesMatch(binaryPattern.Right, variableNames),
             ParenthesizedPatternSyntax parenthesizedPattern => AnyDeclaredVariablesMatch(parenthesizedPattern.Pattern, variableNames),
             DeclarationPatternSyntax { Designation: var variableDesignation } => AnyDeclaredVariablesMatch(variableDesignation, variableNames),
@@ -24,7 +24,7 @@ public static class PatternMatchingVariableDeclarationHelper
             _ => false
         };
     }
-    
+
     internal static bool AnyDeclaredVariablesMatch(VariableDesignationSyntax designation, ImmutableHashSet<string> variableNames)
     {
         return designation switch

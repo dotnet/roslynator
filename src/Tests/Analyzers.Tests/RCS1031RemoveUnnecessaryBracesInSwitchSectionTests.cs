@@ -295,7 +295,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_WhenOverlappingLocalVariableWithRecursivePatternMatchDeclaration()
     {

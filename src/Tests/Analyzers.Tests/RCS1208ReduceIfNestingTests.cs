@@ -183,7 +183,7 @@ class C
 ");
     }
 
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenParentIsLocalFunction()
     {
@@ -230,7 +230,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenParentIsMethod()
     {
@@ -268,7 +268,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsConstructor()
     {
@@ -334,67 +334,6 @@ class C
 ");
     }
 
-    
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
-    public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsConversionOperator()
-    {
-        await VerifyNoDiagnosticAsync(@"
-class C
-{
-    static bool b=false;
-    public static implicit operator bool(C c)
-    {
-        if (b)
-        {
-            var s = 1;
-        }
-        if (b)
-        {
-            var s = 2;
-            return M2();
-        }
-        return false;
-    }
-
-    static bool M2()
-    {
-        return true;
-    }
-}
-");
-    }
-    
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
-    public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsGetAccessor()
-    {
-        await VerifyNoDiagnosticAsync(@"
-class C
-{
-    static bool b=false;
-    public static bool s {
-        get {
-            if (b)
-            {
-                var s = 1;
-            }
-
-            if (b)
-            {
-                var s = 2;
-                return M2();
-            }
-            return false;
-        }  
-    }
-
-    static bool M2()
-    {
-        return true;
-    }
-}
-");
-    }
-
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_InvertingCoalesceToTrue()
     {
@@ -432,7 +371,106 @@ class C
 }
 ");
     }
-    
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task Test_InvertingCoalesceToUnknown()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    bool b { get; set; }
+    void M(bool? p)
+    {
+        [|if|] (p??b)
+        {
+            M2();
+        }
+    }
+    void M2()
+    {
+    }
+}
+", @"
+class C
+{
+    bool b { get; set; }
+    void M(bool? p)
+    {
+        if (!(p ?? b))
+        {
+            return;
+        }
+
+        M2();
+    }
+    void M2()
+    {
+    }
+}
+");
+    }
+
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsConversionOperator()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    static bool b=false;
+    public static implicit operator bool(C c)
+    {
+        if (b)
+        {
+            var s = 1;
+        }
+        if (b)
+        {
+            var s = 2;
+            return M2();
+        }
+        return false;
+    }
+
+    static bool M2()
+    {
+        return true;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsGetAccessor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    static bool b=false;
+    public static bool s {
+        get {
+            if (b)
+            {
+                var s = 1;
+            }
+
+            if (b)
+            {
+                var s = 2;
+                return M2();
+            }
+            return false;
+        }  
+    }
+
+    static bool M2()
+    {
+        return true;
+    }
+}
+");
+    }
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsLambda()
     {
@@ -463,29 +501,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
-    public async Task Test_InvertingCoalesceToUnknown()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    bool b { get; set; }
 
-    void M(bool? p)
-    {
-        [|if|] (p??b)
-        {
-            M2();
-        }
-    }
-
-    void M2()
-    {
-    }
-}
-");
-    }
-    
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsLocalFunction()
     {
@@ -518,7 +534,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsMethod()
     {

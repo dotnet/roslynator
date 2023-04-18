@@ -71,10 +71,10 @@ public sealed class MergeIfWithNestedIfAnalyzer : BaseDiagnosticAnalyzer
 
         if (!CheckTrivia(ifStatement, nestedIf.IfStatement))
             return;
-        
-        if(IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, context.SemanticModel))
+
+        if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, context.SemanticModel))
             return;
-        
+
         ReportDiagnostic(context, ifStatement, nestedIf.IfStatement);
     }
 

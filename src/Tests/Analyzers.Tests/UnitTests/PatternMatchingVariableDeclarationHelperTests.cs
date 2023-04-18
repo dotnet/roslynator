@@ -19,11 +19,11 @@ public class PatternMatchingVariableDeclarationHelperTests
         );
         var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
-        
+
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
     }
-    
+
     [Fact]
     public void ParenthesizedVariableDesignation()
     {
@@ -40,7 +40,7 @@ public class PatternMatchingVariableDeclarationHelperTests
 
         vars = new HashSet<string>() { "y" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
-        
+
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
 
@@ -53,16 +53,16 @@ public class PatternMatchingVariableDeclarationHelperTests
         var vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
     }
-    
+
     [Fact]
     public void NullTest()
     {
         VariableDesignationSyntax designation = null;
         var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
-    
+
     }
-    
+
     [Fact]
     public void DeclarationPattern()
     {
@@ -72,11 +72,11 @@ public class PatternMatchingVariableDeclarationHelperTests
         );
         var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-        
+
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
     }
-    
+
     [Fact]
     public void RecursivePattern_WithPositional()
     {
@@ -102,17 +102,17 @@ public class PatternMatchingVariableDeclarationHelperTests
             propertyPatternClause: default,
             designation: default
         );
-        
+
         var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
 
         vars = new HashSet<string>() { "y" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-        
+
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
     }
-    
+
     [Fact]
     public void RecursivePattern_WithProperty()
     {
@@ -134,11 +134,11 @@ public class PatternMatchingVariableDeclarationHelperTests
         );
         var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-        
+
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
     }
-    
+
     [Fact]
     public void RecursivePattern_WithDesignation()
     {
@@ -158,12 +158,12 @@ public class PatternMatchingVariableDeclarationHelperTests
         );
         var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-        
+
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-    
+
     }
-    
+
     [Fact]
     public void VarPattern()
     {
@@ -172,12 +172,12 @@ public class PatternMatchingVariableDeclarationHelperTests
         );
         var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-        
+
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-    
+
     }
-    
+
     [Fact]
     public void BinaryPattern()
     {
@@ -189,7 +189,7 @@ public class PatternMatchingVariableDeclarationHelperTests
         var vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
     }
-    
+
     [Fact]
     public void ParenthesizedPattern()
     {
@@ -200,7 +200,7 @@ public class PatternMatchingVariableDeclarationHelperTests
         );
         var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-        
+
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
     }

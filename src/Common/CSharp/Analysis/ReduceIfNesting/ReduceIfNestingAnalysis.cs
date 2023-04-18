@@ -107,7 +107,7 @@ internal static class ReduceIfNestingAnalysis
             {
                 return Fail(parent);
             }
-            
+
             if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                 return Fail(parent);
 
@@ -133,7 +133,7 @@ internal static class ReduceIfNestingAnalysis
                     {
                         return Fail(parent);
                     }
-                    
+
                     if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
 
@@ -142,10 +142,10 @@ internal static class ReduceIfNestingAnalysis
             case SyntaxKind.OperatorDeclaration:
             case SyntaxKind.ConversionOperatorDeclaration:
             case SyntaxKind.GetAccessorDeclaration:
-            {
+                {
                     if (jumpKind == SyntaxKind.None)
                         return Fail(parent);
-                    
+
                     if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
 
@@ -154,7 +154,7 @@ internal static class ReduceIfNestingAnalysis
             case SyntaxKind.MethodDeclaration:
                 {
                     var methodDeclaration = (MethodDeclarationSyntax)parent;
-                    
+
                     if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
 
@@ -188,7 +188,7 @@ internal static class ReduceIfNestingAnalysis
             case SyntaxKind.LocalFunctionStatement:
                 {
                     var localFunction = (LocalFunctionStatementSyntax)parent;
-                    
+
                     if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
 
