@@ -12,9 +12,9 @@ public static class PatternMatchingVariableDeclarationHelper
         return pattern switch
         {
             RecursivePatternSyntax { PositionalPatternClause: var positionalPatternClause, PropertyPatternClause: var propertyPatternClause, Designation: var designation } =>
-                (designation != null && AnyDeclaredVariablesMatch(designation, variableNames))
-                || (propertyPatternClause != null && propertyPatternClause.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames)))
-                || (positionalPatternClause != null && positionalPatternClause.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames))),
+                (designation is not null && AnyDeclaredVariablesMatch(designation, variableNames))
+                || (propertyPatternClause?.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames)) ?? false)
+                || (positionalPatternClause?.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames)) ?? false),
             BinaryPatternSyntax binaryPattern =>
                 AnyDeclaredVariablesMatch(binaryPattern.Left, variableNames)
                 || AnyDeclaredVariablesMatch(binaryPattern.Right, variableNames),
@@ -35,5 +35,4 @@ public static class PatternMatchingVariableDeclarationHelper
             _ => false
         };
     }
-
 }

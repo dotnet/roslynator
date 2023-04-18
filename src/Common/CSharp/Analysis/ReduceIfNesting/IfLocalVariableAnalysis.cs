@@ -17,7 +17,6 @@ internal static class IfStatementLocalVariableAnalysis
         SemanticModel semanticModel
     )
     {
-
         var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
             .VariablesDeclared;
 
@@ -26,7 +25,7 @@ internal static class IfStatementLocalVariableAnalysis
 
         var outerScope = GetOuterScope(ifStatement);
 
-        if (outerScope == null)
+        if (outerScope is null)
             return true;
 
         IList<ISymbol> parentVariablesDeclared;
