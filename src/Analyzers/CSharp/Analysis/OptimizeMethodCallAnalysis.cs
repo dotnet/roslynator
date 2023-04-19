@@ -363,7 +363,7 @@ internal static class OptimizeMethodCallAnalysis
                         && (block is null
                             || SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(block.OpenBraceToken)))
                     {
-                        var forEachVariableSymbol = semanticModel.GetDeclaredSymbol(forEachStatement, cancellationToken) as ILocalSymbol;
+                        ILocalSymbol forEachVariableSymbol = semanticModel.GetDeclaredSymbol(forEachStatement, cancellationToken);
 
                         if (forEachVariableSymbol is not null)
                         {

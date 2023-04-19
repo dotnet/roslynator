@@ -142,8 +142,8 @@ internal class CodeFixer
             fixedDiagnostics: fixResult.FixedDiagnostics.Select(f => DiagnosticInfo.Create(f)),
             unfixedDiagnostics: unfixedDiagnostics.Select(f => DiagnosticInfo.Create(f)),
             unfixableDiagnostics: unfixableDiagnostics.Select(f => DiagnosticInfo.Create(f)),
-            numberOfFormattedDocuments: (Options.FileBannerLines.Any()) ? formattedDocuments.Length : -1,
-            numberOfAddedFileBanners: (Options.Format) ? numberOfAddedFileBanners : -1);
+            numberOfFormattedDocuments: (Options.Format) ? formattedDocuments.Length : -1,
+            numberOfAddedFileBanners: (Options.FileBannerLines.Any()) ? numberOfAddedFileBanners : -1);
 
         LogHelpers.WriteFixSummary(
             fixResult.FixedDiagnostics,

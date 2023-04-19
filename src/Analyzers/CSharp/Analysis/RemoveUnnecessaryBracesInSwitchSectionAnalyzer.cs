@@ -109,40 +109,40 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
     private static bool LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax switchBlock, SemanticModel semanticModel)
     {
-        var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
+        ImmutableArray<ISymbol> sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
             .VariablesDeclared;
-        
+
         if (sectionVariablesDeclared.IsEmpty)
             return false;
 
-        var sectionDeclaredVariablesNames = sectionVariablesDeclared
+        ImmutableHashSet<string> sectionDeclaredVariablesNames = sectionVariablesDeclared
             .Select(s => s.Name)
             .ToImmutableHashSet();
 
-        foreach (var otherSection in switchStatement.Sections)
+        foreach (SwitchSectionSyntax otherSection in switchStatement.Sections)
         {
             if (otherSection.Span.Contains(switchBlock.Span))
                 continue;
 
             foreach (var label in otherSection.Labels)
             {
-                if (label is not CasePatternSwitchLabelSyntax casePatternSwitchLabelSyntax)
+                if (label is not CasePatternSwitchLabelSyntax casePatternSwitchLabel)
                     continue;
 
-                if (PattenMatchingVariableDeclarationHelper.GetVariablesDeclared(casePatternSwitchLabelSyntax.Pattern).Intersect(sectionDeclaredVariablesNames).Any())
+                if (PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(casePatternSwitchLabel.Pattern, sectionDeclaredVariablesNames))
                     return true;
             }
-            
+
             foreach (var statement in otherSection.Statements)
             {
-                foreach (var v in semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared)
+                foreach (var symbol in semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared)
                 {
-                    if (sectionDeclaredVariablesNames.Contains(v.Name))
+                    if (sectionDeclaredVariablesNames.Contains(symbol.Name))
                         return true;
                 }
             }
         }
+
         return false;
     }
-
 }

@@ -101,7 +101,6 @@ internal static class DocumentRefactorings
                 {
                     return f.WithExpression(DeclarationExpression(ParseTypeName(f.Expression.ToString()).WithSimplifierAnnotation(), DiscardDesignation()));
                 }
-                
                 SyntaxDebug.Fail(f.Expression);
 
                 return f;

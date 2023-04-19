@@ -2,10 +2,10 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.Refactorings;
 

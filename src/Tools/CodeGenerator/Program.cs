@@ -5,12 +5,12 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeGeneration.CSharp;
-using Roslynator.Metadata;
-using Microsoft.CodeAnalysis;
 using Roslynator.CodeGeneration.EditorConfig;
 using Roslynator.Configuration;
+using Roslynator.Metadata;
 
 namespace Roslynator.CodeGeneration;
 

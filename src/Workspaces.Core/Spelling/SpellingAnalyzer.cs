@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Roslynator.Host.Mef;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Roslynator.Spelling;
 

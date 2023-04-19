@@ -118,7 +118,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
     public async Task TestNoDiagnostic_Struct()
     {

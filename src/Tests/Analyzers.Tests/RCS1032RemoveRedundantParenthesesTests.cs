@@ -254,7 +254,7 @@ class C
     [InlineData(@"M([|(|]""""));", @"M("""");")]
     [InlineData("var arr = new string[] { [|(|]null) };", "var arr = new string[] { null };")]
     [InlineData("var items = new List<string>() { [|(|]null) };", "var items = new List<string>() { null };")]
-    [InlineData("var x = [|(|]i).ToString();","var x = i.ToString();")]
+    [InlineData("var x = [|(|]i).ToString();", "var x = i.ToString();")]
     [InlineData(@"s = $""{[|(|]"""")}"";", @"s = $""{""""}"";")]
     [InlineData("[|(|]i) = [|(|]0);", "i = 0;")]
     [InlineData("[|(|]i) += [|(|]0);", "i += 0;")]

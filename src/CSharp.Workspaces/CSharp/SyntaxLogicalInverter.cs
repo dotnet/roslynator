@@ -209,22 +209,22 @@ public class SyntaxLogicalInverter
                     return DefaultInvert(expression);
                 }
             case SyntaxKind.CoalesceExpression:
-            {
-                var binaryExpression = (BinaryExpressionSyntax)expression;
-                if (binaryExpression.Right.Kind() == SyntaxKind.FalseLiteralExpression)
                 {
-                    // !(x ?? false) === (x != true)
-                    return BinaryExpression(SyntaxKind.NotEqualsExpression, binaryExpression.Left, LiteralExpression(SyntaxKind.TrueLiteralExpression));
-                }
-                
-                if (binaryExpression.Right.Kind() == SyntaxKind.TrueLiteralExpression)
-                {
-                    // !(x ?? true) === (x == false)
-                    return BinaryExpression(SyntaxKind.EqualsExpression, binaryExpression.Left, LiteralExpression(SyntaxKind.FalseLiteralExpression));
-                }
+                    var binaryExpression = (BinaryExpressionSyntax)expression;
+                    if (binaryExpression.Right.IsKind(SyntaxKind.FalseLiteralExpression))
+                    {
+                        // !(x ?? false) === (x != true)
+                        return NotEqualsExpression(binaryExpression.Left, TrueLiteralExpression());
+                    }
 
-                return DefaultInvert(expression);
-            }
+                    if (binaryExpression.Right.IsKind(SyntaxKind.TrueLiteralExpression))
+                    {
+                        // !(x ?? true) === (x == false)
+                        return EqualsExpression(binaryExpression.Left, FalseLiteralExpression());
+                    }
+
+                    return DefaultInvert(expression);
+                }
         }
 
         Debug.Fail($"Logical inversion of unknown kind '{expression.Kind()}'");
