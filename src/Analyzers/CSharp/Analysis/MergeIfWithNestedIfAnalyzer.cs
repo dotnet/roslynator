@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
+using Roslynator.CSharp.Analysis.ReduceIfNesting;
 using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis;
@@ -70,6 +70,9 @@ public sealed class MergeIfWithNestedIfAnalyzer : BaseDiagnosticAnalyzer
             return;
 
         if (!CheckTrivia(ifStatement, nestedIf.IfStatement))
+            return;
+
+        if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, context.SemanticModel))
             return;
 
         ReportDiagnostic(context, ifStatement, nestedIf.IfStatement);
