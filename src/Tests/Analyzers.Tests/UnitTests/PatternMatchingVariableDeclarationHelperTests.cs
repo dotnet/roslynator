@@ -17,7 +17,7 @@ public class PatternMatchingVariableDeclarationHelperTests
         VariableDesignationSyntax designation = SyntaxFactory.SingleVariableDesignation(
             SyntaxFactory.Identifier("x")
         );
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
 
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
@@ -28,14 +28,14 @@ public class PatternMatchingVariableDeclarationHelperTests
     public void ParenthesizedVariableDesignation()
     {
         VariableDesignationSyntax designation = SyntaxFactory.ParenthesizedVariableDesignation(
-            SyntaxFactory.SeparatedList(new List<VariableDesignationSyntax>
+            SyntaxFactory.SeparatedList(new List<VariableDesignationSyntax>()
             {
                 SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x")),
                 SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("y"))
             })
         );
 
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
 
         vars = new HashSet<string>() { "y" }.ToImmutableHashSet();
@@ -43,14 +43,13 @@ public class PatternMatchingVariableDeclarationHelperTests
 
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
-
     }
 
     [Fact]
     public void DiscardDesignation()
     {
         VariableDesignationSyntax designation = SyntaxFactory.DiscardDesignation();
-        var vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
     }
 
@@ -58,9 +57,8 @@ public class PatternMatchingVariableDeclarationHelperTests
     public void NullTest()
     {
         VariableDesignationSyntax designation = null;
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(designation, vars));
-
     }
 
     [Fact]
@@ -70,7 +68,7 @@ public class PatternMatchingVariableDeclarationHelperTests
             SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.IntKeyword)),
             SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x"))
         );
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
 
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
@@ -83,7 +81,7 @@ public class PatternMatchingVariableDeclarationHelperTests
         PatternSyntax pattern = SyntaxFactory.RecursivePattern(
             SyntaxFactory.IdentifierName("TypeA"),
             positionalPatternClause: SyntaxFactory.PositionalPatternClause(
-                SyntaxFactory.SeparatedList(new List<SubpatternSyntax>
+                SyntaxFactory.SeparatedList(new List<SubpatternSyntax>()
                 {
                     SyntaxFactory.Subpattern(
                         SyntaxFactory.DeclarationPattern(
@@ -103,7 +101,7 @@ public class PatternMatchingVariableDeclarationHelperTests
             designation: default
         );
 
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
 
         vars = new HashSet<string>() { "y" }.ToImmutableHashSet();
@@ -120,7 +118,7 @@ public class PatternMatchingVariableDeclarationHelperTests
             SyntaxFactory.IdentifierName("TypeA"),
             positionalPatternClause: default,
             propertyPatternClause: SyntaxFactory.PropertyPatternClause(
-                SyntaxFactory.SeparatedList(new List<SubpatternSyntax>
+                SyntaxFactory.SeparatedList(new List<SubpatternSyntax>()
                 {
                     SyntaxFactory.Subpattern(
                         SyntaxFactory.NameColon(SyntaxFactory.IdentifierName("PropertyName")),
@@ -132,7 +130,7 @@ public class PatternMatchingVariableDeclarationHelperTests
             ),
             designation: default
         );
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
 
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
@@ -146,7 +144,7 @@ public class PatternMatchingVariableDeclarationHelperTests
             SyntaxFactory.IdentifierName("TypeA"),
             positionalPatternClause: default,
             propertyPatternClause: SyntaxFactory.PropertyPatternClause(
-                SyntaxFactory.SeparatedList(new List<SubpatternSyntax>
+                SyntaxFactory.SeparatedList(new List<SubpatternSyntax>()
                 {
                     SyntaxFactory.Subpattern(
                         SyntaxFactory.NameColon(SyntaxFactory.IdentifierName("PropertyName")),
@@ -156,12 +154,11 @@ public class PatternMatchingVariableDeclarationHelperTests
             ),
            designation: SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x"))
         );
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
 
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-
     }
 
     [Fact]
@@ -170,12 +167,11 @@ public class PatternMatchingVariableDeclarationHelperTests
         PatternSyntax pattern = SyntaxFactory.VarPattern(
             SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x"))
         );
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
 
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
-
     }
 
     [Fact]
@@ -186,7 +182,7 @@ public class PatternMatchingVariableDeclarationHelperTests
             SyntaxFactory.ConstantPattern(SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(42))),
             SyntaxFactory.ConstantPattern(SyntaxFactory.LiteralExpression(SyntaxKind.NumericLiteralExpression, SyntaxFactory.Literal(99)))
         );
-        var vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "z" }.ToImmutableHashSet();
         Assert.False(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
     }
 
@@ -198,7 +194,7 @@ public class PatternMatchingVariableDeclarationHelperTests
                 SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x"))
             )
         );
-        var vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
+        ImmutableHashSet<string> vars = new HashSet<string>() { "x" }.ToImmutableHashSet();
         Assert.True(PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(pattern, vars));
 
         vars = new HashSet<string>() { "z" }.ToImmutableHashSet();

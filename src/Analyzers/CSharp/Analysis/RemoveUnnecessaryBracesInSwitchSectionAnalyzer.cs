@@ -124,7 +124,7 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
             if (otherSection.Span.Contains(switchBlock.Span))
                 continue;
 
-            foreach (var label in otherSection.Labels)
+            foreach (SwitchLabelSyntax label in otherSection.Labels)
             {
                 if (label is not CasePatternSwitchLabelSyntax casePatternSwitchLabel)
                     continue;
@@ -133,9 +133,9 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
                     return true;
             }
 
-            foreach (var statement in otherSection.Statements)
+            foreach (StatementSyntax statement in otherSection.Statements)
             {
-                foreach (var symbol in semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared)
+                foreach (ISymbol symbol in semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared)
                 {
                     if (sectionDeclaredVariablesNames.Contains(symbol.Name))
                         return true;

@@ -183,7 +183,6 @@ class C
 ");
     }
 
-
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenParentIsLocalFunction()
     {
@@ -410,7 +409,6 @@ class C
 ");
     }
 
-
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsConversionOperator()
     {
@@ -500,7 +498,6 @@ class C
 }
 ");
     }
-
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables_WhenParentIsLocalFunction()
