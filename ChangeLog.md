@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix RCS1009 to handles discard designations ([#1063](https://github.com/JosefPihrt/Roslynator/pull/1063/files)).
 - [CLI] Fix number of formatted documents, file banners added ([#1072](https://github.com/JosefPihrt/Roslynator/pull/1072)).
 - Improve support for coalesce expressions in code fixes that require computing the logical inversion of an expression, such as [RCS1208](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1208.md) ([#1069](https://github.com/JosefPihrt/Roslynator/pull/1069)).
+- [CLI] Downgrade version of Microsoft.Build.Locator from 1.5.5 to 1.4.1 ([#1079](https://github.com/JosefPihrt/Roslynator/pull/1079))
 
 ## [4.2.0] - 2022-11-27
 
