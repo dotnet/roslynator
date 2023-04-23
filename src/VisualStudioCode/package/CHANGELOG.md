@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.3.0] - 2023-04-23
+
+### Changed
+
+- [CLI] Bump Roslyn to 4.5.0 ([#1043](https://github.com/josefpihrt/roslynator/pull/1043)).
+- [CLI] Downgrade version of Microsoft.Build.Locator from 1.5.5 to 1.4.1 ([#1079](https://github.com/JosefPihrt/Roslynator/pull/1079))
+
+### Fixed
+
+- Fix [RCS1084](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1084.md) ([#1006](https://github.com/josefpihrt/roslynator/pull/1006)).
+- Fix [RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md) ([#1007](https://github.com/josefpihrt/roslynator/pull/1007)).
+- [CLI] Add nullable reference type modifier when creating a list of symbols (`list-symbols` command) ([#1013](https://github.com/josefpihrt/roslynator/pull/1013)).
+- Add/remove blank line after file scoped namespace declaration ([RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md)) ([#1014](https://github.com/josefpihrt/roslynator/pull/1014)).
+- Do not remove overriding member in record ([RCS1132](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1132.md)) ([#1015](https://github.com/josefpihrt/roslynator/pull/1015)).
+- Do not remove parameterless empty constructor in a struct with field initializers ([RCS1074](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1074.md)) ([#1021](https://github.com/josefpihrt/roslynator/pull/1021)).
+- Do not suggest to use generic event handler ([RCS1159](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1159.md)) ([#1022](https://github.com/josefpihrt/roslynator/pull/1022)).
+- Fix ([RCS1077](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1077.md)) ([#1023](https://github.com/josefpihrt/roslynator/pull/1023)).
+- Fix ([RCS1097](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1097.md)) ([#1037](https://github.com/JosefPihrt/Roslynator/pull/1037) by @jamesHargreaves12).
+- Do not report ([RCS1170](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1170.md)) when `Microsoft.AspNetCore.Components.InjectAttribute` is used ([#1046](https://github.com/JosefPihrt/Roslynator/pull/1046)).
+- Fix ([RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md)) ([#1047](https://github.com/JosefPihrt/Roslynator/pull/1047)).
+- Fix ([RCS1206](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1206.md)) ([#1049](https://github.com/JosefPihrt/Roslynator/pull/1049)).
+- Prevent possible recursion in ([RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md)) ([#1054](https://github.com/JosefPihrt/Roslynator/pull/1054)).
+- Fix ([RCS1223](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1223.md)) ([#1051](https://github.com/JosefPihrt/Roslynator/pull/1051) by @jamesHargreaves12).
+- Do not remove braces in the cases where there are overlapping local variables. ([RCS1031](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1031.md), [RCS1211](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1211.md), [RCS1208](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1208.md), [RCS1061](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1061.md)) ([#1039](https://github.com/JosefPihrt/Roslynator/pull/1039), [#1062](https://github.com/JosefPihrt/Roslynator/pull/1062) by @jamesHargreaves12).
+- [CLI] Analyze command does not create the XML output file and returns incorrect exit code when only compiler diagnostics are reported ([#1056](https://github.com/JosefPihrt/Roslynator/pull/1056) by @PeterKaszab).
+- [CLI] Fix exit code when multiple projects are processed ([#1061](https://github.com/JosefPihrt/Roslynator/pull/1061) by @PeterKaszab).
+- Fix code fix for CS0164 ([#1031](https://github.com/JosefPihrt/Roslynator/pull/1031) by @jamesHargreaves12).
+- Do not report `System.Windows.DependencyPropertyChangedEventArgs` as unused parameter ([RCS1163](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1163.md)) ([#1068](https://github.com/JosefPihrt/Roslynator/pull/1068)).
+- Fix ([RCS1032](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1032.md)) ([#1064](https://github.com/JosefPihrt/Roslynator/pull/1064) by @jamesHargreaves12).
+- Update processing of .globalconfig file to prioritize file-specific diagnostic severities over global diagnostic severities ([#1066](https://github.com/JosefPihrt/Roslynator/pull/1066/files) by @jamesHargreaves12).
+- Fix RCS1009 to handles discard designations ([#1063](https://github.com/JosefPihrt/Roslynator/pull/1063/files) by @jamesHargreaves12).
+- [CLI] Fix number of formatted documents, file banners added ([#1072](https://github.com/JosefPihrt/Roslynator/pull/1072)).
+- Improve support for coalesce expressions in code fixes that require computing the logical inversion of an expression, such as [RCS1208](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1208.md) ([#1069](https://github.com/JosefPihrt/Roslynator/pull/1069) by @jamesHargreaves12).
+
 ## [4.2.0] - 2022-11-27
 
 ### Added
