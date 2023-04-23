@@ -86,13 +86,30 @@ internal static class DiagnosticXmlSerializer
             diagnostics
                 .GroupBy(f => f.Descriptor, DiagnosticDescriptorComparer.Id)
                 .OrderBy(f => f.Key, DiagnosticDescriptorComparer.Id)
-                .Select(f => new XElement(
-                    "Diagnostic",
-                    new XAttribute("Id", f.Key.Id),
-                    new XAttribute("Title", f.Key.Title.ToString(formatProvider)),
-                    new XAttribute("Description", f.Key.Description.ToString(formatProvider)),
-                    new XAttribute("HelpLink", f.Key.HelpLinkUri),
-                    new XAttribute("Count", f.Count()))));
+                .Select(f => SerializeSummaryDiagnosticGroup(f, formatProvider)));
+    }
+
+    private static XElement SerializeSummaryDiagnosticGroup(
+        IGrouping<DiagnosticDescriptor, DiagnosticInfo> group,
+        IFormatProvider formatProvider)
+    {
+        XElement descriptionElement = null;
+        XElement helpLinkElement = null;
+
+        string descriptionText = group.Key.Description?.ToString(formatProvider);
+        if (!string.IsNullOrEmpty(descriptionText))
+            descriptionElement = new XElement("Description", descriptionText);
+
+        if (!string.IsNullOrEmpty(group.Key.HelpLinkUri))
+            helpLinkElement = new XElement("HelpLink", group.Key.HelpLinkUri);
+
+        return new XElement(
+            "Diagnostic",
+            new XAttribute("Id", group.Key.Id),
+            new XAttribute("Title", group.Key.Title.ToString(formatProvider)),
+            new XAttribute("Count", group.Count()),
+            descriptionElement,
+            helpLinkElement);
     }
 
     private static void SerializeDocument(string filePath, XElement summary, params object[] projects)
