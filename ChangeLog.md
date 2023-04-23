@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - [CLI] Bump Roslyn to 4.5.0 ([#1043](https://github.com/josefpihrt/roslynator/pull/1043)).
+- [CLI] Add more information about the found diagnostics to the XML output file ([#1078](https://github.com/josefpihrt/roslynator/pull/1078) by @PeterKaszab).
 
 ### Fixed
 
