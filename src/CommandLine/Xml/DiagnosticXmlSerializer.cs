@@ -75,8 +75,6 @@ internal static class DiagnosticXmlSerializer
             new XAttribute("Id", diagnostic.Descriptor.Id),
             new XElement("Severity", diagnostic.Severity),
             new XElement("Message", diagnostic.Descriptor.Title.ToString(formatProvider)),
-            new XElement("Description", diagnostic.Descriptor.Description.ToString(formatProvider)),
-            new XElement("HelpLink", diagnostic.Descriptor.HelpLinkUri.ToString(formatProvider)),
             filePathElement,
             locationElement);
     }
@@ -92,6 +90,8 @@ internal static class DiagnosticXmlSerializer
                     "Diagnostic",
                     new XAttribute("Id", f.Key.Id),
                     new XAttribute("Title", f.Key.Title.ToString(formatProvider)),
+                    new XAttribute("Description", f.Key.Description.ToString(formatProvider)),
+                    new XAttribute("HelpLink", f.Key.HelpLinkUri),
                     new XAttribute("Count", f.Count()))));
     }
 
