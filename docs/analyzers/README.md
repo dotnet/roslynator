@@ -1,5 +1,13 @@
 ## Roslynator Analyzers
 
+
+| Package | Diagnostic ID Prefix | NuGet |
+| --- | --- | --- |
+| [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers) | `RCS1` | common analyzers |
+| [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers) | `RCS0` | - |
+| [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers) | `RCS9` | suitable for projects that reference `Microsoft.CodeAnalysis.CSharp` |
+
+
 | Id  | Title | Severity |
 | --- | ----- | -------- |
 | RCS0001 | [Add blank line after embedded statement](RCS0001.md) | None |
