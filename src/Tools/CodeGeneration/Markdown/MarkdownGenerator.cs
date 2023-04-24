@@ -302,12 +302,14 @@ public static class MarkdownGenerator
     {
         MDocument document = Document(
             Heading2(title),
-            Raw(@"| Package | Diagnostic ID Prefix | NuGet |
+            Heading3("Overview"),
+            Raw(@"| Package | Prefix | NuGet |
 | --- | --- | --- |
 | [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers) | `RCS1` | common analyzers |
 | [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers) | `RCS0` | - |
-| [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers) | `RCS9` | suitable for projects that reference `Microsoft.CodeAnalysis.CSharp` |
+| [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers) | `RCS9` | suitable for projects that reference [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) |
 "),
+            Heading3("List of Analyzers"),
             Table(
                 TableRow("Id", "Title", "Severity"),
                 analyzers.OrderBy(f => f.Id, comparer).Select(f =>
