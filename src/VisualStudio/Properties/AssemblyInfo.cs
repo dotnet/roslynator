@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyConfiguration("")]
 //[assembly: AssemblyCompany("Josef Pihrt")]
 //[assembly: AssemblyProduct("Roslynator.VisualStudio.2022")]
-//[assembly: AssemblyCopyright("Copyright (c) 2016-2021 Josef Pihrt")]
+//[assembly: AssemblyCopyright("Copyright (c) 2016-2023 Josef Pihrt")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
