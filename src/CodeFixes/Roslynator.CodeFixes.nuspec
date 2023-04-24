@@ -6,7 +6,7 @@
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
-    <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
+    <projectUrl>https://github.com/JosefPihrt/Roslynator</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of code fixes for C# compiler diagnostics (CS....), powered by Roslyn.

@@ -1,6 +1,6 @@
 # Roslynator <img align="left" width="48px" height="48px" src="http://pihrt.net/images/Roslynator.ico">
 
-A collection of 500+ [analyzers](docs/analyzers/README.md), [refactorings](docs/refactorings/README.md) and [fixes](docs/cs/README.md) for C#, powered by [Roslyn](http://github.com/dotnet/roslyn).
+A collection of 500+ [analyzers](docs/analyzers/README.md), [refactorings](docs/refactorings/README.md) and [fixes](docs/cs/README.md) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
 ### Features
 
