@@ -7,7 +7,7 @@ Remove-Item "$outDir/Roslynator.CommandLine.*.nupkg"
 Remove-Item "$outDir/Roslynator.DotNet.Cli.*.nupkg"
 Remove-Item -Path "../src/CommandLine/bin/Release" -Recurse
 
-orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
+orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -u
 dotnet clean "../src/CommandLine.sln" `
 
 dotnet publish "../src/CommandLine.sln" -c Release `
@@ -19,7 +19,7 @@ dotnet pack -c Release --no-build -v normal /p:RoslynatorCommandLine=true "../sr
 
 Copy-Item -Path "../src/CommandLine/bin/Release/Roslynator.CommandLine.*.nupkg" -Destination "$outDir"
 
-orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
+orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -u
 dotnet clean "../src/CommandLine.sln"
 
 dotnet pack "../src/CommandLine/CommandLine.csproj" -c Release -v normal `
