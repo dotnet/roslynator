@@ -1,9 +1,5 @@
 @echo off
 
-set _programFiles=%ProgramFiles%
-
-set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild"
-set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591,DefineConstants=VSCODE
 set _version=4.3.0
 
 orang replace "..\src\VisualStudioCode\package\package.json" ^
@@ -12,9 +8,9 @@ orang replace "..\src\VisualStudioCode\package\package.json" ^
 
 dotnet restore --force "..\src\VisualStudioCode.sln"
 
-%_msbuildPath% "..\src\VisualStudioCode.sln" ^
+dotnet build "..\src\VisualStudioCode.sln" ^
  /t:Clean,Build ^
- /p:%_properties% ^
+ /p:Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591,DefineConstants=VSCODE ^
  /v:normal ^
  /m
 
