@@ -303,12 +303,15 @@ public static class MarkdownGenerator
         MDocument document = Document(
             Heading2(title),
             Heading3("Overview"),
-            Raw(@"| Package | Prefix | NuGet |
-| --- | --- | --- |
-| [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers) | `RCS1` | common analyzers |
-| [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers) | `RCS0` | - |
-| [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers) | `RCS9` | suitable for projects that reference [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) |
-"),
+            Table(
+                TableRow("Package", "Prefix", "Comment"),
+                TableRow(Link("Roslynator.Analyzers", "https://www.nuget.org/packages/Roslynator.Analyzers"), InlineCode("RCS1"), "common analyzers"),
+                TableRow(Link("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"), InlineCode("RCS0"), "-"),
+                TableRow(
+                    Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"),
+                    InlineCode("RCS9"),
+                    Inline("suitable for projects that reference ", Link("Microsoft.CodeAnalysis.CSharp", "https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp")))
+            ),
             Heading3("List of Analyzers"),
             Table(
                 TableRow("Id", "Title", "Severity"),
