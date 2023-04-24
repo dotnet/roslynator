@@ -2,11 +2,11 @@
 
 set _programFiles=%ProgramFiles%
 
-set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild"
+set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591
 set _outDir=..\out\Release
-set _version=4.2.0
-set _version4=4.2.0.0
+set _version=4.3.0
+set _version4=4.3.0.0
 
 orang replace "..\src\VisualStudio\source.extension.vsixmanifest" ^
  -c "patterns\vsix_manifest_version.txt" from-file -t m r ^
@@ -14,11 +14,10 @@ orang replace "..\src\VisualStudio\source.extension.vsixmanifest" ^
 
 orang replace ^
   "..\src\VisualStudio\Properties\AssemblyInfo.cs" ^
-  "..\src\VisualStudio.Common\Properties\AssemblyInfo.cs" ^
  -c "patterns\assembly_info_version.txt" from-file -t m r ^
  -r %_version4%
 
-orang delete "..\src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
+orang delete "..\src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -u
 
 echo.
 
@@ -26,8 +25,7 @@ dotnet restore "..\src\Roslynator.sln"
 dotnet restore "..\src\VisualStudio.sln"
 dotnet restore "..\src\Tools\Tools.sln"
 
-%_msbuildPath% "..\src\Tools\Tools.sln" ^
- /t:Build ^
+dotnet build "..\src\Tools\Tools.sln" ^
  /p:%_properties% ^
  /v:normal ^
  /m
@@ -37,7 +35,7 @@ if errorlevel 1 (
  exit
 )
 
-"..\src\Tools\MetadataGenerator\bin\Release\net48\Roslynator.MetadataGenerator.exe" "..\src"
+"..\src\Tools\MetadataGenerator\bin\Release\net7.0\Roslynator.MetadataGenerator.exe" "..\src"
 dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp3.1\Roslynator.CodeGenerator.dll" "..\src"
 
 %_msbuildPath% "..\src\Roslynator.sln" ^
