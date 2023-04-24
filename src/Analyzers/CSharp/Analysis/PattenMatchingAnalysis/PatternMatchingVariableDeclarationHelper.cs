@@ -13,11 +13,11 @@ public static class PatternMatchingVariableDeclarationHelper
         {
             RecursivePatternSyntax { PositionalPatternClause: var positionalPatternClause, PropertyPatternClause: var propertyPatternClause, Designation: var designation } =>
                 (designation is not null && AnyDeclaredVariablesMatch(designation, variableNames))
-                || (propertyPatternClause?.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames)) ?? false)
-                || (positionalPatternClause?.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames)) ?? false),
+                    || (propertyPatternClause?.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames)) ?? false)
+                    || (positionalPatternClause?.Subpatterns.Any(p => AnyDeclaredVariablesMatch(p.Pattern, variableNames)) ?? false),
             BinaryPatternSyntax binaryPattern =>
                 AnyDeclaredVariablesMatch(binaryPattern.Left, variableNames)
-                || AnyDeclaredVariablesMatch(binaryPattern.Right, variableNames),
+                    || AnyDeclaredVariablesMatch(binaryPattern.Right, variableNames),
             ParenthesizedPatternSyntax parenthesizedPattern => AnyDeclaredVariablesMatch(parenthesizedPattern.Pattern, variableNames),
             DeclarationPatternSyntax { Designation: var variableDesignation } => AnyDeclaredVariablesMatch(variableDesignation, variableNames),
             VarPatternSyntax { Designation: var variableDesignation } => AnyDeclaredVariablesMatch(variableDesignation, variableNames),

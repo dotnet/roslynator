@@ -1,5 +1,6 @@
 // Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,12 +14,11 @@ internal static class IfStatementLocalVariableAnalysis
         SemanticModel semanticModel
     )
     {
-        var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
+        ImmutableArray<ISymbol> ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
             .VariablesDeclared;
 
         if (ifVariablesDeclared.IsEmpty)
             return false;
-        
         foreach (StatementSyntax statement in SyntaxInfo.StatementListInfo(ifStatement).Statements)
         {
             if (statement == ifStatement)

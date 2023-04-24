@@ -54,7 +54,7 @@ internal static class Program
             RefactoringIdentifiersGenerator.Generate(refactorings, obsolete: true, comparer: comparer));
 
         WriteCompilationUnit(
-            @"VisualStudio.Common\RefactoringsOptionsPage.Generated.cs",
+            @"VisualStudio\RefactoringsOptionsPage.Generated.cs",
             RefactoringsOptionsPageGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer));
 
         WriteDiagnostics(@"Analyzers\CSharp", analyzers, @namespace: "Roslynator.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
@@ -78,7 +78,7 @@ internal static class Program
             CodeFixIdentifiersGenerator.Generate(codeFixes, comparer));
 
         WriteCompilationUnit(
-            @"VisualStudio.Common\CodeFixesOptionsPage.Generated.cs",
+            @"VisualStudio\CodeFixesOptionsPage.Generated.cs",
             CodeFixesOptionsPageGenerator.Generate());
 
         WriteCompilationUnit(
