@@ -1,3 +1,3 @@
-## Code Fixes for Compiler Diagnostics
+## Compiler Diagnostics Fixable with Roslynator
 
-[List of Code Fixes](../../docs/cs/README.md)
+[List of Compiler Diagnostics](../../docs/cs/README.md)
