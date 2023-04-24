@@ -17,7 +17,7 @@ public static class MarkdownGenerator
 {
     private static void AddFootnote(this MDocument document)
     {
-        document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "https://github.com/JosefPihrt/DotMarkdown"), ")"));
+        document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
     }
 
     public static string CreateReadMe(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
@@ -310,7 +310,7 @@ public static class MarkdownGenerator
                 TableRow(
                     Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"),
                     InlineCode("RCS9"),
-                    Inline("suitable for projects that reference ", Link("Microsoft.CodeAnalysis.CSharp", "https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp")))
+                    Inline("suitable for projects that reference Roslyn packages (", InlineCode("Microsoft.CodeAnalysis*"), ")"))
             ),
             Heading3("List of Analyzers"),
             Table(
