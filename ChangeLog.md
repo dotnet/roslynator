@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix [RCS1084](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1084.md) ([#1085](https://github.com/josefpihrt/roslynator/pull/1085)).
+- Improve inversion of logical expressions to handling additional cases ([#1086](https://github.com/josefpihrt/roslynator/pull/1086)).
 
 ## [4.3.0] - 2023-04-24
 
