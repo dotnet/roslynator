@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -44,6 +45,16 @@ internal static class SimplifyNullCheckRefactoring
             //RCS1084 UseCoalesceExpressionInsteadOfConditionalExpression
             newNode = nullCheck.Expression;
             coalesce = true;
+            
+            // If the types are polymorphic then the LHS of the null coalesce must be cast to the base type.
+            var newNodeType = semanticModel.GetTypeInfo(newNode).Type;
+            var whenNullType = semanticModel.GetTypeInfo(whenNull).Type;
+            var overallType = semanticModel.GetTypeInfo(conditionalExpression).ConvertedType;
+            if (overallType != null && newNodeType != null && !newNodeType.Equals(whenNullType))
+            {
+                var typeCastStr = overallType.ToMinimalDisplayString(semanticModel, overallType.Locations.First().SourceSpan.Start);
+                newNode = CastExpression(NullableType(ParseTypeName(typeCastStr)), newNode);
+            }
         }
         else if (semanticModel
             .GetTypeSymbol(nullCheck.Expression, cancellationToken)
