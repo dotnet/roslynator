@@ -48,7 +48,7 @@ internal sealed class WhitespaceRemover : CSharpSyntaxRewriter
             if (!prevTrivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
                 return Replacement;
         }
-        
+
         return base.VisitTrivia(trivia);
     }
 }
