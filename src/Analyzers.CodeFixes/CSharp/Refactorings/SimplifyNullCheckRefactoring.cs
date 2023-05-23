@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -47,13 +46,22 @@ internal static class SimplifyNullCheckRefactoring
             coalesce = true;
             
             // If the types are polymorphic then the LHS of the null coalesce must be cast to the base type.
-            var newNodeType = semanticModel.GetTypeInfo(newNode).Type;
-            var whenNullType = semanticModel.GetTypeInfo(whenNull).Type;
-            var overallType = semanticModel.GetTypeInfo(conditionalExpression).ConvertedType;
-            if (overallType != null && newNodeType != null && !newNodeType.Equals(whenNullType))
+            ITypeSymbol newNodeType = semanticModel.GetTypeSymbol(newNode);
+            ITypeSymbol whenNullType = semanticModel.GetTypeSymbol(whenNull);
+            ITypeSymbol overallType = semanticModel.GetTypeInfo(conditionalExpression).ConvertedType;
+
+            if (overallType?.SupportsExplicitDeclaration() == true
+                && !SymbolEqualityComparer.Default.Equals(newNodeType, whenNullType))
             {
-                var typeCastStr = overallType.ToMinimalDisplayString(semanticModel, overallType.Locations.First().SourceSpan.Start);
-                newNode = CastExpression(NullableType(ParseTypeName(typeCastStr)), newNode);
+                TypeSyntax castType = overallType.ToTypeSyntax().WithSimplifierAnnotation();
+
+                if ((semanticModel.GetNullableContext(conditionalExpression.SpanStart) & NullableContext.AnnotationsEnabled) != 0)
+                    castType = NullableType(castType);
+
+                newNode = CastExpression(
+                        castType,
+                        newNode.WithoutTrivia())
+                    .WithTriviaFrom(newNode);
             }
         }
         else if (semanticModel
