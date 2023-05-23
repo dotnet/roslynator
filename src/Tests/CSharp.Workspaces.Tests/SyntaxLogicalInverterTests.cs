@@ -50,6 +50,7 @@ public class SyntaxLogicallyInvertTests
     [InlineData(@"x ?? y", @"!(x ?? y)")]
     [InlineData(@"x.a", @"!x.a")]
     [InlineData(@"x.a()", @"!x.a()")]
+    [InlineData(@"x?.a", @"!x?.a")]
     public async Task LogicallyInvert(string source, string expected)
     {
         var sourceCode = $"class C {{ void M(dynamic x, dynamic y, dynamic z){{ if({source})return;}} }}";
