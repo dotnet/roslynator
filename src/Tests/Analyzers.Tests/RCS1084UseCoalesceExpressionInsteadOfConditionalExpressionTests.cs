@@ -33,7 +33,7 @@ class C
     }
     
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
-    public async Task Test_PolymorphicType()
+    public async Task Test_PolymorphicType_WithNullable()
     {
         await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
@@ -69,6 +69,46 @@ class C
         A? a = null;
 
         IBase c = (IBase?)a ?? new B();
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task Test_PolymorphicType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A a = null;
+
+        IBase c = [|a != null ? a : new B()|];
+    }
+}
+",@"
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A a = null;
+
+        IBase c = (IBase)a ?? new B();
     }
 }
 ");
