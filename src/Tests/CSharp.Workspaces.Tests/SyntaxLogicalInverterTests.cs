@@ -50,14 +50,12 @@ public class SyntaxLogicallyInvertTests
     [InlineData(@"x ?? y", @"!(x ?? y)")]
     [InlineData(@"x.a", @"!x.a")]
     [InlineData(@"x.a()", @"!x.a()")]
+    [InlineData(@"x?.a", @"!x?.a")]
     public async Task LogicallyInvert(string source, string expected)
     {
         var sourceCode = $"class C {{ void M(dynamic x, dynamic y, dynamic z){{ if({source})return;}} }}";
         var workspace = new AdhocWorkspace();
-        var projectId = ProjectId.CreateNewId();
-        var versionStamp = VersionStamp.Create();
-        var projectInfo = ProjectInfo.Create(projectId, versionStamp, "TestProject", "TestProject", LanguageNames.CSharp);
-        var newProject = workspace.AddProject(projectInfo);
+        var newProject = workspace.AddProject("TestProject", LanguageNames.CSharp);
         var newDocument = workspace.AddDocument(newProject.Id, "TestDocument.cs", SourceText.From(sourceCode));
         var syntaxTree = await newDocument.GetSyntaxTreeAsync();
         var compilation = await newDocument.Project.GetCompilationAsync();

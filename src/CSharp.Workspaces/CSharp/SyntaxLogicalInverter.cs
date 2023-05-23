@@ -76,9 +76,7 @@ public class SyntaxLogicalInverter
             return null;
 
         var inverted = LogicallyInvertImpl(expression, semanticModel, cancellationToken);
-        if (inverted.IsKind(SyntaxKind.LogicalNotExpression, SyntaxKind.ParenthesizedExpression))
-            return inverted;
-        return inverted.Parenthesize();
+        return inverted.IsKind(SyntaxKind.LogicalNotExpression, SyntaxKind.ParenthesizedExpression) ? inverted : inverted.Parenthesize();
     }
 
     private ExpressionSyntax LogicallyInvertImpl(
@@ -98,9 +96,10 @@ public class SyntaxLogicalInverter
             case SyntaxKind.CheckedExpression:
             case SyntaxKind.UncheckedExpression:
             case SyntaxKind.DefaultExpression:
-            {
-                return DefaultInvert(expression, false);
-            }
+            case SyntaxKind.ConditionalAccessExpression:
+                {
+                    return DefaultInvert(expression, false);
+                }
             case SyntaxKind.PostIncrementExpression:
             case SyntaxKind.PostDecrementExpression:
             case SyntaxKind.ObjectCreationExpression:
@@ -506,7 +505,7 @@ public class SyntaxLogicalInverter
 
                 return isPattern.WithPattern(newConstantPattern);
             }
-            else if (constantExpression.IsKind(SyntaxKind.NullLiteralExpression,SyntaxKind.NumericLiteralExpression,SyntaxKind.StringLiteralExpression))
+            else if (constantExpression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.NumericLiteralExpression, SyntaxKind.StringLiteralExpression))
             {
                 UnaryPatternSyntax notPattern = NotPattern(constantPattern.WithoutTrivia()).WithTriviaFrom(constantPattern);
 
@@ -521,13 +520,13 @@ public class SyntaxLogicalInverter
         return DefaultInvert(isPattern);
     }
 
-    private static PrefixUnaryExpressionSyntax DefaultInvert(ExpressionSyntax expression, bool needsParenthesize=true)
+    private static PrefixUnaryExpressionSyntax DefaultInvert(ExpressionSyntax expression, bool needsParenthesize = true)
     {
         SyntaxDebug.Assert(expression.Kind() != SyntaxKind.ParenthesizedExpression, expression);
 
         SyntaxTriviaList leadingTrivia = expression.GetLeadingTrivia();
         expression = expression.WithoutLeadingTrivia();
-        if(needsParenthesize)
+        if (needsParenthesize)
             expression = expression.Parenthesize();
 
         return LogicalNotExpression(
