@@ -350,4 +350,19 @@ class C
 }
 ");
     }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
+    public async Task TestNoDiagnostic_SuppressNullableWarning()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    int _a;
+
+    void M(ref int x) {}
+    void M2() {M(ref _a!);} 
+}
+");
+    }
+
 }

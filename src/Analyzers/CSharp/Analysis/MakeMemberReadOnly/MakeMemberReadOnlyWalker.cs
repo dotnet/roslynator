@@ -67,6 +67,13 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
     {
         SyntaxKind kind = expression.Kind();
 
+        if (kind == SyntaxKind.SuppressNullableWarningExpression)
+        {
+            var postfixUnaryExpression = (PostfixUnaryExpressionSyntax)expression;
+            expression = postfixUnaryExpression.Operand;
+            kind = expression.Kind();
+        }
+
         if (kind == SyntaxKind.IdentifierName)
         {
             AnalyzeAssigned((IdentifierNameSyntax)expression);
