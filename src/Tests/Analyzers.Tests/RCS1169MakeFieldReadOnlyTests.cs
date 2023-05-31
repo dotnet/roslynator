@@ -365,4 +365,16 @@ class C
 ");
     }
 
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
+    public async Task TestNoDiagnostic_RefInRef()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Runtime.CompilerServices;
+class C
+{
+    int _a;
+    ref int M2() {return ref Unsafe.Add(ref _a, 3);} 
+}
+");
+    }
 }

@@ -137,10 +137,8 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
         {
             VisitAssignedExpression(expression);
         }
-        else
-        {
-            base.VisitRefExpression(node);
-        }
+
+        base.VisitRefExpression(node);
     }
 
     public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
