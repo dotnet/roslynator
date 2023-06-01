@@ -35,6 +35,11 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                     {
                         StringBuilder sb = StringBuilderCache.GetInstance();
 
+                        if (isVerbatim)
+                        {
+                            sb.Append("@");
+                        }
+
                         sb.Append("\"{0");
 
                         if (alignmentClause is not null)
