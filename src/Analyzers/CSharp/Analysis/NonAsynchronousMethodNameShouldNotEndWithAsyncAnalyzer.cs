@@ -2,8 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Data;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -77,7 +75,7 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
                 return;
 
             if (SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
-                || ReturnsAsyncEnumerableLike(methodSymbol))
+                || IsAsyncEnumerableLike(methodSymbol.ReturnType.OriginalDefinition))
             {
                 return;
             }
@@ -115,44 +113,41 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
     }
 
     /// <summary>
-    /// Checks if the return type of the method implements <see cref="IAsyncEnumerable{T}"/> or a duck typed <c>GetAsyncEnumerator()</c>
+    /// Checks if the type implements <see cref="IAsyncEnumerable{T}"/> or a duck typed <c>GetAsyncEnumerator()</c>
     /// directly, through a base type, interface, or a generic constraint.
     /// </summary>
-    private static bool ReturnsAsyncEnumerableLike(IMethodSymbol methodSymbol)
+    private static bool IsAsyncEnumerableLike(ITypeSymbol typeSymbol)
     {
-        if (IsAsyncEnumerableLike(methodSymbol.ReturnType.OriginalDefinition))
+        if (typeSymbol.Kind == SymbolKind.TypeParameter)
         {
-            return true;
-        }
-
-        // check for IAsyncEnumerable-likeness in the generic constraint, e.g. GetAsync<T>() where T : IAsyncEnumerable<int>
-        foreach (ITypeParameterSymbol typeParameter in methodSymbol.TypeParameters)
-        {
-            if (typeParameter.Equals(methodSymbol.ReturnType, SymbolEqualityComparer.Default))
+            foreach (ITypeSymbol constraint in ((ITypeParameterSymbol)typeSymbol).ConstraintTypes)
             {
-                foreach (ITypeSymbol constraint in typeParameter.ConstraintTypes)
+                if (constraint.TypeKind.Is(TypeKind.Class, TypeKind.Interface)
+                    && IsAsyncEnumerable(constraint))
                 {
-                    if (IsAsyncEnumerableLike(constraint.OriginalDefinition))
-                        return true;
+                    return true;
                 }
-
-                break;
             }
+
+            return false;
         }
 
-        return false;
+        return typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface)
+            && IsAsyncEnumerable(typeSymbol);
 
-        static bool IsAsyncEnumerableLike(ITypeSymbol typeSymbol)
+        static bool IsAsyncEnumerable(ITypeSymbol typeSymbol)
         {
+            if (typeSymbol.SpecialType != SpecialType.None)
+                return false;
+
+            if (typeSymbol.IsTupleType)
+                return false;
+
             if (typeSymbol.HasMetadataName(in MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
-            {
                 return true;
-            }
 
             if (typeSymbol.Implements(in MetadataNames.System_Collections_Generic_IAsyncEnumerable_T, allInterfaces: true))
-            {
                 return true;
-            }
 
             // Seek a non-static method called GetAsyncEnumerator that has no parameters or a single CancellationToken parameter.
             do
@@ -171,7 +166,7 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
                     }
                 }
             }
-            while ((typeSymbol = typeSymbol.BaseType) is not null && !typeSymbol.HasMetadataName(in MetadataNames.System_Object));
+            while ((typeSymbol = typeSymbol.BaseType) is not null && !typeSymbol.IsObject());
 
             return false;
         }
