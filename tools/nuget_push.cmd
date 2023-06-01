@@ -17,5 +17,8 @@ dotnet nuget push "..\out\release\Roslynator.Analyzers.*.nupkg" --source %_nuget
 dotnet nuget push "..\out\release\Roslynator.Formatting.Analyzers.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
 dotnet nuget push "..\out\release\Roslynator.CodeAnalysis.Analyzers.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
 
+dotnet nuget push "..\out\release\Roslynator.CommandLine.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
+dotnet nuget push "..\out\release\Roslynator.DotNet.Cli.*.nupkg" --source %_nugetSource% --api-key %_apiKey%
+
 pause
 
