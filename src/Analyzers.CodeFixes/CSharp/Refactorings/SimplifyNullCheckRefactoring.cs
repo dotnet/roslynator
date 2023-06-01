@@ -44,6 +44,25 @@ internal static class SimplifyNullCheckRefactoring
             //RCS1084 UseCoalesceExpressionInsteadOfConditionalExpression
             newNode = nullCheck.Expression;
             coalesce = true;
+            
+            // If the types are polymorphic then the LHS of the null coalesce must be cast to the base type.
+            ITypeSymbol newNodeType = semanticModel.GetTypeSymbol(newNode);
+            ITypeSymbol whenNullType = semanticModel.GetTypeSymbol(whenNull);
+            ITypeSymbol overallType = semanticModel.GetTypeInfo(conditionalExpression).ConvertedType;
+
+            if (overallType?.SupportsExplicitDeclaration() == true
+                && !SymbolEqualityComparer.Default.Equals(newNodeType, whenNullType))
+            {
+                TypeSyntax castType = overallType.ToTypeSyntax().WithSimplifierAnnotation();
+
+                if ((semanticModel.GetNullableContext(conditionalExpression.SpanStart) & NullableContext.AnnotationsEnabled) != 0)
+                    castType = NullableType(castType);
+
+                newNode = CastExpression(
+                        castType,
+                        newNode.WithoutTrivia())
+                    .WithTriviaFrom(newNode);
+            }
         }
         else if (semanticModel
             .GetTypeSymbol(nullCheck.Expression, cancellationToken)

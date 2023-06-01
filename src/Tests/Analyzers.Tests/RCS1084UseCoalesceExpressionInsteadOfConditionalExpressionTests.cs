@@ -31,6 +31,88 @@ class C
 }
 ", source, expected);
     }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task Test_PolymorphicType_WithNullable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A? a = null;
+
+        IBase c = [|a != null ? a : new B()|];
+    }
+}
+",@"
+#nullable enable
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A? a = null;
+
+        IBase c = (IBase?)a ?? new B();
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task Test_PolymorphicType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A a = null;
+
+        IBase c = [|a != null ? a : new B()|];
+    }
+}
+",@"
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A a = null;
+
+        IBase c = (IBase)a ?? new B();
+    }
+}
+");
+    }
 
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
     [InlineData("(ni != null) ? ni.Value : 1", "ni ?? 1")]
