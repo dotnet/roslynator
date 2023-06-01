@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - Fix [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016.md) ([#1090](https://github.com/josefpihrt/roslynator/pull/1090)).
+- Recognize more shapes of IAsyncEnumerable as being Async ([RCS1047](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1047.md)) ([#1084](https://github.com/josefpihrt/roslynator/pull/1084)).
 
 ### Fixed
 

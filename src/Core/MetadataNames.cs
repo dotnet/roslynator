@@ -45,6 +45,7 @@ internal static class MetadataNames
     public static readonly MetadataName System_Linq_IOrderedEnumerable_T = MetadataName.Parse("System.Linq.IOrderedEnumerable`1");
     public static readonly MetadataName System_Linq_IQueryable_T = MetadataName.Parse("System.Linq.IQueryable`1");
     public static readonly MetadataName System_NonSerializedAttribute = MetadataName.Parse("System.NonSerializedAttribute");
+    public static readonly MetadataName System_Object = MetadataName.Parse("System.Object");
     public static readonly MetadataName System_ObsoleteAttribute = MetadataName.Parse("System.ObsoleteAttribute");
     public static readonly MetadataName System_Reflection = MetadataName.Parse("System.Reflection");
     public static readonly MetadataName System_Runtime_CompilerServices = MetadataName.Parse("System.Runtime.CompilerServices");
@@ -59,6 +60,7 @@ internal static class MetadataNames
     public static readonly MetadataName System_Text_RegularExpressions_Regex = MetadataName.Parse("System.Text.RegularExpressions.Regex");
     public static readonly MetadataName System_Text_RegularExpressions_RegexOptions = MetadataName.Parse("System.Text.RegularExpressions.RegexOptions");
     public static readonly MetadataName System_Text_StringBuilder = MetadataName.Parse("System.Text.StringBuilder");
+    public static readonly MetadataName System_Threading_CancellationToken = MetadataName.Parse("System.Threading.CancellationToken");
     public static readonly MetadataName System_Threading_Tasks = MetadataName.Parse("System.Threading.Tasks");
     public static readonly MetadataName System_Threading_Tasks_Task = MetadataName.Parse("System.Threading.Tasks.Task");
     public static readonly MetadataName System_Threading_Tasks_Task_T = MetadataName.Parse("System.Threading.Tasks.Task`1");
