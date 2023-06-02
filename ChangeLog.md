@@ -6,13 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Fix [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016.md) ([#1090](https://github.com/josefpihrt/roslynator/pull/1090)).
 
 ### Fixed
 
+- Fix [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016.md) ([#1090](https://github.com/josefpihrt/roslynator/pull/1090)).
 - Improve inversion of logical expressions to handling additional cases ([#1086](https://github.com/josefpihrt/roslynator/pull/1086)).
 - Fix [RCS1084](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1084.md) ([#1085](https://github.com/josefpihrt/roslynator/pull/1085)).
 - Fix [RCS1169](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1169.md) ([#1092](https://github.com/JosefPihrt/Roslynator/pull/1092)).
+- Recognize more shapes of IAsyncEnumerable as being Async ([RCS1047](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1047.md)) ([#1084](https://github.com/josefpihrt/roslynator/pull/1084)).
 
 ## [4.3.0] - 2023-04-24
 
