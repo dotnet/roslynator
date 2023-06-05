@@ -58,7 +58,7 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
         if (!unsafeStatement.Block.Statements.Any())
             return;
 
-        if (!ParentDeclarationsContainsUnsafeModifier(unsafeStatement))
+        if (!ParentDeclarationsContainsUnsafeModifier(unsafeStatement.Parent))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, unsafeStatement.UnsafeKeyword);
@@ -76,14 +76,7 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
             return;
 
         SyntaxNode parent = localFunctionStatement.Parent;
-
-        SyntaxDebug.Assert(parent.IsKind(SyntaxKind.Block), parent);
-
-        if (parent is not BlockSyntax)
-            return;
-
-        parent = parent.Parent;
-
+        
         if (!ParentDeclarationsContainsUnsafeModifier(parent))
             return;
 
@@ -184,96 +177,69 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
         if (index == -1)
             return;
 
-        if (!ParentTypeDeclarationsContainsUnsafeModifier(memberDeclaration))
+        if (!ParentDeclarationsContainsUnsafeModifier(memberDeclaration.Parent))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, modifiers[index]);
     }
-
-    private static bool ParentDeclarationsContainsUnsafeModifier(UnsafeStatementSyntax unsafeStatement)
-    {
-        SyntaxNode parent = unsafeStatement.Parent;
-
-        while (parent is not null)
-        {
-            SyntaxKind kind = parent.Kind();
-
-            if (kind == SyntaxKind.UnsafeStatement)
-            {
-                return true;
-            }
-            else if (kind == SyntaxKind.LocalFunctionStatement)
-            {
-                break;
-            }
-
-            if (parent is AccessorDeclarationSyntax)
-            {
-                parent = parent.Parent;
-
-                if (parent is AccessorListSyntax)
-                    parent = parent.Parent;
-
-                break;
-            }
-
-            if (parent is MemberDeclarationSyntax)
-                break;
-
-            parent = parent.Parent;
-        }
-
-        return ParentDeclarationsContainsUnsafeModifier(parent);
-    }
-
+    
     private static bool ParentDeclarationsContainsUnsafeModifier(SyntaxNode node)
     {
-        while (node.IsKind(SyntaxKind.LocalFunctionStatement))
+        while (node is not null)
         {
-            var localFunction = (LocalFunctionStatementSyntax)node;
+            SyntaxKind kind = node.Kind();
 
-            if (localFunction.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                return true;
+            switch (kind)
+            {
+                case SyntaxKind.UnsafeStatement:
+                    return true;
+                case SyntaxKind.LocalFunctionStatement:
+                {
+                    var localFunction = (LocalFunctionStatementSyntax)node;
+                    if (localFunction.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
+                    break;
+                }
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
+                case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                {
+                    var typeDeclaration = (TypeDeclarationSyntax)node;
+                    if (typeDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
+                    break;
+                }
+                case SyntaxKind.IndexerDeclaration:
+                    var indexerDeclaration = (IndexerDeclarationSyntax)node;
+                    if (indexerDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
+                    break;
+                case SyntaxKind.OperatorDeclaration:
+                    var operatorDeclaration = (OperatorDeclarationSyntax)node;
+                    if (operatorDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
+                    break;
+                case SyntaxKind.PropertyDeclaration:
+                    var fieldDeclaration = (PropertyDeclarationSyntax)node;
+                    if (fieldDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
+                    break;
+                case SyntaxKind.MethodDeclaration:
+                    var methodDeclaration = (MethodDeclarationSyntax)node;
+                    if (methodDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
+                    break;
+                case SyntaxKind.ConstructorDeclaration:
+                    var constructorDeclaration = (ConstructorDeclarationSyntax)node;
+                    if (constructorDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        return true;
+                    break;
+            }
 
             node = node.Parent;
-
-            SyntaxDebug.Assert(node.IsKind(SyntaxKind.Block), node);
-
-            if (!node.IsKind(SyntaxKind.Block))
-                break;
-
-            node = node.Parent;
         }
-
-        SyntaxDebug.Assert(node is MemberDeclarationSyntax, node);
-
-        if (node is MemberDeclarationSyntax memberDeclaration)
-        {
-            if (SyntaxInfo.ModifierListInfo(memberDeclaration).IsUnsafe)
-                return true;
-
-            return ParentTypeDeclarationsContainsUnsafeModifier(memberDeclaration);
-        }
-
-        return false;
-    }
-
-    private static bool ParentTypeDeclarationsContainsUnsafeModifier(MemberDeclarationSyntax memberDeclaration)
-    {
-        SyntaxNode parent = memberDeclaration.Parent;
-
-        while (parent.IsKind(
-            SyntaxKind.ClassDeclaration,
-            SyntaxKind.StructDeclaration,
-            SyntaxKind.RecordStructDeclaration,
-            SyntaxKind.InterfaceDeclaration))
-        {
-            if (((TypeDeclarationSyntax)parent).Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                return true;
-
-            parent = parent.Parent;
-        }
-
         return false;
     }
 }
