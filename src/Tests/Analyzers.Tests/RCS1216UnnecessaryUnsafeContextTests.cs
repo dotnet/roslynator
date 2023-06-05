@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Analysis.Tests;
 public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVerifier<UnnecessaryUnsafeContextAnalyzer, UnnecessaryUnsafeContextCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryUnsafeContext;
-    
+
     [Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     [Theory]
     [InlineData(@"class")]
@@ -29,7 +29,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
-".Replace("<type_keyword>",typeKeyword);
+".Replace("<type_keyword>", typeKeyword);
         var expected = @"
     unsafe <type_keyword> C
     {
@@ -40,7 +40,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
-".Replace("<type_keyword>",typeKeyword);
+".Replace("<type_keyword>", typeKeyword);
         await VerifyDiagnosticAndFixAsync(source, expected, options: Options.WithAllowUnsafe(true));
     }
 
@@ -60,7 +60,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
-".Replace("<member_signature>",memberSignature);
+".Replace("<member_signature>", memberSignature);
         var expected = @"
     class C
     {
@@ -71,10 +71,10 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
-".Replace("<member_signature>",memberSignature);
+".Replace("<member_signature>", memberSignature);
         await VerifyDiagnosticAndFixAsync(source, expected, options: Options.WithAllowUnsafe(true));
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_UnsafeLocalFunction()
     {
@@ -90,7 +90,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
-",@"
+", @"
     class C
     {
         unsafe void M()
@@ -104,7 +104,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     }
 ", options: Options.WithAllowUnsafe(true));
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_UnsafeBlock()
     {
@@ -120,7 +120,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
-",@"
+", @"
     class C
     {
         void M()
@@ -134,7 +134,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     }
 ", options: Options.WithAllowUnsafe(true));
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Property()
     {
@@ -151,7 +151,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
-",@"
+", @"
     class C
     {
         unsafe string X
@@ -181,7 +181,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             return c1;
         }
     }
-",@"
+", @"
     class C
     {
         public unsafe static C operator +(C c1, C c2) 
@@ -211,7 +211,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
-",@"
+", @"
     class C
     {
         unsafe string this[int i]
@@ -227,8 +227,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
 ", options: Options.WithAllowUnsafe(true));
     }
 
-    
-    
+
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_NoDiagnostic_UnwrappedUnsafeBlock()
     {

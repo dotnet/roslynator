@@ -76,7 +76,7 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
             return;
 
         SyntaxNode parent = localFunctionStatement.Parent;
-        
+
         if (!ParentDeclarationsContainsUnsafeModifier(parent))
             return;
 
@@ -182,7 +182,7 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, modifiers[index]);
     }
-    
+
     private static bool ParentDeclarationsContainsUnsafeModifier(SyntaxNode node)
     {
         while (node is not null)
@@ -194,23 +194,23 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
                 case SyntaxKind.UnsafeStatement:
                     return true;
                 case SyntaxKind.LocalFunctionStatement:
-                {
-                    var localFunction = (LocalFunctionStatementSyntax)node;
-                    if (localFunction.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-                    break;
-                }
+                    {
+                        var localFunction = (LocalFunctionStatementSyntax)node;
+                        if (localFunction.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                            return true;
+                        break;
+                    }
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
-                {
-                    var typeDeclaration = (TypeDeclarationSyntax)node;
-                    if (typeDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-                    break;
-                }
+                    {
+                        var typeDeclaration = (TypeDeclarationSyntax)node;
+                        if (typeDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                            return true;
+                        break;
+                    }
                 case SyntaxKind.IndexerDeclaration:
                     var indexerDeclaration = (IndexerDeclarationSyntax)node;
                     if (indexerDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
