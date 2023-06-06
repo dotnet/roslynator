@@ -68,4 +68,39 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
+    public async Task TestNoDiagnostic_OverlappingLocalVariablesWithSwitch()
+    {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    int M(int i, bool flag)
+    {
+        switch(i)
+        {
+            case 0:
+                if(flag)
+                {
+                    var z = 1;
+                    return z;
+                }   
+                break;
+            case 1:
+                if(flag)
+                {
+                    var y = 1;
+                    return y;
+                }
+                else
+                {
+                    var z = 1;
+                    return z;
+                }
+        }
+        return 2;
+    }
+}
+");
+    }
 }

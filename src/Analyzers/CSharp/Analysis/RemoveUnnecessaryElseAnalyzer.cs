@@ -61,8 +61,15 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
         if (ifStatementStatement is not BlockSyntax ifBlock)
             return CSharpFacts.IsJumpStatement(ifStatementStatement.Kind());
 
-        if (elseClause.Statement is BlockSyntax elseBlock && LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
-            return false;
+        if (elseClause.Statement is BlockSyntax elseBlock)
+        {
+            if(LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
+                return false;
+
+            if (ifStatement.Parent is SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement } 
+                && SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel))
+                return false;
+        }
 
         StatementSyntax lastStatementInIf = ifBlock.Statements.LastOrDefault();
 
