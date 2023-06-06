@@ -72,7 +72,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
     public async Task TestNoDiagnostic_OverlappingLocalVariablesWithSwitch()
     {
-            await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     int M(int i, bool flag)
