@@ -78,4 +78,35 @@ class C
 }
 ");
     }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
+    public async Task Test_BlockNamespaces()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+namespace BlockNamespace
+{
+    [|using s = System;|]
+
+    class C
+    {
+        void M()
+        {
+            string u1 = s.String.Empty;
+        }
+    }
+}
+", @"
+namespace BlockNamespace
+{
+
+    class C
+    {
+        void M()
+        {
+            string u1 = System.String.Empty;
+        }
+    }
+}
+");
+    }
 }
