@@ -59,6 +59,7 @@ internal static class MetadataNames
     public static readonly MetadataName System_Text_RegularExpressions_Regex = MetadataName.Parse("System.Text.RegularExpressions.Regex");
     public static readonly MetadataName System_Text_RegularExpressions_RegexOptions = MetadataName.Parse("System.Text.RegularExpressions.RegexOptions");
     public static readonly MetadataName System_Text_StringBuilder = MetadataName.Parse("System.Text.StringBuilder");
+    public static readonly MetadataName System_Threading_CancellationToken = MetadataName.Parse("System.Threading.CancellationToken");
     public static readonly MetadataName System_Threading_Tasks = MetadataName.Parse("System.Threading.Tasks");
     public static readonly MetadataName System_Threading_Tasks_Task = MetadataName.Parse("System.Threading.Tasks.Task");
     public static readonly MetadataName System_Threading_Tasks_Task_T = MetadataName.Parse("System.Threading.Tasks.Task`1");
