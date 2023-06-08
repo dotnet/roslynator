@@ -113,6 +113,11 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
                     var namespaceDeclaration = (NamespaceDeclarationSyntax)declaration;
                     return new UsingDirectiveListInfo(namespaceDeclaration, namespaceDeclaration.Usings);
                 }
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+            {
+                var fileScopedNamespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)declaration;
+                return new UsingDirectiveListInfo(fileScopedNamespaceDeclaration, fileScopedNamespaceDeclaration.Usings);
+            }
         }
 
         return default;
