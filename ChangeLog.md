@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Recognize more shapes of IAsyncEnumerable as being Async ([RCS1047](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1047.md)) ([#1084](https://github.com/josefpihrt/roslynator/pull/1084)).
 - Fix [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1197.md) ([#1093](https://github.com/JosefPihrt/Roslynator/pull/1093)).
 - Fix [RCS1211](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1211.md) ([#1095](https://github.com/JosefPihrt/Roslynator/pull/1095)).
+- Fix [RCS1216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1216.md) ([#1094](https://github.com/JosefPihrt/Roslynator/pull/1094)).
 
 ## [4.3.0] - 2023-04-24
 

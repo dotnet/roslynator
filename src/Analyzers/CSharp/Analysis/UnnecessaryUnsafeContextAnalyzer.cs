@@ -58,7 +58,7 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
         if (!unsafeStatement.Block.Statements.Any())
             return;
 
-        if (!ParentDeclarationsContainsUnsafeModifier(unsafeStatement.Parent))
+        if (!AncestorContainsUnsafeModifier(unsafeStatement.Parent))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, unsafeStatement.UnsafeKeyword);
@@ -68,19 +68,7 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
     {
         var localFunctionStatement = (LocalFunctionStatementSyntax)context.Node;
 
-        SyntaxTokenList modifiers = localFunctionStatement.Modifiers;
-
-        int index = modifiers.IndexOf(SyntaxKind.UnsafeKeyword);
-
-        if (index == -1)
-            return;
-
-        SyntaxNode parent = localFunctionStatement.Parent;
-
-        if (!ParentDeclarationsContainsUnsafeModifier(parent))
-            return;
-
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, modifiers[index]);
+        AnalyzeMemberDeclaration(context, localFunctionStatement, localFunctionStatement.Modifiers);
     }
 
     private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
@@ -169,7 +157,7 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
 
     private static void AnalyzeMemberDeclaration(
         SyntaxNodeAnalysisContext context,
-        MemberDeclarationSyntax memberDeclaration,
+        SyntaxNode node,
         SyntaxTokenList modifiers)
     {
         int index = modifiers.IndexOf(SyntaxKind.UnsafeKeyword);
@@ -177,65 +165,26 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
         if (index == -1)
             return;
 
-        if (!ParentDeclarationsContainsUnsafeModifier(memberDeclaration.Parent))
+        if (!AncestorContainsUnsafeModifier(node.Parent))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, modifiers[index]);
     }
 
-    private static bool ParentDeclarationsContainsUnsafeModifier(SyntaxNode node)
+    private static bool AncestorContainsUnsafeModifier(SyntaxNode node)
     {
         while (node is not null)
         {
-            SyntaxKind kind = node.Kind();
-
-            switch (kind)
+            switch (node)
             {
-                case SyntaxKind.UnsafeStatement:
+                case UnsafeStatementSyntax:
                     return true;
-                case SyntaxKind.LocalFunctionStatement:
+                case MemberDeclarationSyntax memberDeclarationSyntax:
                     {
-                        var localFunction = (LocalFunctionStatementSyntax)node;
-                        if (localFunction.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
+                        if (memberDeclarationSyntax.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
                             return true;
                         break;
                     }
-                case SyntaxKind.ClassDeclaration:
-                case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
-                case SyntaxKind.RecordDeclaration:
-                case SyntaxKind.InterfaceDeclaration:
-                    {
-                        var typeDeclaration = (TypeDeclarationSyntax)node;
-                        if (typeDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                            return true;
-                        break;
-                    }
-                case SyntaxKind.IndexerDeclaration:
-                    var indexerDeclaration = (IndexerDeclarationSyntax)node;
-                    if (indexerDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-                    break;
-                case SyntaxKind.OperatorDeclaration:
-                    var operatorDeclaration = (OperatorDeclarationSyntax)node;
-                    if (operatorDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-                    break;
-                case SyntaxKind.PropertyDeclaration:
-                    var fieldDeclaration = (PropertyDeclarationSyntax)node;
-                    if (fieldDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-                    break;
-                case SyntaxKind.MethodDeclaration:
-                    var methodDeclaration = (MethodDeclarationSyntax)node;
-                    if (methodDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-                    break;
-                case SyntaxKind.ConstructorDeclaration:
-                    var constructorDeclaration = (ConstructorDeclarationSyntax)node;
-                    if (constructorDeclaration.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-                        return true;
-                    break;
             }
 
             node = node.Parent;
