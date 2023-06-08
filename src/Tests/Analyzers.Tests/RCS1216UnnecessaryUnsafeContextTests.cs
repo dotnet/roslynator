@@ -405,5 +405,4 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     }
 ", options: Options.WithAllowUnsafe(true));
     }
-
 }
