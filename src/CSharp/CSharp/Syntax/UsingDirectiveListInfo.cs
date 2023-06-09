@@ -91,6 +91,14 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
         return new UsingDirectiveListInfo(namespaceDeclaration, namespaceDeclaration.Usings);
     }
 
+    internal static UsingDirectiveListInfo Create(FileScopedNamespaceDeclarationSyntax namespaceDeclaration)
+    {
+        if (namespaceDeclaration is null)
+            return default;
+
+        return new UsingDirectiveListInfo(namespaceDeclaration, namespaceDeclaration.Usings);
+    }
+
     internal static UsingDirectiveListInfo Create(CompilationUnitSyntax compilationUnit)
     {
         if (compilationUnit is null)
@@ -114,10 +122,10 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
                     return new UsingDirectiveListInfo(namespaceDeclaration, namespaceDeclaration.Usings);
                 }
             case SyntaxKind.FileScopedNamespaceDeclaration:
-            {
-                var fileScopedNamespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)declaration;
-                return new UsingDirectiveListInfo(fileScopedNamespaceDeclaration, fileScopedNamespaceDeclaration.Usings);
-            }
+                {
+                    var fileScopedNamespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)declaration;
+                    return new UsingDirectiveListInfo(fileScopedNamespaceDeclaration, fileScopedNamespaceDeclaration.Usings);
+                }
         }
 
         return default;
