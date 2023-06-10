@@ -302,7 +302,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     {
         unsafe string X
         {
-            get {
+            get
+            {
                 [|unsafe|]
                 {
                     var x = 1;
@@ -316,7 +317,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     {
         unsafe string X
         {
-            get {
+            get
+            {
                 {
                     var x = 1;
                 }
@@ -364,7 +366,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     {
         unsafe string this[int i]
         {
-            get {
+            get
+            {
                 [|unsafe|]
                 {
                     var x = 1;
@@ -378,7 +381,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     {
         unsafe string this[int i]
         {
-            get {
+            get
+            {
                 {
                     var x = 1;
                 }
@@ -386,6 +390,39 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
             }
         }
     }
+", options: Options.WithAllowUnsafe(true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
+    public async Task Test_Local()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        unsafe void Local()
+        {
+            [|unsafe|]
+            {
+                var x = 1;
+            }
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        unsafe void Local()
+        {
+            {
+                var x = 1;
+            }
+        }
+    }
+}
 ", options: Options.WithAllowUnsafe(true));
     }
 
