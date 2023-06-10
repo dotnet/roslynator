@@ -5091,6 +5091,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.TypeOfExpression:
                     VisitTypeOfExpression((TypeOfExpressionSyntax)node);
                     break;
+                case SyntaxKind.Utf8StringLiteralExpression:
+                    base.Visit(node);
+                    break;
                 case SyntaxKind.WithExpression:
                     VisitWithExpression((WithExpressionSyntax)node);
                     break;
@@ -5250,6 +5253,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.VarPattern:
                     VisitVarPattern((VarPatternSyntax)node);
+                    break;
+                case SyntaxKind.ListPattern:
+                    VisitListPattern((ListPatternSyntax)node);
                     break;
                 default:
                     Debug.Fail($"Unrecognized kind '{node.Kind()}'.");
