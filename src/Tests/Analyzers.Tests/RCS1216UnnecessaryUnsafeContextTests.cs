@@ -390,6 +390,39 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
+    public async Task Test_Local()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        unsafe void Local()
+        {
+            [|unsafe|]
+            {
+                var x = 1;
+            }
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        unsafe void Local()
+        {
+            {
+                var x = 1;
+            }
+        }
+    }
+}
+", options: Options.WithAllowUnsafe(true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_NoDiagnostic_UnwrappedUnsafeBlock()
     {
         await VerifyNoDiagnosticAsync(@"
