@@ -302,7 +302,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     {
         unsafe string X
         {
-            get {
+            get
+            {
                 [|unsafe|]
                 {
                     var x = 1;
@@ -316,7 +317,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     {
         unsafe string X
         {
-            get {
+            get
+            {
                 {
                     var x = 1;
                 }
@@ -364,7 +366,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     {
         unsafe string this[int i]
         {
-            get {
+            get
+            {
                 [|unsafe|]
                 {
                     var x = 1;
@@ -378,7 +381,8 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     {
         unsafe string this[int i]
         {
-            get {
+            get
+            {
                 {
                     var x = 1;
                 }
