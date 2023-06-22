@@ -39,7 +39,10 @@ Default configuration file can be used with extension for Visual Studio or VS co
 ### Format of Default Configuration File
 
 Format of the file is same as format of [global AnalyzerConfig](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/configuration-files#global-analyzerconfig).
-It essentially means that file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`).
+
+> **Info**
+> `.roslynator.config` file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`).
+
 
 ### Location of Default Configuration File
 
