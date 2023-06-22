@@ -31,7 +31,7 @@ roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 Some analyzers require option to be set. For this purpose there is special analyzer ROS0003 that reports a diagnostic
 if an analyzer is enabled but required option is not set. ROS0003 is disabled by default.
 
-## Default Configuration
+## Default Configuration (`.roslynatorconfig`)
 
 If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file.
 Default configuration file can be used with extension for Visual Studio or VS code.
@@ -39,11 +39,12 @@ Default configuration file can be used with extension for Visual Studio or VS co
 ### Format of Default Configuration File
 
 Format of the file is same as format of [global AnalyzerConfig](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/configuration-files#global-analyzerconfig).
+It essentially means that file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`), For example:
 
-> **Note**
->
-> `.roslynatorconfig` file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`).
-
+```editorconfig
+is_global = true
+roslynator_analyzers.enabled_by_default = true
+```
 
 ### Location of Default Configuration File
 
