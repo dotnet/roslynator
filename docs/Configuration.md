@@ -40,7 +40,8 @@ If you want to configure Roslynator on a user-wide basis you have to use Roslyna
 ### Format
 
 Format of the file is same as format of [global AnalyzerConfig](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/configuration-files#global-analyzerconfig).
-It essentially means that **file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`)**, For example:
+
+**IMPORTANT:** Default configuration file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`), For example:
 
 ```ini
 is_global = true
