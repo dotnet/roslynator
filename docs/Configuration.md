@@ -34,7 +34,9 @@ if an analyzer is enabled but required option is not set. ROS0003 is disabled by
 ## Default Configuration
 
 If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file (`.roslynatorconfig`).
-Default configuration file can be used with VS extension or VS code extension.
+
+> **Warning**
+> Default configuration file can be used only with VS extension or VS code extension.
 
 ### Format
 
