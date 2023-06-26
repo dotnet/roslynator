@@ -275,6 +275,10 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
                 case SyntaxKind.EqualsExpression:
                     {
                         var leftTypeSymbol = semanticModel.GetTypeSymbol(((BinaryExpressionSyntax)expression).Left);
+
+                        if (leftTypeSymbol.IsErrorType())
+                            return false;
+
                         if (leftTypeSymbol.IsValueType && !CSharpFacts.IsPredefinedType(leftTypeSymbol.SpecialType))
                         { 
                             // If the LHS is a ValueTypes then making the expression conditional would change the type of the expression
