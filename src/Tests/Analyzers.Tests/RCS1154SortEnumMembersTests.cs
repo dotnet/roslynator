@@ -185,4 +185,82 @@ enum Foo
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test_WithCommentsAfter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+enum [|Foo|]
+{
+    B = 1, // B
+    A = 0, // A
+    D = 3, // D
+    C = 2, // C
+}
+", @"
+enum Foo
+{
+    A = 0, // A
+    B = 1, // B
+    C = 2, // C
+    D = 3, // D
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test_CommentsAfter_EmptyLines()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+enum [|Foo|]
+{
+    B = 1, // B
+
+    A = 0, // A
+
+    D = 3, // D
+
+    C = 2 // C
+}
+", @"
+enum Foo
+{
+    A = 0, // A
+
+    B = 1, // B
+
+    C = 2, // C
+
+    D = 3 // D
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
+    public async Task Test_CommentsAfter_EmptyLines_TrailingSeparator()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+enum [|Foo|]
+{
+    B = 1, // B
+
+    A = 0, // A
+
+    D = 3, // D
+
+    C = 2, // C
+}
+", @"
+enum Foo
+{
+    A = 0, // A
+
+    B = 1, // B
+
+    C = 2, // C
+
+    D = 3, // D
+}
+");
+    }
 }
