@@ -173,11 +173,11 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
         if (leadingTrivia.FirstOrDefault().IsEndOfLineTrivia())
             sortedMembers[0] = sortedMembers[0].WithLeadingTrivia(leadingTrivia.RemoveAt(0));
 
-        MemberDeclarationSyntax newNode = enumDeclaration
+        MemberDeclarationSyntax newEnumDeclaration = enumDeclaration
             .WithMembers(sortedMembers.ToSeparatedSyntaxList<EnumMemberDeclarationSyntax>())
             .WithFormatterAnnotation();
 
-        return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+        return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
     }
 
     private static object GetConstantValue(
