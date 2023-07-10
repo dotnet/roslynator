@@ -91,25 +91,25 @@ enum Foo
 enum [|Foo|]
 {
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
 }
 ", @"
 enum Foo
 {
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
 }
 ");
     }
@@ -121,31 +121,31 @@ enum Foo
 enum [|Foo|]
 {
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
 
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
 
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
 
     /// <summary>C</summary>
-    C = 2
+    C = 2 // C
 }
 ", @"
 enum Foo
 {
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
 
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
 
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
 
     /// <summary>D</summary>
-    D = 3
+    D = 3 // D
 }
 ");
     }
@@ -157,108 +157,30 @@ enum Foo
 enum [|Foo|]
 {
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
 
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
 
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
 
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
 }
 ", @"
 enum Foo
 {
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
 
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
 
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
 
     /// <summary>D</summary>
-    D = 3,
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-    public async Task Test_WithCommentsAfter()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-enum [|Foo|]
-{
-    B = 1, // B
-    A = 0, // A
-    D = 3, // D
-    C = 2, // C
-}
-", @"
-enum Foo
-{
-    A = 0, // A
-    B = 1, // B
-    C = 2, // C
-    D = 3, // D
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-    public async Task Test_CommentsAfter_EmptyLines()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-enum [|Foo|]
-{
-    B = 1, // B
-
-    A = 0, // A
-
-    D = 3, // D
-
-    C = 2 // C
-}
-", @"
-enum Foo
-{
-    A = 0, // A
-
-    B = 1, // B
-
-    C = 2, // C
-
-    D = 3 // D
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SortEnumMembers)]
-    public async Task Test_CommentsAfter_EmptyLines_TrailingSeparator()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-enum [|Foo|]
-{
-    B = 1, // B
-
-    A = 0, // A
-
-    D = 3, // D
-
-    C = 2, // C
-}
-", @"
-enum Foo
-{
-    A = 0, // A
-
-    B = 1, // B
-
-    C = 2, // C
-
     D = 3, // D
 }
 ");
