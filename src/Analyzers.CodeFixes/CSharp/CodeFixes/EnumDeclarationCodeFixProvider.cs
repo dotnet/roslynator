@@ -119,68 +119,65 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
         CancellationToken cancellationToken)
     {
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
         SpecialType enumSpecialType = semanticModel.GetDeclaredSymbol(enumDeclaration).EnumUnderlyingType.SpecialType;
-
         SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
 
-        SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = members
+        List<EnumMemberDeclarationSyntax> sortedList = members
             .OrderBy(f => GetConstantValue(f, semanticModel, cancellationToken), EnumValueComparer.GetInstance(enumSpecialType))
-            .ToSeparatedSyntaxList();
+            .ToList();
 
-        if (AreSeparatedWithEmptyLine(members))
+        bool hasTrailingSeparator = members.HasTrailingSeparator();
+        int lastIndex = sortedList.Count - 1;
+
+        if (!hasTrailingSeparator)
         {
-            for (int i = 0; i < newMembers.Count; i++)
-            {
-                newMembers = newMembers.ReplaceAt(i, newMembers[i].TrimLeadingTrivia());
-            }
+            int index = members.IndexOf(sortedList.Last());
 
-            for (int i = 0; i < newMembers.Count - 1; i++)
-            {
-                SyntaxToken separator = newMembers.GetSeparator(i);
+            SyntaxTriviaList trailingTrivia = (index == members.Count - 1)
+                ? members[index].GetTrailingTrivia()
+                : members.GetSeparator(index).TrailingTrivia;
 
-                newMembers = newMembers.ReplaceSeparator(
-                    separator,
-                    separator.TrimTrailingTrivia().AppendToTrailingTrivia(new SyntaxTrivia[] { NewLine(), NewLine() }));
-            }
+            sortedList[sortedList.Count - 1] = sortedList[sortedList.Count - 1].WithTrailingTrivia(trailingTrivia);
+            lastIndex--;
         }
 
-        if (newMembers.SeparatorCount == members.SeparatorCount - 1)
+        List<SyntaxNodeOrToken> sortedMembers = sortedList.ConvertAll(member => (SyntaxNodeOrToken)member);
+
+        for (int i = lastIndex; i >= 0; i--)
         {
-            SyntaxNodeOrTokenList newMembersWithSeparators = newMembers.GetWithSeparators();
+            int oldIndex = members.IndexOf((EnumMemberDeclarationSyntax)sortedMembers[i]);
 
-            newMembersWithSeparators = newMembersWithSeparators.Add(CommaToken());
+            if (oldIndex == 0
+                && members[i].GetLeadingTrivia().FirstOrDefault().IsEndOfLineTrivia())
+            {
+                sortedMembers[i] = sortedMembers[i].WithLeadingTrivia(sortedMembers[i].GetLeadingTrivia().Insert(0, NewLine()));
+            }
 
-            newMembers = newMembersWithSeparators.ToSeparatedSyntaxList<EnumMemberDeclarationSyntax>();
+            SyntaxTriviaList trailingTrivia;
+            if (!hasTrailingSeparator
+                && oldIndex == members.Count - 1)
+            {
+                trailingTrivia = members.Last().GetTrailingTrivia();
+                sortedMembers[i] = sortedMembers[i].WithoutTrailingTrivia();
+            }
+            else
+            {
+                trailingTrivia = members.GetSeparator(oldIndex).TrailingTrivia;
+            }
+
+            sortedMembers.Insert(i + 1, Token(SyntaxKind.CommaToken).WithTrailingTrivia(trailingTrivia));
         }
 
-        MemberDeclarationSyntax newNode = enumDeclaration
-            .WithMembers(newMembers)
+        SyntaxTriviaList leadingTrivia = sortedMembers[0].GetLeadingTrivia();
+
+        if (leadingTrivia.FirstOrDefault().IsEndOfLineTrivia())
+            sortedMembers[0] = sortedMembers[0].WithLeadingTrivia(leadingTrivia.RemoveAt(0));
+
+        MemberDeclarationSyntax newEnumDeclaration = enumDeclaration
+            .WithMembers(sortedMembers.ToSeparatedSyntaxList<EnumMemberDeclarationSyntax>())
             .WithFormatterAnnotation();
 
-        return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
-    }
-
-    private static bool AreSeparatedWithEmptyLine(SeparatedSyntaxList<EnumMemberDeclarationSyntax> members)
-    {
-        int count = members.Count;
-
-        if (members.SeparatorCount < count - 1)
-            return false;
-
-        for (int i = 1; i < count; i++)
-        {
-            if (!members[i].GetLeadingTrivia().Any(SyntaxKind.EndOfLineTrivia))
-                return false;
-        }
-
-        for (int i = 0; i < count - 1; i++)
-        {
-            if (!members.GetSeparator(i).TrailingTrivia.Any(SyntaxKind.EndOfLineTrivia))
-                return false;
-        }
-
-        return true;
+        return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
     }
 
     private static object GetConstantValue(
