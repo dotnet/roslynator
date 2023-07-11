@@ -40,8 +40,6 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         HashSet<string> ignoredSymbolIds = (Options.IgnoredSymbolIds.Any())
             ? new HashSet<string>(Options.IgnoredSymbolIds)
             : null;

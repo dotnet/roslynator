@@ -32,8 +32,6 @@ internal class ListReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
         int count = 0;

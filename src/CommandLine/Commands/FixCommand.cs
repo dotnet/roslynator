@@ -44,8 +44,6 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
 
     public override async Task<FixCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var codeFixerOptions = new CodeFixerOptions(
             severityLevel: SeverityLevel,
             ignoreCompilerErrors: Options.IgnoreCompilerErrors,

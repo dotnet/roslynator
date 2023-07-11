@@ -37,8 +37,6 @@ internal class GenerateSourceReferencesCommand : MSBuildWorkspaceCommand<Command
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var filter = new SymbolFilterOptions(Visibility.ToVisibilityFilter());
 
         WriteLine($"Save source references to '{Options.Output}'.", Verbosity.Minimal);

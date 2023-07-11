@@ -43,8 +43,6 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
     public override async Task<SpellcheckCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         VisibilityFilter visibilityFilter = Visibility switch
         {
             Visibility.Public => VisibilityFilter.All,

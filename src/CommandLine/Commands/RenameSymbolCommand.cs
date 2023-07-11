@@ -53,8 +53,6 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
     public override async Task<RenameSymbolCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
 
         SymbolRenamer renamer = null;

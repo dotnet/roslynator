@@ -88,8 +88,6 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var documentationOptions = new DocumentationOptions(
             rootFileHeading: Options.Heading,
             ignoredNames: Options.IgnoredNames,
