@@ -94,3 +94,10 @@ Would you like to improve Roslynator documentation? Please see [how to update do
 * [LINQ to Regex](https://github.com/JosefPihrt/LinqToRegex) - A library that provides language integrated access to .NET regular expressions
 * [Snippet Manager](https://github.com/JosefPihrt/SnippetManager) - A library that enables to work with Visual Studio snippets
 * [Regexator](http://pihrt.net/Regexator) - A comprehensive development environment for .NET regular expressions
+
+## Building *.nupkg files
+
+1. Install [orang](https://github.com/JosefPihrt/Orang) with: `dotnet tool install -g orang.dotnet.cli`
+2. cd `tools`
+3. Run: `./build_cli.ps1`
+4. cd `../out/Release` for artifacts
