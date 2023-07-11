@@ -1,5 +1,3 @@
-#dotnet tool install -g orang.dotnet.cli
-
 $outDir = "../out/Release"
 
 New-Item -Path $outDir -ItemType directory
