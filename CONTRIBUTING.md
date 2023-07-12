@@ -25,4 +25,5 @@ Guidelines for contributing to the Roslynator repo.
 ## Coding Style
 
 * **DO** follow [.NET Runtime Coding Style](https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md) (except using `s_` and `t_` prefix for field names).
-* **DO** install [Roslynator for Visual Studio](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) and follow suggestions.
+* **DO** install extension for VS/VS Code and follow suggestions.
+  * As an alternative you can run script `tools/cli_fix.ps1`.

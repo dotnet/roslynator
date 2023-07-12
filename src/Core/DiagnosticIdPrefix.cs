@@ -82,6 +82,10 @@ internal static class DiagnosticIdPrefix
                     {
                         return IL;
                     }
+                    else if (HasPrefix(ISB))
+                    {
+                        return ISB;
+                    }
 
                     break;
                 }
@@ -119,6 +123,10 @@ internal static class DiagnosticIdPrefix
                     else if (HasPrefix(SX))
                     {
                         return SX;
+                    }
+                    else if (HasPrefix(SYSLIB))
+                    {
+                        return SYSLIB;
                     }
 
                     break;

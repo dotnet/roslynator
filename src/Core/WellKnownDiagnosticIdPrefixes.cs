@@ -14,6 +14,7 @@ internal static class WellKnownDiagnosticIdPrefixes
     public const string ENC = nameof(ENC);
     public const string IDE = nameof(IDE);
     public const string IL = nameof(IL);
+    public const string ISB = nameof(ISB);
     public const string RCS = nameof(RCS);
     public const string ROS = nameof(ROS);
     public const string RECS = nameof(RECS);
@@ -30,6 +31,7 @@ internal static class WellKnownDiagnosticIdPrefixes
     /// </summary>
     public const string SX = nameof(SX);
 
+    public const string SYSLIB = nameof(SYSLIB);
     public const string U2U = nameof(U2U);
     public const string VB = nameof(VB);
     public const string VSSDK = nameof(VSSDK);
