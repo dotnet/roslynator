@@ -98,6 +98,6 @@
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "json5": "^2.1.1"
+    "json5": "^2.2.2"
   }
 }
