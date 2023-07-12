@@ -1,3 +1,3 @@
 & "$env:ProgramFiles/Microsoft Visual Studio/2022/Community/Common7/IDE/VSIXInstaller" `
  /q `
- /u:d42db039-5432-4399-bb62-67a9b4c3b838
+ /u:f326ee1b-81a6-4577-b251-1f29d391cef3
