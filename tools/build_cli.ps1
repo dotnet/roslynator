@@ -1,8 +1,6 @@
-#dotnet tool install -g orang.dotnet.cli
-
 $outDir = "../out/Release"
 
-New-Item -Path $outDir -ItemType directory
+New-Item -Path $outDir -ItemType directory -Force
 Remove-Item "$outDir/Roslynator.CommandLine.*.nupkg"
 Remove-Item "$outDir/Roslynator.DotNet.Cli.*.nupkg"
 Remove-Item -Path "../src/CommandLine/bin/Release" -Recurse
