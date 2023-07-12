@@ -68,7 +68,9 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
 
             if (ifStatement.Parent is SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement }
                 && SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel))
+            {
                 return false;
+            }
         }
 
         StatementSyntax lastStatementInIf = ifBlock.Statements.LastOrDefault();
