@@ -1,4 +1,3 @@
-
 dotnet build "../src/VisualStudio.sln" -c Debug -v normal `
  /p:RunCodeAnalysis=false,DeployExtension=false `
  /nr:false `

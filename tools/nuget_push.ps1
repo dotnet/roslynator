@@ -1,4 +1,3 @@
-
 $apiKey = Read-Host -Prompt "Enter API key"
 $nugetSource = https://api.nuget.org/v3/index.json
 

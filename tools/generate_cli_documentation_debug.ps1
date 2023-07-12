@@ -1,4 +1,3 @@
-
 dotnet build "../src/CommandLine.DocumentationGenerator/CommandLine.DocumentationGenerator.csproj" -c Debug -v minimal `
  /p:Deterministic=true `
  /m

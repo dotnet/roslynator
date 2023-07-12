@@ -1,4 +1,3 @@
-
 dotnet restore "../src/CommandLine.DocumentationGenerator/CommandLine.DocumentationGenerator.csproj" 
 
 dotnet build "../src/CommandLine.DocumentationGenerator/CommandLine.DocumentationGenerator.csproj" -c Release -v minimal `

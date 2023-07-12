@@ -1,4 +1,3 @@
-
 dotnet build "../src/CommandLine.sln" -c Debug -v minimal /m
 
 roslynator list-symbols "../src/CommandLine/CommandLine.csproj" `

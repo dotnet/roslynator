@@ -1,4 +1,3 @@
-
 dotnet build "../src/Tools/Tools.sln" -c Debug `
  /p:RunCodeAnalysis=false `
  /v:minimal `
