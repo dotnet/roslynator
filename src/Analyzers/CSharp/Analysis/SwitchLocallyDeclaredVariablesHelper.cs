@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis;
 
-public static class SwitchLocallyDeclaredVariablesHelper
+internal static class SwitchLocallyDeclaredVariablesHelper
 {
     internal static bool BlockDeclaredVariablesOverlapWithOtherSwitchSections(BlockSyntax block, SwitchStatementSyntax switchStatement, SemanticModel semanticModel)
     {
