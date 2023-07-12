@@ -42,6 +42,7 @@ internal static class SwitchLocallyDeclaredVariablesHelper
                 }
             }
         }
+
         return false;
     }
 }
