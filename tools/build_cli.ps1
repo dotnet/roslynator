@@ -28,4 +28,3 @@ dotnet pack "../src/CommandLine/CommandLine.csproj" -c Release -v normal `
 Copy-Item -Path "../src/CommandLine/bin/Release/Roslynator.DotNet.Cli.*.nupkg" -Destination "$outDir"
 
 Write-Host "DONE"
-Read-Host
