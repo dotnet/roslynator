@@ -70,7 +70,7 @@ orang copy "../src" "$outDir" -e nupkg,vsix --flat -i packages e ne
 orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_Analyzers_"
 orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -u
 dotnet restore --force "../src/Roslynator.sln"
-dotnet build "../src/Roslynator.sln" /p:"$properties,RoslynatorAnalyzersNuGet=true" /v:normal /m
+dotnet build "../src/Roslynator.Analyzers.slnf" /p:"$properties,RoslynatorAnalyzersNuGet=true" /v:normal /m
 if(!$?) { Read-Host; Exit }
 dotnet pack -c Release --no-build -v normal "../src/Analyzers.CodeFixes/Analyzers.CodeFixes.csproj"
 Copy-Item "../src/Analyzers.CodeFixes/bin/Release/Roslynator.Analyzers.*.nupkg" "$outDir"
@@ -79,7 +79,7 @@ orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_
 orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_CodeAnalysis_Analyzers_"
 orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -u
 dotnet restore --force "../src/Roslynator.sln"
-dotnet build "../src/Roslynator.sln" /p:"$properties,RoslynatorCodeAnalysisAnalyzersNuGet=true" /v:normal /m
+dotnet build "../src/Roslynator.Analyzers.slnf" /p:"$properties,RoslynatorCodeAnalysisAnalyzersNuGet=true" /v:normal /m
 if(!$?) { Read-Host; Exit }
 dotnet pack -c Release --no-build -v normal "../src/CodeAnalysis.Analyzers.CodeFixes/CodeAnalysis.Analyzers.CodeFixes.csproj"
 Copy-Item "../src/CodeAnalysis.Analyzers.CodeFixes/bin/Release/Roslynator.CodeAnalysis.Analyzers.*.nupkg" "$outDir"
@@ -88,7 +88,7 @@ orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_
 orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_Formatting_Analyzers_"
 orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -u
 dotnet restore --force "../src/Roslynator.sln"
-dotnet build "../src/Roslynator.sln" /p:"$properties,RoslynatorFormattingAnalyzersNuGet=true" /v:normal /m
+dotnet build "../src/Roslynator.Analyzers.slnf" /p:"$properties,RoslynatorFormattingAnalyzersNuGet=true" /v:normal /m
 if(!$?) { Read-Host; Exit }
 dotnet pack -c Release --no-build -v normal "../src/Formatting.Analyzers.CodeFixes/Formatting.Analyzers.CodeFixes.csproj"
 Copy-Item "../src/Formatting.Analyzers.CodeFixes/bin/Release/Roslynator.Formatting.Analyzers.*.nupkg" "$outDir"

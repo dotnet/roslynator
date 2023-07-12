@@ -1,0 +1,21 @@
+{
+  "solution": {
+    "path": "Roslynator.sln",
+    "projects": [
+      "Analyzers.CodeFixes\\Analyzers.CodeFixes.csproj",
+      "Analyzers\\Analyzers.csproj",
+      "CSharp.Workspaces\\CSharp.Workspaces.csproj",
+      "CSharp\\CSharp.csproj",
+      "CodeAnalysis.Analyzers.CodeFixes\\CodeAnalysis.Analyzers.CodeFixes.csproj",
+      "CodeAnalysis.Analyzers\\CodeAnalysis.Analyzers.csproj",
+      "Common\\Common.csproj",
+      "Core\\Core.csproj",
+      "Formatting.Analyzers.CodeFixes\\Formatting.Analyzers.CodeFixes.csproj",
+      "Formatting.Analyzers\\Formatting.Analyzers.csproj",
+      "VisualBasic.Workspaces\\VisualBasic.Workspaces.csproj",
+      "VisualBasic\\VisualBasic.csproj",
+      "Workspaces.Common\\Workspaces.Common.csproj",
+      "Workspaces.Core\\Workspaces.Core.csproj"
+    ]
+  }
+}
