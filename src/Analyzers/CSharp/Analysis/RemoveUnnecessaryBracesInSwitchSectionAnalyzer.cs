@@ -93,7 +93,7 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
         // If any of the other case blocks contain a definition for the same local variables then removing the braces would introduce a new error.
         if (switchSection.Parent is SwitchStatementSyntax switchStatement
-            && LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(switchStatement, block, context.SemanticModel))
+            && SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(block, switchStatement, context.SemanticModel))
         {
             return;
         }
@@ -107,42 +107,4 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
         }
     }
 
-    private static bool LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax switchBlock, SemanticModel semanticModel)
-    {
-        ImmutableArray<ISymbol> sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
-            .VariablesDeclared;
-
-        if (sectionVariablesDeclared.IsEmpty)
-            return false;
-
-        ImmutableHashSet<string> sectionDeclaredVariablesNames = sectionVariablesDeclared
-            .Select(s => s.Name)
-            .ToImmutableHashSet();
-
-        foreach (SwitchSectionSyntax otherSection in switchStatement.Sections)
-        {
-            if (otherSection.Span.Contains(switchBlock.Span))
-                continue;
-
-            foreach (SwitchLabelSyntax label in otherSection.Labels)
-            {
-                if (label is not CasePatternSwitchLabelSyntax casePatternSwitchLabel)
-                    continue;
-
-                if (PatternMatchingVariableDeclarationHelper.AnyDeclaredVariablesMatch(casePatternSwitchLabel.Pattern, sectionDeclaredVariablesNames))
-                    return true;
-            }
-
-            foreach (StatementSyntax statement in otherSection.Statements)
-            {
-                foreach (ISymbol symbol in semanticModel.AnalyzeDataFlow(statement)!.VariablesDeclared)
-                {
-                    if (sectionDeclaredVariablesNames.Contains(symbol.Name))
-                        return true;
-                }
-            }
-        }
-
-        return false;
-    }
 }
