@@ -56,5 +56,3 @@ dotnet build "../src/CommandLine.sln" -c Debug -v minimal /m
  --host github `
  --heading "Roslynator Testing Framework" `
  --root-directory-url $rootDirectoryUrl
-
-Write-Host DONE

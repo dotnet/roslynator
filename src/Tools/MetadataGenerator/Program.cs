@@ -29,11 +29,7 @@ internal static class Program
     {
         if (args is null || args.Length == 0)
         {
-#if DEBUG
-            args = new[] { @"..\..\..\..\.." };
-#else
             args = new string[] { Environment.CurrentDirectory };
-#endif
         }
 
         string rootPath = args[0];
