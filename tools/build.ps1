@@ -7,7 +7,6 @@ $msbuildExe = ./vswhere.exe -latest -prerelease -products * -requires Microsoft.
 Write-Host "MSBuild location: $msbuildExe"
 
 orang replace "../src/VisualStudio/source.extension.vsixmanifest" -c "patterns/vsix_manifest_version.txt" from-file -t m r -r $version
-orang replace "../src/VisualStudio/Properties/AssemblyInfo.cs" -c "patterns/assembly_info_version.txt" from-file -t m r -r $version4
 orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -u
 
 Write-Host
