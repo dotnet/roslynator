@@ -40,7 +40,7 @@ internal static class OptionNames
     public const string Scope = "scope";
     public const string SeverityLevel = "severity-level";
     public const string SymbolGroups = "symbol-groups";
-        public const string Target = "target";
+    public const string Target = "target";
     public const string TargetVersion = "target-version";
     public const string Type = "type";
     public const string Visibility = "visibility";

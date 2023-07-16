@@ -34,13 +34,13 @@ public abstract class AbstractGenerateDocCommandLineOptions : MSBuildCommandLine
         MetaValue = "<DEPTH>")]
     public string Depth { get; set; }
 
-        //TODO: JP
-        [Option(
-            longName: OptionNames.Target,
-            Required = true,
-            HelpText = "Defines a target where the content will be hosted. Allowed values are github or docusaurus.",
-            MetaValue = "<TARGET>")]
-        public string Target { get; set; }
+    //TODO: JP
+    [Option(
+        longName: OptionNames.Target,
+        Required = true,
+        HelpText = "Defines a target where the content will be hosted. Allowed values are github or docusaurus.",
+        MetaValue = "<TARGET>")]
+    public string Target { get; set; }
 
     [Option(
         longName: OptionNames.Host,
