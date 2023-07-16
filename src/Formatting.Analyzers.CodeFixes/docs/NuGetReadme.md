@@ -1,6 +1,6 @@
 # Roslynator.Formatting.Analyzers
 
-A collection of formatting analyzers for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
+A collection of formatting [analyzers](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/README.md) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
 ## Requirements
 

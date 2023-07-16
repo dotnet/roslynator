@@ -141,7 +141,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_WithLocalVariablesThatDoNotOverlap()
     {
@@ -169,7 +169,7 @@ class C
         }
     }
 }
-",@"
+", @"
 using System;
 
 class C
@@ -237,7 +237,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_WhenOverlappingLocalVariableDeclaration()
     {
@@ -260,6 +260,66 @@ class C
             default:
                 {
                     var x = 1;
+                    break;
+                }
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task TestNoDiagnostic_WhenOverlappingLocalVariableWithPatternMatchDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        object o = null;
+
+        switch (o)
+        {
+            case string s:
+                var x = 1;
+                break;
+            default:
+                {
+                    var s = 1;
+                    break;
+                }
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task TestNoDiagnostic_WhenOverlappingLocalVariableWithRecursivePatternMatchDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    class Wrapper
+    {
+        public string S;
+    }
+    void M()
+    {
+        object o = null;
+
+        switch (o)
+        {
+            case Wrapper { S: var s }:
+                var x = 1;
+                break;
+            default:
+                {
+                    var s = 1;
                     break;
                 }
         }

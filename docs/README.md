@@ -1,9 +1,9 @@
 
 # Roslynator Docs
 
-* [List of Analyzers](../src/Analyzers/README.md)
-* [List of Refactorings](../src/Refactorings/README.md)
-* [List of Fixable Compiler Diagnostics](../src/CodeFixes/README.md)
+* [List of Analyzers](analyzers/README.md)
+* [List of Refactorings](refactorings/README.md)
+* [List of Fixable Compiler Diagnostics](cs/README.md)
 * [Roslynator Configuration](Configuration.md)
 
 ## How to

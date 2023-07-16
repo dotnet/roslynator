@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -259,7 +260,7 @@ internal static class ModifiersCodeFixRegistrator
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Remove modifiers",
+                    GetRemoveModifiersTitle(modifiers, predicate),
                     ct =>
                     {
                         SyntaxNode newNode = node;
@@ -282,16 +283,17 @@ internal static class ModifiersCodeFixRegistrator
         SyntaxNode node,
         string additionalKey = null)
     {
-        SyntaxToken modifier = SyntaxInfo.ModifierListInfo(node).Modifiers.SingleOrDefault(shouldThrow: false);
+        SyntaxTokenList modifiers = SyntaxInfo.ModifierListInfo(node).Modifiers;
+        SyntaxToken modifier = modifiers.SingleOrDefault(shouldThrow: false);
 
-        if (modifier != default)
+        if (!modifier.IsKind(SyntaxKind.None))
         {
             RemoveModifier(context, diagnostic, node, modifier, additionalKey);
         }
         else
         {
             CodeAction codeAction = CodeAction.Create(
-                "Remove modifiers",
+                GetRemoveModifiersTitle(modifiers),
                 ct =>
                 {
                     SyntaxNode newNode = ModifierList.RemoveAll(node);
@@ -431,6 +433,18 @@ internal static class ModifiersCodeFixRegistrator
 
     internal static string GetRemoveModifierTitle(SyntaxKind modifierKind)
     {
-        return $"Remove modifier '{GetText(modifierKind)}'";
+        return (IsAccessibilityModifier(modifierKind))
+            ? "Remove access modifier"
+            : $"Remove modifier '{GetText(modifierKind)}'";
+    }
+
+    private static string GetRemoveModifiersTitle(IEnumerable<SyntaxToken> modifiers, Func<SyntaxToken, bool> predicate = null)
+    {
+        if (predicate is not null)
+            modifiers = modifiers.Where(predicate);
+
+        return (modifiers.All(m => IsAccessibilityModifier(m.Kind())))
+            ? "Remove access modifiers"
+            : "Remove modifiers";
     }
 }

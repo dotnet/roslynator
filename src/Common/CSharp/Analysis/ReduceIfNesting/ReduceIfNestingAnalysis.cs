@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -72,7 +72,7 @@ internal static class ReduceIfNestingAnalysis
                 return Fail(switchSection);
             }
 
-            if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, switchSection, semanticModel))
+            if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                 return Fail(switchSection);
 
             return Success(jumpKind, switchSection);
@@ -108,7 +108,7 @@ internal static class ReduceIfNestingAnalysis
                 return Fail(parent);
             }
 
-            if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
+            if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                 return Fail(parent);
 
             return Success(jumpKind, parent);
@@ -133,8 +133,8 @@ internal static class ReduceIfNestingAnalysis
                     {
                         return Fail(parent);
                     }
-                    
-                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
+
+                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
 
                     return Success(jumpKind, parent);
@@ -145,17 +145,17 @@ internal static class ReduceIfNestingAnalysis
                 {
                     if (jumpKind == SyntaxKind.None)
                         return Fail(parent);
-                    
-                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, parent, semanticModel))
+
+                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
-                    
+
                     return Success(jumpKind, parent);
                 }
             case SyntaxKind.MethodDeclaration:
                 {
                     var methodDeclaration = (MethodDeclarationSyntax)parent;
-                    
-                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, methodDeclaration.Body, semanticModel))
+
+                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
 
                     if (jumpKind != SyntaxKind.None)
@@ -188,8 +188,8 @@ internal static class ReduceIfNestingAnalysis
             case SyntaxKind.LocalFunctionStatement:
                 {
                     var localFunction = (LocalFunctionStatementSyntax)parent;
-                    
-                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, localFunction.Body, semanticModel))
+
+                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
 
                     if (jumpKind != SyntaxKind.None)
@@ -223,7 +223,7 @@ internal static class ReduceIfNestingAnalysis
                 {
                     var anonymousFunction = (AnonymousFunctionExpressionSyntax)parent;
 
-                    if (LocallyDeclaredVariablesOverlapWithOuterScope(ifStatement, anonymousFunction.Block, semanticModel))
+                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
                         return Fail(parent);
 
                     if (jumpKind != SyntaxKind.None)
@@ -280,27 +280,6 @@ internal static class ReduceIfNestingAnalysis
         }
 
         return Fail(parent);
-    }
-
-    private static bool LocallyDeclaredVariablesOverlapWithOuterScope(
-        IfStatementSyntax ifStatement,
-        SyntaxNode parent,
-        SemanticModel semanticModel
-    )
-    {
-        var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifStatement)!
-            .VariablesDeclared;
-        
-        if (ifVariablesDeclared.IsEmpty)
-            return false;
-
-        var parentStatementDeclared = semanticModel.AnalyzeDataFlow(parent)!
-            .VariablesDeclared;
-        
-        // The parent's declared variables will include those from the if and so we have to check for any symbols occurring twice.
-        return ifVariablesDeclared.Any(variable =>
-            parentStatementDeclared.Count(s => s.Name == variable.Name) > 1
-        );
     }
 
     private static bool IsNestedFix(SyntaxNode node, SemanticModel semanticModel, ReduceIfNestingOptions options, CancellationToken cancellationToken)

@@ -84,7 +84,7 @@ public sealed class OrderNamedArgumentsAnalyzer : BaseDiagnosticAnalyzer
         if (firstIndex >= 0
             && firstIndex < arguments.Count - 1)
         {
-            ISymbol symbol = semanticModel.GetSymbol(arguments.First().Parent.Parent, cancellationToken);
+            ISymbol symbol = semanticModel.GetSymbol(arguments[0].Parent.Parent, cancellationToken);
 
             if (symbol is not null)
             {

@@ -93,7 +93,7 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
         // If any of the other case blocks contain a definition for the same local variables then removing the braces would introduce a new error.
         if (switchSection.Parent is SwitchStatementSyntax switchStatement
-            && LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(switchStatement, block, context.SemanticModel))
+            && SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(block, switchStatement, context.SemanticModel))
         {
             return;
         }
@@ -106,36 +106,4 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
             return trivia.All(f => f.IsKind(SyntaxKind.WhitespaceTrivia, SyntaxKind.EndOfLineTrivia, SyntaxKind.SingleLineCommentTrivia));
         }
     }
-
-    private static bool LocallyDeclaredVariablesOverlapWithAnyOtherSwitchSections(SwitchStatementSyntax switchStatement, BlockSyntax switchBlock, SemanticModel semanticModel)
-    {
-        var sectionVariablesDeclared = semanticModel.AnalyzeDataFlow(switchBlock)!
-            .VariablesDeclared;
-        
-        if (sectionVariablesDeclared.IsEmpty)
-            return false;
-
-        var sectionDeclaredVariablesNames = sectionVariablesDeclared
-            .Select(s => s.Name)
-            .ToImmutableHashSet();
-
-        foreach (var otherSection in switchStatement.Sections)
-        {
-            // If the other section is not a block then we do not need to check as if there were overlapping variables then there would already be a error.
-            if (otherSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax otherBlock)
-                continue;
-
-            if (otherBlock.Span == switchBlock.Span)
-                continue;
-
-            foreach (var v in semanticModel.AnalyzeDataFlow(otherBlock)!.VariablesDeclared)
-            {
-                if (sectionDeclaredVariablesNames.Contains(v.Name))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-
 }

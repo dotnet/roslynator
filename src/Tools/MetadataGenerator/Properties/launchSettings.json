@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MetadataGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "\"../../../../..\""
+    }
+  }
+}

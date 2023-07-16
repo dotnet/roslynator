@@ -91,25 +91,25 @@ enum Foo
 enum [|Foo|]
 {
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
 }
 ", @"
 enum Foo
 {
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
 }
 ");
     }
@@ -121,31 +121,31 @@ enum Foo
 enum [|Foo|]
 {
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
 
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
 
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
 
     /// <summary>C</summary>
-    C = 2
+    C = 2 // C
 }
 ", @"
 enum Foo
 {
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
 
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
 
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
 
     /// <summary>D</summary>
-    D = 3
+    D = 3 // D
 }
 ");
     }
@@ -157,31 +157,31 @@ enum Foo
 enum [|Foo|]
 {
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
 
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
 
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
 
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
 }
 ", @"
 enum Foo
 {
     /// <summary>A</summary>
-    A = 0,
+    A = 0, // A
 
     /// <summary>B</summary>
-    B = 1,
+    B = 1, // B
 
     /// <summary>C</summary>
-    C = 2,
+    C = 2, // C
 
     /// <summary>D</summary>
-    D = 3,
+    D = 3, // D
 }
 ");
     }

@@ -384,7 +384,7 @@ internal static class LogHelpers
             sb.Append(symbol.Name);
             sb.Append("': ");
 
-            if ((symbol.ContainingSymbol as IMethodSymbol)?.MethodKind == MethodKind.LambdaMethod)
+            if (symbol.ContainingSymbol is IMethodSymbol { MethodKind: MethodKind.LambdaMethod })
             {
                 sb.Append("anonymous function");
             }

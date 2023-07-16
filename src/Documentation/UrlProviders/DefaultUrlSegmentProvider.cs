@@ -72,7 +72,7 @@ internal class DefaultUrlSegmentProvider : UrlSegmentProvider
 
                 builder.Add(name);
             }
-            else if ((symbol as IPropertySymbol)?.IsIndexer == true)
+            else if (symbol is IPropertySymbol { IsIndexer: true })
             {
                 builder.Add("Item");
             }

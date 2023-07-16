@@ -533,26 +533,6 @@ internal class SpellingFixer
         }
     }
 
-    private SpellingFix GetParentFix(SpellingDiagnostic diagnostic)
-    {
-        string containingValue = diagnostic.Parent;
-
-        if (Options.Autofix
-            && containingValue is not null
-            && SpellingData.Fixes.TryGetKey(containingValue, out string actualKey)
-            && string.Equals(containingValue, actualKey, StringComparison.Ordinal))
-        {
-            SpellingFix fix = SpellingData.Fixes.Items[containingValue].SingleOrDefault(
-                f => f.Kind == SpellingFixKind.Predefined && diagnostic.IsApplicableFix(f.Value),
-                shouldThrow: false);
-
-            if (!fix.IsDefault)
-                return fix;
-        }
-
-        return default;
-    }
-
     private SpellingFix GetFix(SpellingDiagnostic diagnostic)
     {
         string value = diagnostic.Value;

@@ -527,6 +527,38 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedString_WithFormat_AppendLine2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Text;
+
+class C
+{
+    void M(DateTime x)
+    {
+        string s = null;
+        var sb = new StringBuilder();
+        sb.Append([|$@""{x:hh\:mm\:ss\.fff}""|]).ToString();
+    }
+}
+", @"
+using System;
+using System.Text;
+
+class C
+{
+    void M(DateTime x)
+    {
+        string s = null;
+        var sb = new StringBuilder();
+        sb.AppendFormat(@""{0:hh\:mm\:ss\.fff}"", x).ToString();
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
     public async Task Test_Concatenation()
     {
         await VerifyDiagnosticAndFixAsync(@"

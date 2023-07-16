@@ -5,12 +5,12 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeGeneration.CSharp;
-using Roslynator.Metadata;
-using Microsoft.CodeAnalysis;
 using Roslynator.CodeGeneration.EditorConfig;
 using Roslynator.Configuration;
+using Roslynator.Metadata;
 
 namespace Roslynator.CodeGeneration;
 
@@ -20,11 +20,7 @@ internal static class Program
     {
         if (args is null || args.Length == 0)
         {
-#if DEBUG
-            args = new[] { @"..\..\..\..\.." };
-#else
             args = new string[] { Environment.CurrentDirectory };
-#endif
         }
 
         string rootPath = args[0];
@@ -54,7 +50,7 @@ internal static class Program
             RefactoringIdentifiersGenerator.Generate(refactorings, obsolete: true, comparer: comparer));
 
         WriteCompilationUnit(
-            @"VisualStudio.Common\RefactoringsOptionsPage.Generated.cs",
+            @"VisualStudio\RefactoringsOptionsPage.Generated.cs",
             RefactoringsOptionsPageGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer));
 
         WriteDiagnostics(@"Analyzers\CSharp", analyzers, @namespace: "Roslynator.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
@@ -78,7 +74,7 @@ internal static class Program
             CodeFixIdentifiersGenerator.Generate(codeFixes, comparer));
 
         WriteCompilationUnit(
-            @"VisualStudio.Common\CodeFixesOptionsPage.Generated.cs",
+            @"VisualStudio\CodeFixesOptionsPage.Generated.cs",
             CodeFixesOptionsPageGenerator.Generate());
 
         WriteCompilationUnit(

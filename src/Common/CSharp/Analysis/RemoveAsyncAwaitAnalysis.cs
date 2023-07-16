@@ -13,7 +13,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis;
 
-internal struct RemoveAsyncAwaitAnalysis : IDisposable
+internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
 {
     private RemoveAsyncAwaitAnalysis(AwaitExpressionWalker walker)
     {

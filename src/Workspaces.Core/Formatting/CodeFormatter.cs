@@ -55,6 +55,7 @@ internal static class CodeFormatter
         return project;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator", "RCS1163:Unused parameter.")]
     internal static async Task<ImmutableArray<DocumentId>> GetFormattedDocumentsAsync(
         Project project,
         Project newProject,

@@ -1,6 +1,6 @@
 # Roslynator.CodeAnalysis.Analyzers
 
-A collection of analyzers for Roslyn API, powered by [Roslyn](https://github.com/dotnet/roslyn).
+A collection of [analyzers](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/README.md) for Roslyn API, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
 The package is applicable for projects that reference Roslyn packages (Microsoft.CodeAnalysis*).
 

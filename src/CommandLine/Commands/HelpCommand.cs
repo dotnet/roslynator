@@ -72,6 +72,7 @@ internal class HelpCommand
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
     private static void OpenHelpInBrowser(string commandName)
     {
         throw new NotSupportedException();
