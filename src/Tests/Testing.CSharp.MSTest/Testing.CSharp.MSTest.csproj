@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>$(RoslynatorTestingVersion)</Version>
+    <AssemblyName>Roslynator.Testing.CSharp.MSTest</AssemblyName>
+    <RootNamespace>Roslynator.Testing.CSharp.MSTest</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Deterministic>true</Deterministic>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>1591</WarningsNotAsErrors>
+    <DocumentationFile>bin\$(Configuration)\netstandard2.0\Roslynator.Testing.CSharp.MSTest.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Roslynator.Testing.CSharp.MSTest</PackageId>
+    <PackageVersion>$(RoslynatorTestingPackageVersion)</PackageVersion>
+    <Company></Company>
+    <Description>Testing framework for Roslyn analyzers, refactorings and code fixes.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/josefpihrt/roslynator</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>Roslyn;CodeAnalysis;Test;UnitTest</PackageTags>
+    <PackageReadmeFile>docs/README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/josefpihrt/roslynator.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Testing.CSharp\Testing.CSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="docs\NuGetReadme.md" Pack="true" PackagePath="docs\README.md" />
+  </ItemGroup>
+
+</Project>

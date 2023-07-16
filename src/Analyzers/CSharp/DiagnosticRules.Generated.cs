@@ -2498,6 +2498,18 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1255</summary>
+        public static readonly DiagnosticDescriptor UseEnumFieldExplicitly = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseEnumFieldExplicitly, 
+            title:              "Use enum field explicitly", 
+            messageFormat:      "Use enum field explicitly", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UseEnumFieldExplicitly, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1255</summary>
         public static readonly DiagnosticDescriptor SimplifyArgumentNullCheck = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
             title:              "Simplify argument null check.", 
@@ -2509,16 +2521,16 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1255</summary>
-        public static readonly DiagnosticDescriptor UseEnumFieldExplicitly = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.UseEnumFieldExplicitly, 
-            title:              "Use enum field explicitly", 
-            messageFormat:      "Use enum field explicitly", 
+        /// <summary>RCS1256</summary>
+        public static readonly DiagnosticDescriptor InvalidArgumentNullCheck = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.InvalidArgumentNullCheck, 
+            title:              "Invalid argument null check.", 
+            messageFormat:      "Invalid argument null check.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseEnumFieldExplicitly, 
+            helpLinkUri:        DiagnosticIdentifiers.InvalidArgumentNullCheck, 
             customTags:         Array.Empty<string>());
 
     }

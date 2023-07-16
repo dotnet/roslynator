@@ -169,4 +169,76 @@ class C
     }
 }");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    public async Task Test_TupleExpression_WithDiscardPredefinedType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<(object, System.DateTime)>();
+
+        foreach ([|var|] (_, y) in items)
+        {
+        }
+    }
+}
+", @"
+using System;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<(object, System.DateTime)>();
+
+        foreach ((object _, DateTime y) in items)
+        {
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    public async Task Test_TupleExpression_WithDiscardNonPredefinedType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<(object, System.DateTime)>();
+
+        foreach ([|var|] (x, _) in items)
+        {
+        }
+    }
+}
+", @"
+using System;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<(object, System.DateTime)>();
+
+        foreach ((object x, DateTime _) in items)
+        {
+        }
+    }
+}
+");
+    }
 }

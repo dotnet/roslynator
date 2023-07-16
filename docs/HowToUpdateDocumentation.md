@@ -43,7 +43,7 @@ To update documentation it is necessary to edit [Analyzers.xml](../src/Analyzers
     <Remarks>Remarks</Remarks> <!-- optional section that contains raw markdown -->
     <Links> <!-- optional links -->
       <Link>
-        <Url>http://github.com/JosefPihrt/Roslynator</Url>
+        <Url>https://github.com/JosefPihrt/Roslynator</Url>
         <Text>A sample link</Text>
       </Link>
     </Links>
@@ -73,7 +73,7 @@ Metadata sample above will produce [RCSXXXX.md](analyzers/RCSXXXX.md).
     <Remarks>Remarks</Remarks> <!-- optional section that contains raw markdown -->
     <Links> <!-- optional links -->
       <Link>
-        <Url>http://github.com/JosefPihrt/Roslynator</Url>
+        <Url>https://github.com/JosefPihrt/Roslynator</Url>
         <Text>A sample link</Text>
       </Link>
     </Links>

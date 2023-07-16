@@ -18,10 +18,10 @@ internal static class AddUsingStaticDirectiveRefactoring
         if (memberAccess.Name?.IsMissing != false)
             return;
 
-        if (context.Span.IsBetweenSpans(memberAccess))
+        if (context.Span.IsBetweenSpans(memberAccess)
+            && memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
         {
-            if (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-                memberAccess = (MemberAccessExpressionSyntax)memberAccess.Parent;
+            memberAccess = (MemberAccessExpressionSyntax)memberAccess.Parent;
         }
 
         if (!context.Span.IsBetweenSpans(memberAccess.Expression))
@@ -72,13 +72,5 @@ internal static class AddUsingStaticDirectiveRefactoring
         newRoot = ((CompilationUnitSyntax)newRoot).AddUsings(CSharpFactory.UsingStaticDirective(SyntaxFactory.ParseName(name)));
 
         return document.WithSyntaxRoot(newRoot);
-    }
-
-    private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)
-    {
-        while (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-            memberAccess = (MemberAccessExpressionSyntax)memberAccess.Parent;
-
-        return memberAccess;
     }
 }

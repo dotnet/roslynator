@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -93,6 +92,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.GreaterThanOrEqualExpression:
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
+            case SyntaxKind.SimpleMemberAccessExpression:
                 {
                     if (expression.IsKind(SyntaxKind.IdentifierName)
                         || expression is LiteralExpressionSyntax)

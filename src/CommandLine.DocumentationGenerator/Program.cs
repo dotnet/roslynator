@@ -9,103 +9,113 @@ using System.Text;
 using System.Text.RegularExpressions;
 using DotMarkdown;
 
-namespace Roslynator.CommandLine.Documentation
+namespace Roslynator.CommandLine.Documentation;
+
+internal static class Program
 {
-    internal static class Program
+    private static void Main(params string[] args)
     {
-        private static void Main(params string[] args)
+        IEnumerable<Command> commands = CommandLoader.LoadCommands(typeof(CommandLoader).Assembly)
+            .Select(c => c.WithOptions(c.Options.OrderBy(f => f, CommandOptionComparer.Name)))
+            .OrderBy(c => c.Name, StringComparer.InvariantCulture);
+
+        var application = new CommandLineApplication(
+            "roslynator",
+            "Roslynator Command-line Tool",
+            commands.OrderBy(f => f.Name, StringComparer.InvariantCulture));
+
+        if (args.Length < 2)
         {
-            IEnumerable<Command> commands = CommandLoader.LoadCommands(typeof(CommandLoader).Assembly)
-                .Select(c => c.WithOptions(c.Options.OrderBy(f => f, CommandOptionComparer.Name)))
-                .OrderBy(c => c.Name, StringComparer.InvariantCulture);
+            Console.WriteLine("Invalid number of arguments");
+            return;
+        }
 
-            var application = new CommandLineApplication(
-                "roslynator",
-                "Roslynator Command-line Tool",
-                commands.OrderBy(f => f.Name, StringComparer.InvariantCulture));
+        string destinationDirectoryPath = args[0];
+        string dataDirectoryPath = args[1];
 
-            string destinationDirectoryPath = null;
-            string dataDirectoryPath = null;
+        string[] ignoredCommandNames = (args.Length > 2)
+            ? Regex.Split(args[2], ",")
+            : Array.Empty<string>();
 
-            if (Debugger.IsAttached)
+        destinationDirectoryPath = Path.GetFullPath(destinationDirectoryPath);
+        dataDirectoryPath = Path.GetFullPath(dataDirectoryPath);
+
+        Console.WriteLine($"Destination directory: {destinationDirectoryPath}");
+        Console.WriteLine($"Data directory: {dataDirectoryPath}");
+
+        foreach (Command command in application.Commands)
+        {
+            if (ignoredCommandNames.Contains(command.Name))
             {
-                destinationDirectoryPath = (args.Length > 0) ? args[0] : @"..\..\..\..\..\docs\cli";
-                dataDirectoryPath = @"..\..\..\data";
+                Console.WriteLine($"Skip command '{command.Name}'");
+                continue;
             }
-            else
-            {
-                destinationDirectoryPath = args[0];
-                dataDirectoryPath = @"..\src\CommandLine.DocumentationGenerator\data";
-            }
 
-            foreach (Command command in application.Commands)
-            {
-                string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, $"{command.Name}-command.md"));
+            string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, $"{command.Name}-command.md"));
 
-                using (var sw = new StreamWriter(commandFilePath, append: false, Encoding.UTF8))
-                using (MarkdownWriter mw = MarkdownWriter.Create(sw))
+            using (var sw = new StreamWriter(commandFilePath, append: false, Encoding.UTF8))
+            using (MarkdownWriter mw = MarkdownWriter.Create(sw))
+            {
+                var writer = new DocumentationWriter(mw);
+
+                mw.WriteLine();
+                writer.WriteCommandHeading(command, application);
+                writer.WriteCommandDescription(command);
+
+                mw.WriteLink("Home", "README.md");
+
+                string additionalContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_bottom.md");
+
+                string additionalContent = (File.Exists(additionalContentFilePath))
+                    ? File.ReadAllText(additionalContentFilePath)
+                    : "";
+
+                var sections = new List<string>() { "Synopsis", "Arguments", "Options" };
+
+                if (Regex.IsMatch(additionalContent, @"^\#+ Examples", RegexOptions.Multiline))
+                    sections.Add("Examples");
+
+                foreach (string section in sections)
                 {
-                    var writer = new DocumentationWriter(mw);
-
-                    mw.WriteLine();
-                    writer.WriteCommandHeading(command, application);
-                    writer.WriteCommandDescription(command);
-
-                    mw.WriteLink("Home", "README.md");
-
-                    string additionalContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_bottom.md");
-
-                    string additionalContent = (File.Exists(additionalContentFilePath))
-                        ? File.ReadAllText(additionalContentFilePath)
-                        : "";
-
-                    var sections = new List<string>() { "Synopsis", "Arguments", "Options" };
-
-                    if (Regex.IsMatch(additionalContent, @"^\#+ Examples", RegexOptions.Multiline))
-                        sections.Add("Examples");
-
-                    foreach (string section in sections)
-                    {
-                        mw.WriteString(" ");
-                        mw.WriteCharEntity((char)0x2022);
-                        mw.WriteString(" ");
-                        mw.WriteLink(section, "#" + section);
-                    }
-
-                    mw.WriteLine();
-
-                    writer.WriteCommandSynopsis(command, application);
-                    writer.WriteArguments(command.Arguments);
-                    writer.WriteOptions(command.Options);
-
-                    if (!string.IsNullOrEmpty(additionalContent))
-                    {
-                        mw.WriteLine();
-                        mw.WriteLine();
-                        mw.WriteRaw(additionalContent);
-                    }
-
-                    WriteFootNote(mw);
-
-                    Console.WriteLine(commandFilePath);
+                    mw.WriteString(" ");
+                    mw.WriteCharEntity((char)0x2022);
+                    mw.WriteString(" ");
+                    mw.WriteLink(section, "#" + section);
                 }
+
+                mw.WriteLine();
+
+                writer.WriteCommandSynopsis(command, application);
+                writer.WriteArguments(command.Arguments);
+                writer.WriteOptions(command.Options);
+
+                if (!string.IsNullOrEmpty(additionalContent))
+                {
+                    mw.WriteLine();
+                    mw.WriteLine();
+                    mw.WriteRaw(additionalContent);
+                }
+
+                WriteFootNote(mw);
+
+                Console.WriteLine(commandFilePath);
             }
-
-            Console.WriteLine("Done");
-
-            if (Debugger.IsAttached)
-                Console.ReadKey();
         }
 
-        private static void WriteFootNote(MarkdownWriter mw)
-        {
-            mw.WriteLine();
-            mw.WriteLine();
-            mw.WriteStartItalic();
-            mw.WriteString("(Generated with ");
-            mw.WriteLink("DotMarkdown", "https://github.com/JosefPihrt/DotMarkdown");
-            mw.WriteString(")");
-            mw.WriteEndItalic();
-        }
+        Console.WriteLine("Done");
+
+        if (Debugger.IsAttached)
+            Console.ReadKey();
+    }
+
+    private static void WriteFootNote(MarkdownWriter mw)
+    {
+        mw.WriteLine();
+        mw.WriteLine();
+        mw.WriteStartItalic();
+        mw.WriteString("(Generated with ");
+        mw.WriteLink("DotMarkdown", "https://github.com/JosefPihrt/DotMarkdown");
+        mw.WriteString(")");
+        mw.WriteEndItalic();
     }
 }

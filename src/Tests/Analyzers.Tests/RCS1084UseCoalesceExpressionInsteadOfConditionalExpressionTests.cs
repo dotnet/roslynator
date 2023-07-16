@@ -32,6 +32,88 @@ class C
 ", source, expected);
     }
 
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task Test_PolymorphicType_WithNullable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A? a = null;
+
+        IBase c = [|a != null ? a : new B()|];
+    }
+}
+", @"
+#nullable enable
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A? a = null;
+
+        IBase c = (IBase?)a ?? new B();
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task Test_PolymorphicType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A a = null;
+
+        IBase c = [|a != null ? a : new B()|];
+    }
+}
+", @"
+class C
+{
+    private interface IBase { }
+
+    private class A: IBase  { }
+    
+    private class B: IBase { }
+    
+
+    void M()
+    {
+        A a = null;
+
+        IBase c = (IBase)a ?? new B();
+    }
+}
+");
+    }
+
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
     [InlineData("(ni != null) ? ni.Value : 1", "ni ?? 1")]
     [InlineData("(ni == null) ? 1 : ni.Value", "ni ?? 1")]
@@ -85,5 +167,20 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task TestNoDiagnostic_DefaultOfTEqualsToNull()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    T M<T>()
+    {
+        return default(T) == null ? (T)Convert.ChangeType("""", typeof(T)) : default(T);
+    }
+}", options: Options.WithAllowUnsafe(true));
     }
 }

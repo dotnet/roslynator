@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>$(RoslynatorVersion)</Version>
+    <Version>$(RoslynatorAnalyzersVersion)</Version>
     <AssemblyName>Roslynator.CSharp.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CSharp</RootNamespace>
     <NuspecFile>Roslynator.Analyzers.nuspec</NuspecFile> 
@@ -32,6 +32,12 @@
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
     <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
     <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Roslynator.Analyzers.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

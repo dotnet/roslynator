@@ -38,30 +38,27 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
     {
         var namespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)context.Node;
 
-        MemberDeclarationSyntax memberDeclaration = namespaceDeclaration.Members.FirstOrDefault();
-
-        if (memberDeclaration is null)
-            return;
+        SyntaxNode node = GetNodeAfterNamespaceDeclaration(namespaceDeclaration);
 
         BlankLineStyle style = context.GetBlankLineAfterFileScopedNamespaceDeclaration();
 
         if (style == BlankLineStyle.None)
             return;
 
-        BlankLineStyle currentStyle = GetCurrentStyle(namespaceDeclaration, memberDeclaration);
+        BlankLineStyle currentStyle = GetCurrentStyle(namespaceDeclaration, node);
 
         if (style != currentStyle)
             return;
 
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
-            Location.Create(namespaceDeclaration.SyntaxTree, new TextSpan(memberDeclaration.FullSpan.Start, 0)),
+            Location.Create(namespaceDeclaration.SyntaxTree, new TextSpan(node.FullSpan.Start, 0)),
             (style == BlankLineStyle.Add) ? "Add" : "Remove");
     }
 
     internal static BlankLineStyle GetCurrentStyle(
         FileScopedNamespaceDeclarationSyntax namespaceDeclaration,
-        MemberDeclarationSyntax memberDeclaration)
+        SyntaxNode node)
     {
         (bool add, bool remove) = AnalyzeTrailingTrivia();
 
@@ -109,7 +106,7 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
 
         BlankLineStyle AnalyzeLeadingTrivia()
         {
-            SyntaxTriviaList.Enumerator en = memberDeclaration.GetLeadingTrivia().GetEnumerator();
+            SyntaxTriviaList.Enumerator en = node.GetLeadingTrivia().GetEnumerator();
 
             if (!en.MoveNext())
                 return BlankLineStyle.Add;
@@ -131,5 +128,15 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
 
             return BlankLineStyle.None;
         }
+    }
+
+    internal static SyntaxNode GetNodeAfterNamespaceDeclaration(FileScopedNamespaceDeclarationSyntax namespaceDeclaration)
+    {
+        MemberDeclarationSyntax memberDeclaration = namespaceDeclaration.Members.FirstOrDefault();
+        UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings.FirstOrDefault();
+
+        return (usingDirective?.SpanStart > namespaceDeclaration.SpanStart)
+            ? usingDirective
+            : memberDeclaration;
     }
 }

@@ -1,10 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -187,6 +184,12 @@ public static class MarkdownGenerator
         document.AddFootnote();
 
         return document.ToString(format);
+
+        static IEnumerable<MElement> CreateSeeAlso(params object[] content)
+        {
+            yield return Heading2("See Also");
+            yield return BulletList(content);
+        }
     }
 
     public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options, IEnumerable<(string title, string url)> appliesTo = null)
@@ -250,12 +253,6 @@ public static class MarkdownGenerator
         }
     }
 
-    private static IEnumerable<MElement> CreateSeeAlso(params object[] content)
-    {
-        yield return Heading2("See Also");
-        yield return BulletList(content);
-    }
-
     public static string CreateCompilerDiagnosticMarkdown(
         CompilerDiagnosticMetadata diagnostic,
         IEnumerable<CodeFixMetadata> codeFixes,
@@ -305,14 +302,24 @@ public static class MarkdownGenerator
     {
         MDocument document = Document(
             Heading2(title),
-            Link("Search Analyzers", "http://pihrt.net/Roslynator/Analyzers"),
+            Heading3("Overview"),
+            Table(
+                TableRow("Package", "Prefix", "Comment"),
+                TableRow(Link("Roslynator.Analyzers", "https://www.nuget.org/packages/Roslynator.Analyzers"), InlineCode("RCS1"), "common analyzers"),
+                TableRow(Link("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"), InlineCode("RCS0"), "-"),
+                TableRow(
+                    Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"),
+                    InlineCode("RCS9"),
+                    Inline("suitable for projects that reference Roslyn packages (", InlineCode("Microsoft.CodeAnalysis*"), ")"))
+            ),
+            Heading3("List of Analyzers"),
             Table(
                 TableRow("Id", "Title", "Severity"),
                 analyzers.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
                         f.Id,
-                        Link(f.Title.TrimEnd('.'), $"../../docs/analyzers/{f.Id}.md"),
+                        Link(f.Title.TrimEnd('.'), $"{f.Id}.md"),
                         (f.IsEnabledByDefault) ? f.DefaultSeverity : "None");
                 })));
 
@@ -325,14 +332,13 @@ public static class MarkdownGenerator
     {
         MDocument document = Document(
             Heading2("Roslynator Refactorings"),
-            Link("Search Refactorings", "http://pihrt.net/Roslynator/Refactorings"),
             Table(
                 TableRow("Id", "Title", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
-                refactorings.OrderBy(f => f.Title, comparer).Select(f =>
+                refactorings.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
                         f.Id,
-                        Link(f.Title.TrimEnd('.'), $"../../docs/refactorings/{f.Id}.md"),
+                        Link(f.Title.TrimEnd('.'), $"{f.Id}.md"),
                         CheckboxOrHyphen(f.IsEnabledByDefault));
                 })));
 
@@ -359,7 +365,7 @@ public static class MarkdownGenerator
                 .OrderBy(f => f.Id, comparer))
             {
                 yield return TableRow(
-                    Link(diagnostic.Id, $"../../docs/cs/{diagnostic.Id}.md"),
+                    Link(diagnostic.Id, $"{diagnostic.Id}.md"),
                     diagnostic.Title);
             }
         }

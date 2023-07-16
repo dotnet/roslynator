@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -75,20 +74,10 @@ public sealed class MarkTypeWithDebuggerDisplayAttributeAnalyzer : BaseDiagnosti
         if (typeSymbol.OriginalDefinition.HasAttribute(debuggerDisplayAttributeSymbol, includeBaseTypes: true))
             return;
 
-        SyntaxToken identifier;
+        if (typeSymbol.GetSyntax(context.CancellationToken) is not TypeDeclarationSyntax typeDeclaration)
+            return;
 
-        if (typeKind == TypeKind.Class)
-        {
-            var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
-
-            identifier = classDeclaration.Identifier;
-        }
-        else
-        {
-            var structDeclaration = (StructDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
-
-            identifier = structDeclaration.Identifier;
-        }
+        SyntaxToken identifier = typeDeclaration.Identifier;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute, identifier, identifier.ValueText);
     }

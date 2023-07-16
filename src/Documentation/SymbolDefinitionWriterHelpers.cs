@@ -242,7 +242,8 @@ internal static class SymbolDefinitionWriterHelpers
                         case "operator":
                             {
                                 if (Peek(j + 1).IsSpace()
-                                    && Peek(j + 2).Kind == SymbolDisplayPartKind.MethodName)
+                                    && Peek(j + 2).Kind == SymbolDisplayPartKind.Operator
+                                    && Peek(j + 2).Symbol is IMethodSymbol { MethodKind: MethodKind.UserDefinedOperator })
                                 {
                                     j += 3;
                                     return (i, j, parts[j].Symbol);

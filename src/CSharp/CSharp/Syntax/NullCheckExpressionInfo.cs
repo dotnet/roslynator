@@ -379,7 +379,7 @@ public readonly struct NullCheckExpressionInfo
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);
 
-                    if (!typeSymbol.IsReferenceType)
+                    if (typeSymbol?.IsReferenceType != true)
                         return false;
 
                     ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(right, cancellationToken);

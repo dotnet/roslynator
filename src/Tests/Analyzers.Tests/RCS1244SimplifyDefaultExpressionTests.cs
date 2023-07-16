@@ -492,4 +492,20 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+    public async Task TestNoDiagnostic_LambdaExpression2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    T M<T>()
+    {
+        return default(T) ?? (T)Convert.ChangeType("""", typeof(T));
+    }
+}
+");
+    }
 }

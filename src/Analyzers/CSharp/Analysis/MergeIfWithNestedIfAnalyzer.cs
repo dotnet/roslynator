@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -8,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
+using Roslynator.CSharp.Analysis.ReduceIfNesting;
 using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis;
@@ -71,6 +70,9 @@ public sealed class MergeIfWithNestedIfAnalyzer : BaseDiagnosticAnalyzer
             return;
 
         if (!CheckTrivia(ifStatement, nestedIf.IfStatement))
+            return;
+
+        if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, context.SemanticModel))
             return;
 
         ReportDiagnostic(context, ifStatement, nestedIf.IfStatement);

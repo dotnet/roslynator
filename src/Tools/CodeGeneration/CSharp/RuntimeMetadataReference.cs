@@ -19,7 +19,7 @@ internal static class RuntimeMetadataReference
         return AppContext
             .GetData("TRUSTED_PLATFORM_ASSEMBLIES")
             .ToString()
-            .Split(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ';' : ':')
+            .Split((RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? ';' : ':')
             .ToImmutableDictionary(f => Path.GetFileName(f));
     }
 

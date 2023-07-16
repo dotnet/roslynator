@@ -1089,6 +1089,15 @@ public static class SyntaxInfo
     }
 
     /// <summary>
+    /// Creates a new <see cref="Syntax.UsingDirectiveListInfo"/> from the specified declaration.
+    /// </summary>
+    /// <param name="declaration"></param>
+    public static UsingDirectiveListInfo UsingDirectiveListInfo(FileScopedNamespaceDeclarationSyntax declaration)
+    {
+        return Syntax.UsingDirectiveListInfo.Create(declaration);
+    }
+
+    /// <summary>
     /// Creates a new <see cref="Syntax.XmlElementInfo"/> from the specified xml node.
     /// </summary>
     /// <param name="xmlNode"></param>
