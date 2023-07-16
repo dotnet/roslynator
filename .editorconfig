@@ -70,7 +70,6 @@ dotnet_diagnostic.RCS0039.severity = suggestion
 dotnet_diagnostic.RCS0041.severity = suggestion
 dotnet_diagnostic.RCS0042.severity = suggestion
 dotnet_diagnostic.RCS0043.severity = suggestion
-dotnet_diagnostic.RCS0044.severity = suggestion
 dotnet_diagnostic.RCS0046.severity = suggestion
 dotnet_diagnostic.RCS0048.severity = silent
 dotnet_diagnostic.RCS0049.severity = suggestion

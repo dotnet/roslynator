@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator;
 #endregion usings
 
-#pragma warning disable RCS1018, RCS1213, CA1822
+#pragma warning disable RCS1018, RCS1213, CA1822, IDE0051
 
 namespace Roslynator;
 

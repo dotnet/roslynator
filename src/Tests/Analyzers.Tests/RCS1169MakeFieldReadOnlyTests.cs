@@ -350,7 +350,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
     public async Task TestNoDiagnostic_SuppressNullableWarning()
     {

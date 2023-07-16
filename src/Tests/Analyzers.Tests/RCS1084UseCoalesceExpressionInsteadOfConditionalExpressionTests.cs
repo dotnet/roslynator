@@ -31,7 +31,7 @@ class C
 }
 ", source, expected);
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
     public async Task Test_PolymorphicType_WithNullable()
     {
@@ -53,7 +53,7 @@ class C
         IBase c = [|a != null ? a : new B()|];
     }
 }
-",@"
+", @"
 #nullable enable
 class C
 {
@@ -94,7 +94,7 @@ class C
         IBase c = [|a != null ? a : new B()|];
     }
 }
-",@"
+", @"
 class C
 {
     private interface IBase { }
