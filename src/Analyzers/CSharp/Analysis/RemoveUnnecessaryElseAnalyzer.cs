@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -38,13 +39,13 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
         if (elseClause.ContainsDiagnostics)
             return;
 
-        if (!IsFixable(elseClause))
+        if (!IsFixable(elseClause, context.SemanticModel))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryElse, elseClause.ElseKeyword);
     }
 
-    public static bool IsFixable(ElseClauseSyntax elseClause)
+    private static bool IsFixable(ElseClauseSyntax elseClause, SemanticModel semanticModel)
     {
         if (elseClause.Statement?.IsKind(SyntaxKind.IfStatement) != false)
             return false;
@@ -55,12 +56,53 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
         if (!ifStatement.IsTopmostIf())
             return false;
 
-        StatementSyntax statement = ifStatement.Statement;
+        StatementSyntax ifStatementStatement = ifStatement.Statement;
 
-        if (statement is BlockSyntax block)
-            statement = block.Statements.LastOrDefault();
+        if (ifStatementStatement is not BlockSyntax ifBlock)
+            return CSharpFacts.IsJumpStatement(ifStatementStatement.Kind());
 
-        return statement is not null
-            && CSharpFacts.IsJumpStatement(statement.Kind());
+        if (elseClause.Statement is BlockSyntax elseBlock)
+        {
+            if (LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
+                return false;
+
+            if (ifStatement.Parent is SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement }
+                && SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel))
+            {
+                return false;
+            }
+        }
+
+        StatementSyntax lastStatementInIf = ifBlock.Statements.LastOrDefault();
+
+        return lastStatementInIf is not null
+            && CSharpFacts.IsJumpStatement(lastStatementInIf.Kind());
+    }
+
+    private static bool LocalDeclaredVariablesOverlap(BlockSyntax elseBlock, BlockSyntax ifBlock, SemanticModel semanticModel)
+    {
+        ImmutableArray<ISymbol> elseVariablesDeclared = semanticModel.AnalyzeDataFlow(elseBlock)!
+            .VariablesDeclared;
+
+        if (elseVariablesDeclared.IsEmpty)
+            return false;
+
+        ImmutableArray<ISymbol> ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifBlock)!
+            .VariablesDeclared;
+
+        if (ifVariablesDeclared.IsEmpty)
+            return false;
+
+        ImmutableHashSet<string> elseVariableNames = elseVariablesDeclared
+            .Select(s => s.Name)
+            .ToImmutableHashSet();
+
+        foreach (ISymbol v in ifVariablesDeclared)
+        {
+            if (elseVariableNames.Contains(v.Name))
+                return true;
+        }
+
+        return false;
     }
 }

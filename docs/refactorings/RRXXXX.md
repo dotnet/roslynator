@@ -32,8 +32,8 @@ Remarks
 
 ## See Also
 
-* [A sample link](http://github.com/JosefPihrt/Roslynator)
+* [A sample link](https://github.com/JosefPihrt/Roslynator)
 * [Full list of refactorings](Refactorings.md)
 
 
-*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
+*\(Generated with [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown)\)*

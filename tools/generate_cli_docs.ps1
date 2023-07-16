@@ -1,0 +1,11 @@
+dotnet restore "../src/CommandLine.DocumentationGenerator/CommandLine.DocumentationGenerator.csproj" 
+
+dotnet build "../src/CommandLine.DocumentationGenerator/CommandLine.DocumentationGenerator.csproj" -c Release -v minimal `
+ /p:Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors="1591,RS1024" `
+
+ if(!$?) { Read-Host; Exit }
+
+& "../src/CommandLine.DocumentationGenerator/bin/Release/net7.0/Roslynator.CommandLine.DocumentationGenerator.exe" `
+ "../docs/cli" `
+ "../src/CommandLine.DocumentationGenerator/data" `
+ "help,migrate"

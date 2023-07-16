@@ -33,10 +33,22 @@ internal sealed class WhitespaceRemover : CSharpSyntaxRewriter
 
     public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
     {
-        if (trivia.IsWhitespaceOrEndOfLineTrivia()
-            && (Span?.Contains(trivia.Span) != false))
-        {
+        if (Span?.Contains(trivia.Span) == false)
+            return base.VisitTrivia(trivia);
+
+        if (trivia.IsKind(SyntaxKind.WhitespaceTrivia))
             return Replacement;
+
+        if (trivia.IsKind(SyntaxKind.EndOfLineTrivia))
+        {
+            // We can only safely remove EndOfLineTrivia if it is not proceeded by a SingleLineComment
+            int triviaIndex = trivia.Token.TrailingTrivia.IndexOf(trivia);
+            if (triviaIndex == 0)
+                return Replacement;
+
+            SyntaxTrivia prevTrivia = trivia.Token.TrailingTrivia[triviaIndex - 1];
+            if (!prevTrivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                return Replacement;
         }
 
         return base.VisitTrivia(trivia);

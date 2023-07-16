@@ -431,7 +431,7 @@ internal static class DiagnosticHelpers
         {
             throw new InvalidOperationException("Invalid number of message arguments. "
                 + $"Message: {message}, "
-                + $"Arguments: { string.Join(", ", messageArgs)}");
+                + $"Arguments: {string.Join(", ", messageArgs)}");
         }
     }
 }

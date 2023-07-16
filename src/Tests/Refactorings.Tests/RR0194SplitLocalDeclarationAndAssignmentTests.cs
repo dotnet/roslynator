@@ -18,7 +18,7 @@ class C
 {
     void M()
     {
-        string s [||]= new string(' ', 1);
+        var s [||]= new string(' ', 1);
     }
 }
 ", @"

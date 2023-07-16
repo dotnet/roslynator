@@ -59,6 +59,7 @@ internal sealed class VisualBasicSyntaxFactsService : ISyntaxFactsService
         return SyntaxFactory.AreEquivalent(oldTree, newTree, topLevel: false);
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator", "RCS1079:Throwing of new NotImplementedException.")]
     public SyntaxNode GetSymbolDeclaration(SyntaxToken identifier) => throw new NotImplementedException();
 
     public bool IsValidIdentifier(string name)

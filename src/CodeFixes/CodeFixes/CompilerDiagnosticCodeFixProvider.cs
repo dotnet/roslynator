@@ -2,8 +2,8 @@
 
 using System.Collections.Concurrent;
 using Microsoft.CodeAnalysis;
-using Roslynator.Configuration;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.Configuration;
 
 namespace Roslynator.CodeFixes;
 

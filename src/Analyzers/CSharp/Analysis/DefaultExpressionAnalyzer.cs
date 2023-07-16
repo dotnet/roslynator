@@ -4,11 +4,11 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using System.Threading;
 
 namespace Roslynator.CSharp.Analysis;
 
@@ -106,6 +106,12 @@ public sealed class DefaultExpressionAnalyzer : BaseDiagnosticAnalyzer
                 {
                     if (parent.IsParentKind(SyntaxKind.ObjectInitializerExpression))
                         return;
+
+                    if (parent is BinaryExpressionSyntax coalesceExpression
+                        && coalesceExpression.Left == defaultExpression)
+                    {
+                        return;
+                    }
 
                     TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
 

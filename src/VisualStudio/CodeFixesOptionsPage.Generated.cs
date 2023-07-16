@@ -5,7 +5,6 @@
 using Roslynator.CSharp;
 
 namespace Roslynator.VisualStudio;
-
 public partial class CodeFixesOptionsPage
 {
 }

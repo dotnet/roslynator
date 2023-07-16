@@ -106,7 +106,7 @@ public sealed class SimplifyNullCheckAnalyzer : BaseDiagnosticAnalyzer
                     var memberAccessExpression = (MemberAccessExpressionSyntax)expression.Parent;
 
                     if (!memberAccessExpression.IsParentKind(SyntaxKind.InvocationExpression)
-                        && (memberAccessExpression.Name as IdentifierNameSyntax)?.Identifier.ValueText == "Value")
+                        && memberAccessExpression.Name is IdentifierNameSyntax { Identifier.ValueText: "Value" })
                     {
                         if (memberAccessExpression == whenNotNull)
                         {
@@ -175,6 +175,7 @@ public sealed class SimplifyNullCheckAnalyzer : BaseDiagnosticAnalyzer
 
             if (typeSymbol?.IsErrorType() == false
                 && (typeSymbol.IsReferenceType || typeSymbol.IsValueType)
+                && (!typeSymbol.IsValueType || !typeSymbol.IsRefLikeType)
                 && (semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
                     || IsDefaultOfNullableStruct(typeSymbol, whenNull, semanticModel, cancellationToken))
                 && !CSharpUtility.ContainsOutArgumentWithLocalOrParameter(whenNotNull, semanticModel, cancellationToken)

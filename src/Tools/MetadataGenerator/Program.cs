@@ -29,11 +29,7 @@ internal static class Program
     {
         if (args is null || args.Length == 0)
         {
-#if DEBUG
-            args = new[] { @"..\..\..\..\.." };
-#else
             args = new string[] { Environment.CurrentDirectory };
-#endif
         }
 
         string rootPath = args[0];
@@ -49,13 +45,11 @@ internal static class Program
         ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
         ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
-        WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers, "Roslynator.Analyzers");
-
-        WriteAnalyzersReadMe(@"CodeAnalysis.Analyzers\README.md", codeAnalysisAnalyzers, "Roslynator.CodeAnalysis.Analyzers");
-
-        WriteAnalyzersReadMe(@"Formatting.Analyzers\README.md", formattingAnalyzers, "Roslynator.Formatting.Analyzers");
+        WriteAllText(
+            @"..\docs\analyzers\README.md",
+            MarkdownGenerator.CreateAnalyzersReadMe(metadata.GetAllAnalyzers().Where(f => !f.IsObsolete), "Roslynator Analyzers", comparer));
 #if !DEBUG
-        VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 17);
+        VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 7);
 
         MSBuildLocator.RegisterInstance(instance);
 
@@ -123,25 +117,18 @@ internal static class Program
         }
 
         WriteAllText(
-            @"..\docs\refactorings\Refactorings.md",
-            MarkdownGenerator.CreateRefactoringsMarkdown(refactorings, comparer));
-
-        WriteAllText(
-            @"Refactorings\README.md",
+            @"..\docs\refactorings\README.md",
             MarkdownGenerator.CreateRefactoringsReadMe(refactorings.Where(f => !f.IsObsolete), comparer));
 
         WriteAllText(
-            @"CodeFixes\README.md",
+            @"..\docs\cs\README.md",
             MarkdownGenerator.CreateCodeFixesReadMe(fixableCompilerDiagnostics, comparer));
 
         // find files to delete
         foreach (string path in Directory.EnumerateFiles(GetPath(@"..\docs\refactorings")))
         {
-            if (Path.GetFileName(path) != "Refactorings.md"
-                && !refactorings.Any(f => f.Id == Path.GetFileNameWithoutExtension(path)))
-            {
+            if (!refactorings.Any(f => f.Id == Path.GetFileNameWithoutExtension(path)))
                 Console.WriteLine($"FILE TO DELETE: {path}");
-            }
         }
 
         // find missing samples
@@ -211,13 +198,6 @@ internal static class Program
 
                 File.Delete(filePath);
             }
-        }
-
-        void WriteAnalyzersReadMe(string path, ImmutableArray<AnalyzerMetadata> descriptors, string title)
-        {
-            WriteAllText(
-                path,
-                MarkdownGenerator.CreateAnalyzersReadMe(descriptors.Where(f => !f.IsObsolete), title, comparer));
         }
 
         void UpdateChangeLog()

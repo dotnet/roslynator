@@ -1145,14 +1145,6 @@ internal static class SymbolDefinitionDisplay
         builder.Add(SymbolDisplayPartFactory.Keyword(text));
     }
 
-    private static void InsertRange(this ImmutableArray<SymbolDisplayPart>.Builder builder, int index, ImmutableArray<SymbolDisplayPart> parts)
-    {
-        for (int i = parts.Length - 1; i >= 0; i--)
-        {
-            builder.Insert(index, parts[i]);
-        }
-    }
-
     private static bool HasOption(this SymbolDisplayAdditionalOptions options, SymbolDisplayAdditionalOptions option)
     {
         return (options & option) == option;

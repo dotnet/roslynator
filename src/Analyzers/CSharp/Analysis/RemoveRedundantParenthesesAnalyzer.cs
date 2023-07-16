@@ -92,6 +92,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.GreaterThanOrEqualExpression:
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
+            case SyntaxKind.SimpleMemberAccessExpression:
                 {
                     if (expression.IsKind(SyntaxKind.IdentifierName)
                         || expression is LiteralExpressionSyntax)

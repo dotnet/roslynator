@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -365,6 +366,7 @@ internal static class Program
         return GetExitCode(status);
     }
 
+#if DEBUG
     private static int AnalyzeAssembly(AnalyzeAssemblyCommandLineOptions options)
     {
         string language = null;
@@ -438,6 +440,7 @@ internal static class Program
 
         return GetExitCode(status);
     }
+#endif
 
     private static async Task<int> RenameSymbolAsync(RenameSymbolCommandLineOptions options)
     {
@@ -450,7 +453,9 @@ internal static class Program
         if (!TryParseOptionValueAsEnum(options.OnError, OptionNames.OnError, out RenameErrorResolution errorResolution, defaultValue: RenameErrorResolution.None))
             return ExitCodes.Error;
 
+#pragma warning disable RCS1118
         var visibility = Visibility.Public;
+#pragma warning restore RCS1118
         var scopeFilter = RenameScopeFilter.All;
 #if DEBUG
         if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out visibility))
@@ -679,6 +684,7 @@ internal static class Program
         return GetExitCode(status);
     }
 
+#if DEBUG
     private static async Task<int> SlnListAsync(SlnListCommandLineOptions options)
     {
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
@@ -702,6 +708,7 @@ internal static class Program
 
         return GetExitCode(status);
     }
+#endif
 
     private static async Task<int> PhysicalLinesOfCodeAsync(PhysicalLinesOfCodeCommandLineOptions options)
     {
@@ -846,6 +853,7 @@ internal static class Program
         return GetExitCode(status);
     }
 
+#if DEBUG
     private static async Task<int> GenerateSourceReferencesAsync(GenerateSourceReferencesCommandLineOptions options)
     {
         if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.DefaultValues.Depth))
@@ -870,6 +878,7 @@ internal static class Program
 
         return GetExitCode(status);
     }
+#endif
 
     private static int Migrate(MigrateCommandLineOptions options)
     {
@@ -907,6 +916,7 @@ internal static class Program
         return GetExitCode(status);
     }
 
+#if DEBUG
     private static async Task<int> ListReferencesAsync(ListReferencesCommandLineOptions options)
     {
         if (!TryParseOptionValueAsEnum(options.Display, OptionNames.Display, out MetadataReferenceDisplay display, MetadataReferenceDisplay.Path))
@@ -931,6 +941,7 @@ internal static class Program
 
         return GetExitCode(status);
     }
+#endif
 
     private static bool TryParsePaths(string value, out ImmutableArray<string> paths)
     {

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.VisualStudio;
-
 public partial class RefactoringsOptionsPage
 {
     protected override void Fill(ICollection<BaseModel> refactorings)
@@ -186,6 +185,7 @@ public partial class RefactoringsOptionsPage
         refactorings.Add(new BaseModel(RefactoringIdentifiers.UseIndexInitializer, "Use index initializer", IsEnabled(RefactoringIdentifiers.UseIndexInitializer)));
         refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertCommentToDocumentationComment, "Convert comment to documentation comment", IsEnabled(RefactoringIdentifiers.ConvertCommentToDocumentationComment)));
         refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertInterpolatedStringToConcatenation, "Convert interpolated string to concatenation", IsEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToConcatenation)));
+        refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitLocalDeclarationAndAssignment, "Split local declaration and assignment", IsEnabled(RefactoringIdentifiers.SplitLocalDeclarationAndAssignment)));
         refactorings.Add(new BaseModel(RefactoringIdentifiers.AddMemberToInterface, "Add member to interface", IsEnabled(RefactoringIdentifiers.AddMemberToInterface)));
         refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfWithParentIf, "Merge if with parent if", IsEnabled(RefactoringIdentifiers.MergeIfWithParentIf)));
         refactorings.Add(new BaseModel(RefactoringIdentifiers.InitializeFieldFromConstructor, "Initialize field from constructor", IsEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)));
@@ -208,5 +208,6 @@ public partial class RefactoringsOptionsPage
         refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement, "Convert 'switch' expression to 'switch' statement", IsEnabled(RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)));
         refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandPositionalConstructor, "Expand positional constructor", IsEnabled(RefactoringIdentifiers.ExpandPositionalConstructor)));
         refactorings.Add(new BaseModel(RefactoringIdentifiers.AddAllPropertiesToInitializer, "Add all properties to initializer", IsEnabled(RefactoringIdentifiers.AddAllPropertiesToInitializer)));
+        refactorings.Add(new BaseModel(RefactoringIdentifiers.DeconstructForeachVariable, "Deconstruct foreach variable", IsEnabled(RefactoringIdentifiers.DeconstructForeachVariable)));
     }
 }
