@@ -174,7 +174,7 @@ internal static class DelegateFactory
             || ex is MissingMemberException
             || ex is TypeLoadException)
         {
-            Logger.WriteError(ex, $"Cannot create delegate: {ex.Message}");
+            Logger.WriteError(ex);
             return null;
         }
     }

@@ -939,7 +939,7 @@ public static class CSharpFacts
         return SyntaxFacts.IsAssignmentExpression(kind);
     }
 
-    // http://github.com/dotnet/docs/blob/main/docs/csharp/language-reference/operators/index.md
+    // https://github.com/dotnet/docs/blob/main/docs/csharp/language-reference/operators/index.md
     internal static int GetOperatorPrecedence(SyntaxKind kind)
     {
         switch (kind)

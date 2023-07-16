@@ -354,7 +354,7 @@ public abstract class DocumentationWriter : IDisposable
     {
         WriteStartHeading(1);
 
-        if ((symbol as IMethodSymbol)?.MethodKind == MethodKind.Constructor)
+        if (symbol is IMethodSymbol { MethodKind: MethodKind.Constructor })
         {
             if (isOverloaded)
             {

@@ -67,6 +67,9 @@ public sealed class UseGenericEventHandlerAnalyzer : BaseDiagnosticAnalyzer
         if (!parameters[0].Type.IsObject())
             return;
 
+        if (parameters[1].Type.IsRefLikeType)
+            return;
+
         if (eventSymbol.ImplementsInterfaceMember<IEventSymbol>(allInterfaces: true))
             return;
 

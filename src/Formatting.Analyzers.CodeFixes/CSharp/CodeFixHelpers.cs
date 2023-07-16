@@ -1098,7 +1098,7 @@ internal static class CodeFixHelpers
 
                 if (indentationAdded
                     && node is ArgumentSyntax argument
-                    && (argument.Expression as AnonymousFunctionExpressionSyntax)?.Block is not null)
+                    && argument.Expression is AnonymousFunctionExpressionSyntax { Block: not null })
                 {
                     indentationAdded = false;
                 }

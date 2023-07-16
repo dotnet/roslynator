@@ -274,6 +274,18 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
                 case SyntaxKind.GreaterThanOrEqualExpression:
                 case SyntaxKind.EqualsExpression:
                     {
+                        ITypeSymbol leftTypeSymbol = semanticModel.GetTypeSymbol(((BinaryExpressionSyntax)expression).Left);
+
+                        if (leftTypeSymbol.IsErrorType())
+                            return false;
+
+                        if (leftTypeSymbol.IsValueType && !CSharpFacts.IsPredefinedType(leftTypeSymbol.SpecialType))
+                        {
+                            // If the LHS is a ValueTypes then making the expression conditional would change the type of the expression
+                            // and hence we would call a different overload (a valid overload may not exists)
+                            return false;
+                        }
+
                         expression = ((BinaryExpressionSyntax)expression)
                             .Right?
                             .WalkDownParentheses();

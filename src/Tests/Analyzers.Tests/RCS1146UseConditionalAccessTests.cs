@@ -602,6 +602,26 @@ struct Foo
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+    public async Task TestNoDiagnostic_LogicalAnd_ValueTypeFieldAccess()
+    {
+        await VerifyNoDiagnosticAsync(@"
+struct Foo 
+{
+    public static bool operator ==(Foo left, string right) => left.Equals(right);
+    public static bool operator !=(Foo left, string right) => !(left == right);
+}
+class C
+{
+    public Foo F { get; } 
+    void M(C c)
+    {
+        if (c != null && c.F == ""someStr"") { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_NullableType()
     {
         await VerifyNoDiagnosticAsync(@"

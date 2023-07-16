@@ -29,18 +29,7 @@ internal static class MarkTypeWithDebuggerDisplayAttributeRefactoring
 
         PropertyDeclarationSyntax propertyDeclaration = DebuggerDisplayPropertyDeclaration(propertyName, InvocationExpression(IdentifierName("ToString")));
 
-        TypeDeclarationSyntax newTypeDeclaration;
-
-        if (typeDeclaration is ClassDeclarationSyntax classDeclaration)
-        {
-            newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(classDeclaration, keepDocumentationCommentOnTop: true, attributeList);
-        }
-        else
-        {
-            var structDeclaration = (StructDeclarationSyntax)typeDeclaration;
-
-            newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(structDeclaration, keepDocumentationCommentOnTop: true, attributeList);
-        }
+        TypeDeclarationSyntax newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(typeDeclaration, keepDocumentationCommentOnTop: true, attributeList);
 
         newTypeDeclaration = MemberDeclarationInserter.Default.Insert(newTypeDeclaration, propertyDeclaration);
 

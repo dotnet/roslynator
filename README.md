@@ -1,6 +1,6 @@
 # Roslynator <img align="left" width="48px" height="48px" src="http://pihrt.net/images/Roslynator.ico">
 
-A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Refactorings/README.md) and [fixes](src/CodeFixes/README.md) for C#, powered by [Roslyn](http://github.com/dotnet/roslyn).
+A collection of 500+ [analyzers](docs/analyzers/README.md), [refactorings](docs/refactorings/README.md) and [fixes](docs/cs/README.md) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
 ### Features
 
@@ -8,7 +8,7 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 * [NuGet Packages](#nuget-packages)
 * [Roslynator Client Libraries](#roslynator-client-libraries)
 * [Roslynator Command Line Tool](#roslynator-command-line-tool)
-* [Roslynator for VS Code](#extensions-for-visual-studio-code)
+* [Roslynator for VS Code](#extensions-for-vs-code)
 * [Release notes](ChangeLog.md)
 * Follow on [Twitter](https://twitter.com/roslynator)
 

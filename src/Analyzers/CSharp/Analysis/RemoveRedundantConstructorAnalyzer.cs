@@ -12,8 +12,6 @@ namespace Roslynator.CSharp.Analysis;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
 {
-    private static readonly MetadataName _usedImplicitlyAttribute = MetadataName.Parse("JetBrains.Annotations.UsedImplicitlyAttribute");
-
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -38,48 +36,84 @@ public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
     {
         var constructor = (ConstructorDeclarationSyntax)context.Node;
 
-        if (constructor.ContainsDiagnostics)
-            return;
-
-        if (constructor.ParameterList?.Parameters.Any() != false)
-            return;
-
-        if (constructor.Body?.Statements.Any() != false)
-            return;
-
-        SyntaxTokenList modifiers = constructor.Modifiers;
-
-        if (!modifiers.Contains(SyntaxKind.PublicKeyword))
-            return;
-
-        if (modifiers.Contains(SyntaxKind.StaticKeyword))
-            return;
-
-        ConstructorInitializerSyntax initializer = constructor.Initializer;
-
-        if (initializer is not null
-            && initializer.ArgumentList?.Arguments.Any() != false)
+        if (!constructor.ContainsDiagnostics
+            && constructor.ParameterList?.Parameters.Any() == false
+            && constructor.Body?.Statements.Any() == false)
         {
-            return;
+            SyntaxTokenList modifiers = constructor.Modifiers;
+
+            if (modifiers.Contains(SyntaxKind.PublicKeyword)
+                && !modifiers.Contains(SyntaxKind.StaticKeyword))
+            {
+                ConstructorInitializerSyntax initializer = constructor.Initializer;
+
+                if (initializer is null
+                    || initializer.ArgumentList?.Arguments.Any() == false)
+                {
+                    if (!constructor.AttributeLists.Any(attributeList => attributeList.Attributes.Any())
+                        && !constructor.HasDocumentationComment()
+                        && CheckStructWithFieldInitializer(constructor))
+                    {
+                        IMethodSymbol symbol = context.SemanticModel.GetDeclaredSymbol(constructor, context.CancellationToken);
+
+                        if (symbol is not null
+                            && SymbolEqualityComparer.Default.Equals(symbol, symbol.ContainingType.InstanceConstructors.SingleOrDefault(shouldThrow: false))
+                            && constructor.DescendantTrivia(constructor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        {
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantConstructor, constructor);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static bool CheckStructWithFieldInitializer(ConstructorDeclarationSyntax constructor)
+    {
+        var memberDeclaration = constructor.Parent as BaseTypeDeclarationSyntax;
+
+        if (memberDeclaration is not null)
+        {
+            SyntaxList<MemberDeclarationSyntax> members;
+
+            if (memberDeclaration is StructDeclarationSyntax structDeclaration)
+            {
+                if (memberDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                    return false;
+
+                members = structDeclaration.Members;
+            }
+            else if (memberDeclaration is RecordDeclarationSyntax recordDeclaration
+                && recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword))
+            {
+                if (memberDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                    return false;
+
+                members = recordDeclaration.Members;
+            }
+
+            foreach (MemberDeclarationSyntax member in members)
+            {
+                switch (member)
+                {
+                    case PropertyDeclarationSyntax property:
+                        {
+                            return property.Initializer is null;
+                        }
+                    case FieldDeclarationSyntax field:
+                        {
+                            foreach (VariableDeclaratorSyntax declarator in field.Declaration.Variables)
+                            {
+                                if (declarator.Initializer is not null)
+                                    return false;
+                            }
+
+                            break;
+                        }
+                }
+            }
         }
 
-        if (constructor.HasDocumentationComment())
-            return;
-
-        IMethodSymbol symbol = context.SemanticModel.GetDeclaredSymbol(constructor, context.CancellationToken);
-
-        if (symbol?.Kind != SymbolKind.Method)
-            return;
-
-        if (symbol.ContainingType.InstanceConstructors.SingleOrDefault(shouldThrow: false) != symbol)
-            return;
-
-        if (symbol.HasAttribute(_usedImplicitlyAttribute))
-            return;
-
-        if (!constructor.DescendantTrivia(constructor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            return;
-
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantConstructor, constructor);
+        return true;
     }
 }

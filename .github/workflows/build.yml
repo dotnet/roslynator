@@ -1,0 +1,279 @@
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+      - cli-v*
+  pull_request:
+
+env:
+  Configuration: Release
+  TreatWarningsAsErrors: true
+  WarningsNotAsErrors: 1591,NU5128
+  Deterministic: true
+  RunCodeAnalysis: false
+
+jobs:
+  pre_build:
+    runs-on: ubuntu-20.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version3: ${{ steps.version.outputs.version3 }}
+      cliVersion: ${{ steps.cliVersion.outputs.version }}
+    defaults:
+      run:
+        working-directory: src
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: dotnet tool install -g GitVersion.Tool --version 5.12.0
+      - name: Resolve version
+        id: version
+        run: |
+          dotnet-gitversion > version.json
+          version="$(jq -r '.SemVer' version.json)"
+          version3="$(jq -r '.MajorMinorPatch' version.json)"
+          pr_version="$(jq -r '.MajorMinorPatch' version.json)-$(jq -r '.PreReleaseLabel' version.json).${{ github.run_number }}.${{ github.run_attempt }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then version=$pr_version; fi
+          echo "Resolved version: $version"
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "Resolved version3: $version3"
+          echo "version3=${version3}" >> $GITHUB_OUTPUT
+      - name: Resolve CLI version
+        id: cliVersion
+        run: |
+          dotnet-gitversion /overrideconfig tag-prefix=cli-v > version.json
+          version="$(jq -r '.SemVer' version.json)"
+          pr_version="$(jq -r '.MajorMinorPatch' version.json)-$(jq -r '.PreReleaseLabel' version.json).${{ github.run_number }}.${{ github.run_attempt }}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then version=$pr_version; fi
+          echo "Resolved CLI version: $version"
+          echo "version=${version}" >> $GITHUB_OUTPUT
+      - run: dotnet restore Roslynator.sln
+      - run: dotnet build Roslynator.sln --no-restore
+      - run: |
+          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info --exclude-diagnostics \
+            IDE0220 `# 'foreach' statement implicitly converts type. Add an explicit cast to make intent clearer.` \
+            IDE0251 `# Property can be made read-only.` \
+            IDE0270 `# Null check can be simplified.`
+      - run: dotnet test Roslynator.sln --no-build
+
+  build_core_and_testing:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    needs: pre_build
+    runs-on: ubuntu-20.04
+    env:
+      Version: ${{ needs.pre_build.outputs.version }}
+    defaults:
+      run:
+        working-directory: src
+    steps:
+      - uses: actions/checkout@v3
+      - run: dotnet restore Roslynator.CoreAndTesting.slnf
+      - run: dotnet build Roslynator.CoreAndTesting.slnf --no-restore
+      - run: dotnet pack Roslynator.CoreAndTesting.slnf --no-build -o _nupkg
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget_packages
+          path: src/_nupkg/*nupkg
+
+  build_analyzers:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    needs: pre_build
+    runs-on: ubuntu-20.04
+    env:
+      Version: ${{ needs.pre_build.outputs.version }}
+    strategy:
+      matrix:
+        component:
+          - name: Analyzers
+            propertyName: Analyzers
+          - name: Formatting.Analyzers
+            propertyName: FormattingAnalyzers
+          - name: CodeAnalysis.Analyzers
+            propertyName: CodeAnalysisAnalyzers
+    defaults:
+      run:
+        working-directory: src/${{ matrix.component.name }}.CodeFixes
+    steps:
+      - uses: actions/checkout@v3
+      - run: dotnet restore
+      - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true
+      - run: dotnet pack --no-build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget_packages
+          path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.nupkg
+
+  build_vs_extension:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    needs: pre_build
+    runs-on: windows-latest
+    env:
+      Version: ${{ needs.pre_build.outputs.version }}
+      DeployExtension: false
+    defaults:
+      run:
+        working-directory: src/VisualStudio
+    steps:
+      - uses: actions/checkout@v3
+      - run: (Get-Content source.extension.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension.vsixmanifest
+      - run: dotnet restore
+      - uses: microsoft/setup-msbuild@v1.1
+      - run: msbuild
+      - uses: actions/upload-artifact@v3
+        with:
+          name: vs_extension
+          path: src/VisualStudio/bin/Release/net472/*.vsix
+      - uses: actions/upload-artifact@v3
+        with:
+          name: vs_extension
+          path: src/VisualStudio/manifest.json
+
+  build_vs_code_extension:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    needs: [ pre_build, build_analyzers ]
+    runs-on: ubuntu-20.04
+    env:
+      Version: ${{ needs.pre_build.outputs.version }}
+    defaults:
+      run:
+        working-directory: src/VisualStudioCode
+    steps:
+      - uses: actions/checkout@v3
+      - run: dotnet restore
+      - run: dotnet build --no-restore /p:DefineConstants=VSCODE
+      - run: |
+          mkdir package/roslyn/analyzers
+          mkdir package/roslyn/refactorings
+          mkdir package/roslyn/fixes
+          cp bin/Release/netstandard2.0/Roslynator.Core.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.Common.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.Workspaces.Core.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.Workspaces.Common.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.Workspaces.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.Analyzers.dll package/roslyn/analyzers
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.Analyzers.CodeFixes.dll package/roslyn/analyzers
+          cp bin/Release/netstandard2.0/Roslynator.Formatting.Analyzers.dll package/roslyn/analyzers
+          cp bin/Release/netstandard2.0/Roslynator.Formatting.Analyzers.CodeFixes.dll package/roslyn/analyzers
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.Refactorings.dll package/roslyn/refactorings
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.CodeFixes.dll package/roslyn/fixes
+        name: Copy DLLs to package
+      - run: >
+          sed -i 's/"version": "1.0.0"/"version": "${{ needs.pre_build.outputs.version3 }}"/' package/package.json
+      - run: npm install
+        working-directory: src/VisualStudioCode/package
+      - run: npm install -g @vscode/vsce
+      - run: vsce package
+        working-directory: src/VisualStudioCode/package
+      - uses: actions/upload-artifact@v3
+        with:
+          name: vs_code_extension
+          path: src/VisualStudioCode/package/*.vsix
+      - run: rm package/*.vsix
+      - run: sed -i s/ms-dotnettools.csharp/muhammad-sammy.csharp/ package/package.json
+      - run: vsce package
+        working-directory: src/VisualStudioCode/package
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ovsx_extension
+          path: src/VisualStudioCode/package/*.vsix
+
+  build_core_cli:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'cli-v')
+    needs: pre_build
+    runs-on: ubuntu-20.04
+    env:
+      RoslynatorDotNetCli: true
+      RoslynatorCliVersion: ${{ needs.pre_build.outputs.cliVersion }}
+      Version: ${{ needs.pre_build.outputs.version }}
+    defaults:
+      run:
+        working-directory: src/CommandLine
+    steps:
+      - uses: actions/checkout@v3
+      - run: dotnet restore
+      - run: dotnet build --no-restore
+      - run: dotnet pack --no-build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget_packages
+          path: src/CommandLine/bin/Release/*.nupkg
+
+  build_framework_cli:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'cli-v')
+    needs: pre_build
+    runs-on: windows-latest
+    env:
+      RoslynatorCommandLine: true
+      RoslynatorCliVersion: ${{ needs.pre_build.outputs.cliVersion }}
+      Version: ${{ needs.pre_build.outputs.version }}
+    defaults:
+      run:
+        working-directory: src/CommandLine
+    steps:
+      - uses: actions/checkout@v3
+      - run: dotnet restore
+      - run: dotnet build --no-restore
+      - run: dotnet publish --no-build
+      - run: dotnet pack --no-build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget_packages
+          path: src/CommandLine/bin/Release/*.nupkg
+
+  publish_nuget_packages:
+    needs: [ build_core_and_testing, build_analyzers, build_core_cli, build_framework_cli ]
+    runs-on: ubuntu-20.04
+    if: github.ref_type == 'tag'
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: nuget_packages
+          path: nuget_packages
+      - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json"
+        working-directory: nuget_packages
+
+  publish_vs_code_extension:
+    needs: build_vs_code_extension
+    runs-on: ubuntu-20.04
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: vs_code_extension
+          path: vs_code_extension
+      - run: npm install -g @vscode/vsce
+      - run: vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }}
+        working-directory: vs_code_extension
+
+  publish_ovsx_extension:
+    needs: build_vs_code_extension
+    runs-on: ubuntu-20.04
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: ovsx_extension
+          path: ovsx_extension
+      - run: npm install -g ovsx
+      - run: ovsx publish -p ${{ secrets.OPEN_VSX_TOKEN }}
+        working-directory: ovsx_extension
+
+  publish_vs_extension:
+    needs: build_vs_extension
+    runs-on: windows-latest
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: vs_extension
+          path: vs_extension
+      - run: |
+          $visualStudioPath = vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VSSDK -property installationPath
+          $vsixPublisher = Join-Path "$visualStudioPath" "VSSDK\VisualStudioIntegration\Tools\Bin\VsixPublisher.exe"
+          & "$vsixPublisher" publish -payload Roslynator.VisualStudio.vsix -publishManifest manifest.json -personalAccessToken ${{ secrets.VS_MARKETPLACE_TOKEN }}
+        working-directory: vs_extension
+        name: Publish VS extension to Marketplace

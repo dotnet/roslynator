@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CommandLine.DocumentationGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "\"../../../../../docs/cli\" \"../../../data\""
+    }
+  }
+}

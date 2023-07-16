@@ -181,7 +181,7 @@ internal static class AddExceptionElementToDocumentationCommentRefactoring
                     if (SymbolEqualityComparer.Default.Equals(exceptionSymbol, symbol))
                         return true;
 
-                    // http://github.com/dotnet/roslyn/issues/22923
+                    // https://github.com/dotnet/roslyn/issues/22923
                     if (exceptionSymbol.IsGenericType
                         && symbol.IsGenericType
                         && SymbolEqualityComparer.Default.Equals(exceptionSymbol.ConstructedFrom, symbol.ConstructedFrom))
