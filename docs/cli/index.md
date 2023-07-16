@@ -1,6 +1,6 @@
 ---
-sidebar_position: 0
-sidebar_label: Roslynator Command Line Tool
+sidebar_position: 2
+sidebar_label: Roslynator CLI
 ---
 
 # Roslynator Command Line Tool
@@ -63,9 +63,3 @@ You should specify MSBuild instance that is part of Visual Studio installation. 
 ### Roslynator.DotNet.Cli
 
 You should specify MSBuild instance that is part of .NET Core SDK installation. It should be similar to `C:/Program Files/dotnet/sdk/3.1.200`
-
-## See Also
-
-* [Change Log](../../src/CommandLine/ChangeLog.md)
-* [How to Fix All Diagnostics in a Solution](../HowToFixAllDiagnostics.md)
-* [How to Generate API Documentation](../HowToGenerateDocumentation.md)
