@@ -34,4 +34,10 @@
     <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Roslynator.Refactorings.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>

@@ -411,6 +411,9 @@ internal static class Extensions
         if (!codeAnalysisOptions.IsSupportedDiagnosticId(diagnostic.Id))
             return false;
 
+        if (diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
+            return true;
+
         SyntaxTree tree = diagnostic.Location.SourceTree;
 
         ReportDiagnostic reportDiagnostic = (tree is not null)

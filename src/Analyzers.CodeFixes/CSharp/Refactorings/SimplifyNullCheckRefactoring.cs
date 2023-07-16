@@ -44,7 +44,7 @@ internal static class SimplifyNullCheckRefactoring
             //RCS1084 UseCoalesceExpressionInsteadOfConditionalExpression
             newNode = nullCheck.Expression;
             coalesce = true;
-            
+
             // If the types are polymorphic then the LHS of the null coalesce must be cast to the base type.
             ITypeSymbol newNodeType = semanticModel.GetTypeSymbol(newNode);
             ITypeSymbol whenNullType = semanticModel.GetTypeSymbol(whenNull);
@@ -59,8 +59,8 @@ internal static class SimplifyNullCheckRefactoring
                     castType = NullableType(castType);
 
                 newNode = CastExpression(
-                        castType,
-                        newNode.WithoutTrivia())
+                    castType,
+                    newNode.WithoutTrivia())
                     .WithTriviaFrom(newNode);
             }
         }
@@ -73,7 +73,7 @@ internal static class SimplifyNullCheckRefactoring
                 var memberAccessExpression = (MemberAccessExpressionSyntax)expression.Parent;
 
                 if (!memberAccessExpression.IsParentKind(SyntaxKind.InvocationExpression)
-                    && (memberAccessExpression.Name as IdentifierNameSyntax)?.Identifier.ValueText == "Value")
+                    && memberAccessExpression.Name is IdentifierNameSyntax { Identifier.ValueText: "Value" })
                 {
                     if (memberAccessExpression == whenNotNull)
                     {

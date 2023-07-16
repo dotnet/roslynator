@@ -424,7 +424,7 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
     {
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
-        if ((typeSymbol as IArrayTypeSymbol)?.Rank == 1)
+        if (typeSymbol is IArrayTypeSymbol { Rank: 1 })
         {
             NameSyntax arrayName = ParseName("global::System.Array")
                 .WithLeadingTrivia(invocationInfo.InvocationExpression.GetLeadingTrivia())

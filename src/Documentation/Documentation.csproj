@@ -21,7 +21,6 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <PackageId>Roslynator.Documentation</PackageId>
-    <PackageVersion>$(RoslynatorDocumentationPackageVersion)</PackageVersion>
     <Company></Company>
     <Description>This API enables to generate documentation for your .NET library
 
@@ -50,6 +49,12 @@ Roslynator.Documentation.DocumentationGenerator</Description>
 
   <ItemGroup>
     <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Roslynator, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

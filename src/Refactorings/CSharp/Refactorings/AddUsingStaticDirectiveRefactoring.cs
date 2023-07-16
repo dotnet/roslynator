@@ -73,12 +73,4 @@ internal static class AddUsingStaticDirectiveRefactoring
 
         return document.WithSyntaxRoot(newRoot);
     }
-
-    private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)
-    {
-        while (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-            memberAccess = (MemberAccessExpressionSyntax)memberAccess.Parent;
-
-        return memberAccess;
-    }
 }

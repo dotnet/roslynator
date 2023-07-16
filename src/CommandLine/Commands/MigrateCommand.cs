@@ -17,8 +17,6 @@ namespace Roslynator.CommandLine;
 
 internal class MigrateCommand
 {
-    private static readonly Regex _versionRegex = new(@"\A(?<version>\d+\.\d+\.\d+)(?<suffix>-.*)?\z");
-
     private static readonly Regex _editorConfigRegex = new(
         @"
             dotnet_diagnostic\.
@@ -176,111 +174,6 @@ internal class MigrateCommand
 
         WriteLine(path, Verbosity.Diagnostic);
         return CommandStatus.NotSuccess;
-    }
-
-    private CommandStatus ExecuteProject(string path, XDocument document)
-    {
-        List<LogMessage> messages = null;
-
-        foreach (XElement itemGroup in document.Root.Descendants("ItemGroup"))
-        {
-            XElement analyzers = null;
-            XElement formattingAnalyzers = null;
-
-            foreach (XElement e in itemGroup.Elements("PackageReference"))
-            {
-                string packageId = e.Attribute("Include")?.Value;
-
-                if (packageId is null)
-                    continue;
-
-                if (packageId == "Roslynator.Formatting.Analyzers")
-                    formattingAnalyzers = e;
-
-                if (packageId == "Roslynator.Analyzers")
-                    analyzers = e;
-            }
-
-            if (analyzers is null)
-                continue;
-
-            if (formattingAnalyzers is not null)
-            {
-                string versionText = formattingAnalyzers.Attribute("Version")?.Value;
-
-                if (versionText is null)
-                {
-                    WriteXmlError(formattingAnalyzers, "Version attribute not found");
-                    continue;
-                }
-
-                if (versionText is not null)
-                {
-                    Match match = _versionRegex.Match(versionText);
-
-                    if (!match.Success)
-                    {
-                        WriteXmlError(formattingAnalyzers, $"Invalid version '{versionText}'");
-                        continue;
-                    }
-
-                    versionText = match.Groups["version"].Value;
-
-                    if (!Version.TryParse(versionText, out Version version))
-                    {
-                        WriteXmlError(formattingAnalyzers, $"Invalid version '{versionText}'");
-                        continue;
-                    }
-
-                    if (version > Versions.Version_1_0_0
-                        || !match.Groups["suffix"].Success)
-                    {
-                        continue;
-                    }
-                }
-            }
-
-            if (formattingAnalyzers is not null)
-            {
-                var message = new LogMessage("Update package 'Roslynator.Formatting.Analyzers' to '1.0.0'", Colors.Message_OK, Verbosity.Normal);
-
-                (messages ??= new List<LogMessage>()).Add(message);
-
-                formattingAnalyzers.SetAttributeValue("Version", "1.0.0");
-            }
-            else
-            {
-                var message = new LogMessage("Add package 'Roslynator.Formatting.Analyzers 1.0.0'", Colors.Message_OK, Verbosity.Normal);
-
-                (messages ??= new List<LogMessage>()).Add(message);
-
-                XText whitespace = null;
-
-                if (analyzers.NodesBeforeSelf().LastOrDefault() is XText xtext
-                    && xtext is not null
-                    && string.IsNullOrWhiteSpace(xtext.Value))
-                {
-                    whitespace = xtext;
-                }
-
-                analyzers.AddAfterSelf(whitespace, new XElement("PackageReference", new XAttribute("Include", "Roslynator.Formatting.Analyzers"), new XAttribute("Version", "1.0.0")));
-            }
-        }
-
-        if (messages is not null)
-        {
-            WriteUpdateMessages(path, messages);
-
-            if (!DryRun)
-            {
-                var settings = new XmlWriterSettings() { OmitXmlDeclaration = true };
-
-                using (XmlWriter xmlWriter = XmlWriter.Create(path, settings))
-                    document.Save(xmlWriter);
-            }
-        }
-
-        return CommandStatus.Success;
     }
 
     private CommandStatus ExecuteRuleSet(string path)
@@ -469,11 +362,6 @@ internal class MigrateCommand
         }
 
         return CommandStatus.Success;
-    }
-
-    private static void WriteXmlError(XElement element, string message)
-    {
-        WriteLine($"{message}, line: {((IXmlLineInfo)element).LineNumber}, file: '{element}'", Colors.Message_Warning, Verbosity.Detailed);
     }
 
     private static void WriteUpdateMessages(string path, List<LogMessage> messages)
