@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1255UseEnumFieldExplicitlyTests : AbstractCSharpDiagnosticVerifier<UseEnumFieldExplicitlyAnalyzer, CastExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEnumFieldExplicitly;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1255UseEnumFieldExplicitlyTests : AbstractCSharpDiagnosticVerifier<UseEnumFieldExplicitlyAnalyzer, CastExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEnumFieldExplicitly;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -36,12 +36,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
-        public async Task Test_Flags()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
+    public async Task Test_Flags()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -62,12 +62,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
-        public async Task TestNoDiagnostic_UndefinedValue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
+    public async Task TestNoDiagnostic_UndefinedValue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -88,12 +88,12 @@ enum Foo
     D = 8,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
-        public async Task TestNoDiagnostic_FileAttributes()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
+    public async Task TestNoDiagnostic_FileAttributes()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -102,6 +102,5 @@ class C
     }
 }
 ");
-        }
     }
 }
