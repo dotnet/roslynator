@@ -12,17 +12,19 @@ sidebar_label: GenericInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [GenericInfo(DelegateDeclarationSyntax)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_DelegateDeclarationSyntax_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified delegate declaration\. |
-| [GenericInfo(LocalFunctionStatementSyntax)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_LocalFunctionStatementSyntax_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified local function\. |
-| [GenericInfo(MethodDeclarationSyntax)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_MethodDeclarationSyntax_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified method declaration\. |
-| [GenericInfo(SyntaxNode)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_SyntaxNode_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified node\. |
-| [GenericInfo(TypeDeclarationSyntax)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeDeclarationSyntax_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type declaration\. |
-| [GenericInfo(TypeParameterConstraintClauseSyntax)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterConstraintClauseSyntax_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified constraint clause\. |
-| [GenericInfo(TypeParameterConstraintSyntax)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterConstraintSyntax_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter constraint\. |
-| [GenericInfo(TypeParameterListSyntax)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterListSyntax_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter list\. |
-| [GenericInfo(TypeParameterSyntax)](#Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterSyntax_) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter\. |
+| [GenericInfo(DelegateDeclarationSyntax)](#2218018366) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified delegate declaration\. |
+| [GenericInfo(LocalFunctionStatementSyntax)](#1694092430) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified local function\. |
+| [GenericInfo(MethodDeclarationSyntax)](#1918671437) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified method declaration\. |
+| [GenericInfo(SyntaxNode)](#3041311759) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified node\. |
+| [GenericInfo(TypeDeclarationSyntax)](#732578526) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type declaration\. |
+| [GenericInfo(TypeParameterConstraintClauseSyntax)](#474495995) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified constraint clause\. |
+| [GenericInfo(TypeParameterConstraintSyntax)](#3050507061) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter constraint\. |
+| [GenericInfo(TypeParameterListSyntax)](#3976312058) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter list\. |
+| [GenericInfo(TypeParameterSyntax)](#478667639) | Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter\. |
 
-## GenericInfo\(DelegateDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_DelegateDeclarationSyntax_"></a>
+<a id="2218018366"></a>
+
+## GenericInfo\(DelegateDeclarationSyntax\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified delegate declaration\.
@@ -39,7 +41,9 @@ public static Roslynator.CSharp.Syntax.GenericInfo GenericInfo(Microsoft.CodeAna
 
 [GenericInfo](../../Syntax/GenericInfo/index.md)
 
-## GenericInfo\(LocalFunctionStatementSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_LocalFunctionStatementSyntax_"></a>
+<a id="1694092430"></a>
+
+## GenericInfo\(LocalFunctionStatementSyntax\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified local function\.
@@ -56,7 +60,9 @@ public static Roslynator.CSharp.Syntax.GenericInfo GenericInfo(Microsoft.CodeAna
 
 [GenericInfo](../../Syntax/GenericInfo/index.md)
 
-## GenericInfo\(MethodDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_MethodDeclarationSyntax_"></a>
+<a id="1918671437"></a>
+
+## GenericInfo\(MethodDeclarationSyntax\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified method declaration\.
@@ -73,7 +79,9 @@ public static Roslynator.CSharp.Syntax.GenericInfo GenericInfo(Microsoft.CodeAna
 
 [GenericInfo](../../Syntax/GenericInfo/index.md)
 
-## GenericInfo\(SyntaxNode\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_SyntaxNode_"></a>
+<a id="3041311759"></a>
+
+## GenericInfo\(SyntaxNode\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified node\.
@@ -90,7 +98,9 @@ public static Roslynator.CSharp.Syntax.GenericInfo GenericInfo(Microsoft.CodeAna
 
 [GenericInfo](../../Syntax/GenericInfo/index.md)
 
-## GenericInfo\(TypeDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeDeclarationSyntax_"></a>
+<a id="732578526"></a>
+
+## GenericInfo\(TypeDeclarationSyntax\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type declaration\.
@@ -107,7 +117,9 @@ public static Roslynator.CSharp.Syntax.GenericInfo GenericInfo(Microsoft.CodeAna
 
 [GenericInfo](../../Syntax/GenericInfo/index.md)
 
-## GenericInfo\(TypeParameterConstraintClauseSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterConstraintClauseSyntax_"></a>
+<a id="474495995"></a>
+
+## GenericInfo\(TypeParameterConstraintClauseSyntax\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified constraint clause\.
@@ -124,7 +136,9 @@ public static Roslynator.CSharp.Syntax.GenericInfo GenericInfo(Microsoft.CodeAna
 
 [GenericInfo](../../Syntax/GenericInfo/index.md)
 
-## GenericInfo\(TypeParameterConstraintSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterConstraintSyntax_"></a>
+<a id="3050507061"></a>
+
+## GenericInfo\(TypeParameterConstraintSyntax\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter constraint\.
@@ -141,7 +155,9 @@ public static Roslynator.CSharp.Syntax.GenericInfo GenericInfo(Microsoft.CodeAna
 
 [GenericInfo](../../Syntax/GenericInfo/index.md)
 
-## GenericInfo\(TypeParameterListSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterListSyntax_"></a>
+<a id="3976312058"></a>
+
+## GenericInfo\(TypeParameterListSyntax\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter list\.
@@ -158,7 +174,9 @@ public static Roslynator.CSharp.Syntax.GenericInfo GenericInfo(Microsoft.CodeAna
 
 [GenericInfo](../../Syntax/GenericInfo/index.md)
 
-## GenericInfo\(TypeParameterSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_GenericInfo_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterSyntax_"></a>
+<a id="478667639"></a>
+
+## GenericInfo\(TypeParameterSyntax\) 
 
   
 Creates a new [GenericInfo](../../Syntax/GenericInfo/index.md) from the specified type parameter\.

@@ -12,10 +12,12 @@ sidebar_label: WithMembers
 
 | Method | Summary |
 | ------ | ------- |
-| [WithMembers(IEnumerable&lt;MemberDeclarationSyntax&gt;)](#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_WithMembers_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | Creates a new [MemberDeclarationListInfo](../index.md) with the members updated\. |
-| [WithMembers(SyntaxList&lt;MemberDeclarationSyntax&gt;)](#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_WithMembers_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | Creates a new [MemberDeclarationListInfo](../index.md) with the members updated\. |
+| [WithMembers(IEnumerable&lt;MemberDeclarationSyntax&gt;)](#1171711008) | Creates a new [MemberDeclarationListInfo](../index.md) with the members updated\. |
+| [WithMembers(SyntaxList&lt;MemberDeclarationSyntax&gt;)](#30413986) | Creates a new [MemberDeclarationListInfo](../index.md) with the members updated\. |
 
-## WithMembers\(IEnumerable&lt;MemberDeclarationSyntax&gt;\) <a id="Roslynator_CSharp_Syntax_MemberDeclarationListInfo_WithMembers_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__"></a>
+<a id="1171711008"></a>
+
+## WithMembers\(IEnumerable&lt;MemberDeclarationSyntax&gt;\) 
 
   
 Creates a new [MemberDeclarationListInfo](../index.md) with the members updated\.
@@ -32,7 +34,9 @@ public Roslynator.CSharp.Syntax.MemberDeclarationListInfo WithMembers(System.Col
 
 [MemberDeclarationListInfo](../index.md)
 
-## WithMembers\(SyntaxList&lt;MemberDeclarationSyntax&gt;\) <a id="Roslynator_CSharp_Syntax_MemberDeclarationListInfo_WithMembers_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__"></a>
+<a id="30413986"></a>
+
+## WithMembers\(SyntaxList&lt;MemberDeclarationSyntax&gt;\) 
 
   
 Creates a new [MemberDeclarationListInfo](../index.md) with the members updated\.

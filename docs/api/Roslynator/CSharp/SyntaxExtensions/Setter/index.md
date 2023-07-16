@@ -12,11 +12,13 @@ sidebar_label: Setter
 
 | Method | Summary |
 | ------ | ------- |
-| [Setter(AccessorListSyntax)](#Roslynator_CSharp_SyntaxExtensions_Setter_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_) | Returns a set accessor contained in the specified list\. |
-| [Setter(IndexerDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_Setter_Microsoft_CodeAnalysis_CSharp_Syntax_IndexerDeclarationSyntax_) | Returns a set accessor that is contained in the specified indexer declaration\. |
-| [Setter(PropertyDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_Setter_Microsoft_CodeAnalysis_CSharp_Syntax_PropertyDeclarationSyntax_) | Returns property set accessor, if any\. |
+| [Setter(AccessorListSyntax)](#1651493367) | Returns a set accessor contained in the specified list\. |
+| [Setter(IndexerDeclarationSyntax)](#1041810977) | Returns a set accessor that is contained in the specified indexer declaration\. |
+| [Setter(PropertyDeclarationSyntax)](#2111161647) | Returns property set accessor, if any\. |
 
-## Setter\(AccessorListSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_Setter_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_"></a>
+<a id="1651493367"></a>
+
+## Setter\(AccessorListSyntax\) 
 
   
 Returns a set accessor contained in the specified list\.
@@ -33,7 +35,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax Set
 
 [AccessorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.accessordeclarationsyntax)
 
-## Setter\(IndexerDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_Setter_Microsoft_CodeAnalysis_CSharp_Syntax_IndexerDeclarationSyntax_"></a>
+<a id="1041810977"></a>
+
+## Setter\(IndexerDeclarationSyntax\) 
 
   
 Returns a set accessor that is contained in the specified indexer declaration\.
@@ -50,7 +54,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax Set
 
 [AccessorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.accessordeclarationsyntax)
 
-## Setter\(PropertyDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_Setter_Microsoft_CodeAnalysis_CSharp_Syntax_PropertyDeclarationSyntax_"></a>
+<a id="2111161647"></a>
+
+## Setter\(PropertyDeclarationSyntax\) 
 
   
 Returns property set accessor, if any\.

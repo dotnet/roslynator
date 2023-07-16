@@ -12,10 +12,12 @@ sidebar_label: BinaryExpressionInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [BinaryExpressionInfo(BinaryExpressionSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_BinaryExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_BinaryExpressionSyntax_System_Boolean_System_Boolean_) | Creates a new [BinaryExpressionInfo](../../Syntax/BinaryExpressionInfo/index.md) from the specified binary expression\. |
-| [BinaryExpressionInfo(SyntaxNode, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_BinaryExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_) | Creates a new [BinaryExpressionInfo](../../Syntax/BinaryExpressionInfo/index.md) from the specified node\. |
+| [BinaryExpressionInfo(BinaryExpressionSyntax, Boolean, Boolean)](#3276400696) | Creates a new [BinaryExpressionInfo](../../Syntax/BinaryExpressionInfo/index.md) from the specified binary expression\. |
+| [BinaryExpressionInfo(SyntaxNode, Boolean, Boolean)](#3948535411) | Creates a new [BinaryExpressionInfo](../../Syntax/BinaryExpressionInfo/index.md) from the specified node\. |
 
-## BinaryExpressionInfo\(BinaryExpressionSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_BinaryExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_BinaryExpressionSyntax_System_Boolean_System_Boolean_"></a>
+<a id="3276400696"></a>
+
+## BinaryExpressionInfo\(BinaryExpressionSyntax, Boolean, Boolean\) 
 
   
 Creates a new [BinaryExpressionInfo](../../Syntax/BinaryExpressionInfo/index.md) from the specified binary expression\.
@@ -36,7 +38,9 @@ public static Roslynator.CSharp.Syntax.BinaryExpressionInfo BinaryExpressionInfo
 
 [BinaryExpressionInfo](../../Syntax/BinaryExpressionInfo/index.md)
 
-## BinaryExpressionInfo\(SyntaxNode, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_BinaryExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_"></a>
+<a id="3948535411"></a>
+
+## BinaryExpressionInfo\(SyntaxNode, Boolean, Boolean\) 
 
   
 Creates a new [BinaryExpressionInfo](../../Syntax/BinaryExpressionInfo/index.md) from the specified node\.

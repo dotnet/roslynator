@@ -12,12 +12,14 @@ sidebar_label: HasAttribute
 
 | Method | Summary |
 | ------ | ------- |
-| [HasAttribute(ISymbol, INamedTypeSymbol)](#Roslynator_SymbolExtensions_HasAttribute_Microsoft_CodeAnalysis_ISymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_) | Returns true if the symbol has the specified attribute\. |
-| [HasAttribute(ISymbol, MetadataName)](#Roslynator_SymbolExtensions_HasAttribute_Microsoft_CodeAnalysis_ISymbol_Roslynator_MetadataName__) | Returns true if the symbol has attribute with the specified name\. |
-| [HasAttribute(ITypeSymbol, INamedTypeSymbol, Boolean)](#Roslynator_SymbolExtensions_HasAttribute_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean_) | Returns true if the type symbol has the specified attribute\. |
-| [HasAttribute(ITypeSymbol, MetadataName, Boolean)](#Roslynator_SymbolExtensions_HasAttribute_Microsoft_CodeAnalysis_ITypeSymbol_Roslynator_MetadataName__System_Boolean_) | Returns true if the type symbol has attribute with the specified name\. |
+| [HasAttribute(ISymbol, INamedTypeSymbol)](#3062983091) | Returns true if the symbol has the specified attribute\. |
+| [HasAttribute(ISymbol, MetadataName)](#151999350) | Returns true if the symbol has attribute with the specified name\. |
+| [HasAttribute(ITypeSymbol, INamedTypeSymbol, Boolean)](#289352201) | Returns true if the type symbol has the specified attribute\. |
+| [HasAttribute(ITypeSymbol, MetadataName, Boolean)](#1814378823) | Returns true if the type symbol has attribute with the specified name\. |
 
-## HasAttribute\(ISymbol, INamedTypeSymbol\) <a id="Roslynator_SymbolExtensions_HasAttribute_Microsoft_CodeAnalysis_ISymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_"></a>
+<a id="3062983091"></a>
+
+## HasAttribute\(ISymbol, INamedTypeSymbol\) 
 
   
 Returns true if the symbol has the specified attribute\.
@@ -36,7 +38,9 @@ public static bool HasAttribute(this Microsoft.CodeAnalysis.ISymbol symbol, Micr
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## HasAttribute\(ISymbol, MetadataName\) <a id="Roslynator_SymbolExtensions_HasAttribute_Microsoft_CodeAnalysis_ISymbol_Roslynator_MetadataName__"></a>
+<a id="151999350"></a>
+
+## HasAttribute\(ISymbol, MetadataName\) 
 
   
 Returns true if the symbol has attribute with the specified name\.
@@ -55,7 +59,9 @@ public static bool HasAttribute(this Microsoft.CodeAnalysis.ISymbol symbol, in R
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## HasAttribute\(ITypeSymbol, INamedTypeSymbol, Boolean\) <a id="Roslynator_SymbolExtensions_HasAttribute_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean_"></a>
+<a id="289352201"></a>
+
+## HasAttribute\(ITypeSymbol, INamedTypeSymbol, Boolean\) 
 
   
 Returns true if the type symbol has the specified attribute\.
@@ -76,7 +82,9 @@ public static bool HasAttribute(this Microsoft.CodeAnalysis.ITypeSymbol typeSymb
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## HasAttribute\(ITypeSymbol, MetadataName, Boolean\) <a id="Roslynator_SymbolExtensions_HasAttribute_Microsoft_CodeAnalysis_ITypeSymbol_Roslynator_MetadataName__System_Boolean_"></a>
+<a id="1814378823"></a>
+
+## HasAttribute\(ITypeSymbol, MetadataName, Boolean\) 
 
   
 Returns true if the type symbol has attribute with the specified name\.

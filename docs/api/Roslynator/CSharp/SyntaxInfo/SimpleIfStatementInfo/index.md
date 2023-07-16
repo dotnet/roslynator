@@ -12,10 +12,12 @@ sidebar_label: SimpleIfStatementInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [SimpleIfStatementInfo(IfStatementSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleIfStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_IfStatementSyntax_System_Boolean_System_Boolean_) | Creates a new [SimpleIfStatementInfo](../../Syntax/SimpleIfStatementInfo/index.md) from the specified if statement\. |
-| [SimpleIfStatementInfo(SyntaxNode, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleIfStatementInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_) | Creates a new [SimpleIfStatementInfo](../../Syntax/SimpleIfStatementInfo/index.md) from the specified node\. |
+| [SimpleIfStatementInfo(IfStatementSyntax, Boolean, Boolean)](#2944896454) | Creates a new [SimpleIfStatementInfo](../../Syntax/SimpleIfStatementInfo/index.md) from the specified if statement\. |
+| [SimpleIfStatementInfo(SyntaxNode, Boolean, Boolean)](#2920991926) | Creates a new [SimpleIfStatementInfo](../../Syntax/SimpleIfStatementInfo/index.md) from the specified node\. |
 
-## SimpleIfStatementInfo\(IfStatementSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleIfStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_IfStatementSyntax_System_Boolean_System_Boolean_"></a>
+<a id="2944896454"></a>
+
+## SimpleIfStatementInfo\(IfStatementSyntax, Boolean, Boolean\) 
 
   
 Creates a new [SimpleIfStatementInfo](../../Syntax/SimpleIfStatementInfo/index.md) from the specified if statement\.
@@ -36,7 +38,9 @@ public static Roslynator.CSharp.Syntax.SimpleIfStatementInfo SimpleIfStatementIn
 
 [SimpleIfStatementInfo](../../Syntax/SimpleIfStatementInfo/index.md)
 
-## SimpleIfStatementInfo\(SyntaxNode, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleIfStatementInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_"></a>
+<a id="2920991926"></a>
+
+## SimpleIfStatementInfo\(SyntaxNode, Boolean, Boolean\) 
 
   
 Creates a new [SimpleIfStatementInfo](../../Syntax/SimpleIfStatementInfo/index.md) from the specified node\.

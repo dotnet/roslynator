@@ -55,13 +55,13 @@ public readonly struct MemberDeclarationListInfo : System.Collections.Generic.IR
 | [GetEnumerator()](GetEnumerator/index.md) | Gets the enumerator for the list of members\. |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [IndexOf(Func&lt;MemberDeclarationSyntax, Boolean&gt;)](IndexOf/index.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
-| [IndexOf(MemberDeclarationSyntax)](IndexOf/index.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | The index of the member in the list\. |
+| [IndexOf(Func&lt;MemberDeclarationSyntax, Boolean&gt;)](IndexOf/index.md#442472242) | Searches for a member that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(MemberDeclarationSyntax)](IndexOf/index.md#3381813943) | The index of the member in the list\. |
 | [Insert(Int32, MemberDeclarationSyntax)](Insert/index.md) | Creates a new [MemberDeclarationListInfo](./index.md) with the specified member inserted at the index\. |
 | [InsertRange(Int32, IEnumerable&lt;MemberDeclarationSyntax&gt;)](InsertRange/index.md) | Creates a new [MemberDeclarationListInfo](./index.md) with the specified members inserted at the index\. |
 | [Last()](Last/index.md) | The last member in the list\. |
-| [LastIndexOf(Func&lt;MemberDeclarationSyntax, Boolean&gt;)](LastIndexOf/index.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
-| [LastIndexOf(MemberDeclarationSyntax)](LastIndexOf/index.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | Searches for a member and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(Func&lt;MemberDeclarationSyntax, Boolean&gt;)](LastIndexOf/index.md#2832811949) | Searches for a member that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(MemberDeclarationSyntax)](LastIndexOf/index.md#3105192583) | Searches for a member and returns zero\-based index of the last occurrence in the list\. |
 | [LastOrDefault()](LastOrDefault/index.md) | The last member in the list or null if the list is empty\. |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [Remove(MemberDeclarationSyntax)](Remove/index.md) | Creates a new [MemberDeclarationListInfo](./index.md) with the specified member removed\. |
@@ -72,8 +72,8 @@ public readonly struct MemberDeclarationListInfo : System.Collections.Generic.IR
 | [ReplaceNode(SyntaxNode, SyntaxNode)](ReplaceNode/index.md) | Creates a new [MemberDeclarationListInfo](./index.md) with the specified old node replaced with a new node\. |
 | [ReplaceRange(MemberDeclarationSyntax, IEnumerable&lt;MemberDeclarationSyntax&gt;)](ReplaceRange/index.md) | Creates a new [MemberDeclarationListInfo](./index.md) with the specified member replaced with new members\. |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.tostring) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
-| [WithMembers(IEnumerable&lt;MemberDeclarationSyntax&gt;)](WithMembers/index.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_WithMembers_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | Creates a new [MemberDeclarationListInfo](./index.md) with the members updated\. |
-| [WithMembers(SyntaxList&lt;MemberDeclarationSyntax&gt;)](WithMembers/index.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_WithMembers_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | Creates a new [MemberDeclarationListInfo](./index.md) with the members updated\. |
+| [WithMembers(IEnumerable&lt;MemberDeclarationSyntax&gt;)](WithMembers/index.md#1171711008) | Creates a new [MemberDeclarationListInfo](./index.md) with the members updated\. |
+| [WithMembers(SyntaxList&lt;MemberDeclarationSyntax&gt;)](WithMembers/index.md#30413986) | Creates a new [MemberDeclarationListInfo](./index.md) with the members updated\. |
 
 ## Explicit Interface Implementations
 

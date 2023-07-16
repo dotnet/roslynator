@@ -2,7 +2,7 @@
 sidebar_label: Reversed
 ---
 
-# Reversed\(ExpressionChain\) Constructor
+# ExpressionChain\.Reversed\(ExpressionChain\) Constructor
 
 **Containing Type**: [ExpressionChain.Reversed](../index.md)
 

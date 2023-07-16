@@ -12,10 +12,12 @@ sidebar_label: Insert
 
 | Method | Summary |
 | ------ | ------- |
-| [Insert(TNode, SyntaxKind, IComparer&lt;SyntaxKind&gt;)](#Roslynator_CSharp_ModifierList_1_Insert__0_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Collections_Generic_IComparer_Microsoft_CodeAnalysis_CSharp_SyntaxKind__) | Creates a new node with a modifier of the specified kind inserted\. |
-| [Insert(TNode, SyntaxToken, IComparer&lt;SyntaxToken&gt;)](#Roslynator_CSharp_ModifierList_1_Insert__0_Microsoft_CodeAnalysis_SyntaxToken_System_Collections_Generic_IComparer_Microsoft_CodeAnalysis_SyntaxToken__) | Creates a new node with the specified modifier inserted\. |
+| [Insert(TNode, SyntaxKind, IComparer&lt;SyntaxKind&gt;)](#4255247645) | Creates a new node with a modifier of the specified kind inserted\. |
+| [Insert(TNode, SyntaxToken, IComparer&lt;SyntaxToken&gt;)](#2540511869) | Creates a new node with the specified modifier inserted\. |
 
-## Insert\(TNode, SyntaxKind, IComparer&lt;SyntaxKind&gt;\) <a id="Roslynator_CSharp_ModifierList_1_Insert__0_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Collections_Generic_IComparer_Microsoft_CodeAnalysis_CSharp_SyntaxKind__"></a>
+<a id="4255247645"></a>
+
+## Insert\(TNode, SyntaxKind, IComparer&lt;SyntaxKind&gt;\) 
 
   
 Creates a new node with a modifier of the specified kind inserted\.
@@ -36,7 +38,9 @@ public TNode Insert(TNode node, Microsoft.CodeAnalysis.CSharp.SyntaxKind kind, S
 
 TNode
 
-## Insert\(TNode, SyntaxToken, IComparer&lt;SyntaxToken&gt;\) <a id="Roslynator_CSharp_ModifierList_1_Insert__0_Microsoft_CodeAnalysis_SyntaxToken_System_Collections_Generic_IComparer_Microsoft_CodeAnalysis_SyntaxToken__"></a>
+<a id="2540511869"></a>
+
+## Insert\(TNode, SyntaxToken, IComparer&lt;SyntaxToken&gt;\) 
 
   
 Creates a new node with the specified modifier inserted\.

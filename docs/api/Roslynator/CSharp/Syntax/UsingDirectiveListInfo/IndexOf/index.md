@@ -12,10 +12,12 @@ sidebar_label: IndexOf
 
 | Method | Summary |
 | ------ | ------- |
-| [IndexOf(Func&lt;UsingDirectiveSyntax, Boolean&gt;)](#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_System_Boolean__) | Searches for an using directive that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
-| [IndexOf(UsingDirectiveSyntax)](#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_) | The index of the using directive in the list\. |
+| [IndexOf(Func&lt;UsingDirectiveSyntax, Boolean&gt;)](#2836230997) | Searches for an using directive that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(UsingDirectiveSyntax)](#1386691920) | The index of the using directive in the list\. |
 
-## IndexOf\(Func&lt;UsingDirectiveSyntax, Boolean&gt;\) <a id="Roslynator_CSharp_Syntax_UsingDirectiveListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_System_Boolean__"></a>
+<a id="2836230997"></a>
+
+## IndexOf\(Func&lt;UsingDirectiveSyntax, Boolean&gt;\) 
 
   
 Searches for an using directive that matches the predicate and returns zero\-based index of the first occurrence in the list\.
@@ -32,7 +34,9 @@ public int IndexOf(Func<Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSynta
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-## IndexOf\(UsingDirectiveSyntax\) <a id="Roslynator_CSharp_Syntax_UsingDirectiveListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_"></a>
+<a id="1386691920"></a>
+
+## IndexOf\(UsingDirectiveSyntax\) 
 
   
 The index of the using directive in the list\.

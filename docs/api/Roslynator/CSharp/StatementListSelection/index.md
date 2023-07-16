@@ -46,9 +46,9 @@ public sealed class StatementListSelection : Roslynator.SyntaxListSelection<Micr
 
 | Method | Summary |
 | ------ | ------- |
-| [Create(BlockSyntax, TextSpan)](Create/index.md#Roslynator_CSharp_StatementListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [StatementListSelection](./index.md) based on the specified block and span\. |
-| [Create(StatementListInfo, TextSpan)](Create/index.md#Roslynator_CSharp_StatementListSelection_Create_Roslynator_CSharp_Syntax_StatementListInfo__Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [StatementListSelection](./index.md) based on the specified [StatementListInfo](../Syntax/StatementListInfo/index.md) and span\. |
-| [Create(SwitchSectionSyntax, TextSpan)](Create/index.md#Roslynator_CSharp_StatementListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchSectionSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [StatementListSelection](./index.md) based on the specified switch section and span\. |
+| [Create(BlockSyntax, TextSpan)](Create/index.md#933669229) | Creates a new [StatementListSelection](./index.md) based on the specified block and span\. |
+| [Create(StatementListInfo, TextSpan)](Create/index.md#4239290103) | Creates a new [StatementListSelection](./index.md) based on the specified [StatementListInfo](../Syntax/StatementListInfo/index.md) and span\. |
+| [Create(SwitchSectionSyntax, TextSpan)](Create/index.md#1797202091) | Creates a new [StatementListSelection](./index.md) based on the specified switch section and span\. |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [First()](../../SyntaxListSelection-1/First/index.md) | Gets the first selected node\. \(Inherited from [SyntaxListSelection&lt;TNode&gt;](../../SyntaxListSelection-1/index.md)\) |
 | [GetEnumerator()](../../SyntaxListSelection-1/GetEnumerator/index.md) | Returns an enumerator that iterates through selected nodes\. \(Inherited from [SyntaxListSelection&lt;TNode&gt;](../../SyntaxListSelection-1/index.md)\) |
@@ -57,8 +57,8 @@ public sealed class StatementListSelection : Roslynator.SyntaxListSelection<Micr
 | [Last()](../../SyntaxListSelection-1/Last/index.md) | Gets the last selected node\. \(Inherited from [SyntaxListSelection&lt;TNode&gt;](../../SyntaxListSelection-1/index.md)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [TryCreate(BlockSyntax, TextSpan, StatementListSelection)](TryCreate/index.md#Roslynator_CSharp_StatementListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_StatementListSelection__) | Creates a new [StatementListSelection](./index.md) based on the specified block and span\. |
-| [TryCreate(SwitchSectionSyntax, TextSpan, StatementListSelection)](TryCreate/index.md#Roslynator_CSharp_StatementListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchSectionSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_StatementListSelection__) | Creates a new [StatementListSelection](./index.md) based on the specified switch section and span\. |
+| [TryCreate(BlockSyntax, TextSpan, StatementListSelection)](TryCreate/index.md#736714011) | Creates a new [StatementListSelection](./index.md) based on the specified block and span\. |
+| [TryCreate(SwitchSectionSyntax, TextSpan, StatementListSelection)](TryCreate/index.md#1958870021) | Creates a new [StatementListSelection](./index.md) based on the specified switch section and span\. |
 
 ## Structs
 

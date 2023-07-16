@@ -12,25 +12,15 @@ sidebar_label: AppendToLeadingTrivia
 
 | Method | Summary |
 | ------ | ------- |
-<<<<<<<< HEAD:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/index.md
-| [AppendToLeadingTrivia(SyntaxToken, IEnumerable&lt;SyntaxTrivia&gt;)](#Roslynator_SyntaxExtensions_AppendToLeadingTrivia_Microsoft_CodeAnalysis_SyntaxToken_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxTrivia__) | Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
-| [AppendToLeadingTrivia(SyntaxToken, SyntaxTrivia)](#Roslynator_SyntaxExtensions_AppendToLeadingTrivia_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SyntaxTrivia_) | Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
-| [AppendToLeadingTrivia&lt;TNode&gt;(TNode, IEnumerable&lt;SyntaxTrivia&gt;)](#Roslynator_SyntaxExtensions_AppendToLeadingTrivia__1___0_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxTrivia__) | Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
-| [AppendToLeadingTrivia&lt;TNode&gt;(TNode, SyntaxTrivia)](#Roslynator_SyntaxExtensions_AppendToLeadingTrivia__1___0_Microsoft_CodeAnalysis_SyntaxTrivia_) | Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
-
-## AppendToLeadingTrivia\(SyntaxToken, IEnumerable&lt;SyntaxTrivia&gt;\) <a id="Roslynator_SyntaxExtensions_AppendToLeadingTrivia_Microsoft_CodeAnalysis_SyntaxToken_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxTrivia__"></a>
-
-========
-| [AppendToLeadingTrivia(SyntaxToken, IEnumerable\<SyntaxTrivia\>)](#2690812841) | Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
+| [AppendToLeadingTrivia(SyntaxToken, IEnumerable&lt;SyntaxTrivia&gt;)](#2690812841) | Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
 | [AppendToLeadingTrivia(SyntaxToken, SyntaxTrivia)](#2537170499) | Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
-| [AppendToLeadingTrivia\<TNode\>(TNode, IEnumerable\<SyntaxTrivia\>)](#3159857401) | Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
-| [AppendToLeadingTrivia\<TNode\>(TNode, SyntaxTrivia)](#161505572) | Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
+| [AppendToLeadingTrivia&lt;TNode&gt;(TNode, IEnumerable&lt;SyntaxTrivia&gt;)](#3159857401) | Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
+| [AppendToLeadingTrivia&lt;TNode&gt;(TNode, SyntaxTrivia)](#161505572) | Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\. |
 
 <a id="2690812841"></a>
 
-## AppendToLeadingTrivia\(SyntaxToken, IEnumerable\<SyntaxTrivia\>\) 
+## AppendToLeadingTrivia\(SyntaxToken, IEnumerable&lt;SyntaxTrivia&gt;\) 
 
->>>>>>>> main:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/README.md
   
 Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\.
 
@@ -42,11 +32,7 @@ public static Microsoft.CodeAnalysis.SyntaxToken AppendToLeadingTrivia(this Micr
 
 **token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
 
-<<<<<<<< HEAD:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/index.md
 **trivia** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)&lt;[SyntaxTrivia](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtrivia)&gt;
-========
-**trivia** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[SyntaxTrivia](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtrivia)\>
->>>>>>>> main:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/README.md
 
 ### Returns
 
@@ -54,11 +40,8 @@ public static Microsoft.CodeAnalysis.SyntaxToken AppendToLeadingTrivia(this Micr
 
 <a id="2537170499"></a>
 
-<<<<<<<< HEAD:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/index.md
-========
 ## AppendToLeadingTrivia\(SyntaxToken, SyntaxTrivia\) 
 
->>>>>>>> main:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/README.md
   
 Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\.
 
@@ -76,15 +59,10 @@ public static Microsoft.CodeAnalysis.SyntaxToken AppendToLeadingTrivia(this Micr
 
 [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
 
-<<<<<<<< HEAD:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/index.md
-## AppendToLeadingTrivia&lt;TNode&gt;\(TNode, IEnumerable&lt;SyntaxTrivia&gt;\) <a id="Roslynator_SyntaxExtensions_AppendToLeadingTrivia__1___0_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxTrivia__"></a>
-
-========
 <a id="3159857401"></a>
 
-## AppendToLeadingTrivia\<TNode\>\(TNode, IEnumerable\<SyntaxTrivia\>\) 
+## AppendToLeadingTrivia&lt;TNode&gt;\(TNode, IEnumerable&lt;SyntaxTrivia&gt;\) 
 
->>>>>>>> main:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/README.md
   
 Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\.
 
@@ -100,25 +78,16 @@ public static TNode AppendToLeadingTrivia<TNode>(this TNode node, System.Collect
 
 **node** &ensp; TNode
 
-<<<<<<<< HEAD:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/index.md
 **trivia** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)&lt;[SyntaxTrivia](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtrivia)&gt;
-========
-**trivia** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[SyntaxTrivia](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtrivia)\>
->>>>>>>> main:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/README.md
 
 ### Returns
 
 TNode
 
-<<<<<<<< HEAD:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/index.md
-## AppendToLeadingTrivia&lt;TNode&gt;\(TNode, SyntaxTrivia\) <a id="Roslynator_SyntaxExtensions_AppendToLeadingTrivia__1___0_Microsoft_CodeAnalysis_SyntaxTrivia_"></a>
-
-========
 <a id="161505572"></a>
 
-## AppendToLeadingTrivia\<TNode\>\(TNode, SyntaxTrivia\) 
+## AppendToLeadingTrivia&lt;TNode&gt;\(TNode, SyntaxTrivia\) 
 
->>>>>>>> main:docs/api/Roslynator/SyntaxExtensions/AppendToLeadingTrivia/README.md
   
 Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia\.
 

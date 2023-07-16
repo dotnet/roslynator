@@ -12,10 +12,12 @@ sidebar_label: DefaultSwitchSection
 
 | Method | Summary |
 | ------ | ------- |
-| [DefaultSwitchSection(StatementSyntax)](#Roslynator_CSharp_CSharpFactory_DefaultSwitchSection_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | |
-| [DefaultSwitchSection(SyntaxList&lt;StatementSyntax&gt;)](#Roslynator_CSharp_CSharpFactory_DefaultSwitchSection_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__) | |
+| [DefaultSwitchSection(StatementSyntax)](#1141874678) | |
+| [DefaultSwitchSection(SyntaxList&lt;StatementSyntax&gt;)](#3972211189) | |
 
-## DefaultSwitchSection\(StatementSyntax\) <a id="Roslynator_CSharp_CSharpFactory_DefaultSwitchSection_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_"></a>
+<a id="1141874678"></a>
+
+## DefaultSwitchSection\(StatementSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax DefaultSwitchSection(Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax statement)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax DefaultSw
 
 [SwitchSectionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.switchsectionsyntax)
 
-## DefaultSwitchSection\(SyntaxList&lt;StatementSyntax&gt;\) <a id="Roslynator_CSharp_CSharpFactory_DefaultSwitchSection_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__"></a>
+<a id="3972211189"></a>
+
+## DefaultSwitchSection\(SyntaxList&lt;StatementSyntax&gt;\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax DefaultSwitchSection(Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax> statements)

@@ -29,7 +29,7 @@ public abstract class CSharpDiagnosticVerifier<TAnalyzer, TFixProvider> : Roslyn
 
 ### Derived
 
-* [MSTestDiagnosticVerifier\<TAnalyzer, TFixProvider\>](../MSTest/MSTestDiagnosticVerifier-2/README.md)
+* [MSTestDiagnosticVerifier&lt;TAnalyzer, TFixProvider&gt;](../MSTest/MSTestDiagnosticVerifier-2/index.md)
 * [XunitDiagnosticVerifier&lt;TAnalyzer, TFixProvider&gt;](../Xunit/XunitDiagnosticVerifier-2/index.md)
 
 ## Properties

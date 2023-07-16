@@ -1,10 +1,6 @@
-<<<<<<<< HEAD:docs/api/Roslynator/CSharp/SyntaxExtensions/RemoveTrivia/index.md
 ---
 sidebar_label: RemoveTrivia
 ---
-========
-# SyntaxExtensions\.RemoveTrivia\<TNode\>\(TNode, TextSpan?\) Method
->>>>>>>> main:docs/api/Roslynator/CSharp/SyntaxExtensions/RemoveTrivia/README.md
 
 # SyntaxExtensions\.RemoveTrivia&lt;TNode&gt;\(TNode, TextSpan?\) Method
 

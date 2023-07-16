@@ -47,9 +47,9 @@ public sealed class MemberDeclarationListSelection : Roslynator.SyntaxListSelect
 
 | Method | Summary |
 | ------ | ------- |
-| [Create(CompilationUnitSyntax, TextSpan)](Create/index.md#Roslynator_CSharp_MemberDeclarationListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_CompilationUnitSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified compilation unit and span\. |
-| [Create(NamespaceDeclarationSyntax, TextSpan)](Create/index.md#Roslynator_CSharp_MemberDeclarationListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_NamespaceDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified namespace declaration and span\. |
-| [Create(TypeDeclarationSyntax, TextSpan)](Create/index.md#Roslynator_CSharp_MemberDeclarationListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_TypeDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified type declaration and span\. |
+| [Create(CompilationUnitSyntax, TextSpan)](Create/index.md#158603944) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified compilation unit and span\. |
+| [Create(NamespaceDeclarationSyntax, TextSpan)](Create/index.md#2965480435) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified namespace declaration and span\. |
+| [Create(TypeDeclarationSyntax, TextSpan)](Create/index.md#3405799454) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified type declaration and span\. |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [First()](../../SyntaxListSelection-1/First/index.md) | Gets the first selected node\. \(Inherited from [SyntaxListSelection&lt;TNode&gt;](../../SyntaxListSelection-1/index.md)\) |
 | [GetEnumerator()](../../SyntaxListSelection-1/GetEnumerator/index.md) | Returns an enumerator that iterates through selected nodes\. \(Inherited from [SyntaxListSelection&lt;TNode&gt;](../../SyntaxListSelection-1/index.md)\) |
@@ -58,8 +58,8 @@ public sealed class MemberDeclarationListSelection : Roslynator.SyntaxListSelect
 | [Last()](../../SyntaxListSelection-1/Last/index.md) | Gets the last selected node\. \(Inherited from [SyntaxListSelection&lt;TNode&gt;](../../SyntaxListSelection-1/index.md)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [TryCreate(NamespaceDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](TryCreate/index.md#Roslynator_CSharp_MemberDeclarationListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_NamespaceDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_MemberDeclarationListSelection__) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified namespace declaration and span\. |
-| [TryCreate(TypeDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](TryCreate/index.md#Roslynator_CSharp_MemberDeclarationListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_TypeDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_MemberDeclarationListSelection__) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified type declaration and span\. |
+| [TryCreate(NamespaceDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](TryCreate/index.md#2633164334) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified namespace declaration and span\. |
+| [TryCreate(TypeDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](TryCreate/index.md#3632170245) | Creates a new [MemberDeclarationListSelection](./index.md) based on the specified type declaration and span\. |
 
 ## Structs
 

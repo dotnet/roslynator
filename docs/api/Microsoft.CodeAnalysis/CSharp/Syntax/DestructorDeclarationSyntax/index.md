@@ -6,5 +6,5 @@ sidebar_label: DestructorDeclarationSyntax
 
 | Extension Method | Summary |
 | ---------------- | ------- |
-| [BodyOrExpressionBody(DestructorDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/BodyOrExpressionBody/index.md#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_DestructorDeclarationSyntax_) | Returns destructor body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(DestructorDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/BodyOrExpressionBody/index.md#1634292077) | Returns destructor body or an expression body if the body is null\. |
 

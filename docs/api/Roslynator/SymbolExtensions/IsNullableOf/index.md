@@ -12,12 +12,14 @@ sidebar_label: IsNullableOf
 
 | Method | Summary |
 | ------ | ------- |
-| [IsNullableOf(INamedTypeSymbol, ITypeSymbol)](#Roslynator_SymbolExtensions_IsNullableOf_Microsoft_CodeAnalysis_INamedTypeSymbol_Microsoft_CodeAnalysis_ITypeSymbol_) | Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\. |
-| [IsNullableOf(INamedTypeSymbol, SpecialType)](#Roslynator_SymbolExtensions_IsNullableOf_Microsoft_CodeAnalysis_INamedTypeSymbol_Microsoft_CodeAnalysis_SpecialType_) | Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\. |
-| [IsNullableOf(ITypeSymbol, ITypeSymbol)](#Roslynator_SymbolExtensions_IsNullableOf_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_ITypeSymbol_) | Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\. |
-| [IsNullableOf(ITypeSymbol, SpecialType)](#Roslynator_SymbolExtensions_IsNullableOf_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SpecialType_) | Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\. |
+| [IsNullableOf(INamedTypeSymbol, ITypeSymbol)](#831430666) | Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\. |
+| [IsNullableOf(INamedTypeSymbol, SpecialType)](#1928104294) | Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\. |
+| [IsNullableOf(ITypeSymbol, ITypeSymbol)](#2277729142) | Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\. |
+| [IsNullableOf(ITypeSymbol, SpecialType)](#467484347) | Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\. |
 
-## IsNullableOf\(INamedTypeSymbol, ITypeSymbol\) <a id="Roslynator_SymbolExtensions_IsNullableOf_Microsoft_CodeAnalysis_INamedTypeSymbol_Microsoft_CodeAnalysis_ITypeSymbol_"></a>
+<a id="831430666"></a>
+
+## IsNullableOf\(INamedTypeSymbol, ITypeSymbol\) 
 
   
 Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\.
@@ -36,7 +38,9 @@ public static bool IsNullableOf(this Microsoft.CodeAnalysis.INamedTypeSymbol nam
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## IsNullableOf\(INamedTypeSymbol, SpecialType\) <a id="Roslynator_SymbolExtensions_IsNullableOf_Microsoft_CodeAnalysis_INamedTypeSymbol_Microsoft_CodeAnalysis_SpecialType_"></a>
+<a id="1928104294"></a>
+
+## IsNullableOf\(INamedTypeSymbol, SpecialType\) 
 
   
 Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\.
@@ -55,7 +59,9 @@ public static bool IsNullableOf(this Microsoft.CodeAnalysis.INamedTypeSymbol nam
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## IsNullableOf\(ITypeSymbol, ITypeSymbol\) <a id="Roslynator_SymbolExtensions_IsNullableOf_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_ITypeSymbol_"></a>
+<a id="2277729142"></a>
+
+## IsNullableOf\(ITypeSymbol, ITypeSymbol\) 
 
   
 Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\.
@@ -74,7 +80,9 @@ public static bool IsNullableOf(this Microsoft.CodeAnalysis.ITypeSymbol typeSymb
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## IsNullableOf\(ITypeSymbol, SpecialType\) <a id="Roslynator_SymbolExtensions_IsNullableOf_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SpecialType_"></a>
+<a id="467484347"></a>
+
+## IsNullableOf\(ITypeSymbol, SpecialType\) 
 
   
 Returns true if the type is [Nullable&lt;T&gt;](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1) and it has specified type argument\.

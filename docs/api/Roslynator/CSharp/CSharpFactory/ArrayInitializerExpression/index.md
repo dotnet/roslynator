@@ -12,10 +12,12 @@ sidebar_label: ArrayInitializerExpression
 
 | Method | Summary |
 | ------ | ------- |
-| [ArrayInitializerExpression(SeparatedSyntaxList&lt;ExpressionSyntax&gt;)](#Roslynator_CSharp_CSharpFactory_ArrayInitializerExpression_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__) | |
-| [ArrayInitializerExpression(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_ArrayInitializerExpression_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [ArrayInitializerExpression(SeparatedSyntaxList&lt;ExpressionSyntax&gt;)](#1483103093) | |
+| [ArrayInitializerExpression(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken)](#3659546410) | |
 
-## ArrayInitializerExpression\(SeparatedSyntaxList&lt;ExpressionSyntax&gt;\) <a id="Roslynator_CSharp_CSharpFactory_ArrayInitializerExpression_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__"></a>
+<a id="1483103093"></a>
+
+## ArrayInitializerExpression\(SeparatedSyntaxList&lt;ExpressionSyntax&gt;\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax ArrayInitializerExpression(Microsoft.CodeAnalysis.SeparatedSyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax> expressions = default)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax A
 
 [InitializerExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.initializerexpressionsyntax)
 
-## ArrayInitializerExpression\(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_ArrayInitializerExpression_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__Microsoft_CodeAnalysis_SyntaxToken_"></a>
+<a id="3659546410"></a>
+
+## ArrayInitializerExpression\(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax ArrayInitializerExpression(Microsoft.CodeAnalysis.SyntaxToken openBraceToken, Microsoft.CodeAnalysis.SeparatedSyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax> expressions, Microsoft.CodeAnalysis.SyntaxToken closeBraceToken)

@@ -12,10 +12,12 @@ sidebar_label: SimpleMemberInvocationExpressionInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [SimpleMemberInvocationExpressionInfo(InvocationExpressionSyntax, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleMemberInvocationExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_InvocationExpressionSyntax_System_Boolean_) | Creates a new [SimpleMemberInvocationExpressionInfo](../../Syntax/SimpleMemberInvocationExpressionInfo/index.md) from the specified invocation expression\. |
-| [SimpleMemberInvocationExpressionInfo(SyntaxNode, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleMemberInvocationExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_) | Creates a new [SimpleMemberInvocationExpressionInfo](../../Syntax/SimpleMemberInvocationExpressionInfo/index.md) from the specified node\. |
+| [SimpleMemberInvocationExpressionInfo(InvocationExpressionSyntax, Boolean)](#3355621655) | Creates a new [SimpleMemberInvocationExpressionInfo](../../Syntax/SimpleMemberInvocationExpressionInfo/index.md) from the specified invocation expression\. |
+| [SimpleMemberInvocationExpressionInfo(SyntaxNode, Boolean, Boolean)](#2278576838) | Creates a new [SimpleMemberInvocationExpressionInfo](../../Syntax/SimpleMemberInvocationExpressionInfo/index.md) from the specified node\. |
 
-## SimpleMemberInvocationExpressionInfo\(InvocationExpressionSyntax, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleMemberInvocationExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_InvocationExpressionSyntax_System_Boolean_"></a>
+<a id="3355621655"></a>
+
+## SimpleMemberInvocationExpressionInfo\(InvocationExpressionSyntax, Boolean\) 
 
   
 Creates a new [SimpleMemberInvocationExpressionInfo](../../Syntax/SimpleMemberInvocationExpressionInfo/index.md) from the specified invocation expression\.
@@ -34,7 +36,9 @@ public static Roslynator.CSharp.Syntax.SimpleMemberInvocationExpressionInfo Simp
 
 [SimpleMemberInvocationExpressionInfo](../../Syntax/SimpleMemberInvocationExpressionInfo/index.md)
 
-## SimpleMemberInvocationExpressionInfo\(SyntaxNode, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleMemberInvocationExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_"></a>
+<a id="2278576838"></a>
+
+## SimpleMemberInvocationExpressionInfo\(SyntaxNode, Boolean, Boolean\) 
 
   
 Creates a new [SimpleMemberInvocationExpressionInfo](../../Syntax/SimpleMemberInvocationExpressionInfo/index.md) from the specified node\.

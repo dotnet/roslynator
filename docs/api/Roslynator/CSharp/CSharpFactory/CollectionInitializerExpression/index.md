@@ -12,10 +12,12 @@ sidebar_label: CollectionInitializerExpression
 
 | Method | Summary |
 | ------ | ------- |
-| [CollectionInitializerExpression(SeparatedSyntaxList&lt;ExpressionSyntax&gt;)](#Roslynator_CSharp_CSharpFactory_CollectionInitializerExpression_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__) | |
-| [CollectionInitializerExpression(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_CollectionInitializerExpression_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [CollectionInitializerExpression(SeparatedSyntaxList&lt;ExpressionSyntax&gt;)](#3589452669) | |
+| [CollectionInitializerExpression(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken)](#3700811157) | |
 
-## CollectionInitializerExpression\(SeparatedSyntaxList&lt;ExpressionSyntax&gt;\) <a id="Roslynator_CSharp_CSharpFactory_CollectionInitializerExpression_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__"></a>
+<a id="3589452669"></a>
+
+## CollectionInitializerExpression\(SeparatedSyntaxList&lt;ExpressionSyntax&gt;\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax CollectionInitializerExpression(Microsoft.CodeAnalysis.SeparatedSyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax> expressions = default)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax C
 
 [InitializerExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.initializerexpressionsyntax)
 
-## CollectionInitializerExpression\(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_CollectionInitializerExpression_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__Microsoft_CodeAnalysis_SyntaxToken_"></a>
+<a id="3700811157"></a>
+
+## CollectionInitializerExpression\(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax CollectionInitializerExpression(Microsoft.CodeAnalysis.SyntaxToken openBraceToken, Microsoft.CodeAnalysis.SeparatedSyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax> expressions, Microsoft.CodeAnalysis.SyntaxToken closeBraceToken)

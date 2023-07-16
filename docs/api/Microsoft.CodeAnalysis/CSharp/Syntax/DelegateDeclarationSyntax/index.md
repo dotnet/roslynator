@@ -6,5 +6,5 @@ sidebar_label: DelegateDeclarationSyntax
 
 | Extension Method | Summary |
 | ---------------- | ------- |
-| [ReturnsVoid(DelegateDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/ReturnsVoid/index.md#Roslynator_CSharp_SyntaxExtensions_ReturnsVoid_Microsoft_CodeAnalysis_CSharp_Syntax_DelegateDeclarationSyntax_) | Returns true the specified delegate return type is [Void](https://docs.microsoft.com/en-us/dotnet/api/system.void)\. |
+| [ReturnsVoid(DelegateDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/ReturnsVoid/index.md#1910724647) | Returns true the specified delegate return type is [Void](https://docs.microsoft.com/en-us/dotnet/api/system.void)\. |
 

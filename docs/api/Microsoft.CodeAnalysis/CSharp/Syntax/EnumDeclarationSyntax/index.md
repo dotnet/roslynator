@@ -6,5 +6,5 @@ sidebar_label: EnumDeclarationSyntax
 
 | Extension Method | Summary |
 | ---------------- | ------- |
-| [BracesSpan(EnumDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/BracesSpan/index.md#Roslynator_CSharp_SyntaxExtensions_BracesSpan_Microsoft_CodeAnalysis_CSharp_Syntax_EnumDeclarationSyntax_) | The absolute span of the braces, not including its leading and trailing trivia\. |
+| [BracesSpan(EnumDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/BracesSpan/index.md#3795869771) | The absolute span of the braces, not including its leading and trailing trivia\. |
 

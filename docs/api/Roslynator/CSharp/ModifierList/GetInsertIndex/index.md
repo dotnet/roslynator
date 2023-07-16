@@ -12,10 +12,12 @@ sidebar_label: GetInsertIndex
 
 | Method | Summary |
 | ------ | ------- |
-| [GetInsertIndex(SyntaxTokenList, SyntaxKind, IComparer&lt;SyntaxKind&gt;)](#Roslynator_CSharp_ModifierList_GetInsertIndex_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Collections_Generic_IComparer_Microsoft_CodeAnalysis_CSharp_SyntaxKind__) | Returns an index a token with the specified kind should be inserted at\. |
-| [GetInsertIndex(SyntaxTokenList, SyntaxToken, IComparer&lt;SyntaxToken&gt;)](#Roslynator_CSharp_ModifierList_GetInsertIndex_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_SyntaxToken_System_Collections_Generic_IComparer_Microsoft_CodeAnalysis_SyntaxToken__) | Returns an index the specified token should be inserted at\. |
+| [GetInsertIndex(SyntaxTokenList, SyntaxKind, IComparer&lt;SyntaxKind&gt;)](#4042759183) | Returns an index a token with the specified kind should be inserted at\. |
+| [GetInsertIndex(SyntaxTokenList, SyntaxToken, IComparer&lt;SyntaxToken&gt;)](#2289002607) | Returns an index the specified token should be inserted at\. |
 
-## GetInsertIndex\(SyntaxTokenList, SyntaxKind, IComparer&lt;SyntaxKind&gt;\) <a id="Roslynator_CSharp_ModifierList_GetInsertIndex_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Collections_Generic_IComparer_Microsoft_CodeAnalysis_CSharp_SyntaxKind__"></a>
+<a id="4042759183"></a>
+
+## GetInsertIndex\(SyntaxTokenList, SyntaxKind, IComparer&lt;SyntaxKind&gt;\) 
 
   
 Returns an index a token with the specified kind should be inserted at\.
@@ -36,7 +38,9 @@ public static int GetInsertIndex(Microsoft.CodeAnalysis.SyntaxTokenList tokens, 
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-## GetInsertIndex\(SyntaxTokenList, SyntaxToken, IComparer&lt;SyntaxToken&gt;\) <a id="Roslynator_CSharp_ModifierList_GetInsertIndex_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_SyntaxToken_System_Collections_Generic_IComparer_Microsoft_CodeAnalysis_SyntaxToken__"></a>
+<a id="2289002607"></a>
+
+## GetInsertIndex\(SyntaxTokenList, SyntaxToken, IComparer&lt;SyntaxToken&gt;\) 
 
   
 Returns an index the specified token should be inserted at\.

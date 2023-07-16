@@ -12,10 +12,12 @@ sidebar_label: Remove
 
 | Method | Summary |
 | ------ | ------- |
-| [Remove(TNode, SyntaxKind)](#Roslynator_CSharp_ModifierList_1_Remove__0_Microsoft_CodeAnalysis_CSharp_SyntaxKind_) | Creates a new node with a modifier of the specified kind removed\. |
-| [Remove(TNode, SyntaxToken)](#Roslynator_CSharp_ModifierList_1_Remove__0_Microsoft_CodeAnalysis_SyntaxToken_) | Creates a new node with the specified modifier removed\. |
+| [Remove(TNode, SyntaxKind)](#981244679) | Creates a new node with a modifier of the specified kind removed\. |
+| [Remove(TNode, SyntaxToken)](#1001668605) | Creates a new node with the specified modifier removed\. |
 
-## Remove\(TNode, SyntaxKind\) <a id="Roslynator_CSharp_ModifierList_1_Remove__0_Microsoft_CodeAnalysis_CSharp_SyntaxKind_"></a>
+<a id="981244679"></a>
+
+## Remove\(TNode, SyntaxKind\) 
 
   
 Creates a new node with a modifier of the specified kind removed\.
@@ -34,7 +36,9 @@ public TNode Remove(TNode node, Microsoft.CodeAnalysis.CSharp.SyntaxKind kind)
 
 TNode
 
-## Remove\(TNode, SyntaxToken\) <a id="Roslynator_CSharp_ModifierList_1_Remove__0_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+<a id="1001668605"></a>
+
+## Remove\(TNode, SyntaxToken\) 
 
   
 Creates a new node with the specified modifier removed\.

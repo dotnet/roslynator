@@ -6,5 +6,5 @@ sidebar_label: ConstructorDeclarationSyntax
 
 | Extension Method | Summary |
 | ---------------- | ------- |
-| [BodyOrExpressionBody(ConstructorDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/BodyOrExpressionBody/index.md#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_ConstructorDeclarationSyntax_) | Returns constructor body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(ConstructorDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/BodyOrExpressionBody/index.md#3583146349) | Returns constructor body or an expression body if the body is null\. |
 

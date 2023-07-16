@@ -12,10 +12,12 @@ sidebar_label: WithUsings
 
 | Method | Summary |
 | ------ | ------- |
-| [WithUsings(IEnumerable&lt;UsingDirectiveSyntax&gt;)](#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__) | Creates a new [UsingDirectiveListInfo](../index.md) with the usings updated\. |
-| [WithUsings(SyntaxList&lt;UsingDirectiveSyntax&gt;)](#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__) | Creates a new [UsingDirectiveListInfo](../index.md) with the usings updated\. |
+| [WithUsings(IEnumerable&lt;UsingDirectiveSyntax&gt;)](#2973635367) | Creates a new [UsingDirectiveListInfo](../index.md) with the usings updated\. |
+| [WithUsings(SyntaxList&lt;UsingDirectiveSyntax&gt;)](#3245135487) | Creates a new [UsingDirectiveListInfo](../index.md) with the usings updated\. |
 
-## WithUsings\(IEnumerable&lt;UsingDirectiveSyntax&gt;\) <a id="Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__"></a>
+<a id="2973635367"></a>
+
+## WithUsings\(IEnumerable&lt;UsingDirectiveSyntax&gt;\) 
 
   
 Creates a new [UsingDirectiveListInfo](../index.md) with the usings updated\.
@@ -32,7 +34,9 @@ public Roslynator.CSharp.Syntax.UsingDirectiveListInfo WithUsings(System.Collect
 
 [UsingDirectiveListInfo](../index.md)
 
-## WithUsings\(SyntaxList&lt;UsingDirectiveSyntax&gt;\) <a id="Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__"></a>
+<a id="3245135487"></a>
+
+## WithUsings\(SyntaxList&lt;UsingDirectiveSyntax&gt;\) 
 
   
 Creates a new [UsingDirectiveListInfo](../index.md) with the usings updated\.

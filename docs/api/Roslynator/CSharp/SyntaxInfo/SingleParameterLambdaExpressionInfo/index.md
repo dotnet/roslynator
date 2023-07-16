@@ -12,10 +12,12 @@ sidebar_label: SingleParameterLambdaExpressionInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [SingleParameterLambdaExpressionInfo(LambdaExpressionSyntax, Boolean)](#Roslynator_CSharp_SyntaxInfo_SingleParameterLambdaExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_LambdaExpressionSyntax_System_Boolean_) | Creates a new [SingleParameterLambdaExpressionInfo](../../Syntax/SingleParameterLambdaExpressionInfo/index.md) from the specified lambda expression\. |
-| [SingleParameterLambdaExpressionInfo(SyntaxNode, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SingleParameterLambdaExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_) | Creates a new [SingleParameterLambdaExpressionInfo](../../Syntax/SingleParameterLambdaExpressionInfo/index.md) from the specified node\. |
+| [SingleParameterLambdaExpressionInfo(LambdaExpressionSyntax, Boolean)](#2354507096) | Creates a new [SingleParameterLambdaExpressionInfo](../../Syntax/SingleParameterLambdaExpressionInfo/index.md) from the specified lambda expression\. |
+| [SingleParameterLambdaExpressionInfo(SyntaxNode, Boolean, Boolean)](#2023294591) | Creates a new [SingleParameterLambdaExpressionInfo](../../Syntax/SingleParameterLambdaExpressionInfo/index.md) from the specified node\. |
 
-## SingleParameterLambdaExpressionInfo\(LambdaExpressionSyntax, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SingleParameterLambdaExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_LambdaExpressionSyntax_System_Boolean_"></a>
+<a id="2354507096"></a>
+
+## SingleParameterLambdaExpressionInfo\(LambdaExpressionSyntax, Boolean\) 
 
   
 Creates a new [SingleParameterLambdaExpressionInfo](../../Syntax/SingleParameterLambdaExpressionInfo/index.md) from the specified lambda expression\.
@@ -34,7 +36,9 @@ public static Roslynator.CSharp.Syntax.SingleParameterLambdaExpressionInfo Singl
 
 [SingleParameterLambdaExpressionInfo](../../Syntax/SingleParameterLambdaExpressionInfo/index.md)
 
-## SingleParameterLambdaExpressionInfo\(SyntaxNode, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SingleParameterLambdaExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_"></a>
+<a id="2023294591"></a>
+
+## SingleParameterLambdaExpressionInfo\(SyntaxNode, Boolean, Boolean\) 
 
   
 Creates a new [SingleParameterLambdaExpressionInfo](../../Syntax/SingleParameterLambdaExpressionInfo/index.md) from the specified node\.

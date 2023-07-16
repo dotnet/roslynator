@@ -12,11 +12,13 @@ sidebar_label: SimpleAssignmentStatementInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [SimpleAssignmentStatementInfo(AssignmentExpressionSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleAssignmentStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_AssignmentExpressionSyntax_System_Boolean_System_Boolean_) | Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified assignment expression\. |
-| [SimpleAssignmentStatementInfo(ExpressionStatementSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleAssignmentStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionStatementSyntax_System_Boolean_System_Boolean_) | Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified expression statement\. |
-| [SimpleAssignmentStatementInfo(StatementSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleAssignmentStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean_System_Boolean_) | Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified statement\. |
+| [SimpleAssignmentStatementInfo(AssignmentExpressionSyntax, Boolean, Boolean)](#3727216217) | Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified assignment expression\. |
+| [SimpleAssignmentStatementInfo(ExpressionStatementSyntax, Boolean, Boolean)](#1396493216) | Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified expression statement\. |
+| [SimpleAssignmentStatementInfo(StatementSyntax, Boolean, Boolean)](#4249106749) | Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified statement\. |
 
-## SimpleAssignmentStatementInfo\(AssignmentExpressionSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleAssignmentStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_AssignmentExpressionSyntax_System_Boolean_System_Boolean_"></a>
+<a id="3727216217"></a>
+
+## SimpleAssignmentStatementInfo\(AssignmentExpressionSyntax, Boolean, Boolean\) 
 
   
 Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified assignment expression\.
@@ -37,7 +39,9 @@ public static Roslynator.CSharp.Syntax.SimpleAssignmentStatementInfo SimpleAssig
 
 [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md)
 
-## SimpleAssignmentStatementInfo\(ExpressionStatementSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleAssignmentStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionStatementSyntax_System_Boolean_System_Boolean_"></a>
+<a id="1396493216"></a>
+
+## SimpleAssignmentStatementInfo\(ExpressionStatementSyntax, Boolean, Boolean\) 
 
   
 Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified expression statement\.
@@ -58,7 +62,9 @@ public static Roslynator.CSharp.Syntax.SimpleAssignmentStatementInfo SimpleAssig
 
 [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md)
 
-## SimpleAssignmentStatementInfo\(StatementSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleAssignmentStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean_System_Boolean_"></a>
+<a id="4249106749"></a>
+
+## SimpleAssignmentStatementInfo\(StatementSyntax, Boolean, Boolean\) 
 
   
 Creates a new [SimpleAssignmentStatementInfo](../../Syntax/SimpleAssignmentStatementInfo/index.md) from the specified statement\.

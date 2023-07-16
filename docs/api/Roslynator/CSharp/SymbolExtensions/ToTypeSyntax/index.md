@@ -12,11 +12,13 @@ sidebar_label: ToTypeSyntax
 
 | Method | Summary |
 | ------ | ------- |
-| [ToTypeSyntax(INamespaceOrTypeSymbol, SymbolDisplayFormat)](#Roslynator_CSharp_SymbolExtensions_ToTypeSyntax_Microsoft_CodeAnalysis_INamespaceOrTypeSymbol_Microsoft_CodeAnalysis_SymbolDisplayFormat_) | Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified namespace or type symbol\. |
-| [ToTypeSyntax(INamespaceSymbol, SymbolDisplayFormat)](#Roslynator_CSharp_SymbolExtensions_ToTypeSyntax_Microsoft_CodeAnalysis_INamespaceSymbol_Microsoft_CodeAnalysis_SymbolDisplayFormat_) | Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified namespace symbol\. |
-| [ToTypeSyntax(ITypeSymbol, SymbolDisplayFormat)](#Roslynator_CSharp_SymbolExtensions_ToTypeSyntax_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SymbolDisplayFormat_) | Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified type symbol\. |
+| [ToTypeSyntax(INamespaceOrTypeSymbol, SymbolDisplayFormat)](#3148432103) | Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified namespace or type symbol\. |
+| [ToTypeSyntax(INamespaceSymbol, SymbolDisplayFormat)](#3888206216) | Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified namespace symbol\. |
+| [ToTypeSyntax(ITypeSymbol, SymbolDisplayFormat)](#3779029411) | Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified type symbol\. |
 
-## ToTypeSyntax\(INamespaceOrTypeSymbol, SymbolDisplayFormat\) <a id="Roslynator_CSharp_SymbolExtensions_ToTypeSyntax_Microsoft_CodeAnalysis_INamespaceOrTypeSymbol_Microsoft_CodeAnalysis_SymbolDisplayFormat_"></a>
+<a id="3148432103"></a>
+
+## ToTypeSyntax\(INamespaceOrTypeSymbol, SymbolDisplayFormat\) 
 
   
 Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified namespace or type symbol\.
@@ -35,7 +37,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax ToTypeSyntax(this 
 
 [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax)
 
-## ToTypeSyntax\(INamespaceSymbol, SymbolDisplayFormat\) <a id="Roslynator_CSharp_SymbolExtensions_ToTypeSyntax_Microsoft_CodeAnalysis_INamespaceSymbol_Microsoft_CodeAnalysis_SymbolDisplayFormat_"></a>
+<a id="3888206216"></a>
+
+## ToTypeSyntax\(INamespaceSymbol, SymbolDisplayFormat\) 
 
   
 Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified namespace symbol\.
@@ -54,7 +58,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax ToTypeSyntax(this 
 
 [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax)
 
-## ToTypeSyntax\(ITypeSymbol, SymbolDisplayFormat\) <a id="Roslynator_CSharp_SymbolExtensions_ToTypeSyntax_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SymbolDisplayFormat_"></a>
+<a id="3779029411"></a>
+
+## ToTypeSyntax\(ITypeSymbol, SymbolDisplayFormat\) 
 
   
 Creates a new [TypeSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typesyntax) based on the specified type symbol\.

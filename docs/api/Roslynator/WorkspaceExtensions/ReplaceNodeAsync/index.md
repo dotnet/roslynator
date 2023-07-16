@@ -12,11 +12,13 @@ sidebar_label: ReplaceNodeAsync
 
 | Method | Summary |
 | ------ | ------- |
-| [ReplaceNodeAsync(Document, SyntaxNode, IEnumerable&lt;SyntaxNode&gt;, CancellationToken)](#Roslynator_WorkspaceExtensions_ReplaceNodeAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_SyntaxNode_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxNode__System_Threading_CancellationToken_) | Creates a new document with the specified old node replaced with new nodes\. |
-| [ReplaceNodeAsync(Document, SyntaxNode, SyntaxNode, CancellationToken)](#Roslynator_WorkspaceExtensions_ReplaceNodeAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_SyntaxNode_System_Threading_CancellationToken_) | Creates a new document with the specified old node replaced with a new node\. |
-| [ReplaceNodeAsync&lt;TNode&gt;(Solution, TNode, TNode, CancellationToken)](#Roslynator_WorkspaceExtensions_ReplaceNodeAsync__1_Microsoft_CodeAnalysis_Solution___0___0_System_Threading_CancellationToken_) | Creates a new solution with the specified old node replaced with a new node\. |
+| [ReplaceNodeAsync(Document, SyntaxNode, IEnumerable&lt;SyntaxNode&gt;, CancellationToken)](#2800034700) | Creates a new document with the specified old node replaced with new nodes\. |
+| [ReplaceNodeAsync(Document, SyntaxNode, SyntaxNode, CancellationToken)](#2769549058) | Creates a new document with the specified old node replaced with a new node\. |
+| [ReplaceNodeAsync&lt;TNode&gt;(Solution, TNode, TNode, CancellationToken)](#726832148) | Creates a new solution with the specified old node replaced with a new node\. |
 
-## ReplaceNodeAsync\(Document, SyntaxNode, IEnumerable&lt;SyntaxNode&gt;, CancellationToken\) <a id="Roslynator_WorkspaceExtensions_ReplaceNodeAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_SyntaxNode_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxNode__System_Threading_CancellationToken_"></a>
+<a id="2800034700"></a>
+
+## ReplaceNodeAsync\(Document, SyntaxNode, IEnumerable&lt;SyntaxNode&gt;, CancellationToken\) 
 
   
 Creates a new document with the specified old node replaced with new nodes\.
@@ -39,7 +41,9 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 [Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)&lt;[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)&gt;
 
-## ReplaceNodeAsync\(Document, SyntaxNode, SyntaxNode, CancellationToken\) <a id="Roslynator_WorkspaceExtensions_ReplaceNodeAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_SyntaxNode_System_Threading_CancellationToken_"></a>
+<a id="2769549058"></a>
+
+## ReplaceNodeAsync\(Document, SyntaxNode, SyntaxNode, CancellationToken\) 
 
   
 Creates a new document with the specified old node replaced with a new node\.
@@ -62,7 +66,9 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 [Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)&lt;[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)&gt;
 
-## ReplaceNodeAsync&lt;TNode&gt;\(Solution, TNode, TNode, CancellationToken\) <a id="Roslynator_WorkspaceExtensions_ReplaceNodeAsync__1_Microsoft_CodeAnalysis_Solution___0___0_System_Threading_CancellationToken_"></a>
+<a id="726832148"></a>
+
+## ReplaceNodeAsync&lt;TNode&gt;\(Solution, TNode, TNode, CancellationToken\) 
 
   
 Creates a new solution with the specified old node replaced with a new node\.

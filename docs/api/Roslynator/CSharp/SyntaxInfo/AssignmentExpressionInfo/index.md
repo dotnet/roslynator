@@ -12,10 +12,12 @@ sidebar_label: AssignmentExpressionInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [AssignmentExpressionInfo(AssignmentExpressionSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_AssignmentExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_AssignmentExpressionSyntax_System_Boolean_System_Boolean_) | Creates a new [AssignmentExpressionInfo](../../Syntax/AssignmentExpressionInfo/index.md) from the specified assignment expression\. |
-| [AssignmentExpressionInfo(SyntaxNode, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_AssignmentExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_) | Creates a new [AssignmentExpressionInfo](../../Syntax/AssignmentExpressionInfo/index.md) from the specified node\. |
+| [AssignmentExpressionInfo(AssignmentExpressionSyntax, Boolean, Boolean)](#991774791) | Creates a new [AssignmentExpressionInfo](../../Syntax/AssignmentExpressionInfo/index.md) from the specified assignment expression\. |
+| [AssignmentExpressionInfo(SyntaxNode, Boolean, Boolean)](#1140170368) | Creates a new [AssignmentExpressionInfo](../../Syntax/AssignmentExpressionInfo/index.md) from the specified node\. |
 
-## AssignmentExpressionInfo\(AssignmentExpressionSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_AssignmentExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_AssignmentExpressionSyntax_System_Boolean_System_Boolean_"></a>
+<a id="991774791"></a>
+
+## AssignmentExpressionInfo\(AssignmentExpressionSyntax, Boolean, Boolean\) 
 
   
 Creates a new [AssignmentExpressionInfo](../../Syntax/AssignmentExpressionInfo/index.md) from the specified assignment expression\.
@@ -36,7 +38,9 @@ public static Roslynator.CSharp.Syntax.AssignmentExpressionInfo AssignmentExpres
 
 [AssignmentExpressionInfo](../../Syntax/AssignmentExpressionInfo/index.md)
 
-## AssignmentExpressionInfo\(SyntaxNode, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_AssignmentExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_"></a>
+<a id="1140170368"></a>
+
+## AssignmentExpressionInfo\(SyntaxNode, Boolean, Boolean\) 
 
   
 Creates a new [AssignmentExpressionInfo](../../Syntax/AssignmentExpressionInfo/index.md) from the specified node\.

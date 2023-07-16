@@ -12,10 +12,12 @@ sidebar_label: IndexOf
 
 | Method | Summary |
 | ------ | ------- |
-| [IndexOf(Func&lt;MemberDeclarationSyntax, Boolean&gt;)](#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
-| [IndexOf(MemberDeclarationSyntax)](#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | The index of the member in the list\. |
+| [IndexOf(Func&lt;MemberDeclarationSyntax, Boolean&gt;)](#442472242) | Searches for a member that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(MemberDeclarationSyntax)](#3381813943) | The index of the member in the list\. |
 
-## IndexOf\(Func&lt;MemberDeclarationSyntax, Boolean&gt;\) <a id="Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__"></a>
+<a id="442472242"></a>
+
+## IndexOf\(Func&lt;MemberDeclarationSyntax, Boolean&gt;\) 
 
   
 Searches for a member that matches the predicate and returns zero\-based index of the first occurrence in the list\.
@@ -32,7 +34,9 @@ public int IndexOf(Func<Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSy
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-## IndexOf\(MemberDeclarationSyntax\) <a id="Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_"></a>
+<a id="3381813943"></a>
+
+## IndexOf\(MemberDeclarationSyntax\) 
 
   
 The index of the member in the list\.

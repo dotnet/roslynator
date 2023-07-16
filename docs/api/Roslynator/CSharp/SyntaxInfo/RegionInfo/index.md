@@ -12,10 +12,12 @@ sidebar_label: RegionInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [RegionInfo(EndRegionDirectiveTriviaSyntax)](#Roslynator_CSharp_SyntaxInfo_RegionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_EndRegionDirectiveTriviaSyntax_) | Creates a new [RegionInfo](../../Syntax/RegionInfo/index.md) from the specified endregion directive\. |
-| [RegionInfo(RegionDirectiveTriviaSyntax)](#Roslynator_CSharp_SyntaxInfo_RegionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_RegionDirectiveTriviaSyntax_) | Creates a new [RegionInfo](../../Syntax/RegionInfo/index.md) from the specified region directive\. |
+| [RegionInfo(EndRegionDirectiveTriviaSyntax)](#1176917118) | Creates a new [RegionInfo](../../Syntax/RegionInfo/index.md) from the specified endregion directive\. |
+| [RegionInfo(RegionDirectiveTriviaSyntax)](#2968553518) | Creates a new [RegionInfo](../../Syntax/RegionInfo/index.md) from the specified region directive\. |
 
-## RegionInfo\(EndRegionDirectiveTriviaSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_RegionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_EndRegionDirectiveTriviaSyntax_"></a>
+<a id="1176917118"></a>
+
+## RegionInfo\(EndRegionDirectiveTriviaSyntax\) 
 
   
 Creates a new [RegionInfo](../../Syntax/RegionInfo/index.md) from the specified endregion directive\.
@@ -32,7 +34,9 @@ public static Roslynator.CSharp.Syntax.RegionInfo RegionInfo(Microsoft.CodeAnaly
 
 [RegionInfo](../../Syntax/RegionInfo/index.md)
 
-## RegionInfo\(RegionDirectiveTriviaSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_RegionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_RegionDirectiveTriviaSyntax_"></a>
+<a id="2968553518"></a>
+
+## RegionInfo\(RegionDirectiveTriviaSyntax\) 
 
   
 Creates a new [RegionInfo](../../Syntax/RegionInfo/index.md) from the specified region directive\.

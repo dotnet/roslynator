@@ -12,10 +12,12 @@ sidebar_label: FirstDescendant
 
 | Method | Summary |
 | ------ | ------- |
-| [FirstDescendant&lt;TNode&gt;(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean)](#Roslynator_SyntaxExtensions_FirstDescendant__1_Microsoft_CodeAnalysis_SyntaxNode_System_Func_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean__System_Boolean_) | Searches a list of descendant nodes in prefix document order and returns first descendant of type **TNode**\. |
-| [FirstDescendant&lt;TNode&gt;(SyntaxNode, TextSpan, Func&lt;SyntaxNode, Boolean&gt;, Boolean)](#Roslynator_SyntaxExtensions_FirstDescendant__1_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_Text_TextSpan_System_Func_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean__System_Boolean_) | Searches a list of descendant nodes in prefix document order and returns first descendant of type **TNode**\. |
+| [FirstDescendant&lt;TNode&gt;(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean)](#3727489774) | Searches a list of descendant nodes in prefix document order and returns first descendant of type **TNode**\. |
+| [FirstDescendant&lt;TNode&gt;(SyntaxNode, TextSpan, Func&lt;SyntaxNode, Boolean&gt;, Boolean)](#2271502195) | Searches a list of descendant nodes in prefix document order and returns first descendant of type **TNode**\. |
 
-## FirstDescendant&lt;TNode&gt;\(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean\) <a id="Roslynator_SyntaxExtensions_FirstDescendant__1_Microsoft_CodeAnalysis_SyntaxNode_System_Func_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean__System_Boolean_"></a>
+<a id="3727489774"></a>
+
+## FirstDescendant&lt;TNode&gt;\(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean\) 
 
   
 Searches a list of descendant nodes in prefix document order and returns first descendant of type **TNode**\.
@@ -40,7 +42,9 @@ public static TNode FirstDescendant<TNode>(this Microsoft.CodeAnalysis.SyntaxNod
 
 TNode
 
-## FirstDescendant&lt;TNode&gt;\(SyntaxNode, TextSpan, Func&lt;SyntaxNode, Boolean&gt;, Boolean\) <a id="Roslynator_SyntaxExtensions_FirstDescendant__1_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_Text_TextSpan_System_Func_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean__System_Boolean_"></a>
+<a id="2271502195"></a>
+
+## FirstDescendant&lt;TNode&gt;\(SyntaxNode, TextSpan, Func&lt;SyntaxNode, Boolean&gt;, Boolean\) 
 
   
 Searches a list of descendant nodes in prefix document order and returns first descendant of type **TNode**\.

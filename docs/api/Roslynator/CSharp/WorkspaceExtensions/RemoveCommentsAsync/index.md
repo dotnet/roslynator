@@ -12,10 +12,12 @@ sidebar_label: RemoveCommentsAsync
 
 | Method | Summary |
 | ------ | ------- |
-| [RemoveCommentsAsync(Document, CommentFilter, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_RemoveCommentsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_CommentFilter_System_Threading_CancellationToken_) | Creates a new document with comments of the specified kind removed\. |
-| [RemoveCommentsAsync(Document, TextSpan, CommentFilter, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_RemoveCommentsAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_CommentFilter_System_Threading_CancellationToken_) | Creates a new document with comments of the specified kind removed\. |
+| [RemoveCommentsAsync(Document, CommentFilter, CancellationToken)](#1785144339) | Creates a new document with comments of the specified kind removed\. |
+| [RemoveCommentsAsync(Document, TextSpan, CommentFilter, CancellationToken)](#2147765751) | Creates a new document with comments of the specified kind removed\. |
 
-## RemoveCommentsAsync\(Document, CommentFilter, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_RemoveCommentsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_CommentFilter_System_Threading_CancellationToken_"></a>
+<a id="1785144339"></a>
+
+## RemoveCommentsAsync\(Document, CommentFilter, CancellationToken\) 
 
   
 Creates a new document with comments of the specified kind removed\.
@@ -36,7 +38,9 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Remov
 
 [Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)&lt;[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)&gt;
 
-## RemoveCommentsAsync\(Document, TextSpan, CommentFilter, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_RemoveCommentsAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_CommentFilter_System_Threading_CancellationToken_"></a>
+<a id="2147765751"></a>
+
+## RemoveCommentsAsync\(Document, TextSpan, CommentFilter, CancellationToken\) 
 
   
 Creates a new document with comments of the specified kind removed\.

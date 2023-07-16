@@ -12,12 +12,14 @@ sidebar_label: All
 
 | Method | Summary |
 | ------ | ------- |
-| [All(SyntaxTokenList, Func&lt;SyntaxToken, Boolean&gt;)](#Roslynator_SyntaxExtensions_All_Microsoft_CodeAnalysis_SyntaxTokenList_System_Func_Microsoft_CodeAnalysis_SyntaxToken_System_Boolean__) | Returns true if all tokens in a [SyntaxTokenList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtokenlist) matches the predicate\. |
-| [All(SyntaxTriviaList, Func&lt;SyntaxTrivia, Boolean&gt;)](#Roslynator_SyntaxExtensions_All_Microsoft_CodeAnalysis_SyntaxTriviaList_System_Func_Microsoft_CodeAnalysis_SyntaxTrivia_System_Boolean__) | Returns true if all trivia in a [SyntaxTriviaList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtrivialist) matches the predicate\. |
-| [All&lt;TNode&gt;(SeparatedSyntaxList&lt;TNode&gt;, Func&lt;TNode, Boolean&gt;)](#Roslynator_SyntaxExtensions_All__1_Microsoft_CodeAnalysis_SeparatedSyntaxList___0__System_Func___0_System_Boolean__) | Returns true if all nodes in a list matches the predicate\. |
-| [All&lt;TNode&gt;(SyntaxList&lt;TNode&gt;, Func&lt;TNode, Boolean&gt;)](#Roslynator_SyntaxExtensions_All__1_Microsoft_CodeAnalysis_SyntaxList___0__System_Func___0_System_Boolean__) | Returns true if all nodes in a list matches the predicate\. |
+| [All(SyntaxTokenList, Func&lt;SyntaxToken, Boolean&gt;)](#3911797928) | Returns true if all tokens in a [SyntaxTokenList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtokenlist) matches the predicate\. |
+| [All(SyntaxTriviaList, Func&lt;SyntaxTrivia, Boolean&gt;)](#1935784235) | Returns true if all trivia in a [SyntaxTriviaList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtrivialist) matches the predicate\. |
+| [All&lt;TNode&gt;(SeparatedSyntaxList&lt;TNode&gt;, Func&lt;TNode, Boolean&gt;)](#1104261355) | Returns true if all nodes in a list matches the predicate\. |
+| [All&lt;TNode&gt;(SyntaxList&lt;TNode&gt;, Func&lt;TNode, Boolean&gt;)](#1644057626) | Returns true if all nodes in a list matches the predicate\. |
 
-## All\(SyntaxTokenList, Func&lt;SyntaxToken, Boolean&gt;\) <a id="Roslynator_SyntaxExtensions_All_Microsoft_CodeAnalysis_SyntaxTokenList_System_Func_Microsoft_CodeAnalysis_SyntaxToken_System_Boolean__"></a>
+<a id="3911797928"></a>
+
+## All\(SyntaxTokenList, Func&lt;SyntaxToken, Boolean&gt;\) 
 
   
 Returns true if all tokens in a [SyntaxTokenList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtokenlist) matches the predicate\.
@@ -36,7 +38,9 @@ public static bool All(this Microsoft.CodeAnalysis.SyntaxTokenList list, Func<Mi
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## All\(SyntaxTriviaList, Func&lt;SyntaxTrivia, Boolean&gt;\) <a id="Roslynator_SyntaxExtensions_All_Microsoft_CodeAnalysis_SyntaxTriviaList_System_Func_Microsoft_CodeAnalysis_SyntaxTrivia_System_Boolean__"></a>
+<a id="1935784235"></a>
+
+## All\(SyntaxTriviaList, Func&lt;SyntaxTrivia, Boolean&gt;\) 
 
   
 Returns true if all trivia in a [SyntaxTriviaList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtrivialist) matches the predicate\.
@@ -55,7 +59,9 @@ public static bool All(this Microsoft.CodeAnalysis.SyntaxTriviaList list, Func<M
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## All&lt;TNode&gt;\(SeparatedSyntaxList&lt;TNode&gt;, Func&lt;TNode, Boolean&gt;\) <a id="Roslynator_SyntaxExtensions_All__1_Microsoft_CodeAnalysis_SeparatedSyntaxList___0__System_Func___0_System_Boolean__"></a>
+<a id="1104261355"></a>
+
+## All&lt;TNode&gt;\(SeparatedSyntaxList&lt;TNode&gt;, Func&lt;TNode, Boolean&gt;\) 
 
   
 Returns true if all nodes in a list matches the predicate\.
@@ -78,7 +84,9 @@ public static bool All<TNode>(this Microsoft.CodeAnalysis.SeparatedSyntaxList<TN
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## All&lt;TNode&gt;\(SyntaxList&lt;TNode&gt;, Func&lt;TNode, Boolean&gt;\) <a id="Roslynator_SyntaxExtensions_All__1_Microsoft_CodeAnalysis_SyntaxList___0__System_Func___0_System_Boolean__"></a>
+<a id="1644057626"></a>
+
+## All&lt;TNode&gt;\(SyntaxList&lt;TNode&gt;, Func&lt;TNode, Boolean&gt;\) 
 
   
 Returns true if all nodes in a list matches the predicate\.

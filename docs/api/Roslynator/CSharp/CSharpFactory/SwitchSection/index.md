@@ -12,11 +12,13 @@ sidebar_label: SwitchSection
 
 | Method | Summary |
 | ------ | ------- |
-| [SwitchSection(SwitchLabelSyntax, StatementSyntax)](#Roslynator_CSharp_CSharpFactory_SwitchSection_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchLabelSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | |
-| [SwitchSection(SwitchLabelSyntax, SyntaxList&lt;StatementSyntax&gt;)](#Roslynator_CSharp_CSharpFactory_SwitchSection_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchLabelSyntax_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__) | |
-| [SwitchSection(SyntaxList&lt;SwitchLabelSyntax&gt;, StatementSyntax)](#Roslynator_CSharp_CSharpFactory_SwitchSection_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchLabelSyntax__Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | |
+| [SwitchSection(SwitchLabelSyntax, StatementSyntax)](#420993063) | |
+| [SwitchSection(SwitchLabelSyntax, SyntaxList&lt;StatementSyntax&gt;)](#3075568334) | |
+| [SwitchSection(SyntaxList&lt;SwitchLabelSyntax&gt;, StatementSyntax)](#2177824214) | |
 
-## SwitchSection\(SwitchLabelSyntax, StatementSyntax\) <a id="Roslynator_CSharp_CSharpFactory_SwitchSection_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchLabelSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_"></a>
+<a id="420993063"></a>
+
+## SwitchSection\(SwitchLabelSyntax, StatementSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax SwitchSection(Microsoft.CodeAnalysis.CSharp.Syntax.SwitchLabelSyntax switchLabel, Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax statement)
@@ -32,7 +34,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax SwitchSec
 
 [SwitchSectionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.switchsectionsyntax)
 
-## SwitchSection\(SwitchLabelSyntax, SyntaxList&lt;StatementSyntax&gt;\) <a id="Roslynator_CSharp_CSharpFactory_SwitchSection_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchLabelSyntax_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__"></a>
+<a id="3075568334"></a>
+
+## SwitchSection\(SwitchLabelSyntax, SyntaxList&lt;StatementSyntax&gt;\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax SwitchSection(Microsoft.CodeAnalysis.CSharp.Syntax.SwitchLabelSyntax switchLabel, Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax> statements)
@@ -48,7 +52,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax SwitchSec
 
 [SwitchSectionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.switchsectionsyntax)
 
-## SwitchSection\(SyntaxList&lt;SwitchLabelSyntax&gt;, StatementSyntax\) <a id="Roslynator_CSharp_CSharpFactory_SwitchSection_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchLabelSyntax__Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_"></a>
+<a id="2177824214"></a>
+
+## SwitchSection\(SyntaxList&lt;SwitchLabelSyntax&gt;, StatementSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax SwitchSection(Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.SwitchLabelSyntax> switchLabels, Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax statement)

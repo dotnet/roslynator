@@ -6,5 +6,5 @@ sidebar_label: ConversionOperatorDeclarationSyntax
 
 | Extension Method | Summary |
 | ---------------- | ------- |
-| [BodyOrExpressionBody(ConversionOperatorDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/BodyOrExpressionBody/index.md#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_ConversionOperatorDeclarationSyntax_) | Returns conversion operator body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(ConversionOperatorDeclarationSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/BodyOrExpressionBody/index.md#2593258085) | Returns conversion operator body or an expression body if the body is null\. |
 

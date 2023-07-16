@@ -1,10 +1,6 @@
-<<<<<<<< HEAD:docs/api/Roslynator/CSharp/SyntaxExtensions/RemoveWhitespace/index.md
 ---
 sidebar_label: RemoveWhitespace
 ---
-========
-# SyntaxExtensions\.RemoveWhitespace\<TNode\>\(TNode, TextSpan?\) Method
->>>>>>>> main:docs/api/Roslynator/CSharp/SyntaxExtensions/RemoveWhitespace/README.md
 
 # SyntaxExtensions\.RemoveWhitespace&lt;TNode&gt;\(TNode, TextSpan?\) Method
 

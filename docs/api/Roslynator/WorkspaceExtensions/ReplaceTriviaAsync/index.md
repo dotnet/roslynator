@@ -12,10 +12,12 @@ sidebar_label: ReplaceTriviaAsync
 
 | Method | Summary |
 | ------ | ------- |
-| [ReplaceTriviaAsync(Document, SyntaxTrivia, IEnumerable&lt;SyntaxTrivia&gt;, CancellationToken)](#Roslynator_WorkspaceExtensions_ReplaceTriviaAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_SyntaxTrivia_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxTrivia__System_Threading_CancellationToken_) | Creates a new document with the specified old trivia replaced with a new trivia\. |
-| [ReplaceTriviaAsync(Document, SyntaxTrivia, SyntaxTrivia, CancellationToken)](#Roslynator_WorkspaceExtensions_ReplaceTriviaAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_SyntaxTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_System_Threading_CancellationToken_) | Creates a new document with the specified old trivia replaced with a new trivia\. |
+| [ReplaceTriviaAsync(Document, SyntaxTrivia, IEnumerable&lt;SyntaxTrivia&gt;, CancellationToken)](#3069294243) | Creates a new document with the specified old trivia replaced with a new trivia\. |
+| [ReplaceTriviaAsync(Document, SyntaxTrivia, SyntaxTrivia, CancellationToken)](#4172355089) | Creates a new document with the specified old trivia replaced with a new trivia\. |
 
-## ReplaceTriviaAsync\(Document, SyntaxTrivia, IEnumerable&lt;SyntaxTrivia&gt;, CancellationToken\) <a id="Roslynator_WorkspaceExtensions_ReplaceTriviaAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_SyntaxTrivia_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxTrivia__System_Threading_CancellationToken_"></a>
+<a id="3069294243"></a>
+
+## ReplaceTriviaAsync\(Document, SyntaxTrivia, IEnumerable&lt;SyntaxTrivia&gt;, CancellationToken\) 
 
   
 Creates a new document with the specified old trivia replaced with a new trivia\.
@@ -38,7 +40,9 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 [Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)&lt;[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)&gt;
 
-## ReplaceTriviaAsync\(Document, SyntaxTrivia, SyntaxTrivia, CancellationToken\) <a id="Roslynator_WorkspaceExtensions_ReplaceTriviaAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_SyntaxTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_System_Threading_CancellationToken_"></a>
+<a id="4172355089"></a>
+
+## ReplaceTriviaAsync\(Document, SyntaxTrivia, SyntaxTrivia, CancellationToken\) 
 
   
 Creates a new document with the specified old trivia replaced with a new trivia\.

@@ -12,10 +12,12 @@ sidebar_label: WithStatements
 
 | Method | Summary |
 | ------ | ------- |
-| [WithStatements(IEnumerable&lt;StatementSyntax&gt;)](#Roslynator_CSharp_Syntax_StatementListInfo_WithStatements_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__) | Creates a new [StatementListInfo](../index.md) with the statements updated\. |
-| [WithStatements(SyntaxList&lt;StatementSyntax&gt;)](#Roslynator_CSharp_Syntax_StatementListInfo_WithStatements_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__) | Creates a new [StatementListInfo](../index.md) with the statements updated\. |
+| [WithStatements(IEnumerable&lt;StatementSyntax&gt;)](#3677217916) | Creates a new [StatementListInfo](../index.md) with the statements updated\. |
+| [WithStatements(SyntaxList&lt;StatementSyntax&gt;)](#1765041563) | Creates a new [StatementListInfo](../index.md) with the statements updated\. |
 
-## WithStatements\(IEnumerable&lt;StatementSyntax&gt;\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_WithStatements_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__"></a>
+<a id="3677217916"></a>
+
+## WithStatements\(IEnumerable&lt;StatementSyntax&gt;\) 
 
   
 Creates a new [StatementListInfo](../index.md) with the statements updated\.
@@ -32,7 +34,9 @@ public Roslynator.CSharp.Syntax.StatementListInfo WithStatements(System.Collecti
 
 [StatementListInfo](../index.md)
 
-## WithStatements\(SyntaxList&lt;StatementSyntax&gt;\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_WithStatements_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__"></a>
+<a id="1765041563"></a>
+
+## WithStatements\(SyntaxList&lt;StatementSyntax&gt;\) 
 
   
 Creates a new [StatementListInfo](../index.md) with the statements updated\.

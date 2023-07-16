@@ -12,11 +12,13 @@ sidebar_label: Implements
 
 | Method | Summary |
 | ------ | ------- |
-| [Implements(ITypeSymbol, INamedTypeSymbol, Boolean)](#Roslynator_SymbolExtensions_Implements_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean_) | Returns true if the type implements specified interface\. |
-| [Implements(ITypeSymbol, MetadataName, Boolean)](#Roslynator_SymbolExtensions_Implements_Microsoft_CodeAnalysis_ITypeSymbol_Roslynator_MetadataName__System_Boolean_) | Returns true if the type implements specified interface name\. |
-| [Implements(ITypeSymbol, SpecialType, Boolean)](#Roslynator_SymbolExtensions_Implements_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SpecialType_System_Boolean_) | Returns true if the type implements specified interface\. |
+| [Implements(ITypeSymbol, INamedTypeSymbol, Boolean)](#1804500735) | Returns true if the type implements specified interface\. |
+| [Implements(ITypeSymbol, MetadataName, Boolean)](#3538366426) | Returns true if the type implements specified interface name\. |
+| [Implements(ITypeSymbol, SpecialType, Boolean)](#2161671967) | Returns true if the type implements specified interface\. |
 
-## Implements\(ITypeSymbol, INamedTypeSymbol, Boolean\) <a id="Roslynator_SymbolExtensions_Implements_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean_"></a>
+<a id="1804500735"></a>
+
+## Implements\(ITypeSymbol, INamedTypeSymbol, Boolean\) 
 
   
 Returns true if the type implements specified interface\.
@@ -39,7 +41,9 @@ If true, use [ITypeSymbol.AllInterfaces](https://docs.microsoft.com/en-us/dotnet
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## Implements\(ITypeSymbol, MetadataName, Boolean\) <a id="Roslynator_SymbolExtensions_Implements_Microsoft_CodeAnalysis_ITypeSymbol_Roslynator_MetadataName__System_Boolean_"></a>
+<a id="3538366426"></a>
+
+## Implements\(ITypeSymbol, MetadataName, Boolean\) 
 
   
 Returns true if the type implements specified interface name\.
@@ -60,7 +64,9 @@ public static bool Implements(this Microsoft.CodeAnalysis.ITypeSymbol typeSymbol
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-## Implements\(ITypeSymbol, SpecialType, Boolean\) <a id="Roslynator_SymbolExtensions_Implements_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SpecialType_System_Boolean_"></a>
+<a id="2161671967"></a>
+
+## Implements\(ITypeSymbol, SpecialType, Boolean\) 
 
   
 Returns true if the type implements specified interface\.

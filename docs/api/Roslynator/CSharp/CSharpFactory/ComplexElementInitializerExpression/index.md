@@ -12,10 +12,12 @@ sidebar_label: ComplexElementInitializerExpression
 
 | Method | Summary |
 | ------ | ------- |
-| [ComplexElementInitializerExpression(SeparatedSyntaxList&lt;ExpressionSyntax&gt;)](#Roslynator_CSharp_CSharpFactory_ComplexElementInitializerExpression_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__) | |
-| [ComplexElementInitializerExpression(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_ComplexElementInitializerExpression_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [ComplexElementInitializerExpression(SeparatedSyntaxList&lt;ExpressionSyntax&gt;)](#561848386) | |
+| [ComplexElementInitializerExpression(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken)](#1369186474) | |
 
-## ComplexElementInitializerExpression\(SeparatedSyntaxList&lt;ExpressionSyntax&gt;\) <a id="Roslynator_CSharp_CSharpFactory_ComplexElementInitializerExpression_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__"></a>
+<a id="561848386"></a>
+
+## ComplexElementInitializerExpression\(SeparatedSyntaxList&lt;ExpressionSyntax&gt;\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax ComplexElementInitializerExpression(Microsoft.CodeAnalysis.SeparatedSyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax> expressions = default)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax C
 
 [InitializerExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.initializerexpressionsyntax)
 
-## ComplexElementInitializerExpression\(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_ComplexElementInitializerExpression_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SeparatedSyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax__Microsoft_CodeAnalysis_SyntaxToken_"></a>
+<a id="1369186474"></a>
+
+## ComplexElementInitializerExpression\(SyntaxToken, SeparatedSyntaxList&lt;ExpressionSyntax&gt;, SyntaxToken\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InitializerExpressionSyntax ComplexElementInitializerExpression(Microsoft.CodeAnalysis.SyntaxToken openBraceToken, Microsoft.CodeAnalysis.SeparatedSyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax> expressions, Microsoft.CodeAnalysis.SyntaxToken closeBraceToken)

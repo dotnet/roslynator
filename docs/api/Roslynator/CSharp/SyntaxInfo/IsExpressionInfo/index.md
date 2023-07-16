@@ -12,10 +12,12 @@ sidebar_label: IsExpressionInfo
 
 | Method | Summary |
 | ------ | ------- |
-| [IsExpressionInfo(BinaryExpressionSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_IsExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_BinaryExpressionSyntax_System_Boolean_System_Boolean_) | Creates a new [IsExpressionInfo](../../Syntax/IsExpressionInfo/index.md) from the specified binary expression\. |
-| [IsExpressionInfo(SyntaxNode, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_IsExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_) | Creates a new [IsExpressionInfo](../../Syntax/IsExpressionInfo/index.md) from the specified node\. |
+| [IsExpressionInfo(BinaryExpressionSyntax, Boolean, Boolean)](#2849571983) | Creates a new [IsExpressionInfo](../../Syntax/IsExpressionInfo/index.md) from the specified binary expression\. |
+| [IsExpressionInfo(SyntaxNode, Boolean, Boolean)](#1645034337) | Creates a new [IsExpressionInfo](../../Syntax/IsExpressionInfo/index.md) from the specified node\. |
 
-## IsExpressionInfo\(BinaryExpressionSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_IsExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_BinaryExpressionSyntax_System_Boolean_System_Boolean_"></a>
+<a id="2849571983"></a>
+
+## IsExpressionInfo\(BinaryExpressionSyntax, Boolean, Boolean\) 
 
   
 Creates a new [IsExpressionInfo](../../Syntax/IsExpressionInfo/index.md) from the specified binary expression\.
@@ -36,7 +38,9 @@ public static Roslynator.CSharp.Syntax.IsExpressionInfo IsExpressionInfo(Microso
 
 [IsExpressionInfo](../../Syntax/IsExpressionInfo/index.md)
 
-## IsExpressionInfo\(SyntaxNode, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_IsExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_"></a>
+<a id="1645034337"></a>
+
+## IsExpressionInfo\(SyntaxNode, Boolean, Boolean\) 
 
   
 Creates a new [IsExpressionInfo](../../Syntax/IsExpressionInfo/index.md) from the specified node\.

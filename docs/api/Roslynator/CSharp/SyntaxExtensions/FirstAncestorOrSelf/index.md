@@ -12,12 +12,14 @@ sidebar_label: FirstAncestorOrSelf
 
 | Method | Summary |
 | ------ | ------- |
-| [FirstAncestorOrSelf(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean)](#Roslynator_CSharp_SyntaxExtensions_FirstAncestorOrSelf_Microsoft_CodeAnalysis_SyntaxNode_System_Func_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean__System_Boolean_) | Gets the first ancestor that matches the predicate\. |
-| [FirstAncestorOrSelf(SyntaxNode, SyntaxKind, Boolean)](#Roslynator_CSharp_SyntaxExtensions_FirstAncestorOrSelf_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_) | Gets the first ancestor of the specified kind\. |
-| [FirstAncestorOrSelf(SyntaxNode, SyntaxKind, SyntaxKind, Boolean)](#Roslynator_CSharp_SyntaxExtensions_FirstAncestorOrSelf_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_) | Gets the first ancestor of the specified kinds\. |
-| [FirstAncestorOrSelf(SyntaxNode, SyntaxKind, SyntaxKind, SyntaxKind, Boolean)](#Roslynator_CSharp_SyntaxExtensions_FirstAncestorOrSelf_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_) | Gets the first ancestor of the specified kinds\. |
+| [FirstAncestorOrSelf(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean)](#3332998863) | Gets the first ancestor that matches the predicate\. |
+| [FirstAncestorOrSelf(SyntaxNode, SyntaxKind, Boolean)](#706908351) | Gets the first ancestor of the specified kind\. |
+| [FirstAncestorOrSelf(SyntaxNode, SyntaxKind, SyntaxKind, Boolean)](#1839797174) | Gets the first ancestor of the specified kinds\. |
+| [FirstAncestorOrSelf(SyntaxNode, SyntaxKind, SyntaxKind, SyntaxKind, Boolean)](#280718491) | Gets the first ancestor of the specified kinds\. |
 
-## FirstAncestorOrSelf\(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean\) <a id="Roslynator_CSharp_SyntaxExtensions_FirstAncestorOrSelf_Microsoft_CodeAnalysis_SyntaxNode_System_Func_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean__System_Boolean_"></a>
+<a id="3332998863"></a>
+
+## FirstAncestorOrSelf\(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean\) 
 
   
 Gets the first ancestor that matches the predicate\.
@@ -38,7 +40,9 @@ public static Microsoft.CodeAnalysis.SyntaxNode FirstAncestorOrSelf(this Microso
 
 [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## FirstAncestorOrSelf\(SyntaxNode, SyntaxKind, Boolean\) <a id="Roslynator_CSharp_SyntaxExtensions_FirstAncestorOrSelf_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_"></a>
+<a id="706908351"></a>
+
+## FirstAncestorOrSelf\(SyntaxNode, SyntaxKind, Boolean\) 
 
   
 Gets the first ancestor of the specified kind\.
@@ -59,7 +63,9 @@ public static Microsoft.CodeAnalysis.SyntaxNode FirstAncestorOrSelf(this Microso
 
 [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## FirstAncestorOrSelf\(SyntaxNode, SyntaxKind, SyntaxKind, Boolean\) <a id="Roslynator_CSharp_SyntaxExtensions_FirstAncestorOrSelf_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_"></a>
+<a id="1839797174"></a>
+
+## FirstAncestorOrSelf\(SyntaxNode, SyntaxKind, SyntaxKind, Boolean\) 
 
   
 Gets the first ancestor of the specified kinds\.
@@ -82,7 +88,9 @@ public static Microsoft.CodeAnalysis.SyntaxNode FirstAncestorOrSelf(this Microso
 
 [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## FirstAncestorOrSelf\(SyntaxNode, SyntaxKind, SyntaxKind, SyntaxKind, Boolean\) <a id="Roslynator_CSharp_SyntaxExtensions_FirstAncestorOrSelf_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_"></a>
+<a id="280718491"></a>
+
+## FirstAncestorOrSelf\(SyntaxNode, SyntaxKind, SyntaxKind, SyntaxKind, Boolean\) 
 
   
 Gets the first ancestor of the specified kinds\.

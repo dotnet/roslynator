@@ -6,6 +6,6 @@ sidebar_label: AccessorListSyntax
 
 | Extension Method | Summary |
 | ---------------- | ------- |
-| [Getter(AccessorListSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/Getter/index.md#Roslynator_CSharp_SyntaxExtensions_Getter_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_) | Returns a get accessor contained in the specified list\. |
-| [Setter(AccessorListSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/Setter/index.md#Roslynator_CSharp_SyntaxExtensions_Setter_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_) | Returns a set accessor contained in the specified list\. |
+| [Getter(AccessorListSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/Getter/index.md#3749591364) | Returns a get accessor contained in the specified list\. |
+| [Setter(AccessorListSyntax)](../../../../Roslynator/CSharp/SyntaxExtensions/Setter/index.md#1651493367) | Returns a set accessor contained in the specified list\. |
 

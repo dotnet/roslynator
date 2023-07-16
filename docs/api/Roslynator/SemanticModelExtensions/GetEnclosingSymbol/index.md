@@ -1,10 +1,6 @@
-<<<<<<<< HEAD:docs/api/Roslynator/SemanticModelExtensions/GetEnclosingSymbol/index.md
 ---
 sidebar_label: GetEnclosingSymbol
 ---
-========
-# SemanticModelExtensions\.GetEnclosingSymbol\<TSymbol\>\(SemanticModel, Int32, CancellationToken\) Method
->>>>>>>> main:docs/api/Roslynator/SemanticModelExtensions/GetEnclosingSymbol/README.md
 
 # SemanticModelExtensions\.GetEnclosingSymbol&lt;TSymbol&gt;\(SemanticModel, Int32, CancellationToken\) Method
 

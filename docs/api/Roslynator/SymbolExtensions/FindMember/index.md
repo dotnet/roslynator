@@ -12,25 +12,15 @@ sidebar_label: FindMember
 
 | Method | Summary |
 | ------ | ------- |
-<<<<<<<< HEAD:docs/api/Roslynator/SymbolExtensions/FindMember/index.md
-| [FindMember&lt;TSymbol&gt;(INamedTypeSymbol, Func&lt;TSymbol, Boolean&gt;, Boolean)](#Roslynator_SymbolExtensions_FindMember__1_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Func___0_System_Boolean__System_Boolean_) | Searches for a member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members\. |
-| [FindMember&lt;TSymbol&gt;(INamedTypeSymbol, String, Func&lt;TSymbol, Boolean&gt;, Boolean)](#Roslynator_SymbolExtensions_FindMember__1_Microsoft_CodeAnalysis_INamedTypeSymbol_System_String_System_Func___0_System_Boolean__System_Boolean_) | Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
-| [FindMember&lt;TSymbol&gt;(ITypeSymbol, Func&lt;TSymbol, Boolean&gt;)](#Roslynator_SymbolExtensions_FindMember__1_Microsoft_CodeAnalysis_ITypeSymbol_System_Func___0_System_Boolean__) | Searches for a member that matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
-| [FindMember&lt;TSymbol&gt;(ITypeSymbol, String, Func&lt;TSymbol, Boolean&gt;)](#Roslynator_SymbolExtensions_FindMember__1_Microsoft_CodeAnalysis_ITypeSymbol_System_String_System_Func___0_System_Boolean__) | Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
-
-## FindMember&lt;TSymbol&gt;\(INamedTypeSymbol, Func&lt;TSymbol, Boolean&gt;, Boolean\) <a id="Roslynator_SymbolExtensions_FindMember__1_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Func___0_System_Boolean__System_Boolean_"></a>
-
-========
-| [FindMember\<TSymbol\>(INamedTypeSymbol, Func\<TSymbol, Boolean\>, Boolean)](#996682075) | Searches for a member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members\. |
-| [FindMember\<TSymbol\>(INamedTypeSymbol, String, Func\<TSymbol, Boolean\>, Boolean)](#358208601) | Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
-| [FindMember\<TSymbol\>(ITypeSymbol, Func\<TSymbol, Boolean\>)](#2854901772) | Searches for a member that matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
-| [FindMember\<TSymbol\>(ITypeSymbol, String, Func\<TSymbol, Boolean\>)](#3171999706) | Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
+| [FindMember&lt;TSymbol&gt;(INamedTypeSymbol, Func&lt;TSymbol, Boolean&gt;, Boolean)](#996682075) | Searches for a member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members\. |
+| [FindMember&lt;TSymbol&gt;(INamedTypeSymbol, String, Func&lt;TSymbol, Boolean&gt;, Boolean)](#358208601) | Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
+| [FindMember&lt;TSymbol&gt;(ITypeSymbol, Func&lt;TSymbol, Boolean&gt;)](#2854901772) | Searches for a member that matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
+| [FindMember&lt;TSymbol&gt;(ITypeSymbol, String, Func&lt;TSymbol, Boolean&gt;)](#3171999706) | Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
 
 <a id="996682075"></a>
 
-## FindMember\<TSymbol\>\(INamedTypeSymbol, Func\<TSymbol, Boolean\>, Boolean\) 
+## FindMember&lt;TSymbol&gt;\(INamedTypeSymbol, Func&lt;TSymbol, Boolean&gt;, Boolean\) 
 
->>>>>>>> main:docs/api/Roslynator/SymbolExtensions/FindMember/README.md
   
 Searches for a member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members\.
 
@@ -46,11 +36,7 @@ public static TSymbol FindMember<TSymbol>(this Microsoft.CodeAnalysis.INamedType
 
 **typeSymbol** &ensp; [INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol)
 
-<<<<<<<< HEAD:docs/api/Roslynator/SymbolExtensions/FindMember/index.md
 **predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)&lt;TSymbol, [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)&gt;
-========
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<TSymbol, [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
->>>>>>>> main:docs/api/Roslynator/SymbolExtensions/FindMember/README.md
 
 **includeBaseTypes** &ensp; [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
@@ -58,15 +44,10 @@ public static TSymbol FindMember<TSymbol>(this Microsoft.CodeAnalysis.INamedType
 
 TSymbol
 
-<<<<<<<< HEAD:docs/api/Roslynator/SymbolExtensions/FindMember/index.md
-## FindMember&lt;TSymbol&gt;\(INamedTypeSymbol, String, Func&lt;TSymbol, Boolean&gt;, Boolean\) <a id="Roslynator_SymbolExtensions_FindMember__1_Microsoft_CodeAnalysis_INamedTypeSymbol_System_String_System_Func___0_System_Boolean__System_Boolean_"></a>
-
-========
 <a id="358208601"></a>
 
-## FindMember\<TSymbol\>\(INamedTypeSymbol, String, Func\<TSymbol, Boolean\>, Boolean\) 
+## FindMember&lt;TSymbol&gt;\(INamedTypeSymbol, String, Func&lt;TSymbol, Boolean&gt;, Boolean\) 
 
->>>>>>>> main:docs/api/Roslynator/SymbolExtensions/FindMember/README.md
   
 Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\.
 
@@ -84,11 +65,7 @@ public static TSymbol FindMember<TSymbol>(this Microsoft.CodeAnalysis.INamedType
 
 **name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
-<<<<<<<< HEAD:docs/api/Roslynator/SymbolExtensions/FindMember/index.md
 **predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)&lt;TSymbol, [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)&gt;
-========
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<TSymbol, [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
->>>>>>>> main:docs/api/Roslynator/SymbolExtensions/FindMember/README.md
 
 **includeBaseTypes** &ensp; [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
@@ -96,15 +73,10 @@ public static TSymbol FindMember<TSymbol>(this Microsoft.CodeAnalysis.INamedType
 
 TSymbol
 
-<<<<<<<< HEAD:docs/api/Roslynator/SymbolExtensions/FindMember/index.md
-## FindMember&lt;TSymbol&gt;\(ITypeSymbol, Func&lt;TSymbol, Boolean&gt;\) <a id="Roslynator_SymbolExtensions_FindMember__1_Microsoft_CodeAnalysis_ITypeSymbol_System_Func___0_System_Boolean__"></a>
-
-========
 <a id="2854901772"></a>
 
-## FindMember\<TSymbol\>\(ITypeSymbol, Func\<TSymbol, Boolean\>\) 
+## FindMember&lt;TSymbol&gt;\(ITypeSymbol, Func&lt;TSymbol, Boolean&gt;\) 
 
->>>>>>>> main:docs/api/Roslynator/SymbolExtensions/FindMember/README.md
   
 Searches for a member that matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\.
 
@@ -120,25 +92,16 @@ public static TSymbol FindMember<TSymbol>(this Microsoft.CodeAnalysis.ITypeSymbo
 
 **typeSymbol** &ensp; [ITypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.itypesymbol)
 
-<<<<<<<< HEAD:docs/api/Roslynator/SymbolExtensions/FindMember/index.md
 **predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)&lt;TSymbol, [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)&gt;
-========
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<TSymbol, [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
->>>>>>>> main:docs/api/Roslynator/SymbolExtensions/FindMember/README.md
 
 ### Returns
 
 TSymbol
 
-<<<<<<<< HEAD:docs/api/Roslynator/SymbolExtensions/FindMember/index.md
-## FindMember&lt;TSymbol&gt;\(ITypeSymbol, String, Func&lt;TSymbol, Boolean&gt;\) <a id="Roslynator_SymbolExtensions_FindMember__1_Microsoft_CodeAnalysis_ITypeSymbol_System_String_System_Func___0_System_Boolean__"></a>
-
-========
 <a id="3171999706"></a>
 
-## FindMember\<TSymbol\>\(ITypeSymbol, String, Func\<TSymbol, Boolean\>\) 
+## FindMember&lt;TSymbol&gt;\(ITypeSymbol, String, Func&lt;TSymbol, Boolean&gt;\) 
 
->>>>>>>> main:docs/api/Roslynator/SymbolExtensions/FindMember/README.md
   
 Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\.
 
@@ -156,11 +119,7 @@ public static TSymbol FindMember<TSymbol>(this Microsoft.CodeAnalysis.ITypeSymbo
 
 **name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
-<<<<<<<< HEAD:docs/api/Roslynator/SymbolExtensions/FindMember/index.md
 **predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)&lt;TSymbol, [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)&gt;
-========
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<TSymbol, [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
->>>>>>>> main:docs/api/Roslynator/SymbolExtensions/FindMember/README.md
 
 ### Returns
 

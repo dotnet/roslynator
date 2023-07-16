@@ -12,10 +12,12 @@ sidebar_label: LastIndexOf
 
 | Method | Summary |
 | ------ | ------- |
-| [LastIndexOf(Func&lt;MemberDeclarationSyntax, Boolean&gt;)](#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
-| [LastIndexOf(MemberDeclarationSyntax)](#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | Searches for a member and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(Func&lt;MemberDeclarationSyntax, Boolean&gt;)](#2832811949) | Searches for a member that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(MemberDeclarationSyntax)](#3105192583) | Searches for a member and returns zero\-based index of the last occurrence in the list\. |
 
-## LastIndexOf\(Func&lt;MemberDeclarationSyntax, Boolean&gt;\) <a id="Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__"></a>
+<a id="2832811949"></a>
+
+## LastIndexOf\(Func&lt;MemberDeclarationSyntax, Boolean&gt;\) 
 
   
 Searches for a member that matches the predicate and returns zero\-based index of the last occurrence in the list\.
@@ -32,7 +34,9 @@ public int LastIndexOf(Func<Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarati
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-## LastIndexOf\(MemberDeclarationSyntax\) <a id="Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_"></a>
+<a id="3105192583"></a>
+
+## LastIndexOf\(MemberDeclarationSyntax\) 
 
   
 Searches for a member and returns zero\-based index of the last occurrence in the list\.

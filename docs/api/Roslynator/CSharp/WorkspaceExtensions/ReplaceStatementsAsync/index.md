@@ -12,10 +12,12 @@ sidebar_label: ReplaceStatementsAsync
 
 | Method | Summary |
 | ------ | ------- |
-| [ReplaceStatementsAsync(Document, StatementListInfo, IEnumerable&lt;StatementSyntax&gt;, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_ReplaceStatementsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_StatementListInfo_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__System_Threading_CancellationToken_) | Creates a new document with the specified statements replaced with new statements\. |
-| [ReplaceStatementsAsync(Document, StatementListInfo, SyntaxList&lt;StatementSyntax&gt;, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_ReplaceStatementsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_StatementListInfo_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__System_Threading_CancellationToken_) | Creates a new document with the specified statements replaced with new statements\. |
+| [ReplaceStatementsAsync(Document, StatementListInfo, IEnumerable&lt;StatementSyntax&gt;, CancellationToken)](#1112725449) | Creates a new document with the specified statements replaced with new statements\. |
+| [ReplaceStatementsAsync(Document, StatementListInfo, SyntaxList&lt;StatementSyntax&gt;, CancellationToken)](#1837521881) | Creates a new document with the specified statements replaced with new statements\. |
 
-## ReplaceStatementsAsync\(Document, StatementListInfo, IEnumerable&lt;StatementSyntax&gt;, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_ReplaceStatementsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_StatementListInfo_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__System_Threading_CancellationToken_"></a>
+<a id="1112725449"></a>
+
+## ReplaceStatementsAsync\(Document, StatementListInfo, IEnumerable&lt;StatementSyntax&gt;, CancellationToken\) 
 
   
 Creates a new document with the specified statements replaced with new statements\.
@@ -38,7 +40,9 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 [Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)&lt;[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)&gt;
 
-## ReplaceStatementsAsync\(Document, StatementListInfo, SyntaxList&lt;StatementSyntax&gt;, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_ReplaceStatementsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_StatementListInfo_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__System_Threading_CancellationToken_"></a>
+<a id="1837521881"></a>
+
+## ReplaceStatementsAsync\(Document, StatementListInfo, SyntaxList&lt;StatementSyntax&gt;, CancellationToken\) 
 
   
 Creates a new document with the specified statements replaced with new statements\.

@@ -12,10 +12,12 @@ sidebar_label: LastIndexOf
 
 | Method | Summary |
 | ------ | ------- |
-| [LastIndexOf(Func&lt;UsingDirectiveSyntax, Boolean&gt;)](#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_System_Boolean__) | Searches for an using directive that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
-| [LastIndexOf(UsingDirectiveSyntax)](#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_) | Searches for an using directive and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(Func&lt;UsingDirectiveSyntax, Boolean&gt;)](#3449962221) | Searches for an using directive that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(UsingDirectiveSyntax)](#646248764) | Searches for an using directive and returns zero\-based index of the last occurrence in the list\. |
 
-## LastIndexOf\(Func&lt;UsingDirectiveSyntax, Boolean&gt;\) <a id="Roslynator_CSharp_Syntax_UsingDirectiveListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_System_Boolean__"></a>
+<a id="3449962221"></a>
+
+## LastIndexOf\(Func&lt;UsingDirectiveSyntax, Boolean&gt;\) 
 
   
 Searches for an using directive that matches the predicate and returns zero\-based index of the last occurrence in the list\.
@@ -32,7 +34,9 @@ public int LastIndexOf(Func<Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveS
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-## LastIndexOf\(UsingDirectiveSyntax\) <a id="Roslynator_CSharp_Syntax_UsingDirectiveListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_"></a>
+<a id="646248764"></a>
+
+## LastIndexOf\(UsingDirectiveSyntax\) 
 
   
 Searches for an using directive and returns zero\-based index of the last occurrence in the list\.

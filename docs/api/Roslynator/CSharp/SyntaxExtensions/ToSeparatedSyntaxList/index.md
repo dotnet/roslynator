@@ -12,10 +12,12 @@ sidebar_label: ToSeparatedSyntaxList
 
 | Method | Summary |
 | ------ | ------- |
-| [ToSeparatedSyntaxList&lt;TNode&gt;(IEnumerable&lt;SyntaxNodeOrToken&gt;)](#Roslynator_CSharp_SyntaxExtensions_ToSeparatedSyntaxList__1_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxNodeOrToken__) | Creates a separated list of syntax nodes from a sequence of nodes and tokens\. |
-| [ToSeparatedSyntaxList&lt;TNode&gt;(IEnumerable&lt;TNode&gt;)](#Roslynator_CSharp_SyntaxExtensions_ToSeparatedSyntaxList__1_System_Collections_Generic_IEnumerable___0__) | Creates a separated list of syntax nodes from a sequence of nodes\. |
+| [ToSeparatedSyntaxList&lt;TNode&gt;(IEnumerable&lt;SyntaxNodeOrToken&gt;)](#3594200340) | Creates a separated list of syntax nodes from a sequence of nodes and tokens\. |
+| [ToSeparatedSyntaxList&lt;TNode&gt;(IEnumerable&lt;TNode&gt;)](#2814099200) | Creates a separated list of syntax nodes from a sequence of nodes\. |
 
-## ToSeparatedSyntaxList&lt;TNode&gt;\(IEnumerable&lt;SyntaxNodeOrToken&gt;\) <a id="Roslynator_CSharp_SyntaxExtensions_ToSeparatedSyntaxList__1_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxNodeOrToken__"></a>
+<a id="3594200340"></a>
+
+## ToSeparatedSyntaxList&lt;TNode&gt;\(IEnumerable&lt;SyntaxNodeOrToken&gt;\) 
 
   
 Creates a separated list of syntax nodes from a sequence of nodes and tokens\.
@@ -36,7 +38,9 @@ public static Microsoft.CodeAnalysis.SeparatedSyntaxList<TNode> ToSeparatedSynta
 
 [SeparatedSyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.separatedsyntaxlist-1)&lt;TNode&gt;
 
-## ToSeparatedSyntaxList&lt;TNode&gt;\(IEnumerable&lt;TNode&gt;\) <a id="Roslynator_CSharp_SyntaxExtensions_ToSeparatedSyntaxList__1_System_Collections_Generic_IEnumerable___0__"></a>
+<a id="2814099200"></a>
+
+## ToSeparatedSyntaxList&lt;TNode&gt;\(IEnumerable&lt;TNode&gt;\) 
 
   
 Creates a separated list of syntax nodes from a sequence of nodes\.

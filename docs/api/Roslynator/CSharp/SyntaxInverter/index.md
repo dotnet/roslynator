@@ -28,6 +28,6 @@ public static class SyntaxInverter
 
 | Method | Summary |
 | ------ | ------- |
-| [LogicallyInvert(ExpressionSyntax, CancellationToken)](LogicallyInvert/index.md#Roslynator_CSharp_SyntaxInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_) | Returns new expression that represents logical inversion of the specified expression\. |
-| [LogicallyInvert(ExpressionSyntax, SemanticModel, CancellationToken)](LogicallyInvert/index.md#Roslynator_CSharp_SyntaxInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SemanticModel_System_Threading_CancellationToken_) | Returns new expression that represents logical inversion of the specified expression\. |
+| [LogicallyInvert(ExpressionSyntax, CancellationToken)](LogicallyInvert/index.md#281813151) | Returns new expression that represents logical inversion of the specified expression\. |
+| [LogicallyInvert(ExpressionSyntax, SemanticModel, CancellationToken)](LogicallyInvert/index.md#3337402370) | Returns new expression that represents logical inversion of the specified expression\. |
 

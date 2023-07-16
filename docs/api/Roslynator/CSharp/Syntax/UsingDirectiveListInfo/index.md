@@ -53,13 +53,13 @@ public readonly struct UsingDirectiveListInfo : System.Collections.Generic.IRead
 | [GetEnumerator()](GetEnumerator/index.md) | Gets the enumerator for the list of usings\. |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [IndexOf(Func&lt;UsingDirectiveSyntax, Boolean&gt;)](IndexOf/index.md#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_System_Boolean__) | Searches for an using directive that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
-| [IndexOf(UsingDirectiveSyntax)](IndexOf/index.md#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_) | The index of the using directive in the list\. |
+| [IndexOf(Func&lt;UsingDirectiveSyntax, Boolean&gt;)](IndexOf/index.md#2836230997) | Searches for an using directive that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(UsingDirectiveSyntax)](IndexOf/index.md#1386691920) | The index of the using directive in the list\. |
 | [Insert(Int32, UsingDirectiveSyntax)](Insert/index.md) | Creates a new [UsingDirectiveListInfo](./index.md) with the specified using directive inserted at the index\. |
 | [InsertRange(Int32, IEnumerable&lt;UsingDirectiveSyntax&gt;)](InsertRange/index.md) | Creates a new [UsingDirectiveListInfo](./index.md) with the specified usings inserted at the index\. |
 | [Last()](Last/index.md) | The last using directive in the list\. |
-| [LastIndexOf(Func&lt;UsingDirectiveSyntax, Boolean&gt;)](LastIndexOf/index.md#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_System_Boolean__) | Searches for an using directive that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
-| [LastIndexOf(UsingDirectiveSyntax)](LastIndexOf/index.md#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax_) | Searches for an using directive and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(Func&lt;UsingDirectiveSyntax, Boolean&gt;)](LastIndexOf/index.md#3449962221) | Searches for an using directive that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(UsingDirectiveSyntax)](LastIndexOf/index.md#646248764) | Searches for an using directive and returns zero\-based index of the last occurrence in the list\. |
 | [LastOrDefault()](LastOrDefault/index.md) | The last using directive in the list or null if the list is empty\. |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [Remove(UsingDirectiveSyntax)](Remove/index.md) | Creates a new [UsingDirectiveListInfo](./index.md) with the specified using directive removed\. |
@@ -70,8 +70,8 @@ public readonly struct UsingDirectiveListInfo : System.Collections.Generic.IRead
 | [ReplaceNode(SyntaxNode, SyntaxNode)](ReplaceNode/index.md) | Creates a new [UsingDirectiveListInfo](./index.md) with the specified old node replaced with a new node\. |
 | [ReplaceRange(UsingDirectiveSyntax, IEnumerable&lt;UsingDirectiveSyntax&gt;)](ReplaceRange/index.md) | Creates a new [UsingDirectiveListInfo](./index.md) with the specified using directive replaced with new usings\. |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.tostring) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
-| [WithUsings(IEnumerable&lt;UsingDirectiveSyntax&gt;)](WithUsings/index.md#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__) | Creates a new [UsingDirectiveListInfo](./index.md) with the usings updated\. |
-| [WithUsings(SyntaxList&lt;UsingDirectiveSyntax&gt;)](WithUsings/index.md#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__) | Creates a new [UsingDirectiveListInfo](./index.md) with the usings updated\. |
+| [WithUsings(IEnumerable&lt;UsingDirectiveSyntax&gt;)](WithUsings/index.md#2973635367) | Creates a new [UsingDirectiveListInfo](./index.md) with the usings updated\. |
+| [WithUsings(SyntaxList&lt;UsingDirectiveSyntax&gt;)](WithUsings/index.md#3245135487) | Creates a new [UsingDirectiveListInfo](./index.md) with the usings updated\. |
 
 ## Explicit Interface Implementations
 

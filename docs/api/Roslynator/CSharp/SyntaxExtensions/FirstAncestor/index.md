@@ -12,12 +12,14 @@ sidebar_label: FirstAncestor
 
 | Method | Summary |
 | ------ | ------- |
-| [FirstAncestor(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean)](#Roslynator_CSharp_SyntaxExtensions_FirstAncestor_Microsoft_CodeAnalysis_SyntaxNode_System_Func_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean__System_Boolean_) | Gets the first ancestor that matches the predicate\. |
-| [FirstAncestor(SyntaxNode, SyntaxKind, Boolean)](#Roslynator_CSharp_SyntaxExtensions_FirstAncestor_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_) | Gets the first ancestor of the specified kind\. |
-| [FirstAncestor(SyntaxNode, SyntaxKind, SyntaxKind, Boolean)](#Roslynator_CSharp_SyntaxExtensions_FirstAncestor_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_) | Gets the first ancestor of the specified kinds\. |
-| [FirstAncestor(SyntaxNode, SyntaxKind, SyntaxKind, SyntaxKind, Boolean)](#Roslynator_CSharp_SyntaxExtensions_FirstAncestor_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_) | Gets the first ancestor of the specified kinds\. |
+| [FirstAncestor(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean)](#4122783476) | Gets the first ancestor that matches the predicate\. |
+| [FirstAncestor(SyntaxNode, SyntaxKind, Boolean)](#2319682747) | Gets the first ancestor of the specified kind\. |
+| [FirstAncestor(SyntaxNode, SyntaxKind, SyntaxKind, Boolean)](#3436882574) | Gets the first ancestor of the specified kinds\. |
+| [FirstAncestor(SyntaxNode, SyntaxKind, SyntaxKind, SyntaxKind, Boolean)](#2233565705) | Gets the first ancestor of the specified kinds\. |
 
-## FirstAncestor\(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean\) <a id="Roslynator_CSharp_SyntaxExtensions_FirstAncestor_Microsoft_CodeAnalysis_SyntaxNode_System_Func_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean__System_Boolean_"></a>
+<a id="4122783476"></a>
+
+## FirstAncestor\(SyntaxNode, Func&lt;SyntaxNode, Boolean&gt;, Boolean\) 
 
   
 Gets the first ancestor that matches the predicate\.
@@ -38,7 +40,9 @@ public static Microsoft.CodeAnalysis.SyntaxNode FirstAncestor(this Microsoft.Cod
 
 [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## FirstAncestor\(SyntaxNode, SyntaxKind, Boolean\) <a id="Roslynator_CSharp_SyntaxExtensions_FirstAncestor_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_"></a>
+<a id="2319682747"></a>
+
+## FirstAncestor\(SyntaxNode, SyntaxKind, Boolean\) 
 
   
 Gets the first ancestor of the specified kind\.
@@ -59,7 +63,9 @@ public static Microsoft.CodeAnalysis.SyntaxNode FirstAncestor(this Microsoft.Cod
 
 [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## FirstAncestor\(SyntaxNode, SyntaxKind, SyntaxKind, Boolean\) <a id="Roslynator_CSharp_SyntaxExtensions_FirstAncestor_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_"></a>
+<a id="3436882574"></a>
+
+## FirstAncestor\(SyntaxNode, SyntaxKind, SyntaxKind, Boolean\) 
 
   
 Gets the first ancestor of the specified kinds\.
@@ -82,7 +88,9 @@ public static Microsoft.CodeAnalysis.SyntaxNode FirstAncestor(this Microsoft.Cod
 
 [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## FirstAncestor\(SyntaxNode, SyntaxKind, SyntaxKind, SyntaxKind, Boolean\) <a id="Roslynator_CSharp_SyntaxExtensions_FirstAncestor_Microsoft_CodeAnalysis_SyntaxNode_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_System_Boolean_"></a>
+<a id="2233565705"></a>
+
+## FirstAncestor\(SyntaxNode, SyntaxKind, SyntaxKind, SyntaxKind, Boolean\) 
 
   
 Gets the first ancestor of the specified kinds\.

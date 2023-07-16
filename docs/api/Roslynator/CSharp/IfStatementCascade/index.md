@@ -35,8 +35,8 @@ public readonly struct IfStatementCascade : IEquatable<Roslynator.CSharp.IfState
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(IfStatementCascade)](Equals/index.md#Roslynator_CSharp_IfStatementCascade_Equals_Roslynator_CSharp_IfStatementCascade_) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable&lt;IfStatementCascade&gt;.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](Equals/index.md#Roslynator_CSharp_IfStatementCascade_Equals_System_Object_) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(IfStatementCascade)](Equals/index.md#3739133020) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable&lt;IfStatementCascade&gt;.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](Equals/index.md#3247102308) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 | [GetEnumerator()](GetEnumerator/index.md) | Gets the enumerator for the if\-else cascade\. |
 | [GetHashCode()](GetHashCode/index.md) | Returns the hash code for this instance\. \(Overrides [ValueType.GetHashCode](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |

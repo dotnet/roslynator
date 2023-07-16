@@ -12,10 +12,12 @@ sidebar_label: IndexOf
 
 | Method | Summary |
 | ------ | ------- |
-| [IndexOf(Func&lt;StatementSyntax, Boolean&gt;)](#Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__) | Searches for a statement that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
-| [IndexOf(StatementSyntax)](#Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | The index of the statement in the list\. |
+| [IndexOf(Func&lt;StatementSyntax, Boolean&gt;)](#2005140688) | Searches for a statement that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(StatementSyntax)](#2921438069) | The index of the statement in the list\. |
 
-## IndexOf\(Func&lt;StatementSyntax, Boolean&gt;\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__"></a>
+<a id="2005140688"></a>
+
+## IndexOf\(Func&lt;StatementSyntax, Boolean&gt;\) 
 
   
 Searches for a statement that matches the predicate and returns zero\-based index of the first occurrence in the list\.
@@ -32,7 +34,9 @@ public int IndexOf(Func<Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax, bo
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-## IndexOf\(StatementSyntax\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_"></a>
+<a id="2921438069"></a>
+
+## IndexOf\(StatementSyntax\) 
 
   
 The index of the statement in the list\.
