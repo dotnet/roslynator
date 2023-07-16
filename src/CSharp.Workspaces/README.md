@@ -5,7 +5,7 @@ sidebar_label: Roslynator.CSharp.Workspaces
 
 # Roslynator\.CSharp\.Workspaces
 
-[Namespaces](#namespaces) &#x2022; [Class Hierarchy](#class-hierarchy) &#x2022; [Other](#other)
+[Types](#types) &#x2022; [Class Hierarchy](#class-hierarchy) &#x2022; [Other](#other)
 
 ## Types
 

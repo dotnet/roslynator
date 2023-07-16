@@ -5,7 +5,7 @@ sidebar_label: Roslynator.Core
 
 # Roslynator\.Core
 
-[Namespaces](#namespaces) &#x2022; [Class Hierarchy](#class-hierarchy) &#x2022; [Other](#other)
+[Types](#types) &#x2022; [Class Hierarchy](#class-hierarchy) &#x2022; [Other](#other)
 
 ## Types
 

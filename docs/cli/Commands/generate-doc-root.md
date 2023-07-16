@@ -30,7 +30,6 @@ roslynator generate-doc-root <PROJECT|SOLUTION>
 -p, --properties <NAME=VALUE>
     --root-directory-url <URL>
     --scroll-to-content
-    --target <TARGET>
 -v, --verbosity <LEVEL>
     --visibility <VISIBILITY>
 ```
@@ -122,10 +121,6 @@ Defines a relative url to the documentation root directory\.
 ##### `--scroll-to-content`
 
 Indicates whether a link should lead to the top of the documentation content\. This option is applicable when host is set to 'github'\.
-
-##### `--target <TARGET>`
-
-Defines a target where the content will be hosted\. Allowed values are github or docusaurus\.
 
 ##### `-v, --verbosity <LEVEL>`
 

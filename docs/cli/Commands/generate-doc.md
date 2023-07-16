@@ -4,7 +4,7 @@ sidebar_label: generate-doc
 
 # `roslynator generate-doc`
 
-Generates documentation files from specified assemblies\.
+Generates reference documentation from specified project/solution\.
 
 ## Synopsis
 
@@ -12,18 +12,20 @@ Generates documentation files from specified assemblies\.
 roslynator generate-doc <PROJECT|SOLUTION>
     --additional-xml-documentation <FILE_PATH>
     --depth <DEPTH>
-    --file-layout <LAYOUT>
     --file-log <FILE_PATH>
     --file-log-verbosity <LEVEL>
+    --files-layout <LAYOUT>
     --group-by-common-namespace
     --heading <HEADING>
 -h, --help
+    --host <HOST>
     --ignored-common-parts <IGNORED_COMMON_PARTS>
     --ignored-member-parts <IGNORED_MEMBER_PARTS>
     --ignored-names <FULLY_QUALIFIED_METADATA_NAME>
     --ignored-namespace-parts <IGNORED_NAMESPACE_PARTS>
     --ignored-projects <PROJECT_NAME>
     --ignored-root-parts <IGNORED_ROOT_PARTS>
+    --ignored-title-parts <IGNORED_TITLE_PARTS>
     --ignored-type-parts <IGNORED_TYPE_PARTS>
     --include-all-derived-types
     --include-containing-namespace <INCLUDE_CONTAINING_NAMESPACE>
@@ -47,7 +49,6 @@ roslynator generate-doc <PROJECT|SOLUTION>
     --projects <PROJECT_NAME>
 -p, --properties <NAME=VALUE>
     --scroll-to-content
-    --target <TARGET>
 -v, --verbosity <LEVEL>
     --visibility <VISIBILITY>
 ```
@@ -68,10 +69,6 @@ Defines one or more xml documentation files that should be included\. These file
 
 Defines a depth of a documentation\. Allowed values are member \(default\), type or namespace\.
 
-##### `--file-layout <LAYOUT>`
-
-Defines layout of documentation files\. Allowed values are hierarchical \(default\) or flat\-namespaces\.
-
 ##### `--file-log <FILE_PATH>`
 
 Path to a file that should store output\.
@@ -79,6 +76,10 @@ Path to a file that should store output\.
 ##### `--file-log-verbosity <LEVEL>`
 
 Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
+
+##### `--files-layout <LAYOUT>`
+
+Defines layout of documentation files\. Allowed values are hierarchical \(default\) or flat\-namespaces\.
 
 ##### `--group-by-common-namespace`
 
@@ -91,6 +92,10 @@ Defines a heading of the root documentation file\.
 ##### `-h, --help`
 
 Show command line help\.
+
+##### `--host <HOST>`
+
+Defines a host where the content will be published\. Allowed values are docusaurus, github or sphinx\.
 
 ##### `--ignored-common-parts <IGNORED_COMMON_PARTS>`
 
@@ -115,6 +120,10 @@ Defines projects that should not be analyzed\.
 ##### `--ignored-root-parts <IGNORED_ROOT_PARTS>`
 
 Defines parts of a root documentation that should be excluded\. Allowed values are content, namespaces, class\-hierarchy, types and other\.
+
+##### `--ignored-title-parts <IGNORED_TITLE_PARTS>`
+
+Defines title parts of a documentation that should be excluded\. Allowed value is containing\-namespace, containing\-type, parameters and explicit\-implementation\.
 
 ##### `--ignored-type-parts <IGNORED_TYPE_PARTS>`
 
@@ -206,11 +215,7 @@ Defines one or more MSBuild properties\.
 
 ##### `--scroll-to-content`
 
-Indicates whether a link should lead to the top of the documentation content\.
-
-##### `--target <TARGET>`
-
-Defines a target where the content will be hosted\. Allowed values are github or docusaurus\.
+Indicates whether a link should lead to the top of the documentation content\. This option is applicable when host is set to 'github'\.
 
 ##### `-v, --verbosity <LEVEL>`
 
