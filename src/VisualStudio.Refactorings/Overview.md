@@ -1,10 +1,10 @@
 ## Overview
 
-* A collection of 300+ refactorings and fixes for C#, powered by [Roslyn](http://github.com/dotnet/roslyn).
-* [Project website](http://github.com/JosefPihrt/Roslynator)
-* [List of refactorings](http://github.com/JosefPihrt/Roslynator/blob/main/src/Refactorings/README.md)
-* [List of code fixes for CS diagnostics](http://github.com/JosefPihrt/Roslynator/blob/main/src/CodeFixes/README.md)
-* [Release notes](http://github.com/JosefPihrt/Roslynator/blob/main/ChangeLog.md)
+* A collection of 300+ refactorings and fixes for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
+* [Project website](https://github.com/JosefPihrt/Roslynator)
+* [List of refactorings](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/README.md)
+* [List of code fixes for CS diagnostics](https://github.com/JosefPihrt/Roslynator/blob/main/docs/cs/README.md)
+* [Release notes](https://github.com/JosefPihrt/Roslynator/blob/main/ChangeLog.md)
 
 ## Donation
 
@@ -17,5 +17,5 @@ Although Roslynator Refactorings is free of charge, any [donation](https://www.p
 
 ## Documentation
 
-* [How to Configure Roslynator](http://github.com/JosefPihrt/Roslynator/blob/main/docs/Configuration.md)
-* [Analyzers vs. Refactorings](http://github.com/JosefPihrt/Roslynator/blob/main/docs/AnalyzersVsRefactorings.md)
+* [How to Configure Roslynator](https://github.com/JosefPihrt/Roslynator/blob/main/docs/Configuration.md)
+* [Analyzers vs. Refactorings](https://github.com/JosefPihrt/Roslynator/blob/main/docs/AnalyzersVsRefactorings.md)

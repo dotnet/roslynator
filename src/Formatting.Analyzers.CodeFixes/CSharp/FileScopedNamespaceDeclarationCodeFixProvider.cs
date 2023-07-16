@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,9 +11,8 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
-using Roslynator.Formatting.CSharp;
 using Roslynator.CSharp.CodeStyle;
-using System.Diagnostics;
+using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp;
 
@@ -34,8 +34,8 @@ public sealed class FileScopedNamespaceDeclarationCodeFixProvider : BaseCodeFixP
 
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
-        MemberDeclarationSyntax member = fileScopedNamespace.Members[0];
-        BlankLineStyle style = BlankLineAfterFileScopedNamespaceDeclarationAnalyzer.GetCurrentStyle(fileScopedNamespace, member);
+        SyntaxNode node = BlankLineAfterFileScopedNamespaceDeclarationAnalyzer.GetNodeAfterNamespaceDeclaration(fileScopedNamespace);
+        BlankLineStyle style = BlankLineAfterFileScopedNamespaceDeclarationAnalyzer.GetCurrentStyle(fileScopedNamespace, node);
 
         if (style == BlankLineStyle.Add)
         {
@@ -43,17 +43,17 @@ public sealed class FileScopedNamespaceDeclarationCodeFixProvider : BaseCodeFixP
                 CodeFixTitles.AddBlankLine,
                 ct =>
                 {
-                    MemberDeclarationSyntax newMember;
+                    SyntaxNode newNode;
                     if (!fileScopedNamespace.SemicolonToken.TrailingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
                     {
-                        newMember = member.PrependToLeadingTrivia(new SyntaxTrivia[] { CSharpFactory.NewLine(), CSharpFactory.NewLine() });
+                        newNode = node.PrependToLeadingTrivia(new SyntaxTrivia[] { CSharpFactory.NewLine(), CSharpFactory.NewLine() });
                     }
                     else
                     {
-                        newMember = member.PrependEndOfLineToLeadingTrivia();
+                        newNode = node.PrependEndOfLineToLeadingTrivia();
                     }
 
-                    return document.ReplaceNodeAsync(member, newMember, ct);
+                    return document.ReplaceNodeAsync(node, newNode, ct);
                 },
                 GetEquivalenceKey(diagnostic));
 
@@ -63,7 +63,7 @@ public sealed class FileScopedNamespaceDeclarationCodeFixProvider : BaseCodeFixP
         {
             CodeAction codeAction = CodeAction.Create(
                 CodeFixTitles.RemoveBlankLine,
-                ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, member.GetFirstToken(), ct),
+                ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, node.GetFirstToken(), ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

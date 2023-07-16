@@ -247,6 +247,28 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_GetterTrailingComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string P [|=> null|]; // some comment
+}
+", @"
+class C
+{
+    string P
+    {
+        get
+        {
+            return null;// some comment
+        }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Block));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
     public async Task Test_PropertyWithGetter_MultilineExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"

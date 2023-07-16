@@ -61,7 +61,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
             try
             {
-                var status = CommandStatus.NotSuccess;
+                var status = CommandStatus.Success;
                 var results = new List<TCommandResult>();
 
                 foreach (string path in paths)
@@ -81,11 +81,8 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
                     results.Add(result);
 
-                    if (status != CommandStatus.Fail
-                        && result.Status != CommandStatus.NotSuccess)
-                    {
+                    if (status == CommandStatus.Success)
                         status = result.Status;
-                    }
 
                     if (status == CommandStatus.Canceled)
                         break;

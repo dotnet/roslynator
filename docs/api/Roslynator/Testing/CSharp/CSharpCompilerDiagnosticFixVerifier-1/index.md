@@ -25,6 +25,7 @@ public abstract class CSharpCompilerDiagnosticFixVerifier<TFixProvider> : Roslyn
 
 ### Derived
 
+* [MSTestCompilerDiagnosticFixVerifier\<TFixProvider\>](../MSTest/MSTestCompilerDiagnosticFixVerifier-1/README.md)
 * [XunitCompilerDiagnosticFixVerifier&lt;TFixProvider&gt;](../Xunit/XunitCompilerDiagnosticFixVerifier-1/index.md)
 
 ## Properties

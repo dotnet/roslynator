@@ -1,0 +1,23 @@
+{
+  "solution": {
+    "path": "Roslynator.sln",
+    "projects": [
+      "CSharp.Workspaces\\CSharp.Workspaces.csproj",
+      "CSharp\\CSharp.csproj",
+      "Core\\Core.csproj",
+      "Tests\\CSharp.Tests\\CSharp.Tests.csproj",
+      "Tests\\CSharp.Workspaces.Tests\\CSharp.Workspaces.Tests.csproj",
+      "Tests\\Core.Tests\\Core.Tests.csproj",
+      "Tests\\Testing.CSharp.MSTest\\Testing.CSharp.MSTest.csproj",
+      "Tests\\Testing.CSharp.Xunit\\Testing.CSharp.Xunit.csproj",
+      "Tests\\Testing.CSharp\\Testing.CSharp.csproj",
+      "Tests\\Testing.Common\\Testing.Common.csproj",
+      "Tests\\Testing.VisualBasic\\Testing.VisualBasic.csproj",
+      "Tests\\Tests.Common\\Tests.Common.csproj",
+      "VisualBasic.Workspaces\\VisualBasic.Workspaces.csproj",
+      "VisualBasic\\VisualBasic.csproj",
+      "Workspaces.Common\\Workspaces.Common.csproj",
+      "Workspaces.Core\\Workspaces.Core.csproj"
+    ]
+  }
+}

@@ -208,4 +208,21 @@ class FooEventArgs
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
+    public async Task TestNoDiagnostic_EventArgsIsRefStruct()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public delegate void CustomEventHandler(object sender, RefStructEventArgs e);
+
+public readonly ref struct RefStructEventArgs
+{
+}
+
+public interface IEventTest
+{
+    event CustomEventHandler CustomEvent;
+}
+");
+    }
 }

@@ -84,7 +84,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
         }
 
         return new AnalyzeCommandResult(
-            (results.Any(f => f.Diagnostics.Length > 0)) ? CommandStatus.NotSuccess : CommandStatus.Success,
+            (results.Any(f => f.Diagnostics.Length > 0 || f.CompilerDiagnostics.Length > 0)) ? CommandStatus.NotSuccess : CommandStatus.Success,
             results);
     }
 
@@ -96,7 +96,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
             WriteAnalysisResults(analysisResults);
 
         if (Options.Output is not null
-            && analysisResults.Any(f => f.Diagnostics.Any()))
+            && analysisResults.Any(f => f.Diagnostics.Any() || f.CompilerDiagnostics.Any()))
         {
             CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 

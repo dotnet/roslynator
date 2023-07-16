@@ -191,7 +191,7 @@ internal static class SymbolExtensions
                             case "this":
                                 {
                                     if ((additionalOptions & SymbolDisplayAdditionalMemberOptions.UseItemPropertyName) != 0
-                                        && (symbol as IPropertySymbol)?.IsIndexer == true)
+                                        && symbol is IPropertySymbol { IsIndexer: true })
                                     {
                                         parts = parts.Replace(part, SymbolDisplayPartFactory.PropertyName("Item", part.Symbol));
                                     }
@@ -211,7 +211,8 @@ internal static class SymbolExtensions
                                         if (name.StartsWith("op_", StringComparison.Ordinal)
                                             && i < length - 2
                                             && parts[i + 1].IsSpace()
-                                            && parts[i + 2].Kind == SymbolDisplayPartKind.MethodName)
+                                            && parts[i + 2].Kind == SymbolDisplayPartKind.Operator
+                                            && parts[i + 2].Symbol is IMethodSymbol { MethodKind: MethodKind.UserDefinedOperator })
                                         {
                                             parts = parts.Replace(parts[i + 2], SymbolDisplayPartFactory.MethodName(name.Substring(3), parts[i + 2].Symbol));
                                             parts = parts.RemoveRange(i, 2);

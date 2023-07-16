@@ -3223,6 +3223,8 @@ public static class SyntaxExtensions
                 case SyntaxKind.IfDirectiveTrivia:
                 case SyntaxKind.ElifDirectiveTrivia:
                 case SyntaxKind.WhenClause:
+                case SyntaxKind.BaseConstructorInitializer:
+                case SyntaxKind.ThisConstructorInitializer:
                     {
                         return false;
                     }
@@ -4211,10 +4213,15 @@ public static class SyntaxExtensions
     #region UsingDirectiveSyntax
     internal static IdentifierNameSyntax GetRootNamespace(this UsingDirectiveSyntax usingDirective)
     {
-        if (usingDirective.Name is IdentifierNameSyntax identifierName)
+        NameSyntax name = usingDirective.Name;
+
+        if (name is AliasQualifiedNameSyntax aliasQualifiedName)
+            name = aliasQualifiedName.Name;
+
+        if (name is IdentifierNameSyntax identifierName)
             return identifierName;
 
-        if (usingDirective.Name is QualifiedNameSyntax qualifiedName)
+        if (name is QualifiedNameSyntax qualifiedName)
         {
             NameSyntax left;
 
@@ -4233,7 +4240,7 @@ public static class SyntaxExtensions
         }
         else
         {
-            SyntaxDebug.Fail(usingDirective.Name);
+            SyntaxDebug.Fail(name);
         }
 
         return null;

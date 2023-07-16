@@ -25,6 +25,7 @@ public abstract class CSharpRefactoringVerifier<TRefactoringProvider> : Roslynat
 
 ### Derived
 
+* [MSTestRefactoringVerifier\<TRefactoringProvider\>](../MSTest/MSTestRefactoringVerifier-1/README.md)
 * [XunitRefactoringVerifier&lt;TRefactoringProvider&gt;](../Xunit/XunitRefactoringVerifier-1/index.md)
 
 ## Properties

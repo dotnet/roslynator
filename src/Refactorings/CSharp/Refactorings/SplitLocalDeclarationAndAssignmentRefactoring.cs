@@ -16,6 +16,9 @@ internal static class SplitLocalDeclarationAndAssignmentRefactoring
         RefactoringContext context,
         LocalDeclarationStatementSyntax localDeclaration)
     {
+        if (!context.Span.IsEmpty)
+            return;
+
         StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(localDeclaration);
 
         if (!statementsInfo.Success)
@@ -23,18 +26,12 @@ internal static class SplitLocalDeclarationAndAssignmentRefactoring
 
         SingleLocalDeclarationStatementInfo localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(localDeclaration);
 
-        if (!localInfo.Success)
-            return;
-
-        if (!context.Span.IsEmpty
-            && context.Span.Start == localInfo.EqualsToken.SpanStart)
-        {
-            return;
-        }
-
         ExpressionSyntax value = localInfo.Value;
 
         if (value is null)
+            return;
+
+        if (context.Span.Start != localInfo.EqualsToken.SpanStart)
             return;
 
         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

@@ -342,7 +342,7 @@ internal class SymbolRenamer
                     {
                         if (symbol.Kind == SymbolKind.Method
                             || (symbol.IsKind(SymbolKind.Parameter, SymbolKind.TypeParameter)
-                                && (symbol.ContainingSymbol as IMethodSymbol)?.MethodKind == MethodKind.LocalFunction))
+                                && symbol.ContainingSymbol is IMethodSymbol { MethodKind: MethodKind.LocalFunction }))
                         {
                             (localFunctionIndexes ??= new HashSet<int>()).Add(i);
                         }
@@ -1026,7 +1026,7 @@ internal class SymbolRenamer
                         id = symbol.Name;
                         ISymbol cs = symbol.ContainingSymbol;
 
-                        while ((cs as IMethodSymbol)?.MethodKind == MethodKind.LocalFunction)
+                        while (cs is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
                         {
                             id = cs.Name + "." + id;
                             cs = cs.ContainingSymbol;
@@ -1052,7 +1052,7 @@ internal class SymbolRenamer
                             id = cs.Name + " " + symbol.Name;
                             cs = cs.ContainingSymbol;
 
-                            while ((cs as IMethodSymbol)?.MethodKind == MethodKind.LocalFunction)
+                            while (cs is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
                             {
                                 id = cs.Name + "." + id;
                                 cs = cs.ContainingSymbol;
