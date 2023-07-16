@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1257RemoveEmptySyntaxTests : AbstractCSharpDiagnosticVerifier<RemoveEmptySyntaxAnalyzer, RemoveEmptySyntaxCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptySyntax;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_Destructor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1257RemoveEmptySyntaxTests : AbstractCSharpDiagnosticVerifier<RemoveEmptySyntaxAnalyzer, RemoveEmptySyntaxCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptySyntax;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_Destructor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -36,12 +36,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_Destructor_IfDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_Destructor_IfDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 #define A
 class C
 {
@@ -52,12 +52,12 @@ class C
 #endif
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_Destructor_NotEmpty()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_Destructor_NotEmpty()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -70,12 +70,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_ElseClause()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_ElseClause()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -103,12 +103,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_ElseClause_ElseIf()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_ElseClause_ElseIf()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -124,12 +124,12 @@ class C
 }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_ElseClause_NonEmptyElse()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_ElseClause_NonEmptyElse()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -146,12 +146,12 @@ class C
 }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_ElseClause_IfElseEmbeddedInIfWithElse()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_ElseClause_IfElseEmbeddedInIfWithElse()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -167,12 +167,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_ElseClause_IfElseEmbeddedInIfWithElse2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_ElseClause_IfElseEmbeddedInIfWithElse2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -188,12 +188,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_FinallyClause_TryCatchFinally()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_FinallyClause_TryCatchFinally()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -223,12 +223,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_FinallyClause_TryFinally()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_FinallyClause_TryFinally()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -259,12 +259,12 @@ class C
     string M2() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_FinallyClause_NonEmptyFinally()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_FinallyClause_NonEmptyFinally()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -282,12 +282,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_ObjectInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_ObjectInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -304,12 +304,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_ObjectInitializer2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_ObjectInitializer2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -374,12 +374,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_ObjectInitializer_ExpressionTree()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_ObjectInitializer_ExpressionTree()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq.Expressions;
 
@@ -391,12 +391,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_Namespace()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_Namespace()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Linq.Expressions;
 
@@ -421,12 +421,12 @@ namespace N1
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_RegionDirective()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_RegionDirective()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N1
 {
     class C
@@ -443,12 +443,12 @@ namespace N1
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task Test_EmptyStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_EmptyStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N1
 {
     class C
@@ -473,12 +473,12 @@ namespace N1
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
-        public async Task TestNoDiagnostic_EmptyStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_EmptyStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 namespace N1
 {
     class C
@@ -491,6 +491,5 @@ namespace N1
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0642"));
-        }
     }
 }
