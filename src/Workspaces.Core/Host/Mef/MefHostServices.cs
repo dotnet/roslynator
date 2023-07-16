@@ -11,113 +11,112 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Host.Mef
+namespace Roslynator.Host.Mef;
+
+internal class MefHostServices
 {
-    internal class MefHostServices
+    private static MefHostServices _default;
+    private static ImmutableArray<Assembly> _defaultAssemblies;
+
+    private readonly CompositionContext _compositionContext;
+
+    public MefHostServices(CompositionContext compositionContext)
     {
-        private static MefHostServices _default;
-        private static ImmutableArray<Assembly> _defaultAssemblies;
+        _compositionContext = compositionContext;
+    }
 
-        private readonly CompositionContext _compositionContext;
-
-        public MefHostServices(CompositionContext compositionContext)
+    public static MefHostServices Default
+    {
+        get
         {
-            _compositionContext = compositionContext;
-        }
-
-        public static MefHostServices Default
-        {
-            get
+            if (_default is null)
             {
-                if (_default is null)
-                {
-                    MefHostServices services = Create(DefaultAssemblies);
-                    Interlocked.CompareExchange(ref _default, services, null);
-                }
-
-                return _default;
+                MefHostServices services = Create(DefaultAssemblies);
+                Interlocked.CompareExchange(ref _default, services, null);
             }
-        }
 
-        public static ImmutableArray<Assembly> DefaultAssemblies
+            return _default;
+        }
+    }
+
+    public static ImmutableArray<Assembly> DefaultAssemblies
+    {
+        get
         {
-            get
-            {
-                if (_defaultAssemblies.IsDefault)
-                    ImmutableInterlocked.InterlockedInitialize(ref _defaultAssemblies, LoadDefaultAssemblies());
+            if (_defaultAssemblies.IsDefault)
+                ImmutableInterlocked.InterlockedInitialize(ref _defaultAssemblies, LoadDefaultAssemblies());
 
-                return _defaultAssemblies;
-            }
+            return _defaultAssemblies;
         }
+    }
 
-        public static MefHostServices Create(CompositionContext compositionContext)
+    public static MefHostServices Create(CompositionContext compositionContext)
+    {
+        if (compositionContext is null)
+            throw new ArgumentNullException(nameof(compositionContext));
+
+        return new MefHostServices(compositionContext);
+    }
+
+    public static MefHostServices Create(IEnumerable<Assembly> assemblies)
+    {
+        if (assemblies is null)
+            throw new ArgumentNullException(nameof(assemblies));
+
+        ContainerConfiguration compositionConfiguration = new ContainerConfiguration().WithAssemblies(assemblies);
+
+        CompositionHost container = compositionConfiguration.CreateContainer();
+
+        return new MefHostServices(container);
+    }
+
+    private static ImmutableArray<Assembly> LoadDefaultAssemblies()
+    {
+        return GetAssemblyNames()
+            .Select(f => TryLoadAssembly(f))
+            .Where(f => f is not null)
+            .ToImmutableArray();
+
+        static IEnumerable<string> GetAssemblyNames()
         {
-            if (compositionContext is null)
-                throw new ArgumentNullException(nameof(compositionContext));
+            AssemblyName assemblyName = typeof(MefHostServices).GetTypeInfo().Assembly.GetName();
+            Version assemblyVersion = assemblyName.Version;
+            string publicKeyToken = assemblyName.GetPublicKeyToken().Aggregate("", (s, b) => s + b.ToString("x2"));
 
-            return new MefHostServices(compositionContext);
+            string prefix = Regex.Match(assemblyName.Name, @"\A.*Roslynator(?=\..*\z)", RegexOptions.RightToLeft).Value;
+
+            yield return $"{prefix}.CSharp.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken={publicKeyToken}";
+            yield return $"{prefix}.VisualBasic.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken={publicKeyToken}";
         }
+    }
 
-        public static MefHostServices Create(IEnumerable<Assembly> assemblies)
+    private static Assembly TryLoadAssembly(string assemblyName)
+    {
+        try
         {
-            if (assemblies is null)
-                throw new ArgumentNullException(nameof(assemblies));
-
-            ContainerConfiguration compositionConfiguration = new ContainerConfiguration().WithAssemblies(assemblies);
-
-            CompositionHost container = compositionConfiguration.CreateContainer();
-
-            return new MefHostServices(container);
+            return Assembly.Load(new AssemblyName(assemblyName));
         }
-
-        private static ImmutableArray<Assembly> LoadDefaultAssemblies()
+        catch (Exception)
         {
-            return GetAssemblyNames()
-                .Select(f => TryLoadAssembly(f))
-                .Where(f => f is not null)
-                .ToImmutableArray();
-
-            static IEnumerable<string> GetAssemblyNames()
-            {
-                AssemblyName assemblyName = typeof(MefHostServices).GetTypeInfo().Assembly.GetName();
-                Version assemblyVersion = assemblyName.Version;
-                string publicKeyToken = assemblyName.GetPublicKeyToken().Aggregate("", (s, b) => s + b.ToString("x2"));
-
-                string prefix = Regex.Match(assemblyName.Name, @"\A.*Roslynator(?=\..*\z)", RegexOptions.RightToLeft).Value;
-
-                yield return $"{prefix}.CSharp.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken={publicKeyToken}";
-                yield return $"{prefix}.VisualBasic.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken={publicKeyToken}";
-            }
+            return null;
         }
+    }
 
-        private static Assembly TryLoadAssembly(string assemblyName)
-        {
-            try
-            {
-                return Assembly.Load(new AssemblyName(assemblyName));
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
+    public IEnumerable<Lazy<TExtension>> GetExports<TExtension>()
+    {
+        return _compositionContext.GetExports<TExtension>().Select(e => new Lazy<TExtension>(() => e));
+    }
 
-        public IEnumerable<Lazy<TExtension>> GetExports<TExtension>()
-        {
-            return _compositionContext.GetExports<TExtension>().Select(e => new Lazy<TExtension>(() => e));
-        }
+    public IEnumerable<Lazy<TExtension, TMetadata>> GetExports<TExtension, TMetadata>()
+    {
+        var importer = new WithMetadataImporter<TExtension, TMetadata>();
+        _compositionContext.SatisfyImports(importer);
+        return importer.Exports;
+    }
 
-        public IEnumerable<Lazy<TExtension, TMetadata>> GetExports<TExtension, TMetadata>()
-        {
-            var importer = new WithMetadataImporter<TExtension, TMetadata>();
-            _compositionContext.SatisfyImports(importer);
-            return importer.Exports;
-        }
-
-        private class WithMetadataImporter<TExtension, TMetadata>
-        {
-            [ImportMany]
-            public IEnumerable<Lazy<TExtension, TMetadata>> Exports { get; set; }
-        }
+    private class WithMetadataImporter<TExtension, TMetadata>
+    {
+        [ImportMany]
+        public IEnumerable<Lazy<TExtension, TMetadata>> Exports { get; set; }
     }
 }

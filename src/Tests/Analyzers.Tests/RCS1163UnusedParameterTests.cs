@@ -204,4 +204,37 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_DependencyPropertyEventArgs()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Windows;
+
+static class C
+{
+    public static void M(this Foo foo)
+    {
+        foo.Changed += Foo_Changed;
+
+        void Foo_Changed(object sender, DependencyPropertyChangedEventArgs e)
+        {
+        }
+    }
+}
+
+public class Foo
+{
+    public event EventHandler<DependencyPropertyChangedEventArgs> Changed;
+}
+
+namespace System.Windows
+{
+    public class DependencyPropertyChangedEventArgs
+    {
+    }
+}
+ ");
+    }
 }

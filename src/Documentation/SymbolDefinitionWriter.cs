@@ -93,7 +93,8 @@ internal abstract class SymbolDefinitionWriter : IDisposable
                     kindOptions: SymbolDisplayKindOptions.IncludeNamespaceKeyword
                         | SymbolDisplayKindOptions.IncludeTypeKeyword
                         | SymbolDisplayKindOptions.IncludeMemberKeyword,
-                    miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+                    miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                        | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 
                 format = Format.Update(format);
 
@@ -756,18 +757,11 @@ internal abstract class SymbolDefinitionWriter : IDisposable
 
     protected virtual void WriteAttributeName(ISymbol symbol)
     {
-        SymbolDisplayFormat format = GetAttributeNameFormat(symbol);
-
-        ImmutableArray<SymbolDisplayPart> parts = symbol.ToDisplayParts(format);
+        ImmutableArray<SymbolDisplayPart> parts = symbol.ToDisplayParts(_definitionNameFormat);
 
         parts = SymbolDefinitionWriterHelpers.RemoveAttributeSuffix(symbol, parts);
 
         Write(parts);
-    }
-
-    protected SymbolDisplayFormat GetAttributeNameFormat(ISymbol symbol)
-    {
-        return _definitionNameFormat;
     }
 
     public virtual void WriteAttribute(AttributeData attribute)

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>$(RoslynatorFormattingAnalyzersVersion)</Version>
+    <Version>$(RoslynatorAnalyzersVersion)</Version>
     <AssemblyName>Roslynator.Formatting.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.Formatting</RootNamespace>
     <IsPackable>false</IsPackable>
@@ -22,6 +22,15 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Roslynator.Formatting.Analyzers.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Roslynator.Formatting.Analyzers.CodeFixes, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

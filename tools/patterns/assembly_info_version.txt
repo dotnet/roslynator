@@ -1,4 +1,0 @@
-(?x)
-(?<=\[assembly:\ AssemblyVersion\(")
-\d+\.\d+\.\d+\.\d+
-(?="\)])

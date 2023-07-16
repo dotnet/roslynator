@@ -21,7 +21,7 @@ public sealed class SymbolDocumentationProvider
 
     private readonly Dictionary<IAssemblySymbol, XmlDocumentation> _xmlDocumentations;
 
-    private ImmutableArray<string> _additionalXmlDocumentationPaths;
+    private readonly ImmutableArray<string> _additionalXmlDocumentationPaths;
 
     private ImmutableArray<XmlDocumentation> _additionalXmlDocumentations;
 

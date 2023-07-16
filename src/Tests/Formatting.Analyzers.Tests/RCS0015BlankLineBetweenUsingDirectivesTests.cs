@@ -37,6 +37,30 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
+    public async Task Test_AddEmptyLine_GlobalAlias()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using global::System;[||]
+using Microsoft.CodeAnalysis;[||]
+using System.Threading;
+
+class C
+{
+}
+", @"
+using global::System;
+
+using Microsoft.CodeAnalysis;
+
+using System.Threading;
+
+class C
+{
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_SeparateGroups));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
     public async Task Test_RemoveEmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"

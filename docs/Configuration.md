@@ -33,15 +33,21 @@ if an analyzer is enabled but required option is not set. ROS0003 is disabled by
 
 ## Default Configuration
 
-If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file.
-Default configuration file can be used with extension for Visual Studio or VS code.
+If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file (`.roslynatorconfig`).
 
-### Format of Default Configuration File
+**IMPORTANT:** Default configuration file can be used only with VS extension or VS code extension.
+
+### Format
 
 Format of the file is same as format of [global AnalyzerConfig](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/configuration-files#global-analyzerconfig).
-It essentially means that file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`).
+Namely, file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`), For example:
 
-### Location of Default Configuration File
+```ini
+is_global = true
+roslynator_analyzers.enabled_by_default = true
+```
+
+### Location
 
 Configuration file is located at `%LOCALAPPDATA%/JosefPihrt/Roslynator/.roslynatorconfig`.
 Location of `%LOCALAPPDATA%` depends on the operating system:
@@ -74,6 +80,9 @@ roslynator_arrow_token_new_line = after|before
 
 roslynator_binary_operator_new_line = after|before
 # Applicable to: rcs0027
+
+roslynator_blank_line_after_file_scoped_namespace_declaration = true|false
+# Applicable to: rcs0060
 
 roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 # Applicable to: rcs0014, rcs1036
@@ -326,6 +335,10 @@ dotnet_diagnostic.rcs0058.severity = none
 dotnet_diagnostic.rcs0059.severity = none
 # Options: roslynator_null_conditional_operator_new_line
 
+# Add/remove line after file scoped namespace declaration
+dotnet_diagnostic.rcs0060.severity = none
+# Options: roslynator_blank_line_after_file_scoped_namespace_declaration
+
 # Add braces (when expression spans over multiple lines)
 dotnet_diagnostic.rcs1001.severity = suggestion
 
@@ -508,7 +521,7 @@ dotnet_diagnostic.rcs1078.severity = none
 dotnet_diagnostic.rcs1079.severity = none
 
 # Use 'Count/Length' property instead of 'Any' method
-dotnet_diagnostic.rcs1080.severity = suggestion
+dotnet_diagnostic.rcs1080.severity = none
 
 # Split variable declaration
 dotnet_diagnostic.rcs1081.severity = none
@@ -935,6 +948,12 @@ dotnet_diagnostic.rcs1254.severity = suggestion
 
 # Unnecessary enum flag
 dotnet_diagnostic.rcs1255.severity = suggestion
+
+# Simplify argument null check
+dotnet_diagnostic.rcs1255.severity = none
+
+# Invalid argument null check
+dotnet_diagnostic.rcs1256.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent

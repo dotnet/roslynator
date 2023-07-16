@@ -172,6 +172,27 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_RemoveEmptyLine_UsingAfter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+namespace N;
+[||]using System;
+
+public class C
+{
+}
+", @"
+namespace N;
+
+using System;
+
+public class C
+{
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
     public async Task Test_RemoveEmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"

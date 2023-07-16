@@ -5,6 +5,11 @@ root = true
 
 # Code files
 [*.{cs,csx}]
+
+dotnet_sort_system_directives_first = true
+
+csharp_style_namespace_declarations = file_scoped:suggestion
+
 roslynator_accessibility_modifiers = explicit
 roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line
 roslynator_array_creation_type_style = implicit_when_type_is_obvious
@@ -38,8 +43,6 @@ roslynator_enum_flag_value_style = shift_operator
 roslynator_blank_line_after_file_scoped_namespace_declaration = true
 roslynator_null_check_style = pattern_matching
 
-csharp_style_namespace_declarations = file_scoped:suggestion
-
 dotnet_diagnostic.RCS0001.severity = suggestion
 dotnet_diagnostic.RCS0003.severity = suggestion
 dotnet_diagnostic.RCS0004.severity = suggestion
@@ -67,7 +70,6 @@ dotnet_diagnostic.RCS0039.severity = suggestion
 dotnet_diagnostic.RCS0041.severity = suggestion
 dotnet_diagnostic.RCS0042.severity = suggestion
 dotnet_diagnostic.RCS0043.severity = suggestion
-dotnet_diagnostic.RCS0044.severity = suggestion
 dotnet_diagnostic.RCS0046.severity = suggestion
 dotnet_diagnostic.RCS0048.severity = silent
 dotnet_diagnostic.RCS0049.severity = suggestion
@@ -117,7 +119,6 @@ dotnet_diagnostic.RCS1083.severity = suggestion
 dotnet_diagnostic.RCS1090.severity = suggestion
 dotnet_diagnostic.RCS1091.severity = suggestion
 dotnet_diagnostic.RCS1096.severity = warning
-dotnet_diagnostic.RCS1111.severity = suggestion
 dotnet_diagnostic.RCS1124.severity = suggestion
 dotnet_diagnostic.RCS1126.severity = warning
 dotnet_diagnostic.RCS1129.severity = suggestion
@@ -140,7 +141,7 @@ dotnet_diagnostic.RCS1250.severity = suggestion
 dotnet_diagnostic.RCS1252.severity = suggestion
 dotnet_diagnostic.RCS1253.severity = suggestion
 dotnet_diagnostic.RCS1254.severity = suggestion
-dotnet_diagnostic.RCS1255.severity = suggestion
+dotnet_diagnostic.RCS1255.severity = none
 
 dotnet_diagnostic.IDE0007.severity = none
 dotnet_diagnostic.IDE0007WithoutSuggestion.severity = none

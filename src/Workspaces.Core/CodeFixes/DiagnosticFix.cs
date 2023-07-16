@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 
 namespace Roslynator.CodeFixes;
 
-internal struct DiagnosticFix
+internal readonly struct DiagnosticFix
 {
     public DiagnosticFix(CodeAction codeAction, Document document, CodeFixProvider fixProvider, CodeFixProvider fixProvider2)
     {

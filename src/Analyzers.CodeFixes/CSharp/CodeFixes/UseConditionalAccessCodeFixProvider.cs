@@ -14,7 +14,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
 using Roslynator.Text;
 
@@ -85,8 +84,8 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
         (ExpressionSyntax left, ExpressionSyntax right) = UseConditionalAccessAnalyzer.GetFixableExpressions(binaryExpression, kind, semanticModel, cancellationToken);
 
         NullCheckStyles allowedStyles = (kind == SyntaxKind.LogicalAndExpression)
-            ? NullCheckStyles.NotEqualsToNull
-            : NullCheckStyles.EqualsToNull;
+            ? (NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull)
+            : (NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);
 
         NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, semanticModel, allowedStyles: allowedStyles, cancellationToken: cancellationToken);
 
@@ -191,7 +190,7 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
 
         StatementSyntax newStatement = statement;
 
-        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.NotEqualsToNull);
+        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull);
 
         SimpleMemberInvocationStatementInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationStatementInfo(statement);
 

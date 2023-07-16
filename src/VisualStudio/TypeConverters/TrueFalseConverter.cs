@@ -4,37 +4,36 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Roslynator.VisualStudio.TypeConverters
+namespace Roslynator.VisualStudio.TypeConverters;
+
+public abstract class TrueFalseConverter : BooleanConverter
 {
-    public abstract class TrueFalseConverter : BooleanConverter
+    public abstract string TrueText { get; }
+
+    public abstract string FalseText { get; }
+
+    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
     {
-        public abstract string TrueText { get; }
-
-        public abstract string FalseText { get; }
-
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        if (value is bool boolValue
+            && destinationType == typeof(string))
         {
-            if (value is bool boolValue
-                && destinationType == typeof(string))
-            {
-                return (boolValue) ? TrueText : FalseText;
-            }
-
-            return base.ConvertTo(context, culture, value, destinationType);
+            return (boolValue) ? TrueText : FalseText;
         }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        return base.ConvertTo(context, culture, value, destinationType);
+    }
+
+    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    {
+        if (value is string s)
         {
-            if (value is string s)
-            {
-                if (string.Equals(s, TrueText, StringComparison.Ordinal))
-                    return true;
+            if (string.Equals(s, TrueText, StringComparison.Ordinal))
+                return true;
 
-                if (string.Equals(s, FalseText, StringComparison.Ordinal))
-                    return false;
-            }
-
-            return base.ConvertFrom(context, culture, value);
+            if (string.Equals(s, FalseText, StringComparison.Ordinal))
+                return false;
         }
+
+        return base.ConvertFrom(context, culture, value);
     }
 }

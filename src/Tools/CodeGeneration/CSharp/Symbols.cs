@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Roslynator.CSharp;
 using static Roslynator.CodeGeneration.CSharp.RuntimeMetadataReference;
 
 namespace Roslynator.CodeGeneration.CSharp;
