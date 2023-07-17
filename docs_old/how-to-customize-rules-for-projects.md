@@ -1,4 +1,4 @@
-﻿# How to: Customize Rules for a Project
+﻿# How to Customize Rules for a Project
 
 It is common that you have one rule set in you solution that is shared across all projects (**global.ruleset**).
 

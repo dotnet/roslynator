@@ -51,7 +51,7 @@ internal static class Program
 
         List<Command> commands = application.Commands.Where(f => !ignoredCommandNames.Contains(f.Name)).ToList();
 
-        string filePath = Path.Combine(destinationDirectoryPath, "commands", "index.md");
+        string filePath = Path.Combine(destinationDirectoryPath, "commands.md");
 
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
@@ -64,7 +64,7 @@ internal static class Program
 
             Table(
                 TableRow("Command", "Description"),
-                commands.Select(f => TableRow(Link(f.Name, $"{f.Name}/index.md"), f.Description)))
+                commands.Select(f => TableRow(Link(f.Name, $"commands/{f.Name}.md"), f.Description)))
                 .WriteTo(mw);
 
             WriteFootNote(mw);
@@ -74,7 +74,7 @@ internal static class Program
 
         foreach (Command command in commands)
         {
-            string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, "commands", $"{command.Name}/index.md"));
+            string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, "commands", $"{command.Name}.md"));
 
             Directory.CreateDirectory(Path.GetDirectoryName(commandFilePath));
 

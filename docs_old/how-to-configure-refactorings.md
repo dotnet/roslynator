@@ -1,4 +1,4 @@
-# How to: Configure Refactorings
+# How to Configure Refactorings
 
 Refactoring represents a single operation for a given span of text.
 

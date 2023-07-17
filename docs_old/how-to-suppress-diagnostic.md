@@ -1,4 +1,4 @@
-﻿# How to: Suppress Diagnostic
+﻿# How to Suppress Diagnostic
 
 Suppression of diagnostics is useful to suppress rare cases that are not or cannot be covered by an analyzer.
 

@@ -44,37 +44,11 @@ public static class MarkdownGenerator
             + document;
     }
 
-    public static string CreateRefactoringsMarkdown(IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
-    {
-        MDocument document = Document(
-            Heading2("Roslynator Refactorings"),
-            GetRefactorings());
-
-        document.AddFootnote();
-
-        return document.ToString();
-
-        IEnumerable<object> GetRefactorings()
-        {
-            foreach (RefactoringMetadata refactoring in refactorings.OrderBy(f => f.Title, comparer))
-            {
-                yield return Heading4($"{refactoring.Title} ({refactoring.Id})");
-                yield return BulletItem(Bold("Syntax"), ": ", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name)));
-
-                if (!string.IsNullOrEmpty(refactoring.Span))
-                    yield return BulletItem(Bold("Span"), ": ", refactoring.Span);
-
-                foreach (object item in GetRefactoringSamples(refactoring))
-                    yield return item;
-            }
-        }
-    }
-
     private static IEnumerable<object> GetRefactoringSamples(RefactoringMetadata refactoring)
     {
         if (refactoring.Samples.Count > 0)
         {
-            yield return Heading3("Usage");
+            yield return Heading2("Usage");
 
             foreach (MElement element in GetSamples(refactoring.Samples, Heading4("Before"), Heading4("After")))
                 yield return element;
@@ -174,7 +148,8 @@ public static class MarkdownGenerator
     public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring)
     {
         MDocument document = Document(
-            Heading2(refactoring.Title),
+            CreateFrontMatter(label: refactoring.Id),
+            Heading1(refactoring.Title),
             Table(
                 TableRow("Property", "Value"),
                 TableRow("Id", refactoring.Id),
@@ -185,16 +160,19 @@ public static class MarkdownGenerator
             CreateSummary(refactoring.Summary),
             GetRefactoringSamples(refactoring),
             CreateRemarks(refactoring.Remarks),
-            CreateSeeAlso(refactoring.Links.Select(f => CreateLink(f))));
+            CreateSeeAlso(refactoring));
 
         document.AddFootnote();
 
         return document.ToString(_defaultMarkdownFormat);
 
-        static IEnumerable<MElement> CreateSeeAlso(params object[] content)
+        static IEnumerable<MElement> CreateSeeAlso(RefactoringMetadata refactoring)
         {
-            yield return Heading2("See Also");
-            yield return BulletList(content);
+            if (refactoring.Links.Any())
+            {
+                yield return Heading2("See Also");
+                yield return BulletList(refactoring.Links.Select(f => CreateLink(f)));
+            }
         }
     }
 
@@ -205,6 +183,7 @@ public static class MarkdownGenerator
             .Select(f => InlineCode(f.Key));
 
         MDocument document = Document(
+            CreateFrontMatter(label: analyzer.Id),
             Heading1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {analyzer.Title.TrimEnd('.')}"),
             Table(
                 TableRow("Property", "Value"),
@@ -255,13 +234,14 @@ public static class MarkdownGenerator
         }
     }
 
-    public static string CreateCompilerDiagnosticMarkdown(
+    public static string CreateCodeFixMarkdown(
         CompilerDiagnosticMetadata diagnostic,
         IEnumerable<CodeFixMetadata> codeFixes,
         ImmutableArray<CodeFixOption> options,
         IComparer<string> comparer)
     {
         MDocument document = Document(
+            CreateFrontMatter(label: diagnostic.Id),
             Heading1(diagnostic.Id),
             Table(
                 TableRow("Property", "Value"),
@@ -278,7 +258,7 @@ public static class MarkdownGenerator
 
         document.AddFootnote();
 
-        return document.ToString(MarkdownFormat.Default.WithTableOptions(MarkdownFormat.Default.TableOptions | TableOptions.FormatContent));
+        return document.ToString(_defaultMarkdownFormat);
 
         IEnumerable<MElement> GetOptions()
         {
@@ -300,11 +280,11 @@ public static class MarkdownGenerator
         }
     }
 
-    public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerMetadata> analyzers, string title, IComparer<string> comparer)
+    public static string CreateAnalyzersMarkdown(IEnumerable<AnalyzerMetadata> analyzers, string title, IComparer<string> comparer)
     {
         MDocument document = Document(
-            Heading2(title),
-            Heading3("Overview"),
+            Heading1(title),
+            Heading2("Overview"),
             Table(
                 TableRow("Package", "Prefix", "Comment"),
                 TableRow(Link("Roslynator.Analyzers", "https://www.nuget.org/packages/Roslynator.Analyzers"), InlineCode("RCS1"), "common analyzers"),
@@ -314,13 +294,13 @@ public static class MarkdownGenerator
                     InlineCode("RCS9"),
                     Inline("suitable for projects that reference Roslyn packages (", InlineCode("Microsoft.CodeAnalysis*"), ")"))
             ),
-            Heading3("List of Analyzers"),
+            Heading2("List of Analyzers"),
             Table(
                 TableRow("Id", "Title", "Severity"),
                 analyzers.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
-                        Link(f.Id, $"{f.Id}/index.md"),
+                        Link(InlineCode(f.Id), $"analyzers/{f.Id}.md"),
                         f.Title.TrimEnd('.'),
                         (f.IsEnabledByDefault) ? f.DefaultSeverity : "None");
                 })));
@@ -330,16 +310,16 @@ public static class MarkdownGenerator
         return document.ToString();
     }
 
-    public static string CreateRefactoringsReadMe(IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
+    public static string CreateRefactoringsMarkdown(IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
     {
         MDocument document = Document(
-            Heading2("Roslynator Refactorings"),
+            Heading1("Refactorings"),
             Table(
                 TableRow("Id", "Title", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
                 refactorings.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
-                        Link(f.Id, $"{f.Id}/index.md"),
+                        Link(InlineCode(f.Id), $"refactorings/{f.Id}.md"),
                         f.Title.TrimEnd('.'),
                         CheckboxOrHyphen(f.IsEnabledByDefault));
                 })));
@@ -352,7 +332,7 @@ public static class MarkdownGenerator
     public static string CreateCodeFixesReadMe(IEnumerable<CompilerDiagnosticMetadata> diagnostics, IComparer<string> comparer)
     {
         MDocument document = Document(
-            Heading2("Compiler Diagnostics Fixable with Roslynator"),
+            Heading1("Code Fixes for Compiler Diagnostics"),
             Table(
                 TableRow("Id", "Title"),
                 GetRows()));
@@ -367,7 +347,7 @@ public static class MarkdownGenerator
                 .OrderBy(f => f.Id, comparer))
             {
                 yield return TableRow(
-                    Link(diagnostic.Id, $"{diagnostic.Id}/index.md"),
+                    Link(InlineCode(diagnostic.Id), $"fixes/{diagnostic.Id}.md"),
                     diagnostic.Title);
             }
         }
@@ -377,8 +357,6 @@ public static class MarkdownGenerator
     {
         if (!string.IsNullOrEmpty(summary))
         {
-            summary = PostProcessMarkdown(summary);
-
             yield return Heading2("Summary");
             yield return Raw(summary);
         }
@@ -452,8 +430,14 @@ public static class MarkdownGenerator
         }
     }
 
-    private static string PostProcessMarkdown(string value)
+    private static MObject CreateFrontMatter(int? position = null, string label = null)
     {
-        return Regex.Replace(value, @"\[(?<x>RCS\d{4})\]\(\k<x>\.md\)", "[${x}](../${x}/index.md)");
+        if (position is not null
+            || label is not null)
+        {
+            return Raw(DocusaurusUtility.CreateFrontMatter(position, label));
+        }
+
+        return null;
     }
 }

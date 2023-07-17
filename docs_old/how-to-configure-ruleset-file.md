@@ -1,4 +1,4 @@
-﻿# How to: Configure Ruleset File
+﻿# How to Configure Ruleset File
 
 ## New csproj format (.NET Core, .NET Standard)
 

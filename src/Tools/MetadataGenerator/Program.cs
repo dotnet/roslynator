@@ -66,8 +66,9 @@ internal static class Program
         Directory.CreateDirectory(analyzersDirPath);
 
         WriteAllText(
-            $"{analyzersDirPath}/index.md",
-            MarkdownGenerator.CreateAnalyzersReadMe(metadata.GetAllAnalyzers().Where(f => !f.IsObsolete), "Roslynator Analyzers", comparer));
+            $"{destinationPath}/analyzers.md",
+            MarkdownGenerator.CreateAnalyzersMarkdown(metadata.GetAllAnalyzers().Where(f => !f.IsObsolete), "Analyzers", comparer),
+            sidebarLabel: "Analyzers");
 
         WriteAnalyzerMarkdowns(codeAnalysisAnalyzers, new (string, string)[] { ("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers") });
 
@@ -83,7 +84,7 @@ internal static class Program
 
         foreach (RefactoringMetadata refactoring in refactorings)
         {
-            string filePath = $"{refactoringsDirPath}/{refactoring.Id}/index.md";
+            string filePath = $"{refactoringsDirPath}/{refactoring.Id}.md";
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
             WriteAllText(
@@ -105,27 +106,29 @@ internal static class Program
             })
             .ToImmutableArray();
 
-        string fixesDirPath = Path.Combine(destinationPath, "cs");
+        string fixesDirPath = Path.Combine(destinationPath, "fixes");
 
         Directory.CreateDirectory(fixesDirPath);
 
         foreach (CompilerDiagnosticMetadata diagnostic in fixableCompilerDiagnostics)
         {
-            string filePath = $"{fixesDirPath}/{diagnostic.Id}/index.md";
+            string filePath = $"{fixesDirPath}/{diagnostic.Id}.md";
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
             WriteAllText(
                 filePath,
-                MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, codeFixes, codeFixOptions, comparer));
+                MarkdownGenerator.CreateCodeFixMarkdown(diagnostic, codeFixes, codeFixOptions, comparer));
         }
 
         WriteAllText(
-            $"{fixesDirPath}/index.md",
-            MarkdownGenerator.CreateCodeFixesReadMe(fixableCompilerDiagnostics, comparer));
+            $"{destinationPath}/refactorings.md",
+            MarkdownGenerator.CreateRefactoringsMarkdown(refactorings.Where(f => !f.IsObsolete), comparer),
+            sidebarLabel: "Refactorings");
 
         WriteAllText(
-            $"{refactoringsDirPath}/index.md",
-            MarkdownGenerator.CreateRefactoringsReadMe(refactorings.Where(f => !f.IsObsolete), comparer));
+            $"{destinationPath}/fixes.md",
+            MarkdownGenerator.CreateCodeFixesReadMe(fixableCompilerDiagnostics, comparer),
+            sidebarLabel: "Code Fixes for Compiler Diagnostics");
 
         // find files to delete
         foreach (string path in Directory.EnumerateFiles(GetPath($"{refactoringsDirPath}")))
@@ -160,7 +163,7 @@ internal static class Program
 
         void WriteAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<(string title, string url)> appliesTo = null)
         {
-            string filePath = $"{analyzersDirPath}/{analyzer.Id}/index.md";
+            string filePath = $"{analyzersDirPath}/{analyzer.Id}.md";
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
             WriteAllText(
@@ -186,9 +189,6 @@ internal static class Program
                 .Except(allIds))
             {
                 if (id == "RCSXXXX")
-                    break;
-
-                if (id == "index")
                     break;
 
                 string filePath = Path.Combine(directoryPath, Path.ChangeExtension(id, ".md"));
@@ -235,11 +235,19 @@ internal static class Program
             File.WriteAllText(path, s, _utf8NoBom);
         }
 
-        void WriteAllText(string relativePath, string content, bool onlyIfChanges = true, bool fileMustExists = false)
+        void WriteAllText(
+            string relativePath,
+            string content,
+            bool onlyIfChanges = true,
+            bool fileMustExists = false,
+            int? sidebarPosition = null,
+            string sidebarLabel = null)
         {
             string path = GetPath(relativePath);
 
             Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
+
+            content = DocusaurusUtility.CreateFrontMatter(position: sidebarPosition, label: sidebarLabel) + content;
 
             FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
         }

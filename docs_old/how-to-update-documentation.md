@@ -1,5 +1,4 @@
-﻿
-# How to: Update Documentation
+﻿# How to Update Documentation
 
 The documentation in the following folders can be edited and updated:
 

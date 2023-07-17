@@ -1,4 +1,4 @@
-﻿# How to: Debug Roslynator
+﻿# How to Debug Roslynator
 
 1) Clone `https://github.com/JosefPihrt/Roslynator.git`
 1) Open solution `src/VisualStudio.sln`

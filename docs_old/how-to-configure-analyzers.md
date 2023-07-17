@@ -1,4 +1,4 @@
-﻿# How to: Configure Analyzers
+﻿# How to Configure Analyzers
 
 ## Content
 

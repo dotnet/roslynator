@@ -1,4 +1,4 @@
-﻿# How to: Migrate Analyzers to Version 3.0
+﻿# How to Migrate Analyzers to Version 3.0
 
 ## List of Analyzers
 

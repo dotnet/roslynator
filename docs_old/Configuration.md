@@ -1,3 +1,7 @@
+---
+sidebar_label: Configuration
+---
+
 # Roslynator Configuration
 
 Use EditorConfig file to configure analyzers, refactoring and compiler diagnostic fixes.
