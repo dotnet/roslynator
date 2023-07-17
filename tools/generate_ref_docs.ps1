@@ -1,4 +1,4 @@
-$roslynatorExe="../src/CommandLine/bin/Release/net7.0/roslynator"
+$roslynatorExe="../src/CommandLine/bin/Release/net7.0/Roslynator"
 $rootDirectoryUrl="../../docs/api/"
 
 dotnet restore "../src/CommandLine.sln" -v minimal /m
