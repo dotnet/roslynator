@@ -82,7 +82,7 @@ public class RoslynatorMetadata
         get
         {
             if (_codeFixes.IsDefault)
-                _codeFixes = MetadataFile.ReadCodeFixes(GetPath(@"CodeFixes\CodeFixes.xml")).ToImmutableArray();
+                _codeFixes = MetadataFile.ReadCodeFixes(GetPath("CodeFixes/CodeFixes.xml")).ToImmutableArray();
 
             return _codeFixes;
         }
@@ -93,7 +93,7 @@ public class RoslynatorMetadata
         get
         {
             if (_compilerDiagnostics.IsDefault)
-                _compilerDiagnostics = MetadataFile.ReadCompilerDiagnostics(GetPath(@"CodeFixes\Diagnostics.xml")).ToImmutableArray();
+                _compilerDiagnostics = MetadataFile.ReadCompilerDiagnostics(GetPath("CodeFixes/Diagnostics.xml")).ToImmutableArray();
 
             return _compilerDiagnostics;
         }
@@ -104,7 +104,7 @@ public class RoslynatorMetadata
         get
         {
             if (_configOptions.IsDefault)
-                _configOptions = MetadataFile.ReadOptions(GetPath(@"Common\ConfigOptions.xml")).ToImmutableArray();
+                _configOptions = MetadataFile.ReadOptions(GetPath("Common/ConfigOptions.xml")).ToImmutableArray();
 
             return _configOptions;
         }
