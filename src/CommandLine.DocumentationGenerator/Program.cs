@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DotMarkdown;
+using static DotMarkdown.Linq.MFactory;
 
 namespace Roslynator.CommandLine.Documentation;
 
@@ -15,14 +16,12 @@ internal static class Program
 {
     private static void Main(params string[] args)
     {
-        IEnumerable<Command> commands = CommandLoader.LoadCommands(typeof(CommandLoader).Assembly)
-            .Select(c => c.WithOptions(c.Options.OrderBy(f => f, CommandOptionComparer.Name)))
-            .OrderBy(c => c.Name, StringComparer.InvariantCulture);
-
         var application = new CommandLineApplication(
             "roslynator",
             "Roslynator Command-line Tool",
-            commands.OrderBy(f => f.Name, StringComparer.InvariantCulture));
+            CommandLoader.LoadCommands(typeof(CommandLoader).Assembly)
+                .Select(c => c.WithOptions(c.Options.OrderBy(f => f, CommandOptionComparer.Name)))
+                .OrderBy(c => c.Name, StringComparer.InvariantCulture));
 
         if (args.Length < 2)
         {
@@ -43,28 +42,48 @@ internal static class Program
         Console.WriteLine($"Destination directory: {destinationDirectoryPath}");
         Console.WriteLine($"Data directory: {dataDirectoryPath}");
 
-        foreach (Command command in application.Commands)
-        {
-            if (ignoredCommandNames.Contains(command.Name))
-            {
-                Console.WriteLine($"Skip command '{command.Name}'");
-                continue;
-            }
+        var markdownFormat = new MarkdownFormat(
+            bulletListStyle: BulletListStyle.Minus,
+            tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatHeaderAndContent,
+            angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef);
 
-            string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, "Commands", $"{command.Name}.md"));
+        var settings = new MarkdownWriterSettings(markdownFormat);
+
+        List<Command> commands = application.Commands.Where(f => !ignoredCommandNames.Contains(f.Name)).ToList();
+
+        string filePath = Path.Combine(destinationDirectoryPath, "commands", "index.md");
+
+        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+        using (var sw = new StreamWriter(filePath, append: false, Encoding.UTF8))
+        using (MarkdownWriter mw = MarkdownWriter.Create(sw, settings))
+        {
+            WriteFrontMatter(mw, position: 0, label: "Commands");
+
+            mw.WriteHeading1("Commands");
+
+            Table(
+                TableRow("Command", "Description"),
+                commands.Select(f => TableRow(Link(f.Name, $"{f.Name}/index.md"), f.Description)))
+                .WriteTo(mw);
+
+            WriteFootNote(mw);
+
+            Console.WriteLine(filePath);
+        }
+
+        foreach (Command command in commands)
+        {
+            string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, "commands", $"{command.Name}/index.md"));
+
+            Directory.CreateDirectory(Path.GetDirectoryName(commandFilePath));
 
             using (var sw = new StreamWriter(commandFilePath, append: false, Encoding.UTF8))
-            using (MarkdownWriter mw = MarkdownWriter.Create(sw))
+            using (MarkdownWriter mw = MarkdownWriter.Create(sw, settings))
             {
                 var writer = new DocumentationWriter(mw);
 
-                    mw.WriteRaw("---");
-                    mw.WriteLine();
-                    mw.WriteRaw("sidebar_label: ");
-                    mw.WriteRaw(command.Name);
-                    mw.WriteLine();
-                    mw.WriteRaw("---");
-                    mw.WriteLine();
+                WriteFrontMatter(mw, label: command.Name);
 
                 mw.WriteLine();
                 writer.WriteCommandHeading(command, application);
@@ -108,5 +127,29 @@ internal static class Program
         mw.WriteLink("DotMarkdown", "https://github.com/JosefPihrt/DotMarkdown");
         mw.WriteString(")");
         mw.WriteEndItalic();
+    }
+
+    private static void WriteFrontMatter(MarkdownWriter mw, int? position = null, string label = null)
+    {
+        if (position is not null
+            || label is not null)
+        {
+            mw.WriteRaw("---");
+            mw.WriteLine();
+            if (position is not null)
+            {
+                mw.WriteRaw($"sidebar_position: {position}");
+                mw.WriteLine();
+            }
+
+            if (label is not null)
+            {
+                mw.WriteRaw($"sidebar_label: {label}");
+                mw.WriteLine();
+            }
+
+            mw.WriteRaw("---");
+            mw.WriteLine();
+        }
     }
 }

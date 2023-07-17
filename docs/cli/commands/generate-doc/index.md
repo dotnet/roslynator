@@ -139,7 +139,7 @@ Defines parts of a documentation that should include containing namespace\. Allo
 
 ##### `--include-ienumerable`
 
-Indicates whether interface System\.Collections\.IEnumerable should be included in a documentation if a type also implements interface System\.Collections\.Generic\.IEnumerable\<T\>\.
+Indicates whether interface System\.Collections\.IEnumerable should be included in a documentation if a type also implements interface System\.Collections\.Generic\.IEnumerable&lt;T&gt;\.
 
 ##### `--include-inherited-interface-members`
 

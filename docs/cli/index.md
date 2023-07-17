@@ -7,16 +7,16 @@ sidebar_label: Roslynator CLI
 
 ## Commands
 
-* [analyze](Commands/analyze.md)
-* [fix](Commands/fix.md)
-* [format](Commands/format.md)
-* [generate-doc](Commands/generate-doc.md)
-* [generate-doc-root](Commands/generate-doc-root.md)
-* [list-symbols](Commands/list-symbols.md)
-* [loc](Commands/loc.md)
-* [lloc](Commands/lloc.md)
-* [rename-symbol](Commands/rename-symbol.md)
-* [spellcheck](Commands/spellcheck.md)
+* [analyze](commands/analyze/index.md)
+* [fix](commands/fix/index.md)
+* [format](commands/format/index.md)
+* [generate-doc](commands/generate-doc/index.md)
+* [generate-doc-root](commands/generate-doc-root/index.md)
+* [list-symbols](commands/list-symbols/index.md)
+* [loc](commands/loc/index.md)
+* [lloc](commands/lloc/index.md)
+* [rename-symbol](commands/rename-symbol/index.md)
+* [spellcheck](commands/spellcheck/index.md)
 
 ## Packages
 
@@ -54,7 +54,7 @@ Value | Comment
 
 ## Which MSBuild Instance to Use
 
-If you are using version 0.1.5 or lower it may be necessary to specify MSBuild instance  - a directory where MSBuild binaries are located.
+If you are using version `0.1.5` or lower it may be necessary to specify MSBuild instance  - a directory where MSBuild binaries are located.
 
 ### Roslynator.CommandLine
 
