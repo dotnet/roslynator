@@ -1,15 +1,10 @@
 
 # How to: Fix All Diagnostics in a Solution
 
-1) Download package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine/)&ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
+1) Install [Roslynator.DotNet.Cli](https://www.nuget.org/packages/Roslynator.DotNet.Cli/)&ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.DotNet.Cli.svg)](https://nuget.org/packages/Roslynator.DotNet.Cli): 
+  - Run `dotnet tool install -g Roslynator.DotNet.Cli`
 
-2) Extract package (for example to `C:\\roslynator`)
-
-3) Open Command Line Prompt (cmd.exe)
-
-4) Change directory to directory where **roslynator.exe** is located (for example `C:\\roslynator\\tools\\net461`)
-
-5) Execute following command:
+1) Execute following command:
 
 ```shell
 roslynator fix SOLUTION
@@ -28,7 +23,7 @@ roslynator fix SOLUTION --analyzer-assemblies ANALYZER_ASSEMBLY PATH_TO_DIRECTOR
 Analyzer assembly locations are specific to the version of Visual Studio being used. An example location for Visual Studio 2019 Community:
 
 ```shell
-C:\Program Files\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\ManagedLanguages\VBCSharp
+C:/Program Files/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/ManagedLanguages/VBCSharp
 ```
 
 ## How to Use Custom Rule Set
@@ -41,4 +36,4 @@ It is necessary to specify full path to rule set as each project has different w
 
 ## See Also
 
-* [`fix` command](cli/fix-command.md)
+* [`fix` command](cli/commands/fix/index.md)

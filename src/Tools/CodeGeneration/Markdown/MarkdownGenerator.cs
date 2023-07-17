@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DotMarkdown;
 using DotMarkdown.Linq;
 using Roslynator.Metadata;
@@ -15,6 +16,10 @@ namespace Roslynator.CodeGeneration.Markdown;
 
 public static class MarkdownGenerator
 {
+    private static readonly MarkdownFormat _defaultMarkdownFormat = new(
+        tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent,
+        angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef);
+
     private static void AddFootnote(this MDocument document)
     {
         document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "https://github.com/JosefPihrt/DotMarkdown"), ")"));
@@ -69,32 +74,36 @@ public static class MarkdownGenerator
     {
         if (refactoring.Samples.Count > 0)
         {
+            yield return Heading3("Usage");
+
             foreach (MElement element in GetSamples(refactoring.Samples, Heading4("Before"), Heading4("After")))
                 yield return element;
         }
-        else if (refactoring.Images.Count > 0)
-        {
-            var isFirst = true;
 
-            foreach (ImageMetadata image in refactoring.Images)
-            {
-                if (!isFirst)
-                    yield return NewLine;
+        //TODO: Add example to refactoring documentation
+        //else if (refactoring.Images.Count > 0)
+        //{
+        //    var isFirst = true;
 
-                yield return RefactoringImage(refactoring, image.Name);
-                yield return NewLine;
+        //    foreach (ImageMetadata image in refactoring.Images)
+        //    {
+        //        if (!isFirst)
+        //            yield return NewLine;
 
-                isFirst = false;
-            }
+        //        yield return RefactoringImage(refactoring, image.Name);
+        //        yield return NewLine;
 
-            yield return NewLine;
-        }
-        else
-        {
-            yield return RefactoringImage(refactoring, refactoring.Identifier);
-            yield return NewLine;
-            yield return NewLine;
-        }
+        //        isFirst = false;
+        //    }
+
+        //    yield return NewLine;
+        //}
+        //else
+        //{
+        //    yield return RefactoringImage(refactoring, refactoring.Identifier);
+        //    yield return NewLine;
+        //    yield return NewLine;
+        //}
     }
 
     private static IEnumerable<MElement> GetSamples(
@@ -164,8 +173,6 @@ public static class MarkdownGenerator
 
     public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring)
     {
-        var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
-
         MDocument document = Document(
             Heading2(refactoring.Title),
             Table(
@@ -176,14 +183,13 @@ public static class MarkdownGenerator
                 (!string.IsNullOrEmpty(refactoring.Span)) ? TableRow("Span", refactoring.Span) : null,
                 TableRow("Enabled by Default", CheckboxOrHyphen(refactoring.IsEnabledByDefault))),
             CreateSummary(refactoring.Summary),
-            Heading3("Usage"),
             GetRefactoringSamples(refactoring),
             CreateRemarks(refactoring.Remarks),
-            CreateSeeAlso(refactoring.Links.Select(f => CreateLink(f)), Link("Full list of refactorings", "Refactorings.md")));
+            CreateSeeAlso(refactoring.Links.Select(f => CreateLink(f))));
 
         document.AddFootnote();
 
-        return document.ToString(format);
+        return document.ToString(_defaultMarkdownFormat);
 
         static IEnumerable<MElement> CreateSeeAlso(params object[] content)
         {
@@ -197,8 +203,6 @@ public static class MarkdownGenerator
         IEnumerable<MInlineCode> requiredOptions = analyzer.ConfigOptions
             .Where(f => f.IsRequired)
             .Select(f => InlineCode(f.Key));
-
-        var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
         MDocument document = Document(
             Heading1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {analyzer.Title.TrimEnd('.')}"),
@@ -217,7 +221,7 @@ public static class MarkdownGenerator
 
         document.AddFootnote();
 
-        return document.ToString(format);
+        return document.ToString(_defaultMarkdownFormat);
     }
 
     public static string CreateAnalyzerOptionMarkdown(AnalyzerOptionMetadata option)
@@ -239,9 +243,7 @@ public static class MarkdownGenerator
 
         document.AddFootnote();
 
-        var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
-
-        return document.ToString(format);
+        return document.ToString(_defaultMarkdownFormat);
     }
 
     private static IEnumerable<MElement> CreateAppliesTo(IEnumerable<(string title, string url)> appliesTo)
@@ -318,8 +320,8 @@ public static class MarkdownGenerator
                 analyzers.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
-                        f.Id,
-                        Link(f.Title.TrimEnd('.'), $"{f.Id}.md"),
+                        Link(f.Id, $"{f.Id}/index.md"),
+                        f.Title.TrimEnd('.'),
                         (f.IsEnabledByDefault) ? f.DefaultSeverity : "None");
                 })));
 
@@ -337,8 +339,8 @@ public static class MarkdownGenerator
                 refactorings.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
-                        f.Id,
-                        Link(f.Title.TrimEnd('.'), $"{f.Id}.md"),
+                        Link(f.Id, $"{f.Id}/index.md"),
+                        f.Title.TrimEnd('.'),
                         CheckboxOrHyphen(f.IsEnabledByDefault));
                 })));
 
@@ -365,7 +367,7 @@ public static class MarkdownGenerator
                 .OrderBy(f => f.Id, comparer))
             {
                 yield return TableRow(
-                    Link(diagnostic.Id, $"{diagnostic.Id}.md"),
+                    Link(diagnostic.Id, $"{diagnostic.Id}/index.md"),
                     diagnostic.Title);
             }
         }
@@ -375,6 +377,8 @@ public static class MarkdownGenerator
     {
         if (!string.IsNullOrEmpty(summary))
         {
+            summary = PostProcessMarkdown(summary);
+
             yield return Heading2("Summary");
             yield return Raw(summary);
         }
@@ -446,5 +450,10 @@ public static class MarkdownGenerator
         {
             return new MText("-");
         }
+    }
+
+    private static string PostProcessMarkdown(string value)
+    {
+        return Regex.Replace(value, @"\[(?<x>RCS\d{4})\]\(\k<x>\.md\)", "[${x}](../${x}/index.md)");
     }
 }

@@ -13,10 +13,10 @@ Documentation for project api in `/docs/api` is generated and should not be edit
 Documentation for [analyzers](analyzers) and [refactorings](refactorings) cannot be edited directly.
 It is generated from following metadata files:
 
-* [Analyzers.xml](../src/Analyzers/Analyzers.xml)
-* [Refactorings.xml](../src/Refactorings/Refactorings.xml)
+* [Analyzers.xml](https://github.com/josefpihrt/roslynator/src/Analyzers/Analyzers.xml)
+* [Refactorings.xml](https://github.com/josefpihrt/roslynator/src/Refactorings/Refactorings.xml)
 
-To update documentation it is necessary to edit [Analyzers.xml](../src/Analyzers/Analyzers.xml) and/or [Refactorings.xml](../src/Refactorings/Refactorings.xml) and then run script [MetadataGenerator.cmd](../tools/MetadataGenerator.cmd) to generate documentation.
+To update documentation it is necessary to edit [Analyzers.xml](https://github.com/josefpihrt/roslynator/src/Analyzers/Analyzers.xml) and/or [Refactorings.xml](https://github.com/josefpihrt/roslynator/src/Refactorings/Refactorings.xml).
 
 ## Structure of Analyzers.xml
 
@@ -51,7 +51,7 @@ To update documentation it is necessary to edit [Analyzers.xml](../src/Analyzers
 </Analyzers>
 ```
 
-Metadata sample above will produce [RCSXXXX.md](analyzers/RCSXXXX.md).
+Metadata sample above will produce `RCSXXXX.md`.
 
 ## Structure of Refactorings.xml
 
@@ -81,4 +81,4 @@ Metadata sample above will produce [RCSXXXX.md](analyzers/RCSXXXX.md).
 </Refactorings>
 ```
 
-Metadata sample above will produce [RRXXXX.md](refactorings/RRXXXX.md).
+Metadata sample above will produce `RRXXXX.md`.
