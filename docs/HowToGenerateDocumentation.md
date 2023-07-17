@@ -1,7 +1,7 @@
 
 # How to: Generate API Documentation
 
-1) Install package [Roslynator.CommandLine](http://www.nuget.org/packages/Roslynator.CommandLine/)&ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
+1) Install package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine/)&ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
 
 2) Add MSBuild Target to your csproj or vbproj file:
 

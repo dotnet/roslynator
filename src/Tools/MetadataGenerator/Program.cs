@@ -27,16 +27,22 @@ internal static class Program
 
     private static async Task Main(string[] args)
     {
+        if (args.Length < 2)
+        {
+            Console.WriteLine("Invalid number of arguments");
+        }
+
         if (args is null || args.Length == 0)
         {
             args = new string[] { Environment.CurrentDirectory };
         }
 
-        string rootPath = args[0];
+        string sourcePath = args[0];
+        string destinationPath = args[1];
 
         StringComparer comparer = StringComparer.InvariantCulture;
 
-        var metadata = new RoslynatorMetadata(rootPath);
+        var metadata = new RoslynatorMetadata(sourcePath);
 
         ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
         ImmutableArray<AnalyzerMetadata> codeAnalysisAnalyzers = metadata.CodeAnalysisAnalyzers;
@@ -45,39 +51,24 @@ internal static class Program
         ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
         ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
-        WriteAllText(
-            @"..\docs\analyzers\README.md",
-            MarkdownGenerator.CreateAnalyzersReadMe(metadata.GetAllAnalyzers().Where(f => !f.IsObsolete), "Roslynator Analyzers", comparer));
 #if !DEBUG
-        VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 7);
-
-        MSBuildLocator.RegisterInstance(instance);
-
-        using (MSBuildWorkspace workspace = MSBuildWorkspace.Create())
-        {
-            workspace.WorkspaceFailed += (o, e) => Console.WriteLine(e.Diagnostic.Message);
-
-            string solutionPath = Path.Combine(rootPath, "Roslynator.sln");
-
-            Console.WriteLine($"Loading solution '{solutionPath}'");
-
-            Solution solution = await workspace.OpenSolutionAsync(solutionPath).ConfigureAwait(false);
-
-            Console.WriteLine($"Finished loading solution '{solutionPath}'");
-
-            RoslynatorInfo roslynatorInfo = await RoslynatorInfo.Create(solution).ConfigureAwait(false);
-
-            IOrderedEnumerable<SourceFile> sourceFiles = analyzers
+        await GenerateSourceFilesXml(
+            sourcePath,
+            analyzers
                 .Concat(codeAnalysisAnalyzers)
-                .Concat(formattingAnalyzers)
-                .Select(f => new SourceFile(f.Id, roslynatorInfo.GetAnalyzerFilesAsync(f.Identifier).Result))
-                .Concat(refactorings
-                    .Select(f => new SourceFile(f.Id, roslynatorInfo.GetRefactoringFilesAsync(f.Identifier).Result)))
-                .OrderBy(f => f.Id);
-
-            MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
-        }
+                .Concat(formattingAnalyzers),
+            refactorings)
+            .ConfigureAwait(false);
 #endif
+
+        string analyzersDirPath = Path.Combine(destinationPath, "analyzers");
+
+        Directory.CreateDirectory(analyzersDirPath);
+
+        WriteAllText(
+            $"{analyzersDirPath}/index.md",
+            MarkdownGenerator.CreateAnalyzersReadMe(metadata.GetAllAnalyzers().Where(f => !f.IsObsolete), "Roslynator Analyzers", comparer));
+
         WriteAnalyzerMarkdowns(codeAnalysisAnalyzers, new (string, string)[] { ("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers") });
 
         WriteAnalyzerMarkdowns(formattingAnalyzers, new (string, string)[] { ("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers") });
@@ -86,12 +77,18 @@ internal static class Program
 
         DeleteInvalidAnalyzerMarkdowns();
 
+        string refactoringsDirPath = Path.Combine(destinationPath, "refactorings");
+
+        Directory.CreateDirectory(refactoringsDirPath);
+
         foreach (RefactoringMetadata refactoring in refactorings)
         {
+            string filePath = $"{refactoringsDirPath}/{refactoring.Id}/index.md";
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
             WriteAllText(
-                $@"..\docs\refactorings\{refactoring.Id}.md",
-                MarkdownGenerator.CreateRefactoringMarkdown(refactoring),
-                fileMustExists: false);
+                filePath,
+                MarkdownGenerator.CreateRefactoringMarkdown(refactoring));
         }
 
         IEnumerable<CompilerDiagnosticMetadata> fixableCompilerDiagnostics = compilerDiagnostics
@@ -108,24 +105,30 @@ internal static class Program
             })
             .ToImmutableArray();
 
+        string fixesDirPath = Path.Combine(destinationPath, "cs");
+
+        Directory.CreateDirectory(fixesDirPath);
+
         foreach (CompilerDiagnosticMetadata diagnostic in fixableCompilerDiagnostics)
         {
+            string filePath = $"{fixesDirPath}/{diagnostic.Id}/index.md";
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
             WriteAllText(
-                $@"..\docs\cs\{diagnostic.Id}.md",
-                MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, codeFixes, codeFixOptions, comparer),
-                fileMustExists: false);
+                filePath,
+                MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, codeFixes, codeFixOptions, comparer));
         }
 
         WriteAllText(
-            @"..\docs\refactorings\README.md",
-            MarkdownGenerator.CreateRefactoringsReadMe(refactorings.Where(f => !f.IsObsolete), comparer));
-
-        WriteAllText(
-            @"..\docs\cs\README.md",
+            $"{fixesDirPath}/index.md",
             MarkdownGenerator.CreateCodeFixesReadMe(fixableCompilerDiagnostics, comparer));
 
+        WriteAllText(
+            $"{refactoringsDirPath}/index.md",
+            MarkdownGenerator.CreateRefactoringsReadMe(refactorings.Where(f => !f.IsObsolete), comparer));
+
         // find files to delete
-        foreach (string path in Directory.EnumerateFiles(GetPath(@"..\docs\refactorings")))
+        foreach (string path in Directory.EnumerateFiles(GetPath($"{refactoringsDirPath}")))
         {
             if (!refactorings.Any(f => f.Id == Path.GetFileNameWithoutExtension(path)))
                 Console.WriteLine($"FILE TO DELETE: {path}");
@@ -139,7 +142,7 @@ internal static class Program
             {
                 foreach (ImageMetadata image in refactoring.ImagesOrDefaultImage())
                 {
-                    string imagePath = Path.Combine(GetPath(@"..\images\refactorings"), image.Name + ".png");
+                    string imagePath = Path.Combine(GetPath("../images/refactorings"), image.Name + ".png");
 
                     if (!File.Exists(imagePath))
                         Console.WriteLine($"MISSING SAMPLE: {imagePath}");
@@ -157,19 +160,12 @@ internal static class Program
 
         void WriteAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<(string title, string url)> appliesTo = null)
         {
-            WriteAllText(
-                $@"..\docs\analyzers\{analyzer.Id}.md",
-                MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.ConfigOptions, appliesTo),
-                fileMustExists: false);
+            string filePath = $"{analyzersDirPath}/{analyzer.Id}/index.md";
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-            foreach (AnalyzerOptionMetadata option in analyzer.Options
-                .Where(f => f.Id is not null))
-            {
-                WriteAllText(
-                    $@"..\docs\analyzers\{option.ParentId}{option.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerOptionMarkdown(option),
-                    fileMustExists: false);
-            }
+            WriteAllText(
+                filePath,
+                MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.ConfigOptions, appliesTo));
         }
 
         void DeleteInvalidAnalyzerMarkdowns()
@@ -183,13 +179,16 @@ internal static class Program
                 .Concat(allAnalyzers.SelectMany(f => f.OptionAnalyzers))
                 .Select(f => f.Id);
 
-            string directoryPath = GetPath(@"..\docs\analyzers");
+            string directoryPath = GetPath($"{analyzersDirPath}");
 
             foreach (string id in Directory.GetFiles(directoryPath, "*.*", SearchOption.TopDirectoryOnly)
                 .Select(f => Path.GetFileNameWithoutExtension(f))
                 .Except(allIds))
             {
                 if (id == "RCSXXXX")
+                    break;
+
+                if (id == "index")
                     break;
 
                 string filePath = Path.Combine(directoryPath, Path.ChangeExtension(id, ".md"));
@@ -205,7 +204,7 @@ internal static class Program
             var issueRegex = new Regex(@"\(\#(?<issue>\d+)\)");
             var analyzerRegex = new Regex(@"(\p{Lu}\p{Ll}+){2,}\ +\((?<id>RCS\d{4}[a-z]?)\)");
 
-            string path = GetPath(@"..\ChangeLog.md");
+            string path = GetPath("../ChangeLog.md");
             string s = File.ReadAllText(path, _utf8NoBom);
 
             List<AnalyzerMetadata> allAnalyzers = analyzers
@@ -236,7 +235,7 @@ internal static class Program
             File.WriteAllText(path, s, _utf8NoBom);
         }
 
-        void WriteAllText(string relativePath, string content, bool onlyIfChanges = true, bool fileMustExists = true)
+        void WriteAllText(string relativePath, string content, bool onlyIfChanges = true, bool fileMustExists = false)
         {
             string path = GetPath(relativePath);
 
@@ -247,7 +246,40 @@ internal static class Program
 
         string GetPath(string path)
         {
-            return Path.Combine(rootPath, path);
+            return Path.Combine(sourcePath, path);
+        }
+    }
+
+    private static async Task GenerateSourceFilesXml(
+        string sourcePath,
+        IEnumerable<AnalyzerMetadata> analyzers,
+        ImmutableArray<RefactoringMetadata> refactorings)
+    {
+        VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 7);
+
+        MSBuildLocator.RegisterInstance(instance);
+
+        using (MSBuildWorkspace workspace = MSBuildWorkspace.Create())
+        {
+            workspace.WorkspaceFailed += (o, e) => Console.WriteLine(e.Diagnostic.Message);
+
+            string solutionPath = Path.Combine(sourcePath, "Roslynator.sln");
+
+            Console.WriteLine($"Loading solution '{solutionPath}'");
+
+            Solution solution = await workspace.OpenSolutionAsync(solutionPath).ConfigureAwait(false);
+
+            Console.WriteLine($"Finished loading solution '{solutionPath}'");
+
+            RoslynatorInfo roslynatorInfo = await RoslynatorInfo.Create(solution).ConfigureAwait(false);
+
+            IOrderedEnumerable<SourceFile> sourceFiles = analyzers
+                .Select(f => new SourceFile(f.Id, roslynatorInfo.GetAnalyzerFilesAsync(f.Identifier).Result))
+                .Concat(refactorings
+                    .Select(f => new SourceFile(f.Id, roslynatorInfo.GetRefactoringFilesAsync(f.Identifier).Result)))
+                .OrderBy(f => f.Id);
+
+            MetadataFile.SaveSourceFiles(sourceFiles, @"../SourceFiles.xml");
         }
     }
 }

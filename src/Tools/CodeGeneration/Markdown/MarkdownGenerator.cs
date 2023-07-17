@@ -17,7 +17,7 @@ public static class MarkdownGenerator
 {
     private static void AddFootnote(this MDocument document)
     {
-        document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
+        document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "https://github.com/JosefPihrt/DotMarkdown"), ")"));
     }
 
     public static string CreateReadMe(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
