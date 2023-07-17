@@ -1,8 +1,8 @@
-$roslynatorExe="../src/CommandLine/bin/Debug/net7.0/roslynator"
+$roslynatorExe="../src/CommandLine/bin/Release/net7.0/roslynator"
 $rootDirectoryUrl="../../docs/api/"
 
 dotnet restore "../src/CommandLine.sln" -v minimal /m
-dotnet build "../src/CommandLine.sln" --no-restore -c Debug -v minimal /m
+dotnet build "../src/CommandLine.sln" --no-restore -c Release -v minimal /m
 
 & $roslynatorExe generate-doc generate_ref_docs.sln `
  --properties Configuration=Release `
