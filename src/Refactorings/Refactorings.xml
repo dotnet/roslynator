@@ -1667,7 +1667,7 @@ i--;]]></After>
       <Syntax>local function</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0179" Identifier="ImplementIEquatableOfT" Title="Implement IEquatable&lt;T&gt;">
+  <Refactoring Id="RR0179" Identifier="ImplementIEquatableOfT" Title="Implement IEquatable of T">
     <OptionKey>implement_iequatable</OptionKey>
     <Syntaxes>
       <Syntax>class declaration</Syntax>
@@ -1694,7 +1694,7 @@ i--;]]></After>
       <Syntax>string concatenation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0183" Identifier="UseListInsteadOfYield" Title="Use List&lt;T&gt; instead of yield">
+  <Refactoring Id="RR0183" Identifier="UseListInsteadOfYield" Title="Use List of T instead of yield">
     <OptionKey>use_list_instead_of_yield</OptionKey>
     <Syntaxes>
       <Syntax>yield return</Syntax>
@@ -2286,7 +2286,7 @@ public class Foo
   <Refactoring Id="RR0210" Identifier="ImplementCustomEnumerator" Title="Implement custom enumerator">
     <OptionKey>implement_custom_enumerator</OptionKey>
     <Syntaxes>
-      <Syntax>class that implements IEnumerable&lt;T&gt;</Syntax>
+      <Syntax>class that implements IEnumerable of T</Syntax>
     </Syntaxes>
     <Span>identifier</Span>
     <Samples>
