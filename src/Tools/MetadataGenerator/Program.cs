@@ -249,7 +249,7 @@ internal static class Program
             return Path.Combine(sourcePath, path);
         }
     }
-
+#if !DEBUG
     private static async Task GenerateSourceFilesXml(
         string sourcePath,
         IEnumerable<AnalyzerMetadata> analyzers,
@@ -279,7 +279,8 @@ internal static class Program
                     .Select(f => new SourceFile(f.Id, roslynatorInfo.GetRefactoringFilesAsync(f.Identifier).Result)))
                 .OrderBy(f => f.Id);
 
-            MetadataFile.SaveSourceFiles(sourceFiles, @"../SourceFiles.xml");
+            MetadataFile.SaveSourceFiles(sourceFiles, "../SourceFiles.xml");
         }
     }
+#endif
 }
