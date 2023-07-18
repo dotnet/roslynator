@@ -1,1 +1,1 @@
-**https://josefpihrt.github.io/docs/roslynator**
+# https://josefpihrt.github.io/docs/roslynator
