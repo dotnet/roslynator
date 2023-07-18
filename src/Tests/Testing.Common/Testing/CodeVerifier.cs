@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -304,7 +305,9 @@ public abstract class CodeVerifier
             .AddProject(projectInfo)
             .GetProject(projectId);
 
-        const string directoryPath = "z:";
+        string directoryPath = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            ? "z:"
+            : "/";
 
         if (options.ConfigOptions.Count > 0)
         {

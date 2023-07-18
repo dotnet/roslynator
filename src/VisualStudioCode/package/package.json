@@ -4,7 +4,7 @@
   "displayName": "Roslynator",
   "description": "A collection of 500+ analyzers, refactorings and fixes for C#, powered by Roslyn.",
   "icon": "images/icon.png",
-  "version": "4.3.0",
+  "version": "1.0.0",
   "author": "Josef Pihrt",
   "license": "Apache-2.0",
   "homepage": "https://github.com/josefpihrt/roslynator",
@@ -98,6 +98,6 @@
     "vscode-test": "^1.2.2"
   },
   "dependencies": {
-    "json5": "^2.1.1"
+    "json5": "^2.2.2"
   }
 }

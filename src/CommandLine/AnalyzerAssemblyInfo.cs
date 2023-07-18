@@ -2,7 +2,7 @@
 
 namespace Roslynator.CommandLine;
 
-internal struct AnalyzerAssemblyInfo
+internal readonly struct AnalyzerAssemblyInfo
 {
     public AnalyzerAssemblyInfo(AnalyzerAssembly analyzerAssembly, string filePath)
     {

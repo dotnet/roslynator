@@ -51,7 +51,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
     public async Task Test_FileScopedNamespaces()
     {
@@ -78,7 +78,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
     public async Task Test_BlockNamespaces()
     {

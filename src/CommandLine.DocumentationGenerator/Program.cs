@@ -24,22 +24,33 @@ internal static class Program
             "Roslynator Command-line Tool",
             commands.OrderBy(f => f.Name, StringComparer.InvariantCulture));
 
-        string destinationDirectoryPath = null;
-        string dataDirectoryPath = null;
+        if (args.Length < 2)
+        {
+            Console.WriteLine("Invalid number of arguments");
+            return;
+        }
 
-        if (Debugger.IsAttached)
-        {
-            destinationDirectoryPath = (args.Length > 0) ? args[0] : @"..\..\..\..\..\docs\cli";
-            dataDirectoryPath = @"..\..\..\data";
-        }
-        else
-        {
-            destinationDirectoryPath = args[0];
-            dataDirectoryPath = @"..\src\CommandLine.DocumentationGenerator\data";
-        }
+        string destinationDirectoryPath = args[0];
+        string dataDirectoryPath = args[1];
+
+        string[] ignoredCommandNames = (args.Length > 2)
+            ? Regex.Split(args[2], ",")
+            : Array.Empty<string>();
+
+        destinationDirectoryPath = Path.GetFullPath(destinationDirectoryPath);
+        dataDirectoryPath = Path.GetFullPath(dataDirectoryPath);
+
+        Console.WriteLine($"Destination directory: {destinationDirectoryPath}");
+        Console.WriteLine($"Data directory: {dataDirectoryPath}");
 
         foreach (Command command in application.Commands)
         {
+            if (ignoredCommandNames.Contains(command.Name))
+            {
+                Console.WriteLine($"Skip command '{command.Name}'");
+                continue;
+            }
+
             string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, $"{command.Name}-command.md"));
 
             using (var sw = new StreamWriter(commandFilePath, append: false, Encoding.UTF8))

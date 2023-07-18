@@ -106,7 +106,7 @@ public sealed class SimplifyNullCheckAnalyzer : BaseDiagnosticAnalyzer
                     var memberAccessExpression = (MemberAccessExpressionSyntax)expression.Parent;
 
                     if (!memberAccessExpression.IsParentKind(SyntaxKind.InvocationExpression)
-                        && (memberAccessExpression.Name as IdentifierNameSyntax)?.Identifier.ValueText == "Value")
+                        && memberAccessExpression.Name is IdentifierNameSyntax { Identifier.ValueText: "Value" })
                     {
                         if (memberAccessExpression == whenNotNull)
                         {

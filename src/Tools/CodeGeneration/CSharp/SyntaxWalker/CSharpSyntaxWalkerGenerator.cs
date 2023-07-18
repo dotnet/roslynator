@@ -383,54 +383,6 @@ public partial class CSharpSyntaxWalkerGenerator
         }
     }
 
-    private void CreateVisitListSyntaxStatements(MethodGenerationContext context)
-    {
-        string variableName = context.CreateVariableName(context.PropertyName);
-
-        context.AddStatement(LocalDeclarationStatement(context.PropertyType, variableName, context.ParameterName, context.PropertyName));
-
-        IPropertySymbol listPropertySymbol = FindListPropertySymbol(context.PropertySymbol);
-
-        ITypeSymbol typeSymbol = ((INamedTypeSymbol)listPropertySymbol.Type).TypeArguments.Single();
-
-        IMethodSymbol methodSymbol = FindVisitMethod(typeSymbol);
-
-        string methodName = null;
-
-        if (methodSymbol is not null)
-        {
-            methodName = methodSymbol.Name;
-        }
-        else if (EliminateDefaultVisit)
-        {
-            methodName = GetMethodName(typeSymbol);
-        }
-
-        StatementSyntax statement;
-
-        if (methodName is not null)
-        {
-            string forEachVariableName = context.CreateVariableName(typeSymbol.Name.Remove(typeSymbol.Name.Length - 6));
-
-            statement = ForEachVisitStatement(
-                typeSymbol.Name,
-                forEachVariableName,
-                SimpleMemberAccessExpression(
-                    IdentifierName(variableName),
-                    IdentifierName(listPropertySymbol.Name)),
-                VisitStatement(methodName, forEachVariableName),
-                checkShouldVisit: true);
-        }
-        else
-        {
-            methodName = (SymbolEqualityComparer.Default.Equals(listPropertySymbol.Type.OriginalDefinition, SyntaxListSymbol)) ? "VisitList" : "VisitSeparatedList";
-
-            statement = VisitStatement(methodName, variableName, listPropertySymbol.Name);
-        }
-
-        context.AddStatement(IfNotEqualsToNullStatement(variableName, statement));
-    }
-
     private static string GetMethodName(ITypeSymbol typeSymbol)
     {
         do

@@ -1,0 +1,9 @@
+build-metadata-padding: 4
+mode: ContinuousDeployment
+
+branches:
+  main:
+    tag: beta
+  pull-request:
+    tag: alpha
+    tag-number-pattern: '[/-](?<number>\d+)[-/]'

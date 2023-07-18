@@ -14,21 +14,20 @@ public sealed class RoslynatorCodeRefactoringProvider : CodeRefactoringProvider
     public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
     {
         SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-
 #if DEBUG
         try
         {
-#endif
             var refactoringContext = new RefactoringContext(context, root);
-
             await refactoringContext.ComputeRefactoringsAsync().ConfigureAwait(false);
-#if DEBUG
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
             Debug.Fail(nameof(RoslynatorCodeRefactoringProvider));
             throw;
         }
+#else
+        var refactoringContext = new RefactoringContext(context, root);
+        await refactoringContext.ComputeRefactoringsAsync().ConfigureAwait(false);
 #endif
     }
 }

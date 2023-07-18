@@ -27,7 +27,7 @@ internal sealed class LocalSymbolComparer : IComparer<ISymbol>
             {
                 ISymbol cs = x.ContainingSymbol;
 
-                while ((cs as IMethodSymbol)?.MethodKind == MethodKind.LocalFunction)
+                while (cs is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
                 {
                     if (SymbolEqualityComparer.Default.Equals(cs, y))
                         return 1;
@@ -37,7 +37,7 @@ internal sealed class LocalSymbolComparer : IComparer<ISymbol>
 
                 cs = y.ContainingSymbol;
 
-                while ((cs as IMethodSymbol)?.MethodKind == MethodKind.LocalFunction)
+                while (cs is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
                 {
                     if (SymbolEqualityComparer.Default.Equals(cs, x))
                         return -1;
@@ -58,7 +58,7 @@ internal sealed class LocalSymbolComparer : IComparer<ISymbol>
 
             if (symbol.Kind == SymbolKind.Parameter)
             {
-                if ((symbol.ContainingSymbol as IMethodSymbol)?.MethodKind == MethodKind.AnonymousFunction)
+                if (symbol.ContainingSymbol is IMethodSymbol { MethodKind: MethodKind.AnonymousFunction })
                     return 0;
 
                 return 1;
@@ -66,7 +66,7 @@ internal sealed class LocalSymbolComparer : IComparer<ISymbol>
 
             if (symbol.Kind == SymbolKind.TypeParameter)
             {
-                Debug.Assert((symbol.ContainingSymbol as IMethodSymbol)?.MethodKind == MethodKind.LocalFunction);
+                Debug.Assert(symbol.ContainingSymbol is IMethodSymbol { MethodKind: MethodKind.LocalFunction });
 
                 return 1;
             }

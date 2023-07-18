@@ -33,15 +33,21 @@ if an analyzer is enabled but required option is not set. ROS0003 is disabled by
 
 ## Default Configuration
 
-If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file.
-Default configuration file can be used with extension for Visual Studio or VS code.
+If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file (`.roslynatorconfig`).
 
-### Format of Default Configuration File
+**IMPORTANT:** Default configuration file can be used only with VS extension or VS code extension.
+
+### Format
 
 Format of the file is same as format of [global AnalyzerConfig](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/configuration-files#global-analyzerconfig).
-It essentially means that file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`).
+Namely, file must contain top-level entry `is_global = true` and cannot contain section headers (such as `[*.cs]`), For example:
 
-### Location of Default Configuration File
+```ini
+is_global = true
+roslynator_analyzers.enabled_by_default = true
+```
+
+### Location
 
 Configuration file is located at `%LOCALAPPDATA%/JosefPihrt/Roslynator/.roslynatorconfig`.
 Location of `%LOCALAPPDATA%` depends on the operating system:

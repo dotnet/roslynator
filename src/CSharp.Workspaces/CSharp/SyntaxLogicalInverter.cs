@@ -75,8 +75,8 @@ public class SyntaxLogicalInverter
         if (expression is null)
             return null;
 
-        var inverted = LogicallyInvertImpl(expression, semanticModel, cancellationToken);
-        return inverted.IsKind(SyntaxKind.LogicalNotExpression, SyntaxKind.ParenthesizedExpression) ? inverted : inverted.Parenthesize();
+        ExpressionSyntax inverted = LogicallyInvertImpl(expression, semanticModel, cancellationToken);
+        return (inverted.IsKind(SyntaxKind.LogicalNotExpression, SyntaxKind.ParenthesizedExpression)) ? inverted : inverted.Parenthesize();
     }
 
     private ExpressionSyntax LogicallyInvertImpl(
