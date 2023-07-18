@@ -11,7 +11,7 @@
 * Open ruleset file in text editor.
 * Change value of attribute 'Name' (ruleset is represented in the IDE by its name).
 
-![Edit Rule Set File](/img/roslynator/EditNewRuleSetFile.png)
+![Edit Rule Set File](/img/roslynator/edit-new-ruleset-file.png)
 
 ### 3) Attach Rule Set to Project(s)
 
@@ -31,31 +31,31 @@
 * Skip this step if you already have one.
 * Go to Solution Explorer - Solution - Project - References - Analyzers - Open Active Rule Set.
 
-![Open Active Rule Set](/img/roslynator/OpenActiveRuleSet.png)
+![Open Active Rule Set](/img/roslynator/open-active-ruleset.png)
 
 * Modify ruleset.
 * Save ruleset (this will create a new file **ProjectName.ruleset** in your project folder.
 * Move ruleset file to a solution root folder (or any other location).
 
-![Rule Set Editor](/img/roslynator/RuleSetEditor.png)
+![Rule Set Editor](/img/roslynator/ruleset-editor.png)
 
 ### 2) Modify Rule Set File Manually
 
 * Open ruleset file in text editor.
 * Change value of attribute 'Name' (ruleset is represented in the IDE by its name).
 
-![Edit Rule Set File](/img/roslynator/EditRuleSetFile.png)
+![Edit Rule Set File](/img/roslynator/edit-ruleset-file.png)
 
 ### 3) Attach Rule Set to Project(s)
 
 * Go to Main Menu - Analysis - Configure Code Analysis - For Solution
 
-![Configure Code Analysis for Solution](/img/roslynator/ConfigureCodeAnalysisForSolution.png)
+![Configure Code Analysis for Solution](/img/roslynator/configure-code-analysis-for-solution.png)
 
 * Change ruleset for each project.
 * Change configuration and repeat previous step (optional).
 
-![Code Analysis Settings](/img/roslynator/CodeAnalysisSettings.png)
+![Code Analysis Settings](/img/roslynator/code-analysis-settings.png)
 
 ## Directory.Build.props File
 

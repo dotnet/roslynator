@@ -2,18 +2,26 @@ dotnet restore "../src/CommandLine.sln" -v minimal /m
 dotnet build "../src/CommandLine.sln" --no-restore -c Release -v minimal /m
 
 $roslynatorExe="../src/CommandLine/bin/Release/net7.0/Roslynator"
-# $rootDirectoryUrl="../../docs/api/"
+$rootDirectoryUrl="build/ref"
 
 & $roslynatorExe generate-doc generate_ref_docs.sln `
  --properties Configuration=Release `
- -o "../docs/api" `
+ -o $rootDirectoryUrl `
  --host docusaurus `
  --heading "Roslynator Reference" `
  --group-by-common-namespace `
  --ignored-common-parts content `
  --max-derived-types 10
 
-# & $roslynatorExe list-symbols generate_ref_docs.sln `
+ & $roslynatorExe generate-doc-root generate_ref_docs.sln `
+  --properties Configuration=Release `
+  -o "build/ref.md" `
+  --host docusaurus `
+  --heading "Roslynator Reference" `
+  --ignored-parts content `
+  --root-directory-url "ref"
+
+  # & $roslynatorExe list-symbols generate_ref_docs.sln `
 #  --properties Configuration=Release `
 #  --visibility public `
 #  --depth member `

@@ -15,7 +15,7 @@ Visual Studio does not provide any configuration mechanism for refactorings. Sin
 
 * Roslynator provides standard options page that enables to disable a given refactoring.
 
-![RefactoringsOptions](/img/roslynator/RefactoringsOptions.png)
+![refactoring-options](/img/roslynator/refactoring-options.png)
 
 ## Config File
 

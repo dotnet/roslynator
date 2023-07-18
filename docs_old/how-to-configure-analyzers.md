@@ -63,8 +63,8 @@ For further information please see how to [set rule severity in an EditorConfig 
 
 Roslynator ruleset file can be used to:
 
- 1) Enable/disable analyzer(s) by DEFAULT.
- 2) Change DEFAULT severity (action) of the analyzer(s).
+ * Enable/disable analyzer(s) by DEFAULT.
+ * Change DEFAULT severity (action) of the analyzer(s).
  
 Default configuration is applied once when analyzers are loaded.
 Therefore, it may be necessary to restart IDE for changes to take effect.
@@ -165,7 +165,7 @@ namespace N1.N2
 
 Go to Visual Studio Tools > Options > Roslynator > Global Suppressions
 
-![Global Suppressions](/img/roslynator/GlobalSuppressionsOptions.png)
+![Global Suppressions](/img/roslynator/global-suppressions-options.png)
 
 ## See Also
 

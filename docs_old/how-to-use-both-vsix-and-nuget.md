@@ -1,4 +1,4 @@
-﻿# How to Use Both Visual Studio Extension (VSIX) and NuGet Package
+﻿# How to Use Both VS Extension and NuGet Package
 
 If you use both VSIX and NuGet package **Roslynator.Analyzers** it is necessary to ensure that analyzers won't run twice. The solution differs by Visual Studio version:
 

@@ -28,7 +28,7 @@ All diagnostics are displayed in the Error List. Each diagnostic is visible by s
 
 Hotkey `Ctrl` + `.` will display available code fixes. Code fixes have precedence over refactorings so they are displayed first. There is an identifier and a description in the fly-out menu. Also there is 'Suppress ...' item at the bottom of the context menu.
 
-![Code Fix in Context Menu](/img/roslynator/CodeFixInContextMenu.png)
+![Code Fix in Context Menu](/img/roslynator/code-fix-in-context-menu.png)
 
 ### Configuration
 
@@ -44,7 +44,7 @@ When it is requested IDE will suggest a list of refactorings that are applicable
 
 Hotkey `Ctrl` + `.` will display available refactorings. Refactorings have lower precedence so they are displayed below diagnostics. There is no identifier and no description in the fly-out menu.
 
-![Refactoring in Context Menu](/img/roslynator/RefactoringInContextMenu.png)
+![Refactoring in Context Menu](/img/roslynator/refactoring-in-context-menu.png)
 
 ### Configuration
 

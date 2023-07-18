@@ -152,7 +152,7 @@ public static class MarkdownGenerator
             Heading1(refactoring.Title),
             Table(
                 TableRow("Property", "Value"),
-                TableRow("Id", refactoring.Id),
+                TableRow("Id", InlineCode(refactoring.Id)),
                 TableRow("Title", refactoring.Title),
                 TableRow("Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name))),
                 (!string.IsNullOrEmpty(refactoring.Span)) ? TableRow("Span", refactoring.Span) : null,
@@ -187,7 +187,7 @@ public static class MarkdownGenerator
             Heading1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {analyzer.Title.TrimEnd('.')}"),
             Table(
                 TableRow("Property", "Value"),
-                TableRow("Id", analyzer.Id),
+                TableRow("Id", InlineCode(analyzer.Id)),
                 TableRow("Severity", (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None"),
                 (!string.IsNullOrEmpty(analyzer.MinLanguageVersion)) ? TableRow("Minimum language version", analyzer.MinLanguageVersion) : null,
                 (requiredOptions.Any()) ? TableRow("Required option", Join(" or ", requiredOptions)) : null
@@ -245,7 +245,7 @@ public static class MarkdownGenerator
             Heading1(diagnostic.Id),
             Table(
                 TableRow("Property", "Value"),
-                TableRow("Id", diagnostic.Id),
+                TableRow("Id", InlineCode(diagnostic.Id)),
                 TableRow("Title", diagnostic.Title),
                 TableRow("Severity", diagnostic.Severity),
                 (!string.IsNullOrEmpty(diagnostic.HelpUrl)) ? TableRow("Official Documentation", Link("link", diagnostic.HelpUrl)) : null),

@@ -1,40 +1,36 @@
-# Roslynator <img align="left" width="48px" height="48px" src="http://pihrt.net/images/Roslynator.ico">
+# Roslynator <img align="left" width="48px" height="48px" src="http://pihrt.net/images/Roslynator.ico" />
 
-A collection of 500+ [analyzers](docs/analyzers/README.md), [refactorings](docs/refactorings/README.md) and [fixes](docs/cs/README.md) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
+A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/docs/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-### Features
+## Features
 
 * [Extensions for Visual Studio](#extensions-for-visual-studio)
 * [NuGet Packages](#nuget-packages)
 * [Roslynator Client Libraries](#roslynator-client-libraries)
 * [Roslynator Command Line Tool](#roslynator-command-line-tool)
 * [Roslynator for VS Code](#extensions-for-vs-code)
-* [Release notes](ChangeLog.md)
+* [Release notes](https://github.com/JosefPihrt/Roslynator/blob/main/ChangeLog.md)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
-### Donation
+## Documentation
+
+* [Configuration](https://josefpihrt.github.io/docs/roslynator/configuration)
+* [Guides](https://josefpihrt.github.io/docs/roslynator/guides)
+* [Roslynator CLI](https://josefpihrt.github.io/docs/roslynator/cli)
+* [Roslynator Client Libraries](https://josefpihrt.github.io/docs/roslynator/api)
+
+## Donation
 
 * Although Roslynator products are free of charge, any [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BX85UA346VTN6) is welcome and supports further development.
-* [List of donations](Donations.md)
+* [List of donations](https://github.com/JosefPihrt/Roslynator/blob/main/Donations.md)
 
-## Extensions for Visual Studio
+## Extensions
 
-| Extension | Comment |
-| --- | --- |
-| [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
-| [Roslynator 2019](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
-
-## Extensions for VS Code
-
-| Extension | Comment |
-| --- | --- |
-| [Roslynator](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
-
-## Extensions for VS Code Compatible Editors
-
-| Extension | Comment |
-| --- | --- |
-| [Roslynator](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
+| IDE | Extension | Comment |
+| --- | --- | --- |
+| VS | [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
+| VS Code | [Roslynator](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
+| Open VSX | [Roslynator](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
 
 ## NuGet Packages
 
@@ -46,11 +42,29 @@ A collection of 500+ [analyzers](docs/analyzers/README.md), [refactorings](docs/
 
 *Note: All analyzers in package Roslynator.Formatting.Analyzers are disabled by default.*
 
+## Roslynator Command Line Tool
+
+Run following command to install Roslynator command line tool:
+```
+dotnet tool install -g roslynator.dotnet.cli
+```
+
+* [Documentation](https://josefpihrt.github.io/docs/cli)
+
+## Roslynator Testing Framework
+
+* Roslynator Testing Framework can be used for unit testing of analyzers, refactorings and code fixes.
+* Framework is distributed as NuGet [package](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Testing.CSharp.Xunit.svg)](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit)
+* Learn how to use the framework from actual usages in Roslynator repo:
+  * Tests of analyzers are [here](src/Tests/Analyzers.Tests), [here](src/Tests/CodeAnalysis.Analyzers.Tests) and [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/Formatting.Analyzers.Tests)
+  * Tests of refactorings are [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/Refactorings.Tests)
+  * Tests of fixes of compiler diagnostics are [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/CodeFixes.Tests)
+
 ## Roslynator Client Libraries
 
 * Roslynator client libraries are meant be used for development of your own analyzers/refactorings.
 * It does not contain any analyzers/refactorings itself.
-* See [reference](docs/api/README.md).
+* See [reference](https://josefpihrt.github.io/docs/api).
 
 | Package | Version | Built on top of |
 | --- | --- | --- |
@@ -58,34 +72,6 @@ A collection of 500+ [analyzers](docs/analyzers/README.md), [refactorings](docs/
 | [Roslynator.Workspaces.Core](https://www.nuget.org/packages/Roslynator.Workspaces.Core) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.Workspaces.Core.svg)](https://www.nuget.org/packages/Roslynator.Workspaces.Core) | [Microsoft.CodeAnalysis.Workspaces.Common](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Workspaces.Common) |
 | [Roslynator.CSharp](https://www.nuget.org/packages/Roslynator.CSharp) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.svg)](https://www.nuget.org/packages/Roslynator.CSharp) | [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) |
 | [Roslynator.CSharp.Workspaces](https://www.nuget.org/packages/Roslynator.CSharp.Workspaces) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.Workspaces.svg)](https://www.nuget.org/packages/Roslynator.CSharp.Workspaces) | [Microsoft.CodeAnalysis.CSharp.Workspaces](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces) |
-
-## Roslynator Command Line Tool &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.DotNet.Cli.svg)](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
-
-Run following command to install Roslynator command line tool:
-```
-dotnet tool install -g roslynator.dotnet.cli
-```
-
-* [Documentation](docs/cli/README.md)
-* [Change log](src/CommandLine/ChangeLog.md)
-
-## Roslynator Testing Framework
-
-* Roslynator Testing Framework can be used for unit testing of analyzers, refactorings and code fixes.
-* Framework is distributed as NuGet [package](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Testing.CSharp.Xunit.svg)](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit)
-* Learn how to use the framework from actual usages in Roslynator repo:
-  * Tests of analyzers are [here](src/Tests/Analyzers.Tests), [here](src/Tests/CodeAnalysis.Analyzers.Tests) and [here](src/Tests/Formatting.Analyzers.Tests)
-  * Tests of refactorings are [here](src/Tests/Refactorings.Tests)
-  * Tests of fixes of compiler diagnostics are [here](src/Tests/CodeFixes.Tests)
-
-## Documentation
-
-* [How to Configure Roslynator](docs/Configuration.md)
-* [Analyzers vs. Refactorings](docs/AnalyzersVsRefactorings.md)
-* [How to Fix All Diagnostics in a Solution](docs/HowToFixAllDiagnostics.md)
-* [How to Generate API Documentation](docs/HowToGenerateDocumentation.md)
-
-Would you like to improve Roslynator documentation? Please see [how to update documentation](docs/HowToUpdateDocumentation.md).
 
 ## Other Projects
 

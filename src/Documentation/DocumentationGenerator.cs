@@ -202,10 +202,23 @@ public class DocumentationGenerator
             }
         }
 
-        foreach (INamedTypeSymbol typeSymbol in DocumentationModel.GetExtendedExternalTypes())
+        INamedTypeSymbol[] extendedExternalTypes = DocumentationModel.GetExtendedExternalTypes().ToArray();
+
+        foreach (INamespaceSymbol namespaceSymbol in extendedExternalTypes
+            .SelectMany(f => f.GetContainingNamespaces())
+            .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (DocumentationUtility.ShouldGenerateNamespaceFile(namespaceSymbol, Context.CommonNamespaces))
+                yield return GenerateNamespace(namespaceSymbol, extendedExternalTypes);
+        }
+
+        foreach (INamedTypeSymbol typeSymbol in extendedExternalTypes)
         {
             if (!Options.ShouldBeIgnored(typeSymbol))
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 yield return GenerateExtendedExternalType(typeSymbol);
             }
         }
@@ -319,10 +332,9 @@ public class DocumentationGenerator
         }
     }
 
-    private DocumentationGeneratorResult GenerateNamespace(INamespaceSymbol namespaceSymbol)
+    private DocumentationGeneratorResult GenerateNamespace(INamespaceSymbol namespaceSymbol, IEnumerable<INamedTypeSymbol> types = null)
     {
-        IEnumerable<INamedTypeSymbol> typeSymbols = DocumentationModel
-            .Types
+        IEnumerable<INamedTypeSymbol> typeSymbols = (types ?? DocumentationModel.Types)
             .Where(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(f.ContainingNamespace, namespaceSymbol));
 
         using (DocumentationWriter writer = CreateWriter(namespaceSymbol))

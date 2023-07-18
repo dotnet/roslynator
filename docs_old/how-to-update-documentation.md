@@ -1,14 +1,5 @@
 ﻿# How to Update Documentation
 
-The documentation in the following folders can be edited and updated:
-
-```shell
-/docs/*.md
-/docs/cli/*.md
-```
-
-Documentation for project api in `/docs/api` is generated and should not be edited directly.
-
 Documentation for [analyzers](analyzers) and [refactorings](refactorings) cannot be edited directly.
 It is generated from following metadata files:
 

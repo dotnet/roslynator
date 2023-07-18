@@ -74,7 +74,7 @@ namespace N1.N2
 
 Go to Visual Studio Tools > Options > Roslynator > Global Suppressions
 
-![Global Suppressions](/img/roslynator/GlobalSuppressionsOptions.png)
+![Global Suppressions](/img/roslynator/global-suppressions-options.png)
 
 ## See Also
 
