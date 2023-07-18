@@ -78,7 +78,10 @@ public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosti
                         return false;
                     }
 
-                    return en.Current.IsEndOfLineTrivia();
+                    return en.Current.IsKind(
+                        SyntaxKind.EndOfLineTrivia,
+                        SyntaxKind.RegionDirectiveTrivia,
+                        SyntaxKind.EndRegionDirectiveTrivia);
                 }
             }
 

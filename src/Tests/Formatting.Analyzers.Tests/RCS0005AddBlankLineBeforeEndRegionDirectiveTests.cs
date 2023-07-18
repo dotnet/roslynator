@@ -194,4 +194,37 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task TestNoDiagnostic_TwoEndRegions()
+    {
+        await VerifyNoDiagnosticAsync(@"
+#region
+class C
+{
+    #region
+    void M()
+    {
+    }
+
+    #endregion
+
+    #endregion
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task TestNoDiagnostic_EmptyRegion2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+    #region
+
+    #region
+
+    #endregion
+
+    #endregion
+");
+    }
 }
