@@ -51,16 +51,6 @@ internal static class Program
         ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
         ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
-#if !DEBUG
-        await GenerateSourceFilesXml(
-            sourcePath,
-            analyzers
-                .Concat(codeAnalysisAnalyzers)
-                .Concat(formattingAnalyzers),
-            refactorings)
-            .ConfigureAwait(false);
-#endif
-
         string analyzersDirPath = Path.Combine(destinationPath, "analyzers");
 
         Directory.CreateDirectory(analyzersDirPath);
@@ -248,38 +238,4 @@ internal static class Program
             FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
         }
     }
-#if !DEBUG
-    private static async Task GenerateSourceFilesXml(
-        string sourcePath,
-        IEnumerable<AnalyzerMetadata> analyzers,
-        ImmutableArray<RefactoringMetadata> refactorings)
-    {
-        VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 7);
-
-        MSBuildLocator.RegisterInstance(instance);
-
-        using (MSBuildWorkspace workspace = MSBuildWorkspace.Create())
-        {
-            workspace.WorkspaceFailed += (o, e) => Console.WriteLine(e.Diagnostic.Message);
-
-            string solutionPath = Path.Combine(sourcePath, "Roslynator.sln");
-
-            Console.WriteLine($"Loading solution '{solutionPath}'");
-
-            Solution solution = await workspace.OpenSolutionAsync(solutionPath).ConfigureAwait(false);
-
-            Console.WriteLine($"Finished loading solution '{solutionPath}'");
-
-            RoslynatorInfo roslynatorInfo = await RoslynatorInfo.Create(solution).ConfigureAwait(false);
-
-            IOrderedEnumerable<SourceFile> sourceFiles = analyzers
-                .Select(f => new SourceFile(f.Id, roslynatorInfo.GetAnalyzerFilesAsync(f.Identifier).Result))
-                .Concat(refactorings
-                    .Select(f => new SourceFile(f.Id, roslynatorInfo.GetRefactoringFilesAsync(f.Identifier).Result)))
-                .OrderBy(f => f.Id);
-
-            MetadataFile.SaveSourceFiles(sourceFiles, "../SourceFiles.xml");
-        }
-    }
-#endif
 }

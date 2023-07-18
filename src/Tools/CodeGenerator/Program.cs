@@ -108,22 +108,6 @@ internal static class Program
             @"CSharp\CSharp\SyntaxWalkers\CSharpSyntaxNodeWalker.cs",
             CSharpSyntaxNodeWalkerGenerator.Generate());
 
-        string configFileContent = File.ReadAllText(Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), "Configuration.md"));
-
-        configFileContent += @"# Full List of Options
-
-```editorconfig"
-            + EditorConfigGenerator.GenerateEditorConfig(metadata, commentOut: false)
-            + @"```
-";
-
-        var utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
-
-        File.WriteAllText(
-            Path.Combine(rootPath, "../docs/Configuration.md"),
-            configFileContent,
-            utf8NoBom);
-
         File.WriteAllText(
             Path.Combine(rootPath, @"VisualStudioCode\package\src\configurationFiles.generated.ts"),
             @"export const configurationFileContent = {
@@ -132,7 +116,7 @@ internal static class Program
                 + EditorConfigGenerator.GenerateEditorConfig(metadata, commentOut: true)
                 + @"`
 };",
-            utf8NoBom);
+            new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
 
         Console.WriteLine($"number of analyzers: {analyzers.Count(f => !f.IsObsolete)}");
         Console.WriteLine($"number of code analysis analyzers: {codeAnalysisAnalyzers.Count(f => !f.IsObsolete)}");
