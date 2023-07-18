@@ -131,7 +131,7 @@ internal static class Program
             sidebarLabel: "Code Fixes for Compiler Diagnostics");
 
         // find files to delete
-        foreach (string path in Directory.EnumerateFiles(GetPath($"{refactoringsDirPath}")))
+        foreach (string path in Directory.EnumerateFiles($"{refactoringsDirPath}"))
         {
             if (!refactorings.Any(f => f.Id == Path.GetFileNameWithoutExtension(path)))
                 Console.WriteLine($"FILE TO DELETE: {path}");
@@ -145,7 +145,7 @@ internal static class Program
             {
                 foreach (ImageMetadata image in refactoring.ImagesOrDefaultImage())
                 {
-                    string imagePath = Path.Combine(GetPath("../images/refactorings"), image.Name + ".png");
+                    string imagePath = Path.Combine(Path.Combine(sourcePath, "../images/refactorings"), image.Name + ".png");
 
                     if (!File.Exists(imagePath))
                         Console.WriteLine($"MISSING SAMPLE: {imagePath}");
@@ -182,16 +182,14 @@ internal static class Program
                 .Concat(allAnalyzers.SelectMany(f => f.OptionAnalyzers))
                 .Select(f => f.Id);
 
-            string directoryPath = GetPath($"{analyzersDirPath}");
-
-            foreach (string id in Directory.GetFiles(directoryPath, "*.*", SearchOption.TopDirectoryOnly)
+            foreach (string id in Directory.GetFiles(analyzersDirPath, "*.*", SearchOption.TopDirectoryOnly)
                 .Select(f => Path.GetFileNameWithoutExtension(f))
                 .Except(allIds))
             {
                 if (id == "RCSXXXX")
                     break;
 
-                string filePath = Path.Combine(directoryPath, Path.ChangeExtension(id, ".md"));
+                string filePath = Path.Combine(analyzersDirPath, Path.ChangeExtension(id, ".md"));
 
                 Console.WriteLine($"Delete file '{filePath}'");
 
@@ -204,7 +202,7 @@ internal static class Program
             var issueRegex = new Regex(@"\(\#(?<issue>\d+)\)");
             var analyzerRegex = new Regex(@"(\p{Lu}\p{Ll}+){2,}\ +\((?<id>RCS\d{4}[a-z]?)\)");
 
-            string path = GetPath("../ChangeLog.md");
+            string path = Path.Combine(sourcePath, "../ChangeLog.md");
             string s = File.ReadAllText(path, _utf8NoBom);
 
             List<AnalyzerMetadata> allAnalyzers = analyzers
@@ -236,25 +234,18 @@ internal static class Program
         }
 
         void WriteAllText(
-            string relativePath,
+            string path,
             string content,
             bool onlyIfChanges = true,
             bool fileMustExists = false,
             int? sidebarPosition = null,
             string sidebarLabel = null)
         {
-            string path = GetPath(relativePath);
-
             Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
 
             content = DocusaurusUtility.CreateFrontMatter(position: sidebarPosition, label: sidebarLabel) + content;
 
             FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
-        }
-
-        string GetPath(string path)
-        {
-            return Path.Combine(sourcePath, path);
         }
     }
 #if !DEBUG
