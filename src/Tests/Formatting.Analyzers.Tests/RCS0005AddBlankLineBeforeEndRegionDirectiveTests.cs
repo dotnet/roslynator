@@ -215,7 +215,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-    public async Task TestNoDiagnostic_EmptyRegion2()
+    public async Task TestNoDiagnostic_EmptyRegions()
     {
         await VerifyNoDiagnosticAsync(@"
     #region
