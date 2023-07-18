@@ -159,7 +159,10 @@ public class DocumentationGenerator
 
         using (DocumentationWriter writer = CreateWriter())
         {
-            yield return GenerateRoot(writer, heading);
+            DocumentationGeneratorResult result = GenerateRoot(writer, heading);
+
+            if (result.Content is not null)
+                yield return result;
         }
 
         if (depth <= DocumentationDepth.Namespace)
@@ -232,8 +235,11 @@ public class DocumentationGenerator
         }
     }
 
-    internal DocumentationGeneratorResult GenerateRoot(DocumentationWriter writer, string heading)
+    private DocumentationGeneratorResult GenerateRoot(DocumentationWriter writer, string heading)
     {
+        if (Options.IgnoredRootParts == RootDocumentationParts.All)
+            return CreateResult(null, DocumentationFileKind.Root);
+
         writer.WriteStartDocument(null, DocumentationFileKind.Root);
 
         if (Options.ScrollToContent)

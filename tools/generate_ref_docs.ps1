@@ -11,6 +11,7 @@ $rootDirectoryUrl="build/ref"
  --heading "Roslynator Reference" `
  --group-by-common-namespace `
  --ignored-common-parts content `
+ --ignored-root-parts all `
  --max-derived-types 10
 
  & $roslynatorExe generate-doc-root generate_ref_docs.sln `

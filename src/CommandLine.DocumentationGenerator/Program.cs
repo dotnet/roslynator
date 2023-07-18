@@ -51,7 +51,7 @@ internal static class Program
 
         List<Command> commands = application.Commands.Where(f => !ignoredCommandNames.Contains(f.Name)).ToList();
 
-        string filePath = Path.Combine(destinationDirectoryPath, "commands.md");
+        string filePath = Path.Combine(destinationDirectoryPath, "cli/commands.md");
 
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
@@ -74,7 +74,7 @@ internal static class Program
 
         foreach (Command command in commands)
         {
-            string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, "commands", $"{command.Name}.md"));
+            string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, "cli/commands", $"{command.Name}.md"));
 
             Directory.CreateDirectory(Path.GetDirectoryName(commandFilePath));
 
