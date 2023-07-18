@@ -35,4 +35,4 @@ It is necessary to specify full path to rule set as each project has different w
 
 ## See Also
 
-* [`fix` command](cli/commands/fix/index.md)
+* [`fix` command](cli/commands/fix.md)

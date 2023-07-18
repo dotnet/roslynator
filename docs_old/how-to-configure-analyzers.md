@@ -55,7 +55,7 @@ For further information please see how to [set rule severity in an EditorConfig 
 
 ### EditorConfig Options
 
-* [List of EditorConfig Options](Configuration.md)
+* [List of EditorConfig Options](configuration.md)
 
 ## Change Default Configuration of Analyzers
 

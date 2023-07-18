@@ -20,4 +20,4 @@ sidebar_position: 0
 
 * [Analyzers vs. Refactorings](analyzers-vs-refactorings.md)
 * [Roslynator API Reference](api/index.md)
-* [Roslynator Command-Line Tool](cli/index.md)
+* [Roslynator Command-Line Tool](cli.md)
