@@ -39,7 +39,7 @@ To enforce ruleset it is necessary to reference it in a csproj file:
 </PropertyGroup>
 ```
 
-Please see step-by-step tutorial [how to configure ruleset file](HowToConfigureRulesetFile.md).
+Please see step-by-step tutorial [how to configure ruleset file](how-to-configure-ruleset-file.md).
 
 
 ## Configure Analyzers in an EditorConfig File

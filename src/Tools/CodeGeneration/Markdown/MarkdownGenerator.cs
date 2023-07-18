@@ -413,11 +413,6 @@ public static class MarkdownGenerator
         }
     }
 
-    private static MImage RefactoringImage(RefactoringMetadata refactoring, string fileName)
-    {
-        return Image(refactoring.Title, $"../../images/refactorings/{fileName}.png");
-    }
-
     private static MElement CheckboxOrHyphen(bool value)
     {
         if (value)

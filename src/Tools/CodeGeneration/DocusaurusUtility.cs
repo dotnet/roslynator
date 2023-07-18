@@ -16,10 +16,17 @@ public static class DocusaurusUtility
             sb.AppendLine("---");
 
             if (position is not null)
-                sb.AppendLine($"sidebar_position: {position}");
+            {
+                sb.Append("sidebar_position: ");
+                sb.Append(position);
+                sb.AppendLine();
+            }
 
             if (label is not null)
-                sb.AppendLine($"sidebar_label: {label}");
+            {
+                sb.Append("sidebar_label: ");
+                sb.AppendLine(label);
+            }
 
             sb.AppendLine("---");
             sb.AppendLine();
@@ -29,5 +36,4 @@ public static class DocusaurusUtility
 
         return null;
     }
-
 }
