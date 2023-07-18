@@ -1,4 +1,4 @@
-﻿# Roslynator Configuration
+﻿# Configuration
 
 Use EditorConfig file to configure analyzers, refactoring and compiler diagnostic fixes.
 

@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
 using System.IO;
 using System.Text;
 using Roslynator.CodeGeneration.EditorConfig;
-using Roslynator.Metadata;
 
 namespace Roslynator.CodeGeneration;
 
@@ -13,16 +11,24 @@ internal static class Program
 {
     private static void Main(string[] args)
     {
+        if (args.Length < 3)
+        {
+            Console.WriteLine("Invalid number of arguments");
+            return;
+        }
+
         if (args is null || args.Length == 0)
         {
             args = new string[] { Environment.CurrentDirectory };
         }
 
         string rootPath = args[0];
+        string configurationSourcePath = args[1];
+        string configurationDestinationPath = args[2];
 
         var metadata = new RoslynatorMetadata(rootPath);
 
-        string configFileContent = File.ReadAllText("configuration.md");
+        string configFileContent = File.ReadAllText(configurationSourcePath);
 
         configFileContent += @"# Full List of Options
 
@@ -34,7 +40,7 @@ internal static class Program
         var utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
 
         File.WriteAllText(
-            Path.Combine("configuration.md"),
+            configurationDestinationPath,
             configFileContent,
             utf8NoBom);
     }
