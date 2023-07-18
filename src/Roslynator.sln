@@ -21,29 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1DB0C05-3710-4B69-955F-2F46E330591B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{97FBDF71-F240-48F2-B29A-E6B27597E38B}"
-	ProjectSection(SolutionItems) = preProject
-		..\docs\AnalyzersVsRefactorings.md = ..\docs\AnalyzersVsRefactorings.md
-		..\docs\Configuration.md = ..\docs\Configuration.md
-		..\docs\HowToDebugRoslynator.md = ..\docs\HowToDebugRoslynator.md
-		..\docs\HowToFixAllDiagnostics.md = ..\docs\HowToFixAllDiagnostics.md
-		..\docs\HowToGenerateDocumentation.md = ..\docs\HowToGenerateDocumentation.md
-		..\docs\HowToUpdateDocumentation.md = ..\docs\HowToUpdateDocumentation.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{A16068FE-9E6C-45D2-8114-CC189600AFA2}"
-	ProjectSection(SolutionItems) = preProject
-		..\docs\cli\analyze-command.md = ..\docs\cli\analyze-command.md
-		..\docs\cli\fix-command.md = ..\docs\cli\fix-command.md
-		..\docs\cli\format-command.md = ..\docs\cli\format-command.md
-		..\docs\cli\generate-doc-command.md = ..\docs\cli\generate-doc-command.md
-		..\docs\cli\generate-doc-root-command.md = ..\docs\cli\generate-doc-root-command.md
-		..\docs\cli\lloc-command.md = ..\docs\cli\lloc-command.md
-		..\docs\cli\loc-command.md = ..\docs\cli\loc-command.md
-		..\docs\cli\README.md = ..\docs\cli\README.md
-		..\docs\cli\spellcheck-command.md = ..\docs\cli\spellcheck-command.md
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp", "CSharp\CSharp.csproj", "{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Refactorings", "Refactorings\Refactorings.csproj", "{3AD7B124-7B99-440D-84A1-858BE5AE268B}"
@@ -291,8 +268,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{97FBDF71-F240-48F2-B29A-E6B27597E38B} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
-		{A16068FE-9E6C-45D2-8114-CC189600AFA2} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{7F6F6533-E406-4225-A435-DEE22C717F48} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{62ABFF60-67FC-4D33-91BD-ED1CD7DB5007} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}

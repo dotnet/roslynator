@@ -227,7 +227,7 @@ internal static class Program
 
                     AnalyzerMetadata analyzer = dic[id];
 
-                    return $"[{id}](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/{id}.md) ({analyzer.Title.TrimEnd('.')})";
+                    return $"[{id}](https://josefpihrt.github.io/docs/roslynator/analyzers/{id}) ({analyzer.Title.TrimEnd('.')})";
                 });
 
             File.WriteAllText(path, s, _utf8NoBom);

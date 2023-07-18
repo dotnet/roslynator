@@ -1,6 +1,6 @@
 # Roslynator.Analyzers
 
-A collection of 200+ [analyzers](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/README.md) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
+A collection of 200+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
 ## Requirements
 
@@ -15,7 +15,7 @@ A collection of 200+ [analyzers](https://github.com/JosefPihrt/Roslynator/blob/m
    dotnet add package roslynator.analyzers
    ```
 
-* Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/main/docs/Configuration.md) analyzers.
+* Use EditorConfig to [configure](https://josefpihrt.github.io/docs/roslynator/configuration) analyzers.
 
 ## Feedback
 
