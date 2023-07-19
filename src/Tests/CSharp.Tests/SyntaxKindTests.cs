@@ -563,7 +563,6 @@ public static class SyntaxKindTests
                 case SyntaxKind.LineSpanDirectiveTrivia:
                 case SyntaxKind.RecordStructDeclaration:
                 // new in 4.2.0
-                //case SyntaxKind.ExclamationExclamationToken:
                 case SyntaxKind.SingleLineRawStringLiteralToken:
                 case SyntaxKind.MultiLineRawStringLiteralToken:
                 case SyntaxKind.ListPattern:
