@@ -233,6 +233,7 @@ public partial class CSharpSyntaxWalkerGenerator
                 case "FunctionPointerUnmanagedCallingConventionListSyntax":
                 case "LineDirectivePositionSyntax":
                 case "BaseExpressionColonSyntax":
+                case "ListPatternSyntax":
                     {
                         if (UseCustomVisitMethod)
                         {

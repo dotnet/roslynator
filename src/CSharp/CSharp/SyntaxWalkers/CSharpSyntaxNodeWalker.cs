@@ -2562,6 +2562,19 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitListPattern(ListPatternSyntax node)
+        {
+            foreach (PatternSyntax pattern in node.Patterns)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitPattern(pattern);
+            }
+        }
+
         public override void VisitLiteralExpression(LiteralExpressionSyntax node)
         {
         }
@@ -3790,6 +3803,20 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitScopedType(ScopedTypeSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            TypeSyntax type = node.Type;
+            if (type != null)
+            {
+                VisitType(type);
+            }
+        }
+
         public override void VisitSelectClause(SelectClauseSyntax node)
         {
             if (!ShouldVisit)
@@ -3887,6 +3914,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
         }
 
         public override void VisitSkippedTokensTrivia(SkippedTokensTriviaSyntax node)
+        {
+        }
+
+        public override void VisitSlicePattern(SlicePatternSyntax node)
         {
         }
 
@@ -4890,6 +4921,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.LeftShiftAssignmentExpression:
                 case SyntaxKind.RightShiftAssignmentExpression:
                 case SyntaxKind.CoalesceAssignmentExpression:
+                case SyntaxKind.UnsignedRightShiftAssignmentExpression:
                     VisitAssignmentExpression((AssignmentExpressionSyntax)node);
                     break;
                 case SyntaxKind.AwaitExpression:
@@ -4919,6 +4951,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.IsExpression:
                 case SyntaxKind.AsExpression:
                 case SyntaxKind.CoalesceExpression:
+                case SyntaxKind.UnsignedRightShiftExpression:
                     VisitBinaryExpression((BinaryExpressionSyntax)node);
                     break;
                 case SyntaxKind.CastExpression:
@@ -4991,6 +5024,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.FalseLiteralExpression:
                 case SyntaxKind.NullLiteralExpression:
                 case SyntaxKind.DefaultLiteralExpression:
+                case SyntaxKind.Utf8StringLiteralExpression:
                     VisitLiteralExpression((LiteralExpressionSyntax)node);
                     break;
                 case SyntaxKind.MakeRefExpression:
@@ -5063,6 +5097,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.RefValueExpression:
                     VisitRefValueExpression((RefValueExpressionSyntax)node);
+                    break;
+                case SyntaxKind.ScopedType:
+                    VisitScopedType((ScopedTypeSyntax)node);
                     break;
                 case SyntaxKind.SimpleLambdaExpression:
                     VisitSimpleLambdaExpression((SimpleLambdaExpressionSyntax)node);
@@ -5233,6 +5270,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.DiscardPattern:
                     VisitDiscardPattern((DiscardPatternSyntax)node);
                     break;
+                case SyntaxKind.ListPattern:
+                    VisitListPattern((ListPatternSyntax)node);
+                    break;
                 case SyntaxKind.ParenthesizedPattern:
                     VisitParenthesizedPattern((ParenthesizedPatternSyntax)node);
                     break;
@@ -5241,6 +5281,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.RelationalPattern:
                     VisitRelationalPattern((RelationalPatternSyntax)node);
+                    break;
+                case SyntaxKind.SlicePattern:
+                    VisitSlicePattern((SlicePatternSyntax)node);
                     break;
                 case SyntaxKind.TypePattern:
                     VisitTypePattern((TypePatternSyntax)node);
@@ -5488,6 +5531,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.RefType:
                     VisitRefType((RefTypeSyntax)node);
+                    break;
+                case SyntaxKind.ScopedType:
+                    VisitScopedType((ScopedTypeSyntax)node);
                     break;
                 case SyntaxKind.TupleType:
                     VisitTupleType((TupleTypeSyntax)node);

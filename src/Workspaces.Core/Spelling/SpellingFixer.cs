@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Host.Mef;
 using static Roslynator.Logger;
@@ -469,8 +470,9 @@ internal class SpellingFixer
                     newSolution = await Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(
                         CurrentSolution,
                         symbol,
+                        //TODO: rename file when renaming symbol?
+                        new SymbolRenameOptions(RenameOverloads: true),
                         newName,
-                        default(Microsoft.CodeAnalysis.Options.OptionSet),
                         cancellationToken)
                         .ConfigureAwait(false);
                 }

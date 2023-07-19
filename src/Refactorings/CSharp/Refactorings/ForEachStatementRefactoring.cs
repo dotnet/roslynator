@@ -163,7 +163,7 @@ internal static class ForEachStatementRefactoring
 
         context.RegisterRefactoring(
             $"Rename '{oldName}' to '{newName}'",
-            ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
+            ct => Renamer.RenameSymbolAsync(context.Solution, symbol, default(SymbolRenameOptions), newName, ct),
             RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
     }
 }
