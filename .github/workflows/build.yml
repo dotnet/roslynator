@@ -196,6 +196,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: dotnet restore
       - run: dotnet build --no-restore
+      - run: dotnet format --no-restore --verify-no-changes --severity info
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v3
         with:

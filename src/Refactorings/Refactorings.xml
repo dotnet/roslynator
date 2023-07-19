@@ -700,7 +700,6 @@ if (y)
       <Syntax>field</Syntax>
       <Syntax>property</Syntax>
     </Syntaxes>
-    <Span></Span>
   </Refactoring>
   <Refactoring Id="RR0067" Identifier="IntroduceFieldToLockOn" Title="Introduce field to lock on">
     <OptionKey>introduce_field_to_lock_on</OptionKey>
@@ -2200,7 +2199,6 @@ private object z;]]></After>
     <Syntaxes>
       <Syntax>selected case labels with string literal or enum field</Syntax>
     </Syntaxes>
-    <Span></Span>
     <Samples>
       <Sample>
         <Before><![CDATA[bool Foo(string s)
@@ -2600,7 +2598,6 @@ class Foo : IFoo
     <Syntaxes>
       <Syntax>object/record initializer</Syntax>
     </Syntaxes>
-    <Span></Span>
     <Summary></Summary>
     <Samples>
       <Sample>
