@@ -19,9 +19,11 @@ public static class MarkdownGenerator
         tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent,
         angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef);
 
+#pragma warning disable IDE0060, RCS1175
     private static void AddFootnote(this MDocument document)
     {
     }
+#pragma warning restore IDE0060, RCS1175
 
     public static string CreateReadMe(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
     {
