@@ -17,7 +17,7 @@ A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/an
 * [Guides](https://josefpihrt.github.io/docs/roslynator/guides)
 * [Developers](https://josefpihrt.github.io/docs/roslynator/developers)
 * [Roslynator CLI](https://josefpihrt.github.io/docs/roslynator/cli)
-* [Roslynator Client Libraries](https://josefpihrt.github.io/docs/roslynator/api)
+* [Roslynator Client Libraries](https://josefpihrt.github.io/docs/roslynator/ref)
 
 ## Contributions
 
@@ -36,7 +36,7 @@ In a nutshell, bugfixes or small improvements can be implemented right away. Lar
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
 - [Open VSX](https://open-vsx.org/extension/josefpihrt-vscode/roslynator)
 
-*Note: Extensions contains analyzers, refactorings and fixes for C# compiler diagnostics.*
+*Note: Extensions contain analyzers, refactorings and fixes for C# compiler diagnostics.*
 
 ## NuGet Packages
 
@@ -70,7 +70,7 @@ dotnet tool install -g roslynator.dotnet.cli
 
 * Roslynator client libraries are meant be used for development of your own analyzers/refactorings.
 * It does not contain any analyzers/refactorings itself.
-* See [reference](https://josefpihrt.github.io/docs/api).
+* See [reference](https://josefpihrt.github.io/docs/roslynator/ref).
 
 | Package | Version | Built on top of |
 | --- | --- | --- |
