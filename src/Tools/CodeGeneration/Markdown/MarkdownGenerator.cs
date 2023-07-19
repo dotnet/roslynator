@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using DotMarkdown;
 using DotMarkdown.Linq;
 using Roslynator.Metadata;
@@ -22,7 +21,6 @@ public static class MarkdownGenerator
 
     private static void AddFootnote(this MDocument document)
     {
-        document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "https://github.com/JosefPihrt/DotMarkdown"), ")"));
     }
 
     public static string CreateReadMe(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
