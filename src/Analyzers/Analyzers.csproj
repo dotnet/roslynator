@@ -9,6 +9,7 @@
     <AssemblyName>Roslynator.CSharp.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.CSharp</RootNamespace>
     <IsPackable>false</IsPackable>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
   <ItemGroup>

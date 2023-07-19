@@ -9,6 +9,7 @@
     <AssemblyName>Roslynator.Formatting.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.Formatting</RootNamespace>
     <IsPackable>false</IsPackable>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
   <ItemGroup>
