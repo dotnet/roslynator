@@ -6,4 +6,4 @@ if(!$?) { Read-Host; Exit }
 dotnet "../src/Tools/ConfigurationFileGenerator/bin/Release/net7.0/Roslynator.ConfigurationFileGenerator.dll" `
  "../src" `
  "../src/Tools/ConfigurationFileGenerator/configuration.md" `
- "../docs/configuration.md" 
+ "build/configuration.md" 
