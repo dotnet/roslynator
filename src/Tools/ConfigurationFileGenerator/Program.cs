@@ -39,7 +39,10 @@ internal static class Program
 
         var utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
 
-        Directory.CreateDirectory(Path.GetDirectoryName(configurationDestinationPath));
+        string directoryPath = Path.GetDirectoryName(configurationDestinationPath);
+
+        if (directoryPath.Length > 0)
+            Directory.CreateDirectory(directoryPath);
 
         File.WriteAllText(
             configurationDestinationPath,
