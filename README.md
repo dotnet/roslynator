@@ -26,11 +26,13 @@ A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/an
 
 ## Extensions
 
-| IDE | Extension | Comment |
-| --- | --- | --- |
-| VS | [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
-| VS Code | [Roslynator](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
-| Open VSX | [Roslynator](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) | contains analyzers, refactorings and fixes for C# compiler diagnostics. |
+| IDE | Extension |
+| --- | --- |
+| Visual Studio 2022 | [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) |
+| VS Code | [Roslynator](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator) |
+| Open VSX | [Roslynator](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) |
+
+Extensions contains analyzers, refactorings and fixes for C# compiler diagnostics.
 
 ## NuGet Packages
 
