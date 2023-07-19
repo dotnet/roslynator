@@ -105,6 +105,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     yield return SyntaxKind.LeftShiftAssignmentExpression;
                     yield return SyntaxKind.RightShiftAssignmentExpression;
                     yield return SyntaxKind.CoalesceAssignmentExpression;
+                    yield return SyntaxKind.UnsignedRightShiftAssignmentExpression;
                     break;
                 }
 
@@ -185,6 +186,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     yield return SyntaxKind.IsExpression;
                     yield return SyntaxKind.AsExpression;
                     yield return SyntaxKind.CoalesceExpression;
+                    yield return SyntaxKind.UnsignedRightShiftExpression;
                     break;
                 }
 
@@ -812,6 +814,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "ListPatternSyntax":
+                {
+                    yield return SyntaxKind.ListPattern;
+                    break;
+                }
+
                 case "LiteralExpressionSyntax":
                 {
                     yield return SyntaxKind.ArgListExpression;
@@ -822,6 +830,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     yield return SyntaxKind.FalseLiteralExpression;
                     yield return SyntaxKind.NullLiteralExpression;
                     yield return SyntaxKind.DefaultLiteralExpression;
+                    yield return SyntaxKind.Utf8StringLiteralExpression;
                     break;
                 }
 
@@ -1156,6 +1165,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "ScopedTypeSyntax":
+                {
+                    yield return SyntaxKind.ScopedType;
+                    break;
+                }
+
                 case "SelectClauseSyntax":
                 {
                     yield return SyntaxKind.SelectClause;
@@ -1195,6 +1210,12 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "SkippedTokensTriviaSyntax":
                 {
                     yield return SyntaxKind.SkippedTokensTrivia;
+                    break;
+                }
+
+                case "SlicePatternSyntax":
+                {
+                    yield return SyntaxKind.SlicePattern;
                     break;
                 }
 

@@ -20,7 +20,7 @@ public class RCS1251RemoveUnnecessaryBracesTests : AbstractCSharpDiagnosticVerif
 namespace N
 {
     record R(string Value)
-    [|[|{|]|]
+    [|{|]
     }
 }
 
@@ -42,7 +42,7 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
 namespace N
 {
     record struct R(string Value)
-    [|[|{|]|]
+    [|{|]
     }
 }
 
