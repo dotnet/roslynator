@@ -19,7 +19,7 @@ A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/an
 * [Roslynator CLI](https://josefpihrt.github.io/docs/roslynator/cli)
 * [Roslynator Client Libraries](https://josefpihrt.github.io/docs/roslynator/api)
 
-## Contribution
+## Contributions
 
 Contributions are welcome!
 Please read [CONTRIBUTING.md](CONTRIBUTING.MD) and [documentation for developers](https://josefpihrt.github.io/docs/roslynator/developers).
@@ -32,13 +32,11 @@ In a nutshell, bugfixes or small improvements can be implemented right away. Lar
 
 ## Extensions
 
-| IDE | Extension |
-| --- | --- |
-| Visual Studio 2022 | [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) |
-| VS Code | [Roslynator](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator) |
-| Open VSX | [Roslynator](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) |
+- [Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
+- [VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
+- [Open VSX](https://open-vsx.org/extension/josefpihrt-vscode/roslynator)
 
-Extensions contains analyzers, refactorings and fixes for C# compiler diagnostics.
+*Note: Extensions contains analyzers, refactorings and fixes for C# compiler diagnostics.*
 
 ## NuGet Packages
 
