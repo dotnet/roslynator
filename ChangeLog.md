@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - [CLI] Bump Roslyn to 4.6.0 ([#1106](https://github.com/josefpihrt/roslynator/pull/1106)).
+- Bump Roslyn to 4.5.0 ([#1116](https://github.com/josefpihrt/roslynator/pull/1116)).
 
 ### Fixed
 
