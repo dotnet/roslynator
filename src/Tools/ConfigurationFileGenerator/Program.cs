@@ -32,7 +32,7 @@ internal static class Program
 
         configFileContent += @"# Full List of Options
 
-```editorconfig"
+```editorconfig title=.""editorconfig"""
             + EditorConfigGenerator.GenerateEditorConfig(metadata, commentOut: false)
             + @"```
 ";
