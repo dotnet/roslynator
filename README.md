@@ -4,11 +4,10 @@ A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/an
 
 ## Features
 
-* [Extensions for Visual Studio](#extensions-for-visual-studio)
+* [IDE Extensions](#extensions)
 * [NuGet Packages](#nuget-packages)
 * [Roslynator Client Libraries](#roslynator-client-libraries)
 * [Roslynator Command Line Tool](#roslynator-command-line-tool)
-* [Roslynator for VS Code](#extensions-for-vs-code)
 * [Release notes](https://github.com/JosefPihrt/Roslynator/blob/main/ChangeLog.md)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
@@ -16,8 +15,15 @@ A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/an
 
 * [Configuration](https://josefpihrt.github.io/docs/roslynator/configuration)
 * [Guides](https://josefpihrt.github.io/docs/roslynator/guides)
+* [Developers](https://josefpihrt.github.io/docs/roslynator/developers)
 * [Roslynator CLI](https://josefpihrt.github.io/docs/roslynator/cli)
 * [Roslynator Client Libraries](https://josefpihrt.github.io/docs/roslynator/api)
+
+## Contribution
+
+Contributions are welcome!
+Please read [CONTRIBUTING.md](CONTRIBUTING.MD) and [documentation for developers](https://josefpihrt.github.io/docs/roslynator/developers).
+In a nutshell, bugfixes or small improvements can be implemented right away. Larger task like adding new analyzer/refactoring should be discussed first.
 
 ## Donation
 
