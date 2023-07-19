@@ -2,7 +2,7 @@
 
 Use EditorConfig file to configure analyzers, refactoring and compiler diagnostic fixes.
 
-```editorconfig
+```editorconfig title=".editorconfig"
 # Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
 dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
 
