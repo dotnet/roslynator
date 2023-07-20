@@ -560,8 +560,7 @@ class C
 }
 ");
     }
-    
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task TestDiagnostic_DoesNot_IncorrectlyRecurse()
     {
@@ -590,7 +589,7 @@ class C
     {
     }
 }
-",@"
+", @"
 class C
 {
     void M(bool p, bool q, bool r)
