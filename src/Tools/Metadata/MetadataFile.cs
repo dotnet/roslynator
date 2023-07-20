@@ -31,7 +31,7 @@ public static class MetadataFile
             string title = element.Element("Title").Value;
             string identifier = element.Attribute("Identifier").Value;
             string messageFormat = element.Element("MessageFormat")?.Value ?? title;
-            string category = element.Element("Category").Value;
+            string category = element.Element("Category")?.Value ?? "Roslynator";
             string defaultSeverity = element.Element("DefaultSeverity").Value;
             var isEnabledByDefault = bool.Parse(element.Element("IsEnabledByDefault").Value);
             bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");

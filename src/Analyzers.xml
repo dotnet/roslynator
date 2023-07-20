@@ -3,7 +3,6 @@
   <Analyzer Identifier="AddBlankLineAfterEmbeddedStatement">
     <Id>RCS0001</Id>
     <Title>Add blank line after embedded statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -21,7 +20,6 @@ Bar();]]></After>
   <Analyzer Identifier="AddBlankLineAfterRegionDirective">
     <Id>RCS0002</Id>
     <Title>Add blank line after #region.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -51,7 +49,6 @@ Bar();]]></After>
   <Analyzer Identifier="AddBlankLineAfterUsingDirectiveList">
     <Id>RCS0003</Id>
     <Title>Add blank line after using directive list.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -77,7 +74,6 @@ namespace N
   <Analyzer Identifier="AddEmptyLineBeforeClosingBraceOfDoStatement" IsObsolete="true">
     <Id>RCS0004</Id>
     <Title>Add empty line before closing brace of 'do' statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -97,7 +93,6 @@ namespace N
   <Analyzer Identifier="AddBlankLineBeforeEndRegionDirective">
     <Id>RCS0005</Id>
     <Title>Add blank line before #endregion.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -127,7 +122,6 @@ namespace N
   <Analyzer Identifier="AddBlankLineBeforeUsingDirectiveList">
     <Id>RCS0006</Id>
     <Title>Add blank line before using directive list.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -153,7 +147,6 @@ namespace N
   <Analyzer Identifier="AddBlankLineBetweenAccessors">
     <Id>RCS0007</Id>
     <Title>Add blank line between accessors.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -188,7 +181,6 @@ namespace N
   <Analyzer Identifier="AddBlankLineBetweenClosingBraceAndNextStatement">
     <Id>RCS0008</Id>
     <Title>Add blank line between closing brace and next statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -208,7 +200,6 @@ Foo();]]></After>
   <Analyzer Identifier="AddBlankLineBetweenDeclarationAndDocumentationComment">
     <Id>RCS0009</Id>
     <Title>Add blank line between declaration and documentation comment.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -230,7 +221,6 @@ object P2 { get; }]]></After>
   <Analyzer Identifier="AddBlankLineBetweenDeclarations">
     <Id>RCS0010</Id>
     <Title>Add blank line between declarations.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -306,7 +296,6 @@ enum Bar
     <Id>RCS0011</Id>
     <Title>Add/remove blank line between single-line accessors.</Title>
     <MessageFormat>{0} blank line between single-line accessors.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -355,7 +344,6 @@ enum Bar
   <Analyzer Identifier="AddBlankLineBetweenSingleLineDeclarations">
     <Id>RCS0012</Id>
     <Title>Add blank line between single-line declarations.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -371,7 +359,6 @@ object P2 { get; }]]></After>
   <Analyzer Identifier="AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind">
     <Id>RCS0013</Id>
     <Title>Add blank line between single-line declarations of different kind.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -387,7 +374,6 @@ object this[int index] { get; }]]></After>
   <Analyzer Identifier="AddBlankLineBetweenSwitchSections">
     <Id>RCS0014</Id>
     <Title>Add blank line between switch sections.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
@@ -419,7 +405,6 @@ object this[int index] { get; }]]></After>
     <Id>RCS0015</Id>
     <Title>Add/remove blank line between using directives.</Title>
     <MessageFormat>{0} blank line between using directives.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -473,7 +458,6 @@ namespace N
   <Analyzer Identifier="PutAttributeListOnItsOwnLine">
     <Id>RCS0016</Id>
     <Title>Put attribute list on its own line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -497,7 +481,6 @@ namespace N
   <Analyzer Identifier="AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0017</Id>
     <Title>Add new line after binary operator instead of before it.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -518,7 +501,6 @@ namespace N
   <Analyzer Identifier="AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0018</Id>
     <Title>Add new line after conditional operator instead of before it.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -535,7 +517,6 @@ namespace N
   <Analyzer Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0019</Id>
     <Title>Add new line after expression body arrow instead of before it.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -551,7 +532,6 @@ namespace N
     <Id>RCS0020</Id>
     <Title>Format accessor's braces on a single line or multiple lines.</Title>
     <MessageFormat>Format braces on {0}.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
@@ -577,7 +557,6 @@ namespace N
     <Id>RCS0021</Id>
     <Title>Format block's braces on a single line or multiple lines.</Title>
     <MessageFormat>Format braces on {0}.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
@@ -597,7 +576,6 @@ namespace N
     <Id>RCS0022</Id>
     <Title>Add new line after opening brace of empty block.</Title>
     <MessageFormat>([deprecated] Use RCS0021 instead) Format braces on a single line.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -613,7 +591,6 @@ namespace N
   <Analyzer Identifier="FormatTypeDeclarationBraces">
     <Id>RCS0023</Id>
     <Title>Format type declaration's braces.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -629,7 +606,6 @@ namespace N
   <Analyzer Identifier="AddNewLineAfterSwitchLabel">
     <Id>RCS0024</Id>
     <Title>Add new line after switch label.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -652,7 +628,6 @@ namespace N
   <Analyzer Identifier="PutFullAccessorOnItsOwnLine">
     <Id>RCS0025</Id>
     <Title>Put full accessor on its own line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -670,7 +645,6 @@ namespace N
     <Id>RCS0027</Id>
     <Title>Place new line after/before binary operator.</Title>
     <MessageFormat>Place new line {0} binary operator.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -718,7 +692,6 @@ namespace N
     <Id>RCS0028</Id>
     <Title>Place new line after/before '?:' operator.</Title>
     <MessageFormat>Place new line {0} operator.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -757,7 +730,6 @@ namespace N
   <Analyzer Identifier="PutConstructorInitializerOnItsOwnLine">
     <Id>RCS0029</Id>
     <Title>Put constructor initializer on its own line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -777,7 +749,6 @@ namespace N
   <Analyzer Identifier="AddNewLineBeforeEmbeddedStatement">
     <Id>RCS0030</Id>
     <Title>Add new line before embedded statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -791,7 +762,6 @@ namespace N
   <Analyzer Identifier="PutEnumMemberOnItsOwnLine">
     <Id>RCS0031</Id>
     <Title>Put enum member on its own line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -810,7 +780,6 @@ namespace N
     <Id>RCS0032</Id>
     <Title>Place new line after/before arrow token.</Title>
     <MessageFormat>Place new line {0} arrow token.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -845,7 +814,6 @@ namespace N
   <Analyzer Identifier="AddNewLineBeforeStatement">
     <Id>RCS0033</Id>
     <Title>Add new line before statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -859,7 +827,6 @@ Bar();]]></After>
   <Analyzer Identifier="PutTypeParameterConstraintOnItsOwnLine">
     <Id>RCS0034</Id>
     <Title>Put type parameter constraint on its own line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -878,7 +845,6 @@ Bar();]]></After>
   <Analyzer Identifier="RemoveEmptyLineBetweenSingleLineAccessors2" IsObsolete="true">
     <Id>RCS0035</Id>
     <Title>Remove empty line between single-line accessors.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -900,7 +866,6 @@ Bar();]]></After>
   <Analyzer Identifier="RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind">
     <Id>RCS0036</Id>
     <Title>Remove blank line between single-line declarations of same kind.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -918,7 +883,6 @@ object P2 { get; }]]></After>
   <Analyzer Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace2" IsObsolete="true">
     <Id>RCS0037</Id>
     <Title>Remove empty line between using directives with different root namespace.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -943,7 +907,6 @@ namespace N
     <Id>RCS0038</Id>
     <Title>Remove blank line between using directives with same root namespace.</Title>
     <MessageFormat>([deprecated] Use RCS0015 instead) Remove blank line between using directives.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -967,7 +930,6 @@ namespace N
   <Analyzer Identifier="RemoveNewLineBeforeBaseList">
     <Id>RCS0039</Id>
     <Title>Remove new line before base list.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -985,7 +947,6 @@ namespace N
   <Analyzer Identifier="RemoveNewLineBetweenClosingBraceAndWhileKeyword2" IsObsolete="true">
     <Id>RCS0040</Id>
     <Title>Remove new line between closing brace and 'while' keyword.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1005,7 +966,6 @@ while (x);]]></Before>
   <Analyzer Identifier="RemoveNewLineBetweenIfKeywordAndElseKeyword">
     <Id>RCS0041</Id>
     <Title>Remove new line between 'if' keyword and 'else' keyword.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1033,7 +993,6 @@ else if (y)
   <Analyzer Identifier="PutAutoAccessorsOnSingleLine">
     <Id>RCS0042</Id>
     <Title>Put auto-accessors on a single line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1051,7 +1010,6 @@ else if (y)
     <Id>RCS0043</Id>
     <Title>Format accessor's braces on a single line when expression is on single line.</Title>
     <MessageFormat>([deprecated] Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line) Format braces on a single line.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1078,21 +1036,18 @@ else if (y)
   <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine">
     <Id>RCS0044</Id>
     <Title>Use carriage return + linefeed as new line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="UseLinefeedAsNewLine">
     <Id>RCS0045</Id>
     <Title>Use linefeed as new line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="UseSpacesInsteadOfTab">
     <Id>RCS0046</Id>
     <Title>Use spaces instead of tab.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
@@ -1100,7 +1055,6 @@ else if (y)
     <Id>RCS0047</Id>
     <Title>[deprecated] Wrap and indent each node in list.</Title>
     <MessageFormat>[deprecated] Use analyzer RCS0053 instead.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer has been deprecated. Use analyzer [RCS0053](RCS0053.md) instead.</Summary>
@@ -1136,7 +1090,6 @@ else if (y)
   <Analyzer Identifier="PutInitializerOnSingleLine">
     <Id>RCS0048</Id>
     <Title>Put initializer on a single line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1152,7 +1105,6 @@ else if (y)
   <Analyzer Identifier="AddBlankLineAfterTopComment">
     <Id>RCS0049</Id>
     <Title>Add blank line after top comment.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1176,7 +1128,6 @@ namespace Foo
   <Analyzer Identifier="AddBlankLineBeforeTopDeclaration">
     <Id>RCS0050</Id>
     <Title>Add blank line before top declaration.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1197,7 +1148,6 @@ namespace Foo
     <Id>RCS0051</Id>
     <Title>Add/remove new line before 'while' in 'do' statement.</Title>
     <MessageFormat>{0} new line before 'while' in 'do' statement.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1243,7 +1193,6 @@ while (x);]]></Before>
     <Id>RCS0052</Id>
     <Title>Place new line after/before equals token.</Title>
     <MessageFormat>Place new line {0} equals token.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1279,7 +1228,6 @@ while (x);]]></Before>
     <Id>RCS0053</Id>
     <Title>Fix formatting of a list.</Title>
     <MessageFormat>Fix formatting of {0}.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>
@@ -1360,7 +1308,6 @@ void M(
   <Analyzer Identifier="FixFormattingOfCallChain">
     <Id>RCS0054</Id>
     <Title>Fix formatting of a call chain.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer:
@@ -1388,7 +1335,6 @@ void M(
   <Analyzer Identifier="FixFormattingOfBinaryExpressionChain">
     <Id>RCS0055</Id>
     <Title>Fix formatting of a binary expression chain.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer:
@@ -1425,7 +1371,6 @@ void M(
     <Id>RCS0056</Id>
     <Title>A line is too long.</Title>
     <MessageFormat>A line is too long ({0} characters).</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer reports any line that is longer than maximal length.
@@ -1438,7 +1383,6 @@ Default maximal length is 140.</Summary>
   <Analyzer Identifier="NormalizeWhitespaceAtBeginningOfFile">
     <Id>RCS0057</Id>
     <Title>Normalize whitespace at the beginning of a file.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer enforces no whitespace at the beginning of a file.</Summary>
@@ -1446,7 +1390,6 @@ Default maximal length is 140.</Summary>
   <Analyzer Identifier="NormalizeWhitespaceAtEndOfFile">
     <Id>RCS0058</Id>
     <Title>Normalize whitespace at the end of a file.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer enforces:
@@ -1460,7 +1403,6 @@ Default maximal length is 140.</Summary>
     <Id>RCS0059</Id>
     <Title>Place new line after/before null-conditional operator.</Title>
     <MessageFormat>Place new line {0} null-conditional operator.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1485,7 +1427,6 @@ Default maximal length is 140.</Summary>
     <Id>RCS0060</Id>
     <Title>Add/remove line after file scoped namespace declaration.</Title>
     <MessageFormat>{0} line after file scoped namespace declaration.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <MinLanguageVersion>10.0</MinLanguageVersion>
@@ -1516,7 +1457,6 @@ public class C
     <Id>RCS1001</Id>
     <Title>Add braces (when expression spans over multiple lines).</Title>
     <MessageFormat>Add braces to {0} (when expression spans over multiple lines).</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -1538,7 +1478,6 @@ public class C
     <Id>RCS1002</Id>
     <Title>Remove braces.</Title>
     <MessageFormat>Remove braces from {0}.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -1556,7 +1495,6 @@ public class C
   <Analyzer Identifier="AddBracesToIfElseWhenExpressionSpansOverMultipleLines">
     <Id>RCS1003</Id>
     <Title>Add braces to if-else (when expression spans over multiple lines).</Title>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -1587,7 +1525,6 @@ else
   <Analyzer Identifier="RemoveBracesFromIfElse">
     <Id>RCS1004</Id>
     <Title>Remove braces from if-else.</Title>
-    <Category>Style</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -1611,7 +1548,6 @@ else
   <Analyzer Identifier="SimplifyNestedUsingStatement">
     <Id>RCS1005</Id>
     <Title>Simplify nested using statement.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -1633,7 +1569,6 @@ using (var sr = new StreamReader(fs))
   <Analyzer Identifier="MergeElseWithNestedIf">
     <Id>RCS1006</Id>
     <Title>Merge 'else' with nested 'if'.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -1665,7 +1600,6 @@ else if (condition2)
     <Id>RCS1007</Id>
     <Title>Add braces.</Title>
     <MessageFormat>Add braces to {0}.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1683,7 +1617,6 @@ else if (condition2)
     <Id>RCS1008</Id>
     <Title>Use explicit type instead of 'var' (when the type is not obvious).</Title>
     <MessageFormat>Use explicit type instead of 'var'.</MessageFormat>
-    <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1697,7 +1630,6 @@ else if (condition2)
     <Id>RCS1009</Id>
     <Title>Use explicit type instead of 'var' (foreach variable).</Title>
     <MessageFormat>Use explicit type instead of 'var'.</MessageFormat>
-    <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1719,7 +1651,6 @@ foreach (var item in items) // [|Id|]
     <Id>RCS1010</Id>
     <Title>Use 'var' instead of explicit type (when the type is obvious).</Title>
     <MessageFormat>Use 'var' instead of explicit type.</MessageFormat>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -1734,7 +1665,6 @@ foreach (var item in items) // [|Id|]
     <Id>RCS1012</Id>
     <Title>Use explicit type instead of 'var' (when the type is obvious).</Title>
     <MessageFormat>Use explicit type instead of 'var'.</MessageFormat>
-    <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1747,7 +1677,6 @@ foreach (var item in items) // [|Id|]
   <Analyzer Identifier="UsePredefinedType">
     <Id>RCS1013</Id>
     <Title>Use predefined type.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -1762,7 +1691,6 @@ foreach (var item in items) // [|Id|]
     <Id>RCS1014</Id>
     <Title>Use explicitly/implicitly typed array.</Title>
     <MessageFormat>Use {0} typed array.</MessageFormat>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1807,7 +1735,6 @@ foreach (var item in items) // [|Id|]
   <Analyzer Identifier="UseNameOfOperator">
     <Id>RCS1015</Id>
     <Title>Use nameof operator.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -1835,7 +1762,6 @@ foreach (var item in items) // [|Id|]
     <Id>RCS1016</Id>
     <Title>Use block body or expression body.</Title>
     <MessageFormat>Use {0} body.</MessageFormat>
-    <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <MinLanguageVersion>6.0</MinLanguageVersion>
@@ -1925,7 +1851,6 @@ foreach (var item in items) // [|Id|]
     <Id>RCS1017</Id>
     <Title>[deprecated] Avoid multiline expression body.</Title>
     <MessageFormat>[deprecated] Use analyzer RCS1016a instead.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer has been deprecated. Use EditorConfig option `roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true` instead.</Summary>
@@ -1953,7 +1878,6 @@ foreach (var item in items) // [|Id|]
     <Id>RCS1018</Id>
     <Title>Add/remove accessibility modifiers.</Title>
     <MessageFormat>{0} accessibility modifiers.</MessageFormat>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2005,7 +1929,6 @@ foreach (var item in items) // [|Id|]
   <Analyzer Identifier="OrderModifiers">
     <Id>RCS1019</Id>
     <Title>Order modifiers.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2026,7 +1949,6 @@ protected internal class Foo
   <Analyzer Identifier="SimplifyNullableOfT">
     <Id>RCS1020</Id>
     <Title>Simplify Nullable&lt;T&gt; to T?.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2041,7 +1963,6 @@ protected internal class Foo
     <Id>RCS1021</Id>
     <Title>Convert lambda expression body to expression body.</Title>
     <MessageFormat>Use expression-bodied lambda.</MessageFormat>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2058,7 +1979,6 @@ protected internal class Foo
   <Analyzer Identifier="SimplifyLambdaExpressionParameterList" IsObsolete="true">
     <Id>RCS1022</Id>
     <Title>Simplify lambda expression parameter list.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2066,7 +1986,6 @@ protected internal class Foo
   <Analyzer Identifier="FormatEmptyBlock" IsObsolete="true">
     <Id>RCS1023</Id>
     <Title>Format empty block.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -2082,7 +2001,6 @@ protected internal class Foo
   <Analyzer Identifier="FormatAccessorList" IsObsolete="true">
     <Id>RCS1024</Id>
     <Title>Format accessor list.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2099,7 +2017,6 @@ protected internal class Foo
   <Analyzer Identifier="AddNewLineBeforeEnumMember" IsObsolete="true">
     <Id>RCS1025</Id>
     <Title>Add new line before enum member.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2117,7 +2034,6 @@ protected internal class Foo
   <Analyzer Identifier="AddNewLineBeforeStatement" IsObsolete="true">
     <Id>RCS1026</Id>
     <Title>Add new line before statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2131,7 +2047,6 @@ Bar();]]></After>
   <Analyzer Identifier="AddNewLineBeforeEmbeddedStatement" IsObsolete="true">
     <Id>RCS1027</Id>
     <Title>Add new line before embedded statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2147,7 +2062,6 @@ Bar();]]></After>
   <Analyzer Identifier="AddNewLineAfterSwitchLabel" IsObsolete="true">
     <Id>RCS1028</Id>
     <Title>Add new line after switch label.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2170,7 +2084,6 @@ Bar();]]></After>
   <Analyzer Identifier="FormatBinaryOperatorOnNextLine" IsObsolete="true">
     <Id>RCS1029</Id>
     <Title>Format binary operator on next line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2191,7 +2104,6 @@ Bar();]]></After>
   <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement" IsObsolete="true">
     <Id>RCS1030</Id>
     <Title>Add empty line after embedded statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2210,7 +2122,6 @@ Bar();]]></After>
     <Id>RCS1031</Id>
     <Title>Remove unnecessary braces in switch section.</Title>
     <MessageFormat>Remove unnecessary braces.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2244,7 +2155,6 @@ Bar();]]></After>
   <Analyzer Identifier="RemoveRedundantParentheses">
     <Id>RCS1032</Id>
     <Title>Remove redundant parentheses.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2265,7 +2175,6 @@ Bar();]]></After>
     <Id>RCS1033</Id>
     <Title>Remove redundant boolean literal.</Title>
     <MessageFormat>Remove redundant '{0}'.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2291,7 +2200,6 @@ if (f)
   <Analyzer Identifier="RemoveRedundantSealedModifier">
     <Id>RCS1034</Id>
     <Title>Remove redundant 'sealed' modifier.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2314,7 +2222,6 @@ if (f)
   <Analyzer Identifier="RemoveRedundantCommaInInitializer">
     <Id>RCS1035</Id>
     <Title>Remove redundant comma in initializer.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2334,7 +2241,6 @@ if (f)
   <Analyzer Identifier="RemoveUnnecessaryBlankLine">
     <Id>RCS1036</Id>
     <Title>Remove unnecessary blank line.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -2407,14 +2313,12 @@ if (f)
   <Analyzer Identifier="RemoveTrailingWhitespace">
     <Id>RCS1037</Id>
     <Title>Remove trailing white-space.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyStatement">
     <Id>RCS1038</Id>
     <Title>Remove empty statement.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2433,7 +2337,6 @@ if (f)
   <Analyzer Identifier="RemoveArgumentListFromAttribute">
     <Id>RCS1039</Id>
     <Title>Remove argument list from attribute.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2453,7 +2356,6 @@ public void Foo()
   <Analyzer Identifier="RemoveEmptyElseClause">
     <Id>RCS1040</Id>
     <Title>Remove empty 'else' clause.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2476,7 +2378,6 @@ else // [|Id|]
   <Analyzer Identifier="RemoveEmptyInitializer">
     <Id>RCS1041</Id>
     <Title>Remove empty initializer.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2490,7 +2391,6 @@ else // [|Id|]
   <Analyzer Identifier="RemoveEnumDefaultUnderlyingType">
     <Id>RCS1042</Id>
     <Title>Remove enum default underlying type.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2508,7 +2408,6 @@ else // [|Id|]
   <Analyzer Identifier="RemovePartialModifierFromTypeWithSinglePart">
     <Id>RCS1043</Id>
     <Title>Remove 'partial' modifier from type with a single part.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2526,7 +2425,6 @@ else // [|Id|]
   <Analyzer Identifier="RemoveOriginalExceptionFromThrowStatement">
     <Id>RCS1044</Id>
     <Title>Remove original exception from throw statement.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2554,7 +2452,6 @@ catch (Exception ex)
   <Analyzer Identifier="RenamePrivateFieldToCamelCaseWithUnderscore" IsObsolete="true">
     <Id>RCS1045</Id>
     <Title>Rename private field to camel case with underscore.</Title>
-    <Category>Naming</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2581,7 +2478,6 @@ catch (Exception ex)
     <Id>RCS1046</Id>
     <Title>Asynchronous method name should end with 'Async'.</Title>
     <MessageFormat>Add suffix 'Async' to asynchronous method name.</MessageFormat>
-    <Category>Naming</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2601,7 +2497,6 @@ catch (Exception ex)
     <Id>RCS1047</Id>
     <Title>Non-asynchronous method name should not end with 'Async'.</Title>
     <MessageFormat>Remove suffix 'Async' from non-asynchronous method name.</MessageFormat>
-    <Category>Naming</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2619,7 +2514,6 @@ catch (Exception ex)
   <Analyzer Identifier="UseLambdaExpressionInsteadOfAnonymousMethod">
     <Id>RCS1048</Id>
     <Title>Use lambda expression instead of anonymous method.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2639,7 +2533,6 @@ catch (Exception ex)
   <Analyzer Identifier="SimplifyBooleanComparison">
     <Id>RCS1049</Id>
     <Title>Simplify boolean comparison.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2670,7 +2563,6 @@ if (!f)
     <Id>RCS1050</Id>
     <Title>Include/omit parentheses when creating new object.</Title>
     <MessageFormat>{0} parentheses when creating new object.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2703,7 +2595,6 @@ if (!f)
     <Id>RCS1051</Id>
     <Title>Add/remove parentheses from condition in conditional operator.</Title>
     <MessageFormat>{0} parentheses {1} condition.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2735,7 +2626,6 @@ if (!f)
   <Analyzer Identifier="DeclareEachAttributeSeparately">
     <Id>RCS1052</Id>
     <Title>Declare each attribute separately.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2755,7 +2645,6 @@ public void Foo()
   <Analyzer Identifier="ReplaceForEachWithFor" IsObsolete="true">
     <Id>RCS1053</Id>
     <Title>Replace foreach statement with for statement.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2763,7 +2652,6 @@ public void Foo()
   <Analyzer Identifier="MergeLocalDeclarationWithReturnStatement" IsObsolete="true">
     <Id>RCS1054</Id>
     <Title>Merge local declaration with return statement.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2772,7 +2660,6 @@ public void Foo()
     <Id>RCS1055</Id>
     <Title>Avoid semicolon at the end of declaration.</Title>
     <MessageFormat>Remove semicolon from the end of declaration.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -2790,7 +2677,6 @@ public void Foo()
   <Analyzer Identifier="AvoidUsageOfUsingAliasDirective">
     <Id>RCS1056</Id>
     <Title>Avoid usage of using alias directive.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2817,7 +2703,6 @@ public class Foo
   <Analyzer Identifier="AddEmptyLineBetweenDeclarations" IsObsolete="true">
     <Id>RCS1057</Id>
     <Title>Add empty line between declarations.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2892,7 +2777,6 @@ enum Bar
   <Analyzer Identifier="UseCompoundAssignment">
     <Id>RCS1058</Id>
     <Title>Use compound assignment.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2922,7 +2806,6 @@ enum Bar
     <Id>RCS1059</Id>
     <Title>Avoid locking on publicly accessible instance.</Title>
     <MessageFormat>Lock on private field instead of locking on '{0}'.</MessageFormat>
-    <Category>Design</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -2947,7 +2830,6 @@ public void Foo()
   <Analyzer Identifier="DeclareEachTypeInSeparateFile">
     <Id>RCS1060</Id>
     <Title>Declare each type in separate file.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -2965,7 +2847,6 @@ public class Bar
   <Analyzer Identifier="MergeIfWithNestedIf">
     <Id>RCS1061</Id>
     <Title>Merge 'if' with nested 'if'.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -2987,7 +2868,6 @@ public class Bar
     <Id>RCS1062</Id>
     <Title>Avoid interpolated string with no interpolation.</Title>
     <MessageFormat>Remove '$' from interpolated string with no interpolation.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3002,7 +2882,6 @@ public class Bar
     <Id>RCS1063</Id>
     <Title>([deprecated] use RCS1252 instead) Avoid usage of do statement to create an infinite loop.</Title>
     <MessageFormat>([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Tags>HideFromConfiguration</Tags>
@@ -3024,7 +2903,6 @@ while (true);]]></Before>
     <Id>RCS1064</Id>
     <Title>([deprecated] use RCS1252 instead) Avoid usage of for statement to create an infinite loop.</Title>
     <MessageFormat>([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Tags>HideFromConfiguration</Tags>
@@ -3043,7 +2921,6 @@ while (true);]]></Before>
     <Id>RCS1065</Id>
     <Title>([deprecated] use RCS1252 instead) Avoid usage of while statement to create an infinite loop.</Title>
     <MessageFormat>([deprecated] use RCS1252 instead) Use for statement to create an infinite loop.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Tags>HideFromConfiguration</Tags>
@@ -3061,7 +2938,6 @@ while (true);]]></Before>
   <Analyzer Identifier="RemoveEmptyFinallyClause">
     <Id>RCS1066</Id>
     <Title>Remove empty 'finally' clause.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3101,7 +2977,6 @@ catch (Exception ex)
   <Analyzer Identifier="RemoveArgumentListFromObjectCreation2" IsObsolete="true">
     <Id>RCS1067</Id>
     <Title>Remove argument list from object creation expression.</Title>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3115,7 +2990,6 @@ catch (Exception ex)
   <Analyzer Identifier="SimplifyLogicalNegation">
     <Id>RCS1068</Id>
     <Title>Simplify logical negation.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3136,7 +3010,6 @@ catch (Exception ex)
   <Analyzer Identifier="RemoveUnnecessaryCaseLabel">
     <Id>RCS1069</Id>
     <Title>Remove unnecessary case label.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3163,7 +3036,6 @@ catch (Exception ex)
   <Analyzer Identifier="RemoveRedundantDefaultSwitchSection">
     <Id>RCS1070</Id>
     <Title>Remove redundant default switch section.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3191,7 +3063,6 @@ catch (Exception ex)
   <Analyzer Identifier="RemoveRedundantBaseConstructorCall">
     <Id>RCS1071</Id>
     <Title>Remove redundant base constructor call.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3215,7 +3086,6 @@ catch (Exception ex)
   <Analyzer Identifier="RemoveEmptyNamespaceDeclaration">
     <Id>RCS1072</Id>
     <Title>Remove empty namespace declaration.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3230,7 +3100,6 @@ catch (Exception ex)
   <Analyzer Identifier="ConvertIfToReturnStatement">
     <Id>RCS1073</Id>
     <Title>Convert 'if' to 'return' statement.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -3262,7 +3131,6 @@ else
   <Analyzer Identifier="RemoveRedundantConstructor">
     <Id>RCS1074</Id>
     <Title>Remove redundant constructor.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3283,7 +3151,6 @@ else
   <Analyzer Identifier="AvoidEmptyCatchClauseThatCatchesSystemException">
     <Id>RCS1075</Id>
     <Title>Avoid empty catch clause that catches System.Exception.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3301,7 +3168,6 @@ catch (Exception ex) // [|Id|]
   <Analyzer Identifier="FormatDeclarationBraces" IsObsolete="true">
     <Id>RCS1076</Id>
     <Title>Format declaration braces.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3317,7 +3183,6 @@ catch (Exception ex) // [|Id|]
   <Analyzer Identifier="OptimizeLinqMethodCall">
     <Id>RCS1077</Id>
     <Title>Optimize LINQ method call.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3403,7 +3268,6 @@ object x = queue.Peek();]]></After>
     <Id>RCS1078</Id>
     <Title>Use "" or 'string.Empty'.</Title>
     <MessageFormat>Use {0}</MessageFormat>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3436,7 +3300,6 @@ object x = queue.Peek();]]></After>
     <Id>RCS1079</Id>
     <Title>Throwing of new NotImplementedException.</Title>
     <MessageFormat>Implement the functionality instead of throwing new NotImplementedException.</MessageFormat>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -3452,7 +3315,6 @@ object x = queue.Peek();]]></After>
     <Id>RCS1080</Id>
     <Title>Use 'Count/Length' property instead of 'Any' method.</Title>
     <MessageFormat>Use '{0}' property instead of 'Any' method.</MessageFormat>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -3469,7 +3331,6 @@ object x = queue.Peek();]]></After>
   <Analyzer Identifier="SplitVariableDeclaration">
     <Id>RCS1081</Id>
     <Title>Split variable declaration.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -3484,7 +3345,6 @@ private string s2;]]></After>
     <Id>RCS1082</Id>
     <Title>Use 'Count/Length' property instead of 'Count' method.</Title>
     <MessageFormat>Use '{0}' property instead of 'Count' method.</MessageFormat>
-    <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3501,7 +3361,6 @@ private string s2;]]></After>
   <Analyzer Identifier="CallAnyInsteadOfCount" IsObsolete="true">
     <Id>RCS1083</Id>
     <Title>Call 'Enumerable.Any' instead of 'Enumerable.Count'.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3518,7 +3377,6 @@ private string s2;]]></After>
   <Analyzer Identifier="UseCoalesceExpressionInsteadOfConditionalExpression">
     <Id>RCS1084</Id>
     <Title>Use coalesce expression instead of conditional expression.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3531,7 +3389,6 @@ private string s2;]]></After>
   <Analyzer Identifier="UseAutoProperty">
     <Id>RCS1085</Id>
     <Title>Use auto-implemented property.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -3551,21 +3408,18 @@ public string Foo // [|Id|]
   <Analyzer Identifier="UseLinefeedAsNewLine" IsObsolete="true">
     <Id>RCS1086</Id>
     <Title>Use linefeed as new line.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine" IsObsolete="true">
     <Id>RCS1087</Id>
     <Title>Use carriage return + linefeed as new line.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="UseSpacesInsteadOfTab" IsObsolete="true">
     <Id>RCS1088</Id>
     <Title>Use space(s) instead of tab.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
@@ -3573,7 +3427,6 @@ public string Foo // [|Id|]
     <Id>RCS1089</Id>
     <Title>Use --/++ operator instead of assignment.</Title>
     <MessageFormat>Use {0} operator instead of assignment.</MessageFormat>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -3592,7 +3445,6 @@ public string Foo // [|Id|]
     <Id>RCS1090</Id>
     <Title>Add/remove 'ConfigureAwait(false)' call.</Title>
     <MessageFormat>{0} 'ConfigureAwait(false)' call.</MessageFormat>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -3636,7 +3488,6 @@ public string Foo // [|Id|]
   <Analyzer Identifier="RemoveEmptyRegion">
     <Id>RCS1091</Id>
     <Title>Remove empty region.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -3651,7 +3502,6 @@ public string Foo // [|Id|]
   <Analyzer Identifier="AddEmptyLineBeforeWhileInDoStatement" IsObsolete="true">
     <Id>RCS1092</Id>
     <Title>Add empty line before 'while' keyword in 'do' statement.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -3671,14 +3521,12 @@ public string Foo // [|Id|]
   <Analyzer Identifier="RemoveFileWithNoCode">
     <Id>RCS1093</Id>
     <Title>Remove file with no code.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="DeclareUsingDirectiveOnTopLevel">
     <Id>RCS1094</Id>
     <Title>Declare using directive on top level.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -3698,7 +3546,6 @@ namespace Foo
   <Analyzer Identifier="UseCSharp6DictionaryInitializer" IsObsolete="true">
     <Id>RCS1095</Id>
     <Title>Use C# 6.0 dictionary initializer.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
@@ -3706,7 +3553,6 @@ namespace Foo
     <Id>RCS1096</Id>
     <Title>Use 'HasFlag' method or bitwise operator.</Title>
     <MessageFormat>Use {0}.</MessageFormat>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -3743,7 +3589,6 @@ namespace Foo
   <Analyzer Identifier="RemoveRedundantToStringCall">
     <Id>RCS1097</Id>
     <Title>Remove redundant 'ToString' call.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3761,7 +3606,6 @@ namespace Foo
   <Analyzer Identifier="ConstantValuesShouldBePlacedOnRightSideOfComparisons">
     <Id>RCS1098</Id>
     <Title>Constant values should be placed on right side of comparisons.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3779,7 +3623,6 @@ namespace Foo
     <Id>RCS1099</Id>
     <Title>Default label should be the last label in a switch section.</Title>
     <MessageFormat>Move default label to the last position in a switch section.</MessageFormat>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3804,7 +3647,6 @@ namespace Foo
   <Analyzer Identifier="FormatDocumentationSummaryOnSingleLine">
     <Id>RCS1100</Id>
     <Title>([deprecated] use RCS1253 instead) Format documentation summary on a single line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Tags>HideFromConfiguration</Tags>
@@ -3826,7 +3668,6 @@ public void Foo()
   <Analyzer Identifier="FormatDocumentationSummaryOnMultipleLines">
     <Id>RCS1101</Id>
     <Title>([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Tags>HideFromConfiguration</Tags>
@@ -3848,7 +3689,6 @@ public void Foo()
   <Analyzer Identifier="MakeClassStatic">
     <Id>RCS1102</Id>
     <Title>Make class static.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3875,7 +3715,6 @@ public void Foo()
   <Analyzer Identifier="ConvertIfToAssignment">
     <Id>RCS1103</Id>
     <Title>Convert 'if' to assignment.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3906,7 +3745,6 @@ else
   <Analyzer Identifier="SimplifyConditionalExpression">
     <Id>RCS1104</Id>
     <Title>Simplify conditional expression.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3947,7 +3785,6 @@ else
   <Analyzer Identifier="UnnecessaryInterpolation">
     <Id>RCS1105</Id>
     <Title>Unnecessary interpolation.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3960,7 +3797,6 @@ else
   <Analyzer Identifier="RemoveEmptyDestructor">
     <Id>RCS1106</Id>
     <Title>Remove empty destructor.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3981,7 +3817,6 @@ else
   <Analyzer Identifier="RemoveRedundantStringToCharArrayCall">
     <Id>RCS1107</Id>
     <Title>Remove redundant 'ToCharArray' call.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3999,7 +3834,6 @@ else
   <Analyzer Identifier="AddStaticModifierToAllPartialClassDeclarations">
     <Id>RCS1108</Id>
     <Title>Add 'static' modifier to all partial class declarations.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4024,7 +3858,6 @@ public static partial class Foo
   <Analyzer Identifier="CallCastInsteadOfSelect" IsObsolete="true">
     <Id>RCS1109</Id>
     <Title>Call 'Enumerable.Cast' instead of 'Enumerable.Select'.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4038,7 +3871,6 @@ public static partial class Foo
     <Id>RCS1110</Id>
     <Title>Declare type inside namespace.</Title>
     <MessageFormat>Declare '{0}' inside namespace.</MessageFormat>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4058,7 +3890,6 @@ public static partial class Foo
   <Analyzer Identifier="AddBracesToSwitchSectionWithMultipleStatements">
     <Id>RCS1111</Id>
     <Title>Add braces to switch section with multiple statements.</Title>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -4083,7 +3914,6 @@ public static partial class Foo
   <Analyzer Identifier="CombineEnumerableWhereMethodChain">
     <Id>RCS1112</Id>
     <Title>Combine 'Enumerable.Where' method chain.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -4097,7 +3927,6 @@ public static partial class Foo
   <Analyzer Identifier="UseStringIsNullOrEmptyMethod">
     <Id>RCS1113</Id>
     <Title>Use 'string.IsNullOrEmpty' method.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4114,7 +3943,6 @@ public static partial class Foo
   <Analyzer Identifier="RemoveRedundantDelegateCreation">
     <Id>RCS1114</Id>
     <Title>Remove redundant delegate creation.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -4129,7 +3957,6 @@ public static partial class Foo
     <Id>RCS1115</Id>
     <Title>Replace yield/return statement with expression statement.</Title>
     <MessageFormat>Replace {0} statement with expression statement.</MessageFormat>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4137,21 +3964,18 @@ public static partial class Foo
   <Analyzer Identifier="AddBreakStatementToSwitchSection" IsObsolete="true">
     <Id>RCS1116</Id>
     <Title>Add break statement to switch section.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="AddReturnStatementThatReturnsDefaultValue" IsObsolete="true">
     <Id>RCS1117</Id>
     <Title>Add return statement that returns default value.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="MarkLocalVariableAsConst">
     <Id>RCS1118</Id>
     <Title>Mark local variable as const.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4166,7 +3990,6 @@ string s2 = s + "b";]]></After>
   <Analyzer Identifier="CallFindInsteadOfFirstOrDefault" IsObsolete="true">
     <Id>RCS1119</Id>
     <Title>Call 'Find' instead of 'FirstOrDefault'.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4179,7 +4002,6 @@ string s2 = s + "b";]]></After>
   <Analyzer Identifier="UseElementAccessInsteadOfElementAt" IsObsolete="true">
     <Id>RCS1120</Id>
     <Title>Use [] instead of calling 'ElementAt'.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4192,7 +4014,6 @@ string s2 = s + "b";]]></After>
   <Analyzer Identifier="UseElementAccessInsteadOfFirst" IsObsolete="true">
     <Id>RCS1121</Id>
     <Title>Use [] instead of calling 'First'.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4205,14 +4026,12 @@ string s2 = s + "b";]]></After>
   <Analyzer Identifier="AddMissingSemicolon" IsObsolete="true">
     <Id>RCS1122</Id>
     <Title>Add missing semicolon.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="AddParenthesesWhenNecessary">
     <Id>RCS1123</Id>
     <Title>Add parentheses when necessary.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4233,7 +4052,6 @@ string s2 = s + "b";]]></After>
   <Analyzer Identifier="InlineLocalVariable">
     <Id>RCS1124</Id>
     <Title>Inline local variable.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -4252,7 +4070,6 @@ foreach (object item in items)
   <Analyzer Identifier="MarkMemberAsStatic" IsObsolete="true">
     <Id>RCS1125</Id>
     <Title>Mark member as static.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
@@ -4260,7 +4077,6 @@ foreach (object item in items)
     <Id>RCS1126</Id>
     <Title>Add braces to if-else.</Title>
     <MessageFormat>Add braces to {0}.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -4283,7 +4099,6 @@ else
   <Analyzer Identifier="MergeLocalDeclarationWithAssignment" IsObsolete="true">
     <Id>RCS1127</Id>
     <Title>Merge local declaration with assignment.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -4298,7 +4113,6 @@ s = "";]]></Before>
   <Analyzer Identifier="UseCoalesceExpression">
     <Id>RCS1128</Id>
     <Title>Use coalesce expression.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4316,7 +4130,6 @@ if (s == null)
   <Analyzer Identifier="RemoveRedundantFieldInitialization">
     <Id>RCS1129</Id>
     <Title>Remove redundant field initialization.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4330,7 +4143,6 @@ if (s == null)
   <Analyzer Identifier="BitwiseOperationOnEnumWithoutFlagsAttribute">
     <Id>RCS1130</Id>
     <Title>Bitwise operation on enum without Flags attribute.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4342,7 +4154,6 @@ if (s == null)
   <Analyzer Identifier="ReplaceReturnWithYieldReturn" IsObsolete="true">
     <Id>RCS1131</Id>
     <Title>Replace return with yield return.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
@@ -4350,7 +4161,6 @@ if (s == null)
     <Id>RCS1132</Id>
     <Title>Remove redundant overriding member.</Title>
     <MessageFormat>Remove redundant overriding {0}.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4373,7 +4183,6 @@ if (s == null)
     <Id>RCS1133</Id>
     <Title>Remove redundant Dispose/Close call.</Title>
     <MessageFormat>Remove redundant '{0}' call.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4395,7 +4204,6 @@ if (s == null)
   <Analyzer Identifier="RemoveRedundantStatement">
     <Id>RCS1134</Id>
     <Title>Remove redundant statement.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4442,7 +4250,6 @@ return false;]]></After>
   <Analyzer Identifier="DeclareEnumMemberWithZeroValue">
     <Id>RCS1135</Id>
     <Title>Declare enum member with zero value (when enum has FlagsAttribute).</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4466,7 +4273,6 @@ public enum Foo
   <Analyzer Identifier="MergeSwitchSectionsWithEquivalentContent">
     <Id>RCS1136</Id>
     <Title>Merge switch sections with equivalent content.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4491,14 +4297,12 @@ public enum Foo
   <Analyzer Identifier="AddDocumentationComment" IsObsolete="true">
     <Id>RCS1137</Id>
     <Title>Add documentation comment to publicly visible type or member.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="AddSummaryToDocumentationComment">
     <Id>RCS1138</Id>
     <Title>Add summary to documentation comment.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4515,7 +4319,6 @@ public void Foo()
   <Analyzer Identifier="AddSummaryElementToDocumentationComment">
     <Id>RCS1139</Id>
     <Title>Add summary element to documentation comment.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4537,7 +4340,6 @@ public void Foo(object parameter)
   <Analyzer Identifier="AddExceptionToDocumentationComment">
     <Id>RCS1140</Id>
     <Title>Add exception to documentation comment.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4567,7 +4369,6 @@ public void Foo(object parameter)
   <Analyzer Identifier="AddParamElementToDocumentationComment">
     <Id>RCS1141</Id>
     <Title>Add 'param' element to documentation comment.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4591,7 +4392,6 @@ public void Foo(object parameter)
   <Analyzer Identifier="AddTypeParamElementToDocumentationComment">
     <Id>RCS1142</Id>
     <Title>Add 'typeparam' element to documentation comment.</Title>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4617,7 +4417,6 @@ public class Foo<T1, T2>
   <Analyzer Identifier="SimplifyCoalesceExpression">
     <Id>RCS1143</Id>
     <Title>Simplify coalesce expression.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4631,14 +4430,12 @@ public class Foo<T1, T2>
   <Analyzer Identifier="MarkContainingClassAsAbstract" IsObsolete="true">
     <Id>RCS1144</Id>
     <Title>Mark containing class as abstract.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantAsOperator">
     <Id>RCS1145</Id>
     <Title>Remove redundant 'as' operator.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4654,7 +4451,6 @@ string s2 = s as string; // [|Id|]]]></Before>
   <Analyzer Identifier="UseConditionalAccess">
     <Id>RCS1146</Id>
     <Title>Use conditional access.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <MinLanguageVersion>6.0</MinLanguageVersion>
@@ -4685,7 +4481,6 @@ string s2 = s as string; // [|Id|]]]></Before>
   <Analyzer Identifier="RemoveInapplicableModifier" IsObsolete="true">
     <Id>RCS1147</Id>
     <Title>Remove inapplicable modifier.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4693,7 +4488,6 @@ string s2 = s as string; // [|Id|]]]></Before>
   <Analyzer Identifier="RemoveUnreachableCode" IsObsolete="true">
     <Id>RCS1148</Id>
     <Title>Remove unreachable code.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4702,7 +4496,6 @@ string s2 = s as string; // [|Id|]]]></Before>
     <Id>RCS1149</Id>
     <Title>Remove implementation from abstract member.</Title>
     <MessageFormat>Remove implementation from {0}.</MessageFormat>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4710,7 +4503,6 @@ string s2 = s as string; // [|Id|]]]></Before>
   <Analyzer Identifier="CallStringConcatInsteadOfStringJoin" IsObsolete="true">
     <Id>RCS1150</Id>
     <Title>Call string.Concat instead of string.Join.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4723,7 +4515,6 @@ string s2 = s as string; // [|Id|]]]></Before>
   <Analyzer Identifier="RemoveRedundantCast">
     <Id>RCS1151</Id>
     <Title>Remove redundant cast.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4743,14 +4534,12 @@ string s2 = s as string; // [|Id|]]]></Before>
   <Analyzer Identifier="MemberTypeMustMatchOverriddenMemberType" IsObsolete="true">
     <Id>RCS1152</Id>
     <Title>Member type must match overridden member type.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="AddEmptyLineAfterClosingBrace" IsObsolete="true">
     <Id>RCS1153</Id>
     <Title>Add empty line after closing brace.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -4771,7 +4560,6 @@ Foo();]]></After>
     <Id>RCS1154</Id>
     <Title>Sort enum members.</Title>
     <MessageFormat>Sort '{0}' members.</MessageFormat>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4796,7 +4584,6 @@ Foo();]]></After>
   <Analyzer Identifier="UseStringComparison">
     <Id>RCS1155</Id>
     <Title>Use StringComparison when comparing strings.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4813,7 +4600,6 @@ Foo();]]></After>
   <Analyzer Identifier="UseStringLengthInsteadOfComparisonWithEmptyString">
     <Id>RCS1156</Id>
     <Title>Use string.Length instead of comparison with empty string.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4837,7 +4623,6 @@ Foo();]]></After>
     <Id>RCS1157</Id>
     <Title>Composite enum value contains undefined flag.</Title>
     <MessageFormat>Composite enum value contains undefined flag {0}.</MessageFormat>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4858,7 +4643,6 @@ public enum Foo
   <Analyzer Identifier="StaticMemberInGenericTypeShouldUseTypeParameter">
     <Id>RCS1158</Id>
     <Title>Static member in generic type should use a type parameter.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4875,7 +4659,6 @@ public enum Foo
   <Analyzer Identifier="UseGenericEventHandler">
     <Id>RCS1159</Id>
     <Title>Use EventHandler&lt;T&gt;.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4896,7 +4679,6 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
   <Analyzer Identifier="AbstractTypeShouldNotHavePublicConstructors">
     <Id>RCS1160</Id>
     <Title>Abstract type should not have public constructors.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4919,7 +4701,6 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
   <Analyzer Identifier="EnumShouldDeclareExplicitValues">
     <Id>RCS1161</Id>
     <Title>Enum should declare explicit values.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -4942,7 +4723,6 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
   <Analyzer Identifier="AvoidChainOfAssignments">
     <Id>RCS1162</Id>
     <Title>Avoid chain of assignments.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -4955,7 +4735,6 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <Id>RCS1163</Id>
     <Title>Unused parameter.</Title>
     <MessageFormat>Unused parameter '{0}'.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4975,7 +4754,6 @@ Unused parameter is not reported when its name consists of underscore(s).</Remar
     <Id>RCS1164</Id>
     <Title>Unused type parameter.</Title>
     <MessageFormat>Unused type parameter '{0}'.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -4991,7 +4769,6 @@ Unused parameter is not reported when its name consists of underscore(s).</Remar
   <Analyzer Identifier="UnconstrainedTypeParameterCheckedForNull">
     <Id>RCS1165</Id>
     <Title>Unconstrained type parameter checked for null.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5013,7 +4790,6 @@ Unused parameter is not reported when its name consists of underscore(s).</Remar
   <Analyzer Identifier="ValueTypeObjectIsNeverEqualToNull">
     <Id>RCS1166</Id>
     <Title>Value type object is never equal to null.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5043,7 +4819,6 @@ if (y == default)
   <Analyzer Identifier="OverridingMemberCannotChangeAccessModifiers" IsObsolete="true">
     <Id>RCS1167</Id>
     <Title>Overriding member cannot change access modifiers.</Title>
-    <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
@@ -5051,7 +4826,6 @@ if (y == default)
     <Id>RCS1168</Id>
     <Title>Parameter name differs from base name.</Title>
     <MessageFormat>Parameter name '{0}' differs from base name '{1}'.</MessageFormat>
-    <Category>Maintainability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5080,7 +4854,6 @@ abstract class Foo : IFoo
   <Analyzer Identifier="MakeFieldReadOnly">
     <Id>RCS1169</Id>
     <Title>Make field read-only.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5101,7 +4874,6 @@ abstract class Foo : IFoo
   <Analyzer Identifier="UseReadOnlyAutoProperty">
     <Id>RCS1170</Id>
     <Title>Use read-only auto-implemented property.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -5116,7 +4888,6 @@ abstract class Foo : IFoo
   <Analyzer Identifier="SimplifyLazyInitialization">
     <Id>RCS1171</Id>
     <Title>Simplify lazy initialization.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5140,7 +4911,6 @@ abstract class Foo : IFoo
   <Analyzer Identifier="UseIsOperatorInsteadOfAsOperator">
     <Id>RCS1172</Id>
     <Title>Use 'is' operator instead of 'as' operator.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5157,7 +4927,6 @@ abstract class Foo : IFoo
   <Analyzer Identifier="UseCoalesceExpressionInsteadOfIf">
     <Id>RCS1173</Id>
     <Title>Use coalesce expression instead of 'if'.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5177,7 +4946,6 @@ else
   <Analyzer Identifier="RemoveRedundantAsyncAwait">
     <Id>RCS1174</Id>
     <Title>Remove redundant async/await.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -5198,7 +4966,6 @@ else
     <Id>RCS1175</Id>
     <Title>Unused 'this' parameter.</Title>
     <MessageFormat>Unused 'this' parameter '{0}'.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -5215,7 +4982,6 @@ else
     <Id>RCS1176</Id>
     <Title>Use 'var' instead of explicit type (when the type is not obvious).</Title>
     <MessageFormat>Use 'var' instead of explicit type.</MessageFormat>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -5229,7 +4995,6 @@ else
     <Id>RCS1177</Id>
     <Title>Use 'var' instead of explicit type (in foreach).</Title>
     <MessageFormat>Use 'var' instead of explicit type.</MessageFormat>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -5246,7 +5011,6 @@ else
   <Analyzer Identifier="CallDebugFailInsteadOfDebugAssert" IsObsolete="true">
     <Id>RCS1178</Id>
     <Title>Call Debug.Fail instead of Debug.Assert.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5259,7 +5023,6 @@ else
   <Analyzer Identifier="UnnecessaryAssignment">
     <Id>RCS1179</Id>
     <Title>Unnecessary assignment.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5288,7 +5051,6 @@ else
   <Analyzer Identifier="InlineLazyInitialization">
     <Id>RCS1180</Id>
     <Title>Inline lazy initialization.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5310,7 +5072,6 @@ items.Add(x);]]></Before>
   <Analyzer Identifier="ConvertCommentToDocumentationComment">
     <Id>RCS1181</Id>
     <Title>Convert comment to documentation comment.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5339,7 +5100,6 @@ public string Value { get; }]]></After>
     <Id>RCS1182</Id>
     <Title>Remove redundant base interface.</Title>
     <MessageFormat>Interface '{0}' is already implemented by '{1}'.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -5357,7 +5117,6 @@ public string Value { get; }]]></After>
   <Analyzer Identifier="FormatInitializerWithSingleExpressionOnSingleLine" IsObsolete="true">
     <Id>RCS1183</Id>
     <Title>Format initializer with single expression on single line.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5374,7 +5133,6 @@ public string Value { get; }]]></After>
     <Id>RCS1184</Id>
     <Title>Format conditional expression (format ? and : on next line).</Title>
     <MessageFormat>Format conditional expression.</MessageFormat>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -5391,7 +5149,6 @@ Bar();]]></Before>
   <Analyzer Identifier="FormatSingleLineBlock" IsObsolete="true">
     <Id>RCS1185</Id>
     <Title>Format single-line block.</Title>
-    <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -5407,7 +5164,6 @@ Bar();]]></Before>
   <Analyzer Identifier="UseRegexInstanceInsteadOfStaticMethod">
     <Id>RCS1186</Id>
     <Title>Use Regex instance instead of static method.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5428,7 +5184,6 @@ private void Bar()
   <Analyzer Identifier="UseConstantInsteadOfField">
     <Id>RCS1187</Id>
     <Title>Use constant instead of field.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5441,7 +5196,6 @@ private void Bar()
   <Analyzer Identifier="RemoveRedundantAutoPropertyInitialization">
     <Id>RCS1188</Id>
     <Title>Remove redundant auto-property initialization.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -5456,7 +5210,6 @@ private void Bar()
     <Id>RCS1189</Id>
     <Title>Add or remove region name.</Title>
     <MessageFormat>{0} region name {1} #endregion.</MessageFormat>
-    <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5477,7 +5230,6 @@ public static void Foo()
   <Analyzer Identifier="JoinStringExpressions">
     <Id>RCS1190</Id>
     <Title>Join string expressions.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5490,7 +5242,6 @@ public static void Foo()
   <Analyzer Identifier="DeclareEnumValueAsCombinationOfNames">
     <Id>RCS1191</Id>
     <Title>Declare enum value as combination of names.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5519,7 +5270,6 @@ public enum Foo
   <Analyzer Identifier="UnnecessaryUsageOfVerbatimStringLiteral">
     <Id>RCS1192</Id>
     <Title>Unnecessary usage of verbatim string literal.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -5533,7 +5283,6 @@ public enum Foo
   <Analyzer Identifier="OverridingMemberShouldNotChangeParamsModifier">
     <Id>RCS1193</Id>
     <Title>Overriding member should not change 'params' modifier.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5563,7 +5312,6 @@ public class Derived : Base
   <Analyzer Identifier="ImplementExceptionConstructors">
     <Id>RCS1194</Id>
     <Title>Implement exception constructors.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5591,7 +5339,6 @@ public class Derived : Base
   <Analyzer Identifier="UseExclusiveOrOperator">
     <Id>RCS1195</Id>
     <Title>Use ^ operator.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5608,7 +5355,6 @@ public class Derived : Base
   <Analyzer Identifier="CallExtensionMethodAsInstanceMethod">
     <Id>RCS1196</Id>
     <Title>Call extension method as instance method.</Title>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5622,7 +5368,6 @@ public class Derived : Base
     <Id>RCS1197</Id>
     <Title>Optimize StringBuilder.Append/AppendLine call.</Title>
     <MessageFormat>Optimize StringBuilder.{0} call.</MessageFormat>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5635,7 +5380,6 @@ public class Derived : Base
   <Analyzer Identifier="AvoidBoxingOfValueType">
     <Id>RCS1198</Id>
     <Title>Avoid unnecessary boxing of value type.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -5653,7 +5397,6 @@ string x = s + i; // [|Id|]]]></Before>
   <Analyzer Identifier="UnnecessaryNullCheck">
     <Id>RCS1199</Id>
     <Title>Unnecessary null check.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5688,7 +5431,6 @@ if (x != null && x.Value == y) // [|Id|]
     <Id>RCS1200</Id>
     <Title>Call 'Enumerable.ThenBy' instead of 'Enumerable.OrderBy'.</Title>
     <MessageFormat>Call 'Enumerable.ThenBy{0}' instead of 'Enumerable.OrderBy{0}'.</MessageFormat>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5701,7 +5443,6 @@ if (x != null && x.Value == y) // [|Id|]
   <Analyzer Identifier="UseMethodChaining">
     <Id>RCS1201</Id>
     <Title>Use method chaining.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5722,7 +5463,6 @@ sb.Append("a")
   <Analyzer Identifier="AvoidNullReferenceException">
     <Id>RCS1202</Id>
     <Title>Avoid NullReferenceException.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5735,7 +5475,6 @@ sb.Append("a")
   <Analyzer Identifier="UseAttributeUsageAttribute">
     <Id>RCS1203</Id>
     <Title>Use AttributeUsageAttribute.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5753,7 +5492,6 @@ public class FooAttribute : Attribute
   <Analyzer Identifier="UseEventArgsEmpty">
     <Id>RCS1204</Id>
     <Title>Use EventArgs.Empty.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5766,7 +5504,6 @@ public class FooAttribute : Attribute
   <Analyzer Identifier="OrderNamedArguments">
     <Id>RCS1205</Id>
     <Title>Order named arguments according to the order of parameters.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5793,7 +5530,6 @@ public class FooAttribute : Attribute
   <Analyzer Identifier="UseConditionalAccessInsteadOfConditionalExpression">
     <Id>RCS1206</Id>
     <Title>Use conditional access instead of conditional expression.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <MinLanguageVersion>6.0</MinLanguageVersion>
@@ -5820,7 +5556,6 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
     <Id>RCS1207</Id>
     <Title>Use anonymous function or method group.</Title>
     <MessageFormat>Use {0}.</MessageFormat>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -5851,7 +5586,6 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
   <Analyzer Identifier="ReduceIfNesting">
     <Id>RCS1208</Id>
     <Title>Reduce 'if' nesting.</Title>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -5896,7 +5630,6 @@ Foo3();]]></After>
   <Analyzer Identifier="OrderTypeParameterConstraints">
     <Id>RCS1209</Id>
     <Title>Order type parameter constraints.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5919,7 +5652,6 @@ Foo3();]]></After>
   <Analyzer Identifier="ReturnCompletedTaskInsteadOfNull">
     <Id>RCS1210</Id>
     <Title>Return completed task instead of returning null.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5957,7 +5689,6 @@ Foo3();]]></After>
     <Id>RCS1211</Id>
     <Title>Remove unnecessary 'else'.</Title>
     <MessageFormat>Remove unnecessary else clause.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -5982,7 +5713,6 @@ return WhenFalse();]]></After>
   <Analyzer Identifier="RemoveRedundantAssignment">
     <Id>RCS1212</Id>
     <Title>Remove redundant assignment.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -6013,7 +5743,6 @@ x = "";]]></Before>
     <Id>RCS1213</Id>
     <Title>Remove unused member declaration.</Title>
     <MessageFormat>Remove unused {0} declaration.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -6033,7 +5762,6 @@ x = "";]]></Before>
   <Analyzer Identifier="UnnecessaryInterpolatedString">
     <Id>RCS1214</Id>
     <Title>Unnecessary interpolated string.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -6052,7 +5780,6 @@ x = "";]]></Before>
     <Id>RCS1215</Id>
     <Title>Expression is always equal to true/false.</Title>
     <MessageFormat>Expression is always equal to '{0}'.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6084,7 +5811,6 @@ if (items.Count < 0) // [|Id|]
   <Analyzer Identifier="UnnecessaryUnsafeContext">
     <Id>RCS1216</Id>
     <Title>Unnecessary unsafe context.</Title>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -6121,7 +5847,6 @@ if (items.Count < 0) // [|Id|]
   <Analyzer Identifier="ConvertInterpolatedStringToConcatenation">
     <Id>RCS1217</Id>
     <Title>Convert interpolated string to concatenation.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -6135,7 +5860,6 @@ if (items.Count < 0) // [|Id|]
   <Analyzer Identifier="SimplifyCodeBranching">
     <Id>RCS1218</Id>
     <Title>Simplify code branching.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6220,7 +5944,6 @@ else
   <Analyzer Identifier="CallSkipAndAnyInsteadOfCount" IsObsolete="true">
     <Id>RCS1219</Id>
     <Title>Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -6237,7 +5960,6 @@ else
   <Analyzer Identifier="UsePatternMatchingInsteadOfIsAndCast">
     <Id>RCS1220</Id>
     <Title>Use pattern matching instead of combination of 'is' operator and cast operator.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <MinLanguageVersion>7.0</MinLanguageVersion>
@@ -6255,7 +5977,6 @@ else
   <Analyzer Identifier="UsePatternMatchingInsteadOfAsAndNullCheck">
     <Id>RCS1221</Id>
     <Title>Use pattern matching instead of combination of 'as' operator and null check.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <MinLanguageVersion>7.0</MinLanguageVersion>
@@ -6277,7 +5998,6 @@ if (y == null)
   <Analyzer Identifier="MergePreprocessorDirectives">
     <Id>RCS1222</Id>
     <Title>Merge preprocessor directives.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6293,7 +6013,6 @@ if (y == null)
     <Id>RCS1223</Id>
     <Title>Mark publicly visible type with DebuggerDisplay attribute.</Title>
     <MessageFormat>Mark '{0}' with DebuggerDisplay attribute.</MessageFormat>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -6316,7 +6035,6 @@ public class Foo
   <Analyzer Identifier="MakeMethodExtensionMethod">
     <Id>RCS1224</Id>
     <Title>Make method an extension method.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Summary>Public/internal method in public/internal static class whose name ends with "Extensions" should be an extension method.</Summary>
@@ -6340,7 +6058,6 @@ public class Foo
   <Analyzer Identifier="MakeClassSealed">
     <Id>RCS1225</Id>
     <Title>Make class sealed.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Summary>A class that has only private constructors should be marked as sealed.</Summary>
@@ -6364,7 +6081,6 @@ public class Foo
   <Analyzer Identifier="AddParagraphToDocumentationComment">
     <Id>RCS1226</Id>
     <Title>Add paragraph to documentation comment.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6394,7 +6110,6 @@ class Foo
   <Analyzer Identifier="ValidateArgumentsCorrectly">
     <Id>RCS1227</Id>
     <Title>Validate arguments correctly.</Title>
-    <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Summary>
@@ -6432,7 +6147,6 @@ class Foo
   <Analyzer Identifier="UnusedElementInDocumentationComment">
     <Id>RCS1228</Id>
     <Title>Unused element in documentation comment.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -6462,7 +6176,6 @@ public string Foo()
   <Analyzer Identifier="UseAsyncAwait">
     <Id>RCS1229</Id>
     <Title>Use async/await when necessary.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6494,7 +6207,6 @@ public string Foo()
   <Analyzer Identifier="UnnecessaryExplicitUseOfEnumerator">
     <Id>RCS1230</Id>
     <Title>Unnecessary explicit use of enumerator.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6516,7 +6228,6 @@ public string Foo()
   <Analyzer Identifier="MakeParameterRefReadOnly">
     <Id>RCS1231</Id>
     <Title>Make parameter ref read-only.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <MinLanguageVersion>7.2</MinLanguageVersion>
@@ -6540,7 +6251,6 @@ public string Foo()
   <Analyzer Identifier="OrderElementsInDocumentationComment">
     <Id>RCS1232</Id>
     <Title>Order elements in documentation comment.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6571,7 +6281,6 @@ public string Foo()
   <Analyzer Identifier="UseShortCircuitingOperator">
     <Id>RCS1233</Id>
     <Title>Use short-circuiting operator.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6588,7 +6297,6 @@ public string Foo()
   <Analyzer Identifier="DuplicateEnumValue">
     <Id>RCS1234</Id>
     <Title>Duplicate enum value.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6612,7 +6320,6 @@ public string Foo()
     <Id>RCS1235</Id>
     <Title>Optimize method call.</Title>
     <MessageFormat>Optimize '{0}' call.</MessageFormat>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6648,7 +6355,6 @@ else
   <Analyzer Identifier="UseExceptionFilter">
     <Id>RCS1236</Id>
     <Title>Use exception filter.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <MinLanguageVersion>6.0</MinLanguageVersion>
@@ -6698,7 +6404,6 @@ So the expression is considered as the one that can throw an exception if it con
   <Analyzer Identifier="UseBitShiftOperator">
     <Id>RCS1237</Id>
     <Title>([deprecated] use RCS1254 instead) Use bit shift operator.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Tags>HideFromConfiguration</Tags>
@@ -6726,7 +6431,6 @@ enum Foo
   <Analyzer Identifier="AvoidNestedConditionalOperators">
     <Id>RCS1238</Id>
     <Title>Avoid nested ?: operators.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6751,7 +6455,6 @@ else
   <Analyzer Identifier="UseForStatementInsteadOfWhileStatement">
     <Id>RCS1239</Id>
     <Title>Use 'for' statement instead of 'while' statement.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6773,7 +6476,6 @@ while (x) // [|Id|]
     <Id>RCS1240</Id>
     <Title>Operator is unnecessary.</Title>
     <MessageFormat>The '{0}' operator is unnecessary.</MessageFormat>
-    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -6787,7 +6489,6 @@ while (x) // [|Id|]
     <Id>RCS1241</Id>
     <Title>Implement non-generic counterpart.</Title>
     <MessageFormat>Implement {0} when implementing {1}&lt;T&gt;.</MessageFormat>
-    <Category>Design</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Summary>Publicly visible type that implements `IComparable&lt;T&gt;`, `IComparer&lt;T&gt;` or `IEqualityComparer&lt;T&gt;` should implement their non-generic counterpart.</Summary>
@@ -6959,7 +6660,6 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
   <Analyzer Identifier="DoNotPassNonReadOnlyStructByReadOnlyReference">
     <Id>RCS1242</Id>
     <Title>Do not pass non-read-only struct by read-only reference.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <MinLanguageVersion>7.2</MinLanguageVersion>
@@ -6993,7 +6693,6 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
   <Analyzer Identifier="DuplicateWordInComment">
     <Id>RCS1243</Id>
     <Title>Duplicate word in a comment.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -7017,7 +6716,6 @@ public class C
   <Analyzer Identifier="SimplifyDefaultExpression">
     <Id>RCS1244</Id>
     <Title>Simplify 'default' expression.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -7039,7 +6737,6 @@ public class C
   <Analyzer Identifier="SimplifyConditionalExpression2" IsObsolete="true">
     <Id>RCS1245</Id>
     <Title>Simplify conditional expression.</Title>
-    <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7056,7 +6753,6 @@ public class C
   <Analyzer Identifier="UseElementAccess">
     <Id>RCS1246</Id>
     <Title>Use element access.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7086,7 +6782,6 @@ public class C
   <Analyzer Identifier="FixDocumentationCommentTag">
     <Id>RCS1247</Id>
     <Title>Fix documentation comment tag.</Title>
-    <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7136,7 +6831,6 @@ void M()
     <Id>RCS1248</Id>
     <Title>Normalize null check.</Title>
     <MessageFormat>Use {0} to check for null.</MessageFormat>
-    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <MinLanguageVersion>7.0 (9.0 for 'is not null' syntax)</MinLanguageVersion>
@@ -7172,7 +6866,6 @@ void M()
   <Analyzer Identifier="UnnecessaryNullForgivingOperator">
     <Id>RCS1249</Id>
     <Title>Unnecessary null-forgiving operator.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -7182,7 +6875,6 @@ void M()
     <Id>RCS1250</Id>
     <Title>Use implicit/explicit object creation.</Title>
     <MessageFormat>Use {0} object creation.</MessageFormat>
-    <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <MinLanguageVersion>9.0</MinLanguageVersion>
@@ -7207,7 +6899,6 @@ void M()
     <Id>RCS1251</Id>
     <Title>Remove unnecessary braces from record declaration.</Title>
     <MessageFormat>Remove unnecessary braces.</MessageFormat>
-    <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -7224,7 +6915,6 @@ void M()
     <Id>RCS1252</Id>
     <Title>Normalize usage of infinite loop.</Title>
     <MessageFormat>Use '{0}' statement as an infinite loop.</MessageFormat>
-    <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
@@ -7234,7 +6924,6 @@ void M()
   <Analyzer Identifier="FormatDocumentationCommentSummary">
     <Id>RCS1253</Id>
     <Title>Format documentation comment summary.</Title>
-    <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer replaces RCS1100 and RCS1101.</Summary>
@@ -7246,7 +6935,6 @@ void M()
     <Id>RCS1254</Id>
     <Title>Normalize format of enum flag value.</Title>
     <MessageFormat>{0}</MessageFormat>
-    <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <ConfigOptions>
@@ -7256,7 +6944,6 @@ void M()
   <Analyzer Identifier="SimplifyArgumentNullCheck">
     <Id>RCS1255</Id>
     <Title>Simplify argument null check.</Title>
-    <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.</Summary>
@@ -7273,7 +6960,6 @@ void M()
   <Analyzer Identifier="InvalidArgumentNullCheck">
     <Id>RCS1256</Id>
     <Title>Invalid argument null check.</Title>
-    <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Summary>This analyzer reports null checks of arguments that are:
@@ -7284,7 +6970,6 @@ void M()
   <Analyzer Identifier="UsePatternMatching">
     <Id>RCS9001</Id>
     <Title>Use pattern matching.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7315,7 +7000,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UsePropertySyntaxNodeSpanStart">
     <Id>RCS9002</Id>
     <Title>Use property SyntaxNode.SpanStart.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7328,7 +7012,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UnnecessaryConditionalAccess">
     <Id>RCS9003</Id>
     <Title>Unnecessary conditional access.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -7343,7 +7026,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="CallAnyInsteadOfAccessingCount">
     <Id>RCS9004</Id>
     <Title>Call 'Any' instead of accessing 'Count'.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7367,7 +7049,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UnnecessaryNullCheck">
     <Id>RCS9005</Id>
     <Title>Unnecessary null check.</Title>
-    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -7381,7 +7062,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UseElementAccess">
     <Id>RCS9006</Id>
     <Title>Use element access.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7405,7 +7085,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UseReturnValue">
     <Id>RCS9007</Id>
     <Title>Use return value.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7418,7 +7097,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="CallLastInsteadOfUsingElementAccess">
     <Id>RCS9008</Id>
     <Title>Call 'Last' instead of using [].</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7438,7 +7116,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UnknownLanguageName">
     <Id>RCS9009</Id>
     <Title>Unknown language name.</Title>
-    <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7457,7 +7134,6 @@ class FooDiagnosticAnalyzer : DiagnosticAnalyzer
   <Analyzer Identifier="SpecifyExportCodeRefactoringProviderAttributeName">
     <Id>RCS9010</Id>
     <Title>Specify ExportCodeRefactoringProviderAttribute.Name.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -7476,7 +7152,6 @@ class FooCodeRefactoringProvider : CodeRefactoringProvider
   <Analyzer Identifier="SpecifyExportCodeFixProviderAttributeName">
     <Id>RCS9011</Id>
     <Title>Specify ExportCodeFixProviderAttribute.Name.</Title>
-    <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
