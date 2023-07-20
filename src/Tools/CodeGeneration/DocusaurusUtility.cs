@@ -24,8 +24,10 @@ public static class DocusaurusUtility
 
             if (label is not null)
             {
-                sb.Append("sidebar_label: ");
-                sb.AppendLine(label);
+                sb.Append("sidebar_label: \"");
+                sb.Append(label.Replace("\"", "\\\""));
+                sb.Append('"');
+                sb.AppendLine();
             }
 
             sb.AppendLine("---");

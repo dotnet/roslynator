@@ -145,20 +145,20 @@ public static class MarkdownGenerator
         }
     }
 
-    public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring)
+    public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring, int position)
     {
         MDocument document = Document(
-            CreateFrontMatter(label: refactoring.Id),
+            CreateFrontMatter(position: position, label: refactoring.Title),
             Heading1(refactoring.Title),
             Table(
                 TableRow("Property", "Value"),
                 TableRow("Id", InlineCode(refactoring.Id)),
-                TableRow("Title", refactoring.Title),
-                TableRow("Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name))),
-                (!string.IsNullOrEmpty(refactoring.Span)) ? TableRow("Span", refactoring.Span) : null,
+                TableRow("Applicable Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name))),
+                (!string.IsNullOrEmpty(refactoring.Span)) ? TableRow("Syntax Span", refactoring.Span) : null,
                 TableRow("Enabled by Default", CheckboxOrHyphen(refactoring.IsEnabledByDefault))),
             CreateSummary(refactoring.Summary),
             GetRefactoringSamples(refactoring),
+            CreateRefactoringConfiguration(refactoring),
             CreateRemarks(refactoring.Remarks),
             CreateSeeAlso(refactoring));
 
@@ -176,31 +176,74 @@ public static class MarkdownGenerator
         }
     }
 
-    public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options, IEnumerable<(string title, string url)> appliesTo = null)
+    private static IEnumerable<object> CreateRefactoringConfiguration(RefactoringMetadata refactoring)
     {
-        IEnumerable<MInlineCode> requiredOptions = analyzer.ConfigOptions
+        yield return Heading2("Configuration");
+
+        yield return FencedCodeBlock(
+            $"roslynator_refactoring.{refactoring.OptionKey}.enabled = true|false",
+            "editorconfig");
+    }
+
+    private static IEnumerable<object> CreateInfoBlock(object content)
+    {
+        yield return Raw(":::info" + NewLine);
+
+        yield return content;
+
+        yield return Raw(":::" + NewLine);
+    }
+
+    public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
+    {
+        MInlineCode[] requiredOptions = analyzer.ConfigOptions
             .Where(f => f.IsRequired)
-            .Select(f => InlineCode(f.Key));
+            .Select(f => InlineCode(f.Key))
+            .ToArray();
+
+        string title = analyzer.Title.TrimEnd('.');
 
         MDocument document = Document(
             CreateFrontMatter(label: analyzer.Id),
-            Heading1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {analyzer.Title.TrimEnd('.')}"),
+            Heading1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {title}"),
+            Heading2("Properties"),
             Table(
                 TableRow("Property", "Value"),
-                TableRow("Id", InlineCode(analyzer.Id)),
-                TableRow("Severity", (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None"),
-                (!string.IsNullOrEmpty(analyzer.MinLanguageVersion)) ? TableRow("Minimum language version", analyzer.MinLanguageVersion) : null,
-                (requiredOptions.Any()) ? TableRow("Required option", Join(" or ", requiredOptions)) : null
+                TableRow("Default Severity", (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "disabled by default"),
+                TableRow("Minimum language version", (!string.IsNullOrEmpty(analyzer.MinLanguageVersion)) ? InlineCode(analyzer.MinLanguageVersion) : "-")
             ),
             CreateSummary(analyzer.Summary),
             GetAnalyzerSamples(analyzer),
-            CreateOptions(analyzer, options),
+            CreateAnalyzerConfiguration(analyzer, options),
             CreateRemarks(analyzer.Remarks),
-            CreateAppliesTo(appliesTo));
+            CreateAppliesTo(analyzer));
 
         document.AddFootnote();
 
         return document.ToString(_defaultMarkdownFormat);
+    }
+
+    private static IEnumerable<object> CreateRequiredOptionsInfoBlock(MInlineCode[] requiredOptions)
+    {
+        return CreateInfoBlock(CreateContent(requiredOptions));
+
+        static IEnumerable<MObject> CreateContent(MInlineCode[] requiredOptions)
+        {
+            if (!requiredOptions.Any())
+                yield break;
+
+            if (requiredOptions.Length == 1)
+            {
+                yield return Inline("Option ", requiredOptions[0], " is required to be set for this analyzer to work: " + NewLine);
+            }
+            else
+            {
+                yield return new MText($"One of the following options is required to be set for this analyzer to work: {NewLine}");
+
+                foreach (MInlineCode option in requiredOptions)
+                    yield return BulletItem(option);
+            }
+        }
     }
 
     public static string CreateAnalyzerOptionMarkdown(AnalyzerOptionMetadata option)
@@ -225,13 +268,25 @@ public static class MarkdownGenerator
         return document.ToString(_defaultMarkdownFormat);
     }
 
-    private static IEnumerable<MElement> CreateAppliesTo(IEnumerable<(string title, string url)> appliesTo)
+    private static IEnumerable<MElement> CreateAppliesTo(AnalyzerMetadata analyzer)
     {
-        if (appliesTo is not null)
+        yield return Heading2("Applies to");
+
+        if (!analyzer.Id.StartsWith("RCS9"))
         {
-            yield return Heading2("Applies to");
-            yield return BulletList(appliesTo.Select(f => LinkOrText(f.title, f.url)));
+            yield return BulletItem(Link("Extension for VS 2022", "https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022"));
+            yield return BulletItem(Link("Extension for VS Code", "https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator"));
+            yield return BulletItem(Link("Extension for Open VSX", "https://open-vsx.org/extension/josefpihrt-vscode/roslynator"));
         }
+
+        if (analyzer.Id.StartsWith("RCS0"))
+            yield return BulletItem(Link("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
+
+        if (analyzer.Id.StartsWith("RCS1"))
+            yield return BulletItem(Link("Roslynator.Analyzers", "https://www.nuget.org/packages/Roslynator.Analyzers"));
+
+        if (analyzer.Id.StartsWith("RCS9"))
+            yield return BulletItem(Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"));
     }
 
     public static string CreateCodeFixMarkdown(
@@ -284,25 +339,22 @@ public static class MarkdownGenerator
     {
         MDocument document = Document(
             Heading1(title),
-            Heading2("Overview"),
+            Heading2("Groups"),
             Table(
-                TableRow("Package", "Prefix", "Comment"),
-                TableRow(Link("Roslynator.Analyzers", "https://www.nuget.org/packages/Roslynator.Analyzers"), InlineCode("RCS1"), "common analyzers"),
-                TableRow(Link("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"), InlineCode("RCS0"), "-"),
-                TableRow(
-                    Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"),
-                    InlineCode("RCS9"),
-                    Inline("suitable for projects that reference Roslyn packages (", InlineCode("Microsoft.CodeAnalysis*"), ")"))
+                TableRow("Prefix", "Comment"),
+                TableRow(InlineCode("RCS1"), "common analyzers"),
+                TableRow(InlineCode("RCS0"), "formatting analyzers"),
+                TableRow(InlineCode("RCS9"), Inline("suitable for projects that reference Roslyn packages (", InlineCode("Microsoft.CodeAnalysis*"), ")"))
             ),
             Heading2("List of Analyzers"),
             Table(
-                TableRow("Id", "Title", "Severity"),
+                TableRow("Id", "Title", "Default Severity"),
                 analyzers.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
-                        Link(InlineCode(f.Id), $"analyzers/{f.Id}.md"),
-                        f.Title.TrimEnd('.'),
-                        (f.IsEnabledByDefault) ? f.DefaultSeverity : "None");
+                        InlineCode(f.Id),
+                        Link(f.Title.TrimEnd('.'), $"analyzers/{f.Id}.md"),
+                        (f.IsEnabledByDefault) ? f.DefaultSeverity : "-");
                 })));
 
         document.AddFootnote();
@@ -319,8 +371,8 @@ public static class MarkdownGenerator
                 refactorings.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
-                        Link(InlineCode(f.Id), $"refactorings/{f.Id}.md"),
-                        f.Title.TrimEnd('.'),
+                        InlineCode(f.Id),
+                        Link(f.Title.TrimEnd('.'), $"refactorings/{f.Id}.md"),
                         CheckboxOrHyphen(f.IsEnabledByDefault));
                 })));
 
@@ -362,7 +414,7 @@ public static class MarkdownGenerator
         }
     }
 
-    private static IEnumerable<MElement> CreateOptions(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
+    private static IEnumerable<object> CreateAnalyzerConfiguration(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
     {
         IEnumerable<ConfigOptionMetadata> analyzerOptions = analyzer.ConfigOptions
             .Join(options, f => f.Key, f => f.Key, (_, g) => g)
@@ -373,33 +425,40 @@ public static class MarkdownGenerator
         {
             if (en.MoveNext())
             {
-                yield return Heading2("Options");
+                yield return Heading2("Configuration");
+
+                MInlineCode[] requiredOptions = analyzer.ConfigOptions
+                    .Where(f => f.IsRequired)
+                    .Select(f => InlineCode(f.Key))
+                    .ToArray();
+
+                foreach (object item in CreateRequiredOptionsInfoBlock(requiredOptions))
+                    yield return item;
+
+                var sb = new StringBuilder();
+                var isFirst = true;
 
                 do
                 {
-                    string optionKey = en.Current.Key;
-                    string title = en.Current.Description;
-                    const string summary = null;
-                    string defaultValue = en.Current.DefaultValuePlaceholder;
-
-                    yield return Heading3(title?.TrimEnd('.'));
-
-                    if (!string.IsNullOrEmpty(summary))
+                    if (!isFirst)
                     {
-                        yield return new MText(summary);
-                        yield return new MText(NewLine);
+                        sb.AppendLine();
+                        sb.AppendLine();
                     }
 
-                    string helpValue = optionKey;
+                    isFirst = false;
 
-                    helpValue += " = ";
-                    helpValue += defaultValue ?? "true";
-
-                    yield return FencedCodeBlock(
-                        helpValue,
-                        "editorconfig");
+                    sb.Append('#');
+                    sb.AppendLine(en.Current.Description);
+                    sb.Append(en.Current.Key);
+                    sb.Append(" = ");
+                    sb.Append(en.Current.DefaultValuePlaceholder ?? "true");
                 }
                 while (en.MoveNext());
+
+                yield return FencedCodeBlock(
+                    sb.ToString(),
+                    "editorconfig");
             }
         }
     }

@@ -10,9 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
 using Roslynator.CodeGeneration.Markdown;
 using Roslynator.Metadata;
 using Roslynator.Utilities;
@@ -60,11 +58,9 @@ internal static class Program
             MarkdownGenerator.CreateAnalyzersMarkdown(metadata.GetAllAnalyzers().Where(f => !f.IsObsolete), "Analyzers", comparer),
             sidebarLabel: "Analyzers");
 
-        WriteAnalyzerMarkdowns(codeAnalysisAnalyzers, new (string, string)[] { ("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers") });
-
-        WriteAnalyzerMarkdowns(formattingAnalyzers, new (string, string)[] { ("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers") });
-
-        WriteAnalyzerMarkdowns(analyzers);
+        WriteAnalyzerMarkdown(codeAnalysisAnalyzers);
+        WriteAnalyzerMarkdown(formattingAnalyzers);
+        WriteAnalyzerMarkdown(analyzers);
 
         DeleteInvalidAnalyzerMarkdowns();
 
@@ -72,14 +68,17 @@ internal static class Program
 
         Directory.CreateDirectory(refactoringsDirPath);
 
-        foreach (RefactoringMetadata refactoring in refactorings)
+        int refactoringIndex = 0;
+        foreach (RefactoringMetadata refactoring in refactorings.OrderBy(f => f.Title))
         {
             string filePath = $"{refactoringsDirPath}/{refactoring.Id}.md";
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
             WriteAllText(
                 filePath,
-                MarkdownGenerator.CreateRefactoringMarkdown(refactoring));
+                MarkdownGenerator.CreateRefactoringMarkdown(refactoring, refactoringIndex));
+
+            refactoringIndex++;
         }
 
         IEnumerable<CompilerDiagnosticMetadata> fixableCompilerDiagnostics = compilerDiagnostics
@@ -145,20 +144,15 @@ internal static class Program
 
         UpdateChangeLog();
 
-        void WriteAnalyzerMarkdowns(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<(string title, string url)> appliesTo = null)
+        void WriteAnalyzerMarkdown(IEnumerable<AnalyzerMetadata> analyzers)
         {
             foreach (AnalyzerMetadata analyzer in analyzers)
-                WriteAnalyzerMarkdown(analyzer, appliesTo);
-        }
+            {
+                string filePath = $"{analyzersDirPath}/{analyzer.Id}.md";
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-        void WriteAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<(string title, string url)> appliesTo = null)
-        {
-            string filePath = $"{analyzersDirPath}/{analyzer.Id}.md";
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-            WriteAllText(
-                filePath,
-                MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.ConfigOptions, appliesTo));
+                WriteAllText(filePath, MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.ConfigOptions));
+            }
         }
 
         void DeleteInvalidAnalyzerMarkdowns()
