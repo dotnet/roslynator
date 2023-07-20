@@ -23,7 +23,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
     {
         get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray); }
     }
-    
+
     public override FixAllProvider GetFixAllProvider()
     {
         return UseExplicitlyOrImplicitlyTypedArrayFixAllProvider.Instance;
@@ -51,7 +51,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             ArrayCreationExpressionSyntax => "Use implicitly typed array",
             _ => "",
         };
-        
+
         CodeAction codeAction = CodeAction.Create(
             title,
             ct => ApplyFixToDocument(document, diagnostic, ct),
@@ -63,7 +63,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
     public async Task<Document> ApplyFixToDocument(Document document, Diagnostic diag, CancellationToken cancellationToken)
     {
         var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-        
+
         if (!TryFindFirstAncestorOrSelf(
                 root,
                 diag.Location.SourceSpan,
