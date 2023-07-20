@@ -23,7 +23,6 @@ internal static class Program
 
         var metadata = new RoslynatorMetadata(rootPath);
 
-
         foreach (string id in args.Skip(1))
         {
             if (_analyzerIdRegex.IsMatch(id))
