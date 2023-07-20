@@ -300,16 +300,15 @@ public static class MarkdownGenerator
             Heading1(diagnostic.Id),
             Table(
                 TableRow("Property", "Value"),
-                TableRow("Id", InlineCode(diagnostic.Id)),
                 TableRow("Title", diagnostic.Title),
-                TableRow("Severity", diagnostic.Severity),
-                (!string.IsNullOrEmpty(diagnostic.HelpUrl)) ? TableRow("Official Documentation", Link("link", diagnostic.HelpUrl)) : null),
+                TableRow("Severity", diagnostic.Severity)),
             Heading2("Code Fixes"),
             BulletList(codeFixes
                 .Where(f => f.FixableDiagnosticIds.Any(diagnosticId => diagnosticId == diagnostic.Id))
                 .Select(f => f.Title)
                 .OrderBy(f => f, comparer)),
-            GetOptions());
+            GetOptions(),
+            CreateSeeAlso(diagnostic));
 
         document.AddFootnote();
 
@@ -333,6 +332,15 @@ public static class MarkdownGenerator
                     "editorconfig");
             }
         }
+
+        static IEnumerable<MElement> CreateSeeAlso(CompilerDiagnosticMetadata diagnostic)
+        {
+            if (!string.IsNullOrEmpty(diagnostic.HelpUrl))
+            {
+                yield return Heading2("See Also");
+                yield return BulletItem(Link("Official Documentation", diagnostic.HelpUrl));
+            }
+        }
     }
 
     public static string CreateAnalyzersMarkdown(IEnumerable<AnalyzerMetadata> analyzers, string title, IComparer<string> comparer)
@@ -348,7 +356,7 @@ public static class MarkdownGenerator
             ),
             Heading2("List of Analyzers"),
             Table(
-                TableRow("Id", "Title", "Default Severity"),
+                TableRow("Id", "Title", TableColumn(HorizontalAlignment.Center, "Default Severity")),
                 analyzers.OrderBy(f => f.Id, comparer).Select(f =>
                 {
                     return TableRow(
@@ -381,7 +389,7 @@ public static class MarkdownGenerator
         return document.ToString();
     }
 
-    public static string CreateCodeFixesReadMe(IEnumerable<CompilerDiagnosticMetadata> diagnostics, IComparer<string> comparer)
+    public static string CreateCodeFixesMarkdown(IEnumerable<CompilerDiagnosticMetadata> diagnostics, IComparer<string> comparer)
     {
         MDocument document = Document(
             Heading1("Code Fixes for Compiler Diagnostics"),

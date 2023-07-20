@@ -116,7 +116,7 @@ internal static class Program
 
         WriteAllText(
             $"{destinationPath}/fixes.md",
-            MarkdownGenerator.CreateCodeFixesReadMe(fixableCompilerDiagnostics, comparer),
+            MarkdownGenerator.CreateCodeFixesMarkdown(fixableCompilerDiagnostics, comparer),
             sidebarLabel: "Code Fixes for Compiler Diagnostics");
 
         // find files to delete
