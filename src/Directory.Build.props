@@ -69,7 +69,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(CI)' == 'true' And $(RoslynatorIncludeSymbols)' == 'true'">
+  <ItemGroup Condition="'$(CI)' == 'true' And '$(RoslynatorIncludeSymbols)' == 'true'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
 
