@@ -61,7 +61,7 @@
     </PackageReference>
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(CI)' == 'true' And $(RoslynatorIncludeSymbols)' == 'true'">
+  <PropertyGroup Condition="'$(CI)' == 'true' And '$(RoslynatorIncludeSymbols)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
