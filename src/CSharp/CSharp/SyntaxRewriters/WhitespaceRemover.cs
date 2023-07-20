@@ -45,7 +45,7 @@ internal sealed class WhitespaceRemover : CSharpSyntaxRewriter
             SyntaxTriviaList triviaList = trivia.Token.TrailingTrivia.IndexOf(trivia) == -1
                 ? trivia.Token.LeadingTrivia
                 : trivia.Token.TrailingTrivia;
-            
+
             int triviaIndex = triviaList.IndexOf(trivia);
 
             if (triviaIndex == 0)

@@ -921,7 +921,7 @@ class MyAttribute : Attribute
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
     public async Task TestFix_WithLeadingWhitespace()
     {
