@@ -42,7 +42,7 @@ internal sealed class WhitespaceRemover : CSharpSyntaxRewriter
         if (trivia.IsKind(SyntaxKind.EndOfLineTrivia))
         {
             // We can only safely remove EndOfLineTrivia if it is not proceeded by a SingleLineComment
-            SyntaxTriviaList triviaList = trivia.Token.TrailingTrivia.IndexOf(trivia) == -1
+            SyntaxTriviaList triviaList = (trivia.Token.TrailingTrivia.IndexOf(trivia) == -1)
                 ? trivia.Token.LeadingTrivia
                 : trivia.Token.TrailingTrivia;
 
