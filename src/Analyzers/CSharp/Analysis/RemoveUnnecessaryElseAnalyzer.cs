@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -61,35 +60,44 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
 
         if (ifStatementStatement is not BlockSyntax ifBlock)
             return CSharpFacts.IsJumpStatement(ifStatementStatement.Kind());
-        
-        if (elseClause.Statement is BlockSyntax elseBlock && LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
-            return false;
 
-        var lastStatementInIf = ifBlock.Statements.LastOrDefault();
+        if (elseClause.Statement is BlockSyntax elseBlock)
+        {
+            if (LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
+                return false;
+
+            if (ifStatement.Parent is SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement }
+                && SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel))
+            {
+                return false;
+            }
+        }
+
+        StatementSyntax lastStatementInIf = ifBlock.Statements.LastOrDefault();
 
         return lastStatementInIf is not null
-               && CSharpFacts.IsJumpStatement(lastStatementInIf.Kind());
+            && CSharpFacts.IsJumpStatement(lastStatementInIf.Kind());
     }
 
     private static bool LocalDeclaredVariablesOverlap(BlockSyntax elseBlock, BlockSyntax ifBlock, SemanticModel semanticModel)
-    {        
-        var elseVariablesDeclared = semanticModel.AnalyzeDataFlow(elseBlock)!
+    {
+        ImmutableArray<ISymbol> elseVariablesDeclared = semanticModel.AnalyzeDataFlow(elseBlock)!
             .VariablesDeclared;
-        
+
         if (elseVariablesDeclared.IsEmpty)
             return false;
 
-        var ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifBlock)!
+        ImmutableArray<ISymbol> ifVariablesDeclared = semanticModel.AnalyzeDataFlow(ifBlock)!
             .VariablesDeclared;
-        
+
         if (ifVariablesDeclared.IsEmpty)
             return false;
 
-        var elseVariableNames = elseVariablesDeclared
+        ImmutableHashSet<string> elseVariableNames = elseVariablesDeclared
             .Select(s => s.Name)
             .ToImmutableHashSet();
 
-        foreach (var v in ifVariablesDeclared)
+        foreach (ISymbol v in ifVariablesDeclared)
         {
             if (elseVariableNames.Contains(v.Name))
                 return true;

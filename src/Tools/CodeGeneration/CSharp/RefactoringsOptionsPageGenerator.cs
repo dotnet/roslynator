@@ -18,12 +18,13 @@ public static class RefactoringsOptionsPageGenerator
             UsingDirectives(
                 "System.Collections.Generic",
                 "Roslynator.CSharp.Refactorings"),
-            NamespaceDeclaration(
-                "Roslynator.VisualStudio",
+            List(new MemberDeclarationSyntax[] {
+                FileScopedNamespaceDeclaration(ParseName("Roslynator.VisualStudio")),
                 ClassDeclaration(
                     Modifiers.Public_Partial(),
                     "RefactoringsOptionsPage",
-                    CreateMembers(refactorings, comparer).ToSyntaxList())));
+                    CreateMembers(refactorings, comparer).ToSyntaxList())
+            }));
     }
 
     private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)

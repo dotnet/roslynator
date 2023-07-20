@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
@@ -129,6 +130,8 @@ class C
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_RegularAndMultilineVerbatim()
     {
+        string newLineText = (Environment.NewLine == "\r\n") ? @"\r\n" : @"\n";
+
         await VerifyRefactoringAsync(@"
 class C
 {
@@ -139,15 +142,15 @@ class C
 ""|];
     }
 }
-", @"
+", $@"
 class C
-{
+{{
     void M()
-    {
+    {{
         string s = null;
-        s = "" \r\n \r\n"";
-    }
-}
+        s = "" \r\n {newLineText}"";
+    }}
+}}
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 

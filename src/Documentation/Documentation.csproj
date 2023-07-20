@@ -21,7 +21,6 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <PackageId>Roslynator.Documentation</PackageId>
-    <PackageVersion>$(RoslynatorDocumentationPackageVersion)</PackageVersion>
     <Company></Company>
     <Description>This API enables to generate documentation for your .NET library
 
@@ -30,16 +29,16 @@ Roslynator.Documentation.DocumentationWriter
 Roslynator.Documentation.DocumentationGenerator</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>http://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Roslyn;Documentation;GitHub;C#;CSharp</PackageTags>
-    <RepositoryUrl>http://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynCliVersion)" />
     <PackageReference Include="DotMarkdown" Version="0.2.0" />
   </ItemGroup>
 
@@ -50,6 +49,12 @@ Roslynator.Documentation.DocumentationGenerator</Description>
 
   <ItemGroup>
     <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Roslynator, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

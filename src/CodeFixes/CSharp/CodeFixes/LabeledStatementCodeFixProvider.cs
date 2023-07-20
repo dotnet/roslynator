@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -32,13 +31,12 @@ public sealed class LabeledStatementCodeFixProvider : CompilerDiagnosticCodeFixP
 
         if (!TryFindFirstAncestorOrSelf(root, context.Span, out LabeledStatementSyntax labeledStatement))
             return;
-                
-        var codeAction = CodeAction.Create(
+
+        CodeAction codeAction = CodeAction.Create(
             "Remove unused label",
             ct => context.Document.ReplaceNodeAsync(labeledStatement, labeledStatement.Statement, ct),
             EquivalenceKey.Create(diagnostic));
-        
-        context.RegisterCodeFix(codeAction, diagnostic);
 
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }
