@@ -11,13 +11,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Roslynator.CodeGeneration;
 using Roslynator.CodeGeneration.Markdown;
 using Roslynator.Metadata;
 using Roslynator.Utilities;
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
-namespace Roslynator.CodeGeneration;
+namespace Roslynator.MetadataGenerator;
 
 internal static class Program
 {
@@ -42,9 +43,6 @@ internal static class Program
 
         var metadata = new RoslynatorMetadata(sourcePath);
 
-        ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
-        ImmutableArray<AnalyzerMetadata> codeAnalysisAnalyzers = metadata.CodeAnalysisAnalyzers;
-        ImmutableArray<AnalyzerMetadata> formattingAnalyzers = metadata.FormattingAnalyzers;
         ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
         ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
         ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
@@ -55,12 +53,12 @@ internal static class Program
 
         WriteAllText(
             $"{destinationPath}/analyzers.md",
-            MarkdownGenerator.CreateAnalyzersMarkdown(metadata.GetAllAnalyzers().Where(f => !f.IsObsolete), "Analyzers", comparer),
+            MarkdownGenerator.CreateAnalyzersMarkdown(metadata.Analyzers.Where(f => !f.IsObsolete), "Analyzers", comparer),
             sidebarLabel: "Analyzers");
 
-        WriteAnalyzerMarkdown(codeAnalysisAnalyzers);
-        WriteAnalyzerMarkdown(formattingAnalyzers);
-        WriteAnalyzerMarkdown(analyzers);
+        WriteAnalyzerMarkdown(metadata.CodeAnalysisAnalyzers);
+        WriteAnalyzerMarkdown(metadata.FormattingAnalyzers);
+        WriteAnalyzerMarkdown(metadata.CommonAnalyzers);
 
         DeleteInvalidAnalyzerMarkdowns();
 
@@ -157,13 +155,8 @@ internal static class Program
 
         void DeleteInvalidAnalyzerMarkdowns()
         {
-            AnalyzerMetadata[] allAnalyzers = analyzers
-                .Concat(codeAnalysisAnalyzers)
-                .Concat(formattingAnalyzers)
-                .ToArray();
-
-            IEnumerable<string> allIds = allAnalyzers
-                .Concat(allAnalyzers.SelectMany(f => f.OptionAnalyzers))
+            IEnumerable<string> allIds = metadata.Analyzers
+                .Concat(metadata.Analyzers.SelectMany(f => f.OptionAnalyzers))
                 .Select(f => f.Id);
 
             foreach (string id in Directory.GetFiles(analyzersDirPath, "*.*", SearchOption.TopDirectoryOnly)
@@ -189,13 +182,8 @@ internal static class Program
             string path = Path.Combine(sourcePath, "../ChangeLog.md");
             string s = File.ReadAllText(path, _utf8NoBom);
 
-            List<AnalyzerMetadata> allAnalyzers = analyzers
-                .Concat(formattingAnalyzers)
-                .Concat(codeAnalysisAnalyzers)
-                .ToList();
-
-            ImmutableDictionary<string, AnalyzerMetadata> dic = allAnalyzers
-                .Concat(allAnalyzers.SelectMany(f => f.OptionAnalyzers))
+            ImmutableDictionary<string, AnalyzerMetadata> dic = metadata.Analyzers
+                .Concat(metadata.Analyzers.SelectMany(f => f.OptionAnalyzers))
                 .Where(f => f.Id is not null)
                 .ToImmutableDictionary(f => f.Id, f => f);
 
