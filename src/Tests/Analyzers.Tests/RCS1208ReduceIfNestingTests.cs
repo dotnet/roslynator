@@ -560,4 +560,63 @@ class C
 }
 ");
     }
+    
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task TestDiagnostic_DoesNot_IncorrectlyRecurse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(bool p, bool q, bool r)
+    {
+        [|if|] (r)
+        {
+            if (p)
+            {
+                var x = 1;
+                M2();
+            }
+
+            if (q)
+            {
+                var x = 2;
+                M2();
+            }
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+",@"
+class C
+{
+    void M(bool p, bool q, bool r)
+    {
+        if (!r)
+        {
+            return;
+        }
+
+        if (p)
+        {
+            var x = 1;
+            M2();
+        }
+
+        if (q)
+        {
+            var x = 2;
+            M2();
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+");
+    }
 }
