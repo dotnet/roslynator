@@ -81,8 +81,6 @@ dotnet tool install -g roslynator.dotnet.cli
 
 ## Other Projects
 
-* [Snippetica](https://github.com/JosefPihrt/Snippetica) - A collection of snippets for C++, C#, HTML, JSON, Markdown, VB, XAML and XML
+* [Snippetica](https://github.com/JosefPihrt/Snippetica) - Collection of snippets for C++, C#, HTML, JSON, Markdown, VB, XAML and XML
 * [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown) - Markdown framework for .NET
-* [LINQ to Regex](https://github.com/JosefPihrt/LinqToRegex) - A library that provides language integrated access to .NET regular expressions
-* [Snippet Manager](https://github.com/JosefPihrt/SnippetManager) - A library that enables to work with Visual Studio snippets
-* [Regexator](http://pihrt.net/Regexator) - A comprehensive development environment for .NET regular expressions
+* [Regexator](http://pihrt.net/Regexator) - Desktop application for development of .NET regular expressions
