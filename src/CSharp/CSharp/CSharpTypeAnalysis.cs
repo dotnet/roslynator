@@ -216,7 +216,7 @@ internal static class CSharpTypeAnalysis
         if (expression is null)
             return false;
 
-        if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.ImplicitObjectCreationExpression)) 
+        if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.ImplicitObjectCreationExpression))
             return false;
 
         if (expression.IsKind(SyntaxKind.SuppressNullableWarningExpression)
