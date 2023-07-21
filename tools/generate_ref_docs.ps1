@@ -22,13 +22,6 @@ $rootDirectoryUrl="build/ref"
  --ignored-parts content `
  --root-directory-url "ref"
 
-  # & $roslynatorExe list-symbols generate_ref_docs.sln `
-#  --properties Configuration=Release `
-#  --visibility public `
-#  --depth member `
-#  --ignored-parts containing-namespace assembly-attributes `
-#  --output "../docs/api.txt"
-
 # & $roslynatorExe generate-doc-root generate_ref_docs.sln `
 #  --properties Configuration=Release `
 #  --projects Core `

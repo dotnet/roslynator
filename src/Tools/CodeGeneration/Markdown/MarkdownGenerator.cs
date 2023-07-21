@@ -17,6 +17,7 @@ public static class MarkdownGenerator
 {
     private static readonly MarkdownFormat _defaultMarkdownFormat = new(
         tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent,
+        bulletListStyle: BulletListStyle.Minus,
         angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef);
 
 #pragma warning disable IDE0060, RCS1175
