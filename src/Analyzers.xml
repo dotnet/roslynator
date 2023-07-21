@@ -8,7 +8,7 @@
     <Samples>
       <Sample>
         <Before><![CDATA[if (x)
-    Foo(); // [|Id|]
+    Foo();
 Bar();]]></Before>
         <After><![CDATA[if (x)
     Foo();
@@ -26,7 +26,7 @@ Bar();]]></After>
       <Sample>
         <Before><![CDATA[class C
 {
-    #region Methods // [|Id|]
+    #region Methods
     void M()
     {
     }
@@ -56,7 +56,7 @@ Bar();]]></After>
         <Before><![CDATA[// Copyright ...
 
 using System;
-using System.Linq; // [|Id|]
+using System.Linq;
 namespace N
 {
 }]]></Before>
@@ -80,7 +80,7 @@ namespace N
       <Sample>
         <Before><![CDATA[do
 {
-    Foo(); // [|Id|]
+    Foo();
 } while (x);]]></Before>
         <After><![CDATA[do
 {
@@ -104,7 +104,7 @@ namespace N
     void M()
     {
     }
-    #endregion // [|Id|]
+    #endregion
 }]]></Before>
         <After><![CDATA[class C
 {
@@ -127,7 +127,7 @@ namespace N
     <Samples>
       <Sample>
         <Before><![CDATA[// Copyright ...
-using System; // [|Id|]
+using System;
 using System.Linq;
 
 namespace N
@@ -156,7 +156,7 @@ namespace N
     get
     {
         return _p;
-    } // [|Id|]
+    }
     set
     {
         _p = value;
@@ -187,7 +187,7 @@ namespace N
       <Sample>
         <Before><![CDATA[if (x)
 {
-} // [|Id|]
+}
 Foo();]]></Before>
         <After><![CDATA[if (x)
 {
@@ -204,7 +204,7 @@ Foo();]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[object P1 { get; } // [|Id|]
+        <Before><![CDATA[object P1 { get; }
 /// <summary>
 /// ...
 /// </summary>
@@ -229,27 +229,27 @@ object P2 { get; }]]></After>
 {
     void M1()
     {
-    } // [|Id|]
+    }
     void M2()
     {
-    } // [|Id|]
+    }
     /// <summary>
     /// ...
     /// </summary>
     void M3()
     {
-    } // [|Id|]
-    string P1 { get; set; } // [|Id|]
+    }
+    string P1 { get; set; }
     [Obsolete]
     string P2 { get; set; }
-} // [|Id|]
+}
 enum Bar
 {
-    A = 0, // [|Id|]
+    A = 0,
     /// <summary>
     /// ...
     /// </summary>
-    B = 1, // [|Id|]
+    B = 1,
     [Obsolete]
     C = 2,
 }]]></Before>
@@ -302,7 +302,7 @@ enum Bar
       <Sample>
         <Before><![CDATA[string P
 {
-    get { return _p; } // [|Id|]
+    get { return _p; }
     set { _p = value; }
 }]]></Before>
         <After><![CDATA[string P
@@ -328,7 +328,7 @@ enum Bar
             <Before><![CDATA[string P
 {
     get { return _p; }
-// [|Id|]
+
     set { _p = value; }
 }]]></Before>
             <After><![CDATA[string P
@@ -348,7 +348,7 @@ enum Bar
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[object P1 { get; } // [|Id|]
+        <Before><![CDATA[object P1 { get; }
 object P2 { get; }]]></Before>
         <After><![CDATA[object P1 { get; }
 
@@ -363,7 +363,7 @@ object P2 { get; }]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[object P { get; } // [|Id|]
+        <Before><![CDATA[object P { get; }
 object this[int index] { get; }]]></Before>
         <After><![CDATA[object P { get; }
 
@@ -384,7 +384,7 @@ object this[int index] { get; }]]></After>
         <Before><![CDATA[switch (x)
 {
     case "a":
-        return A(); // [|Id|]
+        return A();
     case "b":
         return B();
 }
@@ -409,7 +409,7 @@ object this[int index] { get; }]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[using System; // [|Id|]
+        <Before><![CDATA[using System;
 using Microsoft.CodeAnalysis;
 
 namespace N
@@ -438,7 +438,7 @@ namespace N
         <Samples>
           <Sample>
             <Before><![CDATA[using System;
-// [|Id|]
+
 using Microsoft.CodeAnalysis;
 
 namespace N
@@ -465,7 +465,7 @@ namespace N
         <Before><![CDATA[enum Foo
 {
     A,
-    [Obsolete] B, // [|Id|]
+    [Obsolete] B,
     C,
 }]]></Before>
         <After><![CDATA[enum Foo
@@ -486,7 +486,7 @@ namespace N
     <Samples>
       <Sample>
         <Before><![CDATA[if (x
-    && y // [|Id|]
+    && y
     && z)
 {
 }]]></Before>
@@ -506,7 +506,7 @@ namespace N
     <Samples>
       <Sample>
         <Before><![CDATA[var y = (x)
-    ? Foo() // [|Id|]
+    ? Foo()
     : Bar();]]></Before>
         <After><![CDATA[var y = (x) ?
      Foo() :
@@ -522,7 +522,7 @@ namespace N
     <Samples>
       <Sample>
         <Before><![CDATA[object Foo()
-    => null; // [|Id|]]]></Before>
+    => null;]]></Before>
         <After><![CDATA[object Foo() =>
     null;]]></After>
       </Sample>
@@ -541,7 +541,7 @@ namespace N
       <Sample>
         <Before><![CDATA[string Foo
 {
-    get { return _foo; } // [|Id|]
+    get { return _foo; }
 }]]></Before>
         <After><![CDATA[string Foo
 {
@@ -581,7 +581,7 @@ namespace N
     <Samples>
       <Sample>
         <Before><![CDATA[void Foo()
-{ } // [|Id|]]]></Before>
+{ }]]></Before>
         <After><![CDATA[void Foo()
 {
 }]]></After>
@@ -596,7 +596,7 @@ namespace N
     <Samples>
       <Sample>
         <Before><![CDATA[interface IFoo
-{ } // [|Id|]]]></Before>
+{ }]]></Before>
         <After><![CDATA[interface IFoo
 {
 }]]></After>
@@ -612,7 +612,7 @@ namespace N
       <Sample>
         <Before><![CDATA[switch (x)
 {
-    case "a": return A(); // [|Id|]
+    case "a": return A();
     case "b": return B();
 }]]></Before>
         <After><![CDATA[switch (x)
@@ -649,7 +649,7 @@ namespace N
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x && // [|Id|]
+        <Before><![CDATA[if (x &&
     y &&
     z)
 {
@@ -674,7 +674,7 @@ namespace N
         <Samples>
           <Sample>
             <Before><![CDATA[if (x
-    && y // [|Id|]
+    && y
     && z)
 {
 }]]></Before>
@@ -696,7 +696,7 @@ namespace N
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[var y = x ? // [|Id|]
+        <Before><![CDATA[var y = x ?
     Foo() :
     Bar();]]></Before>
         <After><![CDATA[var y = x
@@ -717,7 +717,7 @@ namespace N
         <Samples>
           <Sample>
             <Before><![CDATA[var y = x
-    ? Foo() // [|Id|]
+    ? Foo()
     : Bar();]]></Before>
             <After><![CDATA[var y = x ?
     Foo() :
@@ -734,7 +734,7 @@ namespace N
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[Foo(object p1, object p2) : base(p1) // [|Id|]
+        <Before><![CDATA[Foo(object p1, object p2) : base(p1)
 {
     P2 = p2;
 }]]></Before>
@@ -784,7 +784,7 @@ namespace N
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[object Foo() => // [|Id|]
+        <Before><![CDATA[object Foo() =>
     null;]]></Before>
         <After><![CDATA[object Foo()
     => null;]]></After>
@@ -803,7 +803,7 @@ namespace N
         <Samples>
           <Sample>
             <Before><![CDATA[object Foo()
-    => null; // [|Id|]]]></Before>
+    => null;]]></Before>
             <After><![CDATA[object Foo() =>
     null;]]></After>
           </Sample>
@@ -831,7 +831,7 @@ Bar();]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[class Foo<T1, T2> where T1 : struct where T2 : struct // [|Id|]
+        <Before><![CDATA[class Foo<T1, T2> where T1 : struct where T2 : struct
 {
 }]]></Before>
         <After><![CDATA[class Foo<T1, T2>
@@ -852,7 +852,7 @@ Bar();]]></After>
         <Before><![CDATA[string P
 {
     get { return _p; }
-// [|Id|]
+
     set { _p = value; }
 }]]></Before>
         <After><![CDATA[string P
@@ -872,7 +872,7 @@ Bar();]]></After>
       <Samples>
         <Sample>
           <Before><![CDATA[object P1 { get; }
-// [|Id|]
+
 object P2 { get; }]]></Before>
           <After><![CDATA[object P1 { get; }
 object P2 { get; }]]></After>
@@ -888,7 +888,7 @@ object P2 { get; }]]></After>
     <Samples>
       <Sample>
         <Before><![CDATA[using System;
-// [|Id|]
+
 using Microsoft.CodeAnalysis;
 
 namespace N
@@ -912,7 +912,7 @@ namespace N
     <Samples>
       <Sample>
         <Before><![CDATA[using System;
-// [|Id|]
+
 using System.Linq;
 
 namespace N
@@ -935,7 +935,7 @@ namespace N
     <Samples>
       <Sample>
         <Before><![CDATA[class Foo
-    : Bar // [|Id|]
+    : Bar
 {
 }]]></Before>
         <After><![CDATA[class Foo : Bar
@@ -954,7 +954,7 @@ namespace N
         <Before><![CDATA[do
 {
     Foo();
-} // [|Id|]
+}
 while (x);]]></Before>
         <After><![CDATA[do
 {
@@ -974,7 +974,7 @@ while (x);]]></Before>
 {
     Foo();
 }
-else // [|Id|]
+else
 if (y)
 {
     Bar();
@@ -998,7 +998,7 @@ else if (y)
     <Samples>
       <Sample>
         <Before><![CDATA[string Foo
-{ // [|Id|]
+{
     get;
     set;
 }]]></Before>
@@ -1060,7 +1060,7 @@ else if (y)
     <Summary>This analyzer has been deprecated. Use analyzer [RCS0053](RCS0053.md) instead.</Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[void M(object p1, // [|Id|]
+        <Before><![CDATA[void M(object p1,
     object p2
     object p3) 
 {
@@ -1074,7 +1074,7 @@ else if (y)
       </Sample>
       <Sample>
         <Before><![CDATA[void M(
-    object p1, // [|Id|]
+    object p1,
     object p2, object p3) 
 {
 }]]></Before>
@@ -1095,7 +1095,7 @@ else if (y)
     <Samples>
       <Sample>
         <Before><![CDATA[var dic = new Dictionary<int, string>()
-{ // [|Id|]
+{
     { 0, "0" }
 };]]></Before>
         <After><![CDATA[var dic = new Dictionary<int, string>() { { 0, "0" } };]]></After>
@@ -1110,7 +1110,7 @@ else if (y)
     <Samples>
       <Sample>
         <Before><![CDATA[// Copyright ...
-using System; // [|Id|]
+using System;
 
 namespace Foo
 {
@@ -1132,7 +1132,7 @@ namespace Foo
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[using System; // [|Id|]
+        <Before><![CDATA[using System;
 namespace Foo
 {
 }]]></Before>
@@ -1155,7 +1155,7 @@ namespace Foo
         <Before><![CDATA[do
 {
     Foo();
-} while (x); // [|Id|]]]></Before>
+} while (x);]]></Before>
         <After><![CDATA[do
 {
     Foo();
@@ -1178,7 +1178,7 @@ while (x);]]></After>
             <Before><![CDATA[do
 {
     Foo();
-} // [|Id|]
+}
 while (x);]]></Before>
             <After><![CDATA[do
 {
@@ -1197,7 +1197,7 @@ while (x);]]></Before>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = // [|Id|]
+        <Before><![CDATA[string s =
     new string(' ', 4);]]></Before>
         <After><![CDATA[string s
     = new string(' ', 4);]]></After>
@@ -1215,7 +1215,7 @@ while (x);]]></Before>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
-            <Before><![CDATA[string s // [|Id|]
+            <Before><![CDATA[string s
     = new string(' ', 4);]]></Before>
             <After><![CDATA[string s =
     new string(' ', 4);]]></After>
@@ -1316,14 +1316,14 @@ void M(
 </Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[return [|x.M1() // [|Id|]
+        <Before><![CDATA[return [|x.M1()
     .M2().M3()|];]]></Before>
         <After><![CDATA[return [|x.M1()
     .M2()
     .M3()|];]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[return [|x.M1() // [|Id|]
+        <Before><![CDATA[return [|x.M1()
 .M2()
 .M3()|];]]></Before>
         <After><![CDATA[return [|x.M1()
@@ -1343,7 +1343,7 @@ void M(
  </Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x && y // [|Id|]
+        <Before><![CDATA[if (x && y
     && z)
 {
 }]]></Before>
@@ -1354,7 +1354,7 @@ void M(
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (x // [|Id|]
+        <Before><![CDATA[if (x
 && y
 && z)
 {
@@ -1432,7 +1432,7 @@ Default maximal length is 140.</Summary>
     <MinLanguageVersion>10.0</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[namespace A.B // [|Id|]
+        <Before><![CDATA[namespace A.B
 public class C
 {
 }]]></Before>
@@ -1462,7 +1462,7 @@ public class C
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-    Foo( // [|Id|]
+    Foo(
         x,
         y);]]></Before>
         <After><![CDATA[if (condition)
@@ -1484,7 +1484,7 @@ public class C
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-{ // [|Id|]
+{
     Foo();
 }]]></Before>
         <After><![CDATA[if (condition)
@@ -1499,7 +1499,7 @@ public class C
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // [|Id|]
+        <Before><![CDATA[if (condition)
     WhenTrue(
         x,
         y);
@@ -1530,7 +1530,7 @@ else
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // [|Id|]
+        <Before><![CDATA[if (condition)
 {
     WhenTrue();
 }
@@ -1554,7 +1554,7 @@ else
     <Samples>
       <Sample>
         <Before><![CDATA[using (var fs = new FileStream("path", FileMode.OpenOrCreate))
-{ // [|Id|]
+{
     using (var sr = new StreamReader(fs))
     {
     }
@@ -1579,7 +1579,7 @@ using (var sr = new StreamReader(fs))
     Foo1();
 }
 else
-{ // [|Id|]
+{
     if (condition2)
     {
         Foo2();
@@ -1605,7 +1605,7 @@ else if (condition2)
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-    Foo(); // [|Id|]]]></Before>
+    Foo();]]></Before>
         <After><![CDATA[if (condition)
 {
     Foo();
@@ -1638,7 +1638,7 @@ else if (condition2)
 
 // ...
 
-foreach (var item in items) // [|Id|]
+foreach (var item in items)
 {
 }]]></Before>
         <After><![CDATA[foreach (string item in items)
@@ -1745,7 +1745,7 @@ foreach (var item in items) // [|Id|]
 {
     if (parameter == null)
     {
-        throw new ArgumentNullException("parameter", "message"); // [|Id|]
+        throw new ArgumentNullException("parameter", "message");
     }
 }]]></Before>
         <After><![CDATA[public void Foo(object parameter)
@@ -1768,7 +1768,7 @@ foreach (var item in items) // [|Id|]
     <Samples>
       <Sample>
         <Before><![CDATA[public string Foo()
-{ // [|Id|]
+{
     return "";
 }]]></Before>
         <After><![CDATA[public string Foo() => "";]]></After>
@@ -1788,7 +1788,7 @@ foreach (var item in items) // [|Id|]
         <Kind>Change</Kind>
         <Samples>
           <Sample>
-            <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]
+            <Before><![CDATA[public string[] Foo() => new string[]
 {
     "a",
     "b",
@@ -1817,7 +1817,7 @@ foreach (var item in items) // [|Id|]
             <Before><![CDATA[public string[] Foo(
     string a,
     string b,
-    string c) => new string[] { a, b, c }; // [|Id|]]]></Before>
+    string c) => new string[] { a, b, c };]]></Before>
             <After><![CDATA[public string[] Foo(
     string a,
     string b,
@@ -1836,7 +1836,7 @@ foreach (var item in items) // [|Id|]
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
-            <Before><![CDATA[public string Foo() => null; // [|Id|]]]></Before>
+            <Before><![CDATA[public string Foo() => null;]]></Before>
             <After><![CDATA[public string Foo()
 {
     return null;
@@ -1856,7 +1856,7 @@ foreach (var item in items) // [|Id|]
     <Summary>This analyzer has been deprecated. Use EditorConfig option `roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true` instead.</Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]
+        <Before><![CDATA[public string[] Foo() => new string[]
 {
     "a",
     "b",
@@ -1882,9 +1882,9 @@ foreach (var item in items) // [|Id|]
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[class Foo // [|Id|]
+        <Before><![CDATA[class Foo
 {
-    void Bar() // [|Id|]
+    void Bar()
     {
     }
 }]]></Before>
@@ -1909,9 +1909,9 @@ foreach (var item in items) // [|Id|]
         <SupportsFadeOut>true</SupportsFadeOut>
         <Samples>
           <Sample>
-            <Before><![CDATA[internal class Foo // [|Id|]
+            <Before><![CDATA[internal class Foo
 {
-    private void Bar() // [|Id|]
+    private void Bar()
     {
     }
 }]]></Before>
@@ -1933,9 +1933,9 @@ foreach (var item in items) // [|Id|]
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[private readonly static object _f; // [|Id|]
+        <Before><![CDATA[private readonly static object _f;
 
-internal protected class Foo // [|Id|]
+internal protected class Foo
 {
 }]]></Before>
         <After><![CDATA[private static readonly object _f;
@@ -1969,7 +1969,7 @@ protected internal class Foo
     <Samples>
       <Sample>
         <Before><![CDATA[var x = items.Select(f =>
-{ // [|Id|]
+{
     return f.ToString();
 });]]></Before>
         <After><![CDATA[var x = items.Select(f => f.ToString());]]></After>
@@ -1991,7 +1991,7 @@ protected internal class Foo
     <Samples>
       <Sample>
         <Before><![CDATA[void Foo()
-{ } // [|Id|]]]></Before>
+{ }]]></Before>
         <After><![CDATA[void Foo()
 {
 }]]></After>
@@ -2068,7 +2068,7 @@ Bar();]]></After>
       <Sample>
         <Before><![CDATA[switch (x)
 {
-    case "a": return Foo(); // [|Id|]
+    case "a": return Foo();
     case "b": return Bar();
 }]]></Before>
         <After><![CDATA[switch (x)
@@ -2088,7 +2088,7 @@ Bar();]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x && // [|Id|]
+        <Before><![CDATA[if (x &&
     y &&
     z)
 {
@@ -2109,7 +2109,7 @@ Bar();]]></After>
     <Samples>
       <Sample>
         <Before><![CDATA[if (x)
-    Foo(); // [|Id|]
+    Foo();
 Bar();]]></Before>
         <After><![CDATA[if (x)
     Foo();
@@ -2131,7 +2131,7 @@ Bar();]]></After>
         <Before><![CDATA[switch (x)
 {
     case "a":
-        { // [|Id|]
+        {
             M();
             break;
         }
@@ -2160,9 +2160,9 @@ Bar();]]></After>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if ((x)) // [|Id|]
+        <Before><![CDATA[if ((x))
 {
-    return (y); // [|Id|]
+    return (y);
 }]]></Before>
         <After><![CDATA[if (x)
 {
@@ -2180,11 +2180,11 @@ Bar();]]></After>
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (f == true) // [|Id|]
+        <Before><![CDATA[if (f == true)
 {
 }
 
-if (f != false) // [|Id|]
+if (f != false)
 {
 }]]></Before>
         <After><![CDATA[if (f)
@@ -2207,7 +2207,7 @@ if (f)
       <Sample>
         <Before><![CDATA[public sealed class Foo
 {
-    public sealed override string ToString() // [|Id|]
+    public sealed override string ToString()
     {
         return "";
     }
@@ -2229,7 +2229,7 @@ if (f)
       <Sample>
         <Before><![CDATA[public void Foo()
 {
-    var arr = new string[] { "a", "b", "c", }; // [|Id|]
+    var arr = new string[] { "a", "b", "c", };
 }]]></Before>
         <After><![CDATA[public void Foo()
 {
@@ -2326,7 +2326,7 @@ if (f)
       <Sample>
         <Before><![CDATA[public void Foo()
 {
-    ; // [|Id|]
+    ;
 }]]></Before>
         <After><![CDATA[public void Foo()
 {
@@ -2342,7 +2342,7 @@ if (f)
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[[Obsolete()] // [|Id|]
+        <Before><![CDATA[[Obsolete()]
 public void Foo()
 {
 }]]></Before>
@@ -2365,7 +2365,7 @@ public void Foo()
 {
     Foo();
 }
-else // [|Id|]
+else
 {
 }]]></Before>
         <After><![CDATA[if (condition)
@@ -2396,7 +2396,7 @@ else // [|Id|]
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[public enum Foo : int // [|Id|]
+        <Before><![CDATA[public enum Foo : int
 {
 }]]></Before>
         <After><![CDATA[public enum Foo
@@ -2413,7 +2413,7 @@ else // [|Id|]
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[public partial class Foo // [|Id|]
+        <Before><![CDATA[public partial class Foo
 {
 }]]></Before>
         <After><![CDATA[public class Foo
@@ -2436,7 +2436,7 @@ else // [|Id|]
 }
 catch (Exception ex)
 {
-    throw ex; // [|Id|]
+    throw ex;
 }]]></Before>
         <After><![CDATA[try
 {
@@ -2482,7 +2482,7 @@ catch (Exception ex)
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public static async Task<bool> Foo() // [|Id|]
+        <Before><![CDATA[public static async Task<bool> Foo()
 {
     return await Task.FromResult(false);
 }]]></Before>
@@ -2502,7 +2502,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public void FooAsync() // [|Id|]
+        <Before><![CDATA[public void FooAsync()
 {
 }]]></Before>
         <After><![CDATA[public void Foo()
@@ -2519,7 +2519,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var x = items.Select(delegate (object f) // [|Id|]
+        <Before><![CDATA[var x = items.Select(delegate (object f)
 {
     return f.ToString();
 });]]></Before>
@@ -2542,11 +2542,11 @@ catch (Exception ex)
 
 // ...
 
-if (f == false) // [|Id|]
+if (f == false)
 {
 }
 
-if (f != true) // [|Id|]
+if (f != true)
 {
 }]]></Before>
         <After><![CDATA[if (!f)
@@ -2630,7 +2630,7 @@ if (!f)
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[[Obsolete, Conditional("DEBUG")] // [|Id|]
+        <Before><![CDATA[[Obsolete, Conditional("DEBUG")]
 public void Foo()
 {
 }]]></Before>
@@ -2667,7 +2667,7 @@ public void Foo()
       <Sample>
         <Before><![CDATA[public class Foo
 {
-}; // [|Id|]]]></Before>
+};]]></Before>
         <After><![CDATA[public class Foo
 {
 }]]></After>
@@ -2681,7 +2681,7 @@ public void Foo()
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[using S = System.String; // [|Id|]
+        <Before><![CDATA[using S = System.String;
 
 public class Foo
 {
@@ -2711,27 +2711,27 @@ public class Foo
 {
     void M1()
     {
-    } // [|Id|]
+    }
     void M2()
     {
-    } // [|Id|]
+    }
     /// <summary>
     /// ...
     /// </summary>
     void M3()
     {
-    } // [|Id|]
-    string P1 { get; set; } // [|Id|]
+    }
+    string P1 { get; set; }
     [Obsolete]
     string P2 { get; set; }
-} // [|Id|]
+}
 enum Bar
 {
-    A = 0, // [|Id|]
+    A = 0,
     /// <summary>
     /// ...
     /// </summary>
-    B = 1, // [|Id|]
+    B = 1,
     [Obsolete]
     C = 2,
 }]]></Before>
@@ -2812,7 +2812,7 @@ enum Bar
       <Sample>
         <Before><![CDATA[public void Foo()
 {
-    lock (this) // [|Id|]
+    lock (this)
     {
     }
 }]]></Before>
@@ -2834,7 +2834,7 @@ public void Foo()
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // [|Id|]
+        <Before><![CDATA[public class Foo
 {
 }
 
@@ -2852,7 +2852,7 @@ public class Bar
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // [|Id|]
+        <Before><![CDATA[if (condition)
 {
     if (condition2)
     {
@@ -2887,7 +2887,7 @@ public class Bar
     <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
-        <Before><![CDATA[do // [|Id|]
+        <Before><![CDATA[do
 {
     // ...
 }
@@ -2908,7 +2908,7 @@ while (true);]]></Before>
     <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
-        <Before><![CDATA[for (;;) // [|Id|]
+        <Before><![CDATA[for (;;)
 {
 }]]></Before>
         <After><![CDATA[while (true)
@@ -2926,7 +2926,7 @@ while (true);]]></Before>
     <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
-        <Before><![CDATA[while (true) // [|Id|]
+        <Before><![CDATA[while (true)
 {
 }]]></Before>
         <After><![CDATA[for (;;)
@@ -2948,7 +2948,7 @@ while (true);]]></Before>
 {
     Foo();
 }
-finally // [|Id|]
+finally
 {
 }]]></Before>
         <After><![CDATA[Foo();]]></After>
@@ -2961,7 +2961,7 @@ finally // [|Id|]
 catch (Exception ex)
 {
 }
-finally // [|Id|]
+finally
 {
 }]]></Before>
         <After><![CDATA[try
@@ -3019,7 +3019,7 @@ catch (Exception ex)
 {
     case "a":
         return true;
-    case "b": // [|Id|]
+    case "b":
     default:
         return false;
 }]]></Before>
@@ -3047,7 +3047,7 @@ catch (Exception ex)
         return true;
     case "b":
         return false;
-    default: // [|Id|]
+    default:
         break;
 }]]></Before>
         <After><![CDATA[switch (s)
@@ -3070,7 +3070,7 @@ catch (Exception ex)
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    public Foo() : base() // [|Id|]
+    public Foo() : base()
     {
     }
 }]]></Before>
@@ -3091,7 +3091,7 @@ catch (Exception ex)
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[namespace Foo // [|Id|]
+        <Before><![CDATA[namespace Foo
 {
 }]]></Before>
       </Sample>
@@ -3105,7 +3105,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x) // [|Id|]
+        <Before><![CDATA[if (x)
 {
     return true;
 }
@@ -3116,7 +3116,7 @@ else
         <After><![CDATA[return x;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (x != null) // [|Id|]
+        <Before><![CDATA[if (x != null)
 {
     return x;
 }
@@ -3138,7 +3138,7 @@ else
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    public Foo() // [|Id|]
+    public Foo()
     {
     }
 }]]></Before>
@@ -3159,7 +3159,7 @@ else
 {
     Foo();
 }
-catch (Exception ex) // [|Id|]
+catch (Exception ex)
 {
 }]]></Before>
       </Sample>
@@ -3173,7 +3173,7 @@ catch (Exception ex) // [|Id|]
     <Samples>
       <Sample>
         <Before><![CDATA[interface IFoo
-{ } // [|Id|]]]></Before>
+{ }]]></Before>
         <After><![CDATA[interface IFoo
 {
 }]]></After>
@@ -3215,7 +3215,7 @@ catch (Exception ex) // [|Id|]
         <After><![CDATA[bool x = items.Any();]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (enumerable.Count() != 0) // [|Id|]
+        <Before><![CDATA[if (enumerable.Count() != 0)
 {
 }]]></Before>
         <After><![CDATA[if (enumerable.Any())
@@ -3223,7 +3223,7 @@ catch (Exception ex) // [|Id|]
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (list.Count() == 1) // [|Id|]
+        <Before><![CDATA[if (list.Count() == 1)
 {
 }]]></Before>
         <After><![CDATA[if (list.Count == 1)
@@ -3233,7 +3233,7 @@ catch (Exception ex) // [|Id|]
       <Sample>
         <Before><![CDATA[var stack = new Stack<object>();
 // ...
-object x = stack.First(); // [|Id|]]]></Before>
+object x = stack.First();]]></Before>
         <After><![CDATA[var stack = new Stack<object>();
 // ...
 object x = stack.Peek();]]></After>
@@ -3241,7 +3241,7 @@ object x = stack.Peek();]]></After>
       <Sample>
         <Before><![CDATA[var queue = new Queue<object>();
 // ...
-object x = queue.First(); // [|Id|]]]></Before>
+object x = queue.First();]]></Before>
         <After><![CDATA[var queue = new Queue<object>();
 // ...
 object x = queue.Peek();]]></After>
@@ -3306,7 +3306,7 @@ object x = queue.Peek();]]></After>
       <Sample>
         <Before><![CDATA[public void Foo()
 {
-    throw new NotImplementedException(); // [|Id|]
+    throw new NotImplementedException();
 }]]></Before>
       </Sample>
     </Samples>
@@ -3319,7 +3319,7 @@ object x = queue.Peek();]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (list.Any()) // [|Id|]
+        <Before><![CDATA[if (list.Any())
 {
 }]]></Before>
         <After><![CDATA[if (list.Count > 0)
@@ -3349,7 +3349,7 @@ private string s2;]]></After>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (list.Count() == 1) // [|Id|]
+        <Before><![CDATA[if (list.Count() == 1)
 {
 }]]></Before>
         <After><![CDATA[if (list.Count == 1)
@@ -3365,7 +3365,7 @@ private string s2;]]></After>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (enumerable.Count() == 0) // [|Id|]
+        <Before><![CDATA[if (enumerable.Count() == 0)
 {
 }]]></Before>
         <After><![CDATA[if (!enumerable.Any())
@@ -3396,7 +3396,7 @@ private string s2;]]></After>
       <Sample>
         <Before><![CDATA[private string _foo;
 
-public string Foo // [|Id|]
+public string Foo
 {
     get { return _foo; }
     set { _foo = value; }
@@ -3451,7 +3451,7 @@ public string Foo // [|Id|]
       <Sample>
         <Before><![CDATA[public async Task FooAsync()
 {
-    await GetValueAsync(); // [|Id|]
+    await GetValueAsync();
 }]]></Before>
         <After><![CDATA[public async Task FooAsync()
 {
@@ -3474,7 +3474,7 @@ public string Foo // [|Id|]
           <Sample>
             <Before><![CDATA[public async Task FooAsync()
 {
-    await GetValueAsync().ConfigureAwait(false); // [|Id|]
+    await GetValueAsync().ConfigureAwait(false);
 }]]></Before>
             <After><![CDATA[public async Task FooAsync()
 {
@@ -3493,7 +3493,7 @@ public string Foo // [|Id|]
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[#region Region // [|Id|]
+        <Before><![CDATA[#region Region
             
 #endregion]]></Before>
       </Sample>
@@ -3508,7 +3508,7 @@ public string Foo // [|Id|]
       <Sample>
         <Before><![CDATA[do
 {
-    Foo(); // [|Id|]
+    Foo();
 } while (x);]]></Before>
         <After><![CDATA[do
 {
@@ -3533,7 +3533,7 @@ public string Foo // [|Id|]
       <Sample>
         <Before><![CDATA[namespace Foo
 {
-    using System; // [|Id|]
+    using System;
 }]]></Before>
         <After><![CDATA[using System;
 
@@ -3610,7 +3610,7 @@ namespace Foo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (null == x) // [|Id|]
+        <Before><![CDATA[if (null == x)
 { 
 }]]></Before>
         <After><![CDATA[if (x == null)
@@ -3629,7 +3629,7 @@ namespace Foo
       <Sample>
         <Before><![CDATA[switch (s)
 {
-    default: // [|Id|]
+    default:
     case "a":
     case "b":
         break;
@@ -3652,7 +3652,7 @@ namespace Foo
     <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
-        <Before><![CDATA[/// <summary> // [|Id|]
+        <Before><![CDATA[/// <summary>
 /// ...
 /// </summary>
 public void Foo()
@@ -3673,7 +3673,7 @@ public void Foo()
     <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
-        <Before><![CDATA[/// <summary>...</summary> // [|Id|]
+        <Before><![CDATA[/// <summary>...</summary>
 public void Foo()
 {
 }]]></Before>
@@ -3693,7 +3693,7 @@ public void Foo()
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // [|Id|]
+        <Before><![CDATA[public class Foo
 {
     private static string _f;
 
@@ -3719,7 +3719,7 @@ public void Foo()
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // [|Id|]
+        <Before><![CDATA[if (condition)
 {
     f = true;
 }
@@ -3730,7 +3730,7 @@ else
         <After><![CDATA[f = condition;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (x != null) // [|Id|]
+        <Before><![CDATA[if (x != null)
 {
     y = x;
 }
@@ -3804,7 +3804,7 @@ else
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    ~Foo() // [|Id|]
+    ~Foo()
     {
     }
 }]]></Before>
@@ -3822,7 +3822,7 @@ else
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[foreach (char ch in s.ToCharArray()) // [|Id|]
+        <Before><![CDATA[foreach (char ch in s.ToCharArray())
 {
 }]]></Before>
         <After><![CDATA[foreach (char ch in s)
@@ -3842,7 +3842,7 @@ else
 {
 }
 
-public partial class Foo // [|Id|]
+public partial class Foo
 {
 }]]></Before>
         <After><![CDATA[public static partial class Foo
@@ -3875,7 +3875,7 @@ public static partial class Foo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // [|Id|]
+        <Before><![CDATA[public class Foo
 {
 }]]></Before>
         <After><![CDATA[namespace Namespace
@@ -3897,7 +3897,7 @@ public static partial class Foo
         <Before><![CDATA[switch (s)
 {
     case "a":
-        Foo(); // [|Id|]
+        Foo();
         break;
 }]]></Before>
         <After><![CDATA[switch (s)
@@ -3931,7 +3931,7 @@ public static partial class Foo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (s == null || s.Length == 0) // [|Id|]
+        <Before><![CDATA[if (s == null || s.Length == 0)
 {
 }]]></Before>
         <After><![CDATA[if (string.IsNullOrEmpty(s))
@@ -3980,7 +3980,7 @@ public static partial class Foo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = "a"; // [|Id|]
+        <Before><![CDATA[string s = "a";
 string s2 = s + "b";]]></Before>
         <After><![CDATA[const string s = "a";
 string s2 = s + "b";]]></After>
@@ -4036,7 +4036,7 @@ string s2 = s + "b";]]></After>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x || y && z) // [|Id|]
+        <Before><![CDATA[if (x || y && z)
 {
 }]]></Before>
         <After><![CDATA[if (x || (y && z))
@@ -4057,7 +4057,7 @@ string s2 = s + "b";]]></After>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[IEnumerable<object> items = GetValues(); // [|Id|]
+        <Before><![CDATA[IEnumerable<object> items = GetValues();
 foreach (object item in items)
 {
 }]]></Before>
@@ -4082,7 +4082,7 @@ foreach (object item in items)
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-    Foo(); // [|Id|]
+    Foo();
 else
     Bar();]]></Before>
         <After><![CDATA[if (condition)
@@ -4104,7 +4104,7 @@ else
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s; // [|Id|]
+        <Before><![CDATA[string s;
 s = "";]]></Before>
         <After><![CDATA[string s = "";]]></After>
       </Sample>
@@ -4117,7 +4117,7 @@ s = "";]]></Before>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = GetValue(); // [|Id|]
+        <Before><![CDATA[string s = GetValue();
 
 if (s == null)
 {
@@ -4168,7 +4168,7 @@ if (s == null)
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    public override string ToString() // [|Id|]
+    public override string ToString()
     {
         return base.ToString();
     }
@@ -4188,7 +4188,7 @@ if (s == null)
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[using (streamReader) // [|Id|]
+        <Before><![CDATA[using (streamReader)
 {
     // ...
 
@@ -4213,7 +4213,7 @@ if (s == null)
 {
     // ...
 
-    return false; // [|Id|]
+    return false;
 }
 
 return false;]]></Before>
@@ -4229,7 +4229,7 @@ return false;]]></After>
 {
     // ...
 
-    return; // [|Id|]
+    return;
 }]]></Before>
         <After><![CDATA[public void Foo()
 {
@@ -4241,7 +4241,7 @@ return false;]]></After>
 {
     /// ...
 
-    continue; // [|Id|]
+    continue;
 }]]></Before>
         <After><![CDATA[]]></After>
       </Sample>
@@ -4255,7 +4255,7 @@ return false;]]></After>
     <Samples>
       <Sample>
         <Before><![CDATA[[Flags]
-public enum Foo // [|Id|]
+public enum Foo
 {
     A = 1,
     B = 2
@@ -4281,7 +4281,7 @@ public enum Foo
         <Before><![CDATA[switch (s)
 {
     case "a":
-        break; // [|Id|]
+        break;
     case "b":
         break;
 }]]></Before>
@@ -4307,7 +4307,7 @@ public enum Foo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[/// <summary> // [|Id|]
+        <Before><![CDATA[/// <summary>
 /// 
 /// </summary>
 public void Foo()
@@ -4323,7 +4323,7 @@ public void Foo()
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[/// <param name="parameter"></param> // [|Id|]
+        <Before><![CDATA[/// <param name="parameter"></param>
 public void Foo(object parameter)
 {
 }]]></Before>
@@ -4351,7 +4351,7 @@ public void Foo(object parameter)
 public void Foo(object parameter)
 {
     if (parameter == null)
-        throw new ArgumentNullException(nameof(parameter)); // [|Id|]
+        throw new ArgumentNullException(nameof(parameter));
 }]]></Before>
         <After><![CDATA[/// <summary>
 /// ...
@@ -4376,7 +4376,7 @@ public void Foo(object parameter)
         <Before><![CDATA[/// <summary>
 /// ...
 /// </summary>
-public void Foo(object parameter) // [|Id|]
+public void Foo(object parameter)
 {
 }]]></Before>
         <After><![CDATA[/// <summary>
@@ -4400,7 +4400,7 @@ public void Foo(object parameter)
 /// ...
 /// </summary>
 /// <typeparam name="T1"></typeparam>
-public class Foo<T1, T2> // [|Id|]
+public class Foo<T1, T2>
 {
 }]]></Before>
         <After><![CDATA[/// <summary>
@@ -4443,7 +4443,7 @@ public class Foo<T1, T2>
       <Sample>
         <Before><![CDATA[string s = null;
 
-string s2 = s as string; // [|Id|]]]></Before>
+string s2 = s as string;]]></Before>
         <After><![CDATA[string s2 = s;]]></After>
       </Sample>
     </Samples>
@@ -4456,7 +4456,7 @@ string s2 = s as string; // [|Id|]]]></Before>
     <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (s != null && s.StartsWith("a")) // [|Id|]
+        <Before><![CDATA[if (s != null && s.StartsWith("a"))
 {
 }]]></Before>
         <After><![CDATA[if (s?.StartsWith("a") == true)
@@ -4464,7 +4464,7 @@ string s2 = s as string; // [|Id|]]]></Before>
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (dic != null && dic[0].StartsWith("a")) // [|Id|]
+        <Before><![CDATA[if (dic != null && dic[0].StartsWith("a"))
 {
 }]]></Before>
         <After><![CDATA[if (dic?[0].StartsWith("a") == true)
@@ -4472,7 +4472,7 @@ string s2 = s as string; // [|Id|]]]></Before>
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (x != null) // [|Id|]
+        <Before><![CDATA[if (x != null)
     x.Foo();]]></Before>
         <After><![CDATA[x?.Foo();]]></After>
       </Sample>
@@ -4522,7 +4522,7 @@ string s2 = s as string; // [|Id|]]]></Before>
       <Sample>
         <Before><![CDATA[var b = new Base();
 
-((Foo)b).Bar(); // [|Id|]]]></Before>
+((Foo)b).Bar();]]></Before>
         <After><![CDATA[b.Bar();]]></After>
       </Sample>
       <Sample>
@@ -4546,7 +4546,7 @@ string s2 = s as string; // [|Id|]]]></Before>
       <Sample>
         <Before><![CDATA[if (x)
 {
-} // [|Id|]
+}
 Foo();]]></Before>
         <After><![CDATA[if (x)
 {
@@ -4564,7 +4564,7 @@ Foo();]]></After>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public enum Foo // [|Id|]
+        <Before><![CDATA[public enum Foo
 {
     D = 4,
     B = 2,
@@ -4588,7 +4588,7 @@ Foo();]]></After>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x.ToLower() == y.ToLower()) // [|Id|]
+        <Before><![CDATA[if (x.ToLower() == y.ToLower())
 {
 }]]></Before>
         <After><![CDATA[if (string.Equals(x, y, StringComparison.OrdinalIgnoreCase))
@@ -4604,7 +4604,7 @@ Foo();]]></After>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (s == "") // [|Id|]
+        <Before><![CDATA[if (s == "")
 {
 }]]></Before>
         <After><![CDATA[if (s?.Length == 0)
@@ -4635,7 +4635,7 @@ public enum Foo
     B = 2,
     C = 4,
     D = 8,
-    X = 17 // [|Id|]
+    X = 17
 }]]></Before>
       </Sample>
     </Samples>
@@ -4649,7 +4649,7 @@ public enum Foo
       <Sample>
         <Before><![CDATA[public class Foo<T>
 {
-    public static void Bar() // [|Id|]
+    public static void Bar()
     {
     }
 }]]></Before>
@@ -4665,7 +4665,7 @@ public enum Foo
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    public event FooEventHandler EventName; // [|Id|]
+    public event FooEventHandler EventName;
 }
 
 public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Before>
@@ -4685,7 +4685,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
       <Sample>
         <Before><![CDATA[public abstract class Foo
 {
-    public Foo() // [|Id|]
+    public Foo()
     {
     }
 }]]></Before>
@@ -4705,7 +4705,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public enum Foo // [|Id|]
+        <Before><![CDATA[public enum Foo
 {
     A,
     B,
@@ -4740,7 +4740,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[public bool Bar(object parameter) // [|Id|]
+        <Before><![CDATA[public bool Bar(object parameter)
 {
     return false;
 }]]></Before>
@@ -4759,7 +4759,7 @@ Unused parameter is not reported when its name consists of underscore(s).</Remar
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[public bool Bar<T>() // [|Id|]
+        <Before><![CDATA[public bool Bar<T>()
 {
     return false
 }]]></Before>
@@ -4777,7 +4777,7 @@ Unused parameter is not reported when its name consists of underscore(s).</Remar
 {
     var x = default(T1);
 
-    if (x == null) // [|Id|]
+    if (x == null)
     {
     }
 }]]></Before>
@@ -4799,11 +4799,11 @@ IntPtr y = IntPtr.Zero
 
 // ...
 
-if (x == null) // [|Id|]
+if (x == null)
 {
 }
 
-if (y == null) // [|Id|]
+if (y == null)
 {
 }]]></Before>
         <After><![CDATA[if (x == 0)
@@ -4837,7 +4837,7 @@ if (y == default)
 
 abstract class Foo : IFoo
 {
-    public abstract string Bar(object value); // [|Id|]
+    public abstract string Bar(object value);
 }]]></Before>
         <After><![CDATA[interface IFoo
 {
@@ -4860,7 +4860,7 @@ abstract class Foo : IFoo
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    private int _f; // [|Id|]
+    private int _f;
 
     public Foo()
     {
@@ -4894,7 +4894,7 @@ abstract class Foo : IFoo
       <Sample>
         <Before><![CDATA[public object Foo()
 {
-    if (_foo == null) // [|Id|]
+    if (_foo == null)
     {
         _foo = Initialize();
     }
@@ -4915,7 +4915,7 @@ abstract class Foo : IFoo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x as string != null) // [|Id|]
+        <Before><![CDATA[if (x as string != null)
 {
 }]]></Before>
         <After><![CDATA[if (x is string)
@@ -4931,7 +4931,7 @@ abstract class Foo : IFoo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x != null) // [|Id|]
+        <Before><![CDATA[if (x != null)
 {
     z = x;
 }
@@ -4951,7 +4951,7 @@ else
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public static async Task<object> FooAsync() // [|Id|]
+        <Before><![CDATA[public static async Task<object> FooAsync()
 {
     return await GetAsync().ConfigureAwait(false);
 }]]></Before>
@@ -4971,7 +4971,7 @@ else
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[public static bool Bar(this Foo foo, object parameter) // [|Id|]
+        <Before><![CDATA[public static bool Bar(this Foo foo, object parameter)
 {
     return parameter != null;
 }]]></Before>
@@ -4999,7 +4999,7 @@ else
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[foreach (string item in items) // [|Id|]
+        <Before><![CDATA[foreach (string item in items)
 {
 }]]></Before>
         <After><![CDATA[foreach (var item in items)
@@ -5027,7 +5027,7 @@ else
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // [|Id|]
+        <Before><![CDATA[if (condition)
 {
     x = 1;
 }
@@ -5059,7 +5059,7 @@ else
 
 // ...
 
-if (items == null) // [|Id|]
+if (items == null)
 {
     items = new List<object>();
 }
@@ -5076,7 +5076,7 @@ items.Add(x);]]></Before>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[// Represents foo. // [|Id|]
+        <Before><![CDATA[// Represents foo.
 public class Foo
 {
 }]]></Before>
@@ -5105,7 +5105,7 @@ public string Value { get; }]]></After>
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo<T> : List<T>, IEnumerable<T> // [|Id|]
+        <Before><![CDATA[public class Foo<T> : List<T>, IEnumerable<T>
 {
 }]]></Before>
         <After><![CDATA[public class Foo<T> : List<T>
@@ -5122,7 +5122,7 @@ public string Value { get; }]]></After>
     <Samples>
       <Sample>
         <Before><![CDATA[var dic = new Dictionary<int, string>()
-{ // [|Id|]
+{
     { 0, "0" }
 };]]></Before>
         <After><![CDATA[var dic = new Dictionary<int, string>() { { 0, "0" } };]]></After>
@@ -5137,7 +5137,7 @@ public string Value { get; }]]></After>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[var y = (x) ? // [|Id|]
+        <Before><![CDATA[var y = (x) ?
 Foo() :
 Bar();]]></Before>
         <After><![CDATA[var y = (x)
@@ -5170,7 +5170,7 @@ Bar();]]></Before>
       <Sample>
         <Before><![CDATA[private void Bar()
 {
-    bool isMatch = Regex.IsMatch("abc", @"\w"); // [|Id|]
+    bool isMatch = Regex.IsMatch("abc", @"\w");
 }]]></Before>
         <After><![CDATA[private readonly Regex _regex = new Regex(@"\w");
 
@@ -5218,7 +5218,7 @@ private void Bar()
 public static void Foo()
 {
 }
-#endregion // [|Id|]]]></Before>
+#endregion]]></Before>
         <After><![CDATA[#region Methods
 public static void Foo()
 {
@@ -5253,7 +5253,7 @@ public enum Foo
     A = 1,
     B = 2,
     C = 4,
-    ABC = 7 // [|Id|]
+    ABC = 7
 }]]></Before>
         <After><![CDATA[[Flags]
 public enum Foo
@@ -5296,7 +5296,7 @@ public enum Foo
 
 public class Derived : Base
 {
-    public override void Foo(object[] values) // [|Id|]
+    public override void Foo(object[] values)
     {
     }
 }]]></Before>
@@ -5316,7 +5316,7 @@ public class Derived : Base
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class FooException : Exception // [|Id|]
+        <Before><![CDATA[public class FooException : Exception
 {
 }]]></Before>
         <After><![CDATA[public class FooException : Exception
@@ -5343,7 +5343,7 @@ public class Derived : Base
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if ((x && !y) || (!x && y)) // [|Id|]
+        <Before><![CDATA[if ((x && !y) || (!x && y))
 {
 }]]></Before>
         <After><![CDATA[if (x ^ y)
@@ -5389,7 +5389,7 @@ int i = 0;
 
 // ...
 
-string x = s + i; // [|Id|]]]></Before>
+string x = s + i;]]></Before>
         <After><![CDATA[string x = s + i.ToString();]]></After>
       </Sample>
     </Samples>
@@ -5405,7 +5405,7 @@ string x = s + i; // [|Id|]]]></Before>
 
 // ...
 
-if (x.HasValue && x.Value) // [|Id|]
+if (x.HasValue && x.Value)
 {
 }]]></Before>
         <After><![CDATA[if (x == true)
@@ -5418,7 +5418,7 @@ bool y = false;
 
 // ...
 
-if (x != null && x.Value == y) // [|Id|]
+if (x != null && x.Value == y)
 {
 }]]></Before>
         <After><![CDATA[if (x == y)
@@ -5449,7 +5449,7 @@ if (x != null && x.Value == y) // [|Id|]
       <Sample>
         <Before><![CDATA[sb = new StringBuilder();
 
-sb.Append("a"); // [|Id|]
+sb.Append("a");
 sb.Append("b");
 sb.Append("c");]]></Before>
         <After><![CDATA[sb = new StringBuilder();
@@ -5479,7 +5479,7 @@ sb.Append("a")
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class FooAttribute : Attribute // [|Id|]
+        <Before><![CDATA[public class FooAttribute : Attribute
 {
 }]]></Before>
         <After><![CDATA[[AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = false)]
@@ -5511,7 +5511,7 @@ public class FooAttribute : Attribute
         <Before><![CDATA[using (var sm = new StreamReader(
     stream: default(Stream),
     encoding: Encoding.UTF8,
-    bufferSize: 0, // [|Id|]
+    bufferSize: 0,
     leaveOpen: false,
     detectEncodingFromByteOrderMarks: true))
 {
@@ -5539,7 +5539,7 @@ public class FooAttribute : Attribute
 
 // ...
 
-        string s = (x != null) ? x.ToString() : null; // [|Id|]]]></Before>
+        string s = (x != null) ? x.ToString() : null;]]></Before>
         <After><![CDATA[string s = x?.ToString();]]></After>
       </Sample>
       <Sample>
@@ -5547,7 +5547,7 @@ public class FooAttribute : Attribute
 
 // ...
 
-int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
+int i = (x != null) ? x.Value.GetHashCode() : 0;]]></Before>
         <After><![CDATA[int i = x?.GetHashCode() ?? 0;]]></After>
       </Sample>
     </Samples>
@@ -5590,7 +5590,7 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition1) // [|Id|]
+        <Before><![CDATA[if (condition1)
 {
     Foo1();
 
@@ -5635,7 +5635,7 @@ Foo3();]]></After>
     <Samples>
       <Sample>
         <Before><![CDATA[public class Foo<T1, T2, T3>
-    where T3 : class // [|Id|]
+    where T3 : class
     where T2 : class
     where T1 : class
 {
@@ -5658,7 +5658,7 @@ Foo3();]]></After>
       <Sample>
         <Before><![CDATA[Task<object> GetAsync()
 {
-    return null; // [|Id|]
+    return null;
 }]]></Before>
         <After><![CDATA[Task<object> GetAsync()
 {
@@ -5668,7 +5668,7 @@ Foo3();]]></After>
       <Sample>
         <Before><![CDATA[Task<object> GetAsync()
 {
-    return _foo?.GetAsync(); // [|Id|]
+    return _foo?.GetAsync();
 }]]></Before>
         <After><![CDATA[Task<object> GetAsync()
 {
@@ -5697,7 +5697,7 @@ Foo3();]]></After>
 {
     return WhenTrue();
 }
-else // [|Id|]
+else
 {
     return WhenFalse();
 }]]></Before>
@@ -5718,7 +5718,7 @@ return WhenFalse();]]></After>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string x; // [|Id|]
+        <Before><![CDATA[string x;
 x = "";]]></Before>
         <After><![CDATA[string x = "";]]></After>
       </Sample>
@@ -5727,7 +5727,7 @@ x = "";]]></Before>
 {
     // ...
 
-    x = false; // [|Id|]
+    x = false;
     return x;
 }]]></Before>
         <After><![CDATA[bool M()
@@ -5788,7 +5788,7 @@ x = "";]]></Before>
 
 // ...
 
-if (i >= 0) // [|Id|]
+if (i >= 0)
 {
 }]]></Before>
       </Sample>
@@ -5798,7 +5798,7 @@ if (i >= 0) // [|Id|]
 // ...
 
 
-if (items.Count < 0) // [|Id|]
+if (items.Count < 0)
 {
 }]]></Before>
       </Sample>
@@ -5816,17 +5816,17 @@ if (items.Count < 0) // [|Id|]
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[public unsafe class Foo // [|Id|]
+        <Before><![CDATA[public unsafe class Foo
 {
     public Foo()
     {
-        unsafe // [|Id|]
+        unsafe
         {
             Bar();
         }
     }
 
-    private unsafe void Bar() // [|Id|]
+    private unsafe void Bar()
     {
     }
 }]]></Before>
@@ -5864,7 +5864,7 @@ if (items.Count < 0) // [|Id|]
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x) // [|Id|]
+        <Before><![CDATA[if (x)
 {
 }
 else
@@ -5879,7 +5879,7 @@ else
       <Sample>
         <Before><![CDATA[while (true)
 {
-  if (x)  // [|Id|]
+  if (x)
   {
     M();
   }
@@ -5896,7 +5896,7 @@ else
       <Sample>
         <Before><![CDATA[while (true)
 {
-  if (x)  // [|Id|]
+  if (x)
   {
     break;
   }
@@ -5914,7 +5914,7 @@ else
 {
   M();
 
-  if (x)  // [|Id|]
+  if (x)
   {
     break;
   }
@@ -5927,7 +5927,7 @@ else
 } while (!x);]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (x) // [|Id|]
+        <Before><![CDATA[if (x)
 {
   do
   {
@@ -5948,7 +5948,7 @@ else
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (enumerable.Count() > x) // [|Id|]
+        <Before><![CDATA[if (enumerable.Count() > x)
 {
 }]]></Before>
         <After><![CDATA[if (enumerable.Skip(x).Any())
@@ -5965,7 +5965,7 @@ else
     <MinLanguageVersion>7.0</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x is T && Foo((T)x)) // [|Id|]
+        <Before><![CDATA[if (x is T && Foo((T)x))
 {
 }]]></Before>
         <After><![CDATA[if (x is T y && Foo(y))
@@ -5982,7 +5982,7 @@ else
     <MinLanguageVersion>7.0</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[var y = x as Foo; // [|Id|]
+        <Before><![CDATA[var y = x as Foo;
 
 if (y == null)
 {
@@ -6017,7 +6017,7 @@ if (y == null)
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // [|Id|]
+        <Before><![CDATA[public class Foo
 {
 }]]></Before>
         <After><![CDATA[[DebuggerDisplay("{DebuggerDisplay,nq}")]
@@ -6042,7 +6042,7 @@ public class Foo
       <Sample>
         <Before><![CDATA[public static class FooExtensions
 {
-    public static string Bar(Foo foo) // [|Id|]
+    public static string Bar(Foo foo)
     {
     }
 }]]></Before>
@@ -6063,7 +6063,7 @@ public class Foo
     <Summary>A class that has only private constructors should be marked as sealed.</Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // [|Id|]
+        <Before><![CDATA[public class Foo
 {
     private Foo()
     {
@@ -6086,9 +6086,9 @@ public class Foo
     <Samples>
       <Sample>
         <Before><![CDATA[/// <summary>
-/// summary1 // [|Id|]
+/// summary1
 /// 
-/// summary2 // [|Id|]
+/// summary2
 /// summary3
 /// </summary>
 class Foo
@@ -6125,7 +6125,7 @@ class Foo
     if (items == null)
         throw new ArgumentNullException(nameof(items));
 
-    foreach (object item in items) // [|Id|]
+    foreach (object item in items)
         yield return item;
 }]]></Before>
         <After><![CDATA[IEnumerable<object> Foo(IEnumerable<object> items)
@@ -6156,7 +6156,7 @@ class Foo
         <Before><![CDATA[/// <summary>
 /// 
 /// </summary>
-/// <returns></returns> // [|Id|]
+/// <returns></returns>
 public string Foo()
 {
     return null;
@@ -6182,7 +6182,7 @@ public string Foo()
       <Sample>
         <Before><![CDATA[Task<object> FooAsync()
 {
-    using (var service = CreateService()) // [|Id|]
+    using (var service = CreateService())
     {
         return service.GetAsync();
     }
@@ -6211,7 +6211,7 @@ public string Foo()
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[using (var en = items.GetEnumerator()) // [|Id|]
+        <Before><![CDATA[using (var en = items.GetEnumerator())
 {
     while (en.MoveNext())
     {
@@ -6235,7 +6235,7 @@ public string Foo()
       <Sample>
         <Before><![CDATA[readonly struct C
 {
-    void M(C c) // [|Id|]
+    void M(C c)
     {
     }
 }]]></Before>
@@ -6258,7 +6258,7 @@ public string Foo()
         <Before><![CDATA[class C
 {
     /// <summary></summary>
-    /// <param name="p3"></param> // [|Id|]
+    /// <param name="p3"></param>
     /// <param name="p2"></param>
     /// <param name="p1"></param>
     void M(object p1, object p2, object p3)
@@ -6305,7 +6305,7 @@ public string Foo()
 {
     A = 1,
     B = 2,
-    C = 2, // [|Id|]
+    C = 2,
 }]]></Before>
         <After><![CDATA[enum E
 {
@@ -6340,7 +6340,7 @@ public string Foo()
         <After><![CDATA[Debug.Fail("message");]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (dic.ContainsKey(key)) // [|Id|]
+        <Before><![CDATA[if (dic.ContainsKey(key))
 {
   dic[key] = value;
 }
@@ -6365,7 +6365,7 @@ else
 }
 catch (Exception ex)
 {
-    if (!(ex is InvalidOperationException)) // [|Id|]
+    if (!(ex is InvalidOperationException))
     {
         throw;
     }
@@ -6410,7 +6410,7 @@ So the expression is considered as the one that can throw an exception if it con
     <Samples>
       <Sample>
         <Before><![CDATA[[Flags]
-enum Foo // [|Id|]
+enum Foo
 {
     None = 0,
     Alpha = 1,
@@ -6460,7 +6460,7 @@ else
     <Samples>
       <Sample>
         <Before><![CDATA[int i = 0;
-while (x) // [|Id|]
+while (x)
 {
     M();
     i++;
@@ -6501,7 +6501,7 @@ public class C
 {
 }
 
-public abstract class Comparable : IComparable<C> // [|Id|]
+public abstract class Comparable : IComparable<C>
 {
     public abstract int CompareTo(C other);
 }]]></Before>
@@ -6541,7 +6541,7 @@ public class C
 {
 }
 
-public abstract class Comparer : IComparer<C> // [|Id|]
+public abstract class Comparer : IComparer<C>
 {
     public abstract int Compare(C x, C y);
 }]]></Before>
@@ -6598,7 +6598,7 @@ public class C
 {
 }
 
-public abstract class EqualityComparer : IEqualityComparer<C> // [|Id|]
+public abstract class EqualityComparer : IEqualityComparer<C>
 {
     public abstract bool Equals(C x, C y);
 
@@ -6667,7 +6667,7 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
       <Sample>
         <Before><![CDATA[struct C
 {
-    void M(in C c) // [|Id|]
+    void M(in C c)
     {
     }
 }]]></Before>
@@ -6723,9 +6723,9 @@ public class C
     <Summary>This analyzer is similar to [IDE0034](https://docs.microsoft.com/visualstudio/ide/common-quick-actions#remove-type-from-default-value-expression) but there are some differences. For example this analyzer does not simplify 'default' expression passed as an argument expression.</Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[Foo M(Foo foo = default(Foo)) // [|Id|]
+        <Before><![CDATA[Foo M(Foo foo = default(Foo))
 {
-    return default(Foo); // [|Id|]
+    return default(Foo);
 }]]></Before>
         <After><![CDATA[Foo M(Foo foo = default)
 {
@@ -6787,7 +6787,7 @@ public class C
     <Samples>
       <Sample>
         <Before><![CDATA[/// <summary>
-/// <code>null</code> // [|Id|]
+/// <code>null</code>
 /// </summary>
 void M()
 {
@@ -6801,7 +6801,7 @@ void M()
       </Sample>
       <Sample>
         <Before><![CDATA[/// <summary>
-/// <c> // [|Id|]
+/// <c>
 /// if (x == null)
 ///     x = new object();
 /// </c>
@@ -6949,7 +6949,7 @@ void M()
     <Summary>Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.</Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (arg is null) // [|Id|]
+        <Before><![CDATA[if (arg is null)
 {
     throw new ArgumentNullException(nameof(arg));
 }]]></Before>
@@ -6974,7 +6974,7 @@ void M()
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (syntaxNode.IsKind(SyntaxKind.IdentifierName)) // [|Id|]
+        <Before><![CDATA[if (syntaxNode.IsKind(SyntaxKind.IdentifierName))
 {
     var identifierName = (IdentifierNameSyntax)syntaxNode;
 }]]></Before>
@@ -6983,7 +6983,7 @@ void M()
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (!syntaxNode.IsKind(SyntaxKind.IdentifierName)) // [|Id|]
+        <Before><![CDATA[if (!syntaxNode.IsKind(SyntaxKind.IdentifierName))
 {
     return;
 }
@@ -7120,7 +7120,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[[DiagnosticAnalyzer("C")] // [|Id|]
+        <Before><![CDATA[[DiagnosticAnalyzer("C")]
 class FooDiagnosticAnalyzer : DiagnosticAnalyzer
 {
 }]]></Before>
@@ -7138,7 +7138,7 @@ class FooDiagnosticAnalyzer : DiagnosticAnalyzer
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[[ExportCodeRefactoringProvider(LanguageNames.CSharp)] // [|Id|]
+        <Before><![CDATA[[ExportCodeRefactoringProvider(LanguageNames.CSharp)]
 class FooCodeRefactoringProvider : CodeRefactoringProvider
 {
 }]]></Before>
@@ -7156,7 +7156,7 @@ class FooCodeRefactoringProvider : CodeRefactoringProvider
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[[ExportCodeFixProvider(LanguageNames.CSharp)] // [|Id|]
+        <Before><![CDATA[[ExportCodeFixProvider(LanguageNames.CSharp)]
 class FooCodeFixProvider : CodeFixProvider
 {
 }]]></Before>

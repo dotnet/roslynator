@@ -104,6 +104,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Metadata", "Metadata", "{CE
 		ConfigOptions.xml = ConfigOptions.xml
 		Diagnostics.xml = Diagnostics.xml
 		Refactorings.xml = Refactorings.xml
+		Template.Analyzers.xml = Template.Analyzers.xml
+		Template.Refactorings.xml = Template.Refactorings.xml
 	EndProjectSection
 EndProject
 Global
