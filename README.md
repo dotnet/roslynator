@@ -27,7 +27,7 @@ Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://g
 
 Contributions are welcome! If you are interested please see:
 - documentation for [developers](https://josefpihrt.github.io/docs/roslynator/developers)
-- available [issues](https://github.com/JosefPihrt/Roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs).
+- available [issues](https://github.com/JosefPihrt/Roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs)
 
 NOTE: Bugfixes or small improvements can be implemented right away. Larger task like adding new analyzer or refactoring should be discussed first.
 
@@ -61,9 +61,3 @@ See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for furthe
 | [Roslynator.Workspaces.Core](https://www.nuget.org/packages/Roslynator.Workspaces.Core) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.Workspaces.Core.svg)](https://www.nuget.org/packages/Roslynator.Workspaces.Core) | [Microsoft.CodeAnalysis.Workspaces.Common](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Workspaces.Common) |
 | [Roslynator.CSharp](https://www.nuget.org/packages/Roslynator.CSharp) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.svg)](https://www.nuget.org/packages/Roslynator.CSharp) | [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) |
 | [Roslynator.CSharp.Workspaces](https://www.nuget.org/packages/Roslynator.CSharp.Workspaces) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.Workspaces.svg)](https://www.nuget.org/packages/Roslynator.CSharp.Workspaces) | [Microsoft.CodeAnalysis.CSharp.Workspaces](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces) |
-
-## Other Projects
-
-- [Snippetica](https://github.com/JosefPihrt/Snippetica) - Collection of snippets for C++, C#, HTML, JSON, Markdown, VB, XAML and XML
-- [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown) - Markdown framework for .NET
-- [Regexator](http://pihrt.net/Regexator) - Desktop application for development of .NET regular expressions
