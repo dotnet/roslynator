@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
     <PackageId>Roslynator.CSharp.Workspaces</PackageId>
     <PackageVersion>$(RoslynatorCorePackageVersion)</PackageVersion>
     <Company></Company>

@@ -104,7 +104,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: nuget_packages
-          path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.nupkg
+          path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.*nupkg
 
   build_vs_extension:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
@@ -200,7 +200,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: nuget_packages
-          path: src/CommandLine/bin/Release/*.nupkg
+          path: src/CommandLine/bin/Release/*.*nupkg
 
   build_framework_cli:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'cli-v')
@@ -222,7 +222,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: nuget_packages
-          path: src/CommandLine/bin/Release/*.nupkg
+          path: src/CommandLine/bin/Release/*.*nupkg
 
   publish_nuget_packages:
     needs: [ build_core_and_testing, build_analyzers, build_core_cli, build_framework_cli ]

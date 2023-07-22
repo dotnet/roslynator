@@ -12,10 +12,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>1591</WarningsNotAsErrors>
     <DocumentationFile>bin\$(Configuration)\netstandard2.0\Roslynator.Testing.CSharp.Xunit.xml</DocumentationFile>
-    <RoslynatorIncludeSymbols>true</RoslynatorIncludeSymbols>
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
     <PackageId>Roslynator.Testing.CSharp.Xunit</PackageId>
     <PackageVersion>$(RoslynatorTestingPackageVersion)</PackageVersion>
     <Company></Company>

@@ -15,10 +15,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>1591</WarningsNotAsErrors>
     <DocumentationFile>bin\Release\netstandard1.3\Roslynator.Testing.VisualBasic.xml</DocumentationFile>
-    <RoslynatorIncludeSymbols>true</RoslynatorIncludeSymbols>
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
     <PackageId>Roslynator.Testing.VisualBasic</PackageId>
     <PackageVersion>$(RoslynatorTestingPackageVersion)</PackageVersion>
     <Company></Company>
