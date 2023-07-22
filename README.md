@@ -29,7 +29,7 @@ Contributions are welcome! If you are interested please see:
 - documentation for [developers](https://josefpihrt.github.io/docs/roslynator/developers)
 - available [issues](https://github.com/JosefPihrt/Roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs)
 
-NOTE: Bugfixes or small improvements can be implemented right away. Larger task like adding new analyzer or refactoring should be discussed first.
+TIP: Bugfixes or small improvements can be implemented right away. Larger task like adding new analyzer or refactoring should be discussed first.
 
 ## Command Line Tool
 
