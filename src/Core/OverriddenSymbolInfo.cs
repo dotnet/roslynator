@@ -38,12 +38,12 @@ internal readonly struct OverriddenSymbolInfo : IEquatable<OverriddenSymbolInfo>
 
     public bool Equals(OverriddenSymbolInfo other)
     {
-        return EqualityComparer<ISymbol>.Default.Equals(Symbol, other.Symbol);
+        return SymbolEqualityComparer.Default.Equals(Symbol, other.Symbol);
     }
 
     public override int GetHashCode()
     {
-        return Symbol?.GetHashCode() ?? 0;
+        return SymbolEqualityComparer.Default.GetHashCode(Symbol);
     }
 
     public static bool operator ==(in OverriddenSymbolInfo info1, in OverriddenSymbolInfo info2)

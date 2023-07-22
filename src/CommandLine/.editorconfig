@@ -1,0 +1,4 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+[*.{cs,csx}]
+roslynator_configure_await = false

@@ -17,7 +17,8 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>Roslynator</AssemblyName>
     <RootNamespace>Roslynator.CommandLine</RootNamespace>
-    <CodeAnalysisRuleSet>CommandLine.ruleset</CodeAnalysisRuleSet>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>false</IncludeSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true">

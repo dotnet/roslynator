@@ -1,3 +1,3 @@
 ## Roslynator\.Analyzers
 
-[List of Analyzers](../../docs/analyzers/README.md)
+https://josefpihrt.github.io/docs/roslynator/analyzers
