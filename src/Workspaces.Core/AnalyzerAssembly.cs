@@ -87,8 +87,8 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
 
             WriteLine(message, ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
-            foreach (Exception loadeException in ex.LoaderExceptions)
-                WriteLine($"  {loadeException.Message}", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+            foreach (Exception loaderException in ex.LoaderExceptions)
+                WriteLine($"  {loaderException.Message}", ConsoleColors.DarkGray, Verbosity.Diagnostic);
         }
 
         foreach (TypeInfo typeInfo in types)
