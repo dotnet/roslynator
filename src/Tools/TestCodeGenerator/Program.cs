@@ -23,15 +23,11 @@ internal static class Program
 
         var metadata = new RoslynatorMetadata(rootPath);
 
-        ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
-        ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
-        ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
-
         foreach (string id in args.Skip(1))
         {
             if (_analyzerIdRegex.IsMatch(id))
             {
-                AnalyzerMetadata analyzer = analyzers.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
+                AnalyzerMetadata analyzer = metadata.CommonAnalyzers.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
                 if (analyzer is null)
                 {
@@ -51,7 +47,7 @@ internal static class Program
             }
             else if (_refactoringIdRegex.IsMatch(id))
             {
-                RefactoringMetadata refactoring = refactorings.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
+                RefactoringMetadata refactoring = metadata.Refactorings.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
                 if (refactoring is null)
                 {
@@ -71,7 +67,7 @@ internal static class Program
             }
             else if (_codeFixIdRegex.IsMatch(id))
             {
-                CompilerDiagnosticMetadata compilerDiagnostic = compilerDiagnostics.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
+                CompilerDiagnosticMetadata compilerDiagnostic = metadata.CompilerDiagnostics.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
                 if (compilerDiagnostic is null)
                 {

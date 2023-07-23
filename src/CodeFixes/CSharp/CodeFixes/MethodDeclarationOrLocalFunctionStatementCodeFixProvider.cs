@@ -73,7 +73,7 @@ public sealed class MethodDeclarationOrLocalFunctionStatementCodeFixProvider : C
             {
                 if (typeSymbols is null)
                 {
-                    typeSymbols = new HashSet<ITypeSymbol>() { typeSymbol };
+                    typeSymbols = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default) { typeSymbol };
                 }
 
                 if (!typeSymbols.Add(namedTypeSymbol))

@@ -25,7 +25,7 @@ Fix project/solution:
 roslynator fix
 ```
 
-See [documentation](https://github.com/josefpihrt/roslynator/blob/main/docs/cli/README.md) for a full list of commands.
+See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for a full list of commands.
 
 ## Feedback
 

@@ -5,7 +5,7 @@ using CommandLine;
 
 namespace Roslynator.CommandLine;
 
-[Verb("format", HelpText = "Formats documents in the specified project or solution.")]
+[Verb("format", HelpText = "Formats whitespace in the specified project or solution.")]
 public class FormatCommandLineOptions : MSBuildCommandLineOptions
 {
     [Value(

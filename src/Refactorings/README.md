@@ -1,3 +1,3 @@
 ## Roslynator Refactorings
 
-[List of Refactorings](../../docs/refactorings/README.md)
+https://josefpihrt.github.io/docs/roslynator/refactorings
