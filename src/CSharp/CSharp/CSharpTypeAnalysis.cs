@@ -216,8 +216,15 @@ internal static class CSharpTypeAnalysis
         if (expression is null)
             return false;
 
-        if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression))
+        if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.ImplicitObjectCreationExpression))
             return false;
+
+        if (expression.IsKind(SyntaxKind.SuppressNullableWarningExpression)
+            && expression is PostfixUnaryExpressionSyntax postfixUnary
+            && postfixUnary.Operand.IsKind(SyntaxKind.DefaultLiteralExpression))
+        {
+            return false;
+        }
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
@@ -227,8 +234,21 @@ internal static class CSharpTypeAnalysis
         if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
             return false;
 
-        if (!SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(expression, cancellationToken)))
+        if (expression.IsKind(SyntaxKind.StackAllocArrayCreationExpression)
+            && typeSymbol.HasMetadataName(MetadataNames.System_Span_T))
+        {
             return false;
+        }
+
+        ITypeSymbol expressionType = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+        if (!SymbolEqualityComparer.Default.Equals(typeSymbol, expressionType)
+            || (type.IsKind(SyntaxKind.NullableType)
+                && typeSymbol.IsReferenceType
+                && expressionType.NullableAnnotation == NullableAnnotation.NotAnnotated))
+        {
+            return false;
+        }
 
         switch (typeAppearance)
         {

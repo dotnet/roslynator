@@ -55,6 +55,7 @@ internal static class MetadataNames
     public static readonly MetadataName System_Runtime_Serialization_DataMemberAttribute = MetadataName.Parse("System.Runtime.Serialization.DataMemberAttribute");
     public static readonly MetadataName System_Runtime_Serialization_SerializationInfo = MetadataName.Parse("System.Runtime.Serialization.SerializationInfo");
     public static readonly MetadataName System_Runtime_Serialization_StreamingContext = MetadataName.Parse("System.Runtime.Serialization.StreamingContext");
+    public static readonly MetadataName System_Span_T = MetadataName.Parse("System.Span`1");
     public static readonly MetadataName System_StringComparison = MetadataName.Parse("System.StringComparison");
     public static readonly MetadataName System_Text_RegularExpressions_Regex = MetadataName.Parse("System.Text.RegularExpressions.Regex");
     public static readonly MetadataName System_Text_RegularExpressions_RegexOptions = MetadataName.Parse("System.Text.RegularExpressions.RegexOptions");

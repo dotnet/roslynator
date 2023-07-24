@@ -52,7 +52,7 @@ public class DocumentationOptions
         IgnoredNames = ignoredNames?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
         RootFileHeading = rootFileHeading;
         PreferredCultureName = preferredCultureName;
-        RootDirectoryUrl = rootDirectoryUrl;
+        RootDirectoryUrl = rootDirectoryUrl?.Trim('/');
         MaxDerivedTypes = maxDerivedTypes;
         IncludeSystemNamespace = includeSystemNamespace;
         PlaceSystemNamespaceFirst = placeSystemNamespaceFirst;

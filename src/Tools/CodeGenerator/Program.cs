@@ -1,18 +1,20 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CodeGeneration;
 using Roslynator.CodeGeneration.CSharp;
 using Roslynator.CodeGeneration.EditorConfig;
 using Roslynator.Configuration;
 using Roslynator.Metadata;
 
-namespace Roslynator.CodeGeneration;
+namespace Roslynator.CodeGenerator;
 
 internal static class Program
 {
@@ -29,9 +31,6 @@ internal static class Program
 
         var metadata = new RoslynatorMetadata(rootPath);
 
-        ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
-        ImmutableArray<AnalyzerMetadata> codeAnalysisAnalyzers = metadata.CodeAnalysisAnalyzers;
-        ImmutableArray<AnalyzerMetadata> formattingAnalyzers = metadata.FormattingAnalyzers;
         ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
         ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
         ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
@@ -53,11 +52,11 @@ internal static class Program
             @"VisualStudio\RefactoringsOptionsPage.Generated.cs",
             RefactoringsOptionsPageGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer));
 
-        WriteDiagnostics(@"Analyzers\CSharp", analyzers, @namespace: "Roslynator.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
+        WriteDiagnostics(@"Analyzers\CSharp", metadata.CommonAnalyzers, @namespace: "Roslynator.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
 
-        WriteDiagnostics(@"CodeAnalysis.Analyzers\CSharp", codeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
+        WriteDiagnostics(@"CodeAnalysis.Analyzers\CSharp", metadata.CodeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
 
-        WriteDiagnostics(@"Formatting.Analyzers\CSharp", formattingAnalyzers, @namespace: "Roslynator.Formatting.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
+        WriteDiagnostics(@"Formatting.Analyzers\CSharp", metadata.FormattingAnalyzers, @namespace: "Roslynator.Formatting.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
 
         WriteCompilationUnit(
             @"CodeFixes\CSharp\CompilerDiagnosticRules.Generated.cs",
@@ -83,21 +82,21 @@ internal static class Program
 
         WriteCompilationUnit(
             @"Common\ConfigOptions.Generated.cs",
-            CodeGenerator.GenerateConfigOptions(options, metadata.GetAllAnalyzers()),
+            Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptions(options, metadata.Analyzers),
             normalizeWhitespace: false);
 
         WriteCompilationUnit(
             @"Common\LegacyConfigOptions.Generated.cs",
-            CodeGenerator.GenerateLegacyConfigOptions(metadata.GetAllAnalyzers()));
+            Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateLegacyConfigOptions(metadata.Analyzers));
 
         WriteCompilationUnit(
             @"Common\ConfigOptionKeys.Generated.cs",
-            CodeGenerator.GenerateConfigOptionKeys(options),
+            Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptionKeys(options),
             normalizeWhitespace: false);
 
         WriteCompilationUnit(
             @"Common\ConfigOptionValues.Generated.cs",
-            CodeGenerator.GenerateConfigOptionValues(options),
+            Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptionValues(options),
             normalizeWhitespace: false);
 
         WriteCompilationUnit(
@@ -108,22 +107,6 @@ internal static class Program
             @"CSharp\CSharp\SyntaxWalkers\CSharpSyntaxNodeWalker.cs",
             CSharpSyntaxNodeWalkerGenerator.Generate());
 
-        string configFileContent = File.ReadAllText(Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), "Configuration.md"));
-
-        configFileContent += @"# Full List of Options
-
-```editorconfig"
-            + EditorConfigGenerator.GenerateEditorConfig(metadata, commentOut: false)
-            + @"```
-";
-
-        var utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
-
-        File.WriteAllText(
-            Path.Combine(rootPath, "../docs/Configuration.md"),
-            configFileContent,
-            utf8NoBom);
-
         File.WriteAllText(
             Path.Combine(rootPath, @"VisualStudioCode\package\src\configurationFiles.generated.ts"),
             @"export const configurationFileContent = {
@@ -132,18 +115,19 @@ internal static class Program
                 + EditorConfigGenerator.GenerateEditorConfig(metadata, commentOut: true)
                 + @"`
 };",
-            utf8NoBom);
+            new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
 
-        Console.WriteLine($"number of analyzers: {analyzers.Count(f => !f.IsObsolete)}");
-        Console.WriteLine($"number of code analysis analyzers: {codeAnalysisAnalyzers.Count(f => !f.IsObsolete)}");
-        Console.WriteLine($"number of formatting analyzers: {formattingAnalyzers.Count(f => !f.IsObsolete)}");
+        Console.WriteLine($"number of analyzers: {metadata.Analyzers.Count(f => !f.IsObsolete)}");
+        Console.WriteLine($"number of common analyzers: {metadata.CommonAnalyzers.Count(f => !f.IsObsolete)}");
+        Console.WriteLine($"number of code analysis analyzers: {metadata.CodeAnalysisAnalyzers.Count(f => !f.IsObsolete)}");
+        Console.WriteLine($"number of formatting analyzers: {metadata.FormattingAnalyzers.Count(f => !f.IsObsolete)}");
         Console.WriteLine($"number of refactorings: {refactorings.Length}");
         Console.WriteLine($"number of code fixes: {codeFixes.Length}");
         Console.WriteLine($"number of fixable compiler diagnostics: {codeFixes.SelectMany(f => f.FixableDiagnosticIds).Distinct().Count()}");
 
         void WriteDiagnostics(
             string dirPath,
-            ImmutableArray<AnalyzerMetadata> analyzers,
+            IEnumerable<AnalyzerMetadata> analyzers,
             string @namespace,
             string categoryName,
             string descriptorsClassName = "DiagnosticRules",

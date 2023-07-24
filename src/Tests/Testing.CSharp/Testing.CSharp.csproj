@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
     <PackageId>Roslynator.Testing.CSharp</PackageId>
     <PackageVersion>$(RoslynatorTestingPackageVersion)</PackageVersion>
     <Company></Company>

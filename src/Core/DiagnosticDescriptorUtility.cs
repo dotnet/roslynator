@@ -4,7 +4,7 @@ namespace Roslynator;
 
 internal static class DiagnosticDescriptorUtility
 {
-    private const string HelpLinkUriRoot = "http://pihrt.net/roslynator/analyzer?id=";
+    private const string HelpLinkUriRoot = "https://josefpihrt.github.io/docs/roslynator/analyzers/";
 
     public static string GetHelpLinkUri(string analyzerId)
     {

@@ -17,7 +17,7 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
 
     [Option(
         longName: "language",
-        HelpText = "Defines project language. Allowed values are cs[harp] or v[isual-]b[asic]",
+        HelpText = "Defines project language. Allowed values are cs[harp] or v[isual-]b[asic].",
         MetaValue = "<LANGUAGE>")]
     public string Language { get; set; }
 
