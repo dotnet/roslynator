@@ -207,8 +207,7 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsSymbolAssignedInStatementWithCorrectType(ISymbol symbol, StatementSyntax statement,
-        SemanticModel semanticModel, ITypeSymbol typeSymbol, CancellationToken cancellationToken)
+    private static bool IsSymbolAssignedInStatementWithCorrectType(ISymbol symbol, StatementSyntax statement, SemanticModel semanticModel, ITypeSymbol typeSymbol, CancellationToken cancellationToken)
     {
         SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
 

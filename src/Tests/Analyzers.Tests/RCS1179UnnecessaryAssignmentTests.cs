@@ -341,6 +341,7 @@ class C
 }
 ");
     }
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_NoDiagnostic_ForPolymorphicSwitch()
     {
@@ -371,5 +372,4 @@ class C
 }
 ");
     }
-
 }
