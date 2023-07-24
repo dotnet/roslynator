@@ -1,0 +1,4 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+[*.{cs,csx}]
+#dotnet_diagnostic.RCS.severity = warning

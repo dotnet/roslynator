@@ -8,7 +8,6 @@
     <Version>$(RoslynatorCoreVersion)</Version>
     <AssemblyName>$(RoslynatorDllPrefix)Roslynator.CSharp</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
-    <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -16,6 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
     <PackageId>Roslynator.CSharp</PackageId>
     <PackageVersion>$(RoslynatorCorePackageVersion)</PackageVersion>
     <Company></Company>
