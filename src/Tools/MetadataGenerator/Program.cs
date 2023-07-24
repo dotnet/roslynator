@@ -10,6 +10,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using DotMarkdown.Docusaurus;
+using DotMarkdown.Docusaurus.Linq;
 using Microsoft.CodeAnalysis;
 using Roslynator.CodeGeneration;
 using Roslynator.CodeGeneration.Markdown;
@@ -215,7 +217,15 @@ internal static class Program
         {
             Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
 
-            content = DocusaurusUtility.CreateFrontMatter(position: sidebarPosition, label: sidebarLabel) + content;
+            var labels = new List<(string, object)>();
+
+            if (sidebarPosition is not null)
+                labels.Add(("sidebar_position", sidebarPosition));
+
+            if (sidebarLabel is not null)
+                labels.Add(("sidebar_label", sidebarLabel));
+
+            content = DocusaurusMarkdownFactory.FrontMatter(labels).ToString() + content;
 
             FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
         }
