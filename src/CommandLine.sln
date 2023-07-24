@@ -4,12 +4,13 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B17331B-D942-4A0C-82AA-23515F4B46C4}"
 	ProjectSection(SolutionItems) = preProject
+		..\ChangeLog.md = ..\ChangeLog.md
 		CommandLine\CommandLine.nuspec = CommandLine\CommandLine.nuspec
 		Directory.Build.props = Directory.Build.props
 		global.ruleset = global.ruleset
 		..\docs\HowToFixAllDiagnostics.md = ..\docs\HowToFixAllDiagnostics.md
 		..\docs\HowToGenerateDocumentation.md = ..\docs\HowToGenerateDocumentation.md
-		..\docs\cli\README.md = ..\docs\cli\README.md
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{B608D907-4B0E-4822-A97E-5A8CBD234C32}"

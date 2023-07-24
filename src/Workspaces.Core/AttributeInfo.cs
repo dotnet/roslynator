@@ -33,7 +33,7 @@ internal readonly struct AttributeInfo
 
         public override int GetHashCode(AttributeInfo obj)
         {
-            return obj.AttributeClass?.GetHashCode() ?? 0;
+            return SymbolEqualityComparer.Default.GetHashCode(obj.AttributeClass);
         }
     }
 }
