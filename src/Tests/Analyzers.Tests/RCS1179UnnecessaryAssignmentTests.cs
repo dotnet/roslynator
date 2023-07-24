@@ -311,4 +311,65 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
+    public async Task Test_NoDiagnostic_ForPolymorphicIf()
+    {
+        await VerifyNoDiagnosticAsync(
+            @"
+class A {}
+class B {}
+class C
+{
+    void M()
+    {
+        var fun = (bool flag) =>
+        {
+            object x;
+            if (flag)
+            {
+                x = new A();
+            }
+            else
+            {
+                x = new B();
+            }
+
+            return x;
+        };
+    }
+}
+");
+    }
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
+    public async Task Test_NoDiagnostic_ForPolymorphicSwitch()
+    {
+        await VerifyNoDiagnosticAsync(
+            @"
+class A {}
+class B {}
+class C
+{
+    void M()
+    {
+        var fun = (object o) =>
+        {
+            object x;
+            switch(o)
+            {
+                case int:
+                    x = new A();
+                    break;
+                default:
+                    x = new B();
+                    break;
+            }
+
+            return x;
+        };
+    }
+}
+");
+    }
+
 }

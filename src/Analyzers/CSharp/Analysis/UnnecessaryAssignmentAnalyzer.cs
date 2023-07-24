@@ -70,6 +70,8 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
         if (!IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, statementsInfo.Parent, semanticModel, cancellationToken))
             return;
 
+        ITypeSymbol returnTypeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
+
         foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
         {
             StatementSyntax statement = ifOrElse.Statement;
@@ -78,7 +80,7 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
                 statement = ((BlockSyntax)statement).Statements.LastOrDefault();
 
             if (!statement.IsKind(SyntaxKind.ThrowStatement)
-                && !IsSymbolAssignedInStatement(symbol, statement, semanticModel, cancellationToken))
+                && !IsSymbolAssignedInStatementWithCorrectType(symbol, statement, semanticModel, returnTypeSymbol, cancellationToken))
             {
                 return;
             }
@@ -113,6 +115,7 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
         CancellationToken cancellationToken = context.CancellationToken;
 
         ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+        ITypeSymbol returnTypeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
 
         if (symbol is null)
             return;
@@ -136,7 +139,7 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
                 case SyntaxKind.BreakStatement:
                     {
                         if (statements.Count == 1
-                            || !IsSymbolAssignedInStatement(symbol, statements.LastButOne(), semanticModel, cancellationToken))
+                            || !IsSymbolAssignedInStatementWithCorrectType(symbol, statements.LastButOne(), semanticModel, returnTypeSymbol, cancellationToken))
                         {
                             return;
                         }
@@ -204,11 +207,13 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsSymbolAssignedInStatement(ISymbol symbol, StatementSyntax statement, SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static bool IsSymbolAssignedInStatementWithCorrectType(ISymbol symbol, StatementSyntax statement,
+        SemanticModel semanticModel, ITypeSymbol typeSymbol, CancellationToken cancellationToken)
     {
         SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
 
         return assignmentInfo.Success
-            && SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken), symbol);
+            && SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken), symbol)
+            && typeSymbol.Equals(semanticModel.GetTypeInfo(assignmentInfo.Right, cancellationToken).Type);
     }
 }
