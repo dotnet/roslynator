@@ -33,8 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix [RCS0005](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0005) ([#1114](https://github.com/JosefPihrt/Roslynator/pull/1114)).
 - Fix [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1176.md) ([#1122](https://github.com/JosefPihrt/Roslynator/pull/1122)).
 - Fix [RCS1085](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1085.md) ([#1120](https://github.com/josefpihrt/roslynator/pull/1120)).
-- [CLI] Fix member full declaration in generated documentation (command `generate-doc`)
-  - Append `?` to nullable reference types
+- [CLI] Fix member full declaration in generated documentation (command `generate-doc`) ([#1130](https://github.com/josefpihrt/roslynator/pull/1130)).
+  - Append `?` to nullable reference types.
 
 ## [4.3.0] - 2023-04-24
 
