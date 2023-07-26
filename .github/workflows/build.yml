@@ -121,7 +121,7 @@ jobs:
       - run: (Get-Content source.extension.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension.vsixmanifest
       - run: dotnet restore
       - uses: microsoft/setup-msbuild@v1.1
-      - run: msbuild
+      - run: msbuild -m
       - uses: actions/upload-artifact@v3
         with:
           name: vs_extension
