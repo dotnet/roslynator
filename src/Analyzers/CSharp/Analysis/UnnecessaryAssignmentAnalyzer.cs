@@ -213,6 +213,6 @@ public sealed class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
         return assignmentInfo.Success
             && SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken), symbol)
-            && typeSymbol.Equals(semanticModel.GetTypeInfo(assignmentInfo.Right, cancellationToken).Type);
+            && SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(assignmentInfo.Right, cancellationToken));
     }
 }
