@@ -176,7 +176,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
             if (!projectNames.Any(f => string.Equals(f.Name, value.Name, StringComparison.Ordinal))
                 && !projectNames.Any(f => string.Equals(f.NameWithoutMoniker, value.NameWithoutMoniker, StringComparison.Ordinal)))
             {
-                WriteLine($"Project '{value}' does not exist.", Verbosity.Quiet);
+                WriteLine($"Project '{value.Name}' does not exist.", Verbosity.Quiet);
                 return false;
             }
         }
