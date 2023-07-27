@@ -33,17 +33,17 @@ jobs:
         id: version
         run: |
           dotnet-gitversion
-          echo: "0"
+          echo "0"
           dotnet-gitversion > version.json
-          echo: "1"
+          echo "1"
           version="$(jq -r '.SemVer' version.json)"
-          echo: "2"
+          echo "2"
           version3="$(jq -r '.MajorMinorPatch' version.json)"
-          echo: "3"
+          echo "3"
           pr_version="$(jq -r '.MajorMinorPatch' version.json)-$(jq -r '.PreReleaseLabel' version.json).${{ github.run_number }}.${{ github.run_attempt }}"
-          echo: "4"
+          echo "4"
           if [ "${{ github.event_name }}" = "pull_request" ]; then version=$pr_version; fi
-          echo: "5"
+          echo "5"
           echo "Resolved version: $version"
           echo "version=${version}" >> $GITHUB_OUTPUT
           echo "Resolved version3: $version3"
