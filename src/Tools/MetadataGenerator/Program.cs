@@ -11,7 +11,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DotMarkdown.Docusaurus;
-using DotMarkdown.Docusaurus.Linq;
 using Microsoft.CodeAnalysis;
 using Roslynator.CodeGeneration;
 using Roslynator.CodeGeneration.Markdown;
