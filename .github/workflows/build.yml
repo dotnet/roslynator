@@ -32,7 +32,6 @@ jobs:
       - name: Resolve version
         id: version
         run: |
-          dotnet-gitversion
           dotnet-gitversion > version.json
           version="$(jq -r '.SemVer' version.json)"
           version3="$(jq -r '.MajorMinorPatch' version.json)"
