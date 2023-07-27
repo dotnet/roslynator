@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using DotMarkdown;
-using DotMarkdown.Docusaurus.Linq;
+using DotMarkdown.Docusaurus;
 using DotMarkdown.Linq;
 using Roslynator.Metadata;
 using static System.Environment;

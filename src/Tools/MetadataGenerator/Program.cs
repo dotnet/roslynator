@@ -28,9 +28,7 @@ internal static class Program
     private static async Task Main(string[] args)
     {
         if (args.Length < 2)
-        {
             Console.WriteLine("Invalid number of arguments");
-        }
 
         if (args is null || args.Length == 0)
         {
