@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using DotMarkdown.Docusaurus;
 using Microsoft.CodeAnalysis;
 using Roslynator.CodeGeneration;
 using Roslynator.CodeGeneration.Markdown;
@@ -29,31 +30,63 @@ internal static class Program
         if (args.Length < 2)
         {
             Console.WriteLine("Invalid number of arguments");
-        }
-
-        if (args is null || args.Length == 0)
-        {
-            args = new string[] { Environment.CurrentDirectory };
+            return;
         }
 
         string sourcePath = args[0];
         string destinationPath = args[1];
 
-        StringComparer comparer = StringComparer.InvariantCulture;
-
         var metadata = new RoslynatorMetadata(sourcePath);
 
-        ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
-        ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
-        ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
+        GenerateAnalyzersMarkdown(metadata, destinationPath);
 
+        GenerateRefactoringsMarkdown(metadata, sourcePath, destinationPath);
+
+        GenerateCodeFixesMarkdown(metadata, destinationPath);
+
+        UpdateChangeLog();
+
+        void UpdateChangeLog()
+        {
+            var issueRegex = new Regex(@"\(\#(?<issue>\d+)\)");
+            var analyzerRegex = new Regex(@"(\p{Lu}\p{Ll}+){2,}\ +\((?<id>RCS\d{4}[a-z]?)\)");
+
+            string path = Path.Combine(sourcePath, "../ChangeLog.md");
+            string s = File.ReadAllText(path, _utf8NoBom);
+
+            ImmutableDictionary<string, AnalyzerMetadata> dic = metadata.Analyzers
+                .Concat(metadata.Analyzers.SelectMany(f => f.OptionAnalyzers))
+                .Where(f => f.Id is not null)
+                .ToImmutableDictionary(f => f.Id, f => f);
+
+            s = issueRegex.Replace(s, "([issue](https://github.com/JosefPihrt/Roslynator/issues/${issue}))");
+
+            s = analyzerRegex.Replace(
+                s,
+                m =>
+                {
+                    string id = m.Groups["id"].Value;
+
+                    Debug.Assert(dic.ContainsKey(id), id);
+
+                    AnalyzerMetadata analyzer = dic[id];
+
+                    return $"[{id}](https://josefpihrt.github.io/docs/roslynator/analyzers/{id}) ({analyzer.Title.TrimEnd('.')})";
+                });
+
+            File.WriteAllText(path, s, _utf8NoBom);
+        }
+    }
+
+    private static void GenerateAnalyzersMarkdown(RoslynatorMetadata metadata, string destinationPath)
+    {
         string analyzersDirPath = Path.Combine(destinationPath, "analyzers");
 
         Directory.CreateDirectory(analyzersDirPath);
 
         WriteAllText(
             $"{destinationPath}/analyzers.md",
-            MarkdownGenerator.CreateAnalyzersMarkdown(metadata.Analyzers.Where(f => !f.IsObsolete), "Analyzers", comparer),
+            MarkdownGenerator.CreateAnalyzersMarkdown(metadata.Analyzers.Where(f => !f.IsObsolete), "Analyzers", StringComparer.InvariantCulture),
             sidebarLabel: "Analyzers");
 
         WriteAnalyzerMarkdown(metadata.CodeAnalysisAnalyzers);
@@ -61,86 +94,6 @@ internal static class Program
         WriteAnalyzerMarkdown(metadata.CommonAnalyzers);
 
         DeleteInvalidAnalyzerMarkdowns();
-
-        string refactoringsDirPath = Path.Combine(destinationPath, "refactorings");
-
-        Directory.CreateDirectory(refactoringsDirPath);
-
-        int refactoringIndex = 0;
-        foreach (RefactoringMetadata refactoring in refactorings.OrderBy(f => f.Title))
-        {
-            string filePath = $"{refactoringsDirPath}/{refactoring.Id}.md";
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-            WriteAllText(
-                filePath,
-                MarkdownGenerator.CreateRefactoringMarkdown(refactoring, refactoringIndex));
-
-            refactoringIndex++;
-        }
-
-        IEnumerable<CompilerDiagnosticMetadata> fixableCompilerDiagnostics = compilerDiagnostics
-            .Join(codeFixes.SelectMany(f => f.FixableDiagnosticIds), f => f.Id, f => f, (f, _) => f)
-            .Distinct();
-
-        ImmutableArray<CodeFixOption> codeFixOptions = typeof(CodeFixOptions).GetFields()
-            .Select(f =>
-            {
-                var key = (string)f.GetValue(null);
-                string value = f.GetCustomAttribute<CodeFixOptionAttribute>().Value;
-
-                return new CodeFixOption(key, value);
-            })
-            .ToImmutableArray();
-
-        string fixesDirPath = Path.Combine(destinationPath, "fixes");
-
-        Directory.CreateDirectory(fixesDirPath);
-
-        foreach (CompilerDiagnosticMetadata diagnostic in fixableCompilerDiagnostics)
-        {
-            string filePath = $"{fixesDirPath}/{diagnostic.Id}.md";
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-            WriteAllText(
-                filePath,
-                MarkdownGenerator.CreateCodeFixMarkdown(diagnostic, codeFixes, codeFixOptions, comparer));
-        }
-
-        WriteAllText(
-            $"{destinationPath}/refactorings.md",
-            MarkdownGenerator.CreateRefactoringsMarkdown(refactorings.Where(f => !f.IsObsolete), comparer),
-            sidebarLabel: "Refactorings");
-
-        WriteAllText(
-            $"{destinationPath}/fixes.md",
-            MarkdownGenerator.CreateCodeFixesMarkdown(fixableCompilerDiagnostics, comparer),
-            sidebarLabel: "Code Fixes for Compiler Diagnostics");
-
-        // find files to delete
-        foreach (string path in Directory.EnumerateFiles($"{refactoringsDirPath}"))
-        {
-            if (!refactorings.Any(f => f.Id == Path.GetFileNameWithoutExtension(path)))
-                Console.WriteLine($"FILE TO DELETE: {path}");
-        }
-
-        // find missing samples
-        foreach (RefactoringMetadata refactoring in refactorings)
-        {
-            if (!refactoring.IsObsolete
-                && refactoring.Samples.Count == 0)
-            {
-                foreach (ImageMetadata image in refactoring.ImagesOrDefaultImage())
-                {
-                    string imagePath = Path.Combine(Path.Combine(sourcePath, "../images/refactorings"), image.Name + ".png");
-
-                    if (!File.Exists(imagePath))
-                        Console.WriteLine($"MISSING SAMPLE: {imagePath}");
-                }
-            }
-        }
-
-        UpdateChangeLog();
 
         void WriteAnalyzerMarkdown(IEnumerable<AnalyzerMetadata> analyzers)
         {
@@ -173,51 +126,112 @@ internal static class Program
                 File.Delete(filePath);
             }
         }
+    }
 
-        void UpdateChangeLog()
+    private static void GenerateRefactoringsMarkdown(RoslynatorMetadata metadata, string sourcePath, string destinationPath)
+    {
+        string refactoringsDirPath = Path.Combine(destinationPath, "refactorings");
+        Directory.CreateDirectory(refactoringsDirPath);
+
+        ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
+
+        WriteAllText(
+            $"{destinationPath}/refactorings.md",
+            MarkdownGenerator.CreateRefactoringsMarkdown(refactorings.Where(f => !f.IsObsolete), StringComparer.InvariantCulture),
+            sidebarLabel: "Refactorings");
+
+        int refactoringIndex = 0;
+        foreach (RefactoringMetadata refactoring in refactorings.OrderBy(f => f.Title))
         {
-            var issueRegex = new Regex(@"\(\#(?<issue>\d+)\)");
-            var analyzerRegex = new Regex(@"(\p{Lu}\p{Ll}+){2,}\ +\((?<id>RCS\d{4}[a-z]?)\)");
+            string filePath = $"{refactoringsDirPath}/{refactoring.Id}.md";
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-            string path = Path.Combine(sourcePath, "../ChangeLog.md");
-            string s = File.ReadAllText(path, _utf8NoBom);
+            WriteAllText(
+                filePath,
+                MarkdownGenerator.CreateRefactoringMarkdown(refactoring, refactoringIndex));
 
-            ImmutableDictionary<string, AnalyzerMetadata> dic = metadata.Analyzers
-                .Concat(metadata.Analyzers.SelectMany(f => f.OptionAnalyzers))
-                .Where(f => f.Id is not null)
-                .ToImmutableDictionary(f => f.Id, f => f);
+            refactoringIndex++;
+        }
 
-            s = issueRegex.Replace(s, "([issue](https://github.com/JosefPihrt/Roslynator/issues/${issue}))");
+        // find files to delete
+        foreach (string path in Directory.EnumerateFiles($"{refactoringsDirPath}"))
+        {
+            if (!refactorings.Any(f => f.Id == Path.GetFileNameWithoutExtension(path)))
+                Console.WriteLine($"FILE TO DELETE: {path}");
+        }
 
-            s = analyzerRegex.Replace(
-                s,
-                m =>
+        // find missing samples
+        foreach (RefactoringMetadata refactoring in refactorings)
+        {
+            if (!refactoring.IsObsolete
+                && refactoring.Samples.Count == 0)
+            {
+                foreach (ImageMetadata image in refactoring.ImagesOrDefaultImage())
                 {
-                    string id = m.Groups["id"].Value;
+                    string imagePath = Path.Combine(Path.Combine(sourcePath, "../images/refactorings"), image.Name + ".png");
 
-                    Debug.Assert(dic.ContainsKey(id), id);
-
-                    AnalyzerMetadata analyzer = dic[id];
-
-                    return $"[{id}](https://josefpihrt.github.io/docs/roslynator/analyzers/{id}) ({analyzer.Title.TrimEnd('.')})";
-                });
-
-            File.WriteAllText(path, s, _utf8NoBom);
+                    if (!File.Exists(imagePath))
+                        Console.WriteLine($"MISSING SAMPLE: {imagePath}");
+                }
+            }
         }
+    }
 
-        void WriteAllText(
-            string path,
-            string content,
-            bool onlyIfChanges = true,
-            bool fileMustExists = false,
-            int? sidebarPosition = null,
-            string sidebarLabel = null)
+    private static void GenerateCodeFixesMarkdown(RoslynatorMetadata metadata, string destinationPath)
+    {
+        IEnumerable<CompilerDiagnosticMetadata> diagnostics = metadata.CompilerDiagnostics
+            .Join(metadata.CodeFixes.SelectMany(f => f.FixableDiagnosticIds), f => f.Id, f => f, (f, _) => f)
+            .Distinct();
+
+        WriteAllText(
+            $"{destinationPath}/fixes.md",
+            MarkdownGenerator.CreateCodeFixesMarkdown(diagnostics, StringComparer.InvariantCulture),
+            sidebarLabel: "Code Fixes for Compiler Diagnostics");
+
+        ImmutableArray<CodeFixOption> codeFixOptions = typeof(CodeFixOptions).GetFields()
+            .Select(f =>
+            {
+                var key = (string)f.GetValue(null);
+                string value = f.GetCustomAttribute<CodeFixOptionAttribute>().Value;
+
+                return new CodeFixOption(key, value);
+            })
+            .ToImmutableArray();
+
+        string fixesDirPath = Path.Combine(destinationPath, "fixes");
+        Directory.CreateDirectory(fixesDirPath);
+
+        foreach (CompilerDiagnosticMetadata diagnostic in diagnostics)
         {
-            Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
+            string filePath = $"{fixesDirPath}/{diagnostic.Id}.md";
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-            content = DocusaurusUtility.CreateFrontMatter(position: sidebarPosition, label: sidebarLabel) + content;
-
-            FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
+            WriteAllText(
+                filePath,
+                MarkdownGenerator.CreateCodeFixMarkdown(diagnostic, metadata.CodeFixes, codeFixOptions, StringComparer.InvariantCulture));
         }
+    }
+
+    private static void WriteAllText(
+        string path,
+        string content,
+        bool onlyIfChanges = true,
+        bool fileMustExists = false,
+        int? sidebarPosition = null,
+        string sidebarLabel = null)
+    {
+        Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
+
+        var labels = new List<(string, object)>();
+
+        if (sidebarPosition is not null)
+            labels.Add(("sidebar_position", sidebarPosition));
+
+        if (sidebarLabel is not null)
+            labels.Add(("sidebar_label", sidebarLabel));
+
+        content = DocusaurusMarkdownFactory.FrontMatter(labels).ToString() + content;
+
+        FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
     }
 }
