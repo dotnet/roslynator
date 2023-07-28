@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0.0</Version>
     <AssemblyName>Roslynator.CodeGeneration</AssemblyName>
     <RootNamespace>Roslynator.CodeGeneration</RootNamespace>
   </PropertyGroup>
