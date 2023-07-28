@@ -11,7 +11,7 @@
     <RoslynVersion>4.4.0</RoslynVersion>
     <RoslynAnalyzersVersion>3.3.4</RoslynAnalyzersVersion>
     <RoslynCliVersion>4.6.0</RoslynCliVersion>
-    <Version>1.0.0</Version>
+    <Version Condition="'$(Version)' == ''">1.0.0</Version>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
