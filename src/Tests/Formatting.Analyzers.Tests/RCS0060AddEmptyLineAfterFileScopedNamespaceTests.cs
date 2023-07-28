@@ -277,4 +277,21 @@ class C
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, false));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task TestNoDiagnostic_EmptyFileWithComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
+namespace A.B;
+
+// x", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, false));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task TestNoDiagnostic_EmptyFileWithComment2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+namespace A.B;
+// x", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
+    }
 }
