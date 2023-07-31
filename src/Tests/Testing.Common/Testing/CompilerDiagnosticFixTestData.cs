@@ -64,6 +64,7 @@ public sealed class CompilerDiagnosticFixTestData
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{DiagnosticId}  {Source}";
 
+    [Obsolete("This method is obsolete and will be removed in future version.")]
     /// <summary>
     /// Creates and return new instance of <see cref="CompilerDiagnosticFixTestData"/> updated with specified values.
     /// </summary>

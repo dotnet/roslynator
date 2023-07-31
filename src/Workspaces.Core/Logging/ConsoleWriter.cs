@@ -12,7 +12,7 @@ internal sealed class ConsoleWriter : TextWriterWithVerbosity
     {
     }
 
-    public ConsoleColors Colors
+    public static ConsoleColors Colors
     {
         get { return new ConsoleColors(Console.ForegroundColor, Console.BackgroundColor); }
         set

@@ -41,7 +41,7 @@ public sealed class OperatorCannotBeAppliedToOperandsCodeFixProvider : CompilerD
             RegisterCodeFix(context, binaryExpression.Right, diagnostic, semanticModel);
     }
 
-    private bool RegisterCodeFix(
+    private static bool RegisterCodeFix(
         CodeFixContext context,
         ExpressionSyntax expression,
         Diagnostic diagnostic,

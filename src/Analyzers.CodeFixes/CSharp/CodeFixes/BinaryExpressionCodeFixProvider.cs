@@ -323,7 +323,7 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
 
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpressionInfo.Left, semanticModel, NullCheckStyles.HasValue | NullCheckStyles.NotEqualsToNull);
+        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpressionInfo.Left, semanticModel, NullCheckStyles.HasValue | NullCheckStyles.NotEqualsToNull, cancellationToken: cancellationToken);
 
         var binaryExpression = right as BinaryExpressionSyntax;
 

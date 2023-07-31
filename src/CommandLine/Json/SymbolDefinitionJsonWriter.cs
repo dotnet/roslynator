@@ -514,16 +514,16 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
 
     public void WriteValue(string value)
     {
-        Debug.Assert(value?.Contains("\n") != true, @"\n");
-        Debug.Assert(value?.Contains("\r") != true, @"\r");
+        Debug.Assert(value?.Contains('\n') != true, @"\n");
+        Debug.Assert(value?.Contains('\r') != true, @"\r");
 
         _writer.WriteValue(value);
     }
 
     public override void Write(string value)
     {
-        Debug.Assert(value?.Contains("\n") != true, @"\n");
-        Debug.Assert(value?.Contains("\r") != true, @"\r");
+        Debug.Assert(value?.Contains('\n') != true, @"\n");
+        Debug.Assert(value?.Contains('\r') != true, @"\r");
 
         _writer.WriteRawValue(value);
     }

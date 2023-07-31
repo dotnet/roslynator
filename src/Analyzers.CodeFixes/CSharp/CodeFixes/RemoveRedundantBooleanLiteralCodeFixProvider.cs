@@ -86,7 +86,7 @@ public sealed class RemoveRedundantBooleanLiteralCodeFixProvider : BaseCodeFixPr
         }
     }
 
-    private void RegisterCodeFix(CodeFixContext context, string textToRemove, Func<CancellationToken, Task<Document>> createChangedDocument)
+    private static void RegisterCodeFix(CodeFixContext context, string textToRemove, Func<CancellationToken, Task<Document>> createChangedDocument)
     {
         CodeAction codeAction = CodeAction.Create(
             $"Remove redundant '{textToRemove}'",

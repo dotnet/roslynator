@@ -46,7 +46,7 @@ public sealed class FixFormattingOfCallChainCodeFixProvider : BaseCodeFixProvide
             "Fix formatting",
             ct =>
             {
-                TextLineCollection lines = expression.SyntaxTree.GetText().Lines;
+                TextLineCollection lines = expression.SyntaxTree.GetText(ct).Lines;
 
                 TextLine line = lines.GetLineFromPosition(expression.SpanStart);
 

@@ -60,7 +60,7 @@ internal static class IntroduceLocalVariableRefactoring
     {
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.Variable, semanticModel, expression.SpanStart);
+        string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.Variable, semanticModel, expression.SpanStart, cancellationToken: cancellationToken);
 
         VariableDeclarationSyntax declaration = VariableDeclaration(
             VarType(),

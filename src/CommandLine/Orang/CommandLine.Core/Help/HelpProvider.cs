@@ -90,7 +90,7 @@ internal static class HelpProvider
 
             if (!string.IsNullOrEmpty(option.ShortName))
             {
-                sb.Append("-");
+                sb.Append('-');
                 sb.Append(option.ShortName);
 
                 if (!string.IsNullOrEmpty(option.Name))

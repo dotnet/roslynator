@@ -65,6 +65,7 @@ public sealed class RefactoringTestData
     {
     }
 
+    [Obsolete("This method is obsolete and will be removed in future version.")]
     /// <summary>
     /// Creates and return new instance of <see cref="RefactoringTestData"/> updated with specified values.
     /// </summary>

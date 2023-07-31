@@ -237,7 +237,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
         }
     }
 
-    private Task<Document> CallArgumentNullExceptionThrowIfNullAsync(
+    private static Task<Document> CallArgumentNullExceptionThrowIfNullAsync(
         Document document,
         IfStatementSyntax ifStatement,
         CancellationToken cancellationToken)

@@ -135,6 +135,7 @@ public sealed class DiagnosticTestData
         }
     }
 
+    [Obsolete("This method is obsolete and will be removed in future version.")]
     /// <summary>
     /// Creates and return new instance of <see cref="DiagnosticTestData"/> updated with specified values.
     /// </summary>

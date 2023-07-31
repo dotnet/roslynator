@@ -109,7 +109,7 @@ public sealed class UseStringComparisonCodeFixProvider : BaseCodeFixProvider
         }
     }
 
-    private bool RegisterCodeFix(
+    private static bool RegisterCodeFix(
         CodeFixContext context,
         Diagnostic diagnostic,
         BinaryExpressionSyntax binaryExpression,
@@ -155,7 +155,7 @@ public sealed class UseStringComparisonCodeFixProvider : BaseCodeFixProvider
         return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
     }
 
-    private bool RegisterCodeFix(
+    private static bool RegisterCodeFix(
         CodeFixContext context,
         Diagnostic diagnostic,
         SimpleMemberInvocationExpressionInfo invocationInfo,
