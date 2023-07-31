@@ -135,7 +135,6 @@ public sealed class DiagnosticTestData
         }
     }
 
-    [Obsolete("This method is obsolete and will be removed in future version.")]
     /// <summary>
     /// Creates and return new instance of <see cref="DiagnosticTestData"/> updated with specified values.
     /// </summary>
@@ -148,6 +147,7 @@ public sealed class DiagnosticTestData
     /// <param name="formatProvider"></param>
     /// <param name="equivalenceKey"></param>
     /// <param name="alwaysVerifyAdditionalLocations"></param>
+    [Obsolete("This method is obsolete and will be removed in future version.")]
     public DiagnosticTestData Update(
         DiagnosticDescriptor descriptor,
         string source,

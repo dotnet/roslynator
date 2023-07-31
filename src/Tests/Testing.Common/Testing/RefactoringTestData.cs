@@ -65,7 +65,6 @@ public sealed class RefactoringTestData
     {
     }
 
-    [Obsolete("This method is obsolete and will be removed in future version.")]
     /// <summary>
     /// Creates and return new instance of <see cref="RefactoringTestData"/> updated with specified values.
     /// </summary>
@@ -73,6 +72,7 @@ public sealed class RefactoringTestData
     /// <param name="spans"></param>
     /// <param name="additionalFiles"></param>
     /// <param name="equivalenceKey"></param>
+    [Obsolete("This method is obsolete and will be removed in future version.")]
     public RefactoringTestData Update(
         string source,
         IEnumerable<TextSpan> spans,
