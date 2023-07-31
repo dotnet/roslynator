@@ -11,7 +11,7 @@
     <Deterministic>true</Deterministic>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>1591</WarningsNotAsErrors>
-    <DocumentationFile>bin\$(Configuration)\netstandard2.0\Roslynator.Testing.CSharp.Xunit.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\($AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
