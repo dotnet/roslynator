@@ -72,14 +72,13 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
 
     public async Task<Document> ApplyFixToDocumentAsync(Document document, Diagnostic diag, CancellationToken cancellationToken)
     {
-        var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
         if (!TryFindFirstAncestorOrSelf(
-                root,
-                diag.Location.SourceSpan,
-                out SyntaxNode node,
-                predicate: f =>
-                    f.IsKind(SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.ArrayCreationExpression)))
+            root,
+            diag.Location.SourceSpan,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.ArrayCreationExpression)))
         {
             return null;
         }
