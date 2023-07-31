@@ -60,7 +60,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         context.RegisterCodeFix(codeAction, diagnostic);
     }
 
-    public async Task<Document> ApplyFixToDocument(Document document, Diagnostic diag, CancellationToken cancellationToken)
+    public async Task<Document> ApplyFixToDocumentAsync(Document document, Diagnostic diag, CancellationToken cancellationToken)
     {
         var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
