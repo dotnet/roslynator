@@ -36,15 +36,15 @@ public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosti
     {
         var endRegionDirective = (EndRegionDirectiveTriviaSyntax)context.Node;
 
-        if (IsPrecededWithEmptyLineOrRegionDirective())
-            return;
+        if (!IsPrecededWithEmptyLineOrRegionDirective(endRegionDirective))
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.AddBlankLineBeforeEndRegionDirective,
+                Location.Create(endRegionDirective.SyntaxTree, endRegionDirective.Span.WithLength(0)));
+        }
 
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.AddBlankLineBeforeEndRegionDirective,
-            Location.Create(endRegionDirective.SyntaxTree, endRegionDirective.Span.WithLength(0)));
-
-        bool IsPrecededWithEmptyLineOrRegionDirective()
+        static bool IsPrecededWithEmptyLineOrRegionDirective(EndRegionDirectiveTriviaSyntax endRegionDirective)
         {
             SyntaxTrivia parentTrivia = endRegionDirective.ParentTrivia;
 
@@ -78,7 +78,10 @@ public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosti
                         return false;
                     }
 
-                    return en.Current.IsEndOfLineTrivia();
+                    return en.Current.IsKind(
+                        SyntaxKind.EndOfLineTrivia,
+                        SyntaxKind.RegionDirectiveTrivia,
+                        SyntaxKind.EndRegionDirectiveTrivia);
                 }
             }
 

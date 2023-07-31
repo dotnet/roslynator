@@ -93,7 +93,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                                     context.Document,
                                     ifStatement,
                                     (SyntaxKind)Enum.Parse(typeof(SyntaxKind), diagnostic.Properties["JumpKind"]),
-                                    recursive: true,
+                                    recursive: false,
                                     cancellationToken: ct);
                             },
                             GetEquivalenceKey(diagnostic));

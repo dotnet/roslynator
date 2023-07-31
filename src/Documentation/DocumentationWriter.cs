@@ -2001,7 +2001,9 @@ public abstract class DocumentationWriter : IDisposable
 
         string url = UrlProvider.GetLocalUrl(segments, containingFolders, target).Url;
 
-        return Options.RootDirectoryUrl + url;
+        return (string.IsNullOrEmpty(Options.RootDirectoryUrl))
+            ? url
+            : $"{Options.RootDirectoryUrl}/{url}";
 
         string GetLocalLinkTarget()
         {

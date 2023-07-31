@@ -41,7 +41,7 @@ public sealed class RefactoringTestData
     /// <summary>
     /// Gets text spans on which a code refactoring will be applied.
     /// </summary>
-    public ImmutableArray<TextSpan> Spans { get; private set; }
+    public ImmutableArray<TextSpan> Spans { get; }
 
     /// <summary>
     /// Gets additional source files.

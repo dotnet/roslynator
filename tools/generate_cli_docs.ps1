@@ -6,6 +6,6 @@ dotnet build "../src/CommandLine.DocumentationGenerator/CommandLine.Documentatio
  if(!$?) { Read-Host; Exit }
 
 & "../src/CommandLine.DocumentationGenerator/bin/Release/net7.0/Roslynator.CommandLine.DocumentationGenerator.exe" `
- "../docs/cli" `
+ build `
  "../src/CommandLine.DocumentationGenerator/data" `
  "help,migrate"

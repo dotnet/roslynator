@@ -648,8 +648,8 @@ internal class SymbolRenamer
                 newSolution = await Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(
                     CurrentSolution,
                     symbol,
+                    new Microsoft.CodeAnalysis.Rename.SymbolRenameOptions(RenameOverloads: true),
                     newName,
-                    default(Microsoft.CodeAnalysis.Options.OptionSet),
                     cancellationToken)
                     .ConfigureAwait(false);
             }

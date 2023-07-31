@@ -203,11 +203,21 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 struct C
 {
+    public C()
+    {
+        _f = 0;
+    }
+
     private int _f [|= 0|];
 }
 ", @"
 struct C
 {
+    public C()
+    {
+        _f = 0;
+    }
+
     private int _f;
 }
 ");

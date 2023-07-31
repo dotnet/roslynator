@@ -8,7 +8,6 @@
     <Version>$(RoslynatorCoreVersion)</Version>
     <AssemblyName>$(RoslynatorDllPrefix)Roslynator.VisualBasic.Workspaces</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
-    <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,8 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="$(RoslynAnalyzersVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(RoslynVersion)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,42 +7,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
-		Analyzers\Analyzers.xml = Analyzers\Analyzers.xml
+		..\.github\workflows\build.yml = ..\.github\workflows\build.yml
 		..\ChangeLog.md = ..\ChangeLog.md
-		CodeFixes\CodeFixes.xml = CodeFixes\CodeFixes.xml
-		..\docs\Configuration.md = ..\docs\Configuration.md
-		CodeFixes\Diagnostics.xml = CodeFixes\Diagnostics.xml
 		Directory.Build.props = Directory.Build.props
-		global.ruleset = global.ruleset
-		..\LICENSE.txt = ..\LICENSE.txt
 		..\README.md = ..\README.md
-		Refactorings\Refactorings.xml = Refactorings\Refactorings.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1DB0C05-3710-4B69-955F-2F46E330591B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{97FBDF71-F240-48F2-B29A-E6B27597E38B}"
-	ProjectSection(SolutionItems) = preProject
-		..\docs\AnalyzersVsRefactorings.md = ..\docs\AnalyzersVsRefactorings.md
-		..\docs\Configuration.md = ..\docs\Configuration.md
-		..\docs\HowToDebugRoslynator.md = ..\docs\HowToDebugRoslynator.md
-		..\docs\HowToFixAllDiagnostics.md = ..\docs\HowToFixAllDiagnostics.md
-		..\docs\HowToGenerateDocumentation.md = ..\docs\HowToGenerateDocumentation.md
-		..\docs\HowToUpdateDocumentation.md = ..\docs\HowToUpdateDocumentation.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{A16068FE-9E6C-45D2-8114-CC189600AFA2}"
-	ProjectSection(SolutionItems) = preProject
-		..\docs\cli\analyze-command.md = ..\docs\cli\analyze-command.md
-		..\docs\cli\fix-command.md = ..\docs\cli\fix-command.md
-		..\docs\cli\format-command.md = ..\docs\cli\format-command.md
-		..\docs\cli\generate-doc-command.md = ..\docs\cli\generate-doc-command.md
-		..\docs\cli\generate-doc-root-command.md = ..\docs\cli\generate-doc-root-command.md
-		..\docs\cli\lloc-command.md = ..\docs\cli\lloc-command.md
-		..\docs\cli\loc-command.md = ..\docs\cli\loc-command.md
-		..\docs\cli\README.md = ..\docs\cli\README.md
-		..\docs\cli\spellcheck-command.md = ..\docs\cli\spellcheck-command.md
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp", "CSharp\CSharp.csproj", "{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}"
 EndProject
@@ -123,6 +94,19 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Common", "Tests\Tests.Common\Tests.Common.csproj", "{D671D7C6-A4DD-41DC-A309-7892E008FD0A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing.CSharp.MSTest", "Tests\Testing.CSharp.MSTest\Testing.CSharp.MSTest.csproj", "{E08D9D15-E5D8-424F-A544-E00A5CB85F50}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationFileGenerator", "Tools\ConfigurationFileGenerator\ConfigurationFileGenerator.csproj", "{823EB01C-7766-424F-987F-FD844B568BC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Metadata", "Metadata", "{CED48D90-9F94-42C8-AFD9-F44DE84A661E}"
+	ProjectSection(SolutionItems) = preProject
+		Analyzers.xml = Analyzers.xml
+		CodeFixes.xml = CodeFixes.xml
+		ConfigOptions.xml = ConfigOptions.xml
+		Diagnostics.xml = Diagnostics.xml
+		Refactorings.xml = Refactorings.xml
+		Template.Analyzers.xml = Template.Analyzers.xml
+		Template.Refactorings.xml = Template.Refactorings.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -286,13 +270,15 @@ Global
 		{E08D9D15-E5D8-424F-A544-E00A5CB85F50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E08D9D15-E5D8-424F-A544-E00A5CB85F50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E08D9D15-E5D8-424F-A544-E00A5CB85F50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{823EB01C-7766-424F-987F-FD844B568BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{823EB01C-7766-424F-987F-FD844B568BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{823EB01C-7766-424F-987F-FD844B568BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{823EB01C-7766-424F-987F-FD844B568BC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{97FBDF71-F240-48F2-B29A-E6B27597E38B} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
-		{A16068FE-9E6C-45D2-8114-CC189600AFA2} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{7F6F6533-E406-4225-A435-DEE22C717F48} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{62ABFF60-67FC-4D33-91BD-ED1CD7DB5007} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
@@ -315,6 +301,8 @@ Global
 		{CA7B4345-0758-4AFA-ADCC-2563640614BD} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
 		{D671D7C6-A4DD-41DC-A309-7892E008FD0A} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
 		{E08D9D15-E5D8-424F-A544-E00A5CB85F50} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
+		{823EB01C-7766-424F-987F-FD844B568BC7} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
+		{CED48D90-9F94-42C8-AFD9-F44DE84A661E} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1943010-8F47-4798-9A3D-97BC24CF1AC4}
