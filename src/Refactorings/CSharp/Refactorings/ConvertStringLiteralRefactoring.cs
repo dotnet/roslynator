@@ -251,6 +251,6 @@ internal static class ConvertStringLiteralRefactoring
 
     private static LiteralExpressionSyntax ParseRegularStringLiteral(string text)
     {
-        return (LiteralExpressionSyntax)ParseExpression('"' + text + '"');
+        return (LiteralExpressionSyntax)ParseExpression("\"" + text + "\"");
     }
 }
