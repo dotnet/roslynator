@@ -117,6 +117,46 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task Test_TryParse_GenericType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        bool TryParse<T>(string? s, out T t)
+        {
+            t = default!;
+            return false;
+        }
+
+        TryParse<IntPtr>(""wasted"", out [|IntPtr|] i);
+    }
+}
+", @"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        bool TryParse<T>(string? s, out T t)
+        {
+            t = default!;
+            return false;
+        }
+
+        TryParse<IntPtr>(""wasted"", out var i);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
     public async Task TestNoDiagnostic_ForEach_DeclarationExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -235,6 +275,53 @@ class C
     {
         var type = typeof(int);
         Type? nullableType = type;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_InferredType_Invocation_IdentifierName()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        bool TryParse<T>(string? s, out T t)
+        {
+            t = default!;
+            return false;
+        }
+
+        TryParse(""wasted"", out IntPtr i);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_InferredType_Invocation_MemberAccessExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+#nullable enable
+
+static class C
+{
+    static void M()
+    {
+
+        C.TryParse(""wasted"", out IntPtr i);
+    }
+
+    static bool TryParse<T>(string? s, out T t)
+    {
+        t = default!;
+        return false;
     }
 }
 ");

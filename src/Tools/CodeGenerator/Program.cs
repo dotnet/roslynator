@@ -20,9 +20,10 @@ internal static class Program
 {
     private static void Main(string[] args)
     {
-        if (args is null || args.Length == 0)
+        if (args.Length == 0)
         {
-            args = new string[] { Environment.CurrentDirectory };
+            Console.WriteLine("Invalid number of arguments");
+            return;
         }
 
         string rootPath = args[0];

@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: dotnet tool install -g GitVersion.Tool --version 5.12.0
+      - run: dotnet tool install -g GitVersion.Tool --version 5.10.0
       - name: Resolve version
         id: version
         run: |
@@ -121,7 +121,7 @@ jobs:
       - run: (Get-Content source.extension.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension.vsixmanifest
       - run: dotnet restore
       - uses: microsoft/setup-msbuild@v1.1
-      - run: msbuild
+      - run: msbuild -m
       - uses: actions/upload-artifact@v3
         with:
           name: vs_extension
@@ -233,7 +233,7 @@ jobs:
         with:
           name: nuget_packages
           path: nuget_packages
-      - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json"
+      - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
         working-directory: nuget_packages
 
   publish_vs_code_extension:
