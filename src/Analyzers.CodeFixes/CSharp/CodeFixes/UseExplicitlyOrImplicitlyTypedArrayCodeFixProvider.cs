@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -26,8 +27,18 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
 
     public override FixAllProvider GetFixAllProvider()
     {
-        return UseExplicitlyOrImplicitlyTypedArrayFixAllProvider.Instance;
+        return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
     }
+
+    private async Task<Document> FixAllAsync(Document document, ImmutableArray<Diagnostic> diagnostics, CancellationToken cancellationToken)
+    {
+        foreach (var diagnostic in diagnostics.OrderByDescending(d => d.Location.SourceSpan.Start))
+        {
+            document = await ApplyFixToDocumentAsync(document, diagnostic, cancellationToken).ConfigureAwait(false);
+        }
+        return document;
+    }
+
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
@@ -54,7 +65,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
 
         CodeAction codeAction = CodeAction.Create(
             title,
-            ct => ApplyFixToDocument(document, diagnostic, ct),
+            ct => ApplyFixToDocumentAsync(document, diagnostic, ct),
             GetEquivalenceKey(diagnostic));
 
         context.RegisterCodeFix(codeAction, diagnostic);
