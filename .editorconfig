@@ -195,3 +195,7 @@ dotnet_diagnostic.IDE1006.severity = suggestion
 dotnet_diagnostic.RS1024.severity = none # Compare symbols correctly
 dotnet_diagnostic.RS1025.severity = none
 dotnet_diagnostic.RS1026.severity = none
+
+dotnet_diagnostic.CA1806.severity = none
+dotnet_diagnostic.CA1826.severity = none
+dotnet_diagnostic.CA2231.severity = none

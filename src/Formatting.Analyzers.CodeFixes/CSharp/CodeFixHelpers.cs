@@ -248,7 +248,7 @@ internal static class CodeFixHelpers
         StringBuilder sb = StringBuilderCache.GetInstance();
 
         if (!middle.Parent.IsKind(SyntaxKind.ConditionalAccessExpression))
-            sb.Append(" ");
+            sb.Append(' ');
 
         sb.Append(middle.ToString());
 
@@ -305,7 +305,7 @@ internal static class CodeFixHelpers
         sb.Append(middle.ToString());
 
         if (!middle.Parent.IsKind(SyntaxKind.ConditionalAccessExpression))
-            sb.Append(" ");
+            sb.Append(' ');
 
         return document.WithTextChangeAsync(
             TextSpan.FromBounds(left.Span.End, right.SpanStart),
@@ -460,7 +460,7 @@ internal static class CodeFixHelpers
                     {
                         var conditionalAccess = (ConditionalAccessExpressionSyntax)prevToken.Parent;
 
-                        if (expression.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(conditionalAccess.Expression.Span.End, conditionalAccess.OperatorToken.SpanStart)))
+                        if (expression.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(conditionalAccess.Expression.Span.End, conditionalAccess.OperatorToken.SpanStart), cancellationToken))
                             continue;
                     }
                 }
@@ -476,7 +476,7 @@ internal static class CodeFixHelpers
                 var conditionalAccess = (ConditionalAccessExpressionSyntax)node;
 
                 if (conditionalAccessOperatorNewLinePosition == NewLinePosition.Before
-                    || expression.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(conditionalAccess.Expression.Span.End, conditionalAccess.OperatorToken.SpanStart)))
+                    || expression.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(conditionalAccess.Expression.Span.End, conditionalAccess.OperatorToken.SpanStart), cancellationToken))
                 {
                     if (!SetIndentation(conditionalAccess.OperatorToken))
                         break;
@@ -1058,7 +1058,7 @@ internal static class CodeFixHelpers
                 if (nodes.Count == 1
                     && node is ArgumentSyntax argument)
                 {
-                    LambdaBlock lambdaBlock = GetLambdaBlock(argument, lines ??= argument.SyntaxTree.GetText().Lines);
+                    LambdaBlock lambdaBlock = GetLambdaBlock(argument, lines ??= argument.SyntaxTree.GetText(cancellationToken).Lines);
 
                     if (lambdaBlock.Block is not null)
                         increasedIndentation = indentationAnalysis.Indentation.ToString();
@@ -1084,7 +1084,7 @@ internal static class CodeFixHelpers
             if (!indentations.Any())
                 continue;
 
-            LambdaBlock lambdaBlock2 = GetLambdaBlock(node, lines ??= node.SyntaxTree.GetText().Lines);
+            LambdaBlock lambdaBlock2 = GetLambdaBlock(node, lines ??= node.SyntaxTree.GetText(cancellationToken).Lines);
 
             bool isLambdaBlockWithOpenBraceAtEndOfLine = lambdaBlock2.Token == indentations.Last().Token;
 

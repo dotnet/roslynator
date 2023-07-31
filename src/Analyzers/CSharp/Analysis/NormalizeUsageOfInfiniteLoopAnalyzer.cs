@@ -36,7 +36,7 @@ public sealed class NormalizeUsageOfInfiniteLoopAnalyzer : BaseDiagnosticAnalyze
         context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
     }
 
-    private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
     {
         InfiniteLoopStyle style = context.GetInfiniteLoopStyle();
 
@@ -62,7 +62,7 @@ public sealed class NormalizeUsageOfInfiniteLoopAnalyzer : BaseDiagnosticAnalyze
         }
     }
 
-    private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
     {
         InfiniteLoopStyle style = context.GetInfiniteLoopStyle();
 
@@ -90,7 +90,7 @@ public sealed class NormalizeUsageOfInfiniteLoopAnalyzer : BaseDiagnosticAnalyze
         }
     }
 
-    private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
     {
         var doStatement = (DoStatementSyntax)context.Node;
 

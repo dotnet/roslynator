@@ -12,7 +12,7 @@ internal static class CoreExtensions
 {
     public static StringBuilder AppendIndent(this StringBuilder sb, string value, int indentLength)
     {
-        if (value.Contains("\n"))
+        if (value.Contains('\n'))
         {
             var indent = new string(' ', indentLength);
 

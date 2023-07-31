@@ -91,7 +91,7 @@ internal abstract class DocumentationCommentRefactoring<TNode> where TNode : Syn
                     .Append(elementInfo.Name)
                     .Append("\"></")
                     .Append(elementName)
-                    .Append(">");
+                    .Append('>');
 
                 if (elementInfo.NewLinePosition == NewLinePosition.End)
                     sb.AppendLine();
