@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Roslynator.CSharp.CodeFixes;
 
-namespace Roslynator.CSharp.CSharp.CodeFixes;
+namespace Roslynator.CSharp.CodeFixes;
 
 public class UseExplicitlyOrImplicitlyTypedArrayFixAllProvider : DocumentBasedFixAllProvider
 {
