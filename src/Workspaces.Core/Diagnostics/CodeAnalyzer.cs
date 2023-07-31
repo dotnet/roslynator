@@ -191,7 +191,7 @@ internal class CodeAnalyzer
     {
         foreach (Diagnostic diagnostic in diagnostics)
         {
-            if (diagnostic.IsEffective(Options, project.CompilationOptions)
+            if (diagnostic.IsEffective(Options, project.CompilationOptions, cancellationToken)
                 && (Options.ReportNotConfigurable || !diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.NotConfigurable)))
             {
                 if (diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))

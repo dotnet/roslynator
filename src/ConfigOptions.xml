@@ -133,7 +133,7 @@
     <Description>Include/omit new line before 'while' in 'do' statement</Description>
   </Option>
   <Option Id="NullCheckStyle">
-    <Description>Use equality operator or pattern matchding as a null check</Description>
+    <Description>Use equality operator or pattern matching as a null check</Description>
     <Values>
       <Value>equality_operator</Value>
       <Value>pattern_matching</Value>

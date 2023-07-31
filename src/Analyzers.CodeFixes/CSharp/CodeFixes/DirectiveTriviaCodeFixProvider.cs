@@ -79,9 +79,9 @@ public sealed class DirectiveTriviaCodeFixProvider : BaseCodeFixProvider
                 && disableOrRestoreKind == directive2.DisableOrRestoreKeyword.Kind())
             {
                 if (addComma)
-                    sb.Append(",");
+                    sb.Append(',');
 
-                sb.Append(" ");
+                sb.Append(' ');
 
                 SeparatedSyntaxList<ExpressionSyntax> errorCodes = directive2.ErrorCodes;
                 sb.Append(errorCodes.ToString());

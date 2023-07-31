@@ -218,7 +218,7 @@ internal static class SyntaxFormatter
         ParameterListSyntax parameterList,
         CancellationToken cancellationToken = default)
     {
-        ParameterListSyntax newNode = WrapParameters(parameterList);
+        ParameterListSyntax newNode = WrapParameters(parameterList, cancellationToken);
 
         return document.ReplaceNodeAsync(parameterList, newNode, cancellationToken);
     }
@@ -256,7 +256,7 @@ internal static class SyntaxFormatter
         BracketedParameterListSyntax parameterList,
         CancellationToken cancellationToken = default)
     {
-        BracketedParameterListSyntax newNode = WrapParameters(parameterList);
+        BracketedParameterListSyntax newNode = WrapParameters(parameterList, cancellationToken);
 
         return document.ReplaceNodeAsync(parameterList, newNode, cancellationToken);
     }
@@ -335,7 +335,7 @@ internal static class SyntaxFormatter
         ArgumentListSyntax argumentList,
         CancellationToken cancellationToken = default)
     {
-        ArgumentListSyntax newNode = ToMultiLine(argumentList);
+        ArgumentListSyntax newNode = ToMultiLine(argumentList, cancellationToken);
 
         return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
     }

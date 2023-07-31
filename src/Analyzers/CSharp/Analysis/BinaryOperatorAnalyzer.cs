@@ -69,7 +69,7 @@ public sealed class BinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
 
     // x == double.NaN >>> double.IsNaN(x)
     // x != double.NaN >>> !double.IsNaN(x)
-    private void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
     {
         var simpleMemberAccess = (MemberAccessExpressionSyntax)context.Node;
 

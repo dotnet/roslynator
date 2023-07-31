@@ -23,7 +23,7 @@ internal static class AddNewLineBeforeStatementRefactoring
         {
             var block = (BlockSyntax)statement.Parent;
 
-            if (block.IsSingleLine(includeExteriorTrivia: false))
+            if (block.IsSingleLine(includeExteriorTrivia: false, cancellationToken: cancellationToken))
             {
                 SyntaxTriviaList triviaList = block.CloseBraceToken.LeadingTrivia
                     .Add(CSharpFactory.NewLine());
