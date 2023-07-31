@@ -70,6 +70,9 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Deterministic>true</Deterministic>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>1591</WarningsNotAsErrors>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(CI)' == 'true'">
