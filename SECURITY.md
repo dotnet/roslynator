@@ -13,9 +13,9 @@ Any vulnerabilities that affect older versions will be considered on a case-by-c
 
 ## Out of Support Versions
 
-| Version | Supported          |
-| ------- |:------------------:|
-| < 4.0   | :x:                |
+| Version | Supported |
+| ------- |:---------:|
+| < 4.0   | :x:       |
 | Extension for VS 2019 and older | :x: |
 
 ## Reporting a Vulnerability
