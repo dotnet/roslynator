@@ -22,7 +22,7 @@ jobs:
       version3: ${{ steps.version.outputs.version3 }}
       cliVersion: ${{ steps.cliVersion.outputs.version }}
     defaults:
-      run: 
+      run:
         working-directory: src
     steps:
       - uses: actions/checkout@v3
