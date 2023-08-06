@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -82,6 +83,18 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
             if (!semanticModel.HasConstantValue(value, cancellationToken))
                 return false;
+
+            // Changing a static field to a constant changes the meaning of that symbol in the decorators.
+            foreach (var identifierName in value.DescendantNodesAndSelf().OfType<IdentifierNameSyntax>())
+            {
+                if (identifierName.Identifier.ValueText != fieldSymbol.Name)
+                    continue;
+
+                if (identifierName.Parent is MemberAccessExpressionSyntax memberAccessExpression && memberAccessExpression.Name == identifierName)
+                    continue;
+
+                return false;
+            }
         }
 
         foreach (IMethodSymbol constructorSymbol in fieldSymbol.ContainingType.StaticConstructors)
