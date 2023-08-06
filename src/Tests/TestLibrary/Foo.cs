@@ -21,7 +21,5 @@ namespace Roslynator;
 
 class C
 {
-    void M()
-    {
-    }
+    private static readonly Double Double = Double.Epsilon;
 }
