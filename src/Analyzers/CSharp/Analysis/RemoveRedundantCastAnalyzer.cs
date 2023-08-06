@@ -73,7 +73,6 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
                 Location.Create(castExpression.SyntaxTree, castExpression.ParenthesesSpan()));
         }
 
-
         if (castExpression.Parent is not ParenthesizedExpressionSyntax parenthesizedExpression)
             return;
 
@@ -81,8 +80,6 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
 
         if (accessedExpression is null)
             return;
-
-
 
         if (expressionTypeSymbol.TypeKind == TypeKind.Interface)
             return;
