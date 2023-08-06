@@ -13,6 +13,28 @@ public class RCS1151RemoveRedundantCastTests : AbstractCSharpDiagnosticVerifier<
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantCast;
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    public async Task Test_CastToSameType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(int x)
+    {
+        var y = [|(int)|]x;
+    }
+}
+", @"
+class C
+{
+    void M(int x)
+    {
+        var y = x;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
     public async Task Test_CastToDerivedType()
     {
         await VerifyDiagnosticAndFixAsync(@"

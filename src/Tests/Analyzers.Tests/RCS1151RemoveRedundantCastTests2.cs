@@ -48,6 +48,49 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    public async Task Test_ChainedCast()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class X : List<int>
+{
+}
+
+class C
+{
+    void M()
+    {
+        X x = new X(){1,2};
+
+        IEnumerable<int> y = x
+            .[|Cast<int>()|]
+            .Where(x => x > 1);
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class X : List<int>
+{
+}
+
+class C
+{
+    void M()
+    {
+        X x = new X(){1,2};
+
+        IEnumerable<int> y = x
+            .Where(x => x > 1);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
     public async Task TestNoDiagnostic_CastFromObject()
     {
         await VerifyNoDiagnosticAsync(@"

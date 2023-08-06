@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Append `?` to nullable reference types.
 - Fix [RCS1179](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1179.md) ([#1129](https://github.com/JosefPihrt/Roslynator/pull/1129)).
 - Fix [RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md) ([#1139](https://github.com/JosefPihrt/Roslynator/pull/1139)).
+- Increase the number of cases considered by [RCS1151](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1151.md) ([#1152](https://github.com/JosefPihrt/Roslynator/pull/1152)).
 
 ## [4.3.0] - 2023-04-24
 

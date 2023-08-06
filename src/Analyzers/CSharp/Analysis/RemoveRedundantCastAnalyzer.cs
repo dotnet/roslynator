@@ -42,14 +42,6 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
         if (castExpression.ContainsDiagnostics)
             return;
 
-        if (castExpression.Parent is not ParenthesizedExpressionSyntax parenthesizedExpression)
-            return;
-
-        ExpressionSyntax accessedExpression = GetAccessedExpression(parenthesizedExpression.Parent);
-
-        if (accessedExpression is null)
-            return;
-
         TypeSyntax type = castExpression.Type;
 
         if (type is null)
@@ -72,6 +64,25 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
 
         if (expressionTypeSymbol?.IsErrorType() != false)
             return;
+
+        if (SymbolEqualityComparer.Default.Equals(typeSymbol, expressionTypeSymbol))
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.RemoveRedundantCast,
+                Location.Create(castExpression.SyntaxTree, castExpression.ParenthesesSpan()));
+        }
+
+
+        if (castExpression.Parent is not ParenthesizedExpressionSyntax parenthesizedExpression)
+            return;
+
+        ExpressionSyntax accessedExpression = GetAccessedExpression(parenthesizedExpression.Parent);
+
+        if (accessedExpression is null)
+            return;
+
+
 
         if (expressionTypeSymbol.TypeKind == TypeKind.Interface)
             return;
@@ -238,12 +249,30 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
         if (typeArgument is null)
             return;
 
-        var memberAccessExpressionType = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken) as INamedTypeSymbol;
 
-        if (memberAccessExpressionType?.OriginalDefinition.IsIEnumerableOfT() != true)
+        if (semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken) is not INamedTypeSymbol memberAccessExpressionType)
             return;
 
-        if (!SymbolEqualityComparer.IncludeNullability.Equals(typeArgument, memberAccessExpressionType.TypeArguments[0]))
+        ITypeSymbol genericParameter;
+        if (memberAccessExpressionType.OriginalDefinition.IsIEnumerableOfT())
+        {
+            genericParameter = memberAccessExpressionType.TypeArguments[0];
+        }
+        else
+        {
+            // If the type implements IEnumerable<T> and the chained method receives an IEnumerable<T> then there is no need ot cast.
+            if (!memberAccessExpressionType.OriginalDefinition.Implements(SpecialType.System_Collections_Generic_IEnumerable_T, allInterfaces: true)
+                || invocationExpression.Parent is not MemberAccessExpressionSyntax { Parent: InvocationExpressionSyntax chainedMethodInvocation }
+                || semanticModel.GetSymbol(chainedMethodInvocation, cancellationToken) is not IMethodSymbol { ReceiverType: INamedTypeSymbol chainedMethodReceiverType }
+                || chainedMethodReceiverType.OriginalDefinition.IsIEnumerableOfT() != true)
+            {
+                return;
+            }
+
+            genericParameter = chainedMethodReceiverType.TypeArguments[0];
+        }
+
+        if (!SymbolEqualityComparer.IncludeNullability.Equals(typeArgument, genericParameter))
             return;
 
         if (invocationExpression.ContainsDirectives(TextSpan.FromBounds(invocationInfo.Expression.Span.End, invocationExpression.Span.End)))

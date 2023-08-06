@@ -17,14 +17,17 @@ internal static class RemoveRedundantCastRefactoring
         CastExpressionSyntax castExpression,
         CancellationToken cancellationToken)
     {
-        var parenthesizedExpression = (ParenthesizedExpressionSyntax)castExpression.Parent;
+        if (castExpression.Parent is ParenthesizedExpressionSyntax parenthesizedExpression)
+        {
+            ParenthesizedExpressionSyntax newNode = parenthesizedExpression
+                .WithExpression(castExpression.Expression.WithTriviaFrom(castExpression))
+                .WithFormatterAnnotation()
+                .WithSimplifierAnnotation();
 
-        ParenthesizedExpressionSyntax newNode = parenthesizedExpression
-            .WithExpression(castExpression.Expression.WithTriviaFrom(castExpression))
-            .WithFormatterAnnotation()
-            .WithSimplifierAnnotation();
+            return document.ReplaceNodeAsync(parenthesizedExpression, newNode, cancellationToken);
+        }
 
-        return document.ReplaceNodeAsync(parenthesizedExpression, newNode, cancellationToken);
+        return document.ReplaceNodeAsync(castExpression, castExpression.Expression.WithTriviaFrom(castExpression), cancellationToken);
     }
 
     public static Task<Document> RefactorAsync(
