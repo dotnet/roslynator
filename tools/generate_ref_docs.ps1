@@ -1,4 +1,4 @@
- dotnet restore "../src/CommandLine.sln" -v minimal /m
+dotnet restore "../src/CommandLine.sln" -v minimal /m
 dotnet build "../src/CommandLine.sln" --no-restore -c Release -v minimal /m
 
 $roslynatorExe="../src/CommandLine/bin/Release/net7.0/Roslynator"
