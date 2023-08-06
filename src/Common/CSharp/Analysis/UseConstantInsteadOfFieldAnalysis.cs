@@ -85,7 +85,7 @@ internal static class UseConstantInsteadOfFieldAnalysis
                 return false;
 
             // Changing a static field to a constant changes the meaning of that symbol in the decorators.
-            foreach (var identifierName in value.DescendantNodesAndSelf().OfType<IdentifierNameSyntax>())
+            foreach (IdentifierNameSyntax identifierName in value.DescendantNodesAndSelf().OfType<IdentifierNameSyntax>())
             {
                 if (identifierName.Identifier.ValueText != fieldSymbol.Name)
                     continue;
