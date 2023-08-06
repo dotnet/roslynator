@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
@@ -10,146 +9,93 @@ namespace Roslynator.Documentation;
 
 public class DocumentationOptions
 {
-    private readonly ImmutableArray<MetadataName> _ignoredMetadataNames;
+    private int _maxDerivedTypes = DefaultValues.MaxDerivedTypes;
+    private CommonDocumentationParts _ignoredCommonParts = CommonDocumentationParts.None;
 
-    public DocumentationOptions(
-        string rootFileHeading,
-        IEnumerable<string> ignoredNames = null,
-        string preferredCultureName = null,
-        string rootDirectoryUrl = null,
-        int maxDerivedTypes = DefaultValues.MaxDerivedTypes,
-        bool includeSystemNamespace = DefaultValues.IncludeSystemNamespace,
-        bool placeSystemNamespaceFirst = DefaultValues.PlaceSystemNamespaceFirst,
-        bool wrapDeclarationBaseTypes = DefaultValues.FormatDeclarationBaseList,
-        bool wrapDeclarationConstraints = DefaultValues.FormatDeclarationConstraints,
-        bool markObsolete = DefaultValues.MarkObsolete,
-        bool includeMemberInheritedFrom = DefaultValues.IncludeMemberInheritedFrom,
-        bool includeMemberOverrides = DefaultValues.IncludeMemberOverrides,
-        bool includeMemberImplements = DefaultValues.IncludeMemberImplements,
-        bool includeMemberConstantValue = DefaultValues.IncludeMemberConstantValue,
-        bool includeInheritedInterfaceMembers = DefaultValues.IncludeInheritedInterfaceMembers,
-        bool includeAllDerivedTypes = DefaultValues.IncludeAllDerivedTypes,
-        bool includeAttributeArguments = DefaultValues.IncludeAttributeArguments,
-        bool includeInheritedAttributes = DefaultValues.IncludeInheritedAttributes,
-        bool omitIEnumerable = DefaultValues.OmitIEnumerable,
-        DocumentationDepth depth = DefaultValues.Depth,
-        InheritanceStyle inheritanceStyle = DefaultValues.InheritanceStyle,
-        RootDocumentationParts ignoredRootParts = RootDocumentationParts.None,
-        NamespaceDocumentationParts ignoredNamespaceParts = NamespaceDocumentationParts.None,
-        TypeDocumentationParts ignoredTypeParts = TypeDocumentationParts.None,
-        MemberDocumentationParts ignoredMemberParts = MemberDocumentationParts.None,
-        CommonDocumentationParts ignoredCommonParts = CommonDocumentationParts.None,
-        SymbolTitleParts ignoredTitleParts = SymbolTitleParts.None,
-        IncludeContainingNamespaceFilter includeContainingNamespaceFilter = IncludeContainingNamespaceFilter.None,
-        FilesLayout filesLayout = FilesLayout.Hierarchical,
-        bool scrollToContent = DefaultValues.ScrollToContent)
+    public List<MetadataName> IgnoredNames { get; } = new();
+
+    public string RootFileHeading { get; set; }
+
+    public string PreferredCultureName { get; set; }
+
+    public string RootDirectoryUrl { get; set; }
+
+    public int MaxDerivedTypes
     {
-        if (maxDerivedTypes < 0)
-            throw new ArgumentOutOfRangeException(nameof(maxDerivedTypes), maxDerivedTypes, "Maximum number of derived items must be greater than or equal to 0.");
-
-        _ignoredMetadataNames = ignoredNames?.Select(name => MetadataName.Parse(name)).ToImmutableArray() ?? default;
-
-        IgnoredNames = ignoredNames?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-        RootFileHeading = rootFileHeading;
-        PreferredCultureName = preferredCultureName;
-        RootDirectoryUrl = rootDirectoryUrl?.Trim('/');
-        MaxDerivedTypes = maxDerivedTypes;
-        IncludeSystemNamespace = includeSystemNamespace;
-        PlaceSystemNamespaceFirst = placeSystemNamespaceFirst;
-        WrapDeclarationBaseTypes = wrapDeclarationBaseTypes;
-        WrapDeclarationConstraints = wrapDeclarationConstraints;
-        MarkObsolete = markObsolete;
-        IncludeMemberInheritedFrom = includeMemberInheritedFrom;
-        IncludeMemberOverrides = includeMemberOverrides;
-        IncludeMemberImplements = includeMemberImplements;
-        IncludeMemberConstantValue = includeMemberConstantValue;
-        IncludeInheritedInterfaceMembers = includeInheritedInterfaceMembers;
-        IncludeAllDerivedTypes = includeAllDerivedTypes;
-        IncludeAttributeArguments = includeAttributeArguments;
-        IncludeInheritedAttributes = includeInheritedAttributes;
-        OmitIEnumerable = omitIEnumerable;
-        Depth = depth;
-        InheritanceStyle = inheritanceStyle;
-        IgnoredRootParts = ignoredRootParts;
-        IgnoredNamespaceParts = ignoredNamespaceParts;
-        IgnoredTypeParts = ignoredTypeParts;
-        IgnoredMemberParts = ignoredMemberParts;
-        IgnoredCommonParts = ignoredCommonParts;
-        IgnoredTitleParts = ignoredTitleParts;
-        IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
-        FilesLayout = filesLayout;
-        ScrollToContent = scrollToContent;
-
-        if ((IgnoredCommonParts & CommonDocumentationParts.Content) != 0)
+        get { return _maxDerivedTypes; }
+        set
         {
-            IgnoredRootParts |= RootDocumentationParts.Content;
-            IgnoredNamespaceParts |= NamespaceDocumentationParts.Content;
-            IgnoredTypeParts |= TypeDocumentationParts.Content;
-            IgnoredMemberParts |= MemberDocumentationParts.Content;
+            if (value < 0)
+                throw new ArgumentOutOfRangeException(nameof(value), value, "Maximum number of derived items must be greater than or equal to 0.");
+
+            _maxDerivedTypes = value;
         }
     }
 
-    public ImmutableArray<string> IgnoredNames { get; }
+    public bool IncludeSystemNamespace { get; set; } = DefaultValues.IncludeSystemNamespace;
 
-    public string RootFileHeading { get; }
+    public bool PlaceSystemNamespaceFirst { get; set; } = DefaultValues.PlaceSystemNamespaceFirst;
 
-    public string PreferredCultureName { get; }
+    public bool WrapDeclarationBaseTypes { get; set; } = DefaultValues.WrapDeclarationBaseTypes;
 
-    public string RootDirectoryUrl { get; }
+    public bool WrapDeclarationConstraints { get; set; } = DefaultValues.WrapDeclarationConstraints;
 
-    public int MaxDerivedTypes { get; }
+    public bool MarkObsolete { get; set; } = DefaultValues.MarkObsolete;
 
-    public bool IncludeClassHierarchy { get; }
+    public bool IncludeMemberInheritedFrom { get; set; } = DefaultValues.IncludeMemberInheritedFrom;
 
-    public bool IncludeSystemNamespace { get; }
+    public bool IncludeMemberOverrides { get; set; } = DefaultValues.IncludeMemberOverrides;
 
-    public bool PlaceSystemNamespaceFirst { get; }
+    public bool IncludeMemberImplements { get; set; } = DefaultValues.IncludeMemberImplements;
 
-    public bool WrapDeclarationBaseTypes { get; }
+    public bool IncludeMemberConstantValue { get; set; } = DefaultValues.IncludeMemberConstantValue;
 
-    public bool WrapDeclarationConstraints { get; }
+    public bool IncludeInheritedInterfaceMembers { get; set; } = DefaultValues.IncludeInheritedInterfaceMembers;
 
-    public bool MarkObsolete { get; }
+    public bool IncludeAllDerivedTypes { get; set; } = DefaultValues.IncludeAllDerivedTypes;
 
-    public bool IncludeMemberInheritedFrom { get; }
+    public bool IncludeAttributeArguments { get; set; } = DefaultValues.IncludeAttributeArguments;
 
-    public bool IncludeMemberOverrides { get; }
+    public bool IncludeInheritedAttributes { get; set; } = DefaultValues.IncludeInheritedAttributes;
 
-    public bool IncludeMemberImplements { get; }
+    public bool OmitIEnumerable { get; set; } = DefaultValues.OmitIEnumerable;
 
-    public bool IncludeMemberConstantValue { get; }
+    public DocumentationDepth Depth { get; set; } = DefaultValues.Depth;
 
-    public bool IncludeInheritedInterfaceMembers { get; }
+    public InheritanceStyle InheritanceStyle { get; set; } = DefaultValues.InheritanceStyle;
 
-    public bool IncludeAllDerivedTypes { get; }
+    public RootDocumentationParts IgnoredRootParts { get; set; } = RootDocumentationParts.None;
 
-    public bool IncludeAttributeArguments { get; }
+    public NamespaceDocumentationParts IgnoredNamespaceParts { get; set; } = NamespaceDocumentationParts.None;
 
-    public bool IncludeInheritedAttributes { get; }
+    public TypeDocumentationParts IgnoredTypeParts { get; set; } = TypeDocumentationParts.None;
 
-    public bool OmitIEnumerable { get; }
+    public MemberDocumentationParts IgnoredMemberParts { get; set; } = MemberDocumentationParts.None;
 
-    public DocumentationDepth Depth { get; }
+    public CommonDocumentationParts IgnoredCommonParts
+    {
+        get { return _ignoredCommonParts; }
+        set
+        {
+            if ((value & CommonDocumentationParts.Content) != 0)
+            {
+                IgnoredRootParts |= RootDocumentationParts.Content;
+                IgnoredNamespaceParts |= NamespaceDocumentationParts.Content;
+                IgnoredTypeParts |= TypeDocumentationParts.Content;
+                IgnoredMemberParts |= MemberDocumentationParts.Content;
+            }
 
-    public InheritanceStyle InheritanceStyle { get; }
+            _ignoredCommonParts = value;
+        }
+    }
 
-    public RootDocumentationParts IgnoredRootParts { get; }
+    public SymbolTitleParts IgnoredTitleParts { get; set; } = SymbolTitleParts.None;
 
-    public NamespaceDocumentationParts IgnoredNamespaceParts { get; }
+    public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; set; } = IncludeContainingNamespaceFilter.None;
 
-    public TypeDocumentationParts IgnoredTypeParts { get; }
+    public FilesLayout FilesLayout { get; set; } = FilesLayout.Hierarchical;
 
-    public MemberDocumentationParts IgnoredMemberParts { get; }
-
-    public CommonDocumentationParts IgnoredCommonParts { get; }
-
-    public SymbolTitleParts IgnoredTitleParts { get; }
-
-    public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
-
-    public FilesLayout FilesLayout { get; }
-
-    public bool ScrollToContent { get; }
+    public bool ScrollToContent { get; set; } = DefaultValues.ScrollToContent;
 
     internal bool IncludeContainingNamespace(IncludeContainingNamespaceFilter filter)
     {
@@ -158,18 +104,18 @@ public class DocumentationOptions
 
     internal bool ShouldBeIgnored(INamedTypeSymbol typeSymbol)
     {
-        foreach (MetadataName metadataName in _ignoredMetadataNames)
+        foreach (MetadataName ignoredName in IgnoredNames)
         {
-            if (typeSymbol.HasMetadataName(metadataName))
+            if (typeSymbol.HasMetadataName(ignoredName))
                 return true;
 
-            if (!metadataName.ContainingTypes.Any())
+            if (!ignoredName.ContainingTypes.Any())
             {
                 INamespaceSymbol n = typeSymbol.ContainingNamespace;
 
                 while (n is not null)
                 {
-                    if (n.HasMetadataName(metadataName))
+                    if (n.HasMetadataName(ignoredName))
                         return true;
 
                     n = n.ContainingNamespace;
@@ -183,8 +129,8 @@ public class DocumentationOptions
     internal static class DefaultValues
     {
         public const DocumentationDepth Depth = DocumentationDepth.Member;
-        public const bool FormatDeclarationBaseList = true;
-        public const bool FormatDeclarationConstraints = true;
+        public const bool WrapDeclarationBaseTypes = true;
+        public const bool WrapDeclarationConstraints = true;
         public const InheritanceStyle InheritanceStyle = Documentation.InheritanceStyle.Horizontal;
         public const bool IncludeAllDerivedTypes = false;
         public const bool IncludeAttributeArguments = true;
@@ -200,7 +146,6 @@ public class DocumentationOptions
         public const bool PlaceSystemNamespaceFirst = true;
         public const bool IncludeSystemNamespace = false;
         public const bool ScrollToContent = false;
-
         public const RootDocumentationParts IgnoredRootParts = RootDocumentationParts.None;
         public const NamespaceDocumentationParts IgnoredNamespaceParts = NamespaceDocumentationParts.None;
         public const TypeDocumentationParts IgnoredTypeParts = TypeDocumentationParts.None;

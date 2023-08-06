@@ -135,7 +135,17 @@ internal static class XmlExtensions
 
                                         if (symbol is not null)
                                         {
-                                            writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                            if (symbol.IsKind(SymbolKind.Field)
+                                                && symbol.ContainingType?.TypeKind == TypeKind.Enum)
+                                            {
+                                                writer.WriteLink(symbol.ContainingType, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                                writer.WriteString(".");
+                                                writer.WriteSymbol(symbol, DocumentationDisplayFormats.SimpleDeclaration, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                            }
+                                            else
+                                            {
+                                                writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                            }
                                         }
                                         else
                                         {
