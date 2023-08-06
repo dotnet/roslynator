@@ -616,4 +616,80 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task Test_WhenIsExpressionCsharp8()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(object o)
+    {
+        [|if|] (o is string)
+        {
+            M2();
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+", @"
+class C
+{
+    void M(object o)
+    {
+        if (!(o is string))
+        {
+            return;
+        }
+
+        M2();
+    }
+
+    void M2()
+    {
+    }
+}
+", options: WellKnownCSharpTestOptions.Default_CSharp8);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task Test_WhenIsExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(object o)
+    {
+        [|if|] (o is string)
+        {
+            M2();
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+", @"
+class C
+{
+    void M(object o)
+    {
+        if (o is not string)
+        {
+            return;
+        }
+
+        M2();
+    }
+
+    void M2()
+    {
+    }
+}
+");
+    }
 }

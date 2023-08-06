@@ -128,13 +128,15 @@ public class SyntaxLogicalInverter
             case SyntaxKind.IsExpression:
                 {
                     var isExpression = (BinaryExpressionSyntax)expression;
-
-                    return IsPatternExpression(
-                        isExpression.Left,
-                        isExpression.OperatorToken.WithTrailingTrivia(Space),
-                        UnaryPattern(
-                            Token(SyntaxKind.NotKeyword).WithTrailingTrivia(isExpression.OperatorToken.TrailingTrivia),
-                            TypePattern((TypeSyntax)isExpression.Right)));
+                    return (Options.UseNotPattern)
+                        ? IsPatternExpression(
+                            isExpression.Left,
+                            isExpression.OperatorToken.WithTrailingTrivia(Space),
+                            UnaryPattern(
+                                Token(SyntaxKind.NotKeyword)
+                                    .WithTrailingTrivia(isExpression.OperatorToken.TrailingTrivia),
+                                TypePattern((TypeSyntax)isExpression.Right)))
+                        : DefaultInvert(expression);
                 }
             case SyntaxKind.AsExpression:
                 {
