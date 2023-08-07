@@ -80,7 +80,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
-    public async Task Test_AliasQualifiedNAme()
+    public async Task Test_AliasQualifiedName()
     {
         await VerifyDiagnosticAndFixAsync(@"
 [|using s = System;|]
