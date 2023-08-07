@@ -150,4 +150,25 @@ class C
 }
 ");
     }
+    
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+    internal async Task TestNoDiagnostic_ChainedCastToSubtype()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IEnumerable<object> objs = new List<object>();
+
+        IEnumerable<C> cs = objs
+            .Cast<C>()
+            .Select(x => x);
+    }
+}
+");
+    }
 }

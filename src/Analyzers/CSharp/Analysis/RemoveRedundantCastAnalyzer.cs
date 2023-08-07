@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -255,18 +256,22 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
         {
             genericParameter = memberAccessExpressionType.TypeArguments[0];
         }
+        else if (invocationExpression.Parent is not MemberAccessExpressionSyntax { Parent: InvocationExpressionSyntax chainedMethodInvocation }
+                 || semanticModel.GetSymbol(chainedMethodInvocation, cancellationToken) is not IMethodSymbol { ReceiverType: INamedTypeSymbol chainedMethodReceiverType }
+                 || chainedMethodReceiverType.OriginalDefinition.IsIEnumerableOfT() != true)
+        {
+            return;
+        }
         else
         {
             // If the type implements IEnumerable<T> and the chained method receives an IEnumerable<T> then there is no need ot cast.
-            if (!memberAccessExpressionType.OriginalDefinition.Implements(SpecialType.System_Collections_Generic_IEnumerable_T, allInterfaces: true)
-                || invocationExpression.Parent is not MemberAccessExpressionSyntax { Parent: InvocationExpressionSyntax chainedMethodInvocation }
-                || semanticModel.GetSymbol(chainedMethodInvocation, cancellationToken) is not IMethodSymbol { ReceiverType: INamedTypeSymbol chainedMethodReceiverType }
-                || chainedMethodReceiverType.OriginalDefinition.IsIEnumerableOfT() != true)
-            {
-                return;
-            }
+            INamedTypeSymbol iEnumerableInterface = memberAccessExpressionType.OriginalDefinition.AllInterfaces
+                .FirstOrDefault(implementedInterface => implementedInterface.OriginalDefinition.IsIEnumerableOfT());
 
-            genericParameter = chainedMethodReceiverType.TypeArguments[0];
+            if(iEnumerableInterface is null)
+                return;
+
+            genericParameter = iEnumerableInterface.TypeArguments[0];
         }
 
         if (!SymbolEqualityComparer.IncludeNullability.Equals(typeArgument, genericParameter))
