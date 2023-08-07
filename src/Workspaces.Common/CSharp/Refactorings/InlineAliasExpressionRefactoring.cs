@@ -68,6 +68,20 @@ internal static class InlineAliasExpressionRefactoring
 
         public CancellationToken CancellationToken { get; }
 
+        public override SyntaxNode VisitAliasQualifiedName(AliasQualifiedNameSyntax node)
+        {
+            IAliasSymbol aliasSymbol = SemanticModel.GetAliasInfo(node.Alias, CancellationToken);
+            if (SymbolEqualityComparer.Default.Equals(aliasSymbol, AliasSymbol) 
+                && Replacement is NameSyntax replacementName)
+            {
+                return SyntaxFactory.QualifiedName(replacementName, node.Name)
+                    .WithTriviaFrom(node)
+                    .WithSimplifierAnnotation();
+            }
+
+            return base.VisitAliasQualifiedName(node);
+        }
+
         public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
         {
             IAliasSymbol aliasSymbol = SemanticModel.GetAliasInfo(node, CancellationToken);
