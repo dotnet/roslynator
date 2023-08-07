@@ -16,10 +16,6 @@ namespace Roslynator.CSharp.Refactorings;
 
 internal static class ConvertStringLiteralRefactoring
 {
-    private const string Quote = "\"";
-    private const string AmpersandQuote = "@" + Quote;
-    private const string Backslash = @"\";
-
     public static Task<Document> ConvertToInterpolatedStringAsync(
         Document document,
         LiteralExpressionSyntax literalExpression,
@@ -129,9 +125,9 @@ internal static class ConvertStringLiteralRefactoring
     {
         string s = literalExpression.Token.ValueText;
 
-        s = s.Replace(Quote, Quote + Quote);
+        s = s.Replace("\"", "\"\"");
 
-        var newNode = (LiteralExpressionSyntax)ParseExpression(AmpersandQuote + s + Quote)
+        var newNode = (LiteralExpressionSyntax)ParseExpression("@\"" + s + "\"")
             .WithTriviaFrom(literalExpression);
 
         return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
@@ -147,14 +143,12 @@ internal static class ConvertStringLiteralRefactoring
             {
                 case '"':
                     {
-                        sb.Append(Backslash);
-                        sb.Append(Quote);
+                        sb.Append("\\\"");
                         break;
                     }
                 case '\\':
                     {
-                        sb.Append(Backslash);
-                        sb.Append(Backslash);
+                        sb.Append(@"\\");
                         break;
                     }
                 case '\r':
@@ -190,14 +184,12 @@ internal static class ConvertStringLiteralRefactoring
             {
                 case '"':
                     {
-                        sb.Append(Backslash);
-                        sb.Append(Quote);
+                        sb.Append("\\\"");
                         break;
                     }
                 case '\\':
                     {
-                        sb.Append(Backslash);
-                        sb.Append(Backslash);
+                        sb.Append(@"\\");
                         break;
                     }
                 case '\r':
@@ -259,6 +251,6 @@ internal static class ConvertStringLiteralRefactoring
 
     private static LiteralExpressionSyntax ParseRegularStringLiteral(string text)
     {
-        return (LiteralExpressionSyntax)ParseExpression(Quote + text + Quote);
+        return (LiteralExpressionSyntax)ParseExpression("\"" + text + "\"");
     }
 }

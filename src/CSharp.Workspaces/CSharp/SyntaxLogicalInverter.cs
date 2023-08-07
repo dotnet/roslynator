@@ -338,6 +338,7 @@ public class SyntaxLogicalInverter
         return null;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
     internal BinaryExpressionSyntax InvertBinaryExpression(BinaryExpressionSyntax binaryExpression)
     {
         SyntaxToken operatorToken = InvertBinaryOperatorToken(binaryExpression.OperatorToken);

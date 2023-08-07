@@ -1874,9 +1874,11 @@ public static class CSharpFactory
     public static UsingDirectiveSyntax UsingStaticDirective(NameSyntax name)
     {
         return UsingDirective(
+            Token(SyntaxKind.UsingKeyword),
             Token(SyntaxKind.StaticKeyword),
             default(NameEqualsSyntax),
-            name);
+            name,
+            SemicolonToken());
     }
 
     public static UsingDirectiveSyntax UsingStaticDirective(SyntaxToken usingKeyword, SyntaxToken staticKeyword, NameSyntax name, SyntaxToken semicolonToken)

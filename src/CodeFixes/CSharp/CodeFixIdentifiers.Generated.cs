@@ -79,7 +79,7 @@ namespace Roslynator.CSharp
         public const string ReplaceAsExpressionWithCastExpression = CodeFixIdentifier.CodeFixIdPrefix + "0074";
         public const string RemoveConditionThatIsAlwaysEqualToTrueOrFalse = CodeFixIdentifier.CodeFixIdPrefix + "0075";
         public const string IntroduceField = CodeFixIdentifier.CodeFixIdPrefix + "0076";
-        public const string ReplaceElementAccessWithInvocation = CodeFixIdentifier.CodeFixIdPrefix + "0077";
+        public const string UseInvocationInsteadOfIndexer = CodeFixIdentifier.CodeFixIdPrefix + "0077";
         public const string AddVariableType = CodeFixIdentifier.CodeFixIdPrefix + "0078";
         public const string ReplaceBreakWithContinue = CodeFixIdentifier.CodeFixIdPrefix + "0079";
         public const string ChangeMemberTypeAccordingToReturnExpression = CodeFixIdentifier.CodeFixIdPrefix + "0080";

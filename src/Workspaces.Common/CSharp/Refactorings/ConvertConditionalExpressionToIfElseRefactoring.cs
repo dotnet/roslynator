@@ -174,7 +174,7 @@ internal static class ConvertConditionalExpressionToIfElseRefactoring
         {
             newLocalDeclaration = newLocalDeclaration.ReplaceNode(
                 type,
-                semanticModel.GetTypeSymbol(conditionalExpression)
+                semanticModel.GetTypeSymbol(conditionalExpression, cancellationToken)
                     .ToMinimalTypeSyntax(semanticModel, type.SpanStart)
                     .WithTriviaFrom(type));
         }

@@ -187,7 +187,7 @@ internal static class StatementRefactoring
 
             if (index == 0
                 && statementsInfo.Parent is BlockSyntax block
-                && block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
+                && block.OpenBraceToken.GetFullSpanEndLine(cancellationToken: cancellationToken) == statement.GetFullSpanStartLine(cancellationToken: cancellationToken))
             {
                 statement = statement.PrependToLeadingTrivia(CSharpFactory.NewLine());
             }

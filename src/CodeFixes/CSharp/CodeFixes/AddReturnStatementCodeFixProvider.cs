@@ -120,7 +120,7 @@ public sealed class AddReturnStatementCodeFixProvider : CompilerDiagnosticCodeFi
         }
     }
 
-    private void ComputeCodeFix(
+    private static void ComputeCodeFix(
         CodeFixContext context,
         Diagnostic diagnostic,
         TypeSyntax type,
@@ -136,7 +136,7 @@ public sealed class AddReturnStatementCodeFixProvider : CompilerDiagnosticCodeFi
         }
     }
 
-    private void ComputeCodeFix(
+    private static void ComputeCodeFix(
         CodeFixContext context,
         Diagnostic diagnostic,
         ITypeSymbol typeSymbol,

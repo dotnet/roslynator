@@ -41,7 +41,7 @@ internal sealed class MicrosoftDocsUrlProvider : ExternalUrlProvider
 
         for (int i = 1; i < segments.Length; i++)
         {
-            sb.Append(".");
+            sb.Append('.');
             sb.Append(segments[i].ToLowerInvariant());
         }
 

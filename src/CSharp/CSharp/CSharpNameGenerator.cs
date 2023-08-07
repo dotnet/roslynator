@@ -12,14 +12,9 @@ namespace Roslynator.CSharp;
 /// <summary>
 /// Provides methods to obtain an unique C# identifier.
 /// </summary>
-internal class CSharpNameGenerator
+internal static class CSharpNameGenerator
 {
     private static readonly NameGenerator _generator = new NumberSuffixCSharpNameGenerator();
-
-    /// <summary>
-    /// Default implementation of <see cref="CSharpNameGenerator"/> that adds number suffix to ensure uniqueness.
-    /// </summary>
-    public static CSharpNameGenerator Default { get; } = new();
 
     /// <summary>
     /// Returns a name that will be unique at the specified position.
@@ -27,7 +22,7 @@ internal class CSharpNameGenerator
     /// <param name="baseName"></param>
     /// <param name="semanticModel"></param>
     /// <param name="position"></param>
-    public string EnsureUniqueName(string baseName, SemanticModel semanticModel, int position)
+    public static string EnsureUniqueName(string baseName, SemanticModel semanticModel, int position)
     {
         return _generator.EnsureUniqueName(baseName, semanticModel, position);
     }
@@ -37,7 +32,7 @@ internal class CSharpNameGenerator
     /// </summary>
     /// <param name="baseName"></param>
     /// <param name="enumType"></param>
-    public string EnsureUniqueEnumMemberName(string baseName, INamedTypeSymbol enumType)
+    public static string EnsureUniqueEnumMemberName(string baseName, INamedTypeSymbol enumType)
     {
         return _generator.EnsureUniqueEnumMemberName(baseName, enumType, isCaseSensitive: true);
     }
@@ -49,7 +44,7 @@ internal class CSharpNameGenerator
     /// <param name="semanticModel"></param>
     /// <param name="position"></param>
     /// <param name="cancellationToken"></param>
-    public string EnsureUniqueLocalName(
+    public static string EnsureUniqueLocalName(
         string baseName,
         SemanticModel semanticModel,
         int position,
@@ -66,7 +61,7 @@ internal class CSharpNameGenerator
     /// <param name="position"></param>
     /// <param name="count"></param>
     /// <param name="cancellationToken"></param>
-    public ImmutableArray<string> EnsureUniqueLocalNames(
+    public static ImmutableArray<string> EnsureUniqueLocalNames(
         string baseName,
         SemanticModel semanticModel,
         int position,
@@ -83,7 +78,7 @@ internal class CSharpNameGenerator
     /// <param name="containingSymbol"></param>
     /// <param name="semanticModel"></param>
     /// <param name="cancellationToken"></param>
-    public string EnsureUniqueParameterName(
+    public static string EnsureUniqueParameterName(
         string baseName,
         ISymbol containingSymbol,
         SemanticModel semanticModel,
@@ -92,7 +87,7 @@ internal class CSharpNameGenerator
         return _generator.EnsureUniqueParameterName(baseName, containingSymbol, semanticModel, isCaseSensitive: true, cancellationToken);
     }
 
-    internal string CreateUniqueLocalName(
+    internal static string CreateUniqueLocalName(
         ITypeSymbol typeSymbol,
         SemanticModel semanticModel,
         int position,
@@ -101,7 +96,7 @@ internal class CSharpNameGenerator
         return _generator.CreateUniqueLocalName(typeSymbol, semanticModel, position, isCaseSensitive: true, cancellationToken);
     }
 
-    internal string CreateUniqueLocalName(
+    internal static string CreateUniqueLocalName(
         ITypeSymbol typeSymbol,
         string oldName,
         SemanticModel semanticModel,
@@ -111,7 +106,7 @@ internal class CSharpNameGenerator
         return _generator.CreateUniqueLocalName(typeSymbol, oldName, semanticModel, position, isCaseSensitive: true, cancellationToken);
     }
 
-    internal string CreateUniqueParameterName(
+    internal static string CreateUniqueParameterName(
         string oldName,
         IParameterSymbol parameterSymbol,
         SemanticModel semanticModel,
@@ -152,7 +147,7 @@ internal class CSharpNameGenerator
             return CheckKeyword(name);
         }
 
-        private string CheckKeyword(string name)
+        private static string CheckKeyword(string name)
         {
             return (SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None) ? "@" + name : name;
         }

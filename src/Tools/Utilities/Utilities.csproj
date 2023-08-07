@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0.0</Version>
     <AssemblyName>Roslynator.Utilities</AssemblyName>
     <RootNamespace>Roslynator.Utilities</RootNamespace>
   </PropertyGroup>
@@ -17,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynatorRoslynVersion)" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
   </ItemGroup>
 
