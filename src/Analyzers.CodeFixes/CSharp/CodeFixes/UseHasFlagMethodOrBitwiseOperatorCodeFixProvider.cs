@@ -57,7 +57,7 @@ public sealed class UseHasFlagMethodOrBitwiseOperatorCodeFixProvider : BaseCodeF
         }
     }
 
-    private async Task<Document> ConvertBitwiseOperationToHasFlagCallAsync(
+    private static async Task<Document> ConvertBitwiseOperationToHasFlagCallAsync(
         Document document,
         BinaryExpressionSyntax equalsOrNotEquals,
         CancellationToken cancellationToken)

@@ -46,9 +46,9 @@ internal static class SimplifyNullCheckRefactoring
             coalesce = true;
 
             // If the types are polymorphic then the LHS of the null coalesce must be cast to the base type.
-            ITypeSymbol newNodeType = semanticModel.GetTypeSymbol(newNode);
-            ITypeSymbol whenNullType = semanticModel.GetTypeSymbol(whenNull);
-            ITypeSymbol overallType = semanticModel.GetTypeInfo(conditionalExpression).ConvertedType;
+            ITypeSymbol newNodeType = semanticModel.GetTypeSymbol(newNode, cancellationToken);
+            ITypeSymbol whenNullType = semanticModel.GetTypeSymbol(whenNull, cancellationToken);
+            ITypeSymbol overallType = semanticModel.GetTypeInfo(conditionalExpression, cancellationToken).ConvertedType;
 
             if (overallType?.SupportsExplicitDeclaration() == true
                 && !SymbolEqualityComparer.Default.Equals(newNodeType, whenNullType))

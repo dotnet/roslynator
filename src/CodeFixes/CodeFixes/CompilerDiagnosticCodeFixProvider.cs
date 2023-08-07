@@ -11,7 +11,7 @@ public abstract class CompilerDiagnosticCodeFixProvider : AbstractCodeFixProvide
 {
     private static readonly ConcurrentDictionary<string, string> _optionKeysMap = new();
 
-    protected bool IsEnabled(string compilerDiagnosticId, string codeFixId, Document document, SyntaxTree syntaxTree)
+    protected static bool IsEnabled(string compilerDiagnosticId, string codeFixId, Document document, SyntaxTree syntaxTree)
     {
         AnalyzerConfigOptions configOptions = document.GetConfigOptions(syntaxTree);
 
