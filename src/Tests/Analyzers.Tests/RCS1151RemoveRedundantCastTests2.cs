@@ -150,7 +150,7 @@ class C
 }
 ");
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
     internal async Task TestNoDiagnostic_ChainedCastToSubtype()
     {
