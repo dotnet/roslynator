@@ -10,13 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add SECURITY.md ([#1147](https://github.com/josefpihrt/roslynator/pull/1147))
+- Add Custom FixAllProvider for [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014.md) ([#1070](https://github.com/JosefPihrt/Roslynator/pull/1070)).
 
 ## [4.4.0] - 2023-08-01
 
 ### Added
 
 - Add GitHub workflow ([#1112](https://github.com/josefpihrt/roslynator/pull/1112))
-- Add Custom FixAllProvider for [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014.md) ([#1070](https://github.com/JosefPihrt/Roslynator/pull/1070)).
 
 ### Changed
 
