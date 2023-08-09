@@ -256,9 +256,9 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
         {
             genericParameter = memberAccessExpressionType.TypeArguments[0];
         }
-        else if (invocationExpression.Parent is not MemberAccessExpressionSyntax { Parent: InvocationExpressionSyntax chainedMethodInvocation }
-                 || semanticModel.GetSymbol(chainedMethodInvocation, cancellationToken) is not IMethodSymbol { ReceiverType: INamedTypeSymbol chainedMethodReceiverType }
-                 || chainedMethodReceiverType.OriginalDefinition.IsIEnumerableOfT() != true)
+        else if (invocationExpression.Parent is not MemberAccessExpressionSyntax { Parent: InvocationExpressionSyntax chainedMethodInvocation } 
+                || semanticModel.GetSymbol(chainedMethodInvocation, cancellationToken) is not IMethodSymbol { ReceiverType: INamedTypeSymbol chainedMethodReceiverType }
+                || chainedMethodReceiverType.OriginalDefinition.IsIEnumerableOfT() != true)
         {
             return;
         }
