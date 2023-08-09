@@ -33,7 +33,7 @@ public sealed class NormalizeFormatOfEnumFlagValueAnalyzer : BaseDiagnosticAnaly
         context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
     }
 
-    private void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
     {
         var enumDeclaration = (EnumDeclarationSyntax)context.Node;
 

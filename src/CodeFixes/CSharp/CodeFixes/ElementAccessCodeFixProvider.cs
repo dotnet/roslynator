@@ -28,7 +28,7 @@ public sealed class ElementAccessCodeFixProvider : CompilerDiagnosticCodeFixProv
 
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceElementAccessWithInvocation, context.Document, root.SyntaxTree))
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseInvocationInsteadOfIndexer, context.Document, root.SyntaxTree))
             return;
 
         if (!TryFindFirstAncestorOrSelf(root, context.Span, out ElementAccessExpressionSyntax elementAccess))
@@ -52,7 +52,7 @@ public sealed class ElementAccessCodeFixProvider : CompilerDiagnosticCodeFixProv
             return;
 
         CodeAction codeAction = CodeAction.Create(
-            "Replace [] with ()",
+            "Use invocation instead of indexer",
             ct => context.Document.ReplaceNodeAsync(elementAccess, invocationExpression, ct),
             GetEquivalenceKey(diagnostic));
 

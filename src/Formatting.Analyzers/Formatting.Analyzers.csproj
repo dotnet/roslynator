@@ -13,11 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="$(RoslynAnalyzersVersion)">
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="$(RoslynatorRoslynAnalyzersVersion)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynatorRoslynVersion)" />
   </ItemGroup>
 
   <ItemGroup>

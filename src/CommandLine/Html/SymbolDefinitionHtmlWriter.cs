@@ -636,9 +636,9 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                             if (elementsByLine is null)
                                 elementsByLine = new Dictionary<int, List<XElement>>();
 
-                            if (elementsByLine.ContainsKey(lineNumber))
+                            if (elementsByLine.TryGetValue(lineNumber, out List<XElement> elements))
                             {
-                                elementsByLine[lineNumber].Add(e);
+                                elements.Add(e);
                             }
                             else
                             {

@@ -51,13 +51,13 @@ public class CommandOption
             var sb = new StringBuilder();
 
             if (!IsRequired)
-                sb.Append("[");
+                sb.Append('[');
 
             if (!string.IsNullOrEmpty(ShortName))
             {
-                sb.Append("-");
+                sb.Append('-');
                 sb.Append(ShortName);
-                sb.Append("|");
+                sb.Append('|');
             }
 
             if (!string.IsNullOrEmpty(Name))
@@ -67,7 +67,7 @@ public class CommandOption
             }
 
             if (!IsRequired)
-                sb.Append("]");
+                sb.Append(']');
 
             if (!string.IsNullOrEmpty(MetaValue))
             {

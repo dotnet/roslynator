@@ -22,6 +22,7 @@ internal sealed class ExtractConditionFromIfToIfRefactoring : ExtractConditionFr
         get { return "Extract condition to if"; }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
     public Task<Document> RefactorAsync(
         Document document,
         in StatementListInfo statementsInfo,
@@ -39,6 +40,7 @@ internal sealed class ExtractConditionFromIfToIfRefactoring : ExtractConditionFr
         return document.ReplaceNodeAsync(statementsInfo.Parent, newNode, cancellationToken);
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
     public Task<Document> RefactorAsync(
         Document document,
         in StatementListInfo statementsInfo,

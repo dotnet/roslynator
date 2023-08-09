@@ -152,7 +152,7 @@ internal class DefaultUrlSegmentProvider : UrlSegmentProvider
                     else
                     {
                         if (sb.Length > 0)
-                            sb.Append(".");
+                            sb.Append('.');
 
                         sb.Append(namespaceSymbol.Name);
 
