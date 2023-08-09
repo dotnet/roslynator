@@ -71,10 +71,9 @@ internal static class InlineAliasExpressionRefactoring
         public override SyntaxNode VisitAliasQualifiedName(AliasQualifiedNameSyntax node)
         {
             IAliasSymbol aliasSymbol = SemanticModel.GetAliasInfo(node.Alias, CancellationToken);
-            if (SymbolEqualityComparer.Default.Equals(aliasSymbol, AliasSymbol)
-                && Replacement is NameSyntax replacementName)
+            if (SymbolEqualityComparer.Default.Equals(aliasSymbol, AliasSymbol))
             {
-                return SyntaxFactory.QualifiedName(replacementName, node.Name)
+                return SyntaxFactory.QualifiedName((NameSyntax)Replacement, node.Name)
                     .WithTriviaFrom(node)
                     .WithSimplifierAnnotation();
             }
