@@ -268,7 +268,7 @@ public sealed class RemoveRedundantCastAnalyzer : BaseDiagnosticAnalyzer
             INamedTypeSymbol iEnumerableInterface = memberAccessExpressionType.OriginalDefinition.AllInterfaces
                 .FirstOrDefault(implementedInterface => implementedInterface.OriginalDefinition.IsIEnumerableOfT());
 
-            if(iEnumerableInterface is null)
+            if (iEnumerableInterface is null)
                 return;
 
             genericParameter = iEnumerableInterface.TypeArguments[0];
