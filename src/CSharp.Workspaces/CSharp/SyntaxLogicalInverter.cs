@@ -128,7 +128,7 @@ public class SyntaxLogicalInverter
             case SyntaxKind.IsExpression:
                 {
                     var isExpression = (BinaryExpressionSyntax)expression;
-                    ITypeSymbol rightTypeSymbol = (ITypeSymbol)semanticModel.GetSymbolInfo(isExpression.Right, cancellationToken).Symbol!;
+                    var rightTypeSymbol = (ITypeSymbol)semanticModel.GetSymbolInfo(isExpression.Right, cancellationToken).Symbol!;
                     return (Options.UseNotPattern)
                         ? IsPatternExpression(
                             isExpression.Left,
