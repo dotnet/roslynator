@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add SECURITY.md ([#1147](https://github.com/josefpihrt/roslynator/pull/1147))
 
+### Fixed
+
+- Fix [RCS1187](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1187.md) ([#1150](https://github.com/JosefPihrt/Roslynator/pull/1150)).
+
 ## [4.4.0] - 2023-08-01
 
 ### Added
@@ -45,7 +49,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Append `?` to nullable reference types.
 - Fix [RCS1179](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1179.md) ([#1129](https://github.com/JosefPihrt/Roslynator/pull/1129)).
 - Fix [RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md) ([#1139](https://github.com/JosefPihrt/Roslynator/pull/1139)).
-- Fix [RCS1187](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1187.md) ([#1150](https://github.com/JosefPihrt/Roslynator/pull/1150)).
 
 ## [4.3.0] - 2023-04-24
 
