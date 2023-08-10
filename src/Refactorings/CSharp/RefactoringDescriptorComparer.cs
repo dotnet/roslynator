@@ -71,9 +71,6 @@ internal abstract class RefactoringDescriptorComparer : IComparer<RefactoringDes
     {
         public override int Compare(RefactoringDescriptor x, RefactoringDescriptor y)
         {
-            if (object.ReferenceEquals(x, y))
-                return 0;
-
             if (x.Id is null)
                 return -1;
 
@@ -85,9 +82,6 @@ internal abstract class RefactoringDescriptorComparer : IComparer<RefactoringDes
 
         public override bool Equals(RefactoringDescriptor x, RefactoringDescriptor y)
         {
-            if (object.ReferenceEquals(x, y))
-                return true;
-
             if (x.Id is null)
                 return false;
 

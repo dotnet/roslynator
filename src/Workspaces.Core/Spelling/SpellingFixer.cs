@@ -618,7 +618,7 @@ internal class SpellingFixer
         SpellingData = SpellingData.AddIgnoredValue(diagnostic.Value);
     }
 
-    private string GetLocationText(Location location, Project project)
+    private static string GetLocationText(Location location, Project project)
     {
         if (location.Kind == LocationKind.SourceFile
             || location.Kind == LocationKind.XmlFile

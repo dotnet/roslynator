@@ -32,6 +32,7 @@ jobs:
       - name: Resolve version
         id: version
         run: |
+          dotnet-gitversion
           dotnet-gitversion > version.json
           version="$(jq -r '.SemVer' version.json)"
           version3="$(jq -r '.MajorMinorPatch' version.json)"
@@ -130,6 +131,10 @@ jobs:
         with:
           name: vs_extension
           path: src/VisualStudio/manifest.json
+      - uses: actions/upload-artifact@v3
+        with:
+          name: vs_extension
+          path: src/VisualStudio/Overview.md
 
   build_vs_code_extension:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
@@ -225,9 +230,21 @@ jobs:
           path: src/CommandLine/bin/Release/*.*nupkg
 
   publish_nuget_packages:
-    needs: [ build_core_and_testing, build_analyzers, build_core_cli, build_framework_cli ]
+    needs: [ build_core_and_testing, build_analyzers ]
     runs-on: ubuntu-20.04
-    if: github.ref_type == 'tag'
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: nuget_packages
+          path: nuget_packages
+      - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
+        working-directory: nuget_packages
+
+  publish_cli_nuget_packages:
+    needs: [ build_core_cli, build_framework_cli ]
+    runs-on: ubuntu-20.04
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'cli-v')
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -246,7 +263,7 @@ jobs:
           name: vs_code_extension
           path: vs_code_extension
       - run: npm install -g @vscode/vsce
-      - run: vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }}
+      - run: vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }} -i "roslynator-${{ needs.pre_build.outputs.version3 }}.vsix"
         working-directory: vs_code_extension
 
   publish_ovsx_extension:
@@ -259,7 +276,7 @@ jobs:
           name: ovsx_extension
           path: ovsx_extension
       - run: npm install -g ovsx
-      - run: ovsx publish -p ${{ secrets.OPEN_VSX_TOKEN }}
+      - run: ovsx publish -p ${{ secrets.OPEN_VSX_TOKEN }} -i "roslynator-${{ needs.pre_build.outputs.version3 }}.vsix"
         working-directory: ovsx_extension
 
   publish_vs_extension:

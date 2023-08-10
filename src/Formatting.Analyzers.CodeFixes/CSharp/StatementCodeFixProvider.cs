@@ -80,7 +80,7 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
         {
             var block = (BlockSyntax)statement.Parent;
 
-            if (block.IsSingleLine(includeExteriorTrivia: false))
+            if (block.IsSingleLine(includeExteriorTrivia: false, cancellationToken: cancellationToken))
             {
                 BlockSyntax newBlock = block
                     .WithCloseBraceToken(block.CloseBraceToken.AppendEndOfLineToLeadingTrivia())

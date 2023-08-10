@@ -19,7 +19,7 @@ internal static class ConvertMethodGroupToAnonymousFunctionRefactoring
     {
         InvocationExpressionSyntax invocationExpression = InvocationExpression(expression);
 
-        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(expression);
+        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(expression, cancellationToken);
 
         LambdaExpressionSyntax lambda = null;
 

@@ -90,20 +90,20 @@ internal abstract class CommonDocumentationUrlProvider : DocumentationUrlProvide
             if (i < folders.Length)
             {
                 if (sb.Length > 0)
-                    sb.Append("/");
+                    sb.Append('/');
 
                 sb.Append(folders[i]);
                 i++;
 
                 while (i < folders.Length)
                 {
-                    sb.Append("/");
+                    sb.Append('/');
                     sb.Append(folders[i]);
                     i++;
                 }
             }
 
-            sb.Append("/");
+            sb.Append('/');
             sb.Append(IndexFileName);
 
             return StringBuilderCache.GetStringAndFree(sb) + fragment;

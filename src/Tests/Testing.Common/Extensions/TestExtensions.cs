@@ -25,7 +25,7 @@ internal static class TestExtensions
         SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
         if (format)
-            root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace);
+            root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace, cancellationToken: cancellationToken);
 
         return root;
     }

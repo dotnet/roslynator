@@ -274,7 +274,7 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
                 case SyntaxKind.GreaterThanOrEqualExpression:
                 case SyntaxKind.EqualsExpression:
                     {
-                        ITypeSymbol leftTypeSymbol = semanticModel.GetTypeSymbol(((BinaryExpressionSyntax)expression).Left);
+                        ITypeSymbol leftTypeSymbol = semanticModel.GetTypeSymbol(((BinaryExpressionSyntax)expression).Left, cancellationToken);
 
                         if (leftTypeSymbol.IsErrorType())
                             return false;
