@@ -47,6 +47,47 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
+    public async Task Test_UnnecessaryElseIf_Removed()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    int M(bool flag, bool flag2)
+    {
+        if (flag)
+        {
+            return 1;
+        }
+        [|else|] if (flag2)
+        {
+            return 0;
+        }
+
+        return 2;
+    }
+}
+", @"
+class C
+{
+    int M(bool flag, bool flag2)
+    {
+        if (flag)
+        {
+            return 1;
+        }
+
+        if (flag2)
+        {
+            return 0;
+        }
+
+        return 2;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables()
     {
         await VerifyNoDiagnosticAsync(@"

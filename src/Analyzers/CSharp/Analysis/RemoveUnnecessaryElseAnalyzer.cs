@@ -47,9 +47,6 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
 
     private static bool IsFixable(ElseClauseSyntax elseClause, SemanticModel semanticModel)
     {
-        if (elseClause.Statement?.IsKind(SyntaxKind.IfStatement) != false)
-            return false;
-
         if (elseClause.Parent is not IfStatementSyntax ifStatement)
             return false;
 
@@ -61,22 +58,19 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
         if (ifStatementStatement is not BlockSyntax ifBlock)
             return CSharpFacts.IsJumpStatement(ifStatementStatement.Kind());
 
-        if (elseClause.Statement is BlockSyntax elseBlock)
-        {
-            if (LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
-                return false;
-
-            if (ifStatement.Parent is SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement }
-                && SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel))
-            {
-                return false;
-            }
-        }
-
         StatementSyntax lastStatementInIf = ifBlock.Statements.LastOrDefault();
 
-        return lastStatementInIf is not null
-            && CSharpFacts.IsJumpStatement(lastStatementInIf.Kind());
+        if (lastStatementInIf is null || !CSharpFacts.IsJumpStatement(lastStatementInIf.Kind()))
+            return false;
+
+        if (elseClause.Statement is not BlockSyntax elseBlock)
+            return true;
+
+        if (LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
+            return false;
+
+        return ifStatement.Parent is not SwitchSectionSyntax { Parent: SwitchStatementSyntax switchStatement }
+               || !SwitchLocallyDeclaredVariablesHelper.BlockDeclaredVariablesOverlapWithOtherSwitchSections(elseBlock, switchStatement, semanticModel);
     }
 
     private static bool LocalDeclaredVariablesOverlap(BlockSyntax elseBlock, BlockSyntax ifBlock, SemanticModel semanticModel)
