@@ -244,7 +244,7 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
         return CommandResults.Success;
     }
 
-    private void AddTableOfContents(IEnumerable<DocumentationGeneratorResult> results)
+    private static void AddTableOfContents(IEnumerable<DocumentationGeneratorResult> results)
     {
         foreach (DocumentationGeneratorResult result in results)
         {

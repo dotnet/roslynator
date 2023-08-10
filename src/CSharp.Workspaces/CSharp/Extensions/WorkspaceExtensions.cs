@@ -286,7 +286,7 @@ public static class WorkspaceExtensions
 
             foreach (DirectiveTriviaSyntax directive in directives)
             {
-                int startLine = directive.GetSpanStartLine();
+                int startLine = directive.GetSpanStartLine(cancellationToken: cancellationToken);
 
                 yield return new TextChange(lines[startLine].SpanIncludingLineBreak, "");
             }
@@ -381,8 +381,8 @@ public static class WorkspaceExtensions
 
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-        int startLine = region.Directive.GetSpanStartLine();
-        int endLine = region.EndDirective.GetSpanEndLine();
+        int startLine = region.Directive.GetSpanStartLine(cancellationToken: cancellationToken);
+        int endLine = region.EndDirective.GetSpanEndLine(cancellationToken: cancellationToken);
 
         TextLineCollection lines = sourceText.Lines;
 

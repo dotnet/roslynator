@@ -122,7 +122,7 @@ internal class DiffTracker
         }
     }
 
-    private void AddSpan(TextSpan span, int diff, List<DiffSpan> spans)
+    private static void AddSpan(TextSpan span, int diff, List<DiffSpan> spans)
     {
         Debug.Assert(span.Length > 0, span.Length.ToString());
 

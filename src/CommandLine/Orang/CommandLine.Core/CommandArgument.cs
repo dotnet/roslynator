@@ -37,7 +37,7 @@ public class CommandArgument
             var sb = new StringBuilder();
 
             if (!IsRequired)
-                sb.Append("[");
+                sb.Append('[');
 
             if (!string.IsNullOrEmpty(Name))
             {
@@ -49,7 +49,7 @@ public class CommandArgument
             }
 
             if (!IsRequired)
-                sb.Append("]");
+                sb.Append(']');
 
             if (!string.IsNullOrEmpty(Description))
             {

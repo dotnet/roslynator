@@ -187,7 +187,7 @@ internal static class AddAllPropertiesToInitializerRefactoring
         InitializerExpressionSyntax newInitializer = initializer
             .WithExpressions(initializer.Expressions.AddRange(newExpressions));
 
-        if (initializer.IsMultiLine())
+        if (initializer.IsMultiLine(cancellationToken: cancellationToken))
         {
             newInitializer = newInitializer.ReplaceNode(
                 newInitializer.Expressions.Last(),

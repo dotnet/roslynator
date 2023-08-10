@@ -120,7 +120,7 @@ public sealed class TypeDoesNotContainDefinitionCodeFixProvider : CompilerDiagno
         }
     }
 
-    private CodeFixRegistrationResult ReplaceCountWithLengthOrViceVersa(
+    private static CodeFixRegistrationResult ReplaceCountWithLengthOrViceVersa(
         CodeFixContext context,
         Diagnostic diagnostic,
         ExpressionSyntax expression,
@@ -187,7 +187,7 @@ public sealed class TypeDoesNotContainDefinitionCodeFixProvider : CompilerDiagno
         }
     }
 
-    private void ReplaceInvocationWithMemberAccess(
+    private static void ReplaceInvocationWithMemberAccess(
         CodeFixContext context,
         Diagnostic diagnostic,
         MemberAccessExpressionSyntax memberAccess,
@@ -227,7 +227,7 @@ public sealed class TypeDoesNotContainDefinitionCodeFixProvider : CompilerDiagno
         }
     }
 
-    private void ReplaceMemberAccessWithInvocation(
+    private static void ReplaceMemberAccessWithInvocation(
         CodeFixContext context,
         Diagnostic diagnostic,
         MemberAccessExpressionSyntax memberAccessExpression,

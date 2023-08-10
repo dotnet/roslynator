@@ -44,15 +44,15 @@ public sealed class FixFormattingOfCallChainCodeFixProvider : BaseCodeFixProvide
 
         CodeAction codeAction = CodeAction.Create(
             "Fix formatting",
-            ct =>
+            cancellationToken =>
             {
-                TextLineCollection lines = expression.SyntaxTree.GetText().Lines;
+                TextLineCollection lines = expression.SyntaxTree.GetText(cancellationToken).Lines;
 
                 TextLine line = lines.GetLineFromPosition(expression.SpanStart);
 
                 TextSpan span = TextSpan.FromBounds(line.EndIncludingLineBreak, expression.Span.End);
 
-                return CodeFixHelpers.FixCallChainAsync(document, expression, span, ct);
+                return CodeFixHelpers.FixCallChainAsync(document, expression, span, cancellationToken);
             },
             GetEquivalenceKey(diagnostic));
 

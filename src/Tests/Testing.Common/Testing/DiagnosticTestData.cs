@@ -138,15 +138,7 @@ public sealed class DiagnosticTestData
     /// <summary>
     /// Creates and return new instance of <see cref="DiagnosticTestData"/> updated with specified values.
     /// </summary>
-    /// <param name="descriptor"></param>
-    /// <param name="source"></param>
-    /// <param name="spans"></param>
-    /// <param name="additionalSpans"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="diagnosticMessage"></param>
-    /// <param name="formatProvider"></param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="alwaysVerifyAdditionalLocations"></param>
+    [Obsolete("This method is obsolete and will be removed in future version.")]
     public DiagnosticTestData Update(
         DiagnosticDescriptor descriptor,
         string source,

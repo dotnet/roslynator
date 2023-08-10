@@ -111,6 +111,7 @@ internal class ConsoleHelpWriter : HelpWriter
         ConsoleOut.WriteLine(value);
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1846:Prefer 'AsSpan' over 'Substring'")]
     protected override void WriteTextLine(HelpItem helpItem)
     {
         string value = helpItem.Text;

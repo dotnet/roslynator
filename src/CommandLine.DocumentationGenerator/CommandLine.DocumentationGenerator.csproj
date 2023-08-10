@@ -26,8 +26,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommandLine\CommandLine.csproj" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynCliVersion)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(RoslynCliVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorCliRoslynVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="$(RoslynatorCliRoslynVersion)" />
   </ItemGroup>
 
 </Project>

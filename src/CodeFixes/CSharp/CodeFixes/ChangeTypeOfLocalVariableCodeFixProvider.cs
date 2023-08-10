@@ -70,7 +70,7 @@ public sealed class ChangeTypeOfLocalVariableCodeFixProvider : CompilerDiagnosti
         }
     }
 
-    private void ComputeCodeFix(
+    private static void ComputeCodeFix(
         CodeFixContext context,
         Diagnostic diagnostic,
         VariableDeclaratorSyntax variableDeclarator,
