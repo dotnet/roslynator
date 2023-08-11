@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add SECURITY.md ([#1147](https://github.com/josefpihrt/roslynator/pull/1147))
 - [RCS1211](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1211) will suggest removing unecessary 'else if' clauses ([#1155](https://github.com/josefpihrt/roslynator/pull/1155))
 
+### Fixed
+
+- Fix [RCS1056](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1056.md) ([#1154](https://github.com/JosefPihrt/Roslynator/pull/1154)).
+
 ## [4.4.0] - 2023-08-01
 
 ### Added
