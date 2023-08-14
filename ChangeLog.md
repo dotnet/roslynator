@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add SECURITY.md ([#1147](https://github.com/josefpihrt/roslynator/pull/1147))
+- Support for more linq optimizations ([#1157](https://github.com/josefpihrt/roslynator/pull/1157))
 
 ### Fixed
 
