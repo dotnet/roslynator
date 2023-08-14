@@ -137,7 +137,7 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                         case "Min":
                             {
                                 if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context))
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeSelectAndMinOrMax(context, invocationInfo);
+                                    OptimizeLinqMethodCallAnalysis.AnalyzeMinOrMax(context, invocationInfo);
 
                                 break;
                             }

@@ -105,7 +105,9 @@ internal static class OptimizeLinqMethodCallAnalysis
     }
 
     // items.Select(selector).Min/Max() >>> items.Min/Max(selector)
-    public static void AnalyzeSelectAndMinOrMax(
+    // items.OrderBy(selector).Min/Max() >>> items.MinBy/MaxBy(selector)
+    // items.OrderByDescending(selector).Min/Max() >>> items.MaxBy/MinBy(selector)
+    public static void AnalyzeMinOrMax(
         SyntaxNodeAnalysisContext context,
         in SimpleMemberInvocationExpressionInfo invocationInfo)
     {
@@ -114,6 +116,19 @@ internal static class OptimizeLinqMethodCallAnalysis
             invocationInfo,
             "Select",
             Properties.SimplifyLinqMethodChain);
+
+        SimplifyLinqMethodChain(
+            context,
+            invocationInfo,
+            "OrderBy",
+            Properties.SimplifyLinqMethodChain);
+
+        SimplifyLinqMethodChain(
+            context,
+            invocationInfo,
+            "OrderByDescending",
+            Properties.SimplifyLinqMethodChain);
+
     }
 
     // list.Select(selector).ToList() >>> list.ConvertAll(selector)
@@ -187,6 +202,20 @@ internal static class OptimizeLinqMethodCallAnalysis
 
                     break;
                 }
+            case "OrderBy":
+            {
+                if (!SymbolUtility.IsLinqOrderBy(methodSymbol2, allowImmutableArrayExtension: true))
+                    return;
+                
+                break;
+            }
+            case "OrderByDescending":
+            {
+                if (!SymbolUtility.IsLinqOrderByDescending(methodSymbol2, allowImmutableArrayExtension: true))
+                    return;
+                
+                break;
+            }
             default:
                 {
                     Debug.Fail(methodName);

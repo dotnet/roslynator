@@ -332,8 +332,17 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
         InvocationExpressionSyntax invocation2 = invocationInfo2.InvocationExpression;
 
+        SimpleNameSyntax name = (invocationInfo2.NameText, invocationInfo.NameText) switch
+        {
+            ("OrderBy", "Min") => (SimpleNameSyntax)ParseName("MinBy"),
+            ("OrderBy", "Max") => (SimpleNameSyntax)ParseName("MaxBy"),
+            ("OrderByDescending", "Min") => (SimpleNameSyntax)ParseName("MaxBy"),
+            ("OrderByDescending", "Max") => (SimpleNameSyntax)ParseName("MinBy"),
+            _ => invocationInfo.Name
+        };
+
         InvocationExpressionSyntax newNode = invocation2.WithExpression(
-            invocationInfo2.MemberAccessExpression.WithName(invocationInfo.Name.WithTriviaFrom(invocationInfo2.Name)));
+            invocationInfo2.MemberAccessExpression.WithName(name.WithTriviaFrom(invocationInfo2.Name)));
 
         IEnumerable<SyntaxTrivia> trivia = invocation.DescendantTrivia(TextSpan.FromBounds(invocation2.Span.End, invocation.Span.End));
 

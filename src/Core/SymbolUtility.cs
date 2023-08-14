@@ -305,6 +305,20 @@ internal static class SymbolUtility
         return IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol, "Where", parameterCount: 2, allowImmutableArrayExtension: allowImmutableArrayExtension);
     }
 
+    internal static bool IsLinqOrderBy(
+        IMethodSymbol methodSymbol,
+        bool allowImmutableArrayExtension = false)
+    {
+        return IsLinqExtensionOfIEnumerableOfT(methodSymbol, "OrderBy", parameterCount: 2, allowImmutableArrayExtension: allowImmutableArrayExtension);
+    }
+
+    internal static bool IsLinqOrderByDescending(
+        IMethodSymbol methodSymbol,
+        bool allowImmutableArrayExtension = false)
+    {
+        return IsLinqExtensionOfIEnumerableOfT(methodSymbol, "OrderByDescending", parameterCount: 2, allowImmutableArrayExtension: allowImmutableArrayExtension);
+    }
+
     internal static bool IsLinqWhereWithIndex(IMethodSymbol methodSymbol)
     {
         if (!IsLinqExtensionOfIEnumerableOfT(methodSymbol, "Where", parameterCount: 2, allowImmutableArrayExtension: false))
