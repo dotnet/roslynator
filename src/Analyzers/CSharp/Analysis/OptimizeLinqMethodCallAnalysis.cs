@@ -203,19 +203,19 @@ internal static class OptimizeLinqMethodCallAnalysis
                     break;
                 }
             case "OrderBy":
-            {
-                if (!SymbolUtility.IsLinqOrderBy(methodSymbol2, allowImmutableArrayExtension: true))
-                    return;
-                
-                break;
-            }
+                {
+                    if (!SymbolUtility.IsLinqOrderBy(methodSymbol2, allowImmutableArrayExtension: true))
+                        return;
+
+                    break;
+                }
             case "OrderByDescending":
-            {
-                if (!SymbolUtility.IsLinqOrderByDescending(methodSymbol2, allowImmutableArrayExtension: true))
-                    return;
-                
-                break;
-            }
+                {
+                    if (!SymbolUtility.IsLinqOrderByDescending(methodSymbol2, allowImmutableArrayExtension: true))
+                        return;
+
+                    break;
+                }
             default:
                 {
                     Debug.Fail(methodName);

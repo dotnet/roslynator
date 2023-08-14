@@ -121,6 +121,40 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+    public async Task Test_NotAny4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        bool f1 = false;
+        var items = new List<int>();
+
+        f1 = [|!items.Any(i => i % 2 == 0)|];
+    }
+}
+", @"
+using System.Linq;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        bool f1 = false;
+        var items = new List<int>();
+
+        f1 = items.All(i => i % 2 != 0);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
     public async Task Test_NotAll()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -223,6 +257,40 @@ class C
         var items = new List<string>();
 
         f1 = items.Any<string>(s => s.Equals(s));
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+    public async Task Test_NotAll4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        bool f1 = false;
+        var items = new List<int>();
+
+        f1 = [|!items.All(i => i % 2 == 0)|];
+    }
+}
+", @"
+using System.Linq;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        bool f1 = false;
+        var items = new List<int>();
+
+        f1 = items.Any(i => i % 2 != 0);
     }
 }
 ");

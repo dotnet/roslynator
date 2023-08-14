@@ -173,9 +173,7 @@ public sealed class SimplifyLogicalNegationAnalyzer : BaseDiagnosticAnalyzer
         if (!lambdaInfo.Success)
             return;
 
-        ExpressionSyntax expression = GetReturnExpression(lambdaInfo.Body)?.WalkDownParentheses();
-
-        if (expression?.IsKind(SyntaxKind.LogicalNotExpression) != true)
+        if (GetReturnExpression(lambdaInfo.Body) is null)
             return;
 
         IMethodSymbol methodSymbol = context.SemanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, context.CancellationToken).Symbol;

@@ -97,9 +97,11 @@ public sealed class SimplifyLogicalNegationCodeFixProvider : BaseCodeFixProvider
 
                     SingleParameterLambdaExpressionInfo lambdaInfo = SyntaxInfo.SingleParameterLambdaExpressionInfo(lambdaExpression);
 
-                    var logicalNot2 = (PrefixUnaryExpressionSyntax)SimplifyLogicalNegationAnalyzer.GetReturnExpression(lambdaInfo.Body).WalkDownParentheses();
+                    var logicalNot2 = SimplifyLogicalNegationAnalyzer.GetReturnExpression(lambdaInfo.Body).WalkDownParentheses();
 
-                    InvocationExpressionSyntax newNode = invocationExpression.ReplaceNode(logicalNot2, logicalNot2.Operand.WithTriviaFrom(logicalNot2));
+                    var invertedExperssion = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(logicalNot2);
+
+                    InvocationExpressionSyntax newNode = invocationExpression.ReplaceNode(logicalNot2, invertedExperssion.WithTriviaFrom(logicalNot2));
 
                     return SyntaxRefactorings.ChangeInvokedMethodName(newNode, (memberAccessExpression.Name.Identifier.ValueText == "All") ? "Any" : "All");
                 }
