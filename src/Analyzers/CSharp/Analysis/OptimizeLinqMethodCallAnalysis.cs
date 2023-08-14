@@ -105,9 +105,7 @@ internal static class OptimizeLinqMethodCallAnalysis
     }
 
     // items.Select(selector).Min/Max() >>> items.Min/Max(selector)
-    // items.OrderBy(selector).Min/Max() >>> items.MinBy/MaxBy(selector)
-    // items.OrderByDescending(selector).Min/Max() >>> items.MaxBy/MinBy(selector)
-    public static void AnalyzeMinOrMax(
+    public static void AnalyzeSelectAndMinOrMax(
         SyntaxNodeAnalysisContext context,
         in SimpleMemberInvocationExpressionInfo invocationInfo)
     {
@@ -116,19 +114,6 @@ internal static class OptimizeLinqMethodCallAnalysis
             invocationInfo,
             "Select",
             Properties.SimplifyLinqMethodChain);
-
-        SimplifyLinqMethodChain(
-            context,
-            invocationInfo,
-            "OrderBy",
-            Properties.SimplifyLinqMethodChain);
-
-        SimplifyLinqMethodChain(
-            context,
-            invocationInfo,
-            "OrderByDescending",
-            Properties.SimplifyLinqMethodChain);
-
     }
 
     // list.Select(selector).ToList() >>> list.ConvertAll(selector)
@@ -226,6 +211,24 @@ internal static class OptimizeLinqMethodCallAnalysis
         TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocation.Span.End);
 
         Report(context, invocation, span, checkDirectives: true, properties: properties);
+    }
+
+    // items.OrderBy(selector).FirstOrDefault() >>> items.MaxBy(selector)
+    // items.OrderByDescending(selector).FirstOrDefault() >>> items.MaxBy(selector)
+    public static void AnalyzerOrderByAndFirstOrDefault(SyntaxNodeAnalysisContext context,
+        in SimpleMemberInvocationExpressionInfo invocationInfo)
+    {
+        SimplifyLinqMethodChain(
+            context,
+            invocationInfo,
+            "OrderBy",
+            Properties.SimplifyLinqMethodChain);
+
+        SimplifyLinqMethodChain(
+            context,
+            invocationInfo,
+            "OrderByDescending",
+            Properties.SimplifyLinqMethodChain);
     }
 
     public static void AnalyzeFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)

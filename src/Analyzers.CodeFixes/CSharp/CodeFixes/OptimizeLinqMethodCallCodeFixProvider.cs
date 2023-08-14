@@ -334,10 +334,8 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
 
         SimpleNameSyntax name = (invocationInfo2.NameText, invocationInfo.NameText) switch
         {
-            ("OrderBy", "Min") => (SimpleNameSyntax)ParseName("MinBy"),
-            ("OrderBy", "Max") => (SimpleNameSyntax)ParseName("MaxBy"),
-            ("OrderByDescending", "Min") => (SimpleNameSyntax)ParseName("MaxBy"),
-            ("OrderByDescending", "Max") => (SimpleNameSyntax)ParseName("MinBy"),
+            ("OrderBy", "FirstOrDefault") => (SimpleNameSyntax)ParseName("MinBy"),
+            ("OrderByDescending", "FirstOrDefault") => (SimpleNameSyntax)ParseName("MaxBy"),
             _ => invocationInfo.Name
         };
 

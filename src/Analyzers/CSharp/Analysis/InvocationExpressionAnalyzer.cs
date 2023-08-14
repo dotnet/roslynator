@@ -137,7 +137,7 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                         case "Min":
                             {
                                 if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context))
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeMinOrMax(context, invocationInfo);
+                                    OptimizeLinqMethodCallAnalysis.AnalyzeSelectAndMinOrMax(context, invocationInfo);
 
                                 break;
                             }
@@ -184,6 +184,7 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                                 {
                                     OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
                                     OptimizeLinqMethodCallAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
+                                    OptimizeLinqMethodCallAnalysis.AnalyzerOrderByAndFirstOrDefault(context, invocationInfo);
                                 }
 
                                 break;
@@ -269,7 +270,9 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                         case "FirstOrDefault":
                             {
                                 if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context))
+                                {
                                     OptimizeLinqMethodCallAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
+                                }
 
                                 break;
                             }

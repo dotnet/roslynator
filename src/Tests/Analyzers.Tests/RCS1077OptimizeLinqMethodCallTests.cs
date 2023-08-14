@@ -283,11 +283,9 @@ class C
     }
 
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-    [InlineData(@"OrderBy(f => f.Length).Max()", @"MaxBy(f => f.Length)")]
-    [InlineData(@"OrderBy(f => f.Length).Min()", @"MinBy(f => f.Length)")]
-    [InlineData(@"OrderByDescending(f => f.Length).Max()", @"MinBy(f => f.Length)")]
-    [InlineData(@"OrderByDescending(f => f.Length).Min()", @"MaxBy(f => f.Length)")]
-    public async Task Test_CombineOrderByMinMax(string source, string expected)
+    [InlineData(@"OrderBy(f => f.Length).FirstOrDefault()", @"MinBy(f => f.Length)")]
+    [InlineData(@"OrderByDescending(f => f.Length).FirstOrDefault()", @"MaxBy(f => f.Length)")]
+    public async Task Test_CombineOrderByFirstOrDefault(string source, string expected)
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
