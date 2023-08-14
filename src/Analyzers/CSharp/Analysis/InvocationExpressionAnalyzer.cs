@@ -270,9 +270,7 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                         case "FirstOrDefault":
                             {
                                 if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context))
-                                {
                                     OptimizeLinqMethodCallAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
-                                }
 
                                 break;
                             }

@@ -215,8 +215,7 @@ internal static class OptimizeLinqMethodCallAnalysis
 
     // items.OrderBy(selector).FirstOrDefault() >>> items.MaxBy(selector)
     // items.OrderByDescending(selector).FirstOrDefault() >>> items.MaxBy(selector)
-    public static void AnalyzerOrderByAndFirstOrDefault(SyntaxNodeAnalysisContext context,
-        in SimpleMemberInvocationExpressionInfo invocationInfo)
+    public static void AnalyzerOrderByAndFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
     {
         SimplifyLinqMethodChain(
             context,
