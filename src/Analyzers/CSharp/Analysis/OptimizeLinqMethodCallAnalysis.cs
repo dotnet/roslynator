@@ -221,10 +221,10 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         foreach (var attr in compilation.Assembly.GetAttributes())
         {
-            if (!SymbolEqualityComparer.Default.Equals(targetFrameworkAttribute,attr.AttributeClass))
+            if (!SymbolEqualityComparer.Default.Equals(targetFrameworkAttribute, attr.AttributeClass))
                 continue;
 
-            if(attr.ConstructorArguments.FirstOrDefault().Value is not string targetFramework)
+            if (attr.ConstructorArguments.FirstOrDefault().Value is not string targetFramework)
                 continue;
 
             if (targetFramework is ".NETCoreApp,Version=v6.0" or ".NETCoreApp,Version=v7.0")
