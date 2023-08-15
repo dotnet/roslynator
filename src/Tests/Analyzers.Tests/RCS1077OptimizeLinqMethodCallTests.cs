@@ -290,17 +290,41 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
+[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute("".NETCoreApp,Version=v6.0"", FrameworkDisplayName = "".NET 6.0"")]
 
-class C
+namespace N
 {
-    string M()
+    class C
     {
-        var items = new List<string>();
+        string M()
+        {
+            var items = new List<string>();
 
-        return items.[||];
+            return items.[||];
+        }
     }
-}
-", source, expected);
+}", source, expected);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_DoesntCombineOrderByFirstOrDefaultForNetstandard()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+namespace N
+{
+    class C
+    {
+        string M()
+        {
+            var items = new List<string>();
+
+            return items.OrderBy(f => f.Length).FirstOrDefault();
+        }
+    }
+}");
     }
 
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]

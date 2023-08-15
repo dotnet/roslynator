@@ -213,10 +213,33 @@ internal static class OptimizeLinqMethodCallAnalysis
         Report(context, invocation, span, checkDirectives: true, properties: properties);
     }
 
+    private static bool IsNet6OrGreater(Compilation compilation)
+    {
+        var targetFrameworkAttribute = compilation.GetTypeByMetadataName("System.Runtime.Versioning.TargetFrameworkAttribute");
+
+        if (targetFrameworkAttribute == null) return false;
+
+        foreach (var attr in compilation.Assembly.GetAttributes())
+        {
+            if (!SymbolEqualityComparer.Default.Equals(targetFrameworkAttribute,attr.AttributeClass))
+                continue;
+
+            if(attr.ConstructorArguments.FirstOrDefault().Value is not string targetFramework)
+                continue;
+
+            if (targetFramework is ".NETCoreApp,Version=v6.0" or ".NETCoreApp,Version=v7.0")
+                return true;
+        }
+
+        return false;
+    }
+
     // items.OrderBy(selector).FirstOrDefault() >>> items.MaxBy(selector)
     // items.OrderByDescending(selector).FirstOrDefault() >>> items.MaxBy(selector)
     public static void AnalyzerOrderByAndFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
     {
+        if (!IsNet6OrGreater(context.Compilation)) return;
+
         SimplifyLinqMethodChain(
             context,
             invocationInfo,
