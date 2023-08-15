@@ -217,7 +217,8 @@ internal static class OptimizeLinqMethodCallAnalysis
     {
         var targetFrameworkAttribute = compilation.GetTypeByMetadataName("System.Runtime.Versioning.TargetFrameworkAttribute");
 
-        if (targetFrameworkAttribute == null) return false;
+        if (targetFrameworkAttribute == null)
+            return false;
 
         foreach (var attr in compilation.Assembly.GetAttributes())
         {
@@ -238,7 +239,8 @@ internal static class OptimizeLinqMethodCallAnalysis
     // items.OrderByDescending(selector).FirstOrDefault() >>> items.MaxBy(selector)
     public static void AnalyzerOrderByAndFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
     {
-        if (!IsNet6OrGreater(context.Compilation)) return;
+        if (!IsNet6OrGreater(context.Compilation))
+            return;
 
         SimplifyLinqMethodChain(
             context,
