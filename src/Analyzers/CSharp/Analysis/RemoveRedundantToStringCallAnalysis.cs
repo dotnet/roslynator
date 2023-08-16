@@ -65,29 +65,23 @@ internal static class RemoveRedundantToStringCallAnalysis
                     return true;
 
                 ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
-                switch (expression.Parent)
+                switch (expression.Parent.Kind())
                 {
-                    case InterpolationSyntax:
+                    case SyntaxKind.Interpolation:
                         {
-                            if (IsNotHidden(methodSymbol, containingType))
-                                return true;
-
-                            break;
+                            return IsNotHidden(methodSymbol, containingType);
                         }
-                    case BinaryExpressionSyntax { RawKind: (int)SyntaxKind.AddExpression } addExpression:
-                        {
-                            if (addExpression.Right == expression
-                                && semanticModel.GetTypeInfo(addExpression.Left, cancellationToken).Type?.SpecialType == SpecialType.System_String)
-                                return true;
+                    case SyntaxKind.AddExpression:
+                    {
+                            var addExpression = (BinaryExpressionSyntax)expression.Parent;
+                            if (addExpression.Right == expression)
+                                return semanticModel.GetTypeInfo(addExpression.Left, cancellationToken).Type?.SpecialType == SpecialType.System_String;
 
-                            if (addExpression.Left == expression
-                                && semanticModel.GetTypeInfo(addExpression.Right, cancellationToken).Type?.SpecialType == SpecialType.System_String
-                                && (addExpression.Right.WalkDownParentheses() is not InvocationExpressionSyntax invocationExpression2
-                                    || semanticModel.GetMethodSymbol(invocationExpression2, cancellationToken).Name != "ToString"))
-                                return true;
+                            return semanticModel.GetTypeInfo(addExpression.Right, cancellationToken).Type?.SpecialType == SpecialType.System_String
+                                   && (addExpression.Right.WalkDownParentheses() is not InvocationExpressionSyntax invocationExpression2
+                                       || semanticModel.GetMethodSymbol(invocationExpression2, cancellationToken).Name != "ToString");
 
-                            break;
-                        }
+                    }
                 }
             }
         }
