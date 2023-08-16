@@ -129,6 +129,7 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
 
                                     OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
                                     OptimizeLinqMethodCallAnalysis.AnalyzeFirst(context, invocationInfo);
+                                    OptimizeLinqMethodCallAnalysis.AnalyzerOrderByAndFirst(context, invocationInfo, shouldThrowIfEmpty: true);
                                 }
 
                                 break;
@@ -184,7 +185,7 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                                 {
                                     OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
                                     OptimizeLinqMethodCallAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
-                                    OptimizeLinqMethodCallAnalysis.AnalyzerOrderByAndFirstOrDefault(context, invocationInfo);
+                                    OptimizeLinqMethodCallAnalysis.AnalyzerOrderByAndFirst(context, invocationInfo, shouldThrowIfEmpty: false);
                                 }
 
                                 break;

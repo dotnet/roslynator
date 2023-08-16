@@ -336,6 +336,8 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         {
             ("OrderBy", "FirstOrDefault") => (SimpleNameSyntax)ParseName("MinBy"),
             ("OrderByDescending", "FirstOrDefault") => (SimpleNameSyntax)ParseName("MaxBy"),
+            ("OrderBy", "First") => (SimpleNameSyntax)ParseName("MinBy"),
+            ("OrderByDescending", "First") => (SimpleNameSyntax)ParseName("MaxBy"),
             _ => invocationInfo.Name
         };
 

@@ -304,7 +304,72 @@ namespace N
     }
 }", source, expected);
     }
-    
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CombineOrderByFirstOrDefault_NoDiagnosticIfTsourceIsValueType()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            var items = new List<int>();
+
+            var y = items.OrderBy(x=>x).FirstOrDefault();
+        }
+    }
+}");
+    }
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("OrderBy(f => f).First()", "MinBy(f => f)")]
+    [InlineData("OrderByDescending(f => f).First()", "MaxBy(f => f)")]
+    public async Task Test_CombineOrderByFirst(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+namespace N
+{
+    class C
+    {
+        int M()
+        {
+            var items = new List<int>();
+
+            return items.[||];
+        }
+    }
+}", source, expected);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CombineOrderByFirst_NoDiagnosticIfTsourceIsReferenceType()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            var items = new List<string>();
+
+            var y = items.OrderBy(x=>x.Length).First();
+        }
+    }
+}");
+    }
+
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     [InlineData(@"Where(f => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any(f => f.StartsWith(""a"") && f.StartsWith(""b""))")]
     [InlineData(@"Where((f) => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any((f) => f.StartsWith(""a"") && f.StartsWith(""b""))")]

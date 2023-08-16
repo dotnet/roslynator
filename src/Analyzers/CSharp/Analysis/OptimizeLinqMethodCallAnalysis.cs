@@ -187,6 +187,65 @@ internal static class OptimizeLinqMethodCallAnalysis
 
                     break;
                 }
+            default:
+                {
+                    Debug.Fail(methodName);
+                    return;
+                }
+        }
+
+        TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocation.Span.End);
+
+        Report(context, invocation, span, checkDirectives: true, properties: properties);
+    }
+
+
+    // for reference types
+    // items.OrderBy(selector).FirstOrDefault() >>> items.MaxBy(selector)
+    // items.OrderByDescending(selector).FirstOrDefault() >>> items.MaxBy(selector)
+    // for value types:
+    // items.OrderBy(selector).First() >>> items.MaxBy(selector)
+    // items.OrderByDescending(selector).First() >>> items.MaxBy(selector)
+    public static void AnalyzerOrderByAndFirst(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo, bool shouldThrowIfEmpty)
+    {
+        // MinBy / MaxBy are only supported for net6.0 onwards
+        INamedTypeSymbol enumerableSymbol = context.Compilation.GetTypeByMetadataName("System.Linq.Enumerable");
+
+        if (enumerableSymbol.FindMember<IMethodSymbol>("MinBy") is null)
+            return;
+
+        SimpleMemberInvocationExpressionInfo previousInvocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
+
+        if (!previousInvocationInfo.Success)
+            return;
+
+        if (previousInvocationInfo.Arguments.Count != 1)
+            return;
+
+        if (previousInvocationInfo.NameText != "OrderBy" && previousInvocationInfo.NameText != "OrderByDescending")
+            return;
+
+        InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
+
+        SemanticModel semanticModel = context.SemanticModel;
+        CancellationToken cancellationToken = context.CancellationToken;
+
+        IMethodSymbol methodSymbol = semanticModel.GetExtensionMethodInfo(invocation, cancellationToken).Symbol;
+
+        if (methodSymbol is null)
+            return;
+
+        if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, invocationInfo.NameText))
+            return;
+
+        IMethodSymbol methodSymbol2 = semanticModel.GetExtensionMethodInfo(previousInvocationInfo.InvocationExpression, cancellationToken).Symbol;
+
+        if (methodSymbol2 is null)
+            return;
+
+
+        switch (previousInvocationInfo.NameText)
+        {
             case "OrderBy":
                 {
                     if (!SymbolUtility.IsLinqOrderBy(methodSymbol2, allowImmutableArrayExtension: true))
@@ -203,37 +262,26 @@ internal static class OptimizeLinqMethodCallAnalysis
                 }
             default:
                 {
-                    Debug.Fail(methodName);
-                    return;
+                    throw new InvalidOperationException();
                 }
         }
 
-        TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocation.Span.End);
-
-        Report(context, invocation, span, checkDirectives: true, properties: properties);
-    }
-
-    // items.OrderBy(selector).FirstOrDefault() >>> items.MaxBy(selector)
-    // items.OrderByDescending(selector).FirstOrDefault() >>> items.MaxBy(selector)
-    public static void AnalyzerOrderByAndFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
-    {
-        INamedTypeSymbol enumerableSymbol = context.Compilation.GetTypeByMetadataName("System.Linq.Enumerable");
-
-        if (enumerableSymbol.FindMember<IMethodSymbol>("MinBy") is null)
+        // First throws if no values found. MaxBy/MinBy match this behaviour if TSource is a not reference type.
+        var lambda = previousInvocationInfo.InvocationExpression.ArgumentList.Arguments[0].Expression;
+        var delegateType = semanticModel.GetTypeInfo(lambda).ConvertedType;
+        if (delegateType is not INamedTypeSymbol { TypeKind: TypeKind.Delegate } namedDelegateType)
             return;
 
-        SimplifyLinqMethodChain(
-            context,
-            invocationInfo,
-            "OrderBy",
-            Properties.SimplifyLinqMethodChain);
+        var tSource = namedDelegateType.TypeArguments.First();
 
-        SimplifyLinqMethodChain(
-            context,
-            invocationInfo,
-            "OrderByDescending",
-            Properties.SimplifyLinqMethodChain);
+        if (tSource.IsReferenceType == shouldThrowIfEmpty)
+            return;
+
+        TextSpan span = TextSpan.FromBounds(previousInvocationInfo.Name.SpanStart, invocation.Span.End);
+
+        Report(context, invocation, span, checkDirectives: true, properties: Properties.SimplifyLinqMethodChain);
     }
+
 
     public static void AnalyzeFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
     {
