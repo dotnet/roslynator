@@ -80,6 +80,20 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
+    public async Task Test_AliasQualifiedName()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+[|using s = System;|]
+
+class X : s::Object  
+{
+}", @"
+class X : object
+{
+}");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
     public async Task Test_BlockNamespaces()
     {
         await VerifyDiagnosticAndFixAsync(@"
