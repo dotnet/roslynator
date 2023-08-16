@@ -6,9 +6,19 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Rename;
 
+/// <summary>
+/// Represents in information about renaming a symbol.
+/// </summary>
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class SymbolRenameProgress
 {
+    /// <summary>
+    /// Initializes a new instance of <see cref="SymbolRenameProgress"/>.
+    /// </summary>
+    /// <param name="symbol"></param>
+    /// <param name="kind"></param>
+    /// <param name="newName"></param>
+    /// <param name="exception"></param>
     internal SymbolRenameProgress(
         ISymbol symbol,
         SymbolRenameProgressKind kind,
@@ -21,12 +31,21 @@ public class SymbolRenameProgress
         Exception = exception;
     }
 
+    /// <summary>
+    /// Symbols being renamed.
+    /// </summary>
     public ISymbol Symbol { get; }
 
     public SymbolRenameProgressKind Kind { get; }
 
+    /// <summary>
+    /// New name of the symbol.
+    /// </summary>
     public string NewName { get; }
 
+    /// <summary>
+    /// Exception that occurred during renaming. May be <c>null</c>.
+    /// </summary>
     public Exception Exception { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]

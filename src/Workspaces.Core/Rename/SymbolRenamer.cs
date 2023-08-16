@@ -9,8 +9,20 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Rename;
 
+/// <summary>
+/// Provides a set of static methods for renaming symbols in a solution or a project.
+/// </summary>
 public static class SymbolRenamer
 {
+    /// <summary>
+    /// Renames symbols in the specified solution.
+    /// </summary>
+    /// <param name="solution"></param>
+    /// <param name="predicate"></param>
+    /// <param name="getNewName"></param>
+    /// <param name="options"></param>
+    /// <param name="progress"></param>
+    /// <param name="cancellationToken"></param>
     public static async Task RenameSymbolsAsync(
         Solution solution,
         Func<ISymbol, bool> predicate,
@@ -24,6 +36,18 @@ public static class SymbolRenamer
         await renamer.RenameSymbolsAsync(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Renames symbols in the specified projects. All projects must be in the same solution.
+    /// </summary>
+    /// <param name="projects"></param>
+    /// <param name="predicate"></param>
+    /// <param name="getNewName"></param>
+    /// <param name="options"></param>
+    /// <param name="progress"></param>
+    /// <param name="cancellationToken"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
     public static async Task RenameSymbolsAsync(
         IEnumerable<Project> projects,
         Func<ISymbol, bool> predicate,
@@ -70,6 +94,15 @@ public static class SymbolRenamer
         }
     }
 
+    /// <summary>
+    /// Renames symbols in the specified project.
+    /// </summary>
+    /// <param name="project"></param>
+    /// <param name="predicate"></param>
+    /// <param name="getNewName"></param>
+    /// <param name="options"></param>
+    /// <param name="progress"></param>
+    /// <param name="cancellationToken"></param>
     public static async Task RenameSymbolsAsync(
         Project project,
         Func<ISymbol, bool> predicate,
