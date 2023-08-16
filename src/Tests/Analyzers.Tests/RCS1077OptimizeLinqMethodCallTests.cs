@@ -290,7 +290,6 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
-[assembly: global::System.Runtime.Versioning.TargetFrameworkAttribute("".NETCoreApp,Version=v6.0"", FrameworkDisplayName = "".NET 6.0"")]
 
 namespace N
 {
@@ -305,28 +304,7 @@ namespace N
     }
 }", source, expected);
     }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-    public async Task Test_DoesntCombineOrderByFirstOrDefaultForNetstandard()
-    {
-        await VerifyNoDiagnosticAsync(@"
-using System.Collections.Generic;
-using System.Linq;
-
-namespace N
-{
-    class C
-    {
-        string M()
-        {
-            var items = new List<string>();
-
-            return items.OrderBy(f => f.Length).FirstOrDefault();
-        }
-    }
-}");
-    }
-
+    
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     [InlineData(@"Where(f => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any(f => f.StartsWith(""a"") && f.StartsWith(""b""))")]
     [InlineData(@"Where((f) => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any((f) => f.StartsWith(""a"") && f.StartsWith(""b""))")]
