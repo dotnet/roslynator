@@ -81,7 +81,7 @@ internal static class RemoveRedundantToStringCallAnalysis
                                 return true;
 
                             if (addExpression.Left == expression
-                                && semanticModel.GetTypeInfo(addExpression.Right, cancellationToken).Type?.SpecialType == SpecialType.System_String
+                                && semanticModel.GetTypeSymbol(addExpression.Right, cancellationToken)?.SpecialType == SpecialType.System_String
                                 && (addExpression.Right.WalkDownParentheses() is not InvocationExpressionSyntax invocationExpression2
                                     || semanticModel.GetMethodSymbol(invocationExpression2, cancellationToken).Name != "ToString"))
                                 return true;
