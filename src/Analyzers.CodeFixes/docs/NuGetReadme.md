@@ -6,7 +6,7 @@ A collection of 200+ [analyzers](https://josefpihrt.github.io/docs/roslynator/an
 
 * Visual Studio 2022
 * VS Code with [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) 1.21.13 or higher
-* Roslyn 4.0.1 (when used directly, not as a part of IDE)
+* Roslyn 4.4.0 (when used directly, not as a part of IDE)
 
 ## Usage
 
