@@ -77,7 +77,7 @@ internal static class RemoveRedundantToStringCallAnalysis
                     case BinaryExpressionSyntax { RawKind: (int)SyntaxKind.AddExpression } addExpression:
                         {
                             if (addExpression.Right == expression
-                                && semanticModel.GetTypeInfo(addExpression.Left, cancellationToken).Type?.SpecialType == SpecialType.System_String)
+                                && semanticModel.GetTypeSymbol(addExpression.Left, cancellationToken)?.SpecialType == SpecialType.System_String)
                                 return true;
 
                             if (addExpression.Left == expression
