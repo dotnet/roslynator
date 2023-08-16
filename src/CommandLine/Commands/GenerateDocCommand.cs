@@ -269,7 +269,9 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
 
         rootFilePath = Path.GetFullPath(rootFilePath);
 
-        generator.Options.RootDirectoryUrl = DetermineRelativePath(rootFilePath);
+        generator.Options.RootDirectoryUrl = FileSystemHelpers.DetermineRelativePath(Options.Output, rootFilePath);
+
+        WriteLine($"Relative path from root file to output directory is '{generator.Options.RootDirectoryUrl}'.", Verbosity.Detailed);
 
         WriteLine($"Generate documentation root to '{rootFilePath}'.", Verbosity.Minimal);
 
@@ -279,19 +281,6 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
         File.WriteAllText(rootFilePath, result.Content, _defaultEncoding);
 
         WriteLine($"Documentation root successfully generated to '{rootFilePath}'.", Verbosity.Minimal);
-
-        string DetermineRelativePath(string rootFilePath)
-        {
-            string outputDirectoryPath = Path.GetFullPath(Options.Output);
-            outputDirectoryPath = outputDirectoryPath.Replace(@"\", "/").TrimEnd('/');
-
-            string rootDirectoryPath = Path.GetDirectoryName(rootFilePath).Replace(@"\", "/").TrimEnd('/') + "/";
-
-            var outputDirectoryUri = new Uri(outputDirectoryPath);
-            var rootDirectoryUri = new Uri(rootDirectoryPath);
-
-            return rootDirectoryUri.MakeRelativeUri(outputDirectoryUri).ToString().TrimEnd('/');
-        }
     }
 
     private static void AddTableOfContents(IEnumerable<DocumentationGeneratorResult> results)
