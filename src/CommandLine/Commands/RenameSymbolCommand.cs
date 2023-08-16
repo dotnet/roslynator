@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Roslynator.CommandLine.Rename;
 using Roslynator.Rename;
 using static Roslynator.Logger;
 
@@ -19,11 +21,11 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
         in ProjectFilter projectFilter,
         RenameScopeFilter scopeFilter,
         Visibility visibility,
-        RenameErrorResolution errorResolution,
+        CliCompilationErrorResolution errorResolution,
         IEnumerable<string> ignoredCompilerDiagnostics,
         int codeContext,
         Func<ISymbol, bool> predicate,
-        Func<ISymbol, string> getNewName) : base(projectFilter)
+        Func<ISymbol, string> symbolEvaluator) : base(projectFilter)
     {
         Options = options;
         ScopeFilter = scopeFilter;
@@ -32,7 +34,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
         IgnoredCompilerDiagnostics = ignoredCompilerDiagnostics;
         CodeContext = codeContext;
         Predicate = predicate;
-        GetNewName = getNewName;
+        SymbolEvaluator = symbolEvaluator;
     }
 
     public RenameSymbolCommandLineOptions Options { get; }
@@ -41,7 +43,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
     public Visibility Visibility { get; }
 
-    public RenameErrorResolution ErrorResolution { get; }
+    public CliCompilationErrorResolution ErrorResolution { get; }
 
     public IEnumerable<string> IgnoredCompilerDiagnostics { get; }
 
@@ -49,7 +51,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
     public Func<ISymbol, bool> Predicate { get; }
 
-    public Func<ISymbol, string> GetNewName { get; }
+    public Func<ISymbol, string> SymbolEvaluator { get; }
 
     public override async Task<RenameSymbolCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
@@ -57,8 +59,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
         var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
 
-        SymbolRenamer renamer = null;
-        ImmutableArray<SymbolRenameResult> results = default;
+        SymbolRenameState renamer = null;
 
         if (projectOrSolution.IsProject)
         {
@@ -72,7 +73,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            results = await renamer.AnalyzeProjectAsync(project, cancellationToken);
+            await renamer.RenameSymbolsAsync(project, cancellationToken);
 
             stopwatch.Stop();
 
@@ -84,12 +85,12 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
             renamer = GetSymbolRenamer(solution);
 
-            results = await renamer.AnalyzeSolutionAsync(f => projectFilter.IsMatch(f), cancellationToken);
+            await renamer.RenameSymbolsAsync(solution.Projects.Where(p => projectFilter.IsMatch(p)), cancellationToken);
         }
 
-        return new RenameSymbolCommandResult(CommandStatus.Success, results);
+        return new RenameSymbolCommandResult(CommandStatus.Success);
 
-        SymbolRenamer GetSymbolRenamer(Solution solution)
+        SymbolRenameState GetSymbolRenamer(Solution solution)
         {
             VisibilityFilter visibilityFilter = Visibility switch
             {
@@ -99,22 +100,25 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
                 _ => throw new InvalidOperationException()
             };
 
-            var options = new SymbolRenamerOptions(
-                scopeFilter: ScopeFilter,
-                visibilityFilter: visibilityFilter,
-                errorResolution: ErrorResolution,
-                ignoredCompilerDiagnosticIds: IgnoredCompilerDiagnostics,
-                codeContext: CodeContext,
-                includeGeneratedCode: Options.IncludeGeneratedCode,
-                ask: Options.Ask,
-                dryRun: Options.DryRun,
-                interactive: Options.Interactive);
+            var options = new SymbolRenamerOptions()
+            {
+                SkipTypes = (ScopeFilter & RenameScopeFilter.Type) != 0,
+                SkipMembers = (ScopeFilter & RenameScopeFilter.Member) != 0,
+                SkipLocals = (ScopeFilter & RenameScopeFilter.Local) != 0,
+                VisibilityFilter = visibilityFilter,
+                IgnoredCompilerDiagnosticIds = IgnoredCompilerDiagnostics?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty,
+                IncludeGeneratedCode = Options.IncludeGeneratedCode,
+                DryRun = Options.DryRun,
+            };
 
-            return new SymbolRenamer(
+            return new CliSymbolRenameState(
                 solution,
                 predicate: Predicate,
-                getNewName: GetNewName,
-                userDialog: new ConsoleDialog(ConsoleDialogDefinition.Default, "    "),
+                symbolEvaluator: SymbolEvaluator,
+                ask: Options.Ask,
+                interactive: Options.Interactive,
+                codeContext: Options.CodeContext,
+                errorResolution: ErrorResolution,
                 options: options);
         }
     }

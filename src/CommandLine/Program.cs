@@ -16,6 +16,7 @@ using CommandLine.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Roslynator.CodeFixes;
+using Roslynator.CommandLine.Rename;
 using Roslynator.Diagnostics;
 using Roslynator.Documentation;
 using Roslynator.FindSymbols;
@@ -450,7 +451,7 @@ internal static class Program
         if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
             return ExitCodes.Error;
 
-        if (!TryParseOptionValueAsEnum(options.OnError, OptionNames.OnError, out RenameErrorResolution errorResolution, defaultValue: RenameErrorResolution.None))
+        if (!TryParseOptionValueAsEnum(options.OnError, OptionNames.OnError, out CliCompilationErrorResolution errorResolution, defaultValue: CliCompilationErrorResolution.None))
             return ExitCodes.Error;
 
 #pragma warning disable RCS1118
@@ -497,7 +498,7 @@ internal static class Program
             "ISymbol",
             typeof(ISymbol),
             "symbol",
-            out Func<ISymbol, string> getNewName))
+            out Func<ISymbol, string> symbolEvaluator))
         {
             return ExitCodes.Error;
         }
@@ -516,7 +517,7 @@ internal static class Program
             codeContext: -1,
 #endif
             predicate: predicate,
-            getNewName: getNewName);
+            symbolEvaluator: symbolEvaluator);
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 

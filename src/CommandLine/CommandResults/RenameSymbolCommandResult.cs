@@ -7,11 +7,8 @@ namespace Roslynator.CommandLine;
 
 internal class RenameSymbolCommandResult : CommandResult
 {
-    public RenameSymbolCommandResult(CommandStatus status, ImmutableArray<SymbolRenameResult> renameResults)
+    public RenameSymbolCommandResult(CommandStatus status)
         : base(status)
     {
-        RenameResults = renameResults;
     }
-
-    public ImmutableArray<SymbolRenameResult> RenameResults { get; }
 }
