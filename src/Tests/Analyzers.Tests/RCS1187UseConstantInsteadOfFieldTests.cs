@@ -88,4 +88,17 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    public async Task TestNoDiagnostic_SelfReference()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    private static readonly Double Double = Double.Epsilon; 
+}
+");
+    }
 }
