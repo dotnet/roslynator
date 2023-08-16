@@ -119,6 +119,8 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
                 interactive: Options.Interactive,
 #if DEBUG
                 codeContext: Options.CodeContext,
+#else
+                codeContext: -1,
 #endif
                 errorResolution: ErrorResolution,
                 options: options);
