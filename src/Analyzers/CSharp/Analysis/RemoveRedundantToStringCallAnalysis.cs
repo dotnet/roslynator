@@ -72,15 +72,15 @@ internal static class RemoveRedundantToStringCallAnalysis
                             return IsNotHidden(methodSymbol, containingType);
                         }
                     case SyntaxKind.AddExpression:
-                    {
+                        {
                             var addExpression = (BinaryExpressionSyntax)expression.Parent;
                             if (addExpression.Right == expression)
                                 return semanticModel.GetTypeInfo(addExpression.Left, cancellationToken).Type?.SpecialType == SpecialType.System_String;
 
                             return semanticModel.GetTypeInfo(addExpression.Right, cancellationToken).Type?.SpecialType == SpecialType.System_String
                                    && (addExpression.Right.WalkDownParentheses() is not InvocationExpressionSyntax invocationExpression2
-                                       || semanticModel.GetMethodSymbol(invocationExpression2, cancellationToken).Name != "ToString");
-                    }
+                                        || semanticModel.GetMethodSymbol(invocationExpression2, cancellationToken).Name != "ToString");
+                        }
                 }
             }
         }
