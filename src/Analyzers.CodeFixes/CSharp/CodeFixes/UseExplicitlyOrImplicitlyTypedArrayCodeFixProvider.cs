@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
@@ -59,7 +60,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         {
             ImplicitArrayCreationExpressionSyntax => "Use explicitly typed array",
             ArrayCreationExpressionSyntax => "Use implicitly typed array",
-            _ => "",
+            _ => throw new InvalidOperationException(),
         };
 
         CodeAction codeAction = CodeAction.Create(
@@ -87,7 +88,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         {
             ImplicitArrayCreationExpressionSyntax implicitArrayCreation => await ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, cancellationToken).ConfigureAwait(false),
             ArrayCreationExpressionSyntax arrayCreation => await ChangeArrayTypeToImplicitAsync(document, arrayCreation, cancellationToken).ConfigureAwait(false),
-            _ => null
+            _ => throw new InvalidOperationException()
         };
     }
 
