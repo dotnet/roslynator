@@ -727,10 +727,11 @@ internal class SymbolRenameState
         if (!findSymbolService.SyntaxFacts.IsValidIdentifier(newName))
             throw new InvalidOperationException($"'{newName}' is not valid identifier. Cannot rename symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'.");
 
-        Progress?.Report(new SymbolRenameProgress(symbol, SymbolRenameResult.Success, newName));
-
         if (DryRun)
+        {
+            Report(symbol, newName, SymbolRenameResult.Success);
             return default;
+        }
 
         try
         {
@@ -750,7 +751,7 @@ internal class SymbolRenameState
         }
         catch (InvalidOperationException ex)
         {
-            Progress?.Report(new SymbolRenameProgress(symbol, SymbolRenameResult.RenameError, newName, ex));
+            Report(symbol, newName, SymbolRenameResult.RenameError, ex);
 
             ignoreIds?.Add(symbolId);
             return default;
@@ -765,11 +766,7 @@ internal class SymbolRenameState
             {
                 if (!Options.IgnoredCompilerDiagnosticIds.Contains(diagnostic.Id))
                 {
-                    Progress?.Report(
-                        new SymbolRenameProgress(
-                            symbol,
-                            SymbolRenameResult.CompilationError,
-                            newName));
+                    Report(symbol, newName, SymbolRenameResult.CompilationError);
 
                     if (Options.ErrorResolution == CompilationErrorResolution.Skip)
                     {
@@ -788,7 +785,18 @@ internal class SymbolRenameState
             }
         }
 
+        Report(symbol, newName, SymbolRenameResult.Success);
+
         return (newName, newSolution);
+    }
+
+    private void Report(
+        ISymbol symbol,
+        string newName,
+        SymbolRenameResult result,
+        Exception exception = null)
+    {
+        Progress?.Report(new SymbolRenameProgress(symbol, newName, result, exception));
     }
 
     private static string GetSymbolId(ISymbol symbol)

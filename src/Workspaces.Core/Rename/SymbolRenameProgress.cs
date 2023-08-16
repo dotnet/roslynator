@@ -16,18 +16,18 @@ public class SymbolRenameProgress
     /// Initializes a new instance of <see cref="SymbolRenameProgress"/>.
     /// </summary>
     /// <param name="symbol"></param>
-    /// <param name="result"></param>
     /// <param name="newName"></param>
+    /// <param name="result"></param>
     /// <param name="exception"></param>
     internal SymbolRenameProgress(
         ISymbol symbol,
+        string newName,
         SymbolRenameResult result,
-        string newName = null,
         Exception exception = null)
     {
         Symbol = symbol;
-        Result = result;
         NewName = newName;
+        Result = result;
         Exception = exception;
     }
 
@@ -36,12 +36,15 @@ public class SymbolRenameProgress
     /// </summary>
     public ISymbol Symbol { get; }
 
-    public SymbolRenameResult Result { get; }
-
     /// <summary>
     /// New name of the symbol.
     /// </summary>
     public string NewName { get; }
+
+    /// <summary>
+    /// /// Specifies if the rename operation succeeded or not.
+    /// </summary>
+    public SymbolRenameResult Result { get; }
 
     /// <summary>
     /// Exception that occurred during renaming. May be <c>null</c>.
