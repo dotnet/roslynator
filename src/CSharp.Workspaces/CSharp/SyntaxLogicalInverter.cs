@@ -133,8 +133,8 @@ public class SyntaxLogicalInverter
                     TypeSyntax type = rightTypeSymbol.ToTypeSyntax();
 
                     if (SymbolEqualityComparer.Default.Equals(
-                            semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsExpression).Symbol,
-                            semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsTypeOrNamespace).Symbol))
+                        semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsExpression).Symbol,
+                        semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsTypeOrNamespace).Symbol))
                     {
                         type = type.WithSimplifierAnnotation();
                     }
