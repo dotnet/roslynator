@@ -16,17 +16,17 @@ public class SymbolRenameProgress
     /// Initializes a new instance of <see cref="SymbolRenameProgress"/>.
     /// </summary>
     /// <param name="symbol"></param>
-    /// <param name="kind"></param>
+    /// <param name="result"></param>
     /// <param name="newName"></param>
     /// <param name="exception"></param>
     internal SymbolRenameProgress(
         ISymbol symbol,
-        SymbolRenameProgressKind kind,
+        SymbolRenameResult result,
         string newName = null,
         Exception exception = null)
     {
         Symbol = symbol;
-        Kind = kind;
+        Result = result;
         NewName = newName;
         Exception = exception;
     }
@@ -36,7 +36,7 @@ public class SymbolRenameProgress
     /// </summary>
     public ISymbol Symbol { get; }
 
-    public SymbolRenameProgressKind Kind { get; }
+    public SymbolRenameResult Result { get; }
 
     /// <summary>
     /// New name of the symbol.

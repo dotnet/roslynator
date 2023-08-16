@@ -540,9 +540,7 @@ internal class SymbolRenameState
 
         symbol = currentSymbol;
 
-        SymbolRenameResult result = await RenameSymbolAsync(symbol, symbolId, ignoreIds, findSymbolService, span, document, cancellationToken).ConfigureAwait(false);
-        string newName = result.NewName;
-        Solution newSolution = result.NewSolution;
+        (string newName, Solution newSolution) = await RenameSymbolAsync(symbol, symbolId, ignoreIds, findSymbolService, span, document, cancellationToken).ConfigureAwait(false);
 
         IEnumerable<ReferencedSymbol> referencedSymbols = await Microsoft.CodeAnalysis.FindSymbols.SymbolFinder.FindReferencesAsync(
             symbol,
@@ -714,7 +712,7 @@ internal class SymbolRenameState
         }
     }
 
-    protected virtual async Task<SymbolRenameResult> RenameSymbolAsync(
+    protected virtual async Task<(string NewName, Solution NewSolution)> RenameSymbolAsync(
         ISymbol symbol,
         string symbolId,
         List<string> ignoreIds,
@@ -726,13 +724,10 @@ internal class SymbolRenameState
         Solution newSolution = null;
         string newName = SymbolEvaluator(symbol);
 
-        Progress?.Report(new SymbolRenameProgress(symbol, SymbolRenameProgressKind.Rename, newName));
+        if (!findSymbolService.SyntaxFacts.IsValidIdentifier(newName))
+            throw new InvalidOperationException($"'{newName}' is not valid identifier. Cannot rename symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'.");
 
-        if (newName is null)
-        {
-            ignoreIds?.Add(symbolId);
-            return default;
-        }
+        Progress?.Report(new SymbolRenameProgress(symbol, SymbolRenameResult.Success, newName));
 
         if (DryRun)
             return default;
@@ -755,15 +750,13 @@ internal class SymbolRenameState
         }
         catch (InvalidOperationException ex)
         {
-            Progress?.Report(new SymbolRenameProgress(symbol, SymbolRenameProgressKind.RenameError, newName, ex));
+            Progress?.Report(new SymbolRenameProgress(symbol, SymbolRenameResult.RenameError, newName, ex));
 
             ignoreIds?.Add(symbolId);
             return default;
         }
 
-        CompilationErrorResolution errorResolution = Options.ErrorResolution;
-
-        if (errorResolution != CompilationErrorResolution.Ignore)
+        if (Options.ErrorResolution != CompilationErrorResolution.Ignore)
         {
             Project newProject = newSolution.GetDocument(document.Id).Project;
             Compilation compilation = await newProject.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
@@ -775,27 +768,27 @@ internal class SymbolRenameState
                     Progress?.Report(
                         new SymbolRenameProgress(
                             symbol,
-                            SymbolRenameProgressKind.CompilationError,
+                            SymbolRenameResult.CompilationError,
                             newName));
 
-                    if (errorResolution == CompilationErrorResolution.Skip)
+                    if (Options.ErrorResolution == CompilationErrorResolution.Skip)
                     {
                         ignoreIds?.Add(symbolId);
                         return default;
                     }
-                    else if (errorResolution == CompilationErrorResolution.Throw)
+                    else if (Options.ErrorResolution == CompilationErrorResolution.Throw)
                     {
                         throw new InvalidOperationException("Renaming of a symbol causes compiler diagnostics.");
                     }
                     else
                     {
-                        throw new InvalidOperationException($"Unknown enum value '{errorResolution}'.");
+                        throw new InvalidOperationException($"Unknown enum value '{Options.ErrorResolution}'.");
                     }
                 }
             }
         }
 
-        return new SymbolRenameResult(newName, newSolution);
+        return (newName, newSolution);
     }
 
     private static string GetSymbolId(ISymbol symbol)

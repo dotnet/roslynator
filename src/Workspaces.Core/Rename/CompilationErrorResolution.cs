@@ -3,7 +3,7 @@
 namespace Roslynator.Rename;
 
 /// <summary>
-/// Specifies how to handle compilation errors.
+/// Specifies how to handle compilation errors that occur after renaming a symbol.
 /// </summary>
 public enum CompilationErrorResolution
 {

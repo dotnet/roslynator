@@ -88,7 +88,7 @@ internal class CliSymbolRenameState : SymbolRenameState
         }
     }
 
-    protected override async Task<SymbolRenameResult> RenameSymbolAsync(
+    protected override async Task<(string NewName, Solution NewSolution)> RenameSymbolAsync(
         ISymbol symbol,
         string symbolId,
         List<string> ignoreIds,
@@ -256,7 +256,7 @@ internal class CliSymbolRenameState : SymbolRenameState
             }
         }
 
-        return new SymbolRenameResult(newName, newSolution);
+        return (newName, newSolution);
     }
 
     private static string GetNewName(
