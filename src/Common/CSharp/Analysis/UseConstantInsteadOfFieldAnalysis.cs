@@ -82,6 +82,21 @@ internal static class UseConstantInsteadOfFieldAnalysis
 
             if (!semanticModel.HasConstantValue(value, cancellationToken))
                 return false;
+
+            // Changing a static field to a constant changes the meaning of that symbol in the decorators.
+            foreach (SyntaxNode node in value.DescendantNodesAndSelf())
+            {
+                if (node is not IdentifierNameSyntax identifierName)
+                    continue;
+
+                if (identifierName.Identifier.ValueText != fieldSymbol.Name)
+                    continue;
+
+                if (identifierName.Parent is MemberAccessExpressionSyntax memberAccessExpression && memberAccessExpression.Name == identifierName)
+                    continue;
+
+                return false;
+            }
         }
 
         foreach (IMethodSymbol constructorSymbol in fieldSymbol.ContainingType.StaticConstructors)
