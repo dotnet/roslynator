@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynatorRoslynVersion)" />
-    <PackageReference Include="DotMarkdown.Docusaurus" Version="0.3.0-beta" />
+    <PackageReference Include="DotMarkdown.Docusaurus" Version="0.3.0" />
   </ItemGroup>
 
   <ItemGroup>
