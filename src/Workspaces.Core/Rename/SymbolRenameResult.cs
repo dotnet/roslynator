@@ -15,7 +15,7 @@ public enum SymbolRenameResult
     /// <summary>
     /// <see cref="Microsoft.CodeAnalysis.Rename.Renamer"/> throws an exception.
     /// </summary>
-    RenameError,
+    Error,
 
     /// <summary>
     /// Renaming of a symbol caused compilation errors.

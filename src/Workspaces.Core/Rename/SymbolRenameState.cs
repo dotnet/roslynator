@@ -750,13 +750,15 @@ internal class SymbolRenameState
         }
         catch (InvalidOperationException ex)
         {
-            Report(symbol, newName, SymbolRenameResult.RenameError, ex);
+            Report(symbol, newName, SymbolRenameResult.Error, ex);
 
             ignoreIds?.Add(symbolId);
             return default;
         }
 
-        if (Options.ErrorResolution != CompilationErrorResolution.Ignore)
+        CompilationErrorResolution resolution = Options.CompilationErrorResolution;
+
+        if (resolution != CompilationErrorResolution.Ignore)
         {
             Project newProject = newSolution.GetDocument(document.Id).Project;
             Compilation compilation = await newProject.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
@@ -767,18 +769,18 @@ internal class SymbolRenameState
                 {
                     Report(symbol, newName, SymbolRenameResult.CompilationError);
 
-                    if (Options.ErrorResolution == CompilationErrorResolution.Skip)
+                    if (resolution == CompilationErrorResolution.Skip)
                     {
                         ignoreIds?.Add(symbolId);
                         return default;
                     }
-                    else if (Options.ErrorResolution == CompilationErrorResolution.Throw)
+                    else if (resolution == CompilationErrorResolution.Throw)
                     {
                         throw new InvalidOperationException("Renaming of a symbol causes compiler diagnostics.");
                     }
                     else
                     {
-                        throw new InvalidOperationException($"Unknown enum value '{Options.ErrorResolution}'.");
+                        throw new InvalidOperationException($"Unknown enum value '{resolution}'.");
                     }
                 }
             }

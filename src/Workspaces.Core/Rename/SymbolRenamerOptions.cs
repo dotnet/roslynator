@@ -28,7 +28,7 @@ public class SymbolRenamerOptions
     /// </summary>
     public bool SkipLocals { get; init; }
 
-    public CompilationErrorResolution ErrorResolution { get; init; } = CompilationErrorResolution.Throw;
+    public CompilationErrorResolution CompilationErrorResolution { get; init; } = CompilationErrorResolution.Throw;
 
     /// <summary>
     /// A list of compiler diagnostic IDs that should be ignored.

@@ -10,7 +10,7 @@ namespace Roslynator.Rename;
 /// Represents in information about renaming a symbol.
 /// </summary>
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
-public class SymbolRenameProgress
+public readonly struct SymbolRenameProgress
 {
     /// <summary>
     /// Initializes a new instance of <see cref="SymbolRenameProgress"/>.
