@@ -28,8 +28,6 @@ public class SymbolRenamerOptions
     /// </summary>
     public bool SkipLocals { get; init; }
 
-    internal VisibilityFilter VisibilityFilter { get; init; } = VisibilityFilter.All;
-
     public CompilationErrorResolution ErrorResolution { get; init; } = CompilationErrorResolution.Throw;
 
     /// <summary>

@@ -454,15 +454,7 @@ internal static class Program
         if (!TryParseOptionValueAsEnum(options.OnError, OptionNames.OnError, out CliCompilationErrorResolution errorResolution, defaultValue: CliCompilationErrorResolution.None))
             return ExitCodes.Error;
 
-#pragma warning disable RCS1118
-        var visibility = Visibility.Public;
-#pragma warning restore RCS1118
-        var scopeFilter = RenameScopeFilter.All;
-#if DEBUG
-        if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out visibility))
-            return ExitCodes.Error;
-#endif
-        if (!TryParseOptionValueAsEnumFlags(options.Scope, OptionNames.Scope, out scopeFilter, defaultValue: RenameScopeFilter.All))
+        if (!TryParseOptionValueAsEnumFlags(options.Scope, OptionNames.Scope, out RenameScopeFilter scopeFilter, defaultValue: RenameScopeFilter.All))
             return ExitCodes.Error;
 
         if (!TryParseCodeExpression(
@@ -507,15 +499,9 @@ internal static class Program
             options: options,
             projectFilter: projectFilter,
             scopeFilter: scopeFilter,
-            visibility: visibility,
             errorResolution: errorResolution,
-#if DEBUG
             ignoredCompilerDiagnostics: options.IgnoredCompilerDiagnostics,
-            codeContext: options.CodeContext,
-#else
-            ignoredCompilerDiagnostics: null,
             codeContext: -1,
-#endif
             predicate: predicate,
             symbolEvaluator: symbolEvaluator);
 

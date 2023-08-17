@@ -20,7 +20,6 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
         RenameSymbolCommandLineOptions options,
         in ProjectFilter projectFilter,
         RenameScopeFilter scopeFilter,
-        Visibility visibility,
         CliCompilationErrorResolution errorResolution,
         IEnumerable<string> ignoredCompilerDiagnostics,
         int codeContext,
@@ -29,7 +28,6 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
     {
         Options = options;
         ScopeFilter = scopeFilter;
-        Visibility = visibility;
         ErrorResolution = errorResolution;
         IgnoredCompilerDiagnostics = ignoredCompilerDiagnostics;
         CodeContext = codeContext;
@@ -40,8 +38,6 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
     public RenameSymbolCommandLineOptions Options { get; }
 
     public RenameScopeFilter ScopeFilter { get; }
-
-    public Visibility Visibility { get; }
 
     public CliCompilationErrorResolution ErrorResolution { get; }
 
@@ -92,20 +88,11 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
         SymbolRenameState GetSymbolRenamer(Solution solution)
         {
-            VisibilityFilter visibilityFilter = Visibility switch
-            {
-                Visibility.Public => VisibilityFilter.All,
-                Visibility.Internal => VisibilityFilter.Internal | VisibilityFilter.Private,
-                Visibility.Private => VisibilityFilter.Private,
-                _ => throw new InvalidOperationException()
-            };
-
             var options = new SymbolRenamerOptions()
             {
                 SkipTypes = (ScopeFilter & RenameScopeFilter.Type) != 0,
                 SkipMembers = (ScopeFilter & RenameScopeFilter.Member) != 0,
                 SkipLocals = (ScopeFilter & RenameScopeFilter.Local) != 0,
-                VisibilityFilter = visibilityFilter,
                 IgnoredCompilerDiagnosticIds = IgnoredCompilerDiagnostics?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty,
                 IncludeGeneratedCode = Options.IncludeGeneratedCode,
                 DryRun = Options.DryRun,
@@ -117,11 +104,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
                 symbolEvaluator: SymbolEvaluator,
                 ask: Options.Ask,
                 interactive: Options.Interactive,
-#if DEBUG
-                codeContext: Options.CodeContext,
-#else
                 codeContext: -1,
-#endif
                 errorResolution: ErrorResolution,
                 options: options);
         }

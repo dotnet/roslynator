@@ -176,7 +176,6 @@ internal class SymbolRenameState
 
             ImmutableArray<SymbolData> symbolData2 = symbolData
                 .Where(f => !ignoreSymbolIds.Contains(f.Id)
-                    && f.Symbol.IsVisible(Options.VisibilityFilter)
                     && Predicate?.Invoke(f.Symbol) != false)
                 .ToImmutableArray();
 
