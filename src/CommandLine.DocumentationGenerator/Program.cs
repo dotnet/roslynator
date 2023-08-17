@@ -56,18 +56,18 @@ internal static class Program
 
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-        using (var sw = new StreamWriter(filePath, append: false, Encoding.UTF8))
-        using (MarkdownWriter mw = MarkdownWriter.Create(sw, settings))
-        using (var dw = new DocusaurusMarkdownWriter(mw))
+        using (var streamWriter = new StreamWriter(filePath, append: false, Encoding.UTF8))
+        using (MarkdownWriter markdownWriter = MarkdownWriter.Create(streamWriter, settings))
+        using (var mw = new DocusaurusMarkdownWriter(markdownWriter))
         {
-            WriteFrontMatter(dw, position: 0, label: "Commands");
+            WriteFrontMatter(mw, position: 0, label: "Commands");
 
-            dw.WriteHeading1("Commands");
+            mw.WriteHeading1("Commands");
 
             Table(
                 TableRow("Command", "Description"),
                 commands.Select(f => TableRow(Link(f.Name, $"commands/{f.Name}.md"), f.Description)))
-                .WriteTo(dw);
+                .WriteTo(mw);
 
             Console.WriteLine(filePath);
         }
@@ -118,14 +118,15 @@ internal static class Program
 
     private static void WriteFrontMatter(DocusaurusMarkdownWriter mw, int? position = null, string label = null)
     {
-        var labels = new List<(string, object)>();
+        mw.WriteDocusaurusFrontMatter(GetLabels());
 
-        if (position is not null)
-            labels.Add(("sidebar_position", position));
+        IEnumerable<(string, object)> GetLabels()
+        {
+            if (position is not null)
+                yield return ("sidebar_position", position);
 
-        if (label is not null)
-            labels.Add(("sidebar_label", label));
-
-        mw.WriteDocusaurusFrontMatter(labels);
+            if (label is not null)
+                yield return ("sidebar_label", label);
+        }
     }
 }
