@@ -122,7 +122,7 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private void AnalyzeAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
     {
         TrailingCommaStyle style = context.GetTrailingCommaStyle();
 
