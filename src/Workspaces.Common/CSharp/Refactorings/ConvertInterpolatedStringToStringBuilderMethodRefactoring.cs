@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Text;
@@ -70,11 +71,26 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                     string text = interpolatedStringText.TextToken.Text;
 
                     text = StringUtility.ReplaceDoubleBracesWithSingleBrace(text);
-
-                    text = (isVerbatim)
-                        ? "@\"" + text + "\""
-                        : "\"" + text + "\"";
-
+                    if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression
+                        && interpolatedStringExpression.StringStartToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken)
+                        )
+                    {
+                        text = "\"\"\"" + text + "\"\"\"";
+                    }
+                    else if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression2 
+                             && interpolatedStringExpression2.StringStartToken.IsKind(SyntaxKind.InterpolatedMultiLineRawStringStartToken)) 
+                    {
+                        text = "\"\"\"\n" + text + "\n\"\"\"\n";
+                    }
+                    else if (isVerbatim)
+                    {
+                        text = "@\"" + text + "\"";
+                    }
+                    else
+                    {
+                        text = "\"" + text + "\"";
+                    }
+                    
                     ExpressionSyntax stringLiteral = ParseExpression(text);
 
                     return (kind, "Append", ImmutableArray.Create(Argument(stringLiteral)));
