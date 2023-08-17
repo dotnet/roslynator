@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +27,8 @@ internal class GenerateDocRootCommand : MSBuildWorkspaceCommand<CommandResult>
         IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
         Visibility visibility,
         DocumentationHost documentationHost,
+        FilesLayout filesLayout,
+        bool groupByCommonNamespace,
         in ProjectFilter projectFilter) : base(projectFilter)
     {
         Options = options;
@@ -33,6 +37,8 @@ internal class GenerateDocRootCommand : MSBuildWorkspaceCommand<CommandResult>
         IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
         Visibility = visibility;
         DocumentationHost = documentationHost;
+        FilesLayout = filesLayout;
+        GroupByCommonNamespace = groupByCommonNamespace;
     }
 
     public GenerateDocRootCommandLineOptions Options { get; }
@@ -47,27 +53,49 @@ internal class GenerateDocRootCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public DocumentationHost DocumentationHost { get; }
 
+    public FilesLayout FilesLayout { get; }
+
+    public bool GroupByCommonNamespace { get; }
+
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
         AssemblyResolver.Register();
 
-        var documentationOptions = new DocumentationOptions(
-            rootFileHeading: Options.Heading,
-            ignoredNames: Options.IgnoredNames,
-            rootDirectoryUrl: Options.RootDirectoryUrl,
-            includeSystemNamespace: Options.IncludeSystemNamespace,
-            placeSystemNamespaceFirst: !Options.NoPrecedenceForSystem,
-            markObsolete: !Options.NoMarkObsolete,
-            depth: Depth,
-            ignoredRootParts: IgnoredParts,
-            includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
-            scrollToContent: (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent);
+        var documentationOptions = new DocumentationOptions()
+        {
+            RootFileHeading = Options.Heading,
+            RootDirectoryUrl = Options.RootDirectoryUrl,
+            IncludeSystemNamespace = Options.IncludeSystemNamespace,
+            PlaceSystemNamespaceFirst = !Options.NoPrecedenceForSystem,
+            MarkObsolete = !Options.NoMarkObsolete,
+            Depth = Depth,
+            IgnoredRootParts = IgnoredParts,
+            IncludeContainingNamespaceFilter = IncludeContainingNamespaceFilter,
+            ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent,
+            FilesLayout = FilesLayout,
+        };
+
+        if (Options.IgnoredNames is not null)
+        {
+            foreach (string ignoredName in Options.IgnoredNames)
+                documentationOptions.IgnoredNames.Add(MetadataName.Parse(ignoredName));
+        }
 
         ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
         var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance);
 
-        UrlSegmentProvider urlSegmentProvider = DefaultUrlSegmentProvider.Hierarchical;
+        List<INamespaceSymbol> commonNamespaces = null;
+
+        if (GroupByCommonNamespace)
+        {
+            commonNamespaces = DocumentationUtility.FindCommonNamespaces(
+                documentationModel.Types
+                    .Concat(documentationModel.GetExtendedExternalTypes())
+                    .Where(f => !documentationOptions.ShouldBeIgnored(f)));
+        }
+
+        UrlSegmentProvider urlSegmentProvider = new DefaultUrlSegmentProvider(FilesLayout, commonNamespaces);
 
         var externalProviders = new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance };
 

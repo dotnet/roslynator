@@ -418,14 +418,15 @@ public static class MarkdownGenerator
 
     private static MObject CreateFrontMatter(int? position = null, string label = null)
     {
-        var labels = new List<(string, object)>();
+        return DocusaurusMarkdownFactory.FrontMatter(GetLabels());
 
-        if (position is not null)
-            labels.Add(("sidebar_position", position));
+        IEnumerable<(string, object)> GetLabels()
+        {
+            if (position is not null)
+                yield return ("sidebar_position", position);
 
-        if (label is not null)
-            labels.Add(("sidebar_label", label));
-
-        return DocusaurusMarkdownFactory.FrontMatter(labels);
+            if (label is not null)
+                yield return ("sidebar_label", label);
+        }
     }
 }
