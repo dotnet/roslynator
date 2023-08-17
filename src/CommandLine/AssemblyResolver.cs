@@ -53,14 +53,6 @@ internal static class AssemblyResolver
                 }
         }
 
-        Debug.Assert(
-            (!assemblyName.Name.StartsWith("Microsoft.")
-                || assemblyName.Name.StartsWith("Microsoft.VisualStudio.")
-                || string.Equals(assemblyName.Name, "Microsoft.DiaSymReader", StringComparison.Ordinal)
-                || assemblyName.Name.EndsWith(".Analyzers"))
-                && !assemblyName.Name.StartsWith("System."),
-            assemblyName.ToString());
-
         WriteLine($"Unable to resolve assembly '{assemblyName}'.", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
         return null;
