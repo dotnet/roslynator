@@ -93,7 +93,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
                                     context.Document,
                                     ifStatement,
                                     (SyntaxKind)Enum.Parse(typeof(SyntaxKind), diagnostic.Properties["JumpKind"]),
-                                    recursive: true,
+                                    recursive: false,
                                     cancellationToken: ct);
                             },
                             GetEquivalenceKey(diagnostic));
@@ -237,7 +237,7 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
         }
     }
 
-    private Task<Document> CallArgumentNullExceptionThrowIfNullAsync(
+    private static Task<Document> CallArgumentNullExceptionThrowIfNullAsync(
         Document document,
         IfStatementSyntax ifStatement,
         CancellationToken cancellationToken)

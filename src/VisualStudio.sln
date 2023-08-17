@@ -2,11 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
-	ProjectSection(SolutionItems) = preProject
-		global.ruleset = global.ruleset
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp", "CSharp\CSharp.csproj", "{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Refactorings", "Refactorings\Refactorings.csproj", "{3AD7B124-7B99-440D-84A1-858BE5AE268B}"
@@ -32,6 +27,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formatting.Analyzers", "Formatting.Analyzers\Formatting.Analyzers.csproj", "{DE47C588-C04E-4258-9D3F-A34DE88B42BC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formatting.Analyzers.CodeFixes", "Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj", "{ABE1570C-9976-4AF5-8525-DD5A2D5AADFF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{992F7801-DB0B-40A7-8B85-7629B0AE8F66}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

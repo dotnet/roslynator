@@ -16,7 +16,7 @@ public static class EditorConfigGenerator
     {
         var optionMap = new Dictionary<string, HashSet<AnalyzerMetadata>>();
 
-        foreach (AnalyzerMetadata analyzer in metadata.GetAllAnalyzers())
+        foreach (AnalyzerMetadata analyzer in metadata.Analyzers)
         {
             foreach (ConfigOptionKeyMetadata option in analyzer.ConfigOptions)
             {
@@ -68,7 +68,7 @@ public static class EditorConfigGenerator
             w.WriteLine("# Analyzers");
             w.WriteLine();
 
-            foreach (AnalyzerMetadata analyzer in metadata.GetAllAnalyzers()
+            foreach (AnalyzerMetadata analyzer in metadata.Analyzers
                 .Where(f => !f.IsObsolete && !f.Tags.Contains("HideFromConfiguration"))
                 .OrderBy(f => f.Id))
             {

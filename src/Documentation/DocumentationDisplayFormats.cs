@@ -49,6 +49,7 @@ internal static class DocumentationDisplayFormats
         miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
             | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
             | SymbolDisplayMiscellaneousOptions.AllowDefaultLiteral
+            | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier
         );
 
     public static SymbolDisplayFormat ExplicitImplementationFullDeclaration { get; } = FullDeclaration.Update(

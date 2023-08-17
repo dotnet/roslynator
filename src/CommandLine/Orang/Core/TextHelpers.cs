@@ -23,6 +23,7 @@ internal static class TextHelpers
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1847:Use char literal for a single character lookup")]
     public static string Indent(string value, int indentLength)
     {
         if (value.Contains("\n"))
@@ -37,6 +38,7 @@ internal static class TextHelpers
         return value;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1847:Use char literal for a single character lookup")]
     public static string Indent(string value, string indent)
     {
         if (value.Contains("\n"))

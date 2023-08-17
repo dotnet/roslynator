@@ -50,7 +50,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         {
             (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
 
-            SyntaxTree tree = await document.GetSyntaxTreeAsync();
+            SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken);
 
             ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
 
@@ -124,7 +124,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         {
             (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
 
-            SyntaxTree tree = await document.GetSyntaxTreeAsync();
+            SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken);
 
             ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
 
@@ -206,7 +206,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
             Project project = document.Project;
 
-            SyntaxTree tree = await document.GetSyntaxTreeAsync();
+            SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken);
 
             ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
 
@@ -349,7 +349,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
             Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 
-            SyntaxTree tree = await document.GetSyntaxTreeAsync();
+            SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken);
 
             ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
 

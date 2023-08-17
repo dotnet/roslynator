@@ -17,7 +17,7 @@ internal static partial class Symbols
 
     private static ImmutableArray<IMethodSymbol> _visitMethods;
     private static ImmutableArray<INamedTypeSymbol> _syntaxSymbols;
-    private static readonly ImmutableDictionary<ITypeSymbol, IMethodSymbol> _typeSymbolMethodSymbolMap = VisitMethodSymbols.ToImmutableDictionary(f => f.Parameters.Single().Type);
+    private static readonly ImmutableDictionary<ITypeSymbol, IMethodSymbol> _typeSymbolMethodSymbolMap = VisitMethodSymbols.ToImmutableDictionary(f => f.Parameters.Single().Type, (IEqualityComparer<ITypeSymbol>)SymbolEqualityComparer.Default);
 
     private static INamedTypeSymbol _csharpSyntaxWalkerSymbol;
     private static INamedTypeSymbol _syntaxNodeSymbol;

@@ -41,7 +41,7 @@ public sealed class RefactoringTestData
     /// <summary>
     /// Gets text spans on which a code refactoring will be applied.
     /// </summary>
-    public ImmutableArray<TextSpan> Spans { get; private set; }
+    public ImmutableArray<TextSpan> Spans { get; }
 
     /// <summary>
     /// Gets additional source files.
@@ -68,10 +68,7 @@ public sealed class RefactoringTestData
     /// <summary>
     /// Creates and return new instance of <see cref="RefactoringTestData"/> updated with specified values.
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="spans"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
+    [Obsolete("This method is obsolete and will be removed in future version.")]
     public RefactoringTestData Update(
         string source,
         IEnumerable<TextSpan> spans,

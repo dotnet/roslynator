@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -216,8 +217,15 @@ internal static class CSharpTypeAnalysis
         if (expression is null)
             return false;
 
-        if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression))
+        if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.ImplicitObjectCreationExpression))
             return false;
+
+        if (expression.IsKind(SyntaxKind.SuppressNullableWarningExpression)
+            && expression is PostfixUnaryExpressionSyntax postfixUnary
+            && postfixUnary.Operand.IsKind(SyntaxKind.DefaultLiteralExpression))
+        {
+            return false;
+        }
 
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
@@ -227,8 +235,21 @@ internal static class CSharpTypeAnalysis
         if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
             return false;
 
-        if (!SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(expression, cancellationToken)))
+        if (expression.IsKind(SyntaxKind.StackAllocArrayCreationExpression)
+            && typeSymbol.HasMetadataName(MetadataNames.System_Span_T))
+        {
             return false;
+        }
+
+        ITypeSymbol expressionType = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+        if (!SymbolEqualityComparer.Default.Equals(typeSymbol, expressionType)
+            || (type.IsKind(SyntaxKind.NullableType)
+                && typeSymbol.IsReferenceType
+                && expressionType.NullableAnnotation == NullableAnnotation.NotAnnotated))
+        {
+            return false;
+        }
 
         switch (typeAppearance)
         {
@@ -482,7 +503,68 @@ internal static class CSharpTypeAnalysis
         if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
             return false;
 
+        if (declarationExpression.Parent is ArgumentSyntax argument)
+            return AnalyzeArgument(argument, semanticModel, cancellationToken);
+
         return true;
+
+        static bool AnalyzeArgument(ArgumentSyntax argument, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(argument, cancellationToken: cancellationToken);
+
+            if (parameterSymbol is null)
+                return false;
+
+            if (SymbolEqualityComparer.Default.Equals(parameterSymbol.Type, parameterSymbol.OriginalDefinition.Type))
+                return true;
+
+            if (parameterSymbol.ContainingSymbol is IMethodSymbol methodSymbol)
+            {
+                ImmutableArray<ITypeSymbol> typeParameterList = methodSymbol.TypeArguments;
+
+                ITypeParameterSymbol typeParameterSymbol = null;
+                for (int i = 0; i < typeParameterList.Length; i++)
+                {
+                    if (SymbolEqualityComparer.Default.Equals(typeParameterList[i], parameterSymbol.Type))
+                    {
+                        typeParameterSymbol = methodSymbol.TypeParameters[i];
+                        break;
+                    }
+                }
+
+                if (typeParameterSymbol is not null
+                    && argument.Parent is ArgumentListSyntax argumentList
+                    && argumentList.Parent is InvocationExpressionSyntax invocation)
+                {
+                    switch (invocation.Expression.Kind())
+                    {
+                        case SyntaxKind.IdentifierName:
+                            return false;
+
+                        case SyntaxKind.GenericName:
+                            return true;
+
+                        case SyntaxKind.SimpleMemberAccessExpression:
+                            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+                            if (memberAccess.Name.IsKind(SyntaxKind.IdentifierName))
+                                return false;
+
+                            if (memberAccess.Name.IsKind(SyntaxKind.GenericName))
+                                return true;
+
+                            Debug.Fail(memberAccess.Name.Kind().ToString());
+                            break;
+
+                        default:
+                            Debug.Fail(invocation.Expression.Kind().ToString());
+                            break;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 
     public static bool IsExplicitThatCanBeImplicit(

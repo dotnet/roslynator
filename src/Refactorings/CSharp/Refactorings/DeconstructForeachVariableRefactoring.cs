@@ -91,8 +91,8 @@ internal static class DeconstructForeachVariableRefactoring
 
         ImmutableArray<ISymbol> symbols = declaredSymbols
             .Concat(semanticModel.LookupSymbols(position))
-            .Distinct()
-            .Except(deconstructSymbols)
+            .Distinct(SymbolEqualityComparer.Default)
+            .Except(deconstructSymbols, SymbolEqualityComparer.Default)
             .ToImmutableArray();
 
         Dictionary<string, string> newNames = deconstructSymbols

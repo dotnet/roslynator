@@ -64,12 +64,12 @@ public readonly struct ExtensionMethodSymbolInfo : IEquatable<ExtensionMethodSym
 
     public bool Equals(ExtensionMethodSymbolInfo other)
     {
-        return EqualityComparer<IMethodSymbol>.Default.Equals(Symbol, other.Symbol);
+        return SymbolEqualityComparer.Default.Equals(Symbol, other.Symbol);
     }
 
     public override int GetHashCode()
     {
-        return Symbol?.GetHashCode() ?? 0;
+        return SymbolEqualityComparer.Default.GetHashCode(Symbol);
     }
 
     public static bool operator ==(in ExtensionMethodSymbolInfo info1, in ExtensionMethodSymbolInfo info2)

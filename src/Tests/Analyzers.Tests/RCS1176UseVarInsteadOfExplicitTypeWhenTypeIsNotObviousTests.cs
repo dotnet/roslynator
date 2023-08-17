@@ -117,6 +117,46 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task Test_TryParse_GenericType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        bool TryParse<T>(string? s, out T t)
+        {
+            t = default!;
+            return false;
+        }
+
+        TryParse<IntPtr>(""wasted"", out [|IntPtr|] i);
+    }
+}
+", @"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        bool TryParse<T>(string? s, out T t)
+        {
+            t = default!;
+            return false;
+        }
+
+        TryParse<IntPtr>(""wasted"", out var i);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
     public async Task TestNoDiagnostic_ForEach_DeclarationExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -167,6 +207,121 @@ class C
     void M()
     {
         TimeSpan timeSpan = TimeSpan.Parse(null);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_SpanStackAlloc()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        Span<char> span = stackalloc char[1];
+        ReadOnlySpan<char> readonlySpan = stackalloc char[1];
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_DefaultLiteralWithSuppressNullableWarning()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M<T>()
+    {
+        T result = default!;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_ImplicitObjectCreationExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        C x = new();
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_NullableReferenceType()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        var type = typeof(int);
+        Type? nullableType = type;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_InferredType_Invocation_IdentifierName()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        bool TryParse<T>(string? s, out T t)
+        {
+            t = default!;
+            return false;
+        }
+
+        TryParse(""wasted"", out IntPtr i);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_InferredType_Invocation_MemberAccessExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+#nullable enable
+
+static class C
+{
+    static void M()
+    {
+
+        C.TryParse(""wasted"", out IntPtr i);
+    }
+
+    static bool TryParse<T>(string? s, out T t)
+    {
+        t = default!;
+        return false;
     }
 }
 ");

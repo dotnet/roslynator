@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of 200+ analyzers for C#, powered by Roslyn.
 
-  - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 4.0.1.</description>
+  - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 4.4.0.</description>
     <summary>A collection of 200+ analyzers for C#, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2023 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>

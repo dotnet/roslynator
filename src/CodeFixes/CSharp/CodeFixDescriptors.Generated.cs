@@ -574,9 +574,9 @@ namespace Roslynator.CSharp
             "CS0201");
 
         /// <summary>RCF0077 (fixes CS0021)</summary>
-        public static readonly CodeFixDescriptor ReplaceElementAccessWithInvocation = new CodeFixDescriptor(
-            id:                 CodeFixIdentifiers.ReplaceElementAccessWithInvocation, 
-            title:              "Replace element access with invocation", 
+        public static readonly CodeFixDescriptor UseInvocationInsteadOfIndexer = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.UseInvocationInsteadOfIndexer, 
+            title:              "Use invocation instead of indexer", 
             isEnabledByDefault: true, 
             "CS0021");
 

@@ -40,7 +40,7 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
 
     [Option(
         longName: OptionNames.IgnoredRootParts,
-        HelpText = "Defines parts of a root documentation that should be excluded. Allowed values are content, namespaces, class-hierarchy, types and other.",
+        HelpText = "Defines parts of a root documentation that should be excluded. Allowed values are content, namespaces, class-hierarchy, types, other and all.",
         MetaValue = "<IGNORED_ROOT_PARTS>")]
     public IEnumerable<string> IgnoredRootParts { get; set; }
 
@@ -132,6 +132,12 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
         longName: OptionNames.OmitMemberParts,
         HelpText = "Defines parts of member definition that should be omitted. Allowed values are constant-value, implements, inherited-from and overrides.")]
     public IEnumerable<string> OmitMemberParts { get; set; }
+
+    [Option(
+        longName: "root-file-path",
+        HelpText = "Defines path to a documentation root file. If not specified, output directory will be used.",
+        MetaValue = "<FILE_PATH>")]
+    public string RootFilePath { get; set; }
 
     [Option(
         longName: "preferred-culture",

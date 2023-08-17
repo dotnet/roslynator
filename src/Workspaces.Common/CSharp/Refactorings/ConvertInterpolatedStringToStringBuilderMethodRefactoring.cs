@@ -36,7 +36,7 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                         StringBuilder sb = StringBuilderCache.GetInstance();
 
                         if (isVerbatim)
-                            sb.Append("@");
+                            sb.Append('@');
 
                         sb.Append("\"{0");
 

@@ -275,20 +275,28 @@ internal static class Logger
     {
         var colors = new ConsoleColors(color);
 
-        WriteLine(exception.Message, colors, verbosity);
+        string message = exception.Message;
+#if DEBUG
+        if (ShouldWrite(Verbosity.Diagnostic))
+            message = exception.ToString();
+#endif
+        WriteLine(message, colors, verbosity);
 
         if (exception is AggregateException aggregateException)
             WriteInnerExceptions(aggregateException, "");
-#if DEBUG
-        WriteLine(exception.ToString());
-#endif
+
         void WriteInnerExceptions(AggregateException aggregateException, string indent)
         {
             indent += "  ";
 
             foreach (Exception innerException in aggregateException.InnerExceptions)
             {
-                WriteLine(indent + "Inner exception: " + innerException.Message, colors, verbosity);
+                string message = innerException.Message;
+#if DEBUG
+                if (ShouldWrite(Verbosity.Diagnostic))
+                    message = innerException.ToString();
+#endif
+                WriteLine(indent + "Inner exception: " + message, colors, verbosity);
 
                 if (innerException is AggregateException aggregateException2)
                     WriteInnerExceptions(aggregateException2, indent);
