@@ -805,6 +805,8 @@ internal static class Program
 
     private static async Task<int> GenerateDocRootAsync(GenerateDocRootCommandLineOptions options)
     {
+        WriteLine("Command 'generate-doc-root' is obsolete. Use parameter '--root-file-path' of a command 'generate-doc' instead.", ConsoleColors.Yellow, Verbosity.Minimal);
+
         if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.DefaultValues.IncludeContainingNamespaceFilter))
             return ExitCodes.Error;
 
@@ -815,6 +817,9 @@ internal static class Program
             return ExitCodes.Error;
 
         if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredParts, DocumentationOptions.DefaultValues.IgnoredRootParts))
+            return ExitCodes.Error;
+
+        if (!TryParseOptionValueAsEnum(options.FilesLayout, OptionNames.Layout, out FilesLayout filesLayout, FilesLayout.Hierarchical))
             return ExitCodes.Error;
 
         if (!TryParseOptionValueAsEnum(options.Host, OptionNames.Host, out DocumentationHost documentationHost))
@@ -833,9 +838,13 @@ internal static class Program
             includeContainingNamespaceFilter: includeContainingNamespaceFilter,
             visibility,
             documentationHost,
+            filesLayout,
+            options.GroupByCommonNamespace,
             projectFilter);
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
+
+        WriteLine("Command 'generate-doc-root' is obsolete. Use parameter '--root-file-path' of a command 'generate-doc' instead.", ConsoleColors.Yellow, Verbosity.Minimal);
 
         return GetExitCode(status);
     }
