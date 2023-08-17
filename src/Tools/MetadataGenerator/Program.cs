@@ -220,17 +220,18 @@ internal static class Program
         int? sidebarPosition = null,
         string sidebarLabel = null)
     {
+        content = DocusaurusMarkdownFactory.FrontMatter(GetLabels()).ToString() + content;
+
+        IEnumerable<(string, object)> GetLabels()
+        {
+            if (sidebarPosition is not null)
+                yield return ("sidebar_position", sidebarPosition);
+
+            if (sidebarLabel is not null)
+                yield return ("sidebar_label", sidebarLabel);
+        }
+
         Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
-
-        var labels = new List<(string, object)>();
-
-        if (sidebarPosition is not null)
-            labels.Add(("sidebar_position", sidebarPosition));
-
-        if (sidebarLabel is not null)
-            labels.Add(("sidebar_label", sidebarLabel));
-
-        content = DocusaurusMarkdownFactory.FrontMatter(labels).ToString() + content;
 
         FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
     }

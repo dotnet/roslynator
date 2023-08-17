@@ -44,16 +44,16 @@
     <RoslynatorDllPrefix>Roslynator_Formatting_Analyzers_</RoslynatorDllPrefix>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PackageReference Include="roslynator.analyzers" Version="4.3.0" Condition="'$(MSBuildProjectName)'!='Analyzers'">
+  <ItemGroup>
+    <PackageReference Include="roslynator.analyzers" Version="4.4.0" Condition="'$(MSBuildProjectName)'!='Analyzers'">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="roslynator.formatting.analyzers" Version="4.3.0" Condition="'$(MSBuildProjectName)'!='Formatting.Analyzers'">
+    <PackageReference Include="roslynator.formatting.analyzers" Version="4.4.0" Condition="'$(MSBuildProjectName)'!='Formatting.Analyzers'">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="roslynator.codeanalysis.analyzers" Version="4.3.0" Condition="'$(MSBuildProjectName)'!='CodeAnalysis.Analyzers'">
+    <PackageReference Include="roslynator.codeanalysis.analyzers" Version="4.4.0" Condition="'$(MSBuildProjectName)'!='CodeAnalysis.Analyzers'">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
