@@ -562,6 +562,28 @@ public static class SyntaxKindTests
                 case SyntaxKind.LineDirectivePosition:
                 case SyntaxKind.LineSpanDirectiveTrivia:
                 case SyntaxKind.RecordStructDeclaration:
+                // new in 4.2.0
+                case SyntaxKind.SingleLineRawStringLiteralToken:
+                case SyntaxKind.MultiLineRawStringLiteralToken:
+                case SyntaxKind.ListPattern:
+                case SyntaxKind.SlicePattern:
+                case SyntaxKind.InterpolatedSingleLineRawStringStartToken:
+                case SyntaxKind.InterpolatedMultiLineRawStringStartToken:
+                case SyntaxKind.InterpolatedRawStringEndToken:
+                // new in 4.3.0
+                case SyntaxKind.GreaterThanGreaterThanGreaterThanToken:
+                case SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
+                case SyntaxKind.RequiredKeyword:
+                case SyntaxKind.ScopedKeyword:
+                case SyntaxKind.Utf8StringLiteralToken:
+                case SyntaxKind.Utf8SingleLineRawStringLiteralToken:
+                case SyntaxKind.Utf8MultiLineRawStringLiteralToken:
+                case SyntaxKind.UnsignedRightShiftExpression:
+                case SyntaxKind.UnsignedRightShiftAssignmentExpression:
+                case SyntaxKind.Utf8StringLiteralExpression:
+                // new in 4.4.0
+                case SyntaxKind.FileKeyword:
+                case SyntaxKind.ScopedType:
                     {
                         break;
                     }

@@ -4,6 +4,8 @@ using System;
 
 namespace Roslynator;
 
+#pragma warning disable CA1041 // Provide ObsoleteAttribute message
+
 public static class DiagnosticCategories
 {
     internal const string Roslynator = "Roslynator";

@@ -193,6 +193,7 @@ public static class SymbolsGetKindsGenerator
                             yield return SyntaxKind.LeftShiftAssignmentExpression;
                             yield return SyntaxKind.RightShiftAssignmentExpression;
                             yield return SyntaxKind.CoalesceAssignmentExpression;
+                            yield return SyntaxKind.UnsignedRightShiftAssignmentExpression;
                             break;
                         }
                     case "AttributeArgumentListSyntax":
@@ -263,6 +264,7 @@ public static class SymbolsGetKindsGenerator
                             yield return SyntaxKind.IsExpression;
                             yield return SyntaxKind.AsExpression;
                             yield return SyntaxKind.CoalesceExpression;
+                            yield return SyntaxKind.UnsignedRightShiftExpression;
                             break;
                         }
                     case "BlockSyntax":
@@ -731,6 +733,7 @@ public static class SymbolsGetKindsGenerator
                             yield return SyntaxKind.FalseLiteralExpression;
                             yield return SyntaxKind.NullLiteralExpression;
                             yield return SyntaxKind.DefaultLiteralExpression;
+                            yield return SyntaxKind.Utf8StringLiteralExpression;
                             break;
                         }
                     case "LoadDirectiveTriviaSyntax":
@@ -1332,6 +1335,21 @@ public static class SymbolsGetKindsGenerator
                     case "LineSpanDirectiveTriviaSyntax":
                         {
                             yield return SyntaxKind.LineSpanDirectiveTrivia;
+                            break;
+                        }
+                    case "ListPatternSyntax":
+                        {
+                            yield return SyntaxKind.ListPattern;
+                            break;
+                        }
+                    case "SlicePatternSyntax":
+                        {
+                            yield return SyntaxKind.SlicePattern;
+                            break;
+                        }
+                    case "ScopedTypeSyntax":
+                        {
+                            yield return SyntaxKind.ScopedType;
                             break;
                         }
                     default:

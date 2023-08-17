@@ -194,7 +194,7 @@ public static class SemanticModelExtensions
                 if (!excludeAnonymousTypeProperty
                     || !symbol.IsPropertyOfAnonymousType())
                 {
-                    (symbols ??= new HashSet<ISymbol>()).Add(symbol);
+                    (symbols ??= new HashSet<ISymbol>(SymbolEqualityComparer.Default)).Add(symbol);
                 }
             }
         }

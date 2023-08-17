@@ -68,8 +68,6 @@ public sealed class UnusedParameterCodeFixProvider : BaseCodeFixProvider
 
         string newName = NameGenerators.UnderscoreSuffix.EnsureUniqueParameterName("_", anonymousFunctionSymbol, semanticModel, cancellationToken: cancellationToken);
 
-        DocumentOptionSet options = await document.GetOptionsAsync(cancellationToken).ConfigureAwait(false);
-
-        return await Renamer.RenameSymbolAsync(document.Solution(), parameterSymbol, newName, options, cancellationToken).ConfigureAwait(false);
+        return await Renamer.RenameSymbolAsync(document.Solution(), parameterSymbol, default(SymbolRenameOptions), newName, cancellationToken).ConfigureAwait(false);
     }
 }

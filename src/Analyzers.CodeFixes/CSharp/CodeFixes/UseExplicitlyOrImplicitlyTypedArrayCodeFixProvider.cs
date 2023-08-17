@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -23,6 +25,21 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray); }
     }
 
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
+    }
+
+    private static async Task<Document> FixAllAsync(Document document, ImmutableArray<Diagnostic> diagnostics, CancellationToken cancellationToken)
+    {
+        foreach (Diagnostic diagnostic in diagnostics.OrderByDescending(d => d.Location.SourceSpan.Start))
+        {
+            document = await ApplyFixToDocumentAsync(document, diagnostic, cancellationToken).ConfigureAwait(false);
+        }
+
+        return document;
+    }
+
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -39,29 +56,40 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
 
-        switch (node)
+        string title = node switch
         {
-            case ImplicitArrayCreationExpressionSyntax implicitArrayCreation:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use explicitly typed array",
-                        ct => ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, ct),
-                        GetEquivalenceKey(diagnostic));
+            ImplicitArrayCreationExpressionSyntax => "Use explicitly typed array",
+            ArrayCreationExpressionSyntax => "Use implicitly typed array",
+            _ => throw new InvalidOperationException(),
+        };
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
-            case ArrayCreationExpressionSyntax arrayCreation:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use implicitly typed array",
-                        ct => ChangeArrayTypeToImplicitAsync(document, arrayCreation, ct),
-                        GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeAction.Create(
+            title,
+            ct => ApplyFixToDocumentAsync(document, diagnostic, ct),
+            GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    public static async Task<Document> ApplyFixToDocumentAsync(Document document, Diagnostic diag, CancellationToken cancellationToken)
+    {
+        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            diag.Location.SourceSpan,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.ArrayCreationExpression)))
+        {
+            return null;
         }
+
+        return node switch
+        {
+            ImplicitArrayCreationExpressionSyntax implicitArrayCreation => await ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, cancellationToken).ConfigureAwait(false),
+            ArrayCreationExpressionSyntax arrayCreation => await ChangeArrayTypeToImplicitAsync(document, arrayCreation, cancellationToken).ConfigureAwait(false),
+            _ => throw new InvalidOperationException()
+        };
     }
 
     private static async Task<Document> ChangeArrayTypeToExplicitAsync(
@@ -101,13 +129,10 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         ArrayCreationExpressionSyntax arrayCreation,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
         ArrayTypeSyntax arrayType = arrayCreation.Type;
         SyntaxList<ArrayRankSpecifierSyntax> rankSpecifiers = arrayType.RankSpecifiers;
         InitializerExpressionSyntax initializer = arrayCreation.Initializer;
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayType.ElementType, cancellationToken);
         TypeSyntax castType;
 
         if (rankSpecifiers.Count > 1)

@@ -14,6 +14,7 @@ internal class ListVisualStudioCommand
 
     public ListVisualStudioCommandLineOptions Options { get; set; }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
     public CommandStatus Execute()
     {
         int count = 0;

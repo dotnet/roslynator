@@ -128,7 +128,7 @@ public sealed class TypeParameterConstraintCodeFixProvider : CompilerDiagnosticC
         }
     }
 
-    private void MoveConstraint(
+    private static void MoveConstraint(
         CodeFixContext context,
         Diagnostic diagnostic,
         TypeParameterConstraintInfo constraintInfo,
@@ -153,7 +153,7 @@ public sealed class TypeParameterConstraintCodeFixProvider : CompilerDiagnosticC
         context.RegisterCodeFix(codeAction, diagnostic);
     }
 
-    private void RemoveConstraint(
+    private static void RemoveConstraint(
         CodeFixContext context,
         Diagnostic diagnostic,
         TypeParameterConstraintSyntax constraint)

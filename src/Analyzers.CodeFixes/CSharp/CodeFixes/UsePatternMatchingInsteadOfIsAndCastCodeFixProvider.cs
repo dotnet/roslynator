@@ -111,7 +111,7 @@ public sealed class UsePatternMatchingInsteadOfIsAndCastCodeFixProvider : BaseCo
 
         string name = NameGenerator.CreateName(typeSymbol, firstCharToLower: true) ?? DefaultNames.Variable;
 
-        name = CSharpNameGenerator.Default.EnsureUniqueLocalName(name, semanticModel, node.SpanStart, cancellationToken: cancellationToken) ?? DefaultNames.Variable;
+        name = CSharpNameGenerator.EnsureUniqueLocalName(name, semanticModel, node.SpanStart, cancellationToken: cancellationToken) ?? DefaultNames.Variable;
 
         IsPatternExpressionSyntax isPatternExpression = IsPatternExpression(
             isInfo.Expression,

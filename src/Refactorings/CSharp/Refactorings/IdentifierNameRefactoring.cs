@@ -81,7 +81,7 @@ internal static class IdentifierNameRefactoring
 
         context.RegisterRefactoring(
             $"Rename '{fieldSymbol.Name}' to '{newName}'",
-            ct => Renamer.RenameSymbolAsync(context.Solution, fieldSymbol, newName, default(OptionSet), ct),
+            ct => Renamer.RenameSymbolAsync(context.Solution, fieldSymbol, default(SymbolRenameOptions), newName, ct),
             RefactoringDescriptors.SyncPropertyNameAndBackingFieldName);
     }
 

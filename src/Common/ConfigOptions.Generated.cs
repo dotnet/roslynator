@@ -156,7 +156,7 @@ namespace Roslynator
             key:                     ConfigOptionKeys.NullCheckStyle, 
             defaultValue:            null, 
             defaultValuePlaceholder: "equality_operator|pattern_matching", 
-            description:             "Use equality operator or pattern matchding as a null check");
+            description:             "Use equality operator or pattern matching as a null check");
 
         public static readonly ConfigOptionDescriptor ObjectCreationParenthesesStyle = new(
             key:                     ConfigOptionKeys.ObjectCreationParenthesesStyle, 

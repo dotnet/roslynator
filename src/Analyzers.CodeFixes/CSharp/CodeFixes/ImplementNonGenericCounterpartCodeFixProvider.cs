@@ -190,7 +190,7 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
         bool explicitImplementation,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
         INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
 

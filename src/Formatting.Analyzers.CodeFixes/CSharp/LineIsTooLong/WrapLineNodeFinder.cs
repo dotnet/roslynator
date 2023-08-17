@@ -639,7 +639,7 @@ internal class WrapLineNodeFinder
         return node1;
     }
 
-    private SyntaxNode ChooseBetweenArgumentListAndMemberExpression(SyntaxNode argumentList, SyntaxNode memberExpression)
+    private static SyntaxNode ChooseBetweenArgumentListAndMemberExpression(SyntaxNode argumentList, SyntaxNode memberExpression)
     {
         if (argumentList.FullSpan.Contains(memberExpression.FullSpan))
             return argumentList;

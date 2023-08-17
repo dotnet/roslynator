@@ -76,7 +76,7 @@ internal static class CopyMemberDeclarationRefactoring
                 SyntaxToken? openBrace = memberList.OpenBraceToken;
 
                 if (openBrace is not null
-                    && openBrace.Value.GetFullSpanEndLine() == member.GetFullSpanStartLine())
+                    && openBrace.Value.GetFullSpanEndLine(cancellationToken: cancellationToken) == member.GetFullSpanStartLine(cancellationToken: cancellationToken))
                 {
                     newMember = newMember.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                 }
@@ -110,7 +110,7 @@ internal static class CopyMemberDeclarationRefactoring
         {
             if (copyAfter)
             {
-                if (statementsInfos.ParentAsBlock.OpenBraceToken.GetFullSpanEndLine() == localFunction.GetFullSpanStartLine())
+                if (statementsInfos.ParentAsBlock.OpenBraceToken.GetFullSpanEndLine(cancellationToken: cancellationToken) == localFunction.GetFullSpanStartLine(cancellationToken: cancellationToken))
                 {
                     localFunction = localFunction.WithLeadingTrivia(localFunction.GetLeadingTrivia().Insert(0, NewLine()));
                 }
