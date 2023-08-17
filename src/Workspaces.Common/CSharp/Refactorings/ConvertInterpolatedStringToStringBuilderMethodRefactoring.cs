@@ -77,8 +77,8 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                     {
                         text = "\"\"\"" + text + "\"\"\"";
                     }
-                    else if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression2 
-                             && interpolatedStringExpression2.StringStartToken.IsKind(SyntaxKind.InterpolatedMultiLineRawStringStartToken)) 
+                    else if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression2
+                        && interpolatedStringExpression2.StringStartToken.IsKind(SyntaxKind.InterpolatedMultiLineRawStringStartToken))
                     {
                         text = "\"\"\"\n" + text + "\n\"\"\"\n";
                     }
@@ -90,7 +90,7 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                     {
                         text = "\"" + text + "\"";
                     }
-                    
+
                     ExpressionSyntax stringLiteral = ParseExpression(text);
 
                     return (kind, "Append", ImmutableArray.Create(Argument(stringLiteral)));

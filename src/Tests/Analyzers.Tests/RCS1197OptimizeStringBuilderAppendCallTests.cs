@@ -434,7 +434,7 @@ class C
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp11);
     }
-    
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
     public async Task Test_InterpolatedString_Char()
     {
