@@ -71,7 +71,8 @@ internal class GenerateDocRootCommand : MSBuildWorkspaceCommand<CommandResult>
             Depth = Depth,
             IgnoredRootParts = IgnoredParts,
             IncludeContainingNamespaceFilter = IncludeContainingNamespaceFilter,
-            ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent
+            ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent,
+            FilesLayout = FilesLayout,
         };
 
         if (Options.IgnoredNames is not null)
