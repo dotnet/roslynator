@@ -222,7 +222,7 @@ internal static class Program
     {
         content = DocusaurusMarkdownFactory.FrontMatter(GetLabels()).ToString() + content;
 
-        IEnumerable<(string, object)> GetLabels() 
+        IEnumerable<(string, object)> GetLabels()
         {
             if (sidebarPosition is not null)
                 yield return ("sidebar_position", sidebarPosition);
