@@ -128,13 +128,26 @@ public class SyntaxLogicalInverter
             case SyntaxKind.IsExpression:
                 {
                     var isExpression = (BinaryExpressionSyntax)expression;
+                    var rightTypeSymbol = (ITypeSymbol)semanticModel.GetSymbol(isExpression.Right, cancellationToken)!;
 
-                    return IsPatternExpression(
-                        isExpression.Left,
-                        isExpression.OperatorToken.WithTrailingTrivia(Space),
-                        UnaryPattern(
-                            Token(SyntaxKind.NotKeyword).WithTrailingTrivia(isExpression.OperatorToken.TrailingTrivia),
-                            TypePattern((TypeSyntax)isExpression.Right)));
+                    TypeSyntax type = rightTypeSymbol.ToTypeSyntax();
+
+                    if (SymbolEqualityComparer.Default.Equals(
+                        semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsExpression).Symbol,
+                        semanticModel.GetSpeculativeSymbolInfo(isExpression.SpanStart, isExpression.Right, SpeculativeBindingOption.BindAsTypeOrNamespace).Symbol))
+                    {
+                        type = type.WithSimplifierAnnotation();
+                    }
+
+                    return (Options.UseNotPattern)
+                        ? IsPatternExpression(
+                            isExpression.Left,
+                            isExpression.OperatorToken.WithTrailingTrivia(Space),
+                            UnaryPattern(
+                                Token(SyntaxKind.NotKeyword)
+                                    .WithTrailingTrivia(isExpression.OperatorToken.TrailingTrivia),
+                                TypePattern(type)))
+                        : DefaultInvert(expression);
                 }
             case SyntaxKind.AsExpression:
                 {
