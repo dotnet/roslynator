@@ -18,7 +18,7 @@ public static class EditorConfigGenerator
 
         foreach (AnalyzerMetadata analyzer in metadata.Analyzers)
         {
-            foreach (ConfigOptionKeyMetadata option in analyzer.ConfigOptions)
+            foreach (AnalyzerConfigOption option in analyzer.ConfigOptions)
             {
                 if (!optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> optionAnalyzers))
                     optionAnalyzers = new HashSet<AnalyzerMetadata>();
@@ -36,7 +36,7 @@ public static class EditorConfigGenerator
 
             var isSeparatedWithNewLine = true;
 
-            foreach (ConfigOptionMetadata option in metadata.ConfigOptions.OrderBy(f => f.Key))
+            foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions.OrderBy(f => f.Key))
             {
                 if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
                     && !isSeparatedWithNewLine)
@@ -69,7 +69,7 @@ public static class EditorConfigGenerator
             w.WriteLine();
 
             foreach (AnalyzerMetadata analyzer in metadata.Analyzers
-                .Where(f => !f.IsObsolete && !f.Tags.Contains("HideFromConfiguration"))
+                .Where(f => f.Status == AnalyzerStatus.Enabled && !f.Tags.Contains("HideFromConfiguration"))
                 .OrderBy(f => f.Id))
             {
                 w.WriteLine($"# {analyzer.Title.TrimEnd('.')}");

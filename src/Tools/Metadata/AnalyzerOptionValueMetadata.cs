@@ -2,9 +2,9 @@
 
 namespace Roslynator.Metadata;
 
-public readonly struct ConfigOptionValueMetadata
+public readonly struct AnalyzerOptionValueMetadata
 {
-    public ConfigOptionValueMetadata(string value, bool isDefault)
+    public AnalyzerOptionValueMetadata(string value, bool isDefault)
     {
         Value = value;
         IsDefault = isDefault;

@@ -2,12 +2,9 @@
 
 namespace Roslynator.Metadata;
 
-public class ImageMetadata
+public readonly struct AnalyzerConfigOption
 {
-    public ImageMetadata(string name)
-    {
-        Name = name;
-    }
+    public string Key { get; init; }
 
-    public string Name { get; }
+    public bool IsRequired { get; init; }
 }

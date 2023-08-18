@@ -2,7 +2,7 @@
 
 namespace Roslynator.Metadata;
 
-public enum AnalyzerOptionKind
+public enum LegacyAnalyzerOptionKind
 {
     None = 0,
     Enable = 1,

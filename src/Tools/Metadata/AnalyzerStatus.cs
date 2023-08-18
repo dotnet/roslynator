@@ -2,10 +2,9 @@
 
 namespace Roslynator.Metadata;
 
-public record struct SampleMetadata(string Before, string After)
+public enum AnalyzerStatus
 {
-    public SampleMetadata WithBefore(string before)
-    {
-        return new SampleMetadata(Before: before, After: After);
-    }
+    Enabled,
+    Disabled,
+    Obsolete,
 }
