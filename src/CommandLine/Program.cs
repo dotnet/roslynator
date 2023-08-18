@@ -108,7 +108,6 @@ internal static class Program
                     typeof(RenameSymbolCommandLineOptions),
                     typeof(SpellcheckCommandLineOptions),
 #if DEBUG
-                    typeof(AnalyzeAssemblyCommandLineOptions),
                     typeof(FindSymbolsCommandLineOptions),
                     typeof(GenerateSourceReferencesCommandLineOptions),
                     typeof(ListVisualStudioCommandLineOptions),
@@ -222,8 +221,6 @@ internal static class Program
                         case MigrateCommandLineOptions migrateCommandLineOptions:
                             return Migrate(migrateCommandLineOptions);
 #if DEBUG
-                        case AnalyzeAssemblyCommandLineOptions analyzeAssemblyCommandLineOptions:
-                            return AnalyzeAssembly(analyzeAssemblyCommandLineOptions);
                         case ListVisualStudioCommandLineOptions listVisualStudioCommandLineOptions:
                             return ListVisualStudio(listVisualStudioCommandLineOptions);
 #endif
@@ -367,23 +364,6 @@ internal static class Program
     }
 
 #if DEBUG
-    private static int AnalyzeAssembly(AnalyzeAssemblyCommandLineOptions options)
-    {
-        string language = null;
-
-        if (options.Language is not null
-            && !TryParseLanguage(options.Language, out language))
-        {
-            return ExitCodes.Error;
-        }
-
-        var command = new AnalyzeAssemblyCommand(language);
-
-        CommandStatus status = command.Execute(options);
-
-        return GetExitCode(status);
-    }
-
     private static async Task<int> FindSymbolsAsync(FindSymbolsCommandLineOptions options)
     {
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
