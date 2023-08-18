@@ -166,11 +166,7 @@ public static class MetadataFile
         return element
             .Element("ConfigOptions")?
             .Elements("Option")
-            .Select(f => new AnalyzerConfigOption()
-                {
-                    Key = "roslynator_" + f.Attribute("Key").Value,
-                    IsRequired = bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)
-                });
+            .Select(f => new AnalyzerConfigOption("roslynator_" + f.Attribute("Key").Value, bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)));
     }
 
     private static LegacyAnalyzerOptionMetadata LoadOption(XElement element, string parentId)

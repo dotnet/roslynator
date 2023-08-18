@@ -2,9 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public readonly struct AnalyzerConfigOption
-{
-    public string Key { get; init; }
-
-    public bool IsRequired { get; init; }
-}
+public readonly record struct AnalyzerConfigOption(string Key, bool IsRequired);
