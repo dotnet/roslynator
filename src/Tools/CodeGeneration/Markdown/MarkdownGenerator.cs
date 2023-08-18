@@ -274,7 +274,7 @@ public static class MarkdownGenerator
 
         return new DocusaurusCautionBlock("This analyzer is obsolete. ", GetTextParts(), ".") { Title = "WARNING" };
 
-        IEnumerable<object> GetTextParts()
+         IEnumerable<object> GetTextParts()
         {
             int index = 0;
             Match match = Regex.Match(message, @"\bRCS\d\d\d\d\b");
