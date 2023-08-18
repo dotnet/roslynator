@@ -40,7 +40,7 @@ internal static class Program
 
         GenerateAnalyzersMarkdown(metadata, destinationPath);
 
-        GenerateRefactoringsMarkdown(metadata, sourcePath, destinationPath);
+        GenerateRefactoringsMarkdown(metadata, destinationPath);
 
         GenerateCodeFixesMarkdown(metadata, destinationPath);
 
@@ -121,7 +121,7 @@ internal static class Program
         }
     }
 
-    private static void GenerateRefactoringsMarkdown(RoslynatorMetadata metadata, string sourcePath, string destinationPath)
+    private static void GenerateRefactoringsMarkdown(RoslynatorMetadata metadata, string destinationPath)
     {
         string refactoringsDirPath = Path.Combine(destinationPath, "refactorings");
         Directory.CreateDirectory(refactoringsDirPath);
