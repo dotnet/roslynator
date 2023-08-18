@@ -2,4 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public record SyntaxMetadata(string Name);
+public readonly record struct SyntaxMetadata(string Name);

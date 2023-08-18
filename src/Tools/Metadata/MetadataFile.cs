@@ -39,7 +39,7 @@ public static class MetadataFile
             string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
             string summary = element.Element("Summary")?.Value.NormalizeNewLine();
             string remarks = element.Element("Remarks")?.Value.NormalizeNewLine();
-            IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", id)));
+            IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f with { Before = f.Before.Replace("[|Id|]", id) });
             IEnumerable<LinkMetadata> links = LoadLinks(element);
             IEnumerable<LegacyAnalyzerOptionMetadata> options = LoadOptions(element, id);
             IEnumerable<AnalyzerConfigOption> configOptions = LoadConfigOptions(element);
@@ -182,7 +182,7 @@ public static class MetadataFile
         bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
         string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
         string summary = element.Element("Summary")?.Value.NormalizeNewLine();
-        IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", parentId)));
+        IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f with { Before = f.Before.Replace("[|Id|]", parentId) });
         bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
         string[] tags = (element.Element("Tags")?.Value ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         AnalyzerStatus status = ParseStatus(element);
@@ -271,15 +271,22 @@ public static class MetadataFile
                 {
                     bool.TryParse(e.Attribute("IsDefault")?.Value, out bool isDefault);
                     return new AnalyzerOptionValueMetadata(e.Value, isDefault);
-                });
+                }) ?? Enumerable.Empty<AnalyzerOptionValueMetadata>();
 
-            yield return new AnalyzerOptionMetadata(
-                id,
-                "roslynator_" + key,
-                element.Element("DefaultValue")?.Value,
-                element.Element("ValuePlaceholder")?.Value,
-                element.Element("Description").Value,
-                values);
+            string defaultValue = element.Element("DefaultValue")?.Value ?? values.FirstOrDefault(f => f.IsDefault).Value;
+            string defaultValuePlaceholder = element.Element("ValuePlaceholder")?.Value  ?? string.Join("|", values.Select(f => f.Value).OrderBy(f => f));
+
+            var analyzerOption = new AnalyzerOptionMetadata(
+                Id: id,
+                Key: "roslynator_" + key,
+                DefaultValue: defaultValue,
+                DefaultValuePlaceholder: defaultValuePlaceholder,
+                Description: element.Element("Description").Value
+            );
+
+            analyzerOption.Values.AddRange(values ?? Enumerable.Empty<AnalyzerOptionValueMetadata>());
+
+            yield return analyzerOption;
         }
     }
 

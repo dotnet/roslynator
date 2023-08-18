@@ -2,10 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public record struct SampleMetadata(string Before, string After)
-{
-    public SampleMetadata WithBefore(string before)
-    {
-        return new SampleMetadata(Before: before, After: After);
-    }
-}
+public readonly record struct SampleMetadata(string Before, string After);

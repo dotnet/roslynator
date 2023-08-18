@@ -2,11 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public readonly struct LinkMetadata
-{
-    public string Url { get; init; }
-
-    public string Text { get; init; }
-
-    public string Title { get; init; }
-}
+public readonly record struct LinkMetadata(string Url, string Text, string Title);

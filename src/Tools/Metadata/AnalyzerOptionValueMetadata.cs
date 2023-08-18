@@ -2,15 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public readonly struct AnalyzerOptionValueMetadata
-{
-    public AnalyzerOptionValueMetadata(string value, bool isDefault)
-    {
-        Value = value;
-        IsDefault = isDefault;
-    }
-
-    public string Value { get; }
-
-    public bool IsDefault { get; }
-}
+public readonly record struct AnalyzerOptionValueMetadata(string Value, bool IsDefault);

@@ -4,9 +4,9 @@ namespace Roslynator.Metadata;
 
 public enum LegacyAnalyzerOptionKind
 {
-    None = 0,
-    Enable = 1,
-    Disable = 2,
-    Change = 3,
-    Invert = 4,
+    None,
+    Enable,
+    Disable,
+    Change,
+    Invert,
 }
