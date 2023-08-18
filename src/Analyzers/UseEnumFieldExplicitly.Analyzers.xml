@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
   <Analyzer Identifier="UseEnumFieldExplicitly">
-    <Id>RCS1255</Id>
-    <Title>Use enum field explicitly</Title>
-    <Category>General</Category>
+    <Id>RCS1257</Id>
+    <Title>Use enum field explicitly.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>

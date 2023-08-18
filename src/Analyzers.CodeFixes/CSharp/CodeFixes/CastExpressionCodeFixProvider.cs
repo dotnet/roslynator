@@ -76,7 +76,7 @@ public sealed class CastExpressionCodeFixProvider : BaseCodeFixProvider
 
             newExpression = newExpression.WithTriviaFrom(castExpression);
 
-            return await document.ReplaceNodeAsync(castExpression, newExpression).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(castExpression, newExpression, cancellationToken).ConfigureAwait(false);
         }
         else
         {
@@ -91,7 +91,7 @@ public sealed class CastExpressionCodeFixProvider : BaseCodeFixProvider
 
             ExpressionSyntax newExpression = CreateEnumFieldExpression(symbol).WithTriviaFrom(castExpression);
 
-            return await document.ReplaceNodeAsync(castExpression, newExpression).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(castExpression, newExpression, cancellationToken).ConfigureAwait(false);
         }
 
         static MemberAccessExpressionSyntax CreateEnumFieldExpression(IFieldSymbol symbol)

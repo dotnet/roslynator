@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1255UseEnumFieldExplicitlyTests : AbstractCSharpDiagnosticVerifier<UseEnumFieldExplicitlyAnalyzer, CastExpressionCodeFixProvider>
+public class RCS1257UseEnumFieldExplicitlyTests : AbstractCSharpDiagnosticVerifier<UseEnumFieldExplicitlyAnalyzer, CastExpressionCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEnumFieldExplicitly;
 
