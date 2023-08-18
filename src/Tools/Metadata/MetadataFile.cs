@@ -275,7 +275,7 @@ public static class MetadataFile
                 ?? Enumerable.Empty<AnalyzerOptionValueMetadata>();
 
             string defaultValue = element.Element("DefaultValue")?.Value ?? values.FirstOrDefault(f => f.IsDefault).Value;
-            string defaultValuePlaceholder = element.Element("ValuePlaceholder")?.Value  ?? string.Join("|", values.Select(f => f.Value).OrderBy(f => f));
+            string defaultValuePlaceholder = element.Element("ValuePlaceholder")?.Value ?? string.Join("|", values.Select(f => f.Value).OrderBy(f => f));
 
             var analyzerOption = new AnalyzerOptionMetadata(
                 Id: id,
