@@ -59,9 +59,9 @@ internal static class InitializerExpressionRefactoring
                 && initializer.IsKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.WithInitializerExpression)
                 && AddAllPropertiesToInitializerRefactoring.IsApplicableSpan(initializer, context.Span))
             {
-                SemanticModel semanticModdel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                AddAllPropertiesToInitializerRefactoring.ComputeRefactorings(context, initializer, semanticModdel);
+                AddAllPropertiesToInitializerRefactoring.ComputeRefactorings(context, initializer, semanticModel);
             }
 
             await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);

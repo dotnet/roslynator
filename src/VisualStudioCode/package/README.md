@@ -1,6 +1,6 @@
 # Roslynator for Visual Studio Code
 
-A collection of 500+ [analyzers](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/README.md), [refactorings](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/README.md) and [fixes](https://github.com/JosefPihrt/Roslynator/blob/main/docs/cs/README.md) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
+A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
 For further information please visit Roslynator [repo](https://github.com/JosefPihrt/Roslynator).
 
@@ -32,7 +32,7 @@ roslynator_compiler_diagnostic_fixes.enabled = true|false
 roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ```
 
-Full list of available options is [here](https://github.com/JosefPihrt/Roslynator/blob/main/docs/Configuration.md)
+Full list of available options is [here](https://josefpihrt.github.io/docs/roslynator/configuration)
 
 ## Default Configuration
 

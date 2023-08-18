@@ -159,7 +159,10 @@ public class DocumentationGenerator
 
         using (DocumentationWriter writer = CreateWriter())
         {
-            yield return GenerateRoot(writer, heading);
+            DocumentationGeneratorResult result = GenerateRoot(writer, heading);
+
+            if (result.Content is not null)
+                yield return result;
         }
 
         if (depth <= DocumentationDepth.Namespace)
@@ -202,10 +205,23 @@ public class DocumentationGenerator
             }
         }
 
-        foreach (INamedTypeSymbol typeSymbol in DocumentationModel.GetExtendedExternalTypes())
+        INamedTypeSymbol[] extendedExternalTypes = DocumentationModel.GetExtendedExternalTypes().ToArray();
+
+        foreach (INamespaceSymbol namespaceSymbol in extendedExternalTypes
+            .SelectMany(f => f.GetContainingNamespaces())
+            .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (DocumentationUtility.ShouldGenerateNamespaceFile(namespaceSymbol, Context.CommonNamespaces))
+                yield return GenerateNamespace(namespaceSymbol, extendedExternalTypes);
+        }
+
+        foreach (INamedTypeSymbol typeSymbol in extendedExternalTypes)
         {
             if (!Options.ShouldBeIgnored(typeSymbol))
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 yield return GenerateExtendedExternalType(typeSymbol);
             }
         }
@@ -219,8 +235,11 @@ public class DocumentationGenerator
         }
     }
 
-    internal DocumentationGeneratorResult GenerateRoot(DocumentationWriter writer, string heading)
+    private DocumentationGeneratorResult GenerateRoot(DocumentationWriter writer, string heading)
     {
+        if (Options.IgnoredRootParts == RootDocumentationParts.All)
+            return CreateResult(null, DocumentationFileKind.Root);
+
         writer.WriteStartDocument(null, DocumentationFileKind.Root);
 
         if (Options.ScrollToContent)
@@ -319,10 +338,9 @@ public class DocumentationGenerator
         }
     }
 
-    private DocumentationGeneratorResult GenerateNamespace(INamespaceSymbol namespaceSymbol)
+    private DocumentationGeneratorResult GenerateNamespace(INamespaceSymbol namespaceSymbol, IEnumerable<INamedTypeSymbol> types = null)
     {
-        IEnumerable<INamedTypeSymbol> typeSymbols = DocumentationModel
-            .Types
+        IEnumerable<INamedTypeSymbol> typeSymbols = (types ?? DocumentationModel.Types)
             .Where(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(f.ContainingNamespace, namespaceSymbol));
 
         using (DocumentationWriter writer = CreateWriter(namespaceSymbol))

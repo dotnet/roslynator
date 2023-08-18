@@ -526,7 +526,7 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
     {
         var compilationUnit = (CompilationUnitSyntax)context.Node;
 

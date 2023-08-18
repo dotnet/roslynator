@@ -20,6 +20,7 @@
     <VSSDKTargetPlatformRegRootSuffix>Roslyn</VSSDKTargetPlatformRegRootSuffix>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <EnabledefaultEmbeddedResourceItems>false</EnabledefaultEmbeddedResourceItems>
+    <DeterministicSourcePaths>false</DeterministicSourcePaths>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

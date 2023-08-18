@@ -51,6 +51,56 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task Test_IsWhenIsNotIsInvalid()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class X
+{
+}
+
+class C
+{
+    public X X { get; set; }
+
+    C(object o)
+    {
+        [|if|] (o is X)
+        {
+            M2();
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+", @"
+class X
+{
+}
+
+class C
+{
+    public X X { get; set; }
+
+    C(object o)
+    {
+        if (o is not global::X)
+        {
+            return;
+        }
+
+        M2();
+    }
+
+    void M2()
+    {
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
     public async Task Test_WhenParentIsConversionOperator()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -147,12 +197,12 @@ class C
     void M(bool p)
     {
         var f = () => 
-        {
-            [|if|] (p)
             {
-                M2();
-            }
-        };
+                [|if|] (p)
+                {
+                    M2();
+                }
+            };
     }
 
     void M2()
@@ -172,8 +222,7 @@ class C
                 }
 
                 M2();
-            }
-;
+            };
     }
 
     void M2()
@@ -197,7 +246,6 @@ class C
             {
                 M2();
             }
-
         }
         M3();
     }
@@ -552,6 +600,140 @@ class C
             M2();
         }
 
+    }
+
+    void M2()
+    {
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task TestDiagnostic_DoesNot_IncorrectlyRecurse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(bool p, bool q, bool r)
+    {
+        [|if|] (r)
+        {
+            if (p)
+            {
+                var x = 1;
+                M2();
+            }
+
+            if (q)
+            {
+                var x = 2;
+                M2();
+            }
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+", @"
+class C
+{
+    void M(bool p, bool q, bool r)
+    {
+        if (!r)
+        {
+            return;
+        }
+
+        if (p)
+        {
+            var x = 1;
+            M2();
+        }
+
+        if (q)
+        {
+            var x = 2;
+            M2();
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task Test_WhenIsExpressionCsharp8()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(object o)
+    {
+        [|if|] (o is string)
+        {
+            M2();
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+", @"
+class C
+{
+    void M(object o)
+    {
+        if (!(o is string))
+        {
+            return;
+        }
+
+        M2();
+    }
+
+    void M2()
+    {
+    }
+}
+", options: WellKnownCSharpTestOptions.Default_CSharp8);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task Test_WhenIsExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(object o)
+    {
+        [|if|] (o is string)
+        {
+            M2();
+        }
+    }
+
+    void M2()
+    {
+    }
+}
+", @"
+class C
+{
+    void M(object o)
+    {
+        if (o is not string)
+        {
+            return;
+        }
+
+        M2();
     }
 
     void M2()

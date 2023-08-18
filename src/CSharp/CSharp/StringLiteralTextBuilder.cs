@@ -239,12 +239,12 @@ internal class StringLiteralTextBuilder
         if (IsVerbatim)
             StringBuilder.Append('@');
 
-        StringBuilder.Append("\"");
+        StringBuilder.Append('"');
     }
 
     public void AppendEnd()
     {
-        StringBuilder.Append("\"");
+        StringBuilder.Append('"');
     }
 
     public override string ToString()

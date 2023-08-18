@@ -181,7 +181,7 @@ internal static class DocumentationUtility
             }
 
             sb.Append(n.Name);
-            sb.Append("_");
+            sb.Append('_');
             count--;
         }
 
@@ -206,7 +206,7 @@ internal static class DocumentationUtility
             }
 
             AppendType(t);
-            sb.Append("_");
+            sb.Append('_');
             count--;
         }
 
@@ -229,8 +229,8 @@ internal static class DocumentationUtility
 
             if (arity > 0)
             {
-                sb.Append("_");
-                sb.Append(arity.ToString());
+                sb.Append('_');
+                sb.Append(arity);
             }
         }
     }

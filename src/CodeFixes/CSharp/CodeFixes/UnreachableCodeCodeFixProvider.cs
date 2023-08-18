@@ -170,7 +170,7 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
         return null;
     }
 
-    private CodeAction CreateCodeAction(Document document, Diagnostic diagnostic, IfStatementSyntax ifStatement, SyntaxList<StatementSyntax> statements)
+    private static CodeAction CreateCodeAction(Document document, Diagnostic diagnostic, IfStatementSyntax ifStatement, SyntaxList<StatementSyntax> statements)
     {
         return CodeAction.Create(
             Title,
@@ -195,7 +195,7 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
             GetEquivalenceKey(diagnostic));
     }
 
-    private CodeAction CreateCodeAction(Document document, Diagnostic diagnostic, IfStatementSyntax ifStatement, StatementSyntax statement)
+    private static CodeAction CreateCodeAction(Document document, Diagnostic diagnostic, IfStatementSyntax ifStatement, StatementSyntax statement)
     {
         return CodeAction.Create(
             Title,
@@ -210,7 +210,7 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
             GetEquivalenceKey(diagnostic));
     }
 
-    private SyntaxList<TNode> RemoveRange<TNode>(
+    private static SyntaxList<TNode> RemoveRange<TNode>(
         SyntaxList<TNode> list,
         int index,
         int count,

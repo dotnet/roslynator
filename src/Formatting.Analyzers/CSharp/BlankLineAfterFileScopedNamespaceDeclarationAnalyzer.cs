@@ -40,6 +40,9 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
 
         SyntaxNode node = GetNodeAfterNamespaceDeclaration(namespaceDeclaration);
 
+        if (node is null)
+            return;
+
         BlankLineStyle style = context.GetBlankLineAfterFileScopedNamespaceDeclaration();
 
         if (style == BlankLineStyle.None)

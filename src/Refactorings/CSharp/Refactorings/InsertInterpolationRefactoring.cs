@@ -81,7 +81,7 @@ internal static class InsertInterpolationRefactoring
 
             sb.Append("nameof(");
             sb.Append(identifier);
-            sb.Append(")");
+            sb.Append(')');
         }
 
         int closeBracePosition = sb.Length;

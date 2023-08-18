@@ -1,0 +1,694 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeFixes>
+  <CodeFix Id="RCF0001" Identifier="RemoveUnusedVariable" Title="Remove unused variable" IsObsolete="true">
+    <FixableDiagnosticIds>
+      <Id>CS0168</Id>
+      <Id>CS0219</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0002" Identifier="AddBreakStatementToSwitchSection" Title="Add break statement to switch section">
+    <FixableDiagnosticIds>
+      <Id>CS0163</Id>
+      <Id>CS8070</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0003" Identifier="CreateSingletonArray" Title="Create singleton array">
+    <FixableDiagnosticIds>
+      <Id>CS0266</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0004" Identifier="AddOutModifierToArgument" Title="Add 'out' modifier to argument">
+    <FixableDiagnosticIds>
+      <Id>CS1620</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0005" Identifier="MoveBaseClassBeforeAnyInterface" Title="Base base class before any interface">
+    <FixableDiagnosticIds>
+      <Id>CS1722</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0006" Identifier="AddOverrideModifier" Title="Add 'override' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0114</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0007" Identifier="AddNewModifier" Title="Add 'new' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0114</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0008" Identifier="ExtractDeclarationFromUsingStatement" Title="Extract declaration from using statement">
+    <FixableDiagnosticIds>
+      <Id>CS1674</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0009" Identifier="AddBracesToDeclarationOrLabeledStatement" Title="Add braces to declaration or labeled statement">
+    <FixableDiagnosticIds>
+      <Id>CS1023</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0010" Identifier="MarkOperatorAsPublicAndStatic" Title="Mark operator as 'public' and 'static'">
+    <FixableDiagnosticIds>
+      <Id>CS0558</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0011" Identifier="RemoveDuplicateModifier" Title="Remove duplicate modifier">
+    <FixableDiagnosticIds>
+      <Id>CS1004</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0012" Identifier="RemoveDuplicateAttribute" Title="Remove duplicate attribute">
+    <FixableDiagnosticIds>
+      <Id>CS0579</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0013" Identifier="RemoveNewModifier" Title="Remove new modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0109</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0014" Identifier="RemoveUnusedLabel" Title="Remove unused label">
+    <FixableDiagnosticIds>
+      <Id>CS0164</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0016" Identifier="AddDocumentationComment" Title="Add documentation comment">
+    <FixableDiagnosticIds>
+      <Id>CS1591</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0017" Identifier="RemoveUnreachableCode" Title="Unreachable code detected">
+    <FixableDiagnosticIds>
+      <Id>CS0162</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0018" Identifier="ChangeMethodReturnType" Title="Change method return type">
+    <FixableDiagnosticIds>
+      <Id>CS0508</Id>
+      <Id>CS0766</Id>
+      <Id>CS1624</Id>
+      <Id>CS1983</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0019" Identifier="MemberTypeMustMatchOverriddenMemberType" Title="Member type must match overridden member type">
+    <FixableDiagnosticIds>
+      <Id>CS1715</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0020" Identifier="AddReturnStatementThatReturnsDefaultValue" Title="Add return statement that returns default value">
+    <FixableDiagnosticIds>
+      <Id>CS0161</Id>
+      <Id>CS1643</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0021" Identifier="UseYieldReturnInsteadOfReturn" Title="Use yield return instead of return">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+      <Id>CS1622</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0022" Identifier="ReplaceStringLiteralWithCharacterLiteral" Title="Replace string literal with character literal">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0023" Identifier="AddComparisonWithBooleanLiteral" Title="Add comparison with boolean literal">
+    <FixableDiagnosticIds>
+      <Id>CS0019</Id>
+      <Id>CS0266</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0024" Identifier="RemovePropertyOrFieldInitializer" Title="Remove property or field initializer">
+    <FixableDiagnosticIds>
+      <Id>CS0037</Id>
+      <Id>CS0573</Id>
+      <Id>CS8050</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0025" Identifier="AddPartialModifier" Title="Add 'partial' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0101</Id>
+      <Id>CS0102</Id>
+      <Id>CS0260</Id>
+      <Id>CS0751</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0026" Identifier="AddBody" Title="Add body">
+    <FixableDiagnosticIds>
+      <Id>CS0501</Id>
+      <Id>CS0756</Id>
+      <Id>CS8112</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0027" Identifier="RemoveRefModifier" Title="Remove 'ref' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0192</Id>
+      <Id>CS1615</Id>
+      <Id>CS1988</Id>
+      <Id>CS1623</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0028" Identifier="RemoveRedundantAssignment" Title="Remove redundant assignment">
+    <FixableDiagnosticIds>
+      <Id>CS1717</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0029" Identifier="ChangeAccessibility" Title="Change accessibility">
+    <FixableDiagnosticIds>
+      <Id>CS0621</Id>
+      <Id>CS0442</Id>
+      <Id>CS0507</Id>
+      <Id>CS0628</Id>
+      <Id>CS1057</Id>
+      <Id>CS1527</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0030" Identifier="ChangeTypeOfParamsParameter" Title="Change type of 'params' parameter">
+    <FixableDiagnosticIds>
+      <Id>CS0225</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0031" Identifier="UseUncheckedExpression" Title="Use unchecked expression">
+    <FixableDiagnosticIds>
+      <Id>CS0221</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0032" Identifier="RemoveImplementationFromAbstractMember" Title="Remove implementation from abstract member">
+    <FixableDiagnosticIds>
+      <Id>CS0069</Id>
+      <Id>CS0500</Id>
+      <Id>CS0531</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0033" Identifier="AddStaticModifier" Title="Add 'static' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0708</Id>
+      <Id>CS0710</Id>
+      <Id>CS1105</Id>
+      <Id>CS1106</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0034" Identifier="MakeContainingClassAbstract" Title="Make containing class abstract">
+    <FixableDiagnosticIds>
+      <Id>CS0513</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0036" Identifier="SynchronizeAccessibility" Title="Synchronize accessibility">
+    <FixableDiagnosticIds>
+      <Id>CS0262</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0037" Identifier="RemoveArgumentList" Title="Remove argument list">
+    <FixableDiagnosticIds>
+      <Id>CS1955</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0038" Identifier="FixMemberAccessName" Title="Fix member access name">
+    <FixableDiagnosticIds>
+      <Id>CS1061</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0039" Identifier="AddArgumentList" Title="Add argument list">
+    <FixableDiagnosticIds>
+      <Id>CS0023</Id>
+      <Id>CS0119</Id>
+      <Id>CS0428</Id>
+      <Id>CS0201</Id>
+      <Id>CS1526</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0040" Identifier="InitializeLocalVariableWithDefaultValue" Title="Initialize local variable with default value">
+    <FixableDiagnosticIds>
+      <Id>CS0165</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0041" Identifier="ChangeTypeOfLocalVariable" Title="Change type of local variable">
+    <FixableDiagnosticIds>
+      <Id>CS0123</Id>
+      <Id>CS0407</Id>
+      <Id>CS0815</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0042" Identifier="MakeMemberNonStatic" Title="Make member non-static">
+    <FixableDiagnosticIds>
+      <Id>CS0120</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0043" Identifier="RemoveConstraintClauses" Title="Remove constraint clauses">
+    <FixableDiagnosticIds>
+      <Id>CS0080</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0044" Identifier="AddTypeArgument" Title="Add type argument">
+    <FixableDiagnosticIds>
+      <Id>CS0305</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0045" Identifier="RemoveConstModifier" Title="Remove 'const' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0131</Id>
+      <Id>CS0133</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0046" Identifier="RemoveEmptySwitchStatement" Title="Remove empty switch statement">
+    <FixableDiagnosticIds>
+      <Id>CS1522</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0047" Identifier="IntroduceLocalVariable" Title="Introduce local variable">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0048" Identifier="UseExplicitTypeInsteadOfVar" Title="Use explicit type instead of 'var'">
+    <FixableDiagnosticIds>
+      <Id>CS0214</Id>
+      <Id>CS0819</Id>
+      <Id>CS0822</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0049" Identifier="RemoveAwaitKeyword" Title="Remove 'await' keyword">
+    <FixableDiagnosticIds>
+      <Id>CS1061</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0050" Identifier="WrapInUnsafeStatement" Title="Wrap in unsafe statement">
+    <FixableDiagnosticIds>
+      <Id>CS0214</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0051" Identifier="MakeContainingDeclarationUnsafe" Title="Make containing declaration unsafe">
+    <FixableDiagnosticIds>
+      <Id>CS0214</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0052" Identifier="RemoveReturnKeyword" Title="Remove 'return' keyword" IsObsolete="true">
+    <FixableDiagnosticIds>
+      <Id>CS0127</Id>
+      <Id>CS1997</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0053" Identifier="RemoveParametersFromStaticConstructor" Title="Remove parameters from static constructor">
+    <FixableDiagnosticIds>
+      <Id>CS0132</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0054" Identifier="OrderModifiers" Title="Order modifiers">
+    <FixableDiagnosticIds>
+      <Id>CS0267</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0055" Identifier="RemoveInvalidModifier" Title="Remove invalid modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0107</Id>
+      <Id>CS0112</Id>
+      <Id>CS0115</Id>
+      <Id>CS0275</Id>
+      <Id>CS0441</Id>
+      <Id>CS0515</Id>
+      <Id>CS0678</Id>
+      <Id>CS0750</Id>
+      <Id>CS0753</Id>
+      <Id>CS0759</Id>
+      <Id>CS1609</Id>
+      <Id>CS1994</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0056" Identifier="RemoveMemberDeclaration" Title="Remove member declaration">
+    <FixableDiagnosticIds>
+      <Id>CS0114</Id>
+      <Id>CS0541</Id>
+      <Id>CS0525</Id>
+      <Id>CS0567</Id>
+      <Id>CS0568</Id>
+      <Id>CS0575</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0057" Identifier="RemoveReturnExpression" Title="Remove return expression" IsObsolete="true">
+    <FixableDiagnosticIds>
+      <Id>CS0127</Id>
+      <Id>CS1997</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0058" Identifier="ReplaceNullLiteralExpressionWithDefaultValue" Title="Replace 'null' with default value">
+    <FixableDiagnosticIds>
+      <Id>CS0037</Id>
+      <Id>CS0403</Id>
+      <Id>CS1503</Id>
+      <Id>CS1750</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0059" Identifier="ReplaceVariableDeclarationWithAssignment" Title="Replace variable declaration with assignment">
+    <FixableDiagnosticIds>
+      <Id>CS0128</Id>
+      <Id>CS0136</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0060" Identifier="RemoveThisModifier" Title="Remove 'this' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS1100</Id>
+      <Id>CS1105</Id>
+      <Id>CS1106</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0061" Identifier="RemoveTypeParameter" Title="Remove type parameter">
+    <FixableDiagnosticIds>
+      <Id>CS0693</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0062" Identifier="MakeContainingClassNonStatic" Title="Make containing class non-static">
+    <FixableDiagnosticIds>
+      <Id>CS0708</Id>
+      <Id>CS0710</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0063" Identifier="AddExplicitCast" Title="Add explicit cast">
+    <FixableDiagnosticIds>
+      <Id>CS0173</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0064" Identifier="MoveConstraint" Title="Move constraint">
+    <FixableDiagnosticIds>
+      <Id>CS0401</Id>
+      <Id>CS0449</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0065" Identifier="RemoveConstraint" Title="Remove constraint">
+    <FixableDiagnosticIds>
+      <Id>CS0405</Id>
+      <Id>CS0450</Id>
+      <Id>CS0451</Id>
+      <Id>CS0714</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0066" Identifier="CombineConstraintClauses" Title="Combine constraint clauses">
+    <FixableDiagnosticIds>
+      <Id>CS0409</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0067" Identifier="AssignDefaultValueToOutParameter" Title="Assign default value to 'out' parameter">
+    <FixableDiagnosticIds>
+      <Id>CS0177</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0068" Identifier="MakeClassNonStatic" Title="Make class non-static">
+    <FixableDiagnosticIds>
+      <Id>CS0713</Id>
+      <Id>CS0714</Id>
+      <Id>CS0718</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0069" Identifier="RemoveYieldKeyword" Title="Remove 'yield' keyword">
+    <FixableDiagnosticIds>
+      <Id>CS1621</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0070" Identifier="RemoveOutModifier" Title="Remove 'out' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0192</Id>
+      <Id>CS1988</Id>
+      <Id>CS1623</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0071" Identifier="RemoveAttribute" Title="Remove attribute">
+    <FixableDiagnosticIds>
+      <Id>CS0592</Id>
+      <Id>CS1689</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0072" Identifier="RemoveJumpStatement" Title="Remove jump statement">
+    <FixableDiagnosticIds>
+      <Id>CS0139</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0073" Identifier="UseCoalesceExpression" Title="Use coalesce expression">
+    <FixableDiagnosticIds>
+      <Id>CS0266</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0074" Identifier="ReplaceAsExpressionWithCastExpression" Title="Replace as expression with cast expression">
+    <FixableDiagnosticIds>
+      <Id>CS0077</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0075" Identifier="RemoveConditionThatIsAlwaysEqualToTrueOrFalse" Title="Remove condition that is always equal to true/false">
+    <FixableDiagnosticIds>
+      <Id>CS0472</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0076" Identifier="IntroduceField" Title="Introduce field">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0077" Identifier="UseInvocationInsteadOfIndexer" Title="Use invocation instead of indexer">
+    <FixableDiagnosticIds>
+      <Id>CS0021</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0078" Identifier="AddVariableType" Title="Add variable type">
+    <FixableDiagnosticIds>
+      <Id>CS0103</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0079" Identifier="ReplaceBreakWithContinue" Title="Replace 'break' with 'continue'">
+    <FixableDiagnosticIds>
+      <Id>CS0139</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0080" Identifier="ChangeMemberTypeAccordingToReturnExpression" Title="Change member type according to return expression">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+      <Id>CS0127</Id>
+      <Id>CS0201</Id>
+      <Id>CS0246</Id>
+      <Id>CS0266</Id>
+      <Id>CS1997</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0081" Identifier="ReturnDefaultValue" Title="Return default value">
+    <FixableDiagnosticIds>
+      <Id>CS0126</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0082" Identifier="DefineMatchingOperator" Title="Define matching operator">
+    <FixableDiagnosticIds>
+      <Id>CS0216</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0083" Identifier="DefineObjectEquals" Title="Define object.Equals">
+    <FixableDiagnosticIds>
+      <Id>CS0660</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0084" Identifier="DefineObjectGetHashCode" Title="Define object.GetHashCode">
+    <FixableDiagnosticIds>
+      <Id>CS0659</Id>
+      <Id>CS0661</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0085" Identifier="ChangeArrayType" Title="Change array type">
+    <FixableDiagnosticIds>
+      <Id>CS0246</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0086" Identifier="AddMissingType" Title="Add missing type">
+    <FixableDiagnosticIds>
+      <Id>CS1031</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0087" Identifier="ReplaceConditionalExpressionWithIfElse" Title="Replace conditional expression with if-else">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0088" Identifier="RemoveSemicolon" Title="Remove semicolon">
+    <FixableDiagnosticIds>
+      <Id>CS1597</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0089" Identifier="RemoveConditionalAccess" Title="Remove conditional access">
+    <FixableDiagnosticIds>
+      <Id>CS0023</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0090" Identifier="ChangeTypeAccordingToInitializer" Title="Change type according to initializer">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0091" Identifier="ChangeForEachType" Title="Change foreach type">
+    <FixableDiagnosticIds>
+      <Id>CS0030</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0092" Identifier="ChangeTypeToVar" Title="Change type to var">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+      <Id>CS0030</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0093" Identifier="RemoveDefaultValueFromParameter" Title="Remove default value from parameter">
+    <FixableDiagnosticIds>
+      <Id>CS1751</Id>
+      <Id>CS1741</Id>
+      <Id>CS1743</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0094" Identifier="ReplaceConstantWithField" Title="Replace constant with field">
+    <FixableDiagnosticIds>
+      <Id>CS0133</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0095" Identifier="ReplaceStructWithClass" Title="Replace struct with class">
+    <FixableDiagnosticIds>
+      <Id>CS0527</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0096" Identifier="ReplaceYieldReturnWithForEach" Title="Replace yield return with foreach">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0097" Identifier="ReplaceComparisonWithAssignment" Title="Replace comparison with assignment">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0098" Identifier="AddModifierAbstract" Title="Add modifier 'abstract'">
+    <FixableDiagnosticIds>
+      <Id>CS0501</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0099" Identifier="MakeMemberReadOnly" Title="Make member read-only'">
+    <FixableDiagnosticIds>
+      <Id>CS8340</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0100" Identifier="RemoveSealedModifier" Title="Remove 'sealed' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0238</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0101" Identifier="RemoveVirtualModifier" Title="Remove 'virtual' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS0549</Id>
+      <Id>CS0621</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0102" Identifier="MakeContainingClassUnsealed" Title="Make containing class unsealed">
+    <FixableDiagnosticIds>
+      <Id>CS0549</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0103" Identifier="RemoveSwitchLabel" Title="Remove switch label">
+    <FixableDiagnosticIds>
+      <Id>CS0152</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0104" Identifier="RenameDestructorToMatchClassName" Title="Rename destructor to match class name">
+    <FixableDiagnosticIds>
+      <Id>CS0574</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0105" Identifier="RemoveBaseList" Title="Remove base list">
+    <FixableDiagnosticIds>
+      <Id>CS0713</Id>
+      <Id>CS0714</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0106" Identifier="AddDefaultValueToParameter" Title="Add default value to parameter">
+    <FixableDiagnosticIds>
+      <Id>CS1737</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0107" Identifier="AddMissingComma" Title="Add missing comma">
+    <FixableDiagnosticIds>
+      <Id>CS1003</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0108" Identifier="RemoveParentheses" Title="Remove parentheses">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0109" Identifier="RemoveParameter" Title="Remove parameter">
+    <FixableDiagnosticIds>
+      <Id>CS0136</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0110" Identifier="RenameTupleElement" Title="Rename tuple element to match overridden member">
+    <FixableDiagnosticIds>
+      <Id>CS8139</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0111" Identifier="ChangeParameterType" Title="Change parameter type">
+    <FixableDiagnosticIds>
+      <Id>CS1750</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0112" Identifier="MarkDeclarationAsNonCLSCompliant" Title="Mark declaration as non-CLS-compliant">
+    <FixableDiagnosticIds>
+      <Id>CS3000</Id>
+      <Id>CS3001</Id>
+      <Id>CS3002</Id>
+      <Id>CS3003</Id>
+      <Id>CS3005</Id>
+      <Id>CS3006</Id>
+      <Id>CS3007</Id>
+      <Id>CS3008</Id>
+      <Id>CS3009</Id>
+      <Id>CS3016</Id>
+      <Id>CS3024</Id>
+      <Id>CS3027</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0113" Identifier="ReplaceCharacterLiteralWithStringLiteral" Title="Replace character literal with string literal">
+    <FixableDiagnosticIds>
+      <Id>CS1012</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0114" Identifier="MakeFieldWritable" Title="Make field writable">
+    <FixableDiagnosticIds>
+      <Id>CS0191</Id>
+      <Id>CS0192</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0115" Identifier="ReplaceInvocationWithMemberAccessOrViceVersa" Title="Replace invocation with member access or vice versa">
+    <FixableDiagnosticIds>
+      <Id>CS1061</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0116" Identifier="AddParameterToExplicitlyImplementedInterfaceMember" Title="Add parameter to explicitly implemented interface member">
+    <FixableDiagnosticIds>
+      <Id>CS0539</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0117" Identifier="MoveInitializerExpressionsToConstructor" Title="Move initializer expressions to constructor">
+    <FixableDiagnosticIds>
+      <Id>CS7036</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0118" Identifier="RemoveAnnotationForNullableReferenceTypes" Title="Remove annotation for nullable reference types">
+    <FixableDiagnosticIds>
+      <Id>CS8632</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0119" Identifier="UseNullForgivingOperator" Title="Use null-forgiving operator">
+    <FixableDiagnosticIds>
+      <Id>CS8604</Id>
+      <Id>CS8618</Id>
+      <Id>CS8625</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0120" Identifier="AddAsyncModifier" Title="Add 'async' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS8403</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0121" Identifier="UseNullPropagationOperator" Title="Use null propagation operator">
+    <FixableDiagnosticIds>
+      <Id>CS8602</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+</CodeFixes>

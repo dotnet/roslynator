@@ -67,10 +67,7 @@ public sealed class CompilerDiagnosticFixTestData
     /// <summary>
     /// Creates and return new instance of <see cref="CompilerDiagnosticFixTestData"/> updated with specified values.
     /// </summary>
-    /// <param name="diagnosticId"></param>
-    /// <param name="source"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
+    [Obsolete("This method is obsolete and will be removed in future version.")]
     public CompilerDiagnosticFixTestData Update(
         string diagnosticId,
         string source,
