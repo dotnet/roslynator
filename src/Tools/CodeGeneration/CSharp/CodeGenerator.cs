@@ -15,7 +15,7 @@ namespace Roslynator.CodeGeneration.CSharp;
 
 public static class CodeGenerator
 {
-    public static CompilationUnitSyntax GenerateConfigOptions(IEnumerable<ConfigOptionMetadata> options, IEnumerable<AnalyzerMetadata> analyzers)
+    public static CompilationUnitSyntax GenerateConfigOptions(IEnumerable<AnalyzerOptionMetadata> options, IEnumerable<AnalyzerMetadata> analyzers)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(
             UsingDirectives("System.Collections.Generic"),
@@ -54,7 +54,7 @@ public static class CodeGenerator
                                             .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
                                             .Select(f =>
                                             {
-                                                ConfigOptionKeyMetadata mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
+                                                AnalyzerConfigOption mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
 
                                                 Debug.Assert(mismatch.Key is null, mismatch.Key);
 
@@ -85,8 +85,8 @@ public static class CodeGenerator
                     Modifiers.Public_Static_Partial(),
                     "LegacyConfigOptions",
                     analyzers
-                        .SelectMany(f => f.Options)
-                        .Where(f => !f.IsObsolete)
+                        .SelectMany(f => f.LegacyOptions)
+                        .Where(f => f.Status != AnalyzerStatus.Disabled)
                         .OrderBy(f => f.Identifier)
                         .Select(f =>
                         {
@@ -105,7 +105,7 @@ public static class CodeGenerator
                         .ToSyntaxList<MemberDeclarationSyntax>())));
     }
 
-    public static CompilationUnitSyntax GenerateConfigOptionKeys(IEnumerable<ConfigOptionMetadata> options)
+    public static CompilationUnitSyntax GenerateConfigOptionKeys(IEnumerable<AnalyzerOptionMetadata> options)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(
             UsingDirectives(),
@@ -133,7 +133,7 @@ public static class CodeGenerator
         return (CompilationUnitSyntax)rewriter.Visit(compilationUnit);
     }
 
-    public static CompilationUnitSyntax GenerateConfigOptionValues(IEnumerable<ConfigOptionMetadata> options)
+    public static CompilationUnitSyntax GenerateConfigOptionValues(IEnumerable<AnalyzerOptionMetadata> options)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(
             UsingDirectives(),

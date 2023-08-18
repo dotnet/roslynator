@@ -17,7 +17,6 @@ public class DiagnosticRulesGenerator
 {
     public CompilationUnitSyntax Generate(
         IEnumerable<AnalyzerMetadata> analyzers,
-        bool obsolete,
         IComparer<string> comparer,
         string @namespace,
         string className,
@@ -25,7 +24,6 @@ public class DiagnosticRulesGenerator
         string categoryName)
     {
         analyzers = analyzers
-            .Where(f => f.IsObsolete == obsolete)
             .OrderBy(f => f.Id, comparer);
 
         ClassDeclarationSyntax classDeclaration = CreateClassDeclaration(
@@ -76,7 +74,7 @@ public class DiagnosticRulesGenerator
                         IdentifierName("DiagnosticDescriptorFactory"),
                         IdentifierName("CreateFadeOut"),
                         ArgumentList(Argument(IdentifierName(identifier)))))
-                    .AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+                    .AddObsoleteAttributeIf(analyzer.Status == AnalyzerStatus.Disabled, error: true);
             }
         }
     }
@@ -112,7 +110,7 @@ public class DiagnosticRulesGenerator
         idExpression = ModifyIdExpression(idExpression);
 
         FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-            (analyzer.IsObsolete) ? Modifiers.Internal_Static_ReadOnly() : Modifiers.Public_Static_ReadOnly(),
+            (analyzer.Status == AnalyzerStatus.Disabled) ? Modifiers.Internal_Static_ReadOnly() : Modifiers.Public_Static_ReadOnly(),
             IdentifierName("DiagnosticDescriptor"),
             analyzer.Identifier,
             SimpleMemberInvocationExpression(
@@ -149,9 +147,9 @@ public class DiagnosticRulesGenerator
                             ? SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName(WellKnownDiagnosticTags.Unnecessary))
                             : ParseExpression("Array.Empty<string>()"))
                     )))
-            .AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+            .AddObsoleteAttributeIf(analyzer.Status == AnalyzerStatus.Disabled, error: true);
 
-        if (!analyzer.IsObsolete)
+        if (analyzer.Status != AnalyzerStatus.Disabled)
         {
             var settings = new DocumentationCommentGeneratorSettings(
                 summary: new string[] { analyzer.Id },
