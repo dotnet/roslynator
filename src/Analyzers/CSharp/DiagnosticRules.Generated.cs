@@ -590,8 +590,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1063</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop, 
-            title:              "([deprecated] use RCS1252 instead) Avoid usage of do statement to create an infinite loop.", 
-            messageFormat:      "([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.", 
+            title:              "Avoid usage of do statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] Use RCS1252 instead)Use while statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -602,8 +602,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1064</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfForStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop, 
-            title:              "([deprecated] use RCS1252 instead) Avoid usage of for statement to create an infinite loop.", 
-            messageFormat:      "([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.", 
+            title:              "Avoid usage of for statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] Use RCS1252 instead)Use while statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -614,8 +614,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1065</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfWhileStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop, 
-            title:              "([deprecated] use RCS1252 instead) Avoid usage of while statement to create an infinite loop.", 
-            messageFormat:      "([deprecated] use RCS1252 instead) Use for statement to create an infinite loop.", 
+            title:              "Avoid usage of while statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] Use RCS1252 instead)Use for statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -936,8 +936,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1100</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnSingleLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine, 
-            title:              "([deprecated] use RCS1253 instead) Format documentation summary on a single line.", 
-            messageFormat:      "([deprecated] use RCS1253 instead) Format documentation summary on a single line.", 
+            title:              "Format documentation summary on a single line.", 
+            messageFormat:      "([deprecated] Use RCS1253 instead)Format documentation summary on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -948,8 +948,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1101</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnMultipleLines = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines, 
-            title:              "([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.", 
-            messageFormat:      "([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.", 
+            title:              "Format documentation summary on multiple lines.", 
+            messageFormat:      "([deprecated] Use RCS1253 instead)Format documentation summary on multiple lines.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -2296,8 +2296,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1237</summary>
         public static readonly DiagnosticDescriptor UseBitShiftOperator = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseBitShiftOperator, 
-            title:              "([deprecated] use RCS1254 instead) Use bit shift operator.", 
-            messageFormat:      "([deprecated] use RCS1254 instead) Use bit shift operator.", 
+            title:              "Use bit shift operator.", 
+            messageFormat:      "([deprecated] Use RCS1254 instead)Use bit shift operator.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 

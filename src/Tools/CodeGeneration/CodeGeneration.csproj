@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynatorRoslynVersion)" />
-    <PackageReference Include="DotMarkdown.Docusaurus" Version="0.3.0-beta" />
+    <PackageReference Include="DotMarkdown.Docusaurus" Version="0.3.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DotMarkdown;
 using DotMarkdown.Docusaurus;
 using DotMarkdown.Linq;
@@ -123,7 +124,7 @@ public static class MarkdownGenerator
         return document.ToString();
     }
 
-    public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
+    public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<AnalyzerOptionMetadata> options)
     {
         MInlineCode[] requiredOptions = analyzer.ConfigOptions
             .Where(f => f.IsRequired)
@@ -134,7 +135,8 @@ public static class MarkdownGenerator
 
         MDocument document = Document(
             CreateFrontMatter(label: analyzer.Id),
-            Heading1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {title}"),
+            Heading1($"{analyzer.Id}: {title}"),
+            CreateObsoleteWarning(analyzer),
             Heading2("Properties"),
             Table(
                 TableRow("Property", "Value"),
@@ -154,13 +156,13 @@ public static class MarkdownGenerator
         static IEnumerable<MElement> CreateSamples(AnalyzerMetadata analyzer)
         {
             IReadOnlyList<SampleMetadata> samples = analyzer.Samples;
-            AnalyzerOptionKind kind = analyzer.Kind;
+            LegacyAnalyzerOptionKind kind = analyzer.Kind;
 
             if (samples.Count > 0)
             {
                 yield return Heading2((samples.Count == 1) ? "Example" : "Examples");
 
-                string beforeHeading = (kind == AnalyzerOptionKind.Disable)
+                string beforeHeading = (kind == LegacyAnalyzerOptionKind.Disable)
                     ? "Code"
                     : "Code with Diagnostic";
 
@@ -169,13 +171,13 @@ public static class MarkdownGenerator
             }
         }
 
-        static IEnumerable<object> CreateConfiguration(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
+        static IEnumerable<object> CreateConfiguration(AnalyzerMetadata analyzer, ImmutableArray<AnalyzerOptionMetadata> options)
         {
-            IEnumerable<ConfigOptionMetadata> analyzerOptions = analyzer.ConfigOptions
+            IEnumerable<AnalyzerOptionMetadata> analyzerOptions = analyzer.ConfigOptions
                 .Join(options, f => f.Key, f => f.Key, (_, g) => g)
                 .OrderBy(f => f.Key);
 
-            using (IEnumerator<ConfigOptionMetadata> en = analyzerOptions
+            using (IEnumerator<AnalyzerOptionMetadata> en = analyzerOptions
                 .GetEnumerator())
             {
                 if (en.MoveNext())
@@ -260,6 +262,31 @@ public static class MarkdownGenerator
 
             if (analyzer.Id.StartsWith("RCS9"))
                 yield return BulletItem(Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"));
+        }
+    }
+
+    private static DocusaurusCautionBlock CreateObsoleteWarning(AnalyzerMetadata analyzer)
+    {
+        string message = analyzer.ObsoleteMessage;
+
+        if (message is null)
+            return null;
+
+        return new DocusaurusCautionBlock("This analyzer is obsolete. ", GetTextParts(), ".") { Title = "WARNING" };
+
+        IEnumerable<object> GetTextParts()
+        {
+            int index = 0;
+            Match match = Regex.Match(message, @"\bRCS\d\d\d\d\b");
+            while (match.Success)
+            {
+                yield return message.Substring(index, match.Index);
+                yield return Link(match.Value, match.Value);
+                index = match.Index + match.Length;
+                match = match.NextMatch();
+            }
+
+            yield return message.Substring(index);
         }
     }
 
@@ -418,14 +445,15 @@ public static class MarkdownGenerator
 
     private static MObject CreateFrontMatter(int? position = null, string label = null)
     {
-        var labels = new List<(string, object)>();
+        return DocusaurusMarkdownFactory.FrontMatter(GetLabels());
 
-        if (position is not null)
-            labels.Add(("sidebar_position", position));
+        IEnumerable<(string, object)> GetLabels()
+        {
+            if (position is not null)
+                yield return ("sidebar_position", position);
 
-        if (label is not null)
-            labels.Add(("sidebar_label", label));
-
-        return DocusaurusMarkdownFactory.FrontMatter(labels);
+            if (label is not null)
+                yield return ("sidebar_label", label);
+        }
     }
 }

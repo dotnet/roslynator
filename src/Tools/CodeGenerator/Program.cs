@@ -35,7 +35,7 @@ internal static class Program
         ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
         ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
         ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
-        ImmutableArray<ConfigOptionMetadata> options = metadata.ConfigOptions;
+        ImmutableArray<AnalyzerOptionMetadata> options = metadata.ConfigOptions;
 
         WriteCompilationUnit(
             @"Refactorings\CSharp\RefactoringDescriptors.Generated.cs",
@@ -118,10 +118,10 @@ internal static class Program
 };",
             new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
 
-        Console.WriteLine($"number of analyzers: {metadata.Analyzers.Count(f => !f.IsObsolete)}");
-        Console.WriteLine($"number of common analyzers: {metadata.CommonAnalyzers.Count(f => !f.IsObsolete)}");
-        Console.WriteLine($"number of code analysis analyzers: {metadata.CodeAnalysisAnalyzers.Count(f => !f.IsObsolete)}");
-        Console.WriteLine($"number of formatting analyzers: {metadata.FormattingAnalyzers.Count(f => !f.IsObsolete)}");
+        Console.WriteLine($"number of analyzers: {metadata.Analyzers.Count(f => f.Status == AnalyzerStatus.Enabled)}");
+        Console.WriteLine($"number of common analyzers: {metadata.CommonAnalyzers.Count(f => f.Status == AnalyzerStatus.Enabled)}");
+        Console.WriteLine($"number of code analysis analyzers: {metadata.CodeAnalysisAnalyzers.Count(f => f.Status == AnalyzerStatus.Enabled)}");
+        Console.WriteLine($"number of formatting analyzers: {metadata.FormattingAnalyzers.Count(f => f.Status == AnalyzerStatus.Enabled)}");
         Console.WriteLine($"number of refactorings: {refactorings.Length}");
         Console.WriteLine($"number of code fixes: {codeFixes.Length}");
         Console.WriteLine($"number of fixable compiler diagnostics: {codeFixes.SelectMany(f => f.FixableDiagnosticIds).Distinct().Count()}");
@@ -136,21 +136,21 @@ internal static class Program
         {
             WriteCompilationUnit(
                 Path.Combine(dirPath, $"{descriptorsClassName}.Generated.cs"),
-                DiagnosticRulesGenerators.Default.Generate(analyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName, categoryName: categoryName),
+                DiagnosticRulesGenerators.Default.Generate(analyzers.Where(f => f.Status != AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName, categoryName: categoryName),
                 normalizeWhitespace: false);
 
             WriteCompilationUnit(
                 Path.Combine(dirPath, $"{descriptorsClassName}.Deprecated.Generated.cs"),
-                DiagnosticRulesGenerators.Default.Generate(analyzers, obsolete: true, comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName, categoryName: categoryName),
+                DiagnosticRulesGenerators.Default.Generate(analyzers.Where(f => f.Status == AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName, categoryName: categoryName),
                 normalizeWhitespace: false);
 
             WriteCompilationUnit(
                 Path.Combine(dirPath, $"{identifiersClassName}.Generated.cs"),
-                DiagnosticIdentifiersGenerator.Generate(analyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: identifiersClassName));
+                DiagnosticIdentifiersGenerator.Generate(analyzers.Where(f => f.Status != AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: identifiersClassName));
 
             WriteCompilationUnit(
                 Path.Combine(dirPath, $"{identifiersClassName}.Deprecated.Generated.cs"),
-                DiagnosticIdentifiersGenerator.Generate(analyzers, obsolete: true, comparer: comparer, @namespace: @namespace, className: identifiersClassName));
+                DiagnosticIdentifiersGenerator.Generate(analyzers.Where(f => f.Status == AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: identifiersClassName));
         }
 
         void WriteCompilationUnit(

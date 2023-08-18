@@ -63,4 +63,21 @@ internal static class FileSystemHelpers
             return false;
         }
     }
+
+    public static string DetermineRelativePath(string baseDirectoryPath, string filePath)
+    {
+        baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
+        baseDirectoryPath = baseDirectoryPath.Replace(@"\", "/").TrimEnd('/');
+
+        filePath = Path.GetFullPath(filePath);
+        string directoryPath = Path.GetDirectoryName(filePath).Replace(@"\", "/").TrimEnd('/');
+
+        if (string.Equals(baseDirectoryPath, directoryPath, Comparison))
+            return "";
+
+        var baseDirectoryUri = new Uri(baseDirectoryPath);
+        var directoryUri = new Uri(directoryPath + "/");
+
+        return directoryUri.MakeRelativeUri(baseDirectoryUri).ToString().TrimEnd('/');
+    }
 }
