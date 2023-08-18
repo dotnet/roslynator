@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1257AddOrRemoveTrailingCommaTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveTrailingCommaAnalyzer, AddOrRemoveTrailingCommaCodeFixProvider>
+public class RCS1259AddOrRemoveTrailingCommaTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveTrailingCommaAnalyzer, AddOrRemoveTrailingCommaCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveTrailingComma;
 

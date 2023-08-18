@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
   <Analyzer Identifier="AddOrRemoveTrailingComma">
-    <Id>RCS1257</Id>
+    <Id>RCS1259</Id>
     <Title>Add/remove trailing comma.</Title>
     <MessageFormat>{0} trailing comma.</MessageFormat>
     <Category>General</Category>

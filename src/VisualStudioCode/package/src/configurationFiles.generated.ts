@@ -121,6 +121,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Applicable to: rcs1213
 
 #roslynator_trailing_comma_style = include|omit
+# Applicable to: rcs1259
 
 #roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: rcs1207
@@ -904,6 +905,10 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Invalid argument null check
 #dotnet_diagnostic.rcs1256.severity = suggestion
+
+# Add/remove trailing comma
+#dotnet_diagnostic.rcs1259.severity = none
+# Options: roslynator_trailing_comma_style
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

@@ -240,7 +240,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1252", JoinOptionKeys(ConfigOptionKeys.InfiniteLoopStyle));
             yield return new KeyValuePair<string, string>("RCS1253", JoinOptionKeys(ConfigOptionKeys.DocCommentSummaryStyle));
             yield return new KeyValuePair<string, string>("RCS1254", JoinOptionKeys(ConfigOptionKeys.EnumFlagValueStyle));
-            yield return new KeyValuePair<string, string>("RCS1257", JoinOptionKeys(ConfigOptionKeys.TrailingCommaStyle));
+            yield return new KeyValuePair<string, string>("RCS1259", JoinOptionKeys(ConfigOptionKeys.TrailingCommaStyle));
         }
     }
 }
