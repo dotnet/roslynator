@@ -271,7 +271,8 @@ public static class MetadataFile
                 {
                     bool.TryParse(e.Attribute("IsDefault")?.Value, out bool isDefault);
                     return new AnalyzerOptionValueMetadata(e.Value, isDefault);
-                }) ?? Enumerable.Empty<AnalyzerOptionValueMetadata>();
+                })
+                ?? Enumerable.Empty<AnalyzerOptionValueMetadata>();
 
             string defaultValue = element.Element("DefaultValue")?.Value ?? values.FirstOrDefault(f => f.IsDefault).Value;
             string defaultValuePlaceholder = element.Element("ValuePlaceholder")?.Value  ?? string.Join("|", values.Select(f => f.Value).OrderBy(f => f));
