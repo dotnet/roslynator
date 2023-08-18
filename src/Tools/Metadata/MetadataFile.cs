@@ -120,8 +120,8 @@ public static class MetadataFile
             };
 
             refactoring.Syntaxes.AddRange(element.Element("Syntaxes").Elements("Syntax").Select(f => new SyntaxMetadata(f.Value)));
-            refactoring.Samples.AddRange(LoadSamples(element));
-            refactoring.Links.AddRange(LoadLinks(element));
+            refactoring.Samples.AddRange(LoadSamples(element) ?? Enumerable.Empty<SampleMetadata>());
+            refactoring.Links.AddRange(LoadLinks(element) ?? Enumerable.Empty<LinkMetadata>());
 
             yield return refactoring;
         }
