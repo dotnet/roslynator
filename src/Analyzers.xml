@@ -2335,10 +2335,13 @@ if (f)
   <Analyzer>
     <Id>RCS1035</Id>
     <Identifier>RemoveRedundantCommaInInitializer</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove redundant comma in initializer.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[public void Foo()

@@ -199,6 +199,13 @@
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Add/remove blank line after file scoped namespace declaration</Description>
   </Option>
+  <Option Id="TrailingCommaStyle">
+    <Description>Include/omit trailing comma in initializer or enum.</Description>
+    <Values>
+      <Value>include</Value>
+      <Value>omit</Value>
+    </Values>
+  </Option>
   <!--
   <Option Id="">
     <Key></Key>

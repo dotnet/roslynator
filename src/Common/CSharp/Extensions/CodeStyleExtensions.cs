@@ -362,6 +362,25 @@ internal static class CodeStyleExtensions
         return AccessibilityModifierStyle.None;
     }
 
+    public static TrailingCommaStyle GetTrailingCommaStyle(this SyntaxNodeAnalysisContext context)
+    {
+        AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.TrailingCommaStyle, out string rawValue))
+        {
+            if (string.Equals(rawValue, ConfigOptionValues.TrailingCommaStyle_Include, StringComparison.OrdinalIgnoreCase))
+            {
+                return TrailingCommaStyle.Include;
+            }
+            else if (string.Equals(rawValue, ConfigOptionValues.TrailingCommaStyle_Omit, StringComparison.OrdinalIgnoreCase))
+            {
+                return TrailingCommaStyle.Omit;
+            }
+        }
+
+        return TrailingCommaStyle.None;
+    }
+
     public static ObjectCreationTypeStyle GetObjectCreationTypeStyle(this SyntaxNodeAnalysisContext context)
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();

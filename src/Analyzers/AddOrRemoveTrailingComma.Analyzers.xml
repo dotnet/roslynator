@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="AddOrRemoveTrailingComma">
+    <Id>RCS1259</Id>
+    <Title>Add/remove trailing comma.</Title>
+    <MessageFormat>{0} trailing comma.</MessageFormat>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="trailing_comma_style" IsRequired="true" />
+    </ConfigOptions>
+  </Analyzer>
+</Analyzers>

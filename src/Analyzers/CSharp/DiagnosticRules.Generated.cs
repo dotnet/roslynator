@@ -305,7 +305,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantCommaInInitializer = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantCommaInInitializer, 
             title:              "Remove redundant comma in initializer.", 
-            messageFormat:      "Remove redundant comma in initializer.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead)Remove redundant comma in initializer.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -2519,6 +2519,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.InvalidArgumentNullCheck, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1259</summary>
+        public static readonly DiagnosticDescriptor AddOrRemoveTrailingComma = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
+            title:              "Add/remove trailing comma.", 
+            messageFormat:      "{0} trailing comma.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
             customTags:         Array.Empty<string>());
 
     }
