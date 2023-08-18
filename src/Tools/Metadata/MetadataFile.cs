@@ -116,7 +116,7 @@ public static class MetadataFile
                 Summary = element.Element("Summary")?.Value.NormalizeNewLine(),
                 Remarks = element.Element("Remarks")?.Value.NormalizeNewLine(),
                 IsEnabledByDefault = element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
-                IsObsolete =element.AttributeValueAsBooleanOrDefault("IsObsolete", false),
+                IsObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete", false),
             };
 
             refactoring.Syntaxes.AddRange(element.Element("Syntaxes").Elements("Syntax").Select(f => new SyntaxMetadata(f.Value)));
