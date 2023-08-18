@@ -30,14 +30,14 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
+        context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
+        context.RegisterSyntaxNodeAction(f => AnalyzeAnonymousObjectCreationExpression(f), SyntaxKind.AnonymousObjectCreationExpression);
+
         context.RegisterSyntaxNodeAction(
             f => AnalyzeInitializerExpression(f),
             SyntaxKind.ArrayInitializerExpression,
             SyntaxKind.ObjectInitializerExpression,
             SyntaxKind.CollectionInitializerExpression);
-
-        context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
-        context.RegisterSyntaxNodeAction(f => AnalyzeAnonymousObjectCreationExpression(f), SyntaxKind.AnonymousObjectCreationExpression);
     }
 
     private static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
@@ -61,22 +61,24 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
         {
             if (style == TrailingCommaStyle.Omit)
             {
-                SyntaxToken token = expressions.GetSeparator(count - 1);
-
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveTrailingComma, token, "Remove");
+                ReportRemove(context, expressions.GetSeparator(count - 1));
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                && expressions.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportRemove(context, expressions.GetSeparator(count - 1));
             }
         }
         else if (separatorCount == count - 1)
         {
             if (style == TrailingCommaStyle.Include)
             {
-                ExpressionSyntax lastExpression = expressions.Last();
-
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.AddOrRemoveTrailingComma,
-                    Location.Create(lastExpression.SyntaxTree, new TextSpan(lastExpression.Span.End, 0)),
-                    "Add");
+                ReportAdd(context, expressions.Last());
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                && !expressions.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportAdd(context, expressions.Last());
             }
         }
     }
@@ -102,22 +104,24 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
         {
             if (style == TrailingCommaStyle.Omit)
             {
-                SyntaxToken token = members.GetSeparator(count - 1);
-
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveTrailingComma, token, "Remove");
+                ReportRemove(context, members.GetSeparator(count - 1));
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                && members.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportRemove(context, members.GetSeparator(count - 1));
             }
         }
         else if (separatorCount == count - 1)
         {
             if (style == TrailingCommaStyle.Include)
             {
-                EnumMemberDeclarationSyntax lastExpression = members.Last();
-
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.AddOrRemoveTrailingComma,
-                    Location.Create(lastExpression.SyntaxTree, new TextSpan(lastExpression.Span.End, 0)),
-                    "Add");
+                ReportAdd(context, members.Last());
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                && !members.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportAdd(context, members.Last());
             }
         }
     }
@@ -143,23 +147,39 @@ public sealed class AddOrRemoveTrailingCommaAnalyzer : BaseDiagnosticAnalyzer
         {
             if (style == TrailingCommaStyle.Omit)
             {
-                SyntaxToken token = initializers.GetSeparator(count - 1);
-
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveTrailingComma, token, "Remove");
+                ReportRemove(context, initializers.GetSeparator(count - 1));
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                && initializers.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportRemove(context, initializers.GetSeparator(count - 1));
             }
         }
         else if (separatorCount == count - 1)
         {
             if (style == TrailingCommaStyle.Include)
             {
-                AnonymousObjectMemberDeclaratorSyntax lastExpression = initializers.Last();
-
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.AddOrRemoveTrailingComma,
-                    Location.Create(lastExpression.SyntaxTree, new TextSpan(lastExpression.Span.End, 0)),
-                    "Add");
+                ReportAdd(context, initializers.Last());
+            }
+            else if (style == TrailingCommaStyle.OmitWhenSingleLine
+                && !initializers.IsSingleLine(cancellationToken: context.CancellationToken))
+            {
+                ReportAdd(context, initializers.Last());
             }
         }
+    }
+
+    private static void ReportAdd(SyntaxNodeAnalysisContext context, SyntaxNode lastNode)
+    {
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AddOrRemoveTrailingComma,
+            Location.Create(lastNode.SyntaxTree, new TextSpan(lastNode.Span.End, 0)),
+            "Add");
+    }
+
+    private static void ReportRemove(SyntaxNodeAnalysisContext context, SyntaxToken token)
+    {
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveTrailingComma, token, "Remove");
     }
 }

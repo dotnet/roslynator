@@ -7,4 +7,5 @@ internal enum TrailingCommaStyle
     None,
     Include,
     Omit,
+    OmitWhenSingleLine,
 }

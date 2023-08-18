@@ -120,7 +120,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_suppress_unity_script_methods = true|false
 # Applicable to: rcs1213
 
-#roslynator_trailing_comma_style = include|omit
+#roslynator_trailing_comma_style = include|omit|omit_when_single_line
 # Applicable to: rcs1259
 
 #roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group

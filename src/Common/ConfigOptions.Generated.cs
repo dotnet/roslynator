@@ -185,7 +185,7 @@ namespace Roslynator
         public static readonly ConfigOptionDescriptor TrailingCommaStyle = new(
             key:                     ConfigOptionKeys.TrailingCommaStyle, 
             defaultValue:            null, 
-            defaultValuePlaceholder: "include|omit", 
+            defaultValuePlaceholder: "include|omit|omit_when_single_line", 
             description:             "Include/omit trailing comma in initializer or enum.");
 
         public static readonly ConfigOptionDescriptor UseAnonymousFunctionOrMethodGroup = new(

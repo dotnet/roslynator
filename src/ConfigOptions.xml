@@ -204,6 +204,7 @@
     <Values>
       <Value>include</Value>
       <Value>omit</Value>
+      <Value>omit_when_single_line</Value>
     </Values>
   </Option>
   <!--

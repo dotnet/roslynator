@@ -376,6 +376,10 @@ internal static class CodeStyleExtensions
             {
                 return TrailingCommaStyle.Omit;
             }
+            else if (string.Equals(rawValue, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine, StringComparison.OrdinalIgnoreCase))
+            {
+                return TrailingCommaStyle.OmitWhenSingleLine;
+            }
         }
 
         return TrailingCommaStyle.None;

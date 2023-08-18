@@ -13,7 +13,73 @@ public class RCS1259AddOrRemoveTrailingCommaTests : AbstractCSharpDiagnosticVeri
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveTrailingComma;
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
-    public async Task Test_AddComma_ArrayInitializer()
+    public async Task Test_EnumDeclaration_Include()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+enum Foo
+{
+    A,
+    B[||]
+}
+", @"
+enum Foo
+{
+    A,
+    B,
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_EnumDeclaration_Omit()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+enum Foo
+{
+    A,
+    B[|,|]
+}
+", @"
+enum Foo
+{
+    A,
+    B
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SingleLineEnumDeclaration_Include()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+enum Foo { A, B[||] }
+", @"
+enum Foo { A, B, }
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SingleLineEnumDeclaration_Omit()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+enum Foo { A, B[|,|] }
+", @"
+enum Foo { A, B }
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SingleLineEnumDeclaration_OmitWhenSingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+enum Foo { A, B[|,|] }
+", @"
+enum Foo { A, B }
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_ArrayInitializer_Include()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -43,7 +109,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
-    public async Task Test_RemoveComma_ArrayInitializer()
+    public async Task Test_ArrayInitializer_Omit()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -73,147 +139,73 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
-    public async Task Test_AddComma_ObjectInitializer()
+    public async Task Test_SingleLineArrayInitializer_Include()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string P1 { get; set; }
-    string P2 { get; set; }
-
     void M()
     {
-        var items = new C()
-        {
-            P1 = """",
-            P2 = """"[||]
-        };
+        var arr = new[] { """", """"[||] };
     }
 }
 ", @"
 class C
 {
-    string P1 { get; set; }
-    string P2 { get; set; }
-
     void M()
     {
-        var items = new C()
-        {
-            P1 = """",
-            P2 = """",
-        };
+        var arr = new[] { """", """", };
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
-    public async Task Test_RemoveComma_ObjectInitializer()
+    public async Task Test_SingleLineArrayInitializer_Omit()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string P1 { get; set; }
-    string P2 { get; set; }
-
     void M()
     {
-        var items = new C()
-        {
-            P1 = """",
-            P2 = """"[|,|]
-        };
+        var arr = new[] { """", """"[|,|] };
     }
 }
 ", @"
 class C
 {
-    string P1 { get; set; }
-    string P2 { get; set; }
-
     void M()
     {
-        var items = new C()
-        {
-            P1 = """",
-            P2 = """"
-        };
+        var arr = new[] { """", """" };
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
-    public async Task Test_AddComma_CollectionInitializer()
+    public async Task Test_SingleLineArrayInitializer_OmitWhenSingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using System.Collections.Generic;
-
 class C
 {
     void M()
     {
-        var items = new List<string>()
-        {
-            """",
-            """"[||]
-        };
+        var arr = new[] { """", """"[|,|] };
     }
 }
 ", @"
-using System.Collections.Generic;
-
 class C
 {
     void M()
     {
-        var items = new List<string>()
-        {
-            """",
-            """",
-        };
+        var arr = new[] { """", """" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
-    public async Task Test_RemoveComma_CollectionInitializer()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System.Collections.Generic;
-
-class C
-{
-    void M()
-    {
-        var items = new List<string>()
-        {
-            """",
-            """"[|,|]
-        };
-    }
-}
-", @"
-using System.Collections.Generic;
-
-class C
-{
-    void M()
-    {
-        var items = new List<string>()
-        {
-            """",
-            """"
-        };
-    }
-}
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
-    public async Task Test_AddComma_AnonymousObjectCreationExpression()
+    public async Task Test_AnonymousObjectCreationExpression_Include()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -243,7 +235,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
-    public async Task Test_RemoveComma_AnonymousObjectCreationExpression()
+    public async Task Test_AnonymousObjectCreationExpression_Omit()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -270,5 +262,71 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SingleLineAnonymousObjectCreationExpression_Include()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var obj = new { A = """", B = """"[||] };
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var obj = new { A = """", B = """", };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SingleLineAnonymousObjectCreationExpression_Omit()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var obj = new { A = """", B = """"[|,|] };
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var obj = new { A = """", B = """" };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+    public async Task Test_SingleLineAnonymousObjectCreationExpression_OmitWhenSingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var obj = new { A = """", B = """"[|,|] };
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var obj = new { A = """", B = """" };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
 }
