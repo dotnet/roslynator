@@ -2,116 +2,55 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading;
 
 namespace Roslynator.Metadata;
 
 public class AnalyzerMetadata
 {
-    private IReadOnlyList<AnalyzerMetadata> _optionAnalyzers;
+    public string Id { get; init; }
 
-    public AnalyzerMetadata(
-        string id,
-        string identifier,
-        string title,
-        string messageFormat,
-        string category,
-        string defaultSeverity,
-        bool isEnabledByDefault,
-        bool isObsolete,
-        bool supportsFadeOut,
-        bool supportsFadeOutAnalyzer,
-        string minLanguageVersion,
-        string summary,
-        string remarks,
-        IEnumerable<SampleMetadata> samples,
-        IEnumerable<LinkMetadata> links,
-        IEnumerable<ConfigOptionKeyMetadata> configOptions,
-        IEnumerable<AnalyzerOptionMetadata> options,
-        IEnumerable<string> tags,
-        AnalyzerOptionKind kind,
-        AnalyzerMetadata parent)
-    {
-        Id = id;
-        Identifier = identifier;
-        Title = title;
-        MessageFormat = messageFormat;
-        Category = category;
-        DefaultSeverity = defaultSeverity;
-        IsEnabledByDefault = isEnabledByDefault;
-        IsObsolete = isObsolete;
-        SupportsFadeOut = supportsFadeOut;
-        SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
-        MinLanguageVersion = minLanguageVersion;
-        Summary = summary;
-        Remarks = remarks;
-        Tags = new ReadOnlyCollection<string>(tags?.ToArray() ?? Array.Empty<string>());
-        ConfigOptions = new ReadOnlyCollection<ConfigOptionKeyMetadata>(configOptions?.ToArray() ?? Array.Empty<ConfigOptionKeyMetadata>());
-        Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
-        Links = new ReadOnlyCollection<LinkMetadata>(links?.ToArray() ?? Array.Empty<LinkMetadata>());
-        Options = new ReadOnlyCollection<AnalyzerOptionMetadata>(options?.ToArray() ?? Array.Empty<AnalyzerOptionMetadata>());
-        Kind = kind;
-        Parent = parent;
+    public string Identifier { get; init; }
 
-        if (Parent is not null)
-            _optionAnalyzers = new ReadOnlyCollection<AnalyzerMetadata>(new List<AnalyzerMetadata>());
-    }
+    public string Title { get; init; }
 
-    public string Id { get; }
+    public string MessageFormat { get; init; }
 
-    public string Identifier { get; }
+    public string Category { get; init; }
 
-    public string Title { get; }
+    public string DefaultSeverity { get; init; }
 
-    public string MessageFormat { get; }
+    public bool IsEnabledByDefault { get; init; }
 
-    public string Category { get; }
+    [Obsolete("This property is obsolete.", error: true)]
+    public bool IsObsolete { get; init; }
 
-    public string DefaultSeverity { get; }
+    public bool SupportsFadeOut { get; init; }
 
-    public bool IsEnabledByDefault { get; }
+    public bool SupportsFadeOutAnalyzer { get; init; }
 
-    public bool IsObsolete { get; }
+    public string MinLanguageVersion { get; init; }
 
-    public bool SupportsFadeOut { get; }
+    public string Summary { get; init; }
 
-    public bool SupportsFadeOutAnalyzer { get; }
+    public string Remarks { get; init; }
 
-    public string MinLanguageVersion { get; }
+    public List<string> Tags { get; } = new();
 
-    public string Summary { get; }
+    public List<AnalyzerConfigOption> ConfigOptions { get; } = new();
 
-    public string Remarks { get; }
+    public List<SampleMetadata> Samples { get; } = new();
 
-    public IReadOnlyList<string> Tags { get; }
+    public List<LinkMetadata> Links { get; } = new();
 
-    public IReadOnlyList<ConfigOptionKeyMetadata> ConfigOptions { get; }
+    public List<LegacyAnalyzerOptionMetadata> LegacyOptions { get; } = new();
 
-    public IReadOnlyList<SampleMetadata> Samples { get; }
+    public List<AnalyzerMetadata> LegacyOptionAnalyzers { get; } = new();
 
-    public IReadOnlyList<LinkMetadata> Links { get; }
+    public LegacyAnalyzerOptionKind Kind { get; init; }
 
-    public IReadOnlyList<AnalyzerOptionMetadata> Options { get; }
+    public AnalyzerMetadata Parent { get; init; }
 
-    public IReadOnlyList<AnalyzerMetadata> OptionAnalyzers
-    {
-        get
-        {
-            if (_optionAnalyzers is null)
-            {
-                Interlocked.CompareExchange(
-                    ref _optionAnalyzers,
-                    new ReadOnlyCollection<AnalyzerMetadata>(Options.Select(f => f.CreateAnalyzerMetadata(this)).ToList()),
-                    null);
-            }
+    public AnalyzerStatus Status { get; init; }
 
-            return _optionAnalyzers;
-        }
-    }
-
-    public AnalyzerOptionKind Kind { get; }
-
-    public AnalyzerMetadata Parent { get; }
+    public string ObsoleteMessage { get; init; }
 }

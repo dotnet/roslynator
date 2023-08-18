@@ -2,11 +2,9 @@
 
 namespace Roslynator.Metadata;
 
-public enum AnalyzerOptionKind
+public enum AnalyzerStatus
 {
-    None = 0,
-    Enable = 1,
-    Disable = 2,
-    Change = 3,
-    Invert = 4,
+    Enabled,
+    Disabled,
+    Obsolete,
 }

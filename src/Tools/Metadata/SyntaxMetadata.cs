@@ -2,12 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public class SyntaxMetadata
-{
-    public SyntaxMetadata(string name)
-    {
-        Name = name;
-    }
-
-    public string Name { get; }
-}
+public readonly record struct SyntaxMetadata(string Name);
