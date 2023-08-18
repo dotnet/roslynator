@@ -42,7 +42,6 @@ roslynator_doc_comment_summary_style = multi_line
 roslynator_enum_flag_value_style = shift_operator
 roslynator_blank_line_after_file_scoped_namespace_declaration = true
 roslynator_null_check_style = pattern_matching
-roslynator_trailing_comma_style = include
 
 dotnet_diagnostic.RCS0001.severity = suggestion
 dotnet_diagnostic.RCS0003.severity = suggestion
@@ -143,7 +142,6 @@ dotnet_diagnostic.RCS1252.severity = suggestion
 dotnet_diagnostic.RCS1253.severity = suggestion
 dotnet_diagnostic.RCS1254.severity = suggestion
 dotnet_diagnostic.RCS1255.severity = none
-dotnet_diagnostic.RCS1256.severity = suggestion
 
 dotnet_diagnostic.IDE0007.severity = none
 dotnet_diagnostic.IDE0007WithoutSuggestion.severity = none
