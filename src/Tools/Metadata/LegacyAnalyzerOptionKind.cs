@@ -2,12 +2,11 @@
 
 namespace Roslynator.Metadata;
 
-public class ImageMetadata
+public enum LegacyAnalyzerOptionKind
 {
-    public ImageMetadata(string name)
-    {
-        Name = name;
-    }
-
-    public string Name { get; }
+    None,
+    Enable,
+    Disable,
+    Change,
+    Invert,
 }

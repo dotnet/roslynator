@@ -191,9 +191,6 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs0021.severity = none
 # Options: roslynator_block_braces_style
 
-# Add new line after opening brace of empty block
-#dotnet_diagnostic.rcs0022.severity = none
-
 # Format type declaration's braces
 #dotnet_diagnostic.rcs0023.severity = none
 
@@ -233,9 +230,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Remove blank line between single-line declarations of same kind
 #dotnet_diagnostic.rcs0036.severity = none
 
-# Remove blank line between using directives with same root namespace
-#dotnet_diagnostic.rcs0038.severity = none
-
 # Remove new line before base list
 #dotnet_diagnostic.rcs0039.severity = none
 
@@ -245,9 +239,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Put auto-accessors on a single line
 #dotnet_diagnostic.rcs0042.severity = none
 
-# Format accessor's braces on a single line when expression is on single line
-#dotnet_diagnostic.rcs0043.severity = none
-
 # Use carriage return + linefeed as new line
 #dotnet_diagnostic.rcs0044.severity = none
 
@@ -256,9 +247,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Use spaces instead of tab
 #dotnet_diagnostic.rcs0046.severity = none
-
-# [deprecated] Wrap and indent each node in list
-#dotnet_diagnostic.rcs0047.severity = none
 
 # Put initializer on a single line
 #dotnet_diagnostic.rcs0048.severity = none

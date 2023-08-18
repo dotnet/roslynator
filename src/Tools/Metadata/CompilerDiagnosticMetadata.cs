@@ -2,33 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public class CompilerDiagnosticMetadata
-{
-    public CompilerDiagnosticMetadata(
-        string id,
-        string identifier,
-        string title,
-        string messageFormat,
-        string severity,
-        string helpUrl)
-    {
-        Id = id;
-        Identifier = identifier;
-        Title = title;
-        MessageFormat = messageFormat;
-        Severity = severity;
-        HelpUrl = helpUrl;
-    }
-
-    public string Id { get; }
-
-    public string Identifier { get; }
-
-    public string Title { get; }
-
-    public string MessageFormat { get; }
-
-    public string Severity { get; }
-
-    public string HelpUrl { get; }
-}
+public record CompilerDiagnosticMetadata(string Id, string Identifier, string Title, string MessageFormat, string Severity, string HelpUrl);

@@ -21,7 +21,7 @@ public class RoslynatorMetadata
     private ImmutableArray<RefactoringMetadata> _refactorings;
     private ImmutableArray<CodeFixMetadata> _codeFixes;
     private ImmutableArray<CompilerDiagnosticMetadata> _compilerDiagnostics;
-    private ImmutableArray<ConfigOptionMetadata> _configOptions;
+    private ImmutableArray<AnalyzerOptionMetadata> _configOptions;
 
     public ImmutableArray<AnalyzerMetadata> Analyzers
     {
@@ -73,7 +73,7 @@ public class RoslynatorMetadata
         }
     }
 
-    public ImmutableArray<ConfigOptionMetadata> ConfigOptions
+    public ImmutableArray<AnalyzerOptionMetadata> ConfigOptions
     {
         get
         {

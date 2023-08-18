@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -14,7 +15,6 @@ public static class DiagnosticIdentifiersGenerator
 {
     public static CompilationUnitSyntax Generate(
         IEnumerable<AnalyzerMetadata> analyzers,
-        bool obsolete,
         IComparer<string> comparer,
         string @namespace,
         string className)
@@ -27,7 +27,6 @@ public static class DiagnosticIdentifiersGenerator
                     Modifiers.Public_Static_Partial(),
                     className,
                     analyzers
-                        .Where(f => f.IsObsolete == obsolete)
                         .OrderBy(f => f.Id, comparer)
                         .SelectMany(f => CreateMembers(f))
                         .ToSyntaxList<MemberDeclarationSyntax>())));
@@ -39,7 +38,7 @@ public static class DiagnosticIdentifiersGenerator
         string identifier = analyzer.Identifier;
 
         if (id is not null)
-            yield return CreateMember(id, identifier, analyzer.IsObsolete);
+            yield return CreateMember(id, identifier, analyzer.Status == AnalyzerStatus.Disabled);
     }
 
     private static FieldDeclarationSyntax CreateMember(string id, string identifier, bool isObsolete)
