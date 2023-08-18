@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add SECURITY.md ([#1147](https://github.com/josefpihrt/roslynator/pull/1147))
 - Add custom FixAllProvider for [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014.md) ([#1070](https://github.com/JosefPihrt/Roslynator/pull/1070)).
+- Add analyzer "Include/omit trailing comma" ([RCS1256](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#931](https://github.com/JosefPihrt/Roslynator/pull/931)).
+  - Required option: `roslynator_trailing_comma_style = include|omit|omit_when_single_line`
+  - Not enabled by default
 
 ### Fixed
 
@@ -104,9 +107,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - annotated as nullable reference type.
     - optional and its default value is `null`.
 - Add package `Roslynator.Testing.CSharp.MSTest` ([#997](https://github.com/JosefPihrt/Roslynator/pull/997)).
-- Add analyzer "Include/omit trailing comma" ([RCS1256](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#931](https://github.com/JosefPihrt/Roslynator/pull/931)).
-  - Required option: `roslynator_trailing_comma_style = include|omit`
-  - Not enabled by default
 
 ### Changed
 
