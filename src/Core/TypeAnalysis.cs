@@ -46,7 +46,7 @@ internal readonly struct TypeAnalysis : IEquatable<TypeAnalysis>
 
     public override int GetHashCode()
     {
-        return Symbol.GetHashCode();
+        return SymbolEqualityComparer.Default.GetHashCode(Symbol);
     }
 
     public static bool operator ==(in TypeAnalysis analysis1, in TypeAnalysis analysis2)

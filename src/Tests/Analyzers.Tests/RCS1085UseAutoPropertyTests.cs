@@ -921,4 +921,35 @@ class MyAttribute : Attribute
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+    public async Task TestFix_WithLeadingWhitespace()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    public int [|P|]
+        {
+
+
+            get
+            { 
+                return p; 
+            }
+
+            set
+            {
+                p = value;
+            }
+        }
+
+    private int p;
+}
+", @"
+class C
+{
+    public int P { get; set; }
+}
+");
+    }
 }

@@ -108,7 +108,6 @@ internal static class Program
                     typeof(RenameSymbolCommandLineOptions),
                     typeof(SpellcheckCommandLineOptions),
 #if DEBUG
-                    typeof(AnalyzeAssemblyCommandLineOptions),
                     typeof(FindSymbolsCommandLineOptions),
                     typeof(GenerateSourceReferencesCommandLineOptions),
                     typeof(ListVisualStudioCommandLineOptions),
@@ -222,8 +221,6 @@ internal static class Program
                         case MigrateCommandLineOptions migrateCommandLineOptions:
                             return Migrate(migrateCommandLineOptions);
 #if DEBUG
-                        case AnalyzeAssemblyCommandLineOptions analyzeAssemblyCommandLineOptions:
-                            return AnalyzeAssembly(analyzeAssemblyCommandLineOptions);
                         case ListVisualStudioCommandLineOptions listVisualStudioCommandLineOptions:
                             return ListVisualStudio(listVisualStudioCommandLineOptions);
 #endif
@@ -367,23 +364,6 @@ internal static class Program
     }
 
 #if DEBUG
-    private static int AnalyzeAssembly(AnalyzeAssemblyCommandLineOptions options)
-    {
-        string language = null;
-
-        if (options.Language is not null
-            && !TryParseLanguage(options.Language, out language))
-        {
-            return ExitCodes.Error;
-        }
-
-        var command = new AnalyzeAssemblyCommand(language);
-
-        CommandStatus status = command.Execute(options);
-
-        return GetExitCode(status);
-    }
-
     private static async Task<int> FindSymbolsAsync(FindSymbolsCommandLineOptions options)
     {
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
@@ -818,6 +798,8 @@ internal static class Program
 
     private static async Task<int> GenerateDocRootAsync(GenerateDocRootCommandLineOptions options)
     {
+        WriteLine("Command 'generate-doc-root' is obsolete. Use parameter '--root-file-path' of a command 'generate-doc' instead.", ConsoleColors.Yellow, Verbosity.Minimal);
+
         if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.DefaultValues.IncludeContainingNamespaceFilter))
             return ExitCodes.Error;
 
@@ -828,6 +810,9 @@ internal static class Program
             return ExitCodes.Error;
 
         if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredParts, DocumentationOptions.DefaultValues.IgnoredRootParts))
+            return ExitCodes.Error;
+
+        if (!TryParseOptionValueAsEnum(options.FilesLayout, OptionNames.Layout, out FilesLayout filesLayout, FilesLayout.Hierarchical))
             return ExitCodes.Error;
 
         if (!TryParseOptionValueAsEnum(options.Host, OptionNames.Host, out DocumentationHost documentationHost))
@@ -846,9 +831,13 @@ internal static class Program
             includeContainingNamespaceFilter: includeContainingNamespaceFilter,
             visibility,
             documentationHost,
+            filesLayout,
+            options.GroupByCommonNamespace,
             projectFilter);
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
+
+        WriteLine("Command 'generate-doc-root' is obsolete. Use parameter '--root-file-path' of a command 'generate-doc' instead.", ConsoleColors.Yellow, Verbosity.Minimal);
 
         return GetExitCode(status);
     }

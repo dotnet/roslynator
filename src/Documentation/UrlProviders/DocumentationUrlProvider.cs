@@ -13,6 +13,8 @@ namespace Roslynator.Documentation;
 
 public abstract class DocumentationUrlProvider
 {
+    internal string ExtensionsFileName = "Extensions.md";
+
     private readonly Dictionary<string, string> _symbolToLinkMap = new();
 
     protected DocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
@@ -25,8 +27,6 @@ public abstract class DocumentationUrlProvider
     }
 
     public abstract string IndexFileName { get; }
-
-    public string ExtensionsFileName => "Extensions.md";
 
     public UrlSegmentProvider SegmentProvider { get; }
 
@@ -51,6 +51,7 @@ public abstract class DocumentationUrlProvider
         return default;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
     public bool HasExternalUrl(ISymbol symbol)
     {
         return MicrosoftDocsUrlProvider.Instance.CanCreateUrl(symbol);
@@ -110,7 +111,7 @@ public abstract class DocumentationUrlProvider
 
         if (scrollToContent)
         {
-            sb.Append("#");
+            sb.Append('#');
             sb.Append(WellKnownNames.TopFragmentName);
         }
 

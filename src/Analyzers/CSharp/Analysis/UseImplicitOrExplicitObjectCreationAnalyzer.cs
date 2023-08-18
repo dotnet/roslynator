@@ -271,7 +271,7 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
         }
     }
 
-    private void AnalyzeImplicitObjectCreationExpression(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeImplicitObjectCreationExpression(SyntaxNodeAnalysisContext context)
     {
         var implicitObjectCreation = (ImplicitObjectCreationExpressionSyntax)context.Node;
 

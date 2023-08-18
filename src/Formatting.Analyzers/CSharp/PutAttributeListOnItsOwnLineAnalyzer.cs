@@ -48,7 +48,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         context.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
     }
 
-    private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
     {
         var classDeclaration = (ClassDeclarationSyntax)context.Node;
 
@@ -61,7 +61,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, classDeclaration.AttributeLists, token);
     }
 
-    private void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
     {
         var enumDeclaration = (EnumDeclarationSyntax)context.Node;
 
@@ -82,7 +82,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         }
     }
 
-    private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
     {
         var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
 
@@ -95,7 +95,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, interfaceDeclaration.AttributeLists, token);
     }
 
-    private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
     {
         var structDeclaration = (StructDeclarationSyntax)context.Node;
 
@@ -108,7 +108,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, structDeclaration.AttributeLists, token);
     }
 
-    private void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
     {
         var recordDeclaration = (RecordDeclarationSyntax)context.Node;
 
@@ -160,7 +160,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, fieldDeclaration.AttributeLists, nodeOrToken);
     }
 
-    private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
     {
         var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
@@ -173,7 +173,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, methodDeclaration.AttributeLists, nodeOrToken);
     }
 
-    private void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
     {
         var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
@@ -186,7 +186,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, constructorDeclaration.AttributeLists, token);
     }
 
-    private void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
     {
         var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
@@ -199,7 +199,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, conversionOperatorDeclaration.AttributeLists, token);
     }
 
-    private void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
     {
         var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
 
@@ -212,7 +212,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, destructorDeclaration.AttributeLists, token);
     }
 
-    private void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
     {
         var eventDeclaration = (EventDeclarationSyntax)context.Node;
 
@@ -228,7 +228,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
             AnalyzeAccessorList(context, eventDeclaration.AccessorList);
     }
 
-    private void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
     {
         var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
 
@@ -241,7 +241,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
         Analyze(context, operatorDeclaration.AttributeLists, token);
     }
 
-    private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
     {
         var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
@@ -257,7 +257,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
             AnalyzeAccessorList(context, propertyDeclaration.AccessorList);
     }
 
-    private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
     {
         var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
@@ -273,7 +273,7 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
             AnalyzeAccessorList(context, indexerDeclaration.AccessorList);
     }
 
-    private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
+    private static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
     {
         if (accessorList is null)
             return;

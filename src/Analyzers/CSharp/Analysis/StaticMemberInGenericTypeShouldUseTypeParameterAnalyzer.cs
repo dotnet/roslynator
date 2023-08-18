@@ -91,17 +91,17 @@ public sealed class StaticMemberInGenericTypeShouldUseTypeParameterAnalyzer : Ba
                     }
                 case SymbolKind.Method:
                     {
-                        var methodsymbol = (IMethodSymbol)member;
+                        var methodSymbol = (IMethodSymbol)member;
 
-                        if (methodsymbol.MethodKind == MethodKind.Ordinary)
+                        if (methodSymbol.MethodKind == MethodKind.Ordinary)
                         {
                             if (typeParameters.IsDefault)
                                 typeParameters = namedType.TypeParameters;
 
-                            if (!ContainsAnyTypeParameter(typeParameters, methodsymbol.ReturnType)
-                                && !ContainsAnyTypeParameter(typeParameters, methodsymbol.Parameters))
+                            if (!ContainsAnyTypeParameter(typeParameters, methodSymbol.ReturnType)
+                                && !ContainsAnyTypeParameter(typeParameters, methodSymbol.Parameters))
                             {
-                                ReportDiagnostic(context, methodsymbol);
+                                ReportDiagnostic(context, methodSymbol);
                             }
                         }
 

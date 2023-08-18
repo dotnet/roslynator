@@ -260,7 +260,7 @@ internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
         }
 
         sb.Append(value, lastPos, i - lastPos);
-        sb.Append("\"");
+        sb.Append('"');
 
         return SyntaxFactory.ParseExpression(StringBuilderCache.GetStringAndFree(sb));
 

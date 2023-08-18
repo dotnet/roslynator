@@ -2,17 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public class CodeFixOption
-{
-    public CodeFixOption(
-        string key,
-        string value)
-    {
-        Key = key;
-        Value = value;
-    }
-
-    public string Key { get; }
-
-    public string Value { get; }
-}
+public readonly record struct CodeFixOption(string Key, string Value);

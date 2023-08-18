@@ -366,7 +366,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
 
         reservedNames.UnionWith(declarationSymbols.Select(f => f.Name));
 
-        var symbolMap = new Dictionary<ISymbol, string>();
+        var symbolMap = new Dictionary<ISymbol, string>(SymbolEqualityComparer.Default);
 
         foreach (ISymbol symbol in symbols)
         {

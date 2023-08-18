@@ -8,13 +8,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <Deterministic>true</Deterministic>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>1591</WarningsNotAsErrors>
-    <DocumentationFile>bin\$(Configuration)\netstandard2.0\Roslynator.Testing.CSharp.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
     <PackageId>Roslynator.Testing.CSharp</PackageId>
     <PackageVersion>$(RoslynatorTestingPackageVersion)</PackageVersion>
     <Company></Company>
@@ -32,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorTestingRoslynVersion)" />
   </ItemGroup>
 
   <ItemGroup>

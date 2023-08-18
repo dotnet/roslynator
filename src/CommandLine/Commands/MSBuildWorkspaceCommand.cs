@@ -70,6 +70,12 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                     try
                     {
                         result = await ExecuteAsync(path, workspace, cancellationToken);
+
+                        if (result is null)
+                        {
+                            status = CommandStatus.Fail;
+                            continue;
+                        }
                     }
                     catch (ProjectOrSolutionLoadException ex)
                     {
@@ -176,7 +182,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
             if (!projectNames.Any(f => string.Equals(f.Name, value.Name, StringComparison.Ordinal))
                 && !projectNames.Any(f => string.Equals(f.NameWithoutMoniker, value.NameWithoutMoniker, StringComparison.Ordinal)))
             {
-                WriteLine($"Project '{value}' does not exist.", Verbosity.Quiet);
+                WriteLine($"Project '{value.Name}' does not exist.", ConsoleColors.Yellow, Verbosity.Quiet);
                 return false;
             }
         }

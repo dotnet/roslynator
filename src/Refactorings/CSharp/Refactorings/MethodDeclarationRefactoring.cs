@@ -143,7 +143,7 @@ internal static class MethodDeclarationRefactoring
 
         context.RegisterRefactoring(
             $"Rename '{oldName}' to '{newName}'",
-            ct => Renamer.RenameSymbolAsync(context.Solution, methodSymbol, newName, default(OptionSet), ct),
+            ct => Renamer.RenameSymbolAsync(context.Solution, methodSymbol, new SymbolRenameOptions(RenameOverloads: true), newName, ct),
             RefactoringDescriptors.RenameMethodAccordingToTypeName);
     }
 

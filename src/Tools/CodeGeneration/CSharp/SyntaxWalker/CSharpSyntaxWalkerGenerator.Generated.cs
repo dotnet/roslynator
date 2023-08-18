@@ -4,6 +4,7 @@
 
 using System;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CodeGeneration.CSharp
 {
@@ -608,6 +609,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Modifiers":
                         case "ImplicitOrExplicitKeyword":
                         case "OperatorKeyword":
+                        case "CheckedKeyword":
                         case "Type":
                         case "ExplicitInterfaceSpecifier":
                         case "ParameterList":
@@ -626,6 +628,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     {
                         case "ImplicitOrExplicitKeyword":
                         case "OperatorKeyword":
+                        case "CheckedKeyword":
                         case "Type":
                         case "Parameters":
                             return true;
@@ -1839,6 +1842,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Modifiers":
                         case "ReturnType":
                         case "OperatorKeyword":
+                        case "CheckedKeyword":
                         case "ExplicitInterfaceSpecifier":
                         case "OperatorToken":
                         case "ParameterList":
@@ -1856,6 +1860,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     switch (propertySymbol.Name)
                     {
                         case "OperatorKeyword":
+                        case "CheckedKeyword":
                         case "OperatorToken":
                         case "Parameters":
                             return true;
@@ -2177,6 +2182,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     {
                         case "RefKeyword":
                         case "ReadOnlyKeyword":
+                        case "ScopedKeyword":
                             case "Type":
                             return true;
                         default:
@@ -3320,6 +3326,46 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "File":
                         case "EndOfDirectiveToken":
                         case "IsActive":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "ListPatternSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "OpenBracketToken":
+                        case "Patterns":
+                        case "CloseBracketToken":
+                            return true;
+                        case "Designation":
+                            return false;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "SlicePatternSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "DotDotToken":
+                            return true;
+                        case "Pattern":
+                            return false;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "ScopedTypeSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "ScopedKeyword":
+                        case "Type":
                             return true;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");

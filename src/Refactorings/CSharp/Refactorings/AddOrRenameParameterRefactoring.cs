@@ -41,7 +41,7 @@ internal static class AddOrRenameParameterRefactoring
             {
                 context.RegisterRefactoring(
                     $"Rename '{oldName}' to '{newName}'",
-                    ct => Renamer.RenameSymbolAsync(context.Solution, parameterSymbol, newName, default(OptionSet), ct),
+                    ct => Renamer.RenameSymbolAsync(context.Solution, parameterSymbol, default(SymbolRenameOptions), newName, ct),
                     RefactoringDescriptors.RenameParameterAccordingToTypeName);
             }
         }
