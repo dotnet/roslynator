@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1255UnnecessaryEnumFlagTests : AbstractCSharpDiagnosticVerifier<UnnecessaryEnumFlagAnalyzer, UnnecessaryEnumFlagCodeFixProvider>
+public class RCS1258UnnecessaryEnumFlagTests : AbstractCSharpDiagnosticVerifier<UnnecessaryEnumFlagAnalyzer, UnnecessaryEnumFlagCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryEnumFlag;
 

@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -43,9 +42,7 @@ public sealed class UnnecessaryEnumFlagAnalyzer : BaseDiagnosticAnalyzer
                 return;
         }
 
-        SemanticModel semanticModel = context.SemanticModel;
-        CancellationToken cancellationToken = context.CancellationToken;
-        ITypeSymbol symbol = semanticModel.GetTypeSymbol(bitwiseAnd, cancellationToken);
+        ITypeSymbol symbol = context.SemanticModel.GetTypeSymbol(bitwiseAnd, context.CancellationToken);
 
         if (!symbol.HasAttribute(MetadataNames.System_FlagsAttribute))
             return;
@@ -55,35 +52,35 @@ public sealed class UnnecessaryEnumFlagAnalyzer : BaseDiagnosticAnalyzer
 
         foreach (ExpressionSyntax expression in bitwiseAnd.AsChain())
         {
-            Optional<object> constantValueOpt = semanticModel.GetConstantValue(expression, cancellationToken);
+            Optional<object> constantValueOpt = context.SemanticModel.GetConstantValue(expression, context.CancellationToken);
 
-            if (!constantValueOpt.HasValue)
-                continue;
-
-            ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValueOpt.Value, enumSymbol);
-            var addToValues = true;
-
-            for (int i = values.Count - 1; i >= 0; i--)
+            if (constantValueOpt.HasValue)
             {
-                (ExpressionSyntax expression2, ulong value2) = values[i];
+                ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValueOpt.Value, enumSymbol);
+                var addToValues = true;
 
-                if ((value & value2) != 0)
+                for (int i = values.Count - 1; i >= 0; i--)
                 {
-                    if (value <= value2)
+                    (ExpressionSyntax expression2, ulong value2) = values[i];
+
+                    if ((value & value2) != 0)
                     {
-                        ReportDiagnostic(expression, expression2);
-                        addToValues = false;
-                    }
-                    else
-                    {
-                        ReportDiagnostic(expression2, expression);
-                        values.RemoveAt(i);
+                        if (value <= value2)
+                        {
+                            ReportDiagnostic(expression, expression2);
+                            addToValues = false;
+                        }
+                        else
+                        {
+                            ReportDiagnostic(expression2, expression);
+                            values.RemoveAt(i);
+                        }
                     }
                 }
-            }
 
-            if (addToValues)
-                values.Add((expression, value));
+                if (addToValues)
+                    values.Add((expression, value));
+            }
         }
 
         void ReportDiagnostic(ExpressionSyntax expression, ExpressionSyntax expression2)

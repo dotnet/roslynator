@@ -900,14 +900,14 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs1254.severity = suggestion
 # Options: roslynator_enum_flag_value_style
 
-# Unnecessary enum flag
-#dotnet_diagnostic.rcs1255.severity = suggestion
-
 # Simplify argument null check
 #dotnet_diagnostic.rcs1255.severity = none
 
 # Invalid argument null check
 #dotnet_diagnostic.rcs1256.severity = suggestion
+
+# Unnecessary enum flag
+#dotnet_diagnostic.rcs1258.severity = suggestion
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
