@@ -272,12 +272,12 @@ public static class MarkdownGenerator
         if (message is null)
             return null;
 
-        return DocusaurusMarkdownFactory.CautionBlock("This analyzer is obsolete. ", GetTextParts(), ".");
+        return new DocusaurusCautionBlock("This analyzer is obsolete. ", GetTextParts(), ".") { Title = "WARNING" };
 
         IEnumerable<object> GetTextParts()
         {
             int index = 0;
-            Match match = Regex.Match(message, @"RCS\d\d\d\d");
+            Match match = Regex.Match(message, @"\bRCS\d\d\d\d\b");
             while (match.Success)
             {
                 yield return message.Substring(index, match.Index);
