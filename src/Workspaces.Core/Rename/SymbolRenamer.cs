@@ -28,7 +28,7 @@ public static class SymbolRenamer
         Func<ISymbol, bool> predicate,
         Func<ISymbol, string> getNewName,
         SymbolRenamerOptions options = null,
-        IProgress<SymbolRenameProgress> progress = null,
+        IProgress<SymbolRenamerProgress> progress = null,
         CancellationToken cancellationToken = default)
     {
         var renamer = new SymbolRenameState(solution, predicate, getNewName, options, progress);
@@ -53,7 +53,7 @@ public static class SymbolRenamer
         Func<ISymbol, bool> predicate,
         Func<ISymbol, string> getNewName,
         SymbolRenamerOptions options = null,
-        IProgress<SymbolRenameProgress> progress = null,
+        IProgress<SymbolRenamerProgress> progress = null,
         CancellationToken cancellationToken = default)
     {
         if (projects is null)
@@ -108,7 +108,7 @@ public static class SymbolRenamer
         Func<ISymbol, bool> predicate,
         Func<ISymbol, string> getNewName,
         SymbolRenamerOptions options = null,
-        IProgress<SymbolRenameProgress> progress = null,
+        IProgress<SymbolRenamerProgress> progress = null,
         CancellationToken cancellationToken = default)
     {
         var renamer = new SymbolRenameState(project.Solution, predicate, getNewName, options, progress);

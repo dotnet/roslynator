@@ -10,16 +10,16 @@ namespace Roslynator.Rename;
 /// Represents in information about renaming a symbol.
 /// </summary>
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
-public readonly struct SymbolRenameProgress
+public readonly struct SymbolRenamerProgress
 {
     /// <summary>
-    /// Initializes a new instance of <see cref="SymbolRenameProgress"/>.
+    /// Initializes a new instance of <see cref="SymbolRenamerProgress"/>.
     /// </summary>
     /// <param name="symbol"></param>
     /// <param name="newName"></param>
     /// <param name="result"></param>
     /// <param name="exception"></param>
-    internal SymbolRenameProgress(
+    internal SymbolRenamerProgress(
         ISymbol symbol,
         string newName,
         SymbolRenameResult result,

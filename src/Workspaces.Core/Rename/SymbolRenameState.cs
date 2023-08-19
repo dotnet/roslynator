@@ -24,14 +24,14 @@ internal class SymbolRenameState
         Func<ISymbol, bool> predicate,
         Func<ISymbol, string> symbolEvaluator,
         SymbolRenamerOptions options = null,
-        IProgress<SymbolRenameProgress> progress = null)
+        IProgress<SymbolRenamerProgress> progress = null)
     {
         Workspace = solution.Workspace;
 
         Predicate = predicate;
         SymbolEvaluator = symbolEvaluator;
         Progress = progress;
-        Options = options ?? SymbolRenamerOptions.Default;
+        Options = options ?? new SymbolRenamerOptions();
     }
 
     protected Workspace Workspace { get; }
@@ -40,7 +40,7 @@ internal class SymbolRenameState
 
     public SymbolRenamerOptions Options { get; }
 
-    protected IProgress<SymbolRenameProgress> Progress { get; }
+    protected IProgress<SymbolRenamerProgress> Progress { get; }
 
     protected Func<ISymbol, string> SymbolEvaluator { get; }
 
@@ -797,7 +797,7 @@ internal class SymbolRenameState
         SymbolRenameResult result,
         Exception exception = null)
     {
-        Progress?.Report(new SymbolRenameProgress(symbol, newName, result, exception));
+        Progress?.Report(new SymbolRenamerProgress(symbol, newName, result, exception));
     }
 
     private static string GetSymbolId(ISymbol symbol)

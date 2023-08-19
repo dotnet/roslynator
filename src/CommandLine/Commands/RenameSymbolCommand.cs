@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -93,10 +92,15 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
                 SkipTypes = (ScopeFilter & RenameScopeFilter.Type) != 0,
                 SkipMembers = (ScopeFilter & RenameScopeFilter.Member) != 0,
                 SkipLocals = (ScopeFilter & RenameScopeFilter.Local) != 0,
-                IgnoredCompilerDiagnosticIds = IgnoredCompilerDiagnostics?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty,
                 IncludeGeneratedCode = Options.IncludeGeneratedCode,
                 DryRun = Options.DryRun,
             };
+
+            if (IgnoredCompilerDiagnostics is not null)
+            {
+                foreach (string id in IgnoredCompilerDiagnostics)
+                    options.IgnoredCompilerDiagnosticIds.Add(id);
+            }
 
             return new CliSymbolRenameState(
                 solution,
