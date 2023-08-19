@@ -48,7 +48,7 @@ public static class MetadataFile
             string obsoleteMessage = element.Element("ObsoleteMessage")?.Value;
 
             if (obsoleteMessage is not null)
-                messageFormat = $"([deprecated] {obsoleteMessage}){messageFormat}";
+                messageFormat = $"([deprecated] {obsoleteMessage}) {messageFormat}";
 
             var analyzer = new AnalyzerMetadata()
             {

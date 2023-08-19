@@ -7356,6 +7356,18 @@ void M()
 - optional and its default value is `null`.
     </Summary>
   </Analyzer>
+  <Analyzer Identifier="UseEnumFieldExplicitly">
+    <Id>RCS1257</Id>
+    <Title>Use enum field explicitly.</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var options = (RegexOptions) 1]]></Before>
+        <After><![CDATA[var options = RegexOptions.IgnoreCase]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
   <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
