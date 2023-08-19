@@ -149,7 +149,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `roslynator generate-doc --host sphinx`
 - [CLI] Basic support for `<inheritdoc />` when generating documentation (`generate-doc` command) ([#972](https://github.com/josefpihrt/roslynator/pull/972)).
 - [CLI] Add option `ignored-title-parts` (`generate-doc` command) ([#975](https://github.com/josefpihrt/roslynator/pull/975)).
-- - Publish Roslynator to [Open VSX Registry](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) ([#820](https://github.com/JosefPihrt/Roslynator/issues/820)).
+- Publish Roslynator to [Open VSX Registry](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) ([#820](https://github.com/JosefPihrt/Roslynator/issues/820)).
 
 ### Changed
 
