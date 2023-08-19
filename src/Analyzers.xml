@@ -7356,6 +7356,32 @@ void M()
 - optional and its default value is `null`.
     </Summary>
   </Analyzer>
+  <Analyzer Identifier="UseEnumFieldExplicitly">
+    <Id>RCS1257</Id>
+    <Title>Use enum field explicitly.</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var options = (RegexOptions) 1]]></Before>
+        <After><![CDATA[var options = RegexOptions.IgnoreCase]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UnnecessaryEnumFlag" IsDevelopment="true">
+    <Id>RCS1258</Id>
+    <Title>Unnecessary enum flag.</Title>
+    <MessageFormat>Enum flag '{0}' is already contained in flag '{1}'.</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var styles = NumberStyles.Integer | NumberStyles.AllowLeadingWhite]]></Before>
+        <After><![CDATA[var styles = NumberStyles.Integer]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
   <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>

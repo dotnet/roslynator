@@ -213,5 +213,7 @@ namespace Roslynator.CSharp
         public const string NormalizeFormatOfEnumFlagValue = "RCS1254";
         public const string SimplifyArgumentNullCheck = "RCS1255";
         public const string InvalidArgumentNullCheck = "RCS1256";
+        public const string UseEnumFieldExplicitly = "RCS1257";
+        public const string UnnecessaryEnumFlag = "RCS1258";
     }
 }
