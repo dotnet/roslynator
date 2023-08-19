@@ -148,16 +148,16 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
             return true;
         }
 
-        public SyntaxNode Current => _current ?? throw new InvalidOperationException();
+        public readonly SyntaxNode Current => _current ?? throw new InvalidOperationException();
 
         public void Reset()
         {
             _current = null;
         }
 
-        public override bool Equals(object obj) => throw new NotSupportedException();
+        public override readonly bool Equals(object obj) => throw new NotSupportedException();
 
-        public override int GetHashCode() => throw new NotSupportedException();
+        public override readonly int GetHashCode() => throw new NotSupportedException();
     }
 
     private class EnumeratorImpl : IEnumerator<SyntaxNode>
