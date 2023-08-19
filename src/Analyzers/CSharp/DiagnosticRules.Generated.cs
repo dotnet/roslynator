@@ -341,7 +341,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyStatement = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyStatement, 
             title:              "Remove empty statement.", 
-            messageFormat:      "([deprecated] Use RCS1255 instead) Remove empty statement.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty statement.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -365,7 +365,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyElseClause = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyElseClause, 
             title:              "Remove empty 'else' clause.", 
-            messageFormat:      "([deprecated] Use RCS1255 instead) Remove empty 'else' clause.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty 'else' clause.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -377,7 +377,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyInitializer = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyInitializer, 
             title:              "Remove empty initializer.", 
-            messageFormat:      "([deprecated] Use RCS1255 instead) Remove empty initializer.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty initializer.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -627,7 +627,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyFinallyClause = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyFinallyClause, 
             title:              "Remove empty 'finally' clause.", 
-            messageFormat:      "([deprecated] Use RCS1255 instead) Remove empty 'finally' clause.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty 'finally' clause.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -689,7 +689,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyNamespaceDeclaration = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration, 
             title:              "Remove empty namespace declaration.", 
-            messageFormat:      "([deprecated] Use RCS1255 instead) Remove empty namespace declaration.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty namespace declaration.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -851,7 +851,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyRegion = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyRegion, 
             title:              "Remove empty region.", 
-            messageFormat:      "([deprecated] Use RCS1255 instead) Remove empty region.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty region.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -1009,7 +1009,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyDestructor = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyDestructor, 
             title:              "Remove empty destructor.", 
-            messageFormat:      "([deprecated] Use RCS1255 instead) Remove empty destructor.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty destructor.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
