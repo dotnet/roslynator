@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Enabled by default.
 - Add analyzer "Unnecessary enum flag" [RCS1258](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1258.md) ([#886](https://github.com/JosefPihrt/Roslynator/pull/886)).
   - Enabled by default.
+- Make `Roslynator.Rename.SymbolRenamer` public ([#1161](https://github.com/josefpihrt/roslynator/pull/1161))
 
 ### Fixed
 
