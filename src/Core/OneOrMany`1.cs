@@ -160,7 +160,7 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
             return _index < _oneOrMany.Count;
         }
 
-        public T Current
+        public readonly T Current
         {
             get { return _oneOrMany[_index]; }
         }
@@ -170,9 +170,9 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
             _index = -1;
         }
 
-        public override bool Equals(object obj) => throw new NotSupportedException();
+        public override readonly bool Equals(object obj) => throw new NotSupportedException();
 
-        public override int GetHashCode() => throw new NotSupportedException();
+        public override readonly int GetHashCode() => throw new NotSupportedException();
     }
 
     private class EnumeratorImpl : IEnumerator<T>

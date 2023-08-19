@@ -149,7 +149,7 @@ public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnu
             return false;
         }
 
-        public IfStatementOrElseClause Current
+        public readonly IfStatementOrElseClause Current
         {
             get { return (_count >= 0) ? _ifOrElse : throw new InvalidOperationException(); }
         }

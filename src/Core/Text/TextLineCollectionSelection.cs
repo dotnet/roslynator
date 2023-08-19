@@ -212,7 +212,7 @@ public class TextLineCollectionSelection : ISelection<TextLine>
             return false;
         }
 
-        public TextLine Current
+        public readonly TextLine Current
         {
             get { return _selection.UnderlyingLines[_index]; }
         }
