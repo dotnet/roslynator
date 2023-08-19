@@ -128,11 +128,6 @@ public sealed class RemoveEmptySyntaxAnalyzer : BaseDiagnosticAnalyzer
                 return;
 
             ReportDiagnostic(context, finallyClause, "'finally' clause");
-
-            //TODO: JP
-            //DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyFinallyClauseFadeOut, tryStatement.TryKeyword);
-            //DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyFinallyClauseFadeOut, tryBlock.OpenBraceToken);
-            //DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyFinallyClauseFadeOut, tryBlock.CloseBraceToken);
         }
     }
 
