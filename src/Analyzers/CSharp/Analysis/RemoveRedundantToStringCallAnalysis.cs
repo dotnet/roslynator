@@ -38,16 +38,6 @@ internal static class RemoveRedundantToStringCallAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        static bool IsToString(IMethodSymbol methodSymbol1)
-        {
-            return methodSymbol1?.DeclaredAccessibility == Accessibility.Public
-                && !methodSymbol1.IsStatic
-                && !methodSymbol1.IsGenericMethod
-                && string.Equals(methodSymbol1.Name, "ToString", StringComparison.Ordinal)
-                && methodSymbol1.ReturnType.SpecialType == SpecialType.System_String
-                && !methodSymbol1.Parameters.Any();
-        }
-
         if (invocationInfo.Expression.IsKind(SyntaxKind.BaseExpression))
             return false;
 
@@ -91,6 +81,16 @@ internal static class RemoveRedundantToStringCallAnalysis
         }
 
         return false;
+
+        static bool IsToString(IMethodSymbol methodSymbol)
+        {
+            return methodSymbol?.DeclaredAccessibility == Accessibility.Public
+                && !methodSymbol.IsStatic
+                && !methodSymbol.IsGenericMethod
+                && string.Equals(methodSymbol.Name, "ToString", StringComparison.Ordinal)
+                && methodSymbol.ReturnType.SpecialType == SpecialType.System_String
+                && !methodSymbol.Parameters.Any();
+        }
     }
 
     private static bool IsNotHidden(IMethodSymbol methodSymbol, INamedTypeSymbol containingType)
