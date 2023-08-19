@@ -18,25 +18,18 @@ public class RenameSymbolCommandLineOptions : MSBuildCommandLineOptions
         longName: OptionNames.Ask,
         HelpText = "Ask whether to rename a symbol.")]
     public bool Ask { get; set; }
-#if DEBUG
-    [Option(
-        longName: OptionNames.CodeContext,
-        HelpText = "Number of lines to display before and after a line with symbol definition.",
-        MetaValue = "<NUM>",
-        Default = -1)]
-    public int CodeContext { get; set; }
-#endif
+
     [Option(
         shortName: OptionShortNames.DryRun,
         longName: "dry-run",
         HelpText = "List symbols to be renamed but do not save changes to a disk.")]
     public bool DryRun { get; set; }
-#if DEBUG
+
     [Option(
         longName: OptionNames.IgnoredCompilerDiagnostics,
-        HelpText = "A list of compiler diagnostics that should be ignored.")]
+        HelpText = "A space separated list of compiler diagnostics that should be ignored.")]
     public IEnumerable<string> IgnoredCompilerDiagnostics { get; set; }
-#endif
+
     [Option(
         shortName: OptionShortNames.IncludeGeneratedCode,
         longName: "include-generated-code",
@@ -83,12 +76,4 @@ public class RenameSymbolCommandLineOptions : MSBuildCommandLineOptions
         HelpText = "Symbol groups to be included. Allowed values are type, member and local.",
         MetaValue = "<SCOPE>")]
     public IEnumerable<string> Scope { get; set; }
-#if DEBUG
-    [Option(
-        longName: OptionNames.Visibility,
-        Default = nameof(Roslynator.Visibility.Public),
-        HelpText = "Defines a  maximal visibility of a symbol to be renamed. Allowed values are public (default), internal or private.",
-        MetaValue = "<VISIBILITY>")]
-    public string Visibility { get; set; }
-#endif
 }

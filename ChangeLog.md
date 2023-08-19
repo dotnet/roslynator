@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Enabled by default.
 - Add analyzer "Unnecessary enum flag" [RCS1258](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1258.md) ([#886](https://github.com/JosefPihrt/Roslynator/pull/886)).
   - Enabled by default.
+- Make `Roslynator.Rename.SymbolRenamer` public ([#1161](https://github.com/josefpihrt/roslynator/pull/1161))
 - Add analyzer "Include/omit trailing comma" ([RCS1256](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#931](https://github.com/JosefPihrt/Roslynator/pull/931)).
   - Required option: `roslynator_trailing_comma_style = include|omit|omit_when_single_line`
   - Not enabled by default
