@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Enabled by default.
 - Add analyzer "Unnecessary enum flag" [RCS1258](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1258.md) ([#886](https://github.com/JosefPihrt/Roslynator/pull/886)).
   - Enabled by default.
+- Make `Roslynator.Rename.SymbolRenamer` public ([#1161](https://github.com/josefpihrt/roslynator/pull/1161))
 - Analyzer 'Remove empty syntax' ([RCS1259](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1259.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
   - This analyzer replaces following analyzers:
     - Remove empty empty statement ([RCS1038](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1038.md))
