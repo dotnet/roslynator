@@ -2436,7 +2436,7 @@ if (f)
     <Id>RCS1038</Id>
     <Identifier>RemoveEmptyStatement</Identifier>
     <Status>Obsolete</Status>
-    <ObsoleteMessage>Use RCS1255 instead</ObsoleteMessage>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty statement.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -2478,7 +2478,7 @@ public void Foo()
     <Id>RCS1040</Id>
     <Identifier>RemoveEmptyElseClause</Identifier>
     <Status>Obsolete</Status>
-    <ObsoleteMessage>Use RCS1255 instead</ObsoleteMessage>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty 'else' clause.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -2504,7 +2504,7 @@ else
     <Id>RCS1041</Id>
     <Identifier>RemoveEmptyInitializer</Identifier>
     <Status>Obsolete</Status>
-    <ObsoleteMessage>Use RCS1255 instead</ObsoleteMessage>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty initializer.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -3103,7 +3103,7 @@ while (true);]]></Before>
     <Id>RCS1066</Id>
     <Identifier>RemoveEmptyFinallyClause</Identifier>
     <Status>Obsolete</Status>
-    <ObsoleteMessage>Use RCS1255 instead</ObsoleteMessage>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty 'finally' clause.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -3261,7 +3261,7 @@ catch (Exception ex)
     <Id>RCS1072</Id>
     <Identifier>RemoveEmptyNamespaceDeclaration</Identifier>
     <Status>Obsolete</Status>
-    <ObsoleteMessage>Use RCS1255 instead</ObsoleteMessage>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty namespace declaration.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -3691,7 +3691,7 @@ public string Foo
     <Id>RCS1091</Id>
     <Identifier>RemoveEmptyRegion</Identifier>
     <Status>Obsolete</Status>
-    <ObsoleteMessage>Use RCS1255 instead</ObsoleteMessage>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty region.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -4025,7 +4025,7 @@ else
     <Id>RCS1106</Id>
     <Identifier>RemoveEmptyDestructor</Identifier>
     <Status>Obsolete</Status>
-    <ObsoleteMessage>Use RCS1255 instead</ObsoleteMessage>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty destructor.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
