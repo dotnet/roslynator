@@ -7368,6 +7368,20 @@ void M()
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="UnnecessaryEnumFlag" IsDevelopment="true">
+    <Id>RCS1258</Id>
+    <Title>Unnecessary enum flag.</Title>
+    <MessageFormat>Enum flag '{0}' is already contained in flag '{1}'.</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var styles = NumberStyles.Integer | NumberStyles.AllowLeadingWhite]]></Before>
+        <After><![CDATA[var styles = NumberStyles.Integer]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
   <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>

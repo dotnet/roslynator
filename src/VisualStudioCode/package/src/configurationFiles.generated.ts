@@ -909,6 +909,9 @@ roslynator_analyzers.enabled_by_default = true|false
 # Use enum field explicitly
 #dotnet_diagnostic.rcs1257.severity = suggestion
 
+# Unnecessary enum flag
+#dotnet_diagnostic.rcs1258.severity = suggestion
+
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
 
