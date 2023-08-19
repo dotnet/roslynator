@@ -2,4 +2,11 @@
 
 namespace Roslynator.Metadata;
 
-public readonly record struct CodeFixOption(string Key, string Value);
+public enum LegacyAnalyzerOptionKind
+{
+    None,
+    Enable,
+    Disable,
+    Change,
+    Invert,
+}

@@ -2,4 +2,4 @@
 
 namespace Roslynator.Metadata;
 
-public readonly record struct CodeFixOption(string Key, string Value);
+public readonly record struct AnalyzerConfigOption(string Key, bool IsRequired);

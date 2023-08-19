@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotMarkdown" Version="0.2.0" />
+    <PackageReference Include="DotMarkdown.Docusaurus" Version="0.3.0" />
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
   </ItemGroup>
 

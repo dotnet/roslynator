@@ -90,35 +90,42 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
     {
         AssemblyResolver.Register();
 
-        var documentationOptions = new DocumentationOptions(
-            rootFileHeading: Options.Heading,
-            ignoredNames: Options.IgnoredNames,
-            preferredCultureName: Options.PreferredCulture,
-            maxDerivedTypes: Options.MaxDerivedTypes,
-            placeSystemNamespaceFirst: !Options.NoPrecedenceForSystem,
-            wrapDeclarationBaseTypes: !Options.NoWrapBaseTypes,
-            wrapDeclarationConstraints: !Options.NoWrapConstraints,
-            markObsolete: !Options.NoMarkObsolete,
-            includeMemberInheritedFrom: (OmitMemberParts & OmitMemberParts.InheritedFrom) == 0,
-            includeMemberOverrides: (OmitMemberParts & OmitMemberParts.Overrides) == 0,
-            includeMemberImplements: (OmitMemberParts & OmitMemberParts.Implements) == 0,
-            includeMemberConstantValue: (OmitMemberParts & OmitMemberParts.ConstantValue) == 0,
-            includeInheritedInterfaceMembers: Options.IncludeInheritedInterfaceMembers,
-            includeAllDerivedTypes: Options.IncludeAllDerivedTypes,
-            includeAttributeArguments: !Options.OmitAttributeArguments,
-            includeInheritedAttributes: !Options.OmitInheritedAttributes,
-            omitIEnumerable: !Options.IncludeIEnumerable,
-            depth: Depth,
-            inheritanceStyle: InheritanceStyle,
-            ignoredRootParts: IgnoredRootParts,
-            ignoredNamespaceParts: IgnoredNamespaceParts,
-            ignoredTypeParts: IgnoredTypeParts,
-            ignoredMemberParts: IgnoredMemberParts,
-            ignoredCommonParts: IgnoredCommonParts,
-            ignoredTitleParts: IgnoredTitleParts,
-            includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
-            filesLayout: FilesLayout,
-            scrollToContent: (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent);
+        var documentationOptions = new DocumentationOptions()
+        {
+            RootFileHeading = Options.Heading,
+            PreferredCultureName = Options.PreferredCulture,
+            MaxDerivedTypes = Options.MaxDerivedTypes,
+            PlaceSystemNamespaceFirst = !Options.NoPrecedenceForSystem,
+            WrapDeclarationBaseTypes = !Options.NoWrapBaseTypes,
+            WrapDeclarationConstraints = !Options.NoWrapConstraints,
+            MarkObsolete = !Options.NoMarkObsolete,
+            IncludeMemberInheritedFrom = (OmitMemberParts & OmitMemberParts.InheritedFrom) == 0,
+            IncludeMemberOverrides = (OmitMemberParts & OmitMemberParts.Overrides) == 0,
+            IncludeMemberImplements = (OmitMemberParts & OmitMemberParts.Implements) == 0,
+            IncludeMemberConstantValue = (OmitMemberParts & OmitMemberParts.ConstantValue) == 0,
+            IncludeInheritedInterfaceMembers = Options.IncludeInheritedInterfaceMembers,
+            IncludeAllDerivedTypes = Options.IncludeAllDerivedTypes,
+            IncludeAttributeArguments = !Options.OmitAttributeArguments,
+            IncludeInheritedAttributes = !Options.OmitInheritedAttributes,
+            OmitIEnumerable = !Options.IncludeIEnumerable,
+            Depth = Depth,
+            InheritanceStyle = InheritanceStyle,
+            IgnoredRootParts = IgnoredRootParts,
+            IgnoredNamespaceParts = IgnoredNamespaceParts,
+            IgnoredTypeParts = IgnoredTypeParts,
+            IgnoredMemberParts = IgnoredMemberParts,
+            IgnoredCommonParts = IgnoredCommonParts,
+            IgnoredTitleParts = IgnoredTitleParts,
+            IncludeContainingNamespaceFilter = IncludeContainingNamespaceFilter,
+            FilesLayout = FilesLayout,
+            ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent
+        };
+
+        if (Options.IgnoredNames is not null)
+        {
+            foreach (string ignoredName in Options.IgnoredNames)
+                documentationOptions.IgnoredNames.Add(MetadataName.Parse(ignoredName));
+        }
 
         ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
@@ -201,6 +208,8 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
 
         var generator = new DocumentationGenerator(context);
 
+        GenerateRootFile(generator);
+
         string directoryPath = Options.Output;
 
         if (!Options.NoDelete
@@ -242,6 +251,36 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
         WriteLine($"Documentation successfully generated to '{Options.Output}'.", Verbosity.Minimal);
 
         return CommandResults.Success;
+    }
+
+    private void GenerateRootFile(DocumentationGenerator generator)
+    {
+        if (IgnoredRootParts == RootDocumentationParts.All)
+        {
+            WriteLine("Skipping generation of documentation root file.", Verbosity.Minimal);
+            return;
+        }
+
+        string outputDirectoryPath = Path.GetFullPath(Options.Output);
+
+        string rootFilePath = (!string.IsNullOrEmpty(Options.RootFilePath))
+            ? Options.RootFilePath
+            : Path.Combine(outputDirectoryPath, generator.Context.UrlProvider.IndexFileName);
+
+        rootFilePath = Path.GetFullPath(rootFilePath);
+
+        generator.Options.RootDirectoryUrl = FileSystemHelpers.DetermineRelativePath(Options.Output, rootFilePath);
+
+        WriteLine($"Relative path from root file to output directory is '{generator.Options.RootDirectoryUrl}'.", Verbosity.Detailed);
+
+        WriteLine($"Generate documentation root to '{rootFilePath}'.", Verbosity.Minimal);
+
+        DocumentationGeneratorResult result = generator.GenerateRoot(Options.Heading ?? "");
+
+        Directory.CreateDirectory(Path.GetDirectoryName(rootFilePath));
+        File.WriteAllText(rootFilePath, result.Content, _defaultEncoding);
+
+        WriteLine($"Documentation root successfully generated to '{rootFilePath}'.", Verbosity.Minimal);
     }
 
     private static void AddTableOfContents(IEnumerable<DocumentationGeneratorResult> results)
