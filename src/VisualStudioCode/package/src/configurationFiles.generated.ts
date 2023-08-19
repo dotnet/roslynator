@@ -121,7 +121,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Applicable to: rcs1213
 
 #roslynator_trailing_comma_style = include|omit|omit_when_single_line
-# Applicable to: rcs1259
+# Applicable to: rcs1260
 
 #roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: rcs1207
@@ -906,8 +906,14 @@ roslynator_analyzers.enabled_by_default = true|false
 # Invalid argument null check
 #dotnet_diagnostic.rcs1256.severity = suggestion
 
+# Use enum field explicitly
+#dotnet_diagnostic.rcs1257.severity = suggestion
+
+# Unnecessary enum flag
+#dotnet_diagnostic.rcs1258.severity = suggestion
+
 # Add/remove trailing comma
-#dotnet_diagnostic.rcs1259.severity = none
+#dotnet_diagnostic.rcs1260.severity = none
 # Options: roslynator_trailing_comma_style
 
 # Use pattern matching

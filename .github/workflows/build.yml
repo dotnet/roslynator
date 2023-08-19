@@ -54,10 +54,7 @@ jobs:
       - run: dotnet restore Roslynator.sln
       - run: dotnet build Roslynator.sln --no-restore
       - run: |
-          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info --exclude-diagnostics \
-            IDE0220 `# 'foreach' statement implicitly converts type. Add an explicit cast to make intent clearer.` \
-            IDE0251 `# Property can be made read-only.` \
-            IDE0270 `# Null check can be simplified.`
+          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
       - run: dotnet test Roslynator.sln --no-build
 
   build_core_and_testing:
