@@ -211,7 +211,7 @@ public class SyntaxListSelection<TNode> : ISelection<TNode> where TNode : Syntax
             return false;
         }
 
-        public TNode Current
+        public readonly TNode Current
         {
             get { return _selection.UnderlyingList[_index]; }
         }
