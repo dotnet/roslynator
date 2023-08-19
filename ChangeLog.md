@@ -16,6 +16,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Enabled by default.
 - Add analyzer "Unnecessary enum flag" [RCS1258](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1258.md) ([#886](https://github.com/JosefPihrt/Roslynator/pull/886)).
   - Enabled by default.
+- Analyzer 'Remove empty syntax' ([RCS1259](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1259.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
+  - This analyzer replaces following analyzers:
+    - Remove empty empty statement ([RCS1038](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1038.md))
+    - Remove empty 'else' clause ([RCS1040](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1040.md))
+    - Remove empty object initializer ([RCS1041](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1041.md))
+    - Remove empty 'finally' clause ([RCS1066](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1066.md))
+    - Remove empty namespace declaration ([RCS1072](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1072.md))
+    - Remove empty region directive ([RCS1091](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1091.md))
+    - Remove empty destructor ([RCS1106](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1106.md))
 
 ### Fixed
 
@@ -28,15 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add GitHub workflow ([#1112](https://github.com/josefpihrt/roslynator/pull/1112))
-- Analyzer 'Remove empty syntax' ([RCS1257](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1257.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
-  - This analyzer replaces following analyzers:
-    - Remove empty empty statement ([RCS1038](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1038.md))
-    - Remove empty 'else' clause ([RCS1040](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1040.md))
-    - Remove empty object initializer ([RCS1041](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1041.md))
-    - Remove empty 'finally' clause ([RCS1066](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1066.md))
-    - Remove empty namespace declaration ([RCS1072](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1072.md))
-    - Remove empty region directive ([RCS1091](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1091.md))
-    - Remove empty destructor ([RCS1106](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1106.md))
 
 ### Changed
 
