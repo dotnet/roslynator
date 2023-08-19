@@ -18,9 +18,7 @@ public sealed class UseEnumFieldExplicitlyAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-            {
                 Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseEnumFieldExplicitly);
-            }
 
             return _supportedDiagnostics;
         }
