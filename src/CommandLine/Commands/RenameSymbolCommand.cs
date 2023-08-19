@@ -23,7 +23,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
         IEnumerable<string> ignoredCompilerDiagnostics,
         int codeContext,
         Func<ISymbol, bool> predicate,
-        Func<ISymbol, string> symbolEvaluator) : base(projectFilter)
+        Func<ISymbol, string> getNewName) : base(projectFilter)
     {
         Options = options;
         ScopeFilter = scopeFilter;
@@ -31,7 +31,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
         IgnoredCompilerDiagnostics = ignoredCompilerDiagnostics;
         CodeContext = codeContext;
         Predicate = predicate;
-        SymbolEvaluator = symbolEvaluator;
+        GetNewName = getNewName;
     }
 
     public RenameSymbolCommandLineOptions Options { get; }
@@ -46,7 +46,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
     public Func<ISymbol, bool> Predicate { get; }
 
-    public Func<ISymbol, string> SymbolEvaluator { get; }
+    public Func<ISymbol, string> GetNewName { get; }
 
     public override async Task<RenameSymbolCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
@@ -105,7 +105,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
             return new CliSymbolRenameState(
                 solution,
                 predicate: Predicate,
-                symbolEvaluator: SymbolEvaluator,
+                getNewName: GetNewName,
                 ask: Options.Ask,
                 interactive: Options.Interactive,
                 codeContext: -1,

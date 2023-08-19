@@ -21,12 +21,12 @@ internal class CliSymbolRenameState : SymbolRenameState
     public CliSymbolRenameState(
         Solution solution,
         Func<ISymbol, bool> predicate,
-        Func<ISymbol, string> symbolEvaluator,
+        Func<ISymbol, string> getNewName,
         bool ask,
         bool interactive,
         int codeContext,
         CliCompilationErrorResolution errorResolution,
-        SymbolRenamerOptions options) : base(solution, predicate, symbolEvaluator, options: options)
+        SymbolRenamerOptions options) : base(solution, predicate, getNewName, options: options)
     {
         Ask = ask;
         Interactive = interactive;
@@ -108,13 +108,13 @@ internal class CliSymbolRenameState : SymbolRenameState
         }
 
         Solution newSolution = null;
-        string newName = SymbolEvaluator?.Invoke(symbol) ?? symbol.Name;
+        string newName = GetNewName?.Invoke(symbol) ?? symbol.Name;
         bool interactive = Interactive;
         int compilerErrorCount = 0;
 
         while (true)
         {
-            string newName2 = GetNewName(newName, symbol, findSymbolService, interactive: interactive);
+            string newName2 = GetSymbolNewName(newName, symbol, findSymbolService, interactive: interactive);
 
             if (newName2 is null)
             {
@@ -259,7 +259,7 @@ internal class CliSymbolRenameState : SymbolRenameState
         return (newName, newSolution);
     }
 
-    private static string GetNewName(
+    private static string GetSymbolNewName(
         string newName,
         ISymbol symbol,
         IFindSymbolService findSymbolService,

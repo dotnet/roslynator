@@ -22,14 +22,14 @@ internal class SymbolRenameState
     public SymbolRenameState(
         Solution solution,
         Func<ISymbol, bool> predicate,
-        Func<ISymbol, string> symbolEvaluator,
+        Func<ISymbol, string> getNewName,
         SymbolRenamerOptions options = null,
         IProgress<SymbolRenameProgress> progress = null)
     {
         Workspace = solution.Workspace;
 
         Predicate = predicate;
-        SymbolEvaluator = symbolEvaluator;
+        GetNewName = getNewName;
         Progress = progress;
         Options = options ?? new SymbolRenamerOptions();
     }
@@ -42,7 +42,7 @@ internal class SymbolRenameState
 
     protected IProgress<SymbolRenameProgress> Progress { get; }
 
-    protected Func<ISymbol, string> SymbolEvaluator { get; }
+    protected Func<ISymbol, string> GetNewName { get; }
 
     protected Func<ISymbol, bool> Predicate { get; }
 
@@ -721,7 +721,7 @@ internal class SymbolRenameState
         CancellationToken cancellationToken)
     {
         Solution newSolution = null;
-        string newName = SymbolEvaluator(symbol);
+        string newName = GetNewName(symbol);
 
         if (!findSymbolService.SyntaxFacts.IsValidIdentifier(newName))
             throw new InvalidOperationException($"'{newName}' is not valid identifier. Cannot rename symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'.");

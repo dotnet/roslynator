@@ -470,7 +470,7 @@ internal static class Program
             "ISymbol",
             typeof(ISymbol),
             "symbol",
-            out Func<ISymbol, string> symbolEvaluator))
+            out Func<ISymbol, string> getNewName))
         {
             return ExitCodes.Error;
         }
@@ -483,7 +483,7 @@ internal static class Program
             ignoredCompilerDiagnostics: options.IgnoredCompilerDiagnostics,
             codeContext: -1,
             predicate: predicate,
-            symbolEvaluator: symbolEvaluator);
+            getNewName: getNewName);
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
