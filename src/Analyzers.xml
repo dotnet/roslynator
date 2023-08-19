@@ -3686,6 +3686,7 @@ public string Foo
         </Samples>
       </Option>
     </Options>
+  </Analyzer>
   <Analyzer>
     <Id>RCS1091</Id>
     <Identifier>RemoveEmptyRegion</Identifier>
@@ -7374,6 +7375,50 @@ void M()
     <Summary>This analyzer reports null checks of arguments that are:
 - annotated as nullable reference type.
 - optional and its default value is `null`.
+    </Summary>
+  </Analyzer>
+  <Analyzer Identifier="UseEnumFieldExplicitly">
+    <Id>RCS1257</Id>
+    <Title>Use enum field explicitly.</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var options = (RegexOptions) 1]]></Before>
+        <After><![CDATA[var options = RegexOptions.IgnoreCase]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UnnecessaryEnumFlag" IsDevelopment="true">
+    <Id>RCS1258</Id>
+    <Title>Unnecessary enum flag.</Title>
+    <MessageFormat>Enum flag '{0}' is already contained in flag '{1}'.</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var styles = NumberStyles.Integer | NumberStyles.AllowLeadingWhite]]></Before>
+        <After><![CDATA[var styles = NumberStyles.Integer]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveEmptySyntax">
+    <Id>RCS1259</Id>
+    <Title>Remove empty syntax.</Title>
+    <MessageFormat>Remove empty {0}.</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <Summary>
+      This analyzer reports unnecessary syntax that can be safely removed such as:
+      * empty destructor
+      * empty 'else' clause
+      * empty empty statement
+      * empty 'finally' clause
+      * empty namespace declaration
+      * empty object initializer
+      * empty region directive
     </Summary>
   </Analyzer>
   <Analyzer>

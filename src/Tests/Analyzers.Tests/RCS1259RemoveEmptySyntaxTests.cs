@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1257RemoveEmptySyntaxTests : AbstractCSharpDiagnosticVerifier<RemoveEmptySyntaxAnalyzer, RemoveEmptySyntaxCodeFixProvider>
+public class RCS1259RemoveEmptySyntaxTests : AbstractCSharpDiagnosticVerifier<RemoveEmptySyntaxAnalyzer, RemoveEmptySyntaxCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptySyntax;
 

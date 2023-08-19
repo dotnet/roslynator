@@ -48,12 +48,7 @@ internal static class RemoveRedundantToStringCallAnalysis
 
         IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationExpression, cancellationToken);
 
-        if (methodSymbol?.DeclaredAccessibility == Accessibility.Public
-            && !methodSymbol.IsStatic
-            && !methodSymbol.IsGenericMethod
-            && string.Equals(methodSymbol.Name, "ToString", StringComparison.Ordinal)
-            && methodSymbol.ReturnType.SpecialType == SpecialType.System_String
-            && !methodSymbol.Parameters.Any())
+        if (IsToString(methodSymbol))
         {
             INamedTypeSymbol containingType = methodSymbol.ContainingType;
 
@@ -64,15 +59,38 @@ internal static class RemoveRedundantToStringCallAnalysis
                 if (containingType.SpecialType == SpecialType.System_String)
                     return true;
 
-                if (invocationExpression.WalkUpParentheses().IsParentKind(SyntaxKind.Interpolation)
-                    && IsNotHidden(methodSymbol, containingType))
+                ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
+                switch (expression.Parent.Kind())
                 {
-                    return true;
+                    case SyntaxKind.Interpolation:
+                        {
+                            return IsNotHidden(methodSymbol, containingType);
+                        }
+                    case SyntaxKind.AddExpression:
+                        {
+                            var addExpression = (BinaryExpressionSyntax)expression.Parent;
+                            if (addExpression.Right == expression)
+                                return semanticModel.GetTypeInfo(addExpression.Left, cancellationToken).Type?.SpecialType == SpecialType.System_String;
+
+                            return semanticModel.GetTypeInfo(addExpression.Right, cancellationToken).Type?.SpecialType == SpecialType.System_String
+                                && (addExpression.Right.WalkDownParentheses() is not InvocationExpressionSyntax invocationExpression2
+                                    || !IsToString(semanticModel.GetMethodSymbol(invocationExpression2, cancellationToken)));
+                        }
                 }
             }
         }
 
         return false;
+
+        static bool IsToString(IMethodSymbol methodSymbol)
+        {
+            return methodSymbol?.DeclaredAccessibility == Accessibility.Public
+                && !methodSymbol.IsStatic
+                && !methodSymbol.IsGenericMethod
+                && string.Equals(methodSymbol.Name, "ToString", StringComparison.Ordinal)
+                && methodSymbol.ReturnType.SpecialType == SpecialType.System_String
+                && !methodSymbol.Parameters.Any();
+        }
     }
 
     private static bool IsNotHidden(IMethodSymbol methodSymbol, INamedTypeSymbol containingType)

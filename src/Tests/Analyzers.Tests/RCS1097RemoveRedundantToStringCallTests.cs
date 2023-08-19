@@ -81,6 +81,32 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    public async Task Test_PlusString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(object o)
+    {
+        string s = """" + o[|.ToString()|];
+        string s2 = o[|.ToString()|] + """";
+        string s3 = o.ToString() + o[|.ToString()|];
+    }
+}
+", @"
+class C
+{
+    void M(object o)
+    {
+        string s = """" + o;
+        string s2 = o + """";
+        string s3 = o.ToString() + o;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
     public async Task Test_Interpolation()
     {
         await VerifyDiagnosticAndFixAsync(@"
