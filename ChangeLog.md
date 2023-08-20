@@ -17,15 +17,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add analyzer "Unnecessary enum flag" [RCS1258](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1258.md) ([#886](https://github.com/JosefPihrt/Roslynator/pull/886)).
   - Enabled by default.
 - Make `Roslynator.Rename.SymbolRenamer` public ([#1161](https://github.com/josefpihrt/roslynator/pull/1161))
-- Analyzer 'Remove empty syntax' ([RCS1259](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1259.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
+- Analyzer 'Remove empty syntax' ([RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
   - This analyzer replaces following analyzers:
-    - Remove empty empty statement ([RCS1038](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1038.md))
-    - Remove empty 'else' clause ([RCS1040](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1040.md))
-    - Remove empty object initializer ([RCS1041](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1041.md))
-    - Remove empty 'finally' clause ([RCS1066](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1066.md))
-    - Remove empty namespace declaration ([RCS1072](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1072.md))
-    - Remove empty region directive ([RCS1091](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1091.md))
-    - Remove empty destructor ([RCS1106](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1106.md))
+    - Remove empty empty statement ([RCS1038](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1038.md))
+    - Remove empty 'else' clause ([RCS1040](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1040.md))
+    - Remove empty object initializer ([RCS1041](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1041.md))
+    - Remove empty 'finally' clause ([RCS1066](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1066.md))
+    - Remove empty namespace declaration ([RCS1072](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1072.md))
+    - Remove empty region directive ([RCS1091](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1091.md))
+    - Remove empty destructor ([RCS1106](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1106.md))
 
 ### Fixed
 
