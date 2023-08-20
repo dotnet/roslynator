@@ -228,4 +228,21 @@ namespace Microsoft.AspNetCore.Components
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
+    public async Task TestNoDiagnostic_InheritsFromWpfComponentBase()
+    {
+        await VerifyNoDiagnosticAsync(@"
+partial class Foo : System.Windows.FrameworkElement
+{
+}
+
+namespace System.Windows
+{
+    class FrameworkElement
+    {
+    }
+}
+");
+    }
 }
