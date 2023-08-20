@@ -18,7 +18,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
         // ASP.NET Core
         MetadataName.Parse("Microsoft.AspNetCore.Components.ComponentBase"),
         // WPF
-        /MetadataName.Parse("System.Windows.FrameworkElement")
+        MetadataName.Parse("System.Windows.FrameworkElement")
     };
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
