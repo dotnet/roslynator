@@ -375,17 +375,8 @@ roslynator_analyzers.enabled_by_default = true|false
 # Remove trailing white-space
 #dotnet_diagnostic.rcs1037.severity = suggestion
 
-# Remove empty statement
-#dotnet_diagnostic.rcs1038.severity = suggestion
-
 # Remove argument list from attribute
 #dotnet_diagnostic.rcs1039.severity = silent
-
-# Remove empty 'else' clause
-#dotnet_diagnostic.rcs1040.severity = silent
-
-# Remove empty initializer
-#dotnet_diagnostic.rcs1041.severity = suggestion
 
 # Remove enum default underlying type
 #dotnet_diagnostic.rcs1042.severity = silent
@@ -437,9 +428,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Merge 'if' with nested 'if'
 #dotnet_diagnostic.rcs1061.severity = silent
 
-# Remove empty 'finally' clause
-#dotnet_diagnostic.rcs1066.severity = silent
-
 # Simplify logical negation
 #dotnet_diagnostic.rcs1068.severity = suggestion
 
@@ -451,9 +439,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Remove redundant base constructor call
 #dotnet_diagnostic.rcs1071.severity = silent
-
-# Remove empty namespace declaration
-#dotnet_diagnostic.rcs1072.severity = suggestion
 
 # Convert 'if' to 'return' statement
 #dotnet_diagnostic.rcs1073.severity = suggestion
@@ -493,9 +478,6 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs1090.severity = none
 # Options: roslynator_configure_await
 
-# Remove empty region
-#dotnet_diagnostic.rcs1091.severity = silent
-
 # Remove file with no code
 #dotnet_diagnostic.rcs1093.severity = suggestion
 
@@ -526,9 +508,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Unnecessary interpolation
 #dotnet_diagnostic.rcs1105.severity = suggestion
-
-# Remove empty destructor
-#dotnet_diagnostic.rcs1106.severity = suggestion
 
 # Remove redundant 'ToCharArray' call
 #dotnet_diagnostic.rcs1107.severity = suggestion
@@ -911,6 +890,9 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Unnecessary enum flag
 #dotnet_diagnostic.rcs1258.severity = suggestion
+
+# Remove empty syntax
+#dotnet_diagnostic.rcs1259.severity = suggestion
 
 # Add/remove trailing comma
 #dotnet_diagnostic.rcs1260.severity = none

@@ -2438,10 +2438,13 @@ if (f)
   <Analyzer>
     <Id>RCS1038</Id>
     <Identifier>RemoveEmptyStatement</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty statement.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[public void Foo()
@@ -2477,10 +2480,13 @@ public void Foo()
   <Analyzer>
     <Id>RCS1040</Id>
     <Identifier>RemoveEmptyElseClause</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty 'else' clause.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
@@ -2500,10 +2506,13 @@ else
   <Analyzer>
     <Id>RCS1041</Id>
     <Identifier>RemoveEmptyInitializer</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty initializer.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[var items = new List<object>() { };]]></Before>
@@ -3096,11 +3105,14 @@ while (true);]]></Before>
   <Analyzer>
     <Id>RCS1066</Id>
     <Identifier>RemoveEmptyFinallyClause</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty 'finally' clause.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[try
@@ -3251,10 +3263,13 @@ catch (Exception ex)
   <Analyzer>
     <Id>RCS1072</Id>
     <Identifier>RemoveEmptyNamespaceDeclaration</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty namespace declaration.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[namespace Foo
@@ -3678,10 +3693,13 @@ public string Foo
   <Analyzer>
     <Id>RCS1091</Id>
     <Identifier>RemoveEmptyRegion</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty region.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[#region Region
@@ -4009,10 +4027,13 @@ else
   <Analyzer>
     <Id>RCS1106</Id>
     <Identifier>RemoveEmptyDestructor</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1259 instead</ObsoleteMessage>
     <Title>Remove empty destructor.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[public class Foo
@@ -7384,6 +7405,23 @@ void M()
         <After><![CDATA[var styles = NumberStyles.Integer]]></After>
       </Sample>
     </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveEmptySyntax">
+    <Id>RCS1259</Id>
+    <Title>Remove empty syntax.</Title>
+    <MessageFormat>Remove empty {0}.</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <Summary>This analyzer reports unnecessary syntax that can be safely removed such as:
+  * empty destructor
+  * empty 'else' clause
+  * empty empty statement
+  * empty 'finally' clause
+  * empty namespace declaration
+  * empty object initializer
+  * empty region directive
+</Summary>
   </Analyzer>
   <Analyzer>
     <Id>RCS9001</Id>
