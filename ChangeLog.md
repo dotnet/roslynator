@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix [RCS1187](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1187) ([#1150](https://github.com/JosefPihrt/Roslynator/pull/1150)).
 - Fix [RCS1056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1056) ([#1154](https://github.com/JosefPihrt/Roslynator/pull/1154)).
 - Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208) ([#1153](https://github.com/JosefPihrt/Roslynator/pull/1153)).
+- Fix [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([#1176](https://github.com/JosefPihrt/Roslynator/pull/1153)).
 
 ## [4.4.0] - 2023-08-01
 
