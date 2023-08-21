@@ -10,28 +10,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add SECURITY.md ([#1147](https://github.com/josefpihrt/roslynator/pull/1147))
-- Add custom FixAllProvider for [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014.md) ([#1070](https://github.com/JosefPihrt/Roslynator/pull/1070)).
-- Add more cases to [RCS1097](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1097.md) ([#1160](https://github.com/JosefPihrt/Roslynator/pull/1160)).
+- Add custom FixAllProvider for [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) ([#1070](https://github.com/JosefPihrt/Roslynator/pull/1070)).
+- Add more cases to [RCS1097](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1097) ([#1160](https://github.com/JosefPihrt/Roslynator/pull/1160)).
 - Add analyzer "Use enum field explicitly" ([RCS1257](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1257)) ([#889](https://github.com/josefpihrt/roslynator/pull/889)).
   - Enabled by default.
-- Add analyzer "Unnecessary enum flag" [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258.md) ([#886](https://github.com/JosefPihrt/Roslynator/pull/886)).
+- Add analyzer "Unnecessary enum flag" [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([#886](https://github.com/JosefPihrt/Roslynator/pull/886)).
   - Enabled by default.
 - Make `Roslynator.Rename.SymbolRenamer` public ([#1161](https://github.com/josefpihrt/roslynator/pull/1161))
-- Analyzer 'Remove empty syntax' ([RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
+- Analyzer 'Remove empty syntax' ([RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
   - This analyzer replaces following analyzers:
-    - Remove empty empty statement ([RCS1038](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1038.md))
-    - Remove empty 'else' clause ([RCS1040](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1040.md))
-    - Remove empty object initializer ([RCS1041](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1041.md))
-    - Remove empty 'finally' clause ([RCS1066](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1066.md))
-    - Remove empty namespace declaration ([RCS1072](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1072.md))
-    - Remove empty region directive ([RCS1091](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1091.md))
-    - Remove empty destructor ([RCS1106](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1106.md))
+    - Remove empty empty statement ([RCS1038](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1038))
+    - Remove empty 'else' clause ([RCS1040](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1040))
+    - Remove empty object initializer ([RCS1041](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1041))
+    - Remove empty 'finally' clause ([RCS1066](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1066))
+    - Remove empty namespace declaration ([RCS1072](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1072))
+    - Remove empty region directive ([RCS1091](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1091))
+    - Remove empty destructor ([RCS1106](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1106))
 
 ### Fixed
 
-- Fix [RCS1187](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1187.md) ([#1150](https://github.com/JosefPihrt/Roslynator/pull/1150)).
-- Fix [RCS1056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1056.md) ([#1154](https://github.com/JosefPihrt/Roslynator/pull/1154)).
-- Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208.md) ([#1153](https://github.com/JosefPihrt/Roslynator/pull/1153))
+- Fix [RCS1187](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1187) ([#1150](https://github.com/JosefPihrt/Roslynator/pull/1150)).
+- Fix [RCS1056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1056) ([#1154](https://github.com/JosefPihrt/Roslynator/pull/1154)).
+- Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208) ([#1153](https://github.com/JosefPihrt/Roslynator/pull/1153)).
+- Fix [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([#1176](https://github.com/JosefPihrt/Roslynator/pull/1176)).
 
 ## [4.4.0] - 2023-08-01
 
@@ -60,13 +61,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix [RCS1154](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1154) ([#1105](https://github.com/JosefPihrt/Roslynator/pull/1105)).
 - Fix [RCS1211](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1211) ([#1095](https://github.com/JosefPihrt/Roslynator/pull/1095)).
 - Fix [RCS0005](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0005) ([#1114](https://github.com/JosefPihrt/Roslynator/pull/1114)).
-- Fix [RCS1176](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1176.md) ([#1122](https://github.com/JosefPihrt/Roslynator/pull/1122), [#1140](https://github.com/JosefPihrt/Roslynator/pull/1140)).
-- Fix [RCS1085](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1085.md) ([#1120](https://github.com/josefpihrt/roslynator/pull/1120)).
-- Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208.md) ([#1119](https://github.com/JosefPihrt/Roslynator/pull/1119)).
+- Fix [RCS1176](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1176) ([#1122](https://github.com/JosefPihrt/Roslynator/pull/1122), [#1140](https://github.com/JosefPihrt/Roslynator/pull/1140)).
+- Fix [RCS1085](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1085) ([#1120](https://github.com/josefpihrt/roslynator/pull/1120)).
+- Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208) ([#1119](https://github.com/JosefPihrt/Roslynator/pull/1119)).
 - [CLI] Fix member full declaration in generated documentation (command `generate-doc`) ([#1130](https://github.com/josefpihrt/roslynator/pull/1130)).
   - Append `?` to nullable reference types.
-- Fix [RCS1179](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1179.md) ([#1129](https://github.com/JosefPihrt/Roslynator/pull/1129)).
-- Fix [RCS0060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0060.md) ([#1139](https://github.com/JosefPihrt/Roslynator/pull/1139)).
+- Fix [RCS1179](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1179) ([#1129](https://github.com/JosefPihrt/Roslynator/pull/1129)).
+- Fix [RCS0060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0060) ([#1139](https://github.com/JosefPihrt/Roslynator/pull/1139)).
 
 ## [4.3.0] - 2023-04-24
 
