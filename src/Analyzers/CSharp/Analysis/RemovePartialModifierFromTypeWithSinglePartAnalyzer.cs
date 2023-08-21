@@ -14,7 +14,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-    private static readonly MetadataName[] _componentBaseNames = new MetadataName[] {
+    private static readonly MetadataName[] _metadataNames = new MetadataName[] {
         // ASP.NET Core
         MetadataName.Parse("Microsoft.AspNetCore.Components.ComponentBase"),
         // WPF
@@ -56,7 +56,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
         if (symbol?.DeclaringSyntaxReferences.SingleOrDefault(shouldThrow: false) is null)
             return;
 
-        if (_componentBaseNames.Any(c => symbol.InheritsFrom(c)))
+        if (_metadataNames.Any(c => symbol.InheritsFrom(c)))
             return;
 
         foreach (MemberDeclarationSyntax member in typeDeclaration.Members)
