@@ -24,7 +24,7 @@ internal class WordList
     }
 
     public WordList(
-        IEnumerable<string> values,
+        IEnumerable<string> words,
         IEnumerable<string> nonWords,
         IEnumerable<WordSequence> sequences,
         StringComparison? comparison = null)
@@ -32,7 +32,7 @@ internal class WordList
         Comparer = StringComparerUtility.FromComparison(comparison ?? DefaultComparison);
         Comparison = comparison ?? DefaultComparison;
 
-        Words = values?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
+        Words = words?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
         NonWords = nonWords?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
 
         Sequences = sequences?

@@ -33,73 +33,16 @@ internal static class WordListLoader
         }
 
         Dictionary<string, HashSet<string>> fixes = state.Fixes;
-        List<string> words = state.Words;
-        List<string> nonWords = null;
 
-        if ((options & WordListLoadOptions.DetectNonWords) != 0)
-        {
-            nonWords = new List<string>();
-
-            for (int i = words.Count - 1; i >= 0; i--)
-            {
-                string word = words[i];
-                Match match = Spellchecker.WordRegex.Match(word);
-
-                if (!match.Success
-                    || match.Index > 0
-                    || match.Length < word.Length)
-                {
-                    nonWords.Add(word);
-                    words.RemoveAt(i);
-                }
-            }
-        }
-
-        for (int i = words.Count - 1; i >= 0; i--)
-        {
-            fixes.Remove(words[i]);
-
-            if (words[i].Length < minWordLength
-                || words[i].Length > maxWordLength)
-            {
-                words.RemoveAt(i);
-            }
-        }
+        foreach (string word in state.Words)
+            fixes.Remove(word);
 
         List<string> caseSensitiveWords = state.CaseSensitiveWords;
-        List<string> caseSensitiveNonWords = null;
 
         if (caseSensitiveWords is not null)
         {
-            if ((options & WordListLoadOptions.DetectNonWords) != 0)
-            {
-                caseSensitiveNonWords = new List<string>();
-
-                for (int i = caseSensitiveWords.Count - 1; i >= 0; i--)
-                {
-                    string word = caseSensitiveWords[i];
-                    Match match = Spellchecker.WordRegex.Match(word);
-
-                    if (!match.Success
-                        || match.Index > 0
-                        || match.Length < word.Length)
-                    {
-                        caseSensitiveNonWords.Add(word);
-                        caseSensitiveWords.RemoveAt(i);
-                    }
-                }
-            }
-
-            for (int i = caseSensitiveWords.Count - 1; i >= 0; i--)
-            {
-                fixes.Remove(caseSensitiveWords[i]);
-
-                if (caseSensitiveWords[i].Length < minWordLength
-                    || caseSensitiveWords[i].Length > maxWordLength)
-                {
-                    caseSensitiveWords.RemoveAt(i);
-                }
-            }
+            foreach (string word in caseSensitiveWords)
+                fixes.Remove(word);
         }
 
         foreach (HashSet<string> values in fixes.Values.ToList())
@@ -109,8 +52,12 @@ internal static class WordListLoader
         }
 
         return new WordListLoaderResult(
-            new WordList(state.Words, nonWords, state.Sequences, StringComparison.CurrentCultureIgnoreCase),
-            new WordList(state.CaseSensitiveWords, caseSensitiveNonWords, state.CaseSensitiveSequences, StringComparison.CurrentCulture),
+            new WordList(state.Words, state.NonWords, state.Sequences, StringComparison.CurrentCultureIgnoreCase),
+            new WordList(
+                state.CaseSensitiveWords,
+                state.CaseSensitiveNonWords,
+                state.CaseSensitiveSequences,
+                StringComparison.CurrentCulture),
             FixList.Create(fixes));
     }
 
@@ -158,8 +105,10 @@ internal static class WordListLoader
         LoadState state)
     {
         List<string> words = state.Words;
-        List<WordSequence> sequences = state.Sequences;
+        List<string> nonWords = state.NonWords;
         List<string> caseSensitiveWords = state.CaseSensitiveWords;
+        List<string> caseSensitiveNonWords = state.CaseSensitiveNonWords;
+        List<WordSequence> sequences = state.Sequences;
         List<WordSequence> caseSensitiveSequences = state.CaseSensitiveSequences;
         Dictionary<string, HashSet<string>> fixes = state.Fixes;
 
@@ -245,6 +194,9 @@ internal static class WordListLoader
             {
                 string value = line.Substring(startIndex, endIndex - startIndex);
 
+                if (value.Length == 0)
+                    continue;
+
                 if (whitespaceIndex >= 0
                     && whitespaceIndex < endIndex)
                 {
@@ -268,14 +220,38 @@ internal static class WordListLoader
                 else if (caseSensitiveWords is not null
                     && !IsLower(value))
                 {
-                    caseSensitiveWords.Add(value);
+                    if (caseSensitiveNonWords is not null
+                        && !IsWord(value))
+                    {
+                        caseSensitiveNonWords.Add(value);
+                    }
+                    else if (value.Length >= minWordLength
+                        && value.Length <= maxWordLength)
+                    {
+                        caseSensitiveWords.Add(value);
+                    }
                 }
-                else
+                else if (nonWords is not null
+                    && !IsWord(value))
+                {
+                    nonWords.Add(value);
+                }
+                else if (value.Length >= minWordLength
+                    && value.Length <= maxWordLength)
                 {
                     words.Add(value);
                 }
             }
         }
+    }
+
+    private static bool IsWord(string value)
+    {
+        Match match = Spellchecker.WordRegex.Match(value);
+
+        return match.Success
+            && match.Index == 0
+            && match.Length == value.Length;
     }
 
     private static bool IsLower(string value)
@@ -296,13 +272,17 @@ internal static class WordListLoader
     {
         private LoadState(
             List<string> words,
+            List<string> nonWords,
             List<string> caseSensitiveWords,
+            List<string> caseSensitiveNonWords,
             List<WordSequence> sequences,
             List<WordSequence> caseSensitiveSequences,
             Dictionary<string, HashSet<string>> fixes)
         {
             Words = words;
+            NonWords = nonWords;
             CaseSensitiveWords = caseSensitiveWords;
+            CaseSensitiveNonWords = caseSensitiveNonWords;
             Sequences = sequences;
             CaseSensitiveSequences = caseSensitiveSequences;
             Fixes = fixes;
@@ -314,21 +294,33 @@ internal static class WordListLoader
             var sequences = new List<WordSequence>();
             var fixes = new Dictionary<string, HashSet<string>>(WordList.DefaultComparer);
 
+            List<string> nonWords = null;
             List<string> caseSensitiveWords = null;
+            List<string> caseSensitiveNonWords = null;
             List<WordSequence> caseSensitiveSequences = null;
+
+            if ((options & WordListLoadOptions.DetectNonWords) != 0)
+                nonWords = new List<string>();
 
             if ((options & WordListLoadOptions.IgnoreCase) == 0)
             {
                 caseSensitiveWords = new List<string>();
                 caseSensitiveSequences = new List<WordSequence>();
+
+                if ((options & WordListLoadOptions.DetectNonWords) != 0)
+                    caseSensitiveNonWords = new List<string>();
             }
 
-            return new LoadState(words, caseSensitiveWords, sequences, caseSensitiveSequences, fixes);
+            return new LoadState(words, nonWords, caseSensitiveWords, caseSensitiveNonWords, sequences, caseSensitiveSequences, fixes);
         }
 
         public List<string> Words { get; }
 
+        public List<string> NonWords { get; }
+
         public List<string> CaseSensitiveWords { get; }
+
+        public List<string> CaseSensitiveNonWords { get; }
 
         public List<WordSequence> Sequences { get; }
 
