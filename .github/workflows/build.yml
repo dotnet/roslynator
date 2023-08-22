@@ -60,9 +60,9 @@ jobs:
         with:
           repository: josefpihrt/wordb
           path: wordb
-      - run: dotnet tool install -g roslynator.dotnet.cli
+      # - run: dotnet tool install -g roslynator.dotnet.cli
       - run: ls -R ./CommandLine/bin/Release
-      - run: ./CommandLine/bin/Release/net6.0/Roslynator spellcheck Roslynator.sln --words ../wordb/en ../wordb/tech.names.txt --dry-run
+      - run: ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --words spellcheck ../wordb/en ../wordb/tech.names.txt --dry-run
 
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
