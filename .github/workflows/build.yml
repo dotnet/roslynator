@@ -61,11 +61,11 @@ jobs:
           repository: josefpihrt/wordb
           path: wordb
       - run: |
-          ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --dry-run --words
-            spellcheck
-            ../wordb/data/en
-            ../wordb/data/en-us
-            ../wordb/data/en/names.txt
+          ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --dry-run --words \
+            spellcheck \
+            ../wordb/data/en \
+            ../wordb/data/en-us \
+            ../wordb/data/en/names.txt \
             ../wordb/data/en/tech.names.txt
 
   build_core_and_testing:
