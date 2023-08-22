@@ -630,8 +630,18 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!ParseHelpers.TryEnsureFullPath(options.Words, out ImmutableArray<string> wordListPaths))
+        if (!TryEnsureFullPath(options.Words, out ImmutableArray<string> wordListPaths))
             return ExitCodes.Error;
+
+        foreach (string path in wordListPaths)
+        {
+            if (!File.Exists(path)
+                && !Directory.Exists(path))
+            {
+                WriteLine($"File or directory not found: '{path}'.", ConsoleColors.Yellow, Verbosity.Quiet);
+                return ExitCodes.Error;
+            }
+        }
 
         if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
             return ExitCodes.Error;
