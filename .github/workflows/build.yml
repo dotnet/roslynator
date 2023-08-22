@@ -63,7 +63,13 @@ jobs:
       # - run: dotnet tool install -g roslynator.dotnet.cli
       - run: ls .
       - run: ls ../wordb
-      - run: ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --words spellcheck ../wordb/data/en ../wordb/data/en-us --dry-run
+      - run: >
+          ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --dry-run --words
+            spellcheck
+            ../wordb/data/en
+            ../wordb/data/en-us
+            ../wordb/data/en/names.txt
+            ../wordb/data/en/tech.names.txt
 
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
