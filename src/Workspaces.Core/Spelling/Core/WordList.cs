@@ -12,23 +12,20 @@ namespace Roslynator.Spelling;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal class WordList
 {
-    public static StringComparison DefaultComparison { get; } = StringComparison.InvariantCultureIgnoreCase;
+    public static StringComparison DefaultComparison { get; } = StringComparison.CurrentCultureIgnoreCase;
 
     public static StringComparer DefaultComparer { get; } = StringComparerUtility.FromComparison(DefaultComparison);
 
     public static WordList Default { get; } = new(null, DefaultComparison);
 
-    public static WordList CaseSensitive { get; } = new(
-        null,
-        StringComparison.InvariantCulture);
-
     public WordList(IEnumerable<string> values, StringComparison? comparison = null)
-        : this(values, ImmutableArray<WordSequence>.Empty, comparison)
+        : this(values, null, ImmutableArray<WordSequence>.Empty, comparison)
     {
     }
 
     public WordList(
         IEnumerable<string> values,
+        IEnumerable<string> nonWords,
         IEnumerable<WordSequence> sequences,
         StringComparison? comparison = null)
     {
@@ -36,6 +33,7 @@ internal class WordList
         Comparison = comparison ?? DefaultComparison;
 
         Values = values?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
+        NonWords = nonWords?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
 
         Sequences = sequences?
             .GroupBy(f => f.First, Comparer)
@@ -43,7 +41,10 @@ internal class WordList
             ?? ImmutableDictionary<string, ImmutableArray<WordSequence>>.Empty;
     }
 
+    //TODO: x
     public ImmutableHashSet<string> Values { get; }
+
+    public ImmutableHashSet<string> NonWords { get; }
 
     public ImmutableDictionary<string, ImmutableArray<WordSequence>> Sequences { get; }
 
@@ -128,9 +129,7 @@ internal class WordList
         if (merge
             && File.Exists(path))
         {
-            WordListLoaderResult result = WordListLoader.LoadFile(path);
-
-            values = values.Concat(result.List.Values).Concat(result.CaseSensitiveList.Values);
+            values = values.Concat(WordListLoader.LoadValues(path));
         }
 
         values = values

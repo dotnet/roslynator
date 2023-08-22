@@ -15,8 +15,6 @@ internal class SpellingData
     private WordCharMap _reversedCharIndexMap;
     private ImmutableDictionary<string, ImmutableHashSet<string>> _charMap;
 
-    public static SpellingData Empty { get; } = new(WordList.Default, WordList.CaseSensitive, FixList.Empty);
-
     public SpellingData(
         WordList words,
         WordList caseSensitiveWords,
@@ -116,7 +114,7 @@ internal class SpellingData
         return default;
     }
 
-    private static WordSequenceMatch GetSequenceMatch(
+    private WordSequenceMatch GetSequenceMatch(
         string value,
         int startIndex,
         int length,

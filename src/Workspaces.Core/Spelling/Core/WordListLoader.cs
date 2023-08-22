@@ -1,6 +1,6 @@
 ﻿// This code is originally from https://github.com/josefpihrt/orang. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Concurrent;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Roslynator.Spelling;
 
@@ -34,14 +33,73 @@ internal static class WordListLoader
         }
 
         Dictionary<string, HashSet<string>> fixes = state.Fixes;
+        List<string> words = state.Words;
+        List<string> nonWords = null;
 
-        foreach (string word in state.Words)
-            fixes.Remove(word);
-
-        if (state.CaseSensitiveWords is not null)
+        if ((options & WordListLoadOptions.DetectNonWords) != 0)
         {
-            foreach (string word in state.CaseSensitiveWords)
-                fixes.Remove(word);
+            nonWords = new List<string>();
+
+            for (int i = words.Count - 1; i >= 0; i--)
+            {
+                string word = words[i];
+                Match match = Spellchecker.WordRegex.Match(word);
+
+                if (!match.Success
+                    || match.Index > 0
+                    || match.Length < word.Length)
+                {
+                    nonWords.Add(word);
+                    words.RemoveAt(i);
+                }
+            }
+        }
+
+        for (int i = words.Count - 1; i >= 0; i--)
+        {
+            fixes.Remove(words[i]);
+
+            if (words[i].Length < minWordLength
+                || words[i].Length > maxWordLength)
+            {
+                words.RemoveAt(i);
+            }
+        }
+
+        List<string> caseSensitiveWords = state.CaseSensitiveWords;
+        List<string> caseSensitiveNonWords = null;
+
+        if (caseSensitiveWords is not null)
+        {
+            if ((options & WordListLoadOptions.DetectNonWords) != 0)
+            {
+                caseSensitiveNonWords = new List<string>();
+
+                for (int i = caseSensitiveWords.Count - 1; i >= 0; i--)
+                {
+                    string word = caseSensitiveWords[i];
+                    Match match = Spellchecker.WordRegex.Match(word);
+
+                    if (!match.Success
+                        || match.Index > 0
+                        || match.Length < word.Length)
+                    {
+                        caseSensitiveNonWords.Add(word);
+                        caseSensitiveWords.RemoveAt(i);
+                    }
+                }
+            }
+
+            for (int i = caseSensitiveWords.Count - 1; i >= 0; i--)
+            {
+                fixes.Remove(caseSensitiveWords[i]);
+
+                if (caseSensitiveWords[i].Length < minWordLength
+                    || caseSensitiveWords[i].Length > maxWordLength)
+                {
+                    caseSensitiveWords.RemoveAt(i);
+                }
+            }
         }
 
         foreach (HashSet<string> values in fixes.Values.ToList())
@@ -51,75 +109,8 @@ internal static class WordListLoader
         }
 
         return new WordListLoaderResult(
-            new WordList(state.Words, state.Sequences),
-            new WordList(state.CaseSensitiveWords, state.CaseSensitiveSequences),
-            FixList.Create(fixes));
-    }
-
-    internal static WordListLoaderResult LoadParallel(
-        IEnumerable<string> paths,
-        int minWordLength = -1,
-        int maxWordLength = int.MaxValue,
-        WordListLoadOptions options = WordListLoadOptions.None,
-        CancellationToken cancellationToken = default)
-    {
-        var states = new ConcurrentBag<LoadState>();
-
-        var parallelOptions = new ParallelOptions() { CancellationToken = cancellationToken };
-
-        Parallel.ForEach(
-            GetFiles(paths),
-            parallelOptions,
-            path =>
-            {
-                LoadState state = LoadState.Create(options);
-                LoadFile(path, minWordLength, maxWordLength, state);
-                states.Add(state);
-            });
-
-        bool isCaseSensitive = (options & WordListLoadOptions.IgnoreCase) == 0;
-
-        var words = new List<string>(states.Sum(f => f.Words.Count));
-
-        List<string> caseSensitiveWords = null;
-        List<WordSequence> caseSensitiveSequences = null;
-
-        if (isCaseSensitive)
-        {
-            caseSensitiveWords = new List<string>(states.Sum(f => f.CaseSensitiveWords!.Count));
-            caseSensitiveSequences = states.SelectMany(f => f.CaseSensitiveSequences).ToList();
-        }
-
-        Dictionary<string, HashSet<string>> fixes = states.SelectMany(f => f.Fixes).ToDictionary(f => f.Key, f => f.Value);
-        List<WordSequence> sequences = states.SelectMany(f => f.Sequences).ToList();
-
-        foreach (LoadState state in states)
-        {
-            foreach (string word in state.Words)
-            {
-                fixes.Remove(word);
-                words.Add(word);
-            }
-
-            if (isCaseSensitive)
-            {
-                foreach (string word in state.CaseSensitiveWords!)
-                {
-                    fixes.Remove(word);
-                    caseSensitiveWords!.Add(word);
-                }
-            }
-        }
-
-        foreach (HashSet<string> values in fixes.Values)
-        {
-            foreach (string value in values)
-                fixes.Remove(value);
-        }
-
-        return new WordListLoaderResult(
-            new WordList(words, sequences),
-            new WordList(caseSensitiveWords, caseSensitiveSequences),
+            new WordList(state.Words, nonWords, state.Sequences, StringComparison.CurrentCultureIgnoreCase),
+            new WordList(state.CaseSensitiveWords, caseSensitiveNonWords, state.CaseSensitiveSequences, StringComparison.CurrentCulture),
             FixList.Create(fixes));
     }
 
@@ -141,25 +132,23 @@ internal static class WordListLoader
                     yield return filePath;
                 }
             }
+            else
+            {
+                throw new InvalidOperationException($"File or directory not found: {path}.");
+            }
         }
     }
 
-    public static WordListLoaderResult LoadFile(
+    public static List<string> LoadValues(
         string path,
         int minWordLength = -1,
-        int maxWordLength = int.MaxValue,
-        WordListLoadOptions options = WordListLoadOptions.None)
+        int maxWordLength = int.MaxValue)
     {
-        LoadState state = LoadState.Create(options);
+        LoadState state = LoadState.Create(WordListLoadOptions.IgnoreCase);
 
         LoadFile(path, minWordLength, maxWordLength, state);
 
-        return new WordListLoaderResult(
-            new WordList(state.Words, state.Sequences),
-            ((options & WordListLoadOptions.IgnoreCase) == 0)
-                ? new WordList(state.CaseSensitiveWords, state.CaseSensitiveSequences)
-                : WordList.CaseSensitive,
-            FixList.Create(state.Fixes));
+        return state.Words;
     }
 
     private static void LoadFile(
@@ -276,18 +265,14 @@ internal static class WordListLoader
                         }
                     }
                 }
-                else if (value.Length >= minWordLength
-                    && value.Length <= maxWordLength)
+                else if (caseSensitiveWords is not null
+                    && !IsLower(value))
                 {
-                    if (caseSensitiveWords is not null
-                        && !IsLower(value))
-                    {
-                        caseSensitiveWords.Add(value);
-                    }
-                    else
-                    {
-                        words.Add(value);
-                    }
+                    caseSensitiveWords.Add(value);
+                }
+                else
+                {
+                    words.Add(value);
                 }
             }
         }
