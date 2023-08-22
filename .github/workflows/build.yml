@@ -60,10 +60,7 @@ jobs:
         with:
           repository: josefpihrt/wordb
           path: wordb
-      # - run: dotnet tool install -g roslynator.dotnet.cli
-      - run: ls .
-      - run: ls ../wordb
-      - run: >
+      - run: |
           ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --dry-run --words
             spellcheck
             ../wordb/data/en
