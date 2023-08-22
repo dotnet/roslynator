@@ -196,8 +196,8 @@ internal class Spellchecker
         ref SpellingContext context)
     {
         if (IsMatch(value)
-            && !IsContainedInNonWord(value, valueIndex, Data.Words, ref context)
-            && !IsContainedInNonWord(value, valueIndex, Data.CaseSensitiveWords, ref context))
+            && !IsContainedInNonWord(value, valueIndex, Data.WordList, ref context)
+            && !IsContainedInNonWord(value, valueIndex, Data.CaseSensitiveWordList, ref context))
         {
             var spellingMatch = new SpellingMatch(value, valueIndex, containingValue, containingValueIndex);
 
