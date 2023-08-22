@@ -646,11 +646,16 @@ internal static class Program
         if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
             return ExitCodes.Error;
 
+        var loadOptions = WordListLoadOptions.DetectNonWords;
+
+        if (!options.CaseSensitive)
+            loadOptions |= WordListLoadOptions.IgnoreCase;
+
         WordListLoaderResult loaderResult = WordListLoader.Load(
             wordListPaths,
             options.MinWordLength,
             options.MaxWordLength,
-            (options.CaseSensitive) ? WordListLoadOptions.None : WordListLoadOptions.IgnoreCase);
+            loadOptions);
 
         var data = new SpellingData(loaderResult.List, loaderResult.CaseSensitiveList, loaderResult.FixList);
 

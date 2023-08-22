@@ -2,7 +2,7 @@
   "profiles": {
     "CommandLine": {
       "commandName": "Project",
-      "commandLineArgs": "migrate \"E:\\Projects\\Roslynator\\src\\Migration.Test\" --target-version 3.0 --identifier roslynator.analyzers -d"
+      "commandLineArgs": "spellcheck c:/code/jp/roslynator/src/Roslynator.sln --dry-run --scope all --words c:/code/jp/roslynator/src/spellcheck c:/code/jp/wordb/data/en c:/code/jp/wordb/data/en-us c:/code/jp/wordb/data/names.txt c:/code/jp/wordb/data/tech.names.txt c:/code/jp/wordb/data/tech.acronyms.txt\r\n"
     }
   }
 }

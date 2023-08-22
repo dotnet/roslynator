@@ -9,12 +9,15 @@ roslynatorconfig
 seealso
 typeparam
 typeparamref
+ies
 
 q[uiet]
 m[inimal]
 n[ormal]
 d[etailed]
 diag[nostic]
+cs[harp]
+v[isual-]b[asic]
 
 Ascii
 Autofix
