@@ -179,7 +179,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
         {
             if (isFirst)
             {
-                WriteLine("x", Verbosity.Normal);
+                WriteLine(Verbosity.Normal);
                 WriteLine("Unknown words:", Verbosity.Normal);
                 isFirst = false;
             }
