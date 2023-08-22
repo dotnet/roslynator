@@ -234,7 +234,7 @@ internal class SpellingFixHelpers
             // Ienumerable > IEnumerable
             if ((ch == 'I' || ch == 'T')
                 && diagnostic.Casing == TextCasing.FirstUpper
-                && spellingData.Words.Contains(value.Substring(1)))
+                && spellingData.WordList.Contains(value.Substring(1)))
             {
                 (splitIndexes ??= ImmutableArray.CreateBuilder<int>()).Add(1);
             }
