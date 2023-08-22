@@ -66,7 +66,8 @@ jobs:
             ../wordb/data/en \
             ../wordb/data/en-us \
             ../wordb/data/names.txt \
-            ../wordb/data/tech.names.txt
+            ../wordb/data/tech.names.txt \
+            ../wordb/data/tech.acronyms.txt
 
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
