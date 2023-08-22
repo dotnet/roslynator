@@ -53,9 +53,9 @@ jobs:
           echo "version=${version}" >> $GITHUB_OUTPUT
       - run: dotnet restore Roslynator.sln
       - run: dotnet build Roslynator.sln --no-restore
-      # - run: |
-      #     dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
-      # - run: dotnet test Roslynator.sln --no-build
+      - run: |
+          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
+      - run: dotnet test Roslynator.sln --no-build
       - uses: actions/checkout@v3
         with:
           repository: josefpihrt/wordb
