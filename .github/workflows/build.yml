@@ -61,14 +61,13 @@ jobs:
           repository: josefpihrt/wordb
           path: wordb
       - run: |
-          ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --dry-run --words \
+          ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
             spellcheck \
             ../wordb/data/en \
             ../wordb/data/en-us \
             ../wordb/data/names.txt \
             ../wordb/data/tech.names.txt \
             ../wordb/data/tech.acronyms.txt
-        name: Spellcheck
 
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
