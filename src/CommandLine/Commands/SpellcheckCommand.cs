@@ -212,8 +212,14 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
                 WriteMatchingLines(grouping, comparer, ConsoleColors.Green);
         }
 
-        bool any1 = WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
-        bool any2 = WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
+        var any1 = false;
+        var any2 = false;
+
+        if (!Options.DryRun)
+        {
+            any1 = WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
+            any2 = WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
+        }
 
         if (!isFirst
             && !any1
