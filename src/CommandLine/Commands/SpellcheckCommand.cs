@@ -168,8 +168,12 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
         isFirst = true;
 
-        foreach (IGrouping<string, SpellingFixResult> grouping in results
-            .Where(f => !f.HasFix)
+        IEnumerable<SpellingFixResult> filteredResults = results;
+
+        if (!Options.DryRun)
+            filteredResults = filteredResults.Where(f => !f.HasFix);
+
+        foreach (IGrouping<string, SpellingFixResult> grouping in filteredResults
             .GroupBy(f => f.Value, comparer)
             .OrderBy(f => f.Key, comparer))
         {
