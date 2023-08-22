@@ -16,7 +16,7 @@ internal class SpellcheckOptions
 
     public int MaxWordLength { get; init; } = int.MaxValue;
 
-    public int CodeContext { get; init; } = 1;
+    public int CodeContext { get; init; }
 
     public bool IncludeGeneratedCode { get; init; }
 
