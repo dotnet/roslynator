@@ -61,7 +61,7 @@ jobs:
           repository: josefpihrt/wordb
           path: wordb
       - run: dotnet tool install -g roslynator.dotnet.cli
-      - run: ls -R ../wordb
+      - run: ls -R ./CommandLine/bin/Release
       - run: ./CommandLine/bin/Release/net6.0/Roslynator spellcheck Roslynator.sln --words ../wordb/en ../wordb/tech.names.txt --dry-run
 
   build_core_and_testing:
