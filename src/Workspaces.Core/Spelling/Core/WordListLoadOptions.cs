@@ -9,5 +9,5 @@ internal enum WordListLoadOptions
 {
     None = 0,
     IgnoreCase = 1,
-    DetectNonWords = 2,
+    DetectNonWords = 1 << 1,
 }

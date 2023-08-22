@@ -205,7 +205,7 @@ internal class Spellchecker
         }
     }
 
-    private bool IsContainedInNonWord(string value, int index, WordList wordList, ref SpellingContext context)
+    private static bool IsContainedInNonWord(string value, int index, WordList wordList, ref SpellingContext context)
     {
         foreach (string nonWord in wordList.NonWords)
         {
