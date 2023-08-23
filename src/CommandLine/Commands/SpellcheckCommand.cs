@@ -71,13 +71,12 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
         var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
 
-        return await FixAsync(projectOrSolution, options, projectFilter, culture, cancellationToken);
+        return await FixAsync(projectOrSolution, options, culture, cancellationToken);
     }
 
     private async Task<SpellcheckCommandResult> FixAsync(
         ProjectOrSolution projectOrSolution,
         SpellingFixerOptions options,
-        ProjectFilter projectFilter,
         IFormatProvider formatProvider = null,
         CancellationToken cancellationToken = default)
     {

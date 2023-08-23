@@ -71,14 +71,13 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
 
         var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
 
-        return await FixAsync(projectOrSolution, analyzerAssemblies, codeFixerOptions, projectFilter, culture, cancellationToken);
+        return await FixAsync(projectOrSolution, analyzerAssemblies, codeFixerOptions, culture, cancellationToken);
     }
 
     private async Task<FixCommandResult> FixAsync(
         ProjectOrSolution projectOrSolution,
         IEnumerable<AnalyzerAssembly> analyzerAssemblies,
         CodeFixerOptions codeFixerOptions,
-        ProjectFilter projectFilter,
         IFormatProvider formatProvider = null,
         CancellationToken cancellationToken = default)
     {
