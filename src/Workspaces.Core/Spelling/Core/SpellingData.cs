@@ -104,7 +104,7 @@ internal class SpellingData
         {
             WordSequenceMatch sequenceMatch = GetSequenceMatch(value, startIndex, length, match, sequences, WordList.Comparison);
 
-            if (!sequenceMatch.IsDefault)
+            if (!sequenceMatch.Sequence.Words.IsDefault)
                 return sequenceMatch;
         }
 

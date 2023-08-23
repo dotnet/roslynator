@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -129,36 +128,35 @@ internal static class WordListLoader
 
             while (i < line.Length)
             {
-                char ch = line[i];
-
-                if (ch == '#')
+                if (line[i] == ':')
                 {
-                    endIndex = i;
-                    break;
-                }
-                else if (separatorIndex == -1)
-                {
-                    if (ch == ':')
+                    if (i < line.Length - 1
+                        && line[i + 1] == ':')
+                    {
+                        i++;
+                    }
+                    else
                     {
                         separatorIndex = i;
+                        break;
                     }
-                    else if (whitespaceIndex == -1
-                        && char.IsWhiteSpace(ch))
-                    {
-                        whitespaceIndex = i;
-                    }
+                }
+                else if (char.IsWhiteSpace(line[i]))
+                {
+                    whitespaceIndex = i;
+                    break;
                 }
 
                 i++;
             }
 
-            int j = endIndex - 1;
+            i = endIndex - 1;
 
-            while (j >= startIndex
-                && char.IsWhiteSpace(line[j]))
+            while (i >= startIndex
+                && char.IsWhiteSpace(line[i]))
             {
                 endIndex--;
-                j--;
+                i--;
             }
 
             if (separatorIndex >= 0)
@@ -192,7 +190,9 @@ internal static class WordListLoader
             }
             else
             {
-                string value = line.Substring(startIndex, endIndex - startIndex);
+                string value = line
+                    .Substring(startIndex, endIndex - startIndex)
+                    .Replace("::", ":");
 
                 if (value.Length == 0)
                     continue;
@@ -200,21 +200,16 @@ internal static class WordListLoader
                 if (whitespaceIndex >= 0
                     && whitespaceIndex < endIndex)
                 {
-                    string[] s = _splitRegex.Split(value);
+                    string[] values = _splitRegex.Split(value);
 
-                    Debug.Assert(s.Length > 1, s.Length.ToString());
-
-                    if (s.Length > 0)
+                    if (caseSensitiveSequences is not null
+                        && !IsLower(value))
                     {
-                        if (caseSensitiveSequences is not null
-                            && !IsLower(value))
-                        {
-                            caseSensitiveSequences.Add(new WordSequence(s.ToImmutableArray()));
-                        }
-                        else
-                        {
-                            sequences.Add(new WordSequence(s.ToImmutableArray()));
-                        }
+                        caseSensitiveSequences.Add(new WordSequence(values));
+                    }
+                    else
+                    {
+                        sequences.Add(new WordSequence(values));
                     }
                 }
                 else if (caseSensitiveWords is not null

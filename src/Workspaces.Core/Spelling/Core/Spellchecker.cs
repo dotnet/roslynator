@@ -110,7 +110,7 @@ internal class Spellchecker
 
             WordSequenceMatch sequenceMatch = Data.GetSequenceMatch(value, startIndex, length, match);
 
-            if (!sequenceMatch.IsDefault)
+            if (!sequenceMatch.Sequence.Words.IsDefault)
             {
                 sequenceEndIndex = sequenceMatch.EndIndex;
                 continue;
