@@ -28,7 +28,8 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
     public FindSymbolsCommand(
         FindSymbolsCommandLineOptions options,
         SymbolFinderOptions symbolFinderOptions,
-        in ProjectFilter projectFilter) : base(projectFilter)
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         SymbolFinderOptions = symbolFinderOptions;

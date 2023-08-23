@@ -17,9 +17,10 @@ namespace Roslynator.CommandLine;
 
 internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandResult : CommandResult
 {
-    protected MSBuildWorkspaceCommand(in ProjectFilter projectFilter)
+    protected MSBuildWorkspaceCommand(in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter)
     {
         ProjectFilter = projectFilter;
+        FileSystemFilter = fileSystemFilter;
     }
 
     public string Language
@@ -28,6 +29,8 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
     }
 
     public ProjectFilter ProjectFilter { get; }
+
+    public FileSystemFilter FileSystemFilter { get; }
 
     public abstract Task<TCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default);
 
@@ -337,7 +340,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         {
             Project project = workspace.CurrentSolution.GetProject(projectId);
 
-            if (ProjectFilter.IsMatch(project))
+            if (IsMatch(project))
             {
                 yield return project;
             }
@@ -346,6 +349,12 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                 WriteLine($"  Skip '{project.Name}'", ConsoleColors.DarkGray, Verbosity.Normal);
             }
         }
+    }
+
+    private protected bool IsMatch(Project project)
+    {
+        return ProjectFilter.IsMatch(project)
+            && FileSystemFilter?.IsMatch(project.FilePath) != false;
     }
 
     private protected async Task<ImmutableArray<Compilation>> GetCompilationsAsync(

@@ -21,9 +21,10 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
     public SpellcheckCommand(
         SpellcheckCommandLineOptions options,
         in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter,
         SpellingData spellingData,
         Visibility visibility,
-        SpellingScopeFilter scopeFilter) : base(projectFilter)
+        SpellingScopeFilter scopeFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         SpellingData = spellingData;
@@ -55,6 +56,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
         var options = new SpellcheckOptions()
         {
+            FileSystemFilter = FileSystemFilter,
             ScopeFilter = ScopeFilter,
             SymbolVisibility = visibilityFilter,
             MinWordLength = Options.MinWordLength,
@@ -71,13 +73,12 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
         var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
 
-        return await FixAsync(projectOrSolution, options, projectFilter, culture, cancellationToken);
+        return await FixAsync(projectOrSolution, options, culture, cancellationToken);
     }
 
     private async Task<SpellcheckCommandResult> FixAsync(
         ProjectOrSolution projectOrSolution,
         SpellcheckOptions options,
-        ProjectFilter projectFilter,
         IFormatProvider formatProvider = null,
         CancellationToken cancellationToken = default)
     {
@@ -108,7 +109,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             spellingFixer = GetSpellingFixer(solution);
 
-            results = await spellingFixer.FixSolutionAsync(f => projectFilter.IsMatch(f), cancellationToken);
+            results = await spellingFixer.FixSolutionAsync(f => IsMatch(f), cancellationToken);
         }
 
         SpellingData = spellingFixer.SpellingData;

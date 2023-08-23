@@ -339,7 +339,8 @@ internal static class Program
             diagnosticFixMap: diagnosticFixMap,
             diagnosticFixerMap: diagnosticFixerMap,
             fixAllScope: fixAllScope,
-            projectFilter: projectFilter);
+            projectFilter: projectFilter,
+            fileSystemFilter: FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -357,7 +358,7 @@ internal static class Program
         if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
             return ExitCodes.Error;
 
-        var command = new AnalyzeCommand(options, severityLevel, projectFilter);
+        var command = new AnalyzeCommand(options, severityLevel, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -405,7 +406,10 @@ internal static class Program
         if (withoutFlags != SymbolFlags.None)
             rules.AddRange(SymbolFilterRuleFactory.FromFlags(withoutFlags, invert: true));
 
+        FileSystemFilter fileSystemFilter = FileSystemFilter.CreateOrDefault(options.Include, options.Exclude);
+
         var symbolFinderOptions = new SymbolFinderOptions(
+            fileSystemFilter,
             visibility: visibility,
             symbolGroups: symbolGroups,
             rules: rules,
@@ -415,7 +419,8 @@ internal static class Program
         var command = new FindSymbolsCommand(
             options: options,
             symbolFinderOptions: symbolFinderOptions,
-            projectFilter: projectFilter);
+            projectFilter: projectFilter,
+            fileSystemFilter: fileSystemFilter);
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -478,6 +483,7 @@ internal static class Program
         var command = new RenameSymbolCommand(
             options: options,
             projectFilter: projectFilter,
+            fileSystemFilter: FileSystemFilter.CreateOrDefault(options.Include, options.Exclude),
             scopeFilter: scopeFilter,
             errorResolution: errorResolution,
             ignoredCompilerDiagnostics: options.IgnoredCompilerDiagnostics,
@@ -536,7 +542,10 @@ internal static class Program
             IgnoredAttributeNameFilterRule.Default,
             new IgnoredAttributeNameFilterRule(ignoredAttributes));
 
+        FileSystemFilter fileSystemFilter = FileSystemFilter.CreateOrDefault(options.Include, options.Exclude);
+
         var symbolFilterOptions = new SymbolFilterOptions(
+            fileSystemFilter: fileSystemFilter,
             visibility: visibilityFilter,
             symbolGroups: GetSymbolGroupFilter(),
             rules: rules,
@@ -548,7 +557,8 @@ internal static class Program
             wrapListOptions: wrapListOptions,
             layout: layout,
             ignoredParts: ignoredParts,
-            projectFilter: projectFilter);
+            projectFilter: projectFilter,
+            fileSystemFilter: fileSystemFilter);
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -584,7 +594,7 @@ internal static class Program
             CommandLineHelpers.WaitForKeyPress();
         }
 
-        var command = new FormatCommand(options, projectFilter);
+        var command = new FormatCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         IEnumerable<string> properties = options.Properties;
 
@@ -644,7 +654,13 @@ internal static class Program
 
         var data = new SpellingData(loaderResult.List, loaderResult.CaseSensitiveList, loaderResult.FixList);
 
-        var command = new SpellcheckCommand(options, projectFilter, data, visibility, scopeFilter);
+        var command = new SpellcheckCommand(
+            options,
+            projectFilter,
+            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude),
+            data,
+            visibility,
+            scopeFilter);
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -660,7 +676,7 @@ internal static class Program
         if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
             return ExitCodes.Error;
 
-        var command = new SlnListCommand(options, projectFilter);
+        var command = new SlnListCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -685,7 +701,7 @@ internal static class Program
         if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
             return ExitCodes.Error;
 
-        var command = new PhysicalLinesOfCodeCommand(options, projectFilter);
+        var command = new PhysicalLinesOfCodeCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -700,7 +716,7 @@ internal static class Program
         if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
             return ExitCodes.Error;
 
-        var command = new LogicalLinesOfCodeCommand(options, projectFilter);
+        var command = new LogicalLinesOfCodeCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -776,7 +792,8 @@ internal static class Program
             filesLayout: filesLayout,
             groupByCommonNamespace: options.GroupByCommonNamespace,
             inheritanceStyle: inheritanceStyle,
-            projectFilter: projectFilter);
+            projectFilter: projectFilter,
+            fileSystemFilter: FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -820,7 +837,8 @@ internal static class Program
             documentationHost,
             filesLayout,
             options.GroupByCommonNamespace,
-            projectFilter);
+            projectFilter,
+            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -848,7 +866,8 @@ internal static class Program
             options,
             depth,
             visibility,
-            projectFilter);
+            projectFilter,
+            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -911,7 +930,8 @@ internal static class Program
             options,
             display,
             metadataReferenceFilter,
-            projectFilter);
+            projectFilter,
+            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 

@@ -18,12 +18,13 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
     public RenameSymbolCommand(
         RenameSymbolCommandLineOptions options,
         in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter,
         RenameScopeFilter scopeFilter,
         CliCompilationErrorResolution errorResolution,
         IEnumerable<string> ignoredCompilerDiagnostics,
         int codeContext,
         Func<ISymbol, bool> predicate,
-        Func<ISymbol, string> getNewName) : base(projectFilter)
+        Func<ISymbol, string> getNewName) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         ScopeFilter = scopeFilter;
@@ -80,7 +81,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
             renamer = GetSymbolRenamer(solution);
 
-            await renamer.RenameSymbolsAsync(solution.Projects.Where(p => projectFilter.IsMatch(p)), cancellationToken);
+            await renamer.RenameSymbolsAsync(solution.Projects.Where(p => IsMatch(p)), cancellationToken);
         }
 
         return new RenameSymbolCommandResult(CommandStatus.Success);
@@ -94,6 +95,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
                 SkipLocals = (ScopeFilter & RenameScopeFilter.Local) != 0,
                 IncludeGeneratedCode = Options.IncludeGeneratedCode,
                 DryRun = Options.DryRun,
+                FileSystemMatcher = FileSystemFilter?.Matcher,
             };
 
             if (IgnoredCompilerDiagnostics is not null)

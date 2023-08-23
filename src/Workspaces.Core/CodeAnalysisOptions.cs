@@ -11,6 +11,7 @@ namespace Roslynator;
 internal abstract class CodeAnalysisOptions
 {
     internal CodeAnalysisOptions(
+        FileSystemFilter fileSystemFilter = null,
         DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
         bool ignoreAnalyzerReferences = false,
         bool concurrentAnalysis = true,
@@ -26,6 +27,7 @@ internal abstract class CodeAnalysisOptions
         SeverityLevel = severityLevel;
         IgnoreAnalyzerReferences = ignoreAnalyzerReferences;
         ConcurrentAnalysis = concurrentAnalysis;
+        FileSystemFilter = fileSystemFilter;
         SupportedDiagnosticIds = supportedDiagnosticIds?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
         IgnoredDiagnosticIds = ignoredDiagnosticIds?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
     }
@@ -39,6 +41,8 @@ internal abstract class CodeAnalysisOptions
     public ImmutableHashSet<string> SupportedDiagnosticIds { get; }
 
     public ImmutableHashSet<string> IgnoredDiagnosticIds { get; }
+
+    public FileSystemFilter FileSystemFilter { get; }
 
     internal bool IsSupportedDiagnosticId(string diagnosticId)
     {

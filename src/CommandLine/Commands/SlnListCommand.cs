@@ -15,7 +15,7 @@ namespace Roslynator.CommandLine;
 
 internal class SlnListCommand : MSBuildWorkspaceCommand<CommandResult>
 {
-    public SlnListCommand(SlnListCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
+    public SlnListCommand(SlnListCommandLineOptions options, in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
     }
