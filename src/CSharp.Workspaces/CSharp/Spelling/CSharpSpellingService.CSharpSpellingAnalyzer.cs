@@ -43,6 +43,9 @@ internal partial class CSharpSpellingService
         {
             SyntaxTree tree = context.Tree;
 
+            if (_options.FileSystemFilter?.IsMatch(tree.FilePath) == false)
+                return;
+
             SyntaxNode root = tree.GetRoot(context.CancellationToken);
 
             var analysisContext = new SpellingAnalysisContext(

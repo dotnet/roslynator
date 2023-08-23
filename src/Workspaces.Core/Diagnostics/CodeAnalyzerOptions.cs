@@ -10,6 +10,7 @@ internal class CodeAnalyzerOptions : CodeAnalysisOptions
     public static CodeAnalyzerOptions Default { get; } = new();
 
     public CodeAnalyzerOptions(
+        FileSystemFilter fileSystemFilter = null,
         bool ignoreAnalyzerReferences = false,
         bool ignoreCompilerDiagnostics = false,
         bool reportNotConfigurable = false,
@@ -19,6 +20,7 @@ internal class CodeAnalyzerOptions : CodeAnalysisOptions
         DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
         IEnumerable<string> supportedDiagnosticIds = null,
         IEnumerable<string> ignoredDiagnosticIds = null) : base(
+            fileSystemFilter: fileSystemFilter,
             severityLevel: severityLevel,
             ignoreAnalyzerReferences: ignoreAnalyzerReferences,
             concurrentAnalysis: concurrentAnalysis,

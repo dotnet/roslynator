@@ -37,7 +37,8 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
         FilesLayout filesLayout,
         bool groupByCommonNamespace,
         InheritanceStyle inheritanceStyle,
-        in ProjectFilter projectFilter) : base(projectFilter)
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         Depth = depth;
@@ -118,7 +119,8 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
             IgnoredTitleParts = IgnoredTitleParts,
             IncludeContainingNamespaceFilter = IncludeContainingNamespaceFilter,
             FilesLayout = FilesLayout,
-            ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent
+            ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent,
+            FileSystemFilter = FileSystemFilter,
         };
 
         if (Options.IgnoredNames is not null)

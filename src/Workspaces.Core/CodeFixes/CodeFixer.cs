@@ -530,8 +530,21 @@ internal class CodeFixer
         ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzers, analyzerOptions, cancellationToken).ConfigureAwait(false);
 
         return diagnostics
-            .Where(f => f.IsEffective(Options, compilation.Options)
-                && analyzersById.ContainsKey(f.Id))
+            .Where(diagnostic =>
+            {
+                if (diagnostic.IsEffective(Options, compilation.Options)
+                    && analyzersById.ContainsKey(diagnostic.Id))
+                {
+                    SyntaxTree tree = diagnostic.Location.SourceTree;
+                    if (tree is null
+                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            })
             .Except(except, DiagnosticDeepEqualityComparer.Instance)
             .ToImmutableArray();
     }

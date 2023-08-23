@@ -943,7 +943,8 @@ public class DocumentationGenerator
     {
         foreach (IGrouping<string, ISymbol> grouping in typeModel
             .GetMembers(Options.IgnoredTypeParts)
-            .GroupBy(f => f.Name))
+            .Where(s => !Options.ShouldBeIgnoredByLocation(s))
+            .GroupBy(s => s.Name))
         {
             using (IEnumerator<ISymbol> en = grouping.GetEnumerator())
             {
