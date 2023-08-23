@@ -30,6 +30,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add parameter `--include`
   - Add parameter `--exclude`
 
+### Changed
+
+- [CLI] Open help in web browser when running command `roslynator help <COMMAND>` ([#1179](https://github.com/josefpihrt/roslynator/pull/1179))
+
 ### Fixed
 
 - Fix [RCS1187](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1187) ([#1150](https://github.com/JosefPihrt/Roslynator/pull/1150)).
