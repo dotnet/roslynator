@@ -5,25 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.Spelling;
 
-internal class Spellchecker
-{
-    private static readonly Regex _wordRegex = new(
-        @"
-\b
-\p{L}{2,}
-(-\p{L}{2,})*
-\p{L}*
-(
-    (?='s\b)
-|
-    ('(d|ll|m|re|t|ve)\b)
-|
-    ('(?!\p{L})\b)
-|
-    \b
-)",
-        RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace);
+#pragma warning disable RCS1043
 
+internal partial class Spellchecker
+{
     private const string _splitCasePattern = @"
     (?<=
         \p{Lu}
@@ -40,56 +25,63 @@ internal class Spellchecker
     )
 ";
 
-    private static readonly Regex _splitIdentifierRegex = new(
-        @"\P{L}+|" + _splitCasePattern,
-        RegexOptions.IgnorePatternWhitespace);
-
     private static readonly Regex _urlRegex = new(
         @"\bhttps?://[^\s]+(?=\s|\z)", RegexOptions.IgnoreCase);
 
-    private readonly Regex _splitRegex;
+    private readonly Regex _splitRegex = new("-|" + _splitCasePattern, RegexOptions.IgnorePatternWhitespace);
 
     public SpellingData Data { get; }
 
-    public Regex WordRegex { get; }
-
     public SpellcheckerOptions Options { get; }
+
+    internal static Regex WordRegex { get; } = new(
+        @"
+\b
+\p{L}{2,}
+(-\p{L}{2,})*
+\p{L}*
+(
+    (?='s\b)
+|
+    ('(s|d|ll|m|re|t|ve)\b)
+|
+    ('(?!\p{L})\b)
+|
+    \b
+)",
+        RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace);
 
     public Spellchecker(
         SpellingData data,
-        Regex wordRegex = null,
         SpellcheckerOptions options = null)
     {
         Data = data;
-        WordRegex = wordRegex ?? _wordRegex;
         Options = options ?? SpellcheckerOptions.Default;
-
-        _splitRegex = new Regex("-|" + _splitCasePattern, RegexOptions.IgnorePatternWhitespace);
     }
 
     public ImmutableArray<SpellingMatch> AnalyzeText(string value)
     {
+        ImmutableArray<SpellingMatch>.Builder builder = null;
+
         int prevEnd = 0;
 
         Match match = _urlRegex.Match(value, prevEnd);
 
-        ImmutableArray<SpellingMatch>.Builder builder = null;
-
         while (match.Success)
         {
-            AnalyzeText(value, prevEnd, match.Index - prevEnd, ref builder);
+            AnalyzeTextSegment(value, prevEnd, match.Index - prevEnd, ref builder);
 
             prevEnd = match.Index + match.Length;
 
             match = match.NextMatch();
         }
 
-        AnalyzeText(value, prevEnd, value.Length - prevEnd, ref builder);
+        AnalyzeTextSegment(value, prevEnd, value.Length - prevEnd, ref builder);
 
         return builder?.ToImmutableArray() ?? ImmutableArray<SpellingMatch>.Empty;
     }
 
-    private void AnalyzeText(
+    private void AnalyzeTextSegment(
         string value,
         int startIndex,
         int length,
@@ -116,117 +108,88 @@ internal class Spellchecker
 
             WordSequenceMatch sequenceMatch = Data.GetSequenceMatch(value, startIndex, length, match);
 
-            if (!sequenceMatch.IsDefault)
+            if (!sequenceMatch.Sequence.Words.IsDefault)
             {
                 sequenceEndIndex = sequenceMatch.EndIndex;
                 continue;
             }
 
-            if (match.Length >= Options.MinWordLength
-                && match.Length <= Options.MaxWordLength)
-            {
-                if (_splitRegex is null)
-                {
-                    AnalyzeValue(match.Value, match.Index, null, 0, ref builder);
-                }
-                else
-                {
-                    AnalyzeSplit(_splitRegex, match.Value, match.Index, 0, ref builder);
-                }
-            }
+            if (!IsAllowedLength(match.Length))
+                continue;
+
+            AnalyzeWord(value, match.Value, match.Index, ref builder);
         }
     }
 
-    internal ImmutableArray<SpellingMatch> AnalyzeIdentifier(
-        string value,
-        int prefixLength = 0)
-    {
-        if (value.Length < Options.MinWordLength
-            || value.Length > Options.MaxWordLength)
-        {
-            return ImmutableArray<SpellingMatch>.Empty;
-        }
-
-        if (prefixLength > 0
-            && Data.Contains(value))
-        {
-            return ImmutableArray<SpellingMatch>.Empty;
-        }
-
-        ImmutableArray<SpellingMatch>.Builder builder = null;
-
-        AnalyzeSplit(_splitIdentifierRegex, value, 0, prefixLength, ref builder);
-
-        return builder?.ToImmutableArray() ?? ImmutableArray<SpellingMatch>.Empty;
-    }
-
-    private void AnalyzeSplit(
-        Regex regex,
+    private void AnalyzeWord(
         string input,
-        int offset,
-        int prefixLength,
+        string value,
+        int index,
         ref ImmutableArray<SpellingMatch>.Builder builder)
     {
-        Match match = regex.Match(input, prefixLength);
-
-        if (match.Success
-            && prefixLength > 0
-            && match.Index == prefixLength)
-        {
-            match = match.NextMatch();
-        }
+        Match match = _splitRegex.Match(value);
 
         if (!match.Success)
         {
-            if (prefixLength > 0)
-            {
-                AnalyzeValue(input.Substring(prefixLength), offset + prefixLength, input, offset, ref builder);
-            }
-            else
-            {
-                AnalyzeValue(input, offset, null, 0, ref builder);
-            }
+            AnalyzeWordPart(input, value, index, null, 0, ref builder);
         }
-        else if (!Data.Contains(input))
+        else if (!Data.Contains(value))
         {
-            int prevIndex = prefixLength;
+            int lastEnd = 0;
 
             do
             {
-                AnalyzeValue(input.Substring(prevIndex, match.Index - prevIndex), prevIndex + offset, input, offset, ref builder);
+                AnalyzeWordPart(input, value.Substring(lastEnd, match.Index - lastEnd), lastEnd + index, value, index, ref builder);
 
-                prevIndex = match.Index + match.Length;
-
+                lastEnd = match.Index + match.Length;
                 match = match.NextMatch();
             }
             while (match.Success);
 
-            AnalyzeValue(input.Substring(prevIndex), prevIndex + offset, input, offset, ref builder);
+            AnalyzeWordPart(input, value.Substring(lastEnd), lastEnd + index, value, index, ref builder);
         }
     }
 
-    private void AnalyzeValue(
+    private void AnalyzeWordPart(
+        string input,
         string value,
-        int valueIndex,
-        string containingValue,
-        int containingValueIndex,
+        int index,
+        string parentValue,
+        int parentIndex,
         ref ImmutableArray<SpellingMatch>.Builder builder)
     {
-        if (IsMatch(value))
+        if (IsMatch(value)
+            && !IsContainedInNonWord(input, value, index, Data.WordList)
+            && !IsContainedInNonWord(input, value, index, Data.CaseSensitiveWordList))
         {
-            var spellingMatch = new SpellingMatch(value, valueIndex, containingValue, containingValueIndex);
+            var spellingMatch = new SpellingMatch(value, index, parentValue, parentIndex);
 
             (builder ??= ImmutableArray.CreateBuilder<SpellingMatch>()).Add(spellingMatch);
+        }
+
+        static bool IsContainedInNonWord(string input, string value, int index, WordList wordList)
+        {
+            foreach (string nonWord in wordList.NonWords)
+            {
+                int i = nonWord.IndexOf(value, wordList.Comparison);
+
+                if (i >= 0
+                    && index >= i
+                    && index + nonWord.Length - i <= input.Length
+                    && string.Compare(input, index - i, nonWord, 0, nonWord.Length, wordList.Comparison) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
     private bool IsMatch(string value)
     {
-        if (value.Length < Options.MinWordLength
-            || value.Length > Options.MaxWordLength)
-        {
+        if (!IsAllowedLength(value.Length))
             return false;
-        }
 
         if (IsAllowedNonsensicalWord(value))
             return false;
@@ -235,6 +198,12 @@ internal class Spellchecker
             return false;
 
         return true;
+    }
+
+    private bool IsAllowedLength(int value)
+    {
+        return value >= Options.MinWordLength
+            && value <= Options.MaxWordLength;
     }
 
     private static bool IsAllowedNonsensicalWord(string value)

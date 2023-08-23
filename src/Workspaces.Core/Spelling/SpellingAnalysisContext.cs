@@ -18,14 +18,14 @@ internal class SpellingAnalysisContext
 
     public SpellingData SpellingData { get; }
 
-    public SpellingFixerOptions Options { get; }
+    public SpellcheckOptions Options { get; }
 
     public CancellationToken CancellationToken { get; }
 
     public SpellingAnalysisContext(
         Action<Diagnostic> reportDiagnostic,
         SpellingData spellingData,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         CancellationToken cancellationToken)
     {
         SpellingData = spellingData;
@@ -82,7 +82,7 @@ internal class SpellingAnalysisContext
             }
 
             Diagnostic diagnostic = Diagnostic.Create(
-                SpellingAnalyzer.DiagnosticDescriptor,
+                SpellcheckAnalyzer.DiagnosticDescriptor,
                 Location.Create(syntaxTree, new TextSpan(index, match.Value.Length)),
                 properties: properties,
                 messageArgs: match.Value);

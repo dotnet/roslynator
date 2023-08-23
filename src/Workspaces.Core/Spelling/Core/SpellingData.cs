@@ -15,8 +15,6 @@ internal class SpellingData
     private WordCharMap _reversedCharIndexMap;
     private ImmutableDictionary<string, ImmutableHashSet<string>> _charMap;
 
-    public static SpellingData Empty { get; } = new(WordList.Default, WordList.CaseSensitive, FixList.Empty);
-
     public SpellingData(
         WordList words,
         WordList caseSensitiveWords,
@@ -26,20 +24,20 @@ internal class SpellingData
     }
 
     private SpellingData(
-        WordList words,
-        WordList caseSensitiveWords,
+        WordList wordList,
+        WordList caseSensitiveWordList,
         FixList fixes,
         ImmutableHashSet<string> ignoredValues)
     {
-        Words = words;
-        CaseSensitiveWords = caseSensitiveWords;
+        WordList = wordList;
+        CaseSensitiveWordList = caseSensitiveWordList;
         Fixes = fixes ?? FixList.Empty;
         IgnoredValues = ignoredValues.ToImmutableHashSet(StringComparer.InvariantCulture);
     }
 
-    public WordList Words { get; }
+    public WordList WordList { get; }
 
-    public WordList CaseSensitiveWords { get; }
+    public WordList CaseSensitiveWordList { get; }
 
     public ImmutableHashSet<string> IgnoredValues { get; }
 
@@ -50,7 +48,7 @@ internal class SpellingData
         get
         {
             if (_charIndexMap is null)
-                Interlocked.CompareExchange(ref _charIndexMap, WordCharMap.CreateCharIndexMap(Words), null);
+                Interlocked.CompareExchange(ref _charIndexMap, WordCharMap.CreateCharIndexMap(WordList), null);
 
             return _charIndexMap;
         }
@@ -61,7 +59,7 @@ internal class SpellingData
         get
         {
             if (_reversedCharIndexMap is null)
-                Interlocked.CompareExchange(ref _reversedCharIndexMap, WordCharMap.CreateCharIndexMap(Words, reverse: true), null);
+                Interlocked.CompareExchange(ref _reversedCharIndexMap, WordCharMap.CreateCharIndexMap(WordList, reverse: true), null);
 
             return _reversedCharIndexMap;
         }
@@ -78,7 +76,7 @@ internal class SpellingData
 
             ImmutableDictionary<string, ImmutableHashSet<string>> Create()
             {
-                return Words.Values
+                return WordList.Words
                     .Select(s =>
                     {
                         char[] arr = s.ToCharArray();
@@ -87,8 +85,8 @@ internal class SpellingData
 
                         return (value: s, value2: new string(arr));
                     })
-                    .GroupBy(f => f.value, Words.Comparer)
-                    .ToImmutableDictionary(f => f.Key, f => f.Select(f => f.value2).ToImmutableHashSet(Words.Comparer));
+                    .GroupBy(f => f.value, WordList.Comparer)
+                    .ToImmutableDictionary(f => f.Key, f => f.Select(f => f.value2).ToImmutableHashSet(WordList.Comparer));
             }
         }
     }
@@ -96,22 +94,22 @@ internal class SpellingData
     public bool Contains(string value)
     {
         return IgnoredValues.Contains(value)
-            || CaseSensitiveWords.Contains(value)
-            || Words.Contains(value);
+            || CaseSensitiveWordList.Contains(value)
+            || WordList.Contains(value);
     }
 
     public WordSequenceMatch GetSequenceMatch(string value, int startIndex, int length, Match match)
     {
-        if (CaseSensitiveWords.Sequences.TryGetValue(match.Value, out ImmutableArray<WordSequence> sequences))
+        if (CaseSensitiveWordList.Sequences.TryGetValue(match.Value, out ImmutableArray<WordSequence> sequences))
         {
-            WordSequenceMatch sequenceMatch = GetSequenceMatch(value, startIndex, length, match, sequences, Words.Comparison);
+            WordSequenceMatch sequenceMatch = GetSequenceMatch(value, startIndex, length, match, sequences, WordList.Comparison);
 
-            if (!sequenceMatch.IsDefault)
+            if (!sequenceMatch.Sequence.Words.IsDefault)
                 return sequenceMatch;
         }
 
-        if (Words.Sequences.TryGetValue(match.Value, out sequences))
-            return GetSequenceMatch(value, startIndex, length, match, sequences, Words.Comparison);
+        if (WordList.Sequences.TryGetValue(match.Value, out sequences))
+            return GetSequenceMatch(value, startIndex, length, match, sequences, WordList.Comparison);
 
         return default;
     }
@@ -198,30 +196,30 @@ internal class SpellingData
 
     public SpellingData AddWords(IEnumerable<string> values)
     {
-        WordList newList = Words.AddValues(values);
+        WordList newList = WordList.AddValues(values);
 
-        return new SpellingData(newList, CaseSensitiveWords, Fixes, IgnoredValues);
+        return new SpellingData(newList, CaseSensitiveWordList, Fixes, IgnoredValues);
     }
 
     public SpellingData AddWord(string value)
     {
-        return new SpellingData(Words.AddValue(value), CaseSensitiveWords, Fixes, IgnoredValues);
+        return new SpellingData(WordList.AddValue(value), CaseSensitiveWordList, Fixes, IgnoredValues);
     }
 
     public SpellingData AddFix(string error, SpellingFix fix)
     {
         FixList fixList = Fixes.Add(error, fix);
 
-        return new SpellingData(Words, CaseSensitiveWords, fixList, IgnoredValues);
+        return new SpellingData(WordList, CaseSensitiveWordList, fixList, IgnoredValues);
     }
 
     public SpellingData AddIgnoredValue(string value)
     {
-        return new SpellingData(Words, CaseSensitiveWords, Fixes, IgnoredValues.Add(value));
+        return new SpellingData(WordList, CaseSensitiveWordList, Fixes, IgnoredValues.Add(value));
     }
 
     public SpellingData AddIgnoredValues(IEnumerable<string> values)
     {
-        return new SpellingData(Words, CaseSensitiveWords, Fixes, IgnoredValues.Union(values));
+        return new SpellingData(WordList, CaseSensitiveWordList, Fixes, IgnoredValues.Union(values));
     }
 }

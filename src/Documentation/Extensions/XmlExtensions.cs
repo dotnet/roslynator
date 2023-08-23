@@ -122,7 +122,7 @@ internal static class XmlExtensions
                                     {
                                         ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
 
-                                        //XTODO: repair roslyn documentation
+                                        //TODO: repair roslyn documentation
                                         Debug.Assert(
                                             symbol is not null
                                                 || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"

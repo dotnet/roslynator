@@ -25,7 +25,7 @@ internal class VisualStudioCodeAnalysisConfig
 
     public ImmutableDictionary<string, bool> CodeFixes { get; }
 
-    public VisualStudioCodeAnalysisConfig WithPrefixfieldIdentifierWithUnderscore(bool value)
+    public VisualStudioCodeAnalysisConfig WithPrefixFieldIdentifierWithUnderscore(bool value)
     {
         return new VisualStudioCodeAnalysisConfig(
             value,

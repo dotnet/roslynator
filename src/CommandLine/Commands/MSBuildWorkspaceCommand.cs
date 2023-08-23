@@ -277,7 +277,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         return MSBuildWorkspace.Create(properties);
     }
 
-    private static bool TryGetVisualStudioInstance(out VisualStudioInstance instance)
+    private static bool TryGetVisualStudioInstance(out VisualStudioInstance result)
     {
         List<VisualStudioInstance> instances = MSBuildLocator.QueryVisualStudioInstances()
             .Distinct(VisualStudioInstanceComparer.MSBuildPath)
@@ -286,14 +286,14 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         if (instances.Count == 0)
         {
             WriteLine($"MSBuild location not found. Use option '-{OptionShortNames.MSBuildPath}, --{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
-            instance = null;
+            result = null;
             return false;
         }
 
         WriteLine("Available MSBuild locations:", Verbosity.Diagnostic);
 
-        foreach (VisualStudioInstance vsi in instances.OrderBy(f => f.Version))
-            WriteLine($"  {vsi.Name}, Version: {vsi.Version}, Path: {vsi.MSBuildPath}", Verbosity.Diagnostic);
+        foreach (VisualStudioInstance instance in instances.OrderBy(f => f.Version))
+            WriteLine($"  {instance.Name}, Version: {instance.Version}, Path: {instance.MSBuildPath}", Verbosity.Diagnostic);
 
         instances = instances
             .GroupBy(f => f.Version)
@@ -304,11 +304,11 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         if (instances.Count > 1)
         {
             WriteLine($"Cannot choose MSBuild location automatically. Use option '-{OptionShortNames.MSBuildPath}, --{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
-            instance = null;
+            result = null;
             return false;
         }
 
-        instance = instances[0];
+        result = instances[0];
         return true;
     }
 

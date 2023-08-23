@@ -13,12 +13,12 @@ internal abstract class SpellingService : ISpellingService
 
     public abstract DiagnosticAnalyzer CreateAnalyzer(
         SpellingData spellingData,
-        SpellingFixerOptions options);
+        SpellcheckOptions options);
 
     public abstract ImmutableArray<Diagnostic> AnalyzeSpelling(
         SyntaxNode node,
         SpellingData spellingData,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         CancellationToken cancellationToken);
 
     public abstract SpellingDiagnostic CreateSpellingDiagnostic(Diagnostic diagnostic);

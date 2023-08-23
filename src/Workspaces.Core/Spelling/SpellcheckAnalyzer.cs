@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -17,19 +18,31 @@ using static Roslynator.Logger;
 
 namespace Roslynator.Spelling;
 
-internal class SpellingFixer
+internal class SpellcheckAnalyzer
 {
-    public SpellingFixer(
+    [SuppressMessage("MicrosoftCodeAnalysisReleaseTracking", "RS2008:Enable analyzer release tracking")]
+    public static readonly DiagnosticDescriptor DiagnosticDescriptor = new(
+        id: CommonDiagnosticIdentifiers.PossibleMisspellingOrTypo,
+        title: "Possible misspelling or typo",
+        messageFormat: "Possible misspelling or typo in '{0}'",
+        category: "Spelling",
+        defaultSeverity: DiagnosticSeverity.Info,
+        isEnabledByDefault: true,
+        description: null,
+        helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.PossibleMisspellingOrTypo),
+        customTags: Array.Empty<string>());
+
+    public SpellcheckAnalyzer(
         Solution solution,
         SpellingData spellingData,
         IFormatProvider formatProvider = null,
-        SpellingFixerOptions options = null)
+        SpellcheckOptions options = null)
     {
         Workspace = solution.Workspace;
 
         SpellingData = spellingData;
         FormatProvider = formatProvider;
-        Options = options ?? SpellingFixerOptions.Default;
+        Options = options ?? SpellcheckOptions.Default;
     }
 
     public Workspace Workspace { get; }
@@ -38,7 +51,7 @@ internal class SpellingFixer
 
     public IFormatProvider FormatProvider { get; }
 
-    public SpellingFixerOptions Options { get; }
+    public SpellcheckOptions Options { get; }
 
     private Solution CurrentSolution => Workspace.CurrentSolution;
 
