@@ -94,7 +94,7 @@ internal class HelpCommand
     {
         var writer = new ConsoleHelpWriter();
 
-        command = command.WithOptions(command.Options.Sort(CommandOptionComparer.Name));
+        command = command with { Options = command.Options.Sort(CommandOptionComparer.Name) };
 
         CommandHelp commandHelp = CommandHelp.Create(command);
 
