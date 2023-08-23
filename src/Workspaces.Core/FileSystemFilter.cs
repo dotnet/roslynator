@@ -63,14 +63,14 @@ internal sealed class FileSystemFilter
             return true;
 
         bool isMatch = Matcher.IsMatch(symbol);
-
+#if DEBUG
         if (!isMatch
             && Logger.ShouldWrite(Verbosity.Diagnostic))
         {
             lock (_lock)
                 Logger.WriteLine($"Excluding symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
         }
-
+#endif
         return isMatch;
     }
 
