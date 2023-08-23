@@ -67,8 +67,9 @@ internal sealed class FileSystemFilter
     {
         PatternMatchingResult result = Matcher.Match(filePath);
 
-        Debug.Assert(result.Files.Count() <= 1, result.Files.Count().ToString());
 #if DEBUG
+        Debug.Assert(result.Files.Count() <= 1, result.Files.Count().ToString());
+
         if (!result.HasMatches
             && Logger.ShouldWrite(Verbosity.Diagnostic))
         {
