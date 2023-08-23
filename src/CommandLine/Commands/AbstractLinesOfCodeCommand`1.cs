@@ -27,6 +27,22 @@ internal abstract class AbstractLinesOfCodeCommand<TResult> : MSBuildWorkspaceCo
     {
         var codeMetrics = new ConcurrentBag<(ProjectId projectId, CodeMetricsInfo codeMetrics)>();
 
+#if NETFRAMEWORK
+        await Task.CompletedTask;
+
+        Parallel.ForEach(
+            projects,
+            project =>
+            {
+                ICodeMetricsService service = MefWorkspaceServices.Default.GetService<ICodeMetricsService>(project.Language);
+
+                CodeMetricsInfo projectMetrics = (service is not null)
+                    ? service.CountLinesAsync(project, kind, FileSystemFilter, options, cancellationToken).Result
+                    : CodeMetricsInfo.NotAvailable;
+
+                codeMetrics.Add((project.Id, codeMetrics: projectMetrics));
+            });
+#else
         await Parallel.ForEachAsync(
             projects,
             cancellationToken,
@@ -40,7 +56,7 @@ internal abstract class AbstractLinesOfCodeCommand<TResult> : MSBuildWorkspaceCo
 
                 codeMetrics.Add((project.Id, codeMetrics: projectMetrics));
             });
-
+#endif
         return codeMetrics.ToImmutableDictionary(f => f.projectId, f => f.codeMetrics);
     }
 

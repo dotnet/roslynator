@@ -58,6 +58,30 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
 
         var changedDocuments = new ConcurrentBag<ImmutableArray<DocumentId>>();
 
+#if NETFRAMEWORK
+        await Task.CompletedTask;
+
+        Parallel.ForEach(
+            FilterProjects(solution),
+            project =>
+            {
+                WriteLine($"  Analyze '{project.Name}'", Verbosity.Minimal);
+
+                ISyntaxFactsService syntaxFacts = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(project.Language);
+
+                Project newProject = CodeFormatter.FormatProjectAsync(project, syntaxFacts, options, cancellationToken).Result;
+
+                ImmutableArray<DocumentId> formattedDocuments = CodeFormatter.GetFormattedDocumentsAsync(project, newProject, syntaxFacts).Result;
+
+                if (formattedDocuments.Any())
+                {
+                    changedDocuments.Add(formattedDocuments);
+                    LogHelpers.WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
+                }
+
+                WriteLine($"  Done analyzing '{project.Name}'", Verbosity.Normal);
+            });
+#else
         await Parallel.ForEachAsync(
             FilterProjects(solution),
             cancellationToken,
@@ -79,6 +103,7 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
 
                 WriteLine($"  Done analyzing '{project.Name}'", Verbosity.Normal);
             });
+#endif
 
         if (!changedDocuments.IsEmpty)
         {
