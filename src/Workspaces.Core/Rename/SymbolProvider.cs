@@ -14,6 +14,8 @@ using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.Rename;
 
+#pragma warning disable RS1001, RS1022
+
 internal class SymbolProvider
 {
     public bool IncludeGeneratedCode { get; init; }
@@ -62,7 +64,6 @@ internal class SymbolProvider
         return analyzer.Symbols;
     }
 
-    [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1001:Missing diagnostic analyzer attribute.")]
     private class Analyzer : DiagnosticAnalyzer
     {
         [SuppressMessage("MicrosoftCodeAnalysisReleaseTracking", "RS2008:Enable analyzer release tracking")]
