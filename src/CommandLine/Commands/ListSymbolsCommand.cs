@@ -31,7 +31,8 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         WrapListOptions wrapListOptions,
         SymbolDefinitionListLayout layout,
         SymbolDefinitionPartFilter ignoredParts,
-        in ProjectFilter projectFilter) : base(projectFilter)
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         SymbolFilterOptions = symbolFilterOptions;

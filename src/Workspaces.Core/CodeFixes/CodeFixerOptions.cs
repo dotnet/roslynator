@@ -17,6 +17,7 @@ internal class CodeFixerOptions : CodeAnalysisOptions
     public static CodeFixerOptions Default { get; } = new();
 
     public CodeFixerOptions(
+        FileSystemFilter fileSystemFilter = null,
         DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
         bool ignoreCompilerErrors = false,
         bool ignoreAnalyzerReferences = false,
@@ -32,6 +33,7 @@ internal class CodeFixerOptions : CodeAnalysisOptions
         int maxIterations = -1,
         int batchSize = -1,
         bool format = false) : base(
+            fileSystemFilter: fileSystemFilter,
             severityLevel: severityLevel,
             ignoreAnalyzerReferences: ignoreAnalyzerReferences,
             concurrentAnalysis: concurrentAnalysis,

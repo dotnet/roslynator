@@ -10,6 +10,18 @@ namespace Roslynator.CommandLine;
 public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
 {
     [Option(
+        longName: "include",
+        HelpText = "",
+        MetaValue = "<GLOB_PATTERN>")]
+    public IEnumerable<string> Include { get; set; }
+
+    [Option(
+        longName: "exclude",
+        HelpText = "",
+        MetaValue = "<GLOB_PATTERN>")]
+    public IEnumerable<string> Exclude { get; set; }
+
+    [Option(
         longName: OptionNames.IgnoredProjects,
         HelpText = "Defines projects that should not be analyzed.",
         MetaValue = "<PROJECT_NAME>")]

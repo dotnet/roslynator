@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.Rename;
 
@@ -62,4 +63,7 @@ public class SymbolRenamerOptions
     /// If the symbol is a type renames the file containing the type declaration as well.
     /// </summary>
     public bool RenameFile { get; set; }
+
+    //TODO: SymbolRenameOptions.FileSystemMatcher
+    internal Matcher FileSystemMatcher { get; set; }
 }

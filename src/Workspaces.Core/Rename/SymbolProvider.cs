@@ -10,17 +10,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.Rename;
 
 internal class SymbolProvider
 {
-    public SymbolProvider(bool includeGeneratedCode = false)
-    {
-        IncludeGeneratedCode = includeGeneratedCode;
-    }
+    public bool IncludeGeneratedCode { get; init; }
 
-    public bool IncludeGeneratedCode { get; }
+    public Matcher FileSystemMatcher { get; init; }
 
     public async Task<IEnumerable<ISymbol>> GetSymbolsAsync(
         Project project,
@@ -46,9 +44,13 @@ internal class SymbolProvider
             _ => throw new InvalidOperationException(),
         };
 
-        var analyzer = new Analyzer(
-            symbolKinds,
-            IncludeGeneratedCode);
+        var analyzer = new Analyzer()
+        {
+            IncludeGeneratedCode = IncludeGeneratedCode,
+            FileSystemMatcher = FileSystemMatcher,
+        };
+
+        analyzer.SymbolKinds.AddRange(symbolKinds);
 
         var compilationWithAnalyzers = new CompilationWithAnalyzers(
             compilation,
@@ -77,19 +79,15 @@ internal class SymbolProvider
 
         private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics = ImmutableArray.Create(DiagnosticDescriptor);
 
-        public Analyzer(ImmutableArray<SymbolKind> symbolKinds, bool includeGeneratedCode = false)
-        {
-            SymbolKinds = symbolKinds;
-            IncludeGeneratedCode = includeGeneratedCode;
-        }
-
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => _supportedDiagnostics;
 
         public ConcurrentBag<ISymbol> Symbols { get; } = new();
 
-        public ImmutableArray<SymbolKind> SymbolKinds { get; }
+        public List<SymbolKind> SymbolKinds { get; } = new();
 
-        public bool IncludeGeneratedCode { get; }
+        public bool IncludeGeneratedCode { get; set; }
+
+        public Matcher FileSystemMatcher { get; set; }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -99,7 +97,7 @@ internal class SymbolProvider
                 ? GeneratedCodeAnalysisFlags.Analyze
                 : GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(f => AnalyzeSymbol(f), SymbolKinds);
+            context.RegisterSymbolAction(f => AnalyzeSymbol(f), SymbolKinds.ToArray());
         }
 
         private void AnalyzeSymbol(SymbolAnalysisContext context)
@@ -116,7 +114,9 @@ internal class SymbolProvider
                 case SymbolKind.NamedType:
                 case SymbolKind.Property:
                     {
-                        Symbols.Add(symbol);
+                        if (FileSystemMatcher?.IsMatch(symbol) != false)
+                            Symbols.Add(symbol);
+
                         break;
                     }
                 case SymbolKind.Method:
@@ -130,7 +130,9 @@ internal class SymbolProvider
                             case MethodKind.UserDefinedOperator:
                             case MethodKind.Conversion:
                                 {
-                                    Symbols.Add(methodSymbol);
+                                    if (FileSystemMatcher?.IsMatch(symbol) != false)
+                                        Symbols.Add(methodSymbol);
+
                                     break;
                                 }
                         }

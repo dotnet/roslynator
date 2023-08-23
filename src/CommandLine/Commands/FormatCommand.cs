@@ -19,7 +19,7 @@ namespace Roslynator.CommandLine;
 
 internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
 {
-    public FormatCommand(FormatCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
+    public FormatCommand(FormatCommandLineOptions options, in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
     }
@@ -30,19 +30,17 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
     {
         ImmutableArray<DocumentId> formattedDocuments;
 
+        var options = new CodeFormatterOptions(fileSystemFilter: FileSystemFilter, includeGeneratedCode: Options.IncludeGeneratedCode);
+
         if (projectOrSolution.IsProject)
         {
             Project project = projectOrSolution.AsProject();
-
-            var options = new CodeFormatterOptions(includeGeneratedCode: Options.IncludeGeneratedCode);
 
             formattedDocuments = await FormatProjectAsync(project, options, cancellationToken);
         }
         else
         {
             Solution solution = projectOrSolution.AsSolution();
-
-            var options = new CodeFormatterOptions(includeGeneratedCode: Options.IncludeGeneratedCode);
 
             formattedDocuments = await FormatSolutionAsync(solution, options, cancellationToken);
         }
@@ -60,9 +58,10 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
 
         var changedDocuments = new ConcurrentBag<ImmutableArray<DocumentId>>();
 
-        Parallel.ForEach(
+        await Parallel.ForEachAsync(
             FilterProjects(solution),
-            project =>
+            cancellationToken,
+            async (project, cancellationToken) =>
             {
                 WriteLine($"  Analyze '{project.Name}'", Verbosity.Minimal);
 
@@ -70,7 +69,7 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
 
                 Project newProject = CodeFormatter.FormatProjectAsync(project, syntaxFacts, options, cancellationToken).Result;
 
-                ImmutableArray<DocumentId> formattedDocuments = CodeFormatter.GetFormattedDocumentsAsync(project, newProject, syntaxFacts).Result;
+                ImmutableArray<DocumentId> formattedDocuments = await CodeFormatter.GetFormattedDocumentsAsync(project, newProject, syntaxFacts);
 
                 if (formattedDocuments.Any())
                 {

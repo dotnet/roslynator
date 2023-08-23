@@ -9,6 +9,7 @@ internal class SpellingFixerOptions
     public static SpellingFixerOptions Default { get; } = new();
 
     public SpellingFixerOptions(
+        FileSystemFilter fileSystemFilter = null,
         SpellingScopeFilter scopeFilter = SpellingScopeFilter.All,
         VisibilityFilter symbolVisibility = VisibilityFilter.All,
         SplitMode splitMode = SplitMode.CaseAndHyphen,
@@ -23,6 +24,7 @@ internal class SpellingFixerOptions
         if (codeContext < 0)
             throw new ArgumentOutOfRangeException(nameof(codeContext), codeContext, "");
 
+        FileSystemFilter = fileSystemFilter;
         ScopeFilter = scopeFilter;
         SymbolVisibility = symbolVisibility;
         SplitMode = splitMode;
@@ -34,6 +36,8 @@ internal class SpellingFixerOptions
         Interactive = interactive;
         DryRun = dryRun;
     }
+
+    public FileSystemFilter FileSystemFilter { get; }
 
     public SpellingScopeFilter ScopeFilter { get; }
 

@@ -131,7 +131,11 @@ internal class SymbolRenameState
 
         while (true)
         {
-            var symbolProvider = new SymbolProvider(Options.IncludeGeneratedCode);
+            var symbolProvider = new SymbolProvider()
+            {
+                IncludeGeneratedCode = Options.IncludeGeneratedCode,
+                FileSystemMatcher = Options.FileSystemMatcher,
+            };
 
             IEnumerable<ISymbol> symbols = await symbolProvider.GetSymbolsAsync(project, scope, cancellationToken).ConfigureAwait(false);
 

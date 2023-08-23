@@ -21,9 +21,10 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
     public SpellcheckCommand(
         SpellcheckCommandLineOptions options,
         in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter,
         SpellingData spellingData,
         Visibility visibility,
-        SpellingScopeFilter scopeFilter) : base(projectFilter)
+        SpellingScopeFilter scopeFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         SpellingData = spellingData;
@@ -54,6 +55,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
         };
 
         var options = new SpellingFixerOptions(
+            fileSystemFilter: FileSystemFilter,
             scopeFilter: ScopeFilter,
             symbolVisibility: visibilityFilter,
             minWordLength: Options.MinWordLength,
@@ -106,7 +108,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             spellingFixer = GetSpellingFixer(solution);
 
-            results = await spellingFixer.FixSolutionAsync(f => projectFilter.IsMatch(f), cancellationToken);
+            results = await spellingFixer.FixSolutionAsync(f => IsMatch(f), cancellationToken);
         }
 
         SpellingData = spellingFixer.SpellingData;

@@ -22,7 +22,8 @@ internal class GenerateSourceReferencesCommand : MSBuildWorkspaceCommand<Command
         GenerateSourceReferencesCommandLineOptions options,
         DocumentationDepth depth,
         Visibility visibility,
-        in ProjectFilter projectFilter) : base(projectFilter)
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         Depth = depth;
@@ -39,7 +40,7 @@ internal class GenerateSourceReferencesCommand : MSBuildWorkspaceCommand<Command
     {
         AssemblyResolver.Register();
 
-        var filter = new SymbolFilterOptions(Visibility.ToVisibilityFilter());
+        var filter = new SymbolFilterOptions(FileSystemFilter, Visibility.ToVisibilityFilter());
 
         WriteLine($"Save source references to '{Options.Output}'.", Verbosity.Minimal);
 

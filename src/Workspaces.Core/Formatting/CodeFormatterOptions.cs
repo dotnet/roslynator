@@ -7,10 +7,14 @@ internal class CodeFormatterOptions
     public static CodeFormatterOptions Default { get; } = new();
 
     public CodeFormatterOptions(
+        FileSystemFilter fileSystemFilter = null,
         bool includeGeneratedCode = false)
     {
+        FileSystemFilter = fileSystemFilter;
         IncludeGeneratedCode = includeGeneratedCode;
     }
+
+    public FileSystemFilter FileSystemFilter { get; }
 
     public bool IncludeGeneratedCode { get; }
 }

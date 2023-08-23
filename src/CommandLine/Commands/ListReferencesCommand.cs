@@ -17,7 +17,8 @@ internal class ListReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
         ListReferencesCommandLineOptions options,
         MetadataReferenceDisplay display,
         MetadataReferenceFilter filter,
-        in ProjectFilter projectFilter) : base(projectFilter)
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         Display = display;

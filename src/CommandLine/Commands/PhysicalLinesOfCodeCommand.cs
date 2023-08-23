@@ -16,7 +16,7 @@ namespace Roslynator.CommandLine;
 
 internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCodeCommandResult>
 {
-    public PhysicalLinesOfCodeCommand(PhysicalLinesOfCodeCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
+    public PhysicalLinesOfCodeCommand(PhysicalLinesOfCodeCommandLineOptions options, in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
     }
@@ -52,7 +52,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
         }
         else
         {
-            ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetricsByProject = CountLines(projectOrSolution.AsSolution(), codeMetricsOptions, cancellationToken);
+            ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetricsByProject = await CountLinesAsync(projectOrSolution.AsSolution(), codeMetricsOptions, cancellationToken);
 
             codeMetrics = CodeMetricsInfo.Create(codeMetricsByProject.Values);
         }
@@ -66,7 +66,12 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
 
         Stopwatch stopwatch = Stopwatch.StartNew();
 
-        CodeMetricsInfo codeMetrics = await service.CountLinesAsync(project, LinesOfCodeKind.Physical, options, cancellationToken);
+        CodeMetricsInfo codeMetrics = await service.CountLinesAsync(
+            project,
+            LinesOfCodeKind.Physical,
+            FileSystemFilter,
+            options,
+            cancellationToken);
 
         stopwatch.Stop();
 
@@ -84,7 +89,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
         return codeMetrics;
     }
 
-    private ImmutableDictionary<ProjectId, CodeMetricsInfo> CountLines(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
+    private async Task<ImmutableDictionary<ProjectId, CodeMetricsInfo>> CountLinesAsync(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
     {
         WriteLine($"Count lines for solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
@@ -92,7 +97,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
 
         Stopwatch stopwatch = Stopwatch.StartNew();
 
-        ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetrics = LinesOfCodeHelpers.CountLinesInParallel(projects, LinesOfCodeKind.Physical, options, cancellationToken);
+        ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetrics = await CountLinesAsync(projects, LinesOfCodeKind.Physical, options, cancellationToken);
 
         stopwatch.Stop();
 
@@ -101,7 +106,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
             WriteLine(Verbosity.Normal);
             WriteLine("Lines of code by project:", Verbosity.Normal);
 
-            LinesOfCodeHelpers.WriteLinesOfCode(solution, codeMetrics);
+            WriteLinesOfCode(solution, codeMetrics);
         }
 
         WriteMetrics(
