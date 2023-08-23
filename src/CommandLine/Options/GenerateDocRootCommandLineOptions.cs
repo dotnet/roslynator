@@ -6,7 +6,7 @@ using CommandLine;
 namespace Roslynator.CommandLine;
 
 [Verb("generate-doc-root", HelpText = "[deprecated] Generates root documentation file from specified project/solution.")]
-[ObsoleteMessage("This command is obsolete. Use parameter '--root-file-path' of a command 'generate-doc' instead.")]
+[ObsoleteMessage("This command is obsolete. Use parameter `--root-file-path` of a command [generate-doc](generate-doc) instead.")]
 public class GenerateDocRootCommandLineOptions : AbstractGenerateDocCommandLineOptions
 {
     [Option(
