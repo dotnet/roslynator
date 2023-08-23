@@ -86,9 +86,9 @@ internal class SymbolProvider
 
         public List<SymbolKind> SymbolKinds { get; } = new();
 
-        public bool IncludeGeneratedCode { get; set; }
+        public bool IncludeGeneratedCode { get; init; }
 
-        public Matcher FileSystemMatcher { get; set; }
+        public Matcher FileSystemMatcher { get; init; }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -115,9 +115,7 @@ internal class SymbolProvider
                 case SymbolKind.NamedType:
                 case SymbolKind.Property:
                     {
-                        if (FileSystemMatcher?.IsMatch(symbol) != false)
-                            Symbols.Add(symbol);
-
+                        AddSymbol(symbol);
                         break;
                     }
                 case SymbolKind.Method:
@@ -131,9 +129,7 @@ internal class SymbolProvider
                             case MethodKind.UserDefinedOperator:
                             case MethodKind.Conversion:
                                 {
-                                    if (FileSystemMatcher?.IsMatch(symbol) != false)
-                                        Symbols.Add(methodSymbol);
-
+                                    AddSymbol(methodSymbol);
                                     break;
                                 }
                         }
@@ -146,6 +142,12 @@ internal class SymbolProvider
                         break;
                     }
             }
+        }
+
+        private void AddSymbol(ISymbol symbol)
+        {
+            if (FileSystemMatcher?.IsMatch(symbol) != false)
+                Symbols.Add(symbol);
         }
     }
 }
