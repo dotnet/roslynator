@@ -492,22 +492,7 @@ internal static class Program
 
     private static int Help(HelpCommandLineOptions options)
     {
-        Filter filter = null;
-#if DEBUG
-        if (!string.IsNullOrEmpty(options.Filter))
-        {
-            try
-            {
-                filter = new Filter(new Regex(options.Filter, RegexOptions.IgnoreCase));
-            }
-            catch (ArgumentException ex)
-            {
-                WriteLine($"Filter is invalid: {ex.Message}", Verbosity.Quiet);
-                return ExitCodes.Error;
-            }
-        }
-#endif
-        var command = new HelpCommand(options: options, filter);
+        var command = new HelpCommand(options: options);
 
         CommandStatus status = command.Execute();
 
