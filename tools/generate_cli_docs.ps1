@@ -8,4 +8,4 @@ dotnet build "../src/CommandLine.DocumentationGenerator/CommandLine.Documentatio
 & "../src/CommandLine.DocumentationGenerator/bin/Release/net7.0/Roslynator.CommandLine.DocumentationGenerator.exe" `
  build `
  "../src/CommandLine.DocumentationGenerator/data" `
- "help,migrate,generate-doc-root"
+ "help,migrate"
