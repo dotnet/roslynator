@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class UnncessaryNullForgivingOperatorAnalyzer : BaseDiagnosticAnalyzer
+public sealed class UnnecessaryNullForgivingOperatorAnalyzer : BaseDiagnosticAnalyzer
 {
     private static readonly MetadataName System_Diagnostics_CodeAnalysis_MaybeNullWhenAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute");
     private static readonly MetadataName System_Diagnostics_CodeAnalysis_NotNullIfNotNullAttribute = MetadataName.Parse("System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute");

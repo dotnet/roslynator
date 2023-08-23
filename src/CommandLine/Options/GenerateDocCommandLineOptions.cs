@@ -124,7 +124,7 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
     public bool OmitAttributeArguments { get; set; }
 
     [Option(
-        longName: "omit-inherited-atttributes",
+        longName: "omit-inherited-attributes",
         HelpText = "Indicates whether inherited attributes should be omitted.")]
     public bool OmitInheritedAttributes { get; set; }
 

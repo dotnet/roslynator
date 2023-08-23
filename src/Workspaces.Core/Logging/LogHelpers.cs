@@ -80,7 +80,7 @@ internal static class LogHelpers
 
     public static void WriteSpellingDiagnostic(
         SpellingDiagnostic diagnostic,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         SourceText sourceText,
         string baseDirectoryPath,
         string indentation,
