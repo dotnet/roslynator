@@ -5,7 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.Spelling;
 
-internal class Spellchecker
+#pragma warning disable RCS1043
+
+internal partial class Spellchecker
 {
     private const string _splitCasePattern = @"
     (?<=
@@ -22,10 +24,6 @@ internal class Spellchecker
         \p{Lu}
     )
 ";
-
-    private static readonly Regex _splitIdentifierRegex = new(
-        @"\P{L}+|" + _splitCasePattern,
-        RegexOptions.IgnorePatternWhitespace);
 
     private static readonly Regex _urlRegex = new(
         @"\bhttps?://[^\s]+(?=\s|\z)", RegexOptions.IgnoreCase);
@@ -63,7 +61,7 @@ internal class Spellchecker
 
     public ImmutableArray<SpellingMatch> AnalyzeText(string value)
     {
-        var context = new SpellingContext(value);
+        ImmutableArray<SpellingMatch>.Builder builder = null;
 
         int prevEnd = 0;
 
@@ -71,23 +69,23 @@ internal class Spellchecker
 
         while (match.Success)
         {
-            AnalyzeText(value, prevEnd, match.Index - prevEnd, ref context);
+            AnalyzeTextSegment(value, prevEnd, match.Index - prevEnd, ref builder);
 
             prevEnd = match.Index + match.Length;
 
             match = match.NextMatch();
         }
 
-        AnalyzeText(value, prevEnd, value.Length - prevEnd, ref context);
+        AnalyzeTextSegment(value, prevEnd, value.Length - prevEnd, ref builder);
 
-        return context.Builder?.ToImmutableArray() ?? ImmutableArray<SpellingMatch>.Empty;
+        return builder?.ToImmutableArray() ?? ImmutableArray<SpellingMatch>.Empty;
     }
 
-    private void AnalyzeText(
+    private void AnalyzeTextSegment(
         string value,
         int startIndex,
         int length,
-        ref SpellingContext context)
+        ref ImmutableArray<SpellingMatch>.Builder builder)
     {
         int sequenceEndIndex = -1;
 
@@ -116,111 +114,76 @@ internal class Spellchecker
                 continue;
             }
 
-            if (IsAllowedLength(match.Length))
-            {
-                AnalyzeSplit(_splitRegex, match.Value, match.Index, 0, ref context);
-            }
+            if (!IsAllowedLength(match.Length))
+                continue;
+
+            AnalyzeWord(value, match.Value, match.Index, ref builder);
         }
     }
 
-    internal ImmutableArray<SpellingMatch> AnalyzeIdentifier(
-        string value,
-        int prefixLength = 0)
-    {
-        if (!IsAllowedLength(value.Length))
-            return ImmutableArray<SpellingMatch>.Empty;
-
-        if (prefixLength > 0
-            && Data.Contains(value))
-        {
-            return ImmutableArray<SpellingMatch>.Empty;
-        }
-
-        var context = new SpellingContext(value);
-
-        AnalyzeSplit(_splitIdentifierRegex, value, 0, prefixLength, ref context);
-
-        return context.Builder?.ToImmutableArray() ?? ImmutableArray<SpellingMatch>.Empty;
-    }
-
-    private void AnalyzeSplit(
-        Regex regex,
+    private void AnalyzeWord(
         string input,
-        int offset,
-        int prefixLength,
-        ref SpellingContext context)
+        string value,
+        int index,
+        ref ImmutableArray<SpellingMatch>.Builder builder)
     {
-        Match match = regex.Match(input, prefixLength);
-
-        if (match.Success
-            && prefixLength > 0
-            && match.Index == prefixLength)
-        {
-            match = match.NextMatch();
-        }
+        Match match = _splitRegex.Match(value);
 
         if (!match.Success)
         {
-            if (prefixLength > 0)
-            {
-                AnalyzeValue(input.Substring(prefixLength), offset + prefixLength, input, offset, ref context);
-            }
-            else
-            {
-                AnalyzeValue(input, offset, null, 0, ref context);
-            }
+            AnalyzeWordPart(input, value, index, null, 0, ref builder);
         }
-        else if (!Data.Contains(input))
+        else if (!Data.Contains(value))
         {
-            int prevIndex = prefixLength;
+            int lastEnd = 0;
 
             do
             {
-                AnalyzeValue(input.Substring(prevIndex, match.Index - prevIndex), prevIndex + offset, input, offset, ref context);
+                AnalyzeWordPart(input, value.Substring(lastEnd, match.Index - lastEnd), lastEnd + index, value, index, ref builder);
 
-                prevIndex = match.Index + match.Length;
-
+                lastEnd = match.Index + match.Length;
                 match = match.NextMatch();
             }
             while (match.Success);
 
-            AnalyzeValue(input.Substring(prevIndex), prevIndex + offset, input, offset, ref context);
+            AnalyzeWordPart(input, value.Substring(lastEnd), lastEnd + index, value, index, ref builder);
         }
     }
 
-    private void AnalyzeValue(
+    private void AnalyzeWordPart(
+        string input,
         string value,
-        int valueIndex,
-        string containingValue,
-        int containingValueIndex,
-        ref SpellingContext context)
+        int index,
+        string parentValue,
+        int parentIndex,
+        ref ImmutableArray<SpellingMatch>.Builder builder)
     {
         if (IsMatch(value)
-            && !IsContainedInNonWord(value, valueIndex, Data.WordList, ref context)
-            && !IsContainedInNonWord(value, valueIndex, Data.CaseSensitiveWordList, ref context))
+            && !IsContainedInNonWord(input, value, index, Data.WordList)
+            && !IsContainedInNonWord(input, value, index, Data.CaseSensitiveWordList))
         {
-            var spellingMatch = new SpellingMatch(value, valueIndex, containingValue, containingValueIndex);
+            var spellingMatch = new SpellingMatch(value, index, parentValue, parentIndex);
 
-            (context.Builder ??= ImmutableArray.CreateBuilder<SpellingMatch>()).Add(spellingMatch);
+            (builder ??= ImmutableArray.CreateBuilder<SpellingMatch>()).Add(spellingMatch);
         }
-    }
 
-    private static bool IsContainedInNonWord(string value, int index, WordList wordList, ref SpellingContext context)
-    {
-        foreach (string nonWord in wordList.NonWords)
+        static bool IsContainedInNonWord(string input, string value, int index, WordList wordList)
         {
-            int i = nonWord.IndexOf(value, wordList.Comparison);
-
-            if (i >= 0
-                && index >= i
-                && index + nonWord.Length - i <= context.Value.Length
-                && string.Compare(context.Value, index - i, nonWord, 0, nonWord.Length, wordList.Comparison) == 0)
+            foreach (string nonWord in wordList.NonWords)
             {
-                return true;
-            }
-        }
+                int i = nonWord.IndexOf(value, wordList.Comparison);
 
-        return false;
+                if (i >= 0
+                    && index >= i
+                    && index + nonWord.Length - i <= input.Length
+                    && string.Compare(input, index - i, nonWord, 0, nonWord.Length, wordList.Comparison) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     private bool IsMatch(string value)
@@ -381,17 +344,5 @@ internal class Spellchecker
 
             return false;
         }
-    }
-
-    private class SpellingContext
-    {
-        public SpellingContext(string value)
-        {
-            Value = value;
-        }
-
-        public string Value { get; }
-
-        public ImmutableArray<SpellingMatch>.Builder Builder { get; set; }
     }
 }

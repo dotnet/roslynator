@@ -1,6 +1,6 @@
 $spellingPath="../src/Workspaces.Core/Spelling/Core"
 
-orang delete $spellingPath -e cs
+orang delete $spellingPath -e cs -n "Spellchecker.Identifier.cs" ne
 
 orang copy "../../Orang/src/Spelling/Spelling" --target $spellingPath -e cs
 
