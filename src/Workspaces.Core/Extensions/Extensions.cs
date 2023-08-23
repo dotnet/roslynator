@@ -18,11 +18,6 @@ namespace Roslynator;
 
 internal static class Extensions
 {
-    public static bool IsMatch(this Matcher matcher, string filePath)
-    {
-        return matcher.Match(filePath).HasMatches;
-    }
-
     public static bool IsMatch(this Matcher matcher, ISymbol symbol)
     {
         foreach (Location location in symbol.Locations)
@@ -329,8 +324,13 @@ internal static class Extensions
             if (!document.SupportsSyntaxTree)
                 continue;
 
-            if (!fileSystemFilter.IsMatch(document.FilePath))
+            string filePath = document.FilePath;
+
+            if (filePath is not null
+                && fileSystemFilter?.IsMatch(filePath) == false)
+            {
                 continue;
+            }
 
             CodeMetricsInfo documentMetrics = await service.CountLinesAsync(document, kind, options, cancellationToken).ConfigureAwait(false);
 

@@ -537,7 +537,7 @@ internal class CodeFixer
                 {
                     SyntaxTree tree = diagnostic.Location.SourceTree;
                     if (tree is null
-                        || Options.FileSystemFilter.IsMatch(tree.FilePath))
+                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
                     {
                         return true;
                     }

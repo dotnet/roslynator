@@ -11,7 +11,7 @@ namespace Roslynator;
 internal abstract class CodeAnalysisOptions
 {
     internal CodeAnalysisOptions(
-        FileSystemFilter fileSystemFilter,
+        FileSystemFilter fileSystemFilter = null,
         DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
         bool ignoreAnalyzerReferences = false,
         bool concurrentAnalysis = true,

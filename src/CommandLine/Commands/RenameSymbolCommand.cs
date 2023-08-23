@@ -95,6 +95,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
                 SkipLocals = (ScopeFilter & RenameScopeFilter.Local) != 0,
                 IncludeGeneratedCode = Options.IncludeGeneratedCode,
                 DryRun = Options.DryRun,
+                FileSystemMatcher = FileSystemFilter?.Matcher,
             };
 
             if (IgnoredCompilerDiagnostics is not null)

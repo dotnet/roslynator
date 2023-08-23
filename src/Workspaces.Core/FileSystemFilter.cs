@@ -15,25 +15,22 @@ internal sealed class FileSystemFilter
     private static readonly object _lock = new();
 #endif
 
-    public FileSystemFilter(Matcher matcher, bool isDefault, bool isDefaultInclude)
+    private FileSystemFilter(Matcher matcher)
     {
         Matcher = matcher;
-        IsDefault = isDefault;
-        IsDefaultInclude = isDefaultInclude;
     }
 
     public Matcher Matcher { get; }
 
-    public bool IsDefault { get; }
-
-    public bool IsDefaultInclude { get; }
-
-    public static FileSystemFilter Create(
+    public static FileSystemFilter CreateOrDefault(
         IEnumerable<string> include,
         IEnumerable<string> exclude)
     {
-        var isDefault = false;
-        var isDefaultInclude = false;
+        if (!include.Any()
+            && !exclude.Any())
+        {
+            return null;
+        }
 
         var matcher = new Matcher((FileSystemHelpers.IsCaseSensitive) ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
 
@@ -44,24 +41,16 @@ internal sealed class FileSystemFilter
         else
         {
             matcher.AddInclude("**");
-            isDefaultInclude = true;
-            isDefault = true;
         }
 
         if (exclude.Any())
-        {
             matcher.AddExcludePatterns(exclude);
-            isDefault = false;
-        }
 
-        return new FileSystemFilter(matcher, isDefault, isDefaultInclude);
+        return new FileSystemFilter(matcher);
     }
 
     public bool IsMatch(ISymbol symbol)
     {
-        if (IsDefault)
-            return true;
-
         bool isMatch = Matcher.IsMatch(symbol);
 #if DEBUG
         if (!isMatch
@@ -76,9 +65,6 @@ internal sealed class FileSystemFilter
 
     public bool IsMatch(string filePath)
     {
-        if (IsDefault)
-            return true;
-
         PatternMatchingResult result = Matcher.Match(filePath);
 
         Debug.Assert(result.Files.Count() <= 1, result.Files.Count().ToString());

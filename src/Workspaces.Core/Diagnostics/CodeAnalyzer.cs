@@ -200,7 +200,8 @@ internal class CodeAnalyzer
 
                     SyntaxTree tree = diagnostic.Location.SourceTree;
 
-                    if (Options.FileSystemFilter.IsMatch(tree.FilePath))
+                    if (tree is null
+                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
                     {
                         if (tree is null
                             || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language).IsComment(f), cancellationToken))
