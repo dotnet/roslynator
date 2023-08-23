@@ -11,7 +11,9 @@ namespace Roslynator;
 
 internal sealed class FileSystemFilter
 {
+#if DEBUG
     private static readonly object _lock = new();
+#endif
 
     public FileSystemFilter(Matcher matcher, bool isDefault, bool isDefaultInclude)
     {
@@ -80,14 +82,14 @@ internal sealed class FileSystemFilter
         PatternMatchingResult result = Matcher.Match(filePath);
 
         Debug.Assert(result.Files.Count() <= 1, result.Files.Count().ToString());
-
+#if DEBUG
         if (!result.HasMatches
             && Logger.ShouldWrite(Verbosity.Diagnostic))
         {
             lock (_lock)
                 Logger.WriteLine($"Excluding file '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
         }
-
+#endif
         return result.HasMatches;
     }
 }
