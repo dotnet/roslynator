@@ -105,13 +105,16 @@ internal static class CommandLoader
 
         CommandGroupAttribute commandGroupAttribute = type.GetCustomAttribute<CommandGroupAttribute>()!;
 
-        return new Command(
-            verbAttribute.Name,
-            verbAttribute.HelpText,
-            (commandGroupAttribute is not null)
+        return new Command()
+        {
+            Name = verbAttribute.Name,
+            Description = verbAttribute.HelpText,
+            Group = (commandGroupAttribute is not null)
                 ? new CommandGroup(commandGroupAttribute.Name, commandGroupAttribute.Ordinal)
                 : CommandGroup.Default,
-            arguments.OrderBy(f => f.Index),
-            options.OrderBy(f => f, CommandOptionComparer.Name));
+            Arguments = arguments.OrderBy(f => f.Index).ToImmutableArray(),
+            Options = options.OrderBy(f => f, CommandOptionComparer.Name).ToImmutableArray(),
+            ObsoleteMessage = type.GetCustomAttribute<ObsoleteMessageAttribute>()?.Message,
+        };
     }
 }
