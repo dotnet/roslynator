@@ -1107,7 +1107,7 @@ class C
     [InlineData("items.FirstOrDefault(_ => true) is null")]
     [InlineData("items.FirstOrDefault() == null")]
     [InlineData("items.FirstOrDefault() is null")]
-    public async Task TestNoDiagnostc_FirstOrDefault_IEnumerableOfNullableType(string source)
+    public async Task TestNoDiagnostic_FirstOrDefault_IEnumerableOfNullableType(string source)
     {
         await VerifyNoDiagnosticAsync(@"
 using System.Linq;

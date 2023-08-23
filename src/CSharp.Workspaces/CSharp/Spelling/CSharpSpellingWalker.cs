@@ -15,7 +15,7 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
     private readonly SpellingAnalysisContext _analysisContext;
     private readonly Stack<SyntaxNode> _stack = new();
 
-    private SpellingFixerOptions Options => _analysisContext.Options;
+    private SpellcheckOptions Options => _analysisContext.Options;
 
     private CSharpSpellingWalker(SpellingAnalysisContext analysisContext, SyntaxWalkerDepth depth)
         : base(depth)

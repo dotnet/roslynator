@@ -56,6 +56,18 @@ jobs:
       - run: |
           dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
       - run: dotnet test Roslynator.sln --no-build
+      - uses: actions/checkout@v3
+        with:
+          repository: josefpihrt/wordb
+          path: wordb
+      - run: |
+          ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
+            spellcheck \
+            ../wordb/data/en \
+            ../wordb/data/en-us \
+            ../wordb/data/names.txt \
+            ../wordb/data/tech.names.txt \
+            ../wordb/data/tech.acronyms.txt
 
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 

@@ -22,8 +22,6 @@ internal readonly struct WordSequenceMatch
 
     internal int EndIndex => Index + Length;
 
-    public bool IsDefault => Sequence.IsDefault;
-
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => (IsDefault) ? "Uninitialized" : Sequence.ToString();
+    private string DebuggerDisplay => (Sequence.Words.IsDefault) ? "Uninitialized" : Sequence.ToString();
 }

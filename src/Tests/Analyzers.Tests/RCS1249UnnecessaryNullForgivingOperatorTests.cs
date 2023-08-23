@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1249UnnecessaryNullForgivingOperatorTests : AbstractCSharpDiagnosticVerifier<UnncessaryNullForgivingOperatorAnalyzer, TokenCodeFixProvider>
+public class RCS1249UnnecessaryNullForgivingOperatorTests : AbstractCSharpDiagnosticVerifier<UnnecessaryNullForgivingOperatorAnalyzer, TokenCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullForgivingOperator;
 

@@ -903,7 +903,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
-    public async Task TestNoDiagnostic_BackingFieldHasAttibute()
+    public async Task TestNoDiagnostic_BackingFieldHasAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
 using System;

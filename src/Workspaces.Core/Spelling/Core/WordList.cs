@@ -12,30 +12,28 @@ namespace Roslynator.Spelling;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal class WordList
 {
-    public static StringComparison DefaultComparison { get; } = StringComparison.InvariantCultureIgnoreCase;
+    public static StringComparison DefaultComparison { get; } = StringComparison.CurrentCultureIgnoreCase;
 
     public static StringComparer DefaultComparer { get; } = StringComparerUtility.FromComparison(DefaultComparison);
 
     public static WordList Default { get; } = new(null, DefaultComparison);
 
-    public static WordList CaseSensitive { get; } = new(
-        null,
-        StringComparison.InvariantCulture);
-
     public WordList(IEnumerable<string> values, StringComparison? comparison = null)
-        : this(values, ImmutableArray<WordSequence>.Empty, comparison)
+        : this(values, null, ImmutableArray<WordSequence>.Empty, comparison)
     {
     }
 
     public WordList(
-        IEnumerable<string> values,
+        IEnumerable<string> words,
+        IEnumerable<string> nonWords,
         IEnumerable<WordSequence> sequences,
         StringComparison? comparison = null)
     {
         Comparer = StringComparerUtility.FromComparison(comparison ?? DefaultComparison);
         Comparison = comparison ?? DefaultComparison;
 
-        Values = values?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
+        Words = words?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
+        NonWords = nonWords?.ToImmutableHashSet(Comparer) ?? ImmutableHashSet<string>.Empty;
 
         Sequences = sequences?
             .GroupBy(f => f.First, Comparer)
@@ -43,7 +41,9 @@ internal class WordList
             ?? ImmutableDictionary<string, ImmutableArray<WordSequence>>.Empty;
     }
 
-    public ImmutableHashSet<string> Values { get; }
+    public ImmutableHashSet<string> Words { get; }
+
+    public ImmutableHashSet<string> NonWords { get; }
 
     public ImmutableDictionary<string, ImmutableArray<WordSequence>> Sequences { get; }
 
@@ -52,16 +52,16 @@ internal class WordList
     public StringComparer Comparer { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => $"Words = {Values.Count}  Sequences = {Sequences.Sum(f => f.Value.Length)}";
+    private string DebuggerDisplay => $"Words = {Words.Count}  Sequences = {Sequences.Sum(f => f.Value.Length)}";
 
     public WordList Intersect(WordList wordList, params WordList[] additionalWordLists)
     {
-        IEnumerable<string> intersect = Values.Intersect(wordList.Values, Comparer);
+        IEnumerable<string> intersect = Words.Intersect(wordList.Words, Comparer);
 
         if (additionalWordLists?.Length > 0)
         {
             intersect = intersect
-                .Intersect(additionalWordLists.SelectMany(f => f.Values), Comparer);
+                .Intersect(additionalWordLists.SelectMany(f => f.Words), Comparer);
         }
 
         return WithValues(intersect);
@@ -69,12 +69,12 @@ internal class WordList
 
     public WordList Except(WordList wordList, params WordList[] additionalWordLists)
     {
-        IEnumerable<string> except = Values.Except(wordList.Values, Comparer);
+        IEnumerable<string> except = Words.Except(wordList.Words, Comparer);
 
         if (additionalWordLists?.Length > 0)
         {
             except = except
-                .Except(additionalWordLists.SelectMany(f => f.Values), Comparer);
+                .Except(additionalWordLists.SelectMany(f => f.Words), Comparer);
         }
 
         return WithValues(except);
@@ -82,27 +82,27 @@ internal class WordList
 
     public bool Contains(string value)
     {
-        return Values.Contains(value);
+        return Words.Contains(value);
     }
 
     public WordList AddValue(string value)
     {
-        return new WordList(Values.Add(value), Comparison);
+        return new WordList(Words.Add(value), Comparison);
     }
 
     public WordList AddValues(IEnumerable<string> values)
     {
-        values = Values.Concat(values).Distinct(Comparer);
+        values = Words.Concat(values).Distinct(Comparer);
 
         return new WordList(values, Comparison);
     }
 
     public WordList AddValues(WordList wordList, params WordList[] additionalWordLists)
     {
-        IEnumerable<string> concat = Values.Concat(wordList.Values);
+        IEnumerable<string> concat = Words.Concat(wordList.Words);
 
         if (additionalWordLists?.Length > 0)
-            concat = concat.Concat(additionalWordLists.SelectMany(f => f.Values));
+            concat = concat.Concat(additionalWordLists.SelectMany(f => f.Words));
 
         return WithValues(concat.Distinct(Comparer));
     }
@@ -116,7 +116,7 @@ internal class WordList
         string path,
         WordList wordList)
     {
-        Save(path, wordList.Values, wordList.Comparer);
+        Save(path, wordList.Words, wordList.Comparer);
     }
 
     public static void Save(
@@ -128,9 +128,7 @@ internal class WordList
         if (merge
             && File.Exists(path))
         {
-            WordListLoaderResult result = WordListLoader.LoadFile(path);
-
-            values = values.Concat(result.List.Values).Concat(result.CaseSensitiveList.Values);
+            values = values.Concat(WordListLoader.LoadValues(path));
         }
 
         values = values
