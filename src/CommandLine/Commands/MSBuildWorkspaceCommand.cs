@@ -353,8 +353,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
     private protected bool IsMatch(Project project)
     {
-        return ProjectFilter.IsMatch(project)
-            && FileSystemFilter?.IsMatch(project.FilePath) != false;
+        return ProjectFilter.IsMatch(project);
     }
 
     private protected async Task<ImmutableArray<Compilation>> GetCompilationsAsync(
