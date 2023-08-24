@@ -5,5 +5,5 @@ namespace Roslynator;
 public enum IndentStyle
 {
     Space,
-    Tab
+    Tab,
 }
