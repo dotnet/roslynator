@@ -111,7 +111,6 @@ internal static class Program
 #if DEBUG
                     typeof(FindSymbolsCommandLineOptions),
                     typeof(GenerateSourceReferencesCommandLineOptions),
-                    typeof(ListVisualStudioCommandLineOptions),
                     typeof(ListReferencesCommandLineOptions),
                     typeof(SlnListCommandLineOptions),
 #endif
@@ -221,10 +220,6 @@ internal static class Program
                             return Help(helpCommandLineOptions);
                         case MigrateCommandLineOptions migrateCommandLineOptions:
                             return Migrate(migrateCommandLineOptions);
-#if DEBUG
-                        case ListVisualStudioCommandLineOptions listVisualStudioCommandLineOptions:
-                            return ListVisualStudio(listVisualStudioCommandLineOptions);
-#endif
                         default:
                             throw new InvalidOperationException();
                     }
@@ -682,16 +677,6 @@ internal static class Program
 
         return GetExitCode(status);
     }
-
-    private static int ListVisualStudio(ListVisualStudioCommandLineOptions options)
-    {
-        var command = new ListVisualStudioCommand(options);
-
-        CommandStatus status = command.Execute();
-
-        return GetExitCode(status);
-    }
-#endif
 
     private static async Task<int> PhysicalLinesOfCodeAsync(PhysicalLinesOfCodeCommandLineOptions options)
     {
