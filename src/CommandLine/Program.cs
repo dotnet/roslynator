@@ -677,6 +677,7 @@ internal static class Program
 
         return GetExitCode(status);
     }
+#endif
 
     private static async Task<int> PhysicalLinesOfCodeAsync(PhysicalLinesOfCodeCommandLineOptions options)
     {
