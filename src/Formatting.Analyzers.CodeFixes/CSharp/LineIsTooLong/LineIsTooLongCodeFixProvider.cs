@@ -205,7 +205,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
         ConditionalExpressionSyntax conditionalExpression,
         CancellationToken cancellationToken = default)
     {
-        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(conditionalExpression, cancellationToken);
+        string indentation = document.GetIncreasedIndentation(conditionalExpression, cancellationToken);
 
         if (document.GetConfigOptions(conditionalExpression.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After)
         {
@@ -235,7 +235,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
         bool addNewLineAfter,
         CancellationToken cancellationToken = default)
     {
-        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(token.Parent, cancellationToken);
+        string indentation = document.GetIncreasedIndentation(token.Parent, cancellationToken);
 
         return (addNewLineAfter)
             ? AddNewLineAfterAsync(document, token, indentation, cancellationToken)
@@ -247,7 +247,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
         ForStatementSyntax forStatement,
         CancellationToken cancellationToken = default)
     {
-        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(forStatement, cancellationToken);
+        string indentation = document.GetIncreasedIndentation(forStatement, cancellationToken);
 
         return document.WithTextChangesAsync(
             new TextChange[]

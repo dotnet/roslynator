@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -26,6 +27,11 @@ internal static class DefaultCSharpTestOptions
 
         return CSharpTestOptions.Default
             .WithParseOptions(CSharpTestOptions.Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp10))
-            .WithAllowedCompilerDiagnosticIds(allowedCompilerDiagnosticIds);
+            .WithAllowedCompilerDiagnosticIds(allowedCompilerDiagnosticIds)
+            .WithConfigOptions(new KeyValuePair<string, string>[]
+            {
+                new("indent_size", "4"),
+                new("indent_style", "space")
+            });
     }
 }

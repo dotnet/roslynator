@@ -581,7 +581,7 @@ internal class WrapLineNodeFinder
         if (wrapPosition - Span.Start > MaxLineLength)
             return false;
 
-        int indentationLength = SyntaxTriviaAnalysis.GetIncreasedIndentationLength(node);
+        int indentationLength = Document.GetIncreasedIndentationLength(node);
 
         return indentationLength + longestLength <= MaxLineLength;
     }

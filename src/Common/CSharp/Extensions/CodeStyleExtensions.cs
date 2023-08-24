@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Globalization;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Configuration;
 using Roslynator.CSharp.CodeStyle;
@@ -9,6 +10,42 @@ namespace Roslynator.CSharp;
 
 internal static class CodeStyleExtensions
 {
+    public static bool TryGetTabLength(this AnalyzerConfigOptions configOptions, out int tabLength)
+    {
+        if (configOptions.TryGetValue("roslynator_tab_length", out string tabLengthStr)
+            && int.TryParse(tabLengthStr, NumberStyles.None, CultureInfo.InvariantCulture, out tabLength))
+        {
+            return true;
+        }
+
+        tabLength = 0;
+        return false;
+    }
+
+    public static bool TryGetIndentSize(this AnalyzerConfigOptions configOptions, out int indentSize)
+    {
+        if (configOptions.TryGetValue("indent_size", out string indentSizeStr)
+            && int.TryParse(indentSizeStr, NumberStyles.None, CultureInfo.InvariantCulture, out indentSize))
+        {
+            return true;
+        }
+
+        indentSize = 0;
+        return false;
+    }
+
+    public static bool TryGetIndentStyle(this AnalyzerConfigOptions configOptions, out IndentStyle indentStyle)
+    {
+        if (configOptions.TryGetValue("indent_style", out string indentStyleStr)
+            && Enum.TryParse(indentStyleStr, out indentStyle))
+        {
+            return true;
+        }
+
+        indentStyle = IndentStyle.Space;
+        return false;
+    }
+
     public static bool GetPrefixFieldIdentifierWithUnderscore(this AnalyzerConfigOptions configOptions)
     {
         if (configOptions.TryGetValueAsBool(ConfigOptions.PrefixFieldIdentifierWithUnderscore, out bool value))
