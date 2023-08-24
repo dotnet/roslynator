@@ -4,12 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
@@ -965,8 +963,8 @@ internal static class Program
 
     private static FileSystemFilter CreateFileSystemFilter(MSBuildCommandLineOptions options)
     {
-        string[] include = options.Include.Where(p => !CommandLineHelpers.IsGlobPatternForProject(p)).ToArray();
-        string[] exclude = options.Exclude.Where(p => !CommandLineHelpers.IsGlobPatternForProject(p)).ToArray();
+        string[] include = options.Include.Where(p => CommandLineHelpers.IsGlobPatternForFileOrFolder(p)).ToArray();
+        string[] exclude = options.Exclude.Where(p => CommandLineHelpers.IsGlobPatternForFileOrFolder(p)).ToArray();
 
         FileSystemFilter filter = FileSystemFilter.CreateOrDefault(include, exclude);
 
