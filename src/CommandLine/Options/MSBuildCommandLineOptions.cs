@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CommandLine;
-using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.CommandLine;
 
@@ -13,13 +11,13 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
 {
     [Option(
         longName: "include",
-        HelpText = "Space separated list of glob patterns to include files/folders.",
+        HelpText = "Space separated listt of glob patterns to include files, folders or projects.",
         MetaValue = "<GLOB>")]
     public IEnumerable<string> Include { get; set; }
 
     [Option(
         longName: "exclude",
-        HelpText = "Space separated list of glob patterns to exclude files/folders.",
+        HelpText = "Space separated list of glob patterns to exclude files, folders or projects.",
         MetaValue = "<GLOB>")]
     public IEnumerable<string> Exclude { get; set; }
 
@@ -83,47 +81,7 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
             return false;
         }
 
-        Matcher matcher = CreateProjectMatcher();
-
-        projectFilter = new ProjectFilter(matcher, Projects, IgnoredProjects, language);
+        projectFilter = new ProjectFilter(Projects, IgnoredProjects, language);
         return true;
-    }
-
-    private Matcher CreateProjectMatcher()
-    {
-        if (!Include.Any()
-            && !Exclude.Any())
-        {
-            return null;
-        }
-
-        string[] include = Include.Where(p => CommandLineHelpers.IsGlobPatternForProject(p)).ToArray();
-        string[] exclude = Exclude.Where(p => CommandLineHelpers.IsGlobPatternForProject(p)).ToArray();
-
-        Matcher matcher = null;
-
-        if (include.Any()
-            || exclude.Any())
-        {
-            StringComparison comparison = (FileSystemHelpers.IsCaseSensitive)
-                ? StringComparison.Ordinal
-                : StringComparison.OrdinalIgnoreCase;
-
-            matcher = new Matcher(comparison);
-
-            if (include.Any())
-            {
-                matcher.AddIncludePatterns(include);
-            }
-            else
-            {
-                matcher.AddInclude("**");
-            }
-
-            if (exclude.Any())
-                matcher.AddExcludePatterns(exclude);
-        }
-
-        return matcher;
     }
 }
