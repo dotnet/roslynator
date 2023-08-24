@@ -13,7 +13,7 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
 {
     [Option(
         longName: "include",
-        HelpText = "Space separated listt of glob patterns to include files, folders or projects.",
+        HelpText = "Space separated list of glob patterns to include files, folders or projects.",
         MetaValue = "<GLOB>")]
     public IEnumerable<string> Include { get; set; }
 
