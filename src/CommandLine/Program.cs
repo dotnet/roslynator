@@ -111,7 +111,6 @@ internal static class Program
 #if DEBUG
                     typeof(FindSymbolsCommandLineOptions),
                     typeof(ListVisualStudioCommandLineOptions),
-                    typeof(ListReferencesCommandLineOptions),
                     typeof(SlnListCommandLineOptions),
 #endif
                 });
@@ -201,8 +200,6 @@ internal static class Program
 #if DEBUG
                         case FindSymbolsCommandLineOptions findSymbolsCommandLineOptions:
                             return FindSymbolsAsync(findSymbolsCommandLineOptions).Result;
-                        case ListReferencesCommandLineOptions listReferencesCommandLineOptions:
-                            return ListReferencesAsync(listReferencesCommandLineOptions).Result;
                         case SlnListCommandLineOptions slnListCommandLineOptions:
                             return SlnListAsync(slnListCommandLineOptions).Result;
 #endif
@@ -879,34 +876,6 @@ internal static class Program
 
         return GetExitCode(status);
     }
-
-#if DEBUG
-    private static async Task<int> ListReferencesAsync(ListReferencesCommandLineOptions options)
-    {
-        if (!TryParseOptionValueAsEnum(options.Display, OptionNames.Display, out MetadataReferenceDisplay display, MetadataReferenceDisplay.Path))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnumFlags(options.Type, OptionNames.Type, out MetadataReferenceFilter metadataReferenceFilter, MetadataReferenceFilter.Dll | MetadataReferenceFilter.Project))
-            return ExitCodes.Error;
-
-        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
-            return ExitCodes.Error;
-
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
-            return ExitCodes.Error;
-
-        var command = new ListReferencesCommand(
-            options,
-            display,
-            metadataReferenceFilter,
-            projectFilter,
-            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
-
-        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
-
-        return GetExitCode(status);
-    }
-#endif
 
     private static bool TryParsePaths(string value, out ImmutableArray<string> paths)
     {
