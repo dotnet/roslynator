@@ -78,7 +78,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
                         if (matcher?.Match(path.Path).HasMatches == false)
                         {
-                            WriteLine($"  Skip '{path.Path}'", ConsoleColors.DarkGray, Verbosity.Normal);
+                            WriteLine($"Skip '{path.Path}'", ConsoleColors.DarkGray, Verbosity.Normal);
                             continue;
                         }
                     }
