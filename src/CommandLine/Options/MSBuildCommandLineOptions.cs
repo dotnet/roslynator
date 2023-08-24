@@ -83,7 +83,7 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
             return false;
         }
 
-        var matcher = CreateProjectMatcher();
+        Matcher matcher = CreateProjectMatcher();
 
         projectFilter = new ProjectFilter(matcher, Projects, IgnoredProjects, language);
         return true;
