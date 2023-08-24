@@ -113,7 +113,6 @@ internal static class Program
                     typeof(GenerateSourceReferencesCommandLineOptions),
                     typeof(ListVisualStudioCommandLineOptions),
                     typeof(ListReferencesCommandLineOptions),
-                    typeof(SlnListCommandLineOptions),
 #endif
                 });
 
@@ -206,8 +205,6 @@ internal static class Program
                             return GenerateSourceReferencesAsync(generateSourceReferencesCommandLineOptions).Result;
                         case ListReferencesCommandLineOptions listReferencesCommandLineOptions:
                             return ListReferencesAsync(listReferencesCommandLineOptions).Result;
-                        case SlnListCommandLineOptions slnListCommandLineOptions:
-                            return SlnListAsync(slnListCommandLineOptions).Result;
 #endif
                         default:
                             throw new InvalidOperationException();
@@ -668,21 +665,6 @@ internal static class Program
     }
 
 #if DEBUG
-    private static async Task<int> SlnListAsync(SlnListCommandLineOptions options)
-    {
-        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
-            return ExitCodes.Error;
-
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
-            return ExitCodes.Error;
-
-        var command = new SlnListCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
-
-        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
-
-        return GetExitCode(status);
-    }
-
     private static int ListVisualStudio(ListVisualStudioCommandLineOptions options)
     {
         var command = new ListVisualStudioCommand(options);
