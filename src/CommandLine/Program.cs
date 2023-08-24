@@ -110,8 +110,6 @@ internal static class Program
                     typeof(SpellcheckCommandLineOptions),
 #if DEBUG
                     typeof(FindSymbolsCommandLineOptions),
-                    typeof(GenerateSourceReferencesCommandLineOptions),
-                    typeof(ListReferencesCommandLineOptions),
                     typeof(SlnListCommandLineOptions),
 #endif
                 });
@@ -201,10 +199,6 @@ internal static class Program
 #if DEBUG
                         case FindSymbolsCommandLineOptions findSymbolsCommandLineOptions:
                             return FindSymbolsAsync(findSymbolsCommandLineOptions).Result;
-                        case GenerateSourceReferencesCommandLineOptions generateSourceReferencesCommandLineOptions:
-                            return GenerateSourceReferencesAsync(generateSourceReferencesCommandLineOptions).Result;
-                        case ListReferencesCommandLineOptions listReferencesCommandLineOptions:
-                            return ListReferencesAsync(listReferencesCommandLineOptions).Result;
                         case SlnListCommandLineOptions slnListCommandLineOptions:
                             return SlnListAsync(slnListCommandLineOptions).Result;
 #endif
@@ -833,34 +827,6 @@ internal static class Program
         return GetExitCode(status);
     }
 
-#if DEBUG
-    private static async Task<int> GenerateSourceReferencesAsync(GenerateSourceReferencesCommandLineOptions options)
-    {
-        if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.DefaultValues.Depth))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out Visibility visibility))
-            return ExitCodes.Error;
-
-        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
-            return ExitCodes.Error;
-
-        if (!TryParsePaths(options.Path, out ImmutableArray<string> paths))
-            return ExitCodes.Error;
-
-        var command = new GenerateSourceReferencesCommand(
-            options,
-            depth,
-            visibility,
-            projectFilter,
-            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
-
-        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
-
-        return GetExitCode(status);
-    }
-#endif
-
     private static int Migrate(MigrateCommandLineOptions options)
     {
         if (!string.Equals(options.Identifier, "roslynator.analyzers", StringComparison.Ordinal))
@@ -896,34 +862,6 @@ internal static class Program
 
         return GetExitCode(status);
     }
-
-#if DEBUG
-    private static async Task<int> ListReferencesAsync(ListReferencesCommandLineOptions options)
-    {
-        if (!TryParseOptionValueAsEnum(options.Display, OptionNames.Display, out MetadataReferenceDisplay display, MetadataReferenceDisplay.Path))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnumFlags(options.Type, OptionNames.Type, out MetadataReferenceFilter metadataReferenceFilter, MetadataReferenceFilter.Dll | MetadataReferenceFilter.Project))
-            return ExitCodes.Error;
-
-        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
-            return ExitCodes.Error;
-
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
-            return ExitCodes.Error;
-
-        var command = new ListReferencesCommand(
-            options,
-            display,
-            metadataReferenceFilter,
-            projectFilter,
-            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
-
-        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
-
-        return GetExitCode(status);
-    }
-#endif
 
     private static bool TryParsePaths(string value, out ImmutableArray<string> paths)
     {
