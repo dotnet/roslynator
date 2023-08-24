@@ -199,8 +199,6 @@ internal static class Program
 #if DEBUG
                         case FindSymbolsCommandLineOptions findSymbolsCommandLineOptions:
                             return FindSymbolsAsync(findSymbolsCommandLineOptions).Result;
-                        case SlnListCommandLineOptions slnListCommandLineOptions:
-                            return SlnListAsync(slnListCommandLineOptions).Result;
 #endif
                         default:
                             throw new InvalidOperationException();
@@ -655,23 +653,6 @@ internal static class Program
 
         return GetExitCode(status);
     }
-
-#if DEBUG
-    private static async Task<int> SlnListAsync(SlnListCommandLineOptions options)
-    {
-        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
-            return ExitCodes.Error;
-
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
-            return ExitCodes.Error;
-
-        var command = new SlnListCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
-
-        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
-
-        return GetExitCode(status);
-    }
-#endif
 
     private static async Task<int> PhysicalLinesOfCodeAsync(PhysicalLinesOfCodeCommandLineOptions options)
     {
