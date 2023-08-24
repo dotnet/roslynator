@@ -8,7 +8,6 @@ using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.CommandLine;
 
-// Files, IgnoredFiles
 public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
 {
     [Option(
