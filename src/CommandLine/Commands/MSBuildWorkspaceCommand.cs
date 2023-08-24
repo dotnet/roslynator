@@ -73,8 +73,8 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                     if (path.Origin == PathOrigin.PipedInput)
                     {
                         Matcher matcher = (string.Equals(Path.GetExtension(path.Path), ".sln", StringComparison.OrdinalIgnoreCase))
-                            ? ProjectFilter.Matcher
-                            : ProjectFilter.SolutionMatcher;
+                            ? ProjectFilter.SolutionMatcher
+                            : ProjectFilter.Matcher;
 
                         if (matcher?.Match(path.Path).HasMatches == false)
                         {
