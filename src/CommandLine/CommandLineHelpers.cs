@@ -12,6 +12,11 @@ internal static class CommandLineHelpers
             || pattern.EndsWith(".vbproj", StringComparison.OrdinalIgnoreCase);
     }
 
+    public static bool IsGlobPatternForSolution(string pattern)
+    {
+        return pattern.EndsWith(".sln", StringComparison.OrdinalIgnoreCase);
+    }
+
     public static void WaitForKeyPress(string message = null)
     {
         if (Console.IsInputRedirected)

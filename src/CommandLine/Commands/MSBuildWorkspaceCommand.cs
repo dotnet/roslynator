@@ -12,6 +12,7 @@ using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using static Roslynator.Logger;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.CommandLine;
 
@@ -34,7 +35,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
     public abstract Task<TCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default);
 
-    public async Task<CommandStatus> ExecuteAsync(IEnumerable<string> paths, string msbuildPath = null, IEnumerable<string> properties = null)
+    public async Task<CommandStatus> ExecuteAsync(IEnumerable<PathInfo> paths, string msbuildPath = null, IEnumerable<string> properties = null)
     {
         if (paths is null)
             throw new ArgumentNullException(nameof(paths));
@@ -67,12 +68,25 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                 var status = CommandStatus.Success;
                 var results = new List<TCommandResult>();
 
-                foreach (string path in paths)
+                foreach (PathInfo path in paths)
                 {
+                    if (path.Origin == PathOrigin.PipedInput)
+                    {
+                        Matcher matcher = (string.Equals(Path.GetExtension(path.Path), ".sln", StringComparison.OrdinalIgnoreCase))
+                            ? ProjectFilter.Matcher
+                            : ProjectFilter.SolutionMatcher;
+
+                        if (matcher?.Match(path.Path).HasMatches == false)
+                        {
+                            WriteLine($"  Skip '{path.Path}'", ConsoleColors.DarkGray, Verbosity.Normal);
+                            continue;
+                        }
+                    }
+
                     TCommandResult result;
                     try
                     {
-                        result = await ExecuteAsync(path, workspace, cancellationToken);
+                        result = await ExecuteAsync(path.Path, workspace, cancellationToken);
 
                         if (result is null)
                         {
@@ -133,11 +147,6 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
     {
         if (!File.Exists(path))
             throw new FileNotFoundException($"Project or solution file not found: {path}");
-
-        TCommandResult result = await ExecuteAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
-
-        if (result is not null)
-            return result;
 
         ProjectOrSolution projectOrSolution = await OpenProjectOrSolutionAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
 
@@ -205,15 +214,6 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
     protected virtual void WorkspaceFailed(object sender, WorkspaceDiagnosticEventArgs e)
     {
         WriteLine($"  {e.Diagnostic.Message}", e.Diagnostic.Kind.GetColors(), Verbosity.Detailed);
-    }
-
-    protected virtual Task<TCommandResult> ExecuteAsync(
-        string path,
-        MSBuildWorkspace workspace,
-        IProgress<ProjectLoadProgress> progress = null,
-        CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(default(TCommandResult));
     }
 
     private static async Task<ProjectOrSolution> OpenProjectOrSolutionAsync(

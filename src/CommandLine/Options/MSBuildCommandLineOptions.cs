@@ -82,13 +82,14 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
             return false;
         }
 
-        Matcher matcher = CreateProjectMatcher();
+        Matcher projectMatcher = CreateMatcher(p => CommandLineHelpers.IsGlobPatternForProject(p));
+        Matcher solutionMatcher = CreateMatcher(p => CommandLineHelpers.IsGlobPatternForSolution(p));
 
-        projectFilter = new ProjectFilter(matcher, Projects, IgnoredProjects, language);
+        projectFilter = new ProjectFilter(projectMatcher, solutionMatcher, Projects, IgnoredProjects, language);
         return true;
     }
 
-    private Matcher CreateProjectMatcher()
+    private Matcher CreateMatcher(Func<string, bool> patternPredicate)
     {
         if (!Include.Any()
             && !Exclude.Any())
@@ -96,8 +97,8 @@ public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
             return null;
         }
 
-        string[] include = Include.Where(p => CommandLineHelpers.IsGlobPatternForProject(p)).ToArray();
-        string[] exclude = Exclude.Where(p => CommandLineHelpers.IsGlobPatternForProject(p)).ToArray();
+        string[] include = Include.Where(patternPredicate).ToArray();
+        string[] exclude = Exclude.Where(patternPredicate).ToArray();
 
         Matcher matcher = null;
 

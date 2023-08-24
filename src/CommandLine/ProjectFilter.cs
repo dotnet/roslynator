@@ -13,6 +13,7 @@ internal readonly struct ProjectFilter
 {
     public ProjectFilter(
         Matcher matcher,
+        Matcher solutionMatcher,
         IEnumerable<string> names,
         IEnumerable<string> ignoredNames,
         string language)
@@ -24,12 +25,15 @@ internal readonly struct ProjectFilter
         }
 
         Matcher = matcher;
+        SolutionMatcher = solutionMatcher;
         Names = names?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
         IgnoredNames = ignoredNames?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
         Language = language;
     }
 
     public Matcher Matcher { get; }
+
+    public Matcher SolutionMatcher { get; }
 
     public ImmutableHashSet<ProjectName> Names { get; }
 
