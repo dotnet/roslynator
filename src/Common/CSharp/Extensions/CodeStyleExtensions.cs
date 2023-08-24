@@ -12,7 +12,7 @@ internal static class CodeStyleExtensions
 {
     public static bool TryGetTabLength(this AnalyzerConfigOptions configOptions, out int tabLength)
     {
-        if (configOptions.TryGetValue("roslynator_tab_length", out string tabLengthStr)
+        if (configOptions.TryGetValue(ConfigOptionKeys.TabLength, out string tabLengthStr)
             && int.TryParse(tabLengthStr, NumberStyles.None, CultureInfo.InvariantCulture, out tabLength))
         {
             return true;

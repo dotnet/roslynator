@@ -124,6 +124,11 @@
     <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>
     <Description>Max line length</Description>
   </Option>
+  <Option Id="TabLength">
+    <DefaultValue>4</DefaultValue>
+    <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>
+    <Description>A length of a tab character.</Description>
+  </Option>
   <Option Id="NewLineAtEndOfFile">
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Include/omit new line at the end of a file</Description>

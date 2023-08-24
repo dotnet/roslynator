@@ -1446,6 +1446,7 @@ void M(
 Default maximal length is 140.</Summary>
     <ConfigOptions>
       <Option Key="max_line_length" />
+      <Option Key="tab_length" />
     </ConfigOptions>
   </Analyzer>
   <Analyzer>
