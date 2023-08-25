@@ -154,7 +154,7 @@ public sealed class FixFormattingOfBinaryExpressionChainAnalyzer : BaseDiagnosti
 
         int GetIndentationLength()
         {
-            IndentationAnalysis indentationAnalysis = AnalyzeIndentation(topBinaryExpression);
+            IndentationAnalysis indentationAnalysis = AnalyzeIndentation(topBinaryExpression, context.GetConfigOptions());
 
             if (indentationAnalysis.IndentSize == 0)
                 return -1;

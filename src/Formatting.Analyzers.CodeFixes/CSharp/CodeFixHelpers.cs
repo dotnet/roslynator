@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
@@ -78,7 +79,7 @@ internal static class CodeFixHelpers
         return AddNewLineBeforeAndIncreaseIndentationAsync(
             document,
             token,
-            AnalyzeIndentation(token.Parent, cancellationToken),
+            AnalyzeIndentation(token.Parent, document.GetConfigOptions(token.SyntaxTree), cancellationToken),
             cancellationToken);
     }
 
@@ -103,7 +104,7 @@ internal static class CodeFixHelpers
         return AddNewLineAfterAndIncreaseIndentationAsync(
             document,
             token,
-            AnalyzeIndentation(token.Parent, cancellationToken),
+            AnalyzeIndentation(token.Parent, document.GetConfigOptions(token.SyntaxTree), cancellationToken),
             cancellationToken);
     }
 
@@ -429,7 +430,7 @@ internal static class CodeFixHelpers
     {
         NewLinePosition conditionalAccessOperatorNewLinePosition = document.GetConfigOptions(expression.SyntaxTree).GetNullConditionalOperatorNewLinePosition(NewLinePosition.After);
 
-        IndentationAnalysis indentationAnalysis = AnalyzeIndentation(expression, cancellationToken);
+        IndentationAnalysis indentationAnalysis = AnalyzeIndentation(expression, document.GetConfigOptions(expression.SyntaxTree), cancellationToken);
         string indentation = indentationAnalysis.GetIncreasedIndentation();
         string endOfLineAndIndentation = DetermineEndOfLine(expression).ToString() + indentation;
 
@@ -596,7 +597,9 @@ internal static class CodeFixHelpers
         TextSpan span,
         CancellationToken cancellationToken)
     {
-        IndentationAnalysis indentationAnalysis = AnalyzeIndentation(binaryExpression, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(binaryExpression.SyntaxTree);
+
+        IndentationAnalysis indentationAnalysis = AnalyzeIndentation(binaryExpression, configOptions, cancellationToken);
 
         string indentation;
         if (indentationAnalysis.Indentation == binaryExpression.GetLeadingTrivia().LastOrDefault()
@@ -959,6 +962,7 @@ internal static class CodeFixHelpers
         CancellationToken cancellationToken = default) where TNode : SyntaxNode
     {
         List<TextChange> textChanges = GetFixListChanges(
+            document,
             containingNode,
             openNodeOrToken,
             nodes,
@@ -971,13 +975,16 @@ internal static class CodeFixHelpers
     }
 
     internal static List<TextChange> GetFixListChanges<TNode>(
+        Document document,
         SyntaxNode containingNode,
         SyntaxNodeOrToken openNodeOrToken,
         IReadOnlyList<TNode> nodes,
         ListFixMode fixMode = ListFixMode.Fix,
         CancellationToken cancellationToken = default) where TNode : SyntaxNode
     {
-        IndentationAnalysis indentationAnalysis = AnalyzeIndentation(containingNode, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(containingNode.SyntaxTree);
+
+        IndentationAnalysis indentationAnalysis = AnalyzeIndentation(containingNode, configOptions, cancellationToken);
 
         string increasedIndentation = indentationAnalysis.GetIncreasedIndentation();
 

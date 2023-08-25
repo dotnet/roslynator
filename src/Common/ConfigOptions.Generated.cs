@@ -182,6 +182,12 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Suppress Unity script methods");
 
+        public static readonly ConfigOptionDescriptor TabLength = new(
+            key:                     ConfigOptionKeys.TabLength, 
+            defaultValue:            "4", 
+            defaultValuePlaceholder: "<NUM>", 
+            description:             "A length of a tab character.");
+
         public static readonly ConfigOptionDescriptor TrailingCommaStyle = new(
             key:                     ConfigOptionKeys.TrailingCommaStyle, 
             defaultValue:            null, 

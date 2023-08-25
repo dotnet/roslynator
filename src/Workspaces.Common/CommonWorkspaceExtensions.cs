@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp;
 
 namespace Roslynator;
 
@@ -48,5 +50,10 @@ internal static class CommonWorkspaceExtensions
     internal static AnalyzerConfigOptions GetConfigOptions(this Document document, SyntaxTree syntaxTree)
     {
         return document.Project.AnalyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
+    }
+
+    internal static IndentationAnalysis AnalyzeIndentation(this Document document, SyntaxNode node, CancellationToken cancellationToken = default)
+    {
+        return IndentationAnalysis.Create(node, document.GetConfigOptions(node.SyntaxTree), cancellationToken);
     }
 }

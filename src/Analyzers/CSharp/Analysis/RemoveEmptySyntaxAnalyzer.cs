@@ -66,7 +66,7 @@ public sealed class RemoveEmptySyntaxAnalyzer : BaseDiagnosticAnalyzer
         IfStatementSyntax topmostIf = elseClause.GetTopmostIf();
 
         if (topmostIf.Parent is IfStatementSyntax parentIf
-            && parentIf.Else != null)
+            && parentIf.Else is not null)
         {
             return;
         }

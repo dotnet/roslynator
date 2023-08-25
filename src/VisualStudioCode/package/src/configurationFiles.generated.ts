@@ -120,6 +120,10 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_suppress_unity_script_methods = true|false
 # Applicable to: rcs1213
 
+#roslynator_tab_length = <NUM>
+# Default: 4
+# Applicable to: rcs0056
+
 #roslynator_trailing_comma_style = include|omit|omit_when_single_line
 # Applicable to: rcs1260
 
@@ -279,7 +283,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # A line is too long
 #dotnet_diagnostic.rcs0056.severity = none
-# Options: roslynator_max_line_length
+# Options: roslynator_max_line_length, roslynator_tab_length
 
 # Normalize whitespace at the beginning of a file
 #dotnet_diagnostic.rcs0057.severity = none
