@@ -124,6 +124,9 @@ roslynator_analyzers.enabled_by_default = true|false
 # Default: 4
 # Applicable to: rcs0056
 
+#roslynator_trailing_comma_style = include|omit|omit_when_single_line
+# Applicable to: rcs1260
+
 #roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: rcs1207
 
@@ -368,9 +371,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Remove redundant 'sealed' modifier
 #dotnet_diagnostic.rcs1034.severity = silent
-
-# Remove redundant comma in initializer
-#dotnet_diagnostic.rcs1035.severity = none
 
 # Remove unnecessary blank line
 #dotnet_diagnostic.rcs1036.severity = suggestion
@@ -897,6 +897,10 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Remove empty syntax
 #dotnet_diagnostic.rcs1259.severity = suggestion
+
+# Add/remove trailing comma
+#dotnet_diagnostic.rcs1260.severity = none
+# Options: roslynator_trailing_comma_style
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

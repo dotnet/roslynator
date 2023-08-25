@@ -188,6 +188,12 @@ namespace Roslynator
             defaultValuePlaceholder: "<NUM>", 
             description:             "A length of a tab character.");
 
+        public static readonly ConfigOptionDescriptor TrailingCommaStyle = new(
+            key:                     ConfigOptionKeys.TrailingCommaStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "include|omit|omit_when_single_line", 
+            description:             "Include/omit trailing comma in initializer or enum.");
+
         public static readonly ConfigOptionDescriptor UseAnonymousFunctionOrMethodGroup = new(
             key:                     ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, 
             defaultValue:            null, 
@@ -240,6 +246,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1252", JoinOptionKeys(ConfigOptionKeys.InfiniteLoopStyle));
             yield return new KeyValuePair<string, string>("RCS1253", JoinOptionKeys(ConfigOptionKeys.DocCommentSummaryStyle));
             yield return new KeyValuePair<string, string>("RCS1254", JoinOptionKeys(ConfigOptionKeys.EnumFlagValueStyle));
+            yield return new KeyValuePair<string, string>("RCS1260", JoinOptionKeys(ConfigOptionKeys.TrailingCommaStyle));
         }
     }
 }

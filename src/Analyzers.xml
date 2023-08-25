@@ -2336,10 +2336,13 @@ if (f)
   <Analyzer>
     <Id>RCS1035</Id>
     <Identifier>RemoveRedundantCommaInInitializer</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1260 instead</ObsoleteMessage>
     <Title>Remove redundant comma in initializer.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[public void Foo()
@@ -7420,6 +7423,43 @@ void M()
   * empty object initializer
   * empty region directive
 </Summary>
+  </Analyzer>
+  <Analyzer Identifier="AddOrRemoveTrailingComma">
+    <Id>RCS1260</Id>
+    <Title>Add/remove trailing comma.</Title>
+    <MessageFormat>{0} trailing comma.</MessageFormat>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="trailing_comma_style" IsRequired="true" />
+    </ConfigOptions>
+    <Samples>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="trailing_comma_style" Value="include" />
+        </ConfigOptions>
+        <Before><![CDATA[public enum Foo
+{
+    A,
+    B,
+    C
+}]]></Before>
+        <After><![CDATA[public enum Foo
+{
+    A,
+    B,
+    C,
+}]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="trailing_comma_style" Value="omit_when_single_line" />
+        </ConfigOptions>
+        <Before><![CDATA[public enum Foo { A, B, C, }]]></Before>
+        <After><![CDATA[public enum Foo { A, B, C }]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS9001</Id>
