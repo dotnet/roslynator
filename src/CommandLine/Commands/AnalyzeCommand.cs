@@ -79,8 +79,6 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
         {
             Solution solution = projectOrSolution.AsSolution();
 
-            var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
-
             results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => IsMatch(f), cancellationToken);
         }
 

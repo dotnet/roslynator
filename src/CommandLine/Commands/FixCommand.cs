@@ -69,8 +69,6 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
 
         CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
-        var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
-
         return await FixAsync(projectOrSolution, analyzerAssemblies, codeFixerOptions, culture, cancellationToken);
     }
 

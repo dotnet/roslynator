@@ -53,8 +53,6 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
     {
         AssemblyResolver.Register();
 
-        var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
-
         SymbolRenameState renamer = null;
 
         if (projectOrSolution.IsProject)
