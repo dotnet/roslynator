@@ -7423,6 +7423,43 @@ void M()
   * empty region directive
 </Summary>
   </Analyzer>
+  <Analyzer Identifier="AddOrRemoveTrailingComma">
+    <Id>RCS1260</Id>
+    <Title>Add/remove trailing comma.</Title>
+    <MessageFormat>{0} trailing comma.</MessageFormat>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="trailing_comma_style" IsRequired="true" />
+    </ConfigOptions>
+    <Samples>
+      <Sample>
+        <Options>
+          <Option Key="trailing_comma_style" Value="include" />
+        </Options>
+        <Before><![CDATA[public enum Foo
+{
+    A,
+    B,
+    C
+}]]></Before>
+        <After><![CDATA[public enum Foo
+{
+    A,
+    B,
+    C,
+}]]></After>
+      </Sample>
+      <Sample>
+        <Options>
+          <Option Key="trailing_comma_style" Value="omit_when_single_line" />
+        </Options>
+        <Before><![CDATA[public enum Foo { A, B, C, }]]></Before>
+        <After><![CDATA[public enum Foo { A, B, C }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
   <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>

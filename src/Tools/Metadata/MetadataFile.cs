@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -137,10 +138,17 @@ public static class MetadataFile
                 XElement before = f.Element("Before");
                 XElement after = f.Element("After");
 
+                ImmutableArray<(string, string)> options = f.Element("Options")?
+                    .Elements("Option")
+                    .Select(f => (f.Attribute("Key").Value, f.Attribute("Value").Value))
+                    .ToImmutableArray()
+                    ?? ImmutableArray<(string, string)>.Empty;
+
                 return new SampleMetadata()
                 {
                     Before = before.Value.NormalizeNewLine(),
-                    After = after?.Value.NormalizeNewLine()
+                    After = after?.Value.NormalizeNewLine(),
+                    Options = options,
                 };
             });
     }
