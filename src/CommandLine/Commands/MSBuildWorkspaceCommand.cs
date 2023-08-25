@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
-using static Roslynator.Logger;
 using Microsoft.Extensions.FileSystemGlobbing;
+using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine;
 
