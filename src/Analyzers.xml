@@ -7435,9 +7435,9 @@ void M()
     </ConfigOptions>
     <Samples>
       <Sample>
-        <Options>
+        <ConfigOptions>
           <Option Key="trailing_comma_style" Value="include" />
-        </Options>
+        </ConfigOptions>
         <Before><![CDATA[public enum Foo
 {
     A,
@@ -7452,9 +7452,9 @@ void M()
 }]]></After>
       </Sample>
       <Sample>
-        <Options>
+        <ConfigOptions>
           <Option Key="trailing_comma_style" Value="omit_when_single_line" />
-        </Options>
+        </ConfigOptions>
         <Before><![CDATA[public enum Foo { A, B, C, }]]></Before>
         <After><![CDATA[public enum Foo { A, B, C }]]></After>
       </Sample>

@@ -385,7 +385,7 @@ public static class MarkdownGenerator
                 yield return DocusaurusMarkdownFactory.CodeBlock(sample.After, LanguageIdentifiers.CSharp, afterTitle + ".cs");
             }
 
-            ImmutableArray<(string Key, string Value)>.Enumerator en = sample.Options.GetEnumerator();
+            ImmutableArray<(string Key, string Value)>.Enumerator en = sample.ConfigOptions.GetEnumerator();
             if (en.MoveNext())
             {
                 var sb = new StringBuilder();

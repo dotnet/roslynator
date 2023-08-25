@@ -138,7 +138,7 @@ public static class MetadataFile
                 XElement before = f.Element("Before");
                 XElement after = f.Element("After");
 
-                ImmutableArray<(string, string)> options = f.Element("Options")?
+                ImmutableArray<(string, string)> options = f.Element("ConfigOptions")?
                     .Elements("Option")
                     .Select(f => (f.Attribute("Key").Value, f.Attribute("Value").Value))
                     .ToImmutableArray()
@@ -148,7 +148,7 @@ public static class MetadataFile
                 {
                     Before = before.Value.NormalizeNewLine(),
                     After = after?.Value.NormalizeNewLine(),
-                    Options = options,
+                    ConfigOptions = options,
                 };
             });
     }

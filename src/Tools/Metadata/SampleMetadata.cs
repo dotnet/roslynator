@@ -4,4 +4,4 @@ using System.Collections.Immutable;
 
 namespace Roslynator.Metadata;
 
-public readonly record struct SampleMetadata(string Before, string After, ImmutableArray<(string Key, string Value)> Options);
+public readonly record struct SampleMetadata(string Before, string After, ImmutableArray<(string Key, string Value)> ConfigOptions);
