@@ -34,7 +34,7 @@ internal class MigrateCommand
             ",
         RegexOptions.IgnorePatternWhitespace);
 
-    public MigrateCommand(ImmutableArray<string> paths, string identifier, Version version, bool dryRun)
+    public MigrateCommand(ImmutableArray<PathInfo> paths, string identifier, Version version, bool dryRun)
     {
         Paths = paths;
         Identifier = identifier;
@@ -42,7 +42,7 @@ internal class MigrateCommand
         DryRun = dryRun;
     }
 
-    public ImmutableArray<string> Paths { get; }
+    public ImmutableArray<PathInfo> Paths { get; }
 
     public string Identifier { get; }
 
@@ -90,9 +90,9 @@ internal class MigrateCommand
     {
         var status = CommandStatus.Success;
 
-        foreach (string path in Paths)
+        foreach (PathInfo path in Paths)
         {
-            CommandStatus status2 = ExecutePath(path, cancellationToken);
+            CommandStatus status2 = ExecutePath(path.Path, cancellationToken);
 
             if (status != CommandStatus.Success)
                 status = status2;

@@ -6,6 +6,6 @@ dotnet pack "../src/CommandLine/CommandLine.csproj" -c Debug -v minimal `
 
 dotnet tool uninstall roslynator.dotnet.cli -g
 
-dotnet tool install roslynator.dotnet.cli -g --add-source "../src/CommandLine/bin/Debug"
+dotnet tool install roslynator.dotnet.cli -g --add-source "../src/CommandLine/bin/Debug" --version 1.0.0
 
 Write-Host DONE

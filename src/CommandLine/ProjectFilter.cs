@@ -5,12 +5,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.CommandLine;
 
 internal readonly struct ProjectFilter
 {
     public ProjectFilter(
+        Matcher matcher,
+        Matcher solutionMatcher,
         IEnumerable<string> names,
         IEnumerable<string> ignoredNames,
         string language)
@@ -21,10 +24,16 @@ internal readonly struct ProjectFilter
             throw new ArgumentException($"Cannot specify both '{nameof(names)}' and '{nameof(ignoredNames)}'.", nameof(names));
         }
 
+        Matcher = matcher;
+        SolutionMatcher = solutionMatcher;
         Names = names?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
         IgnoredNames = ignoredNames?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
         Language = language;
     }
+
+    public Matcher Matcher { get; }
+
+    public Matcher SolutionMatcher { get; }
 
     public ImmutableHashSet<ProjectName> Names { get; }
 
@@ -36,7 +45,8 @@ internal readonly struct ProjectFilter
     {
         get
         {
-            return Names is null
+            return Matcher is null
+                && Names is null
                 && IgnoredNames is null
                 && Language is null;
         }
@@ -49,6 +59,9 @@ internal readonly struct ProjectFilter
         {
             return false;
         }
+
+        if (Matcher?.Match(project.FilePath).HasMatches == false)
+            return false;
 
         if (Names?.Count > 0)
             return IsMatch(project.Name, Names);

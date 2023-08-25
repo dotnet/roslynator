@@ -4,12 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
@@ -110,7 +108,6 @@ internal static class Program
                     typeof(SpellcheckCommandLineOptions),
 #if DEBUG
                     typeof(FindSymbolsCommandLineOptions),
-                    typeof(SlnListCommandLineOptions),
 #endif
                 });
 
@@ -317,7 +314,7 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         var command = new FixCommand(
@@ -327,7 +324,7 @@ internal static class Program
             diagnosticFixerMap: diagnosticFixerMap,
             fixAllScope: fixAllScope,
             projectFilter: projectFilter,
-            fileSystemFilter: FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
+            fileSystemFilter: CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -342,10 +339,10 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
-        var command = new AnalyzeCommand(options, severityLevel, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
+        var command = new AnalyzeCommand(options, severityLevel, projectFilter, CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -376,7 +373,7 @@ internal static class Program
         if (!TryParseOptionValueAsEnumFlags(options.WithoutFlags, OptionNames.WithoutFlags, out SymbolFlags withoutFlags, SymbolFlags.None))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         ImmutableArray<SymbolFilterRule>.Builder rules = ImmutableArray.CreateBuilder<SymbolFilterRule>();
@@ -393,7 +390,7 @@ internal static class Program
         if (withoutFlags != SymbolFlags.None)
             rules.AddRange(SymbolFilterRuleFactory.FromFlags(withoutFlags, invert: true));
 
-        FileSystemFilter fileSystemFilter = FileSystemFilter.CreateOrDefault(options.Include, options.Exclude);
+        FileSystemFilter fileSystemFilter = CreateFileSystemFilter(options);
 
         var symbolFinderOptions = new SymbolFinderOptions(
             fileSystemFilter,
@@ -420,7 +417,7 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         if (!TryParseOptionValueAsEnum(options.OnError, OptionNames.OnError, out CliCompilationErrorResolution errorResolution, defaultValue: CliCompilationErrorResolution.None))
@@ -470,7 +467,7 @@ internal static class Program
         var command = new RenameSymbolCommand(
             options: options,
             projectFilter: projectFilter,
-            fileSystemFilter: FileSystemFilter.CreateOrDefault(options.Include, options.Exclude),
+            fileSystemFilter: CreateFileSystemFilter(options),
             scopeFilter: scopeFilter,
             errorResolution: errorResolution,
             ignoredCompilerDiagnostics: options.IgnoredCompilerDiagnostics,
@@ -518,7 +515,7 @@ internal static class Program
         if (!TryParseOptionValueAsEnumFlags(options.Visibility, OptionNames.Visibility, out VisibilityFilter visibilityFilter, SymbolFilterOptions.Default.Visibility))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         ImmutableArray<SymbolFilterRule> rules = (ignoredSymbols.Any())
@@ -529,7 +526,7 @@ internal static class Program
             IgnoredAttributeNameFilterRule.Default,
             new IgnoredAttributeNameFilterRule(ignoredAttributes));
 
-        FileSystemFilter fileSystemFilter = FileSystemFilter.CreateOrDefault(options.Include, options.Exclude);
+        FileSystemFilter fileSystemFilter = CreateFileSystemFilter(options);
 
         var symbolFilterOptions = new SymbolFilterOptions(
             fileSystemFilter: fileSystemFilter,
@@ -572,7 +569,7 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         if (options.EndOfLine is not null)
@@ -581,7 +578,7 @@ internal static class Program
             CommandLineHelpers.WaitForKeyPress();
         }
 
-        var command = new FormatCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
+        var command = new FormatCommand(options, projectFilter, CreateFileSystemFilter(options));
 
         IEnumerable<string> properties = options.Properties;
 
@@ -625,7 +622,7 @@ internal static class Program
             }
         }
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         var loadOptions = WordListLoadOptions.DetectNonWords;
@@ -644,7 +641,7 @@ internal static class Program
         var command = new SpellcheckCommand(
             options,
             projectFilter,
-            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude),
+            CreateFileSystemFilter(options),
             data,
             visibility,
             scopeFilter);
@@ -659,10 +656,10 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
-        var command = new PhysicalLinesOfCodeCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
+        var command = new PhysicalLinesOfCodeCommand(options, projectFilter, CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -674,10 +671,10 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
-        var command = new LogicalLinesOfCodeCommand(options, projectFilter, FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
+        var command = new LogicalLinesOfCodeCommand(options, projectFilter, CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -734,7 +731,7 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Path, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Path, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         var command = new GenerateDocCommand(
@@ -754,7 +751,7 @@ internal static class Program
             groupByCommonNamespace: options.GroupByCommonNamespace,
             inheritanceStyle: inheritanceStyle,
             projectFilter: projectFilter,
-            fileSystemFilter: FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
+            fileSystemFilter: CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -786,7 +783,7 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParsePaths(options.Path, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Path, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         var command = new GenerateDocRootCommand(
@@ -799,7 +796,7 @@ internal static class Program
             filesLayout,
             options.GroupByCommonNamespace,
             projectFilter,
-            FileSystemFilter.CreateOrDefault(options.Include, options.Exclude));
+            CreateFileSystemFilter(options));
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -816,7 +813,7 @@ internal static class Program
             return ExitCodes.Error;
         }
 
-        if (!TryParsePaths(options.Path, out ImmutableArray<string> paths))
+        if (!TryParsePaths(options.Path, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
         if (!TryParseVersion(options.Version, out Version version))
@@ -844,21 +841,21 @@ internal static class Program
         return GetExitCode(status);
     }
 
-    private static bool TryParsePaths(string value, out ImmutableArray<string> paths)
+    private static bool TryParsePaths(string value, out ImmutableArray<PathInfo> paths)
     {
         return TryParsePaths(ImmutableArray.Create(value), out paths);
     }
 
-    private static bool TryParsePaths(IEnumerable<string> values, out ImmutableArray<string> paths)
+    private static bool TryParsePaths(IEnumerable<string> values, out ImmutableArray<PathInfo> paths)
     {
-        paths = ImmutableArray<string>.Empty;
+        paths = ImmutableArray<PathInfo>.Empty;
 
         if (values.Any())
         {
             if (!TryEnsureFullPath(values, out ImmutableArray<string> paths2))
                 return false;
 
-            paths = paths.AddRange(paths2);
+            paths = paths.AddRange(ImmutableArray.CreateRange(paths2, f => new PathInfo(f, PathOrigin.Argument)));
         }
 
         if (Console.IsInputRedirected)
@@ -870,7 +867,7 @@ internal static class Program
                 return false;
             }
 
-            paths = paths.AddRange(paths2);
+            paths = paths.AddRange(ImmutableArray.CreateRange(paths2, f => new PathInfo(f, PathOrigin.PipedInput)));
         }
 
         if (!paths.IsEmpty)
@@ -901,12 +898,12 @@ internal static class Program
                 return false;
             }
 
-            paths = ImmutableArray.Create(solutionPath);
+            paths = ImmutableArray.Create(new PathInfo(solutionPath, PathOrigin.CurrentDirectory));
             return true;
         }
         else if (projectPath is not null)
         {
-            paths = ImmutableArray.Create(projectPath);
+            paths = ImmutableArray.Create(new PathInfo(projectPath, PathOrigin.CurrentDirectory));
             return true;
         }
         else
@@ -962,5 +959,24 @@ internal static class Program
         public const int Success = 0;
         public const int NotSuccess = 1;
         public const int Error = 2;
+    }
+
+    private static FileSystemFilter CreateFileSystemFilter(MSBuildCommandLineOptions options)
+    {
+        string[] include = options.Include.Where(p => CommandLineHelpers.IsGlobPatternForFileOrFolder(p)).ToArray();
+        string[] exclude = options.Exclude.Where(p => CommandLineHelpers.IsGlobPatternForFileOrFolder(p)).ToArray();
+
+        FileSystemFilter filter = FileSystemFilter.CreateOrDefault(include, exclude);
+
+        if (filter is not null)
+        {
+            foreach (string pattern in include)
+                WriteLine($"Glob to include files/folders: {pattern}", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+
+            foreach (string pattern in exclude)
+                WriteLine($"Glob to exclude files/folders: {pattern}", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+        }
+
+        return filter;
     }
 }
