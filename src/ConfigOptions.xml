@@ -127,7 +127,7 @@
   <Option Id="TabLength">
     <DefaultValue>4</DefaultValue>
     <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>
-    <Description>A length of a tab character.</Description>
+    <Description>A number of spaces that are equivalent to a tab character.</Description>
   </Option>
   <Option Id="NewLineAtEndOfFile">
     <ValuePlaceholder>true|false</ValuePlaceholder>
