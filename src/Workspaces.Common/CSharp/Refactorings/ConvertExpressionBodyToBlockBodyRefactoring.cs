@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -22,6 +23,8 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         MemberDeclarationListSelection selectedMembers,
         CancellationToken cancellationToken)
     {
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(selectedMembers.Parent.SyntaxTree);
+
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
         IEnumerable<MemberDeclarationSyntax> newMembers = selectedMembers
@@ -36,7 +39,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     if (expressionBody is not null
                         && ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                     {
-                        return (MemberDeclarationSyntax)Refactor(expressionBody, semanticModel, cancellationToken);
+                        return (MemberDeclarationSyntax)Refactor(expressionBody, configOptions, semanticModel, cancellationToken);
                     }
 
                     return member;
@@ -50,9 +53,11 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         ArrowExpressionClauseSyntax expressionBody,
         CancellationToken cancellationToken = default)
     {
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(expressionBody.SyntaxTree);
+
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        SyntaxNode newNode = Refactor(expressionBody, semanticModel, cancellationToken);
+        SyntaxNode newNode = Refactor(expressionBody, configOptions, semanticModel, cancellationToken);
 
         SyntaxToken token = expressionBody.ArrowToken.GetPreviousToken();
 
@@ -68,6 +73,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
 
     public static SyntaxNode Refactor(
         ArrowExpressionClauseSyntax expressionBody,
+        AnalyzerConfigOptions configOptions,
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
@@ -84,7 +90,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     return method
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(method, expression, method.SemicolonToken, method.ReturnType, semanticModel, cancellationToken));
+                        .WithBody(CreateBlock(method, expression, method.SemicolonToken, method.ReturnType, configOptions, semanticModel, cancellationToken));
                 }
             case SyntaxKind.ConstructorDeclaration:
                 {
@@ -93,7 +99,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     return constructor
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default)
-                        .WithBody(CreateBlockWithExpressionStatement(constructor, expression, constructor.SemicolonToken));
+                        .WithBody(CreateBlockWithExpressionStatement(constructor, expression, constructor.SemicolonToken, configOptions));
                 }
             case SyntaxKind.DestructorDeclaration:
                 {
@@ -102,7 +108,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     return destructor
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default)
-                        .WithBody(CreateBlockWithExpressionStatement(destructor, expression, destructor.SemicolonToken));
+                        .WithBody(CreateBlockWithExpressionStatement(destructor, expression, destructor.SemicolonToken, configOptions));
                 }
             case SyntaxKind.OperatorDeclaration:
                 {
@@ -111,7 +117,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     return operatorDeclaration
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(operatorDeclaration, expression, operatorDeclaration.SemicolonToken));
+                        .WithBody(CreateBlock(operatorDeclaration, expression, operatorDeclaration.SemicolonToken, configOptions));
                 }
             case SyntaxKind.ConversionOperatorDeclaration:
                 {
@@ -120,14 +126,14 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     return conversionOperatorDeclaration
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(conversionOperatorDeclaration, expression, conversionOperatorDeclaration.SemicolonToken));
+                        .WithBody(CreateBlock(conversionOperatorDeclaration, expression, conversionOperatorDeclaration.SemicolonToken, configOptions));
                 }
             case SyntaxKind.PropertyDeclaration:
                 {
                     var propertyDeclaration = (PropertyDeclarationSyntax)node;
 
                     return propertyDeclaration
-                        .WithAccessorList(CreateAccessorList(propertyDeclaration, expression, propertyDeclaration.SemicolonToken))
+                        .WithAccessorList(CreateAccessorList(propertyDeclaration, expression, propertyDeclaration.SemicolonToken, configOptions))
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default);
                 }
@@ -136,7 +142,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
                     return indexerDeclaration
-                        .WithAccessorList(CreateAccessorList(indexerDeclaration, expression, indexerDeclaration.SemicolonToken))
+                        .WithAccessorList(CreateAccessorList(indexerDeclaration, expression, indexerDeclaration.SemicolonToken, configOptions))
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default);
                 }
@@ -147,7 +153,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     return accessor
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(accessor, expression, accessor.SemicolonToken));
+                        .WithBody(CreateBlock(accessor, expression, accessor.SemicolonToken, configOptions));
                 }
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.InitAccessorDeclaration:
@@ -159,7 +165,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     return accessor
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default)
-                        .WithBody(CreateBlockWithExpressionStatement(accessor, expression, accessor.SemicolonToken));
+                        .WithBody(CreateBlockWithExpressionStatement(accessor, expression, accessor.SemicolonToken, configOptions));
                 }
             case SyntaxKind.LocalFunctionStatement:
                 {
@@ -168,7 +174,7 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
                     return localFunction
                         .WithExpressionBody(null)
                         .WithSemicolonToken(default)
-                        .WithBody(CreateBlock(localFunction, expression, localFunction.SemicolonToken, localFunction.ReturnType, semanticModel, cancellationToken));
+                        .WithBody(CreateBlock(localFunction, expression, localFunction.SemicolonToken, localFunction.ReturnType, configOptions, semanticModel, cancellationToken));
                 }
             default:
                 {
@@ -178,11 +184,16 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         }
     }
 
-    private static BlockSyntax CreateBlock(SyntaxNode declaration, ExpressionSyntax expression, SyntaxToken semicolon, int increaseCount = 1)
+    private static BlockSyntax CreateBlock(
+        SyntaxNode declaration,
+        ExpressionSyntax expression,
+        SyntaxToken semicolon,
+        AnalyzerConfigOptions configOptions,
+        int increaseCount = 1)
     {
         return (expression.IsKind(SyntaxKind.ThrowExpression))
-            ? CreateBlockWithExpressionStatement(declaration, expression, semicolon, increaseCount)
-            : CreateBlockWithReturnStatement(declaration, expression, semicolon, increaseCount);
+            ? CreateBlockWithExpressionStatement(declaration, expression, semicolon, configOptions, increaseCount)
+            : CreateBlockWithReturnStatement(declaration, expression, semicolon, configOptions, increaseCount);
     }
 
     private static BlockSyntax CreateBlock(
@@ -190,12 +201,13 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         ExpressionSyntax expression,
         SyntaxToken semicolon,
         TypeSyntax returnType,
+        AnalyzerConfigOptions configOptions,
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
         return (ShouldCreateExpressionStatement(returnType, expression, semanticModel, cancellationToken))
-            ? CreateBlockWithExpressionStatement(declaration, expression, semicolon)
-            : CreateBlockWithReturnStatement(declaration, expression, semicolon);
+            ? CreateBlockWithExpressionStatement(declaration, expression, semicolon, configOptions)
+            : CreateBlockWithReturnStatement(declaration, expression, semicolon, configOptions);
 
         static bool ShouldCreateExpressionStatement(
             TypeSyntax returnType,
@@ -238,9 +250,10 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
     private static AccessorListSyntax CreateAccessorList(
         SyntaxNode declaration,
         ExpressionSyntax expression,
-        SyntaxToken semicolon)
+        SyntaxToken semicolon,
+        AnalyzerConfigOptions configOptions)
     {
-        BlockSyntax block = CreateBlock(declaration, expression, semicolon, increaseCount: 2);
+        BlockSyntax block = CreateBlock(declaration, expression, semicolon, configOptions, increaseCount: 2);
 
         AccessorListSyntax accessorList = AccessorList(GetAccessorDeclaration(block));
 
@@ -259,12 +272,14 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         SyntaxNode declaration,
         ExpressionSyntax expression,
         SyntaxToken semicolon,
+        AnalyzerConfigOptions configOptions,
         int increaseCount = 1)
     {
         return CreateBlock(
             declaration,
             expression,
             semicolon,
+            configOptions,
             (e, s) =>
             {
                 if (e is ThrowExpressionSyntax throwExpression)
@@ -283,12 +298,14 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         SyntaxNode declaration,
         ExpressionSyntax expression,
         SyntaxToken semicolon,
+        AnalyzerConfigOptions configOptions,
         int increaseCount = 1)
     {
         return CreateBlock(
             declaration,
             expression,
             semicolon,
+            configOptions,
             (e, s) => ReturnStatement(Token(SyntaxKind.ReturnKeyword), e, s),
             increaseCount: increaseCount);
     }
@@ -297,10 +314,11 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
         SyntaxNode declaration,
         ExpressionSyntax expression,
         SyntaxToken semicolon,
+        AnalyzerConfigOptions configOptions,
         Func<ExpressionSyntax, SyntaxToken, StatementSyntax> createStatement,
         int increaseCount = 1)
     {
-        expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration, increaseCount: increaseCount);
+        expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration, configOptions, increaseCount: increaseCount);
 
         return Block(
             Token(SyntaxKind.OpenBraceToken).WithFormatterAnnotation(),

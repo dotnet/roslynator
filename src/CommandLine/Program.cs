@@ -110,7 +110,6 @@ internal static class Program
                     typeof(SpellcheckCommandLineOptions),
 #if DEBUG
                     typeof(FindSymbolsCommandLineOptions),
-                    typeof(SlnListCommandLineOptions),
 #endif
                 });
 

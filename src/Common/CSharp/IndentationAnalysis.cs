@@ -5,23 +5,30 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp;
 
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
-internal readonly struct IndentationAnalysis
+internal sealed class IndentationAnalysis
 {
+    private static readonly string _twoSpaces = "  ";
+    private static readonly string _fourSpaces = "    ";
+
     private readonly int? _indentSize;
     private readonly SyntaxTrivia? _singleIndentation;
 
-    private IndentationAnalysis(SyntaxTrivia indentation, int? indentSize, SyntaxTrivia? singleIndentation)
+    private IndentationAnalysis(SyntaxTrivia indentation, IndentStyle? indentStyle, int? indentSize, SyntaxTrivia? singleIndentation)
     {
         Indentation = indentation;
+        IndentStyle = indentStyle;
         _indentSize = indentSize;
         _singleIndentation = singleIndentation;
     }
 
     public SyntaxTrivia Indentation { get; }
+
+    public IndentStyle? IndentStyle { get; }
 
     public int IndentSize => _indentSize ?? _singleIndentation?.Span.Length ?? 0;
 
@@ -29,38 +36,41 @@ internal readonly struct IndentationAnalysis
 
     public int IncreasedIndentationLength => (IndentSize > 0) ? Indentation.Span.Length + IndentSize : 0;
 
-    public bool IsDefault
-    {
-        get
-        {
-            return Indentation.IsKind(SyntaxKind.None)
-                && _indentSize is null
-                && _singleIndentation is null;
-        }
-    }
-
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"Length = {Indentation.Span.Length} {nameof(IndentSize)} = {IndentSize}";
 
-    public static IndentationAnalysis Create(SyntaxNode node, CancellationToken cancellationToken = default)
+    public static IndentationAnalysis Create(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
         SyntaxTrivia indentation = SyntaxTriviaAnalysis.DetermineIndentation(node, cancellationToken);
+
+        if (configOptions.TryGetIndentStyle(out IndentStyle indentStyle)
+            && indentStyle == Roslynator.IndentStyle.Tab)
+        {
+            if (!configOptions.TryGetTabLength(out int tabLength))
+                tabLength = 4;
+
+            return new IndentationAnalysis(indentation, indentStyle, tabLength, null);
+        }
+        else if (configOptions.TryGetIndentSize(out int indentSize))
+        {
+            return new IndentationAnalysis(indentation, Roslynator.IndentStyle.Space, indentSize, null);
+        }
 
         (SyntaxTrivia trivia1, SyntaxTrivia trivia2, bool isFromCompilationUnit) = DetermineSingleIndentation(node, cancellationToken);
 
         if (isFromCompilationUnit)
         {
-            return new IndentationAnalysis(indentation, trivia1.Span.Length - trivia2.Span.Length, null);
+            return new IndentationAnalysis(indentation, null, trivia1.Span.Length - trivia2.Span.Length, null);
         }
         else if (indentation.Span.Length > 0)
         {
             return (trivia1.Span.Length > 0)
-                ? new IndentationAnalysis(indentation, null, trivia1)
-                : new IndentationAnalysis(indentation, null, null);
+                ? new IndentationAnalysis(indentation, null, null, trivia1)
+                : new IndentationAnalysis(indentation, null, null, null);
         }
         else if (trivia1.Span.Length > 0)
         {
-            return new IndentationAnalysis(indentation, null, trivia1);
+            return new IndentationAnalysis(indentation, null, null, trivia1);
         }
         else
         {
@@ -90,8 +100,11 @@ internal readonly struct IndentationAnalysis
         if (_singleIndentation is not null)
             return _singleIndentation.ToString();
 
-        if (_indentSize == -1)
-            return Indentation.ToString();
+        if (IndentStyle == Roslynator.IndentStyle.Tab)
+            return "\t";
+
+        if (IndentStyle == Roslynator.IndentStyle.Space)
+            return GetSpaces();
 
         if (Indentation.Span.Length == 0)
             return "";
@@ -101,7 +114,18 @@ internal readonly struct IndentationAnalysis
         if (indentation[indentation.Length - 1] == '\t')
             return "\t";
 
-        return new string(indentation[0], IndentSize);
+        return GetSpaces();
+
+        string GetSpaces()
+        {
+            return IndentSize switch
+            {
+                2 => "  ",
+                4 => "    ",
+                8 => "        ",
+                _ => new string(' ', IndentSize),
+            };
+        }
     }
 
     private static (SyntaxTrivia, SyntaxTrivia, bool isFromCompilationUnit) DetermineSingleIndentation(SyntaxNode node, CancellationToken cancellationToken = default)

@@ -225,7 +225,7 @@ internal class WrapLineNodeFinder
                             forStatement.SecondSemicolonToken.Span.End - forStatement.Condition.SpanStart,
                             forStatement.CloseParenToken.Span.End - forStatement.Incrementors.Span.Start));
 
-                    int indentationLength = SyntaxTriviaAnalysis.GetIncreasedIndentationLength(node);
+                    int indentationLength = SyntaxTriviaAnalysis.GetIncreasedIndentationLength(node, Document.GetConfigOptions(node.SyntaxTree));
 
                     if (indentationLength + longestLength > MaxLineLength)
                         return null;
@@ -581,7 +581,7 @@ internal class WrapLineNodeFinder
         if (wrapPosition - Span.Start > MaxLineLength)
             return false;
 
-        int indentationLength = Document.GetIncreasedIndentationLength(node);
+        int indentationLength = Document.AnalyzeIndentation(node).IncreasedIndentationLength;
 
         return indentationLength + longestLength <= MaxLineLength;
     }

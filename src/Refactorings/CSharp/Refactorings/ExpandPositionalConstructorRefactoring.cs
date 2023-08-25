@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -102,7 +103,9 @@ internal static class ExpandPositionalConstructorRefactoring
         ParameterSyntax firstParameter = parameterList.Parameters[0];
         if (firstParameter.GetLeadingTrivia().SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.WhitespaceTrivia))
         {
-            SyntaxTriviaList newIndentation = SyntaxTriviaAnalysis.GetIncreasedIndentationTriviaList(firstParameter, cancellationToken);
+            AnalyzerConfigOptions configOptions = document.GetConfigOptions(recordDeclaration.SyntaxTree);
+
+            SyntaxTriviaList newIndentation = SyntaxTriviaAnalysis.GetIncreasedIndentationTriviaList(firstParameter, configOptions, cancellationToken);
 
             newParameterList = newParameterList.ReplaceNodes(
                 newParameterList.Parameters,

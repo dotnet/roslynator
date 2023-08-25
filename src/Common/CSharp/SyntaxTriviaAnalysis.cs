@@ -7,6 +7,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.Text;
@@ -201,9 +202,9 @@ internal static class SyntaxTriviaAnalysis
         return en.Current.IsEndOfLineTrivia();
     }
 
-    public static IndentationAnalysis AnalyzeIndentation(SyntaxNode node, CancellationToken cancellationToken = default)
+    public static IndentationAnalysis AnalyzeIndentation(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        return IndentationAnalysis.Create(node, cancellationToken);
+        return IndentationAnalysis.Create(node, configOptions, cancellationToken);
     }
 
     public static SyntaxTrivia DetermineIndentation(SyntaxNodeOrToken nodeOrToken, CancellationToken cancellationToken = default)
@@ -302,24 +303,24 @@ internal static class SyntaxTriviaAnalysis
         }
     }
 
-    public static string GetIncreasedIndentation(SyntaxNode node, CancellationToken cancellationToken = default)
+    public static string GetIncreasedIndentation(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        return AnalyzeIndentation(node, cancellationToken).GetIncreasedIndentation();
+        return AnalyzeIndentation(node, configOptions, cancellationToken).GetIncreasedIndentation();
     }
 
-    public static int GetIncreasedIndentationLength(SyntaxNode node, CancellationToken cancellationToken = default)
+    public static int GetIncreasedIndentationLength(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        return AnalyzeIndentation(node, cancellationToken).IncreasedIndentationLength;
+        return AnalyzeIndentation(node, configOptions, cancellationToken).IncreasedIndentationLength;
     }
 
-    public static SyntaxTrivia GetIncreasedIndentationTrivia(SyntaxNode node, CancellationToken cancellationToken = default)
+    public static SyntaxTrivia GetIncreasedIndentationTrivia(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        return AnalyzeIndentation(node, cancellationToken).GetIncreasedIndentationTrivia();
+        return AnalyzeIndentation(node, configOptions, cancellationToken).GetIncreasedIndentationTrivia();
     }
 
-    public static SyntaxTriviaList GetIncreasedIndentationTriviaList(SyntaxNode node, CancellationToken cancellationToken = default)
+    public static SyntaxTriviaList GetIncreasedIndentationTriviaList(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        return AnalyzeIndentation(node, cancellationToken).GetIncreasedIndentationTriviaList();
+        return AnalyzeIndentation(node, configOptions, cancellationToken).GetIncreasedIndentationTriviaList();
     }
 
     public static IEnumerable<IndentationInfo> FindIndentations(SyntaxNode node)
@@ -367,9 +368,10 @@ internal static class SyntaxTriviaAnalysis
     public static TNode SetIndentation<TNode>(
         TNode expression,
         SyntaxNode containingDeclaration,
+        AnalyzerConfigOptions configOptions,
         int increaseCount = 0) where TNode : SyntaxNode
     {
-        IndentationAnalysis analysis = AnalyzeIndentation(containingDeclaration);
+        IndentationAnalysis analysis = AnalyzeIndentation(containingDeclaration, configOptions);
 
         string replacement = (increaseCount > 0)
             ? string.Concat(Enumerable.Repeat(analysis.GetSingleIndentation(), increaseCount))
