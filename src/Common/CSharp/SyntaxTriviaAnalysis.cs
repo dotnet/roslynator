@@ -308,11 +308,6 @@ internal static class SyntaxTriviaAnalysis
         return AnalyzeIndentation(node, configOptions, cancellationToken).GetIncreasedIndentation();
     }
 
-    public static int GetIncreasedIndentationLength(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
-    {
-        return AnalyzeIndentation(node, configOptions, cancellationToken).IncreasedIndentationLength;
-    }
-
     public static SyntaxTrivia GetIncreasedIndentationTrivia(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
         return AnalyzeIndentation(node, configOptions, cancellationToken).GetIncreasedIndentationTrivia();

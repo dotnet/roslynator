@@ -157,7 +157,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             if (!IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailing))
                 return;
 
-            int indentationLength = GetIncreasedIndentationLength(openNodeOrToken.Parent, context.GetConfigOptions());
+            int indentationLength = IndentationAnalysis.Create(openNodeOrToken.Parent, context.GetConfigOptions()).IncreasedIndentationLength;
 
             if (indentationLength == 0)
                 return;

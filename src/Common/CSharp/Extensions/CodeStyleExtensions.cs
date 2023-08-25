@@ -37,7 +37,7 @@ internal static class CodeStyleExtensions
     public static bool TryGetIndentStyle(this AnalyzerConfigOptions configOptions, out IndentStyle indentStyle)
     {
         if (configOptions.TryGetValue("indent_style", out string indentStyleStr)
-            && Enum.TryParse(indentStyleStr, out indentStyle))
+            && Enum.TryParse(indentStyleStr, ignoreCase: true, out indentStyle))
         {
             return true;
         }

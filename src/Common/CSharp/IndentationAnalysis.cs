@@ -13,28 +13,45 @@ namespace Roslynator.CSharp;
 internal sealed class IndentationAnalysis
 {
     private readonly int? _indentSize;
-    private readonly SyntaxTrivia? _singleIndentation;
+    private readonly SyntaxTrivia? _indentStep;
 
-    private IndentationAnalysis(SyntaxTrivia indentation, IndentStyle? indentStyle, int? indentSize, SyntaxTrivia? singleIndentation)
+    private IndentationAnalysis(SyntaxTrivia indentation, IndentStyle? indentStyle, int? indentSize, SyntaxTrivia? indentStep)
     {
         Indentation = indentation;
         IndentStyle = indentStyle;
         _indentSize = indentSize;
-        _singleIndentation = singleIndentation;
+        _indentStep = indentStep;
     }
 
     public SyntaxTrivia Indentation { get; }
 
     public IndentStyle? IndentStyle { get; }
 
-    public int IndentSize => _indentSize ?? _singleIndentation?.Span.Length ?? 0;
+    public int IndentSize => _indentSize ?? _indentStep?.Span.Length ?? 0;
 
     public int IndentationLength => Indentation.Span.Length;
 
-    public int IncreasedIndentationLength => (IndentSize > 0) ? Indentation.Span.Length + IndentSize : 0;
+    public int IncreasedIndentationLength
+    {
+        get
+        {
+            if (IndentSize > 0)
+            {
+                if (IndentStyle == Roslynator.IndentStyle.Tab)
+                    return IndentationLength + 1;
+
+                return IndentationLength + IndentSize;
+            }
+
+            if (_indentStep is not null)
+                return IndentationLength + 4;
+
+            return IndentationLength;
+        }
+    }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => $"Length = {Indentation.Span.Length} {nameof(IndentSize)} = {IndentSize}";
+    private string DebuggerDisplay => $"Length = {IndentationLength} {nameof(IndentSize)} = {IndentSize}";
 
     public static IndentationAnalysis Create(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
@@ -94,8 +111,8 @@ internal sealed class IndentationAnalysis
 
     public string GetSingleIndentation()
     {
-        if (_singleIndentation is not null)
-            return _singleIndentation.ToString();
+        if (_indentStep is not null)
+            return _indentStep.ToString();
 
         if (IndentStyle == Roslynator.IndentStyle.Tab)
             return "\t";

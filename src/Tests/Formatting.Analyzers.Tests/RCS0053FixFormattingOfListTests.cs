@@ -621,7 +621,7 @@ class C
 				.ToString());
 	}
 }
-");
+", options: Options.AddConfigOption("indent_style", "tab"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
