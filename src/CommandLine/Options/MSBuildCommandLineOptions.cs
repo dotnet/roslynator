@@ -10,12 +10,14 @@ namespace Roslynator.CommandLine;
 
 public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
 {
+    [AdditionalDescription(" For further information about the syntax see https://learn.microsoft.com/en-us/dotnet/core/extensions/file-globbing.")]
     [Option(
         longName: "include",
         HelpText = "Space separated list of glob patterns to include files, folders or projects.",
         MetaValue = "<GLOB>")]
     public IEnumerable<string> Include { get; set; }
 
+    [AdditionalDescription(" For further information about the syntax see https://learn.microsoft.com/en-us/dotnet/core/extensions/file-globbing.")]
     [Option(
         longName: "exclude",
         HelpText = "Space separated list of glob patterns to exclude files, folders or projects.",
