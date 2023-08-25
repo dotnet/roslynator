@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208) ([#1153](https://github.com/JosefPihrt/Roslynator/pull/1153)).
 - Fix [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([#1176](https://github.com/JosefPihrt/Roslynator/pull/1176)).
 - [CLI] Fix exit code of `spellcheck` command ([#1177](https://github.com/JosefPihrt/Roslynator/pull/1177)).
+- Improve indentation analysis ([#1188](https://github.com/JosefPihrt/Roslynator/pull/1188)).
 
 ## [4.4.0] - 2023-08-01
 
