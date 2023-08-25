@@ -6,6 +6,23 @@ namespace Roslynator.CommandLine;
 
 internal static class CommandLineHelpers
 {
+    public static bool IsGlobPatternForFileOrFolder(string pattern)
+    {
+        return !IsGlobPatternForProject(pattern)
+            && !IsGlobPatternForSolution(pattern);
+    }
+
+    public static bool IsGlobPatternForProject(string pattern)
+    {
+        return pattern.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase)
+            || pattern.EndsWith(".vbproj", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool IsGlobPatternForSolution(string pattern)
+    {
+        return pattern.EndsWith(".sln", StringComparison.OrdinalIgnoreCase);
+    }
+
     public static void WaitForKeyPress(string message = null)
     {
         if (Console.IsInputRedirected)

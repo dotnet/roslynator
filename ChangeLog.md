@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Remove empty namespace declaration ([RCS1072](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1072))
     - Remove empty region directive ([RCS1091](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1091))
     - Remove empty destructor ([RCS1106](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1106))
-- [CLI] Add glob pattern matching (`--include` or/and `--exclude`) ([#1178](https://github.com/josefpihrt/roslynator/pull/1178)).
+- [CLI] Add glob pattern matching (`--include` or/and `--exclude`) ([#1178](https://github.com/josefpihrt/roslynator/pull/1178), [#1183](https://github.com/josefpihrt/roslynator/pull/1183)).
 - Add analyzer "Include/omit trailing comma" ([RCS1256](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#931](https://github.com/JosefPihrt/Roslynator/pull/931)).
   - Required option: `roslynator_trailing_comma_style = include|omit|omit_when_single_line`
   - Not enabled by default
