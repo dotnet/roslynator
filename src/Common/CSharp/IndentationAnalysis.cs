@@ -12,9 +12,6 @@ namespace Roslynator.CSharp;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal sealed class IndentationAnalysis
 {
-    private static readonly string _twoSpaces = "  ";
-    private static readonly string _fourSpaces = "    ";
-
     private readonly int? _indentSize;
     private readonly SyntaxTrivia? _singleIndentation;
 

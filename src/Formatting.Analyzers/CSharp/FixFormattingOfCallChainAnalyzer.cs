@@ -122,13 +122,10 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
 
                 int endLine = lines.IndexOf(token.SpanStart);
 
-                if (startLine != endLine)
+                if (startLine != endLine
+                    && (indentationAnalysis ?? AnalyzeIndentation(expression, context.GetConfigOptions())).IndentSize > 0)
                 {
-                    if (indentationAnalysis is not null
-                        || AnalyzeIndentation(expression, context.GetConfigOptions()) is not null)
-                    {
-                        ReportDiagnostic();
-                    }
+                    ReportDiagnostic();
                 }
 
                 return true;
@@ -142,7 +139,7 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
                         {
                             indentationAnalysis = AnalyzeIndentation(expression, context.GetConfigOptions());
 
-                            if (indentationAnalysis is null)
+                            if (indentationAnalysis.IndentSize == 0)
                                 return true;
                         }
 
@@ -167,8 +164,7 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
                     {
                         if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
                         {
-                            if (indentationAnalysis is not null
-                                || AnalyzeIndentation(expression, context.GetConfigOptions()) is not null)
+                            if ((indentationAnalysis ?? AnalyzeIndentation(expression, context.GetConfigOptions())).IndentSize > 0)
                             {
                                 ReportDiagnostic();
                             }
