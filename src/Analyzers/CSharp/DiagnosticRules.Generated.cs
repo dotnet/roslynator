@@ -305,7 +305,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantCommaInInitializer = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantCommaInInitializer, 
             title:              "Remove redundant comma in initializer.", 
-            messageFormat:      "([deprecated] Use RCS1259 instead) Remove redundant comma in initializer.", 
+            messageFormat:      "([deprecated] Use RCS1260 instead) Remove redundant comma in initializer.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
