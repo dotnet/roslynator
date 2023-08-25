@@ -700,6 +700,34 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_Assignment2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    static string foo()
+    {
+[|                                                                                                              string x = foo();|]
+
+        return null;
+    }
+}
+",
+@"
+class C
+{
+    static string foo()
+    {
+                                                                                                              string x
+                                                                                                                  = foo();
+
+        return null;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task Test_AttributeList()
     {
         await VerifyDiagnosticAndFixAsync(@"

@@ -157,7 +157,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             if (!IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailing))
                 return;
 
-            int indentationLength = GetIncreasedIndentationLength(openNodeOrToken.Parent);
+            int indentationLength = IndentationAnalysis.Create(openNodeOrToken.Parent, context.GetConfigOptions()).IncreasedIndentationLength;
 
             if (indentationLength == 0)
                 return;
@@ -169,7 +169,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         {
             TextLineCollection lines = null;
 
-            IndentationAnalysis indentationAnalysis = IndentationAnalysis.Create(openNodeOrToken.Parent);
+            IndentationAnalysis indentationAnalysis = IndentationAnalysis.Create(openNodeOrToken.Parent, context.GetConfigOptions());
 
             int indentationLength = indentationAnalysis.IncreasedIndentationLength;
 

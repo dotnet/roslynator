@@ -57,7 +57,7 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
 
         TextLineCollection lines = null;
         int startLine = -1;
-        IndentationAnalysis indentationAnalysis = default;
+        IndentationAnalysis indentationAnalysis = null;
 
         do
         {
@@ -122,13 +122,10 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
 
                 int endLine = lines.IndexOf(token.SpanStart);
 
-                if (startLine != endLine)
+                if (startLine != endLine
+                    && (indentationAnalysis ?? AnalyzeIndentation(expression, context.GetConfigOptions())).IndentSize > 0)
                 {
-                    if (!indentationAnalysis.IsDefault
-                        || !AnalyzeIndentation(expression).IsDefault)
-                    {
-                        ReportDiagnostic();
-                    }
+                    ReportDiagnostic();
                 }
 
                 return true;
@@ -138,11 +135,11 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
             {
                 case SyntaxKind.WhitespaceTrivia:
                     {
-                        if (indentationAnalysis.IsDefault)
+                        if (indentationAnalysis is null)
                         {
-                            indentationAnalysis = AnalyzeIndentation(expression);
+                            indentationAnalysis = AnalyzeIndentation(expression, context.GetConfigOptions());
 
-                            if (indentationAnalysis.IsDefault)
+                            if (indentationAnalysis.IndentSize == 0)
                                 return true;
                         }
 
@@ -167,8 +164,7 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
                     {
                         if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
                         {
-                            if (!indentationAnalysis.IsDefault
-                                || !AnalyzeIndentation(expression).IsDefault)
+                            if ((indentationAnalysis ?? AnalyzeIndentation(expression, context.GetConfigOptions())).IndentSize > 0)
                             {
                                 ReportDiagnostic();
                             }

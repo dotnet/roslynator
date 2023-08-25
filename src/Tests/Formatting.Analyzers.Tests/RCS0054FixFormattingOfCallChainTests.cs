@@ -389,23 +389,33 @@ partial class Program
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
     public async Task Test_TopLevelStatement2()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyDiagnosticAndFixAsync(@"
+var s = """";
+
+s = [|s.ToString().ToString()
+.ToString()|];
+", @"
 var s = """";
 
 s = s.ToString().ToString()
-.ToString();
+    .ToString();
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
     public async Task Test_TopLevelStatement3()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyDiagnosticAndFixAsync(@"
+var s = """";
+
+s = [|s.ToString().ToString()
+
+.ToString()|];
+", @"
 var s = """";
 
 s = s.ToString().ToString()
-
-.ToString();
+    .ToString();
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -194,14 +195,16 @@ internal static class SyntaxFormatter
         ConditionalExpressionSyntax conditionalExpression,
         CancellationToken cancellationToken = default)
     {
-        ConditionalExpressionSyntax newNode = ToMultiLine(conditionalExpression, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(conditionalExpression.SyntaxTree);
+
+        ConditionalExpressionSyntax newNode = ToMultiLine(conditionalExpression, configOptions, cancellationToken);
 
         return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
     }
 
-    public static ConditionalExpressionSyntax ToMultiLine(ConditionalExpressionSyntax conditionalExpression, CancellationToken cancellationToken = default)
+    public static ConditionalExpressionSyntax ToMultiLine(ConditionalExpressionSyntax conditionalExpression, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(conditionalExpression, cancellationToken);
+        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(conditionalExpression, configOptions, cancellationToken);
 
         leadingTrivia = leadingTrivia.Insert(0, DetermineEndOfLine(conditionalExpression));
 
@@ -218,14 +221,16 @@ internal static class SyntaxFormatter
         ParameterListSyntax parameterList,
         CancellationToken cancellationToken = default)
     {
-        ParameterListSyntax newNode = WrapParameters(parameterList, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(parameterList.SyntaxTree);
+
+        ParameterListSyntax newNode = WrapParameters(parameterList, configOptions, cancellationToken);
 
         return document.ReplaceNodeAsync(parameterList, newNode, cancellationToken);
     }
 
-    public static ParameterListSyntax WrapParameters(ParameterListSyntax parameterList, CancellationToken cancellationToken = default)
+    public static ParameterListSyntax WrapParameters(ParameterListSyntax parameterList, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(parameterList, cancellationToken);
+        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(parameterList, configOptions, cancellationToken);
 
         var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -256,14 +261,16 @@ internal static class SyntaxFormatter
         BracketedParameterListSyntax parameterList,
         CancellationToken cancellationToken = default)
     {
-        BracketedParameterListSyntax newNode = WrapParameters(parameterList, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(parameterList.SyntaxTree);
+
+        BracketedParameterListSyntax newNode = WrapParameters(parameterList, configOptions, cancellationToken);
 
         return document.ReplaceNodeAsync(parameterList, newNode, cancellationToken);
     }
 
-    public static BracketedParameterListSyntax WrapParameters(BracketedParameterListSyntax parameterList, CancellationToken cancellationToken = default)
+    public static BracketedParameterListSyntax WrapParameters(BracketedParameterListSyntax parameterList, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(parameterList, cancellationToken);
+        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(parameterList, configOptions, cancellationToken);
 
         var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -294,13 +301,15 @@ internal static class SyntaxFormatter
         InitializerExpressionSyntax initializer,
         CancellationToken cancellationToken = default)
     {
-        InitializerExpressionSyntax newNode = ToMultiLine(initializer, cancellationToken)
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(initializer.SyntaxTree);
+
+        InitializerExpressionSyntax newNode = ToMultiLine(initializer, configOptions, cancellationToken)
             .WithFormatterAnnotation();
 
         return document.ReplaceNodeAsync(initializer, newNode, cancellationToken);
     }
 
-    public static InitializerExpressionSyntax ToMultiLine(InitializerExpressionSyntax initializer, CancellationToken cancellationToken)
+    public static InitializerExpressionSyntax ToMultiLine(InitializerExpressionSyntax initializer, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken)
     {
         SyntaxNode parent = initializer.Parent;
 
@@ -316,7 +325,7 @@ internal static class SyntaxFormatter
         }
         else
         {
-            IndentationAnalysis indentationAnalysis = AnalyzeIndentation(initializer, cancellationToken);
+            IndentationAnalysis indentationAnalysis = AnalyzeIndentation(initializer, configOptions, cancellationToken);
 
             SyntaxTriviaList braceTrivia = TriviaList(endOfLine, indentationAnalysis.Indentation);
             SyntaxTriviaList expressionTrivia = TriviaList(endOfLine, indentationAnalysis.GetIncreasedIndentationTrivia());
@@ -335,14 +344,16 @@ internal static class SyntaxFormatter
         ArgumentListSyntax argumentList,
         CancellationToken cancellationToken = default)
     {
-        ArgumentListSyntax newNode = ToMultiLine(argumentList, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(argumentList.SyntaxTree);
+
+        ArgumentListSyntax newNode = ToMultiLine(argumentList, configOptions, cancellationToken);
 
         return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
     }
 
-    public static ArgumentListSyntax ToMultiLine(ArgumentListSyntax argumentList, CancellationToken cancellationToken = default)
+    public static ArgumentListSyntax ToMultiLine(ArgumentListSyntax argumentList, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(argumentList, cancellationToken);
+        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(argumentList, configOptions, cancellationToken);
 
         var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -388,7 +399,9 @@ internal static class SyntaxFormatter
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        IndentationAnalysis indentationAnalysis = AnalyzeIndentation(expression, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(expression.SyntaxTree);
+
+        IndentationAnalysis indentationAnalysis = AnalyzeIndentation(expression, configOptions, cancellationToken);
 
         string indentation = Environment.NewLine + indentationAnalysis.GetIncreasedIndentation();
 
@@ -457,14 +470,16 @@ internal static class SyntaxFormatter
         AttributeArgumentListSyntax argumentList,
         CancellationToken cancellationToken = default)
     {
-        AttributeArgumentListSyntax newNode = ToMultiLine(argumentList, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(argumentList.SyntaxTree);
+
+        AttributeArgumentListSyntax newNode = ToMultiLine(argumentList, configOptions, cancellationToken);
 
         return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
     }
 
-    private static AttributeArgumentListSyntax ToMultiLine(AttributeArgumentListSyntax argumentList, CancellationToken cancellationToken = default)
+    private static AttributeArgumentListSyntax ToMultiLine(AttributeArgumentListSyntax argumentList, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
     {
-        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(argumentList, cancellationToken);
+        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(argumentList, configOptions, cancellationToken);
 
         var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -499,7 +514,9 @@ internal static class SyntaxFormatter
         BinaryExpressionSyntax condition,
         CancellationToken cancellationToken = default)
     {
-        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(condition, cancellationToken);
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(condition.SyntaxTree);
+
+        SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(condition, configOptions, cancellationToken);
 
         leadingTrivia = leadingTrivia.Insert(0, DetermineEndOfLine(condition));
 
