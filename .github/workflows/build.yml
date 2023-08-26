@@ -263,7 +263,7 @@ jobs:
         working-directory: nuget_packages
 
   publish_vs_code_extension:
-    needs: build_vs_code_extension
+    needs: [ pre_build, build_vs_code_extension ]
     runs-on: ubuntu-20.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
@@ -276,7 +276,7 @@ jobs:
         working-directory: vs_code_extension
 
   publish_ovsx_extension:
-    needs: build_vs_code_extension
+    needs: [ pre_build, build_vs_code_extension ]
     runs-on: ubuntu-20.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
