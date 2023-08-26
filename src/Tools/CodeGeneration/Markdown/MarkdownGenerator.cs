@@ -190,7 +190,8 @@ public static class MarkdownGenerator
                         .Select(f => InlineCode(f.Key))
                         .ToArray();
 
-                    yield return CreateRequiredOptionsInfoBlock(requiredOptions);
+                    if (requiredOptions.Any())
+                        yield return CreateRequiredOptionsInfoBlock(requiredOptions);
 
                     var sb = new StringBuilder();
                     var isFirst = true;
@@ -205,8 +206,19 @@ public static class MarkdownGenerator
 
                         isFirst = false;
 
-                        sb.Append('#');
-                        sb.AppendLine(en.Current.Description);
+                        sb.Append("# ");
+
+                        if (!string.IsNullOrEmpty(en.Current.Description))
+                            sb.AppendLine(en.Current.Description);
+
+                        string defaultValue = en.Current.DefaultValue;
+
+                        if (!string.IsNullOrEmpty(defaultValue))
+                        {
+                            sb.Append("# Default value is ");
+                            sb.AppendLine(defaultValue);
+                        }
+
                         sb.Append(en.Current.Key);
                         sb.Append(" = ");
                         sb.Append(en.Current.DefaultValuePlaceholder ?? "true");
@@ -227,9 +239,6 @@ public static class MarkdownGenerator
 
             static IEnumerable<MObject> CreateContent(MInlineCode[] requiredOptions)
             {
-                if (!requiredOptions.Any())
-                    yield break;
-
                 if (requiredOptions.Length == 1)
                 {
                     yield return Inline("Option ", requiredOptions[0], " is required to be set for this analyzer to work.");

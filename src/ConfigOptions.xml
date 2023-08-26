@@ -122,12 +122,12 @@
   <Option Id="MaxLineLength">
     <DefaultValue>140</DefaultValue>
     <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>
-    <Description>Max line length</Description>
+    <Description>Maximum line length</Description>
   </Option>
   <Option Id="TabLength">
     <DefaultValue>4</DefaultValue>
     <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>
-    <Description>A number of spaces that are equivalent to a tab character.</Description>
+    <Description>A number of spaces that are equivalent to a tab character</Description>
   </Option>
   <Option Id="NewLineAtEndOfFile">
     <ValuePlaceholder>true|false</ValuePlaceholder>
@@ -205,7 +205,7 @@
     <Description>Add/remove blank line after file scoped namespace declaration</Description>
   </Option>
   <Option Id="TrailingCommaStyle">
-    <Description>Include/omit trailing comma in initializer or enum.</Description>
+    <Description>Include/omit trailing comma in initializer or enum</Description>
     <Values>
       <Value>include</Value>
       <Value>omit</Value>
