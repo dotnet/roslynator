@@ -207,7 +207,7 @@ internal static class Program
         int? sidebarPosition = null,
         string sidebarLabel = null)
     {
-        content = DocusaurusMarkdownFactory.FrontMatter(GetLabels()).ToString() + content;
+        content = DocusaurusMarkdownFactory.FrontMatter(GetLabels()) + content;
 
         IEnumerable<(string, object)> GetLabels()
         {

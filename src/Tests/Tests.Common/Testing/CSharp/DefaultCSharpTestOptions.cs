@@ -31,7 +31,7 @@ internal static class DefaultCSharpTestOptions
             .WithConfigOptions(new KeyValuePair<string, string>[]
             {
                 new("indent_size", "4"),
-                new("indent_style", "space")
+                new("indent_style", "space"),
             });
     }
 }

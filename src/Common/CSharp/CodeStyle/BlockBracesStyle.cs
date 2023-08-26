@@ -6,5 +6,5 @@ internal enum BlockBracesStyle
 {
     None,
     MultiLine,
-    SingleLineWhenEmpty
+    SingleLineWhenEmpty,
 }

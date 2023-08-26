@@ -31,7 +31,7 @@ public class PatternMatchingVariableDeclarationHelperTests
             SyntaxFactory.SeparatedList(new List<VariableDesignationSyntax>()
             {
                 SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("x")),
-                SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("y"))
+                SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("y")),
             })
         );
 
@@ -94,7 +94,7 @@ public class PatternMatchingVariableDeclarationHelperTests
                             SyntaxFactory.PredefinedType(SyntaxFactory.Token(SyntaxKind.IntKeyword)),
                             SyntaxFactory.SingleVariableDesignation(SyntaxFactory.Identifier("y"))
                         )
-                    )
+                    ),
                 })
             ),
             propertyPatternClause: default,

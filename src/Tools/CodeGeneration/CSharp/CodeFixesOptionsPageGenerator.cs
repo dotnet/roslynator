@@ -17,7 +17,7 @@ public static class CodeFixesOptionsPageGenerator
                 FileScopedNamespaceDeclaration(ParseName("Roslynator.VisualStudio")),
                 ClassDeclaration(
                     Modifiers.Public_Partial(),
-                    "CodeFixesOptionsPage")
+                    "CodeFixesOptionsPage"),
             }));
     }
 }

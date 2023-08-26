@@ -77,7 +77,7 @@ internal class SpellingAnalysisContext
             {
                 properties = ImmutableDictionary.CreateRange(new[]
                     {
-                        new KeyValuePair<string, string>("Value", match.Value),
+                        new KeyValuePair<string, string>("Value", match.Value)
                     });
             }
 

@@ -5,5 +5,5 @@ namespace Roslynator.CodeMetrics;
 internal enum LinesOfCodeKind
 {
     Physical,
-    Logical
+    Logical,
 }

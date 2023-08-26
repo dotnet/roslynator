@@ -6,5 +6,5 @@ internal enum AccessorBracesStyle
 {
     None,
     MultiLine,
-    SingleLineWhenExpressionIsOnSingleLine
+    SingleLineWhenExpressionIsOnSingleLine,
 }

@@ -130,7 +130,7 @@ internal class IgnoredAttributeNameFilterRule : AttributeFilterRule
                 "System.Runtime.CompilerServices.StateMachineAttribute",
                 "System.Runtime.CompilerServices.TupleElementNamesAttribute",
                 "System.Runtime.CompilerServices.TypeForwardedFromAttribute",
-                "System.Runtime.CompilerServices.TypeForwardedToAttribute"
+                "System.Runtime.CompilerServices.TypeForwardedToAttribute",
             };
         }
     }

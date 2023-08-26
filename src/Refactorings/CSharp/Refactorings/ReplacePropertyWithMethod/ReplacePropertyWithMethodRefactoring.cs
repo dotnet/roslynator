@@ -23,7 +23,7 @@ internal static class ReplacePropertyWithMethodRefactoring
         "Supports",
         "Should",
         "Get",
-        "Set"
+        "Set",
     };
 
     public static void ComputeRefactoring(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)

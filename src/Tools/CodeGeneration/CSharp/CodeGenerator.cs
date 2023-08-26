@@ -64,7 +64,7 @@ public static class CodeGenerator
 
                                                 return YieldReturnStatement(
                                                     ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionKeys)}))"));
-                                            })))
+                                            }))),
                             })
                         .ToSyntaxList())));
 
