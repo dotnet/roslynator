@@ -45,7 +45,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="roslynator.analyzers" Version="4.5.0" Condition="'$(MSBuildProjectName)'!='Analyzers'">
+     <PackageReference Include="roslynator.analyzers" Version="4.5.0" Condition="'$(MSBuildProjectName)'!='Analyzers'">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
