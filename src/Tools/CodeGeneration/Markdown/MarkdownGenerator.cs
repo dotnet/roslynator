@@ -135,7 +135,7 @@ public static class MarkdownGenerator
         string title = analyzer.Title.TrimEnd('.');
 
         MDocument document = Document(
-            CreateFrontMatter(label: analyzer.Id),
+            CreateFrontMatter(label: (string.IsNullOrEmpty(analyzer.ObsoleteMessage)) ? analyzer.Id : $"[deprecated] {analyzer.Id}"),
             Heading1($"{analyzer.Id}: {title}"),
             CreateObsoleteWarning(analyzer),
             Heading2("Properties"),

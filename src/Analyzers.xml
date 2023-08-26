@@ -7416,12 +7416,12 @@ void M()
     <SupportsFadeOut>true</SupportsFadeOut>
     <Summary>This analyzer reports unnecessary syntax that can be safely removed such as:
   * empty destructor
-  * empty 'else' clause
-  * empty empty statement
-  * empty 'finally' clause
-  * empty namespace declaration
+  * empty `else` clause
+  * empty `finally` clause
+  * empty `namespace` declaration
   * empty object initializer
-  * empty region directive
+  * empty `#region`
+  * empty statement
 </Summary>
   </Analyzer>
   <Analyzer Identifier="AddOrRemoveTrailingComma">
