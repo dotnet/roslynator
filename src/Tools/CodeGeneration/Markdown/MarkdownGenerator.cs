@@ -135,7 +135,7 @@ public static class MarkdownGenerator
         string title = analyzer.Title.TrimEnd('.');
 
         MDocument document = Document(
-            CreateFrontMatter(label: analyzer.Id),
+            CreateFrontMatter(label: (string.IsNullOrEmpty(analyzer.ObsoleteMessage)) ? analyzer.Id : $"[deprecated] {analyzer.Id}"),
             Heading1($"{analyzer.Id}: {title}"),
             CreateObsoleteWarning(analyzer),
             Heading2("Properties"),
@@ -190,7 +190,8 @@ public static class MarkdownGenerator
                         .Select(f => InlineCode(f.Key))
                         .ToArray();
 
-                    yield return CreateRequiredOptionsInfoBlock(requiredOptions);
+                    if (requiredOptions.Any())
+                        yield return CreateRequiredOptionsInfoBlock(requiredOptions);
 
                     var sb = new StringBuilder();
                     var isFirst = true;
@@ -205,8 +206,19 @@ public static class MarkdownGenerator
 
                         isFirst = false;
 
-                        sb.Append('#');
-                        sb.AppendLine(en.Current.Description);
+                        sb.Append("# ");
+
+                        if (!string.IsNullOrEmpty(en.Current.Description))
+                            sb.AppendLine(en.Current.Description);
+
+                        string defaultValue = en.Current.DefaultValue;
+
+                        if (!string.IsNullOrEmpty(defaultValue))
+                        {
+                            sb.Append("# Default value is ");
+                            sb.AppendLine(defaultValue);
+                        }
+
                         sb.Append(en.Current.Key);
                         sb.Append(" = ");
                         sb.Append(en.Current.DefaultValuePlaceholder ?? "true");
@@ -227,9 +239,6 @@ public static class MarkdownGenerator
 
             static IEnumerable<MObject> CreateContent(MInlineCode[] requiredOptions)
             {
-                if (!requiredOptions.Any())
-                    yield break;
-
                 if (requiredOptions.Length == 1)
                 {
                     yield return Inline("Option ", requiredOptions[0], " is required to be set for this analyzer to work.");
@@ -256,13 +265,13 @@ public static class MarkdownGenerator
             }
 
             if (analyzer.Id.StartsWith("RCS0"))
-                yield return BulletItem(Link("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.Formatting.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
 
             if (analyzer.Id.StartsWith("RCS1"))
-                yield return BulletItem(Link("Roslynator.Analyzers", "https://www.nuget.org/packages/Roslynator.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Analyzers"));
 
             if (analyzer.Id.StartsWith("RCS9"))
-                yield return BulletItem(Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.CodeAnalysis.Analyzers" }, "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"));
         }
     }
 

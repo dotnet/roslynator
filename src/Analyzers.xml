@@ -1441,13 +1441,17 @@ void M(
     <MessageFormat>A line is too long ({0} characters).</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Summary>This analyzer reports any line that is longer than maximal length.
+    <Summary>This analyzer reports any line that is longer than maximum length.
     
-Default maximal length is 140.</Summary>
+Default maximum length is 140.</Summary>
     <ConfigOptions>
       <Option Key="max_line_length" />
       <Option Key="tab_length" />
     </ConfigOptions>
+    <Remarks>Code fixer is available for this analyzer but it cannot handle all cases as it's not possible to wrap a line in all cases (e.g. long string literals).
+
+If a particular line seems that it could be reasonably wrapped but it's not, please file an [issue](https://github.com/JosefPihrt/Roslynator/issues/new).
+    </Remarks>
   </Analyzer>
   <Analyzer>
     <Id>RCS0057</Id>
@@ -7416,12 +7420,12 @@ void M()
     <SupportsFadeOut>true</SupportsFadeOut>
     <Summary>This analyzer reports unnecessary syntax that can be safely removed such as:
   * empty destructor
-  * empty 'else' clause
-  * empty empty statement
-  * empty 'finally' clause
-  * empty namespace declaration
+  * empty `else` clause
+  * empty `finally` clause
+  * empty `namespace` declaration
   * empty object initializer
-  * empty region directive
+  * empty `#region`
+  * empty statement
 </Summary>
   </Analyzer>
   <Analyzer Identifier="AddOrRemoveTrailingComma">
