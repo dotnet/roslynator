@@ -132,7 +132,7 @@ namespace Roslynator
             key:                     ConfigOptionKeys.MaxLineLength, 
             defaultValue:            "140", 
             defaultValuePlaceholder: "<NUM>", 
-            description:             "Max line length");
+            description:             "Maximum line length");
 
         public static readonly ConfigOptionDescriptor NewLineAtEndOfFile = new(
             key:                     ConfigOptionKeys.NewLineAtEndOfFile, 
@@ -186,13 +186,13 @@ namespace Roslynator
             key:                     ConfigOptionKeys.TabLength, 
             defaultValue:            "4", 
             defaultValuePlaceholder: "<NUM>", 
-            description:             "A number of spaces that are equivalent to a tab character.");
+            description:             "A number of spaces that are equivalent to a tab character");
 
         public static readonly ConfigOptionDescriptor TrailingCommaStyle = new(
             key:                     ConfigOptionKeys.TrailingCommaStyle, 
             defaultValue:            null, 
             defaultValuePlaceholder: "include|omit|omit_when_single_line", 
-            description:             "Include/omit trailing comma in initializer or enum.");
+            description:             "Include/omit trailing comma in initializer or enum");
 
         public static readonly ConfigOptionDescriptor UseAnonymousFunctionOrMethodGroup = new(
             key:                     ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, 
