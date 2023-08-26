@@ -60,8 +60,9 @@ jobs:
         with:
           repository: josefpihrt/wordb
           path: wordb
+      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.7.0
       - run: |
-          ./CommandLine/bin/Release/net7.0/Roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
+          roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
             spellcheck \
             ../wordb/data/en \
             ../wordb/data/en-us \
@@ -263,7 +264,7 @@ jobs:
         working-directory: nuget_packages
 
   publish_vs_code_extension:
-    needs: build_vs_code_extension
+    needs: [ pre_build, build_vs_code_extension ]
     runs-on: ubuntu-20.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
@@ -276,7 +277,7 @@ jobs:
         working-directory: vs_code_extension
 
   publish_ovsx_extension:
-    needs: build_vs_code_extension
+    needs: [ pre_build, build_vs_code_extension ]
     runs-on: ubuntu-20.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
