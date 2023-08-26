@@ -265,7 +265,7 @@ public static class MarkdownGenerator
             }
 
             if (analyzer.Id.StartsWith("RCS0"))
-                yield return BulletItem(Link(new [] { "Package ", "Roslynator.Formatting.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.Formatting.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
 
             if (analyzer.Id.StartsWith("RCS1"))
                 yield return BulletItem(Link(new[] { "Package ", "Roslynator.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Analyzers"));
