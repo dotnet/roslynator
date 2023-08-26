@@ -17,5 +17,5 @@ internal enum SymbolFlags
     ReadOnly = 1 << 11,
     Extern = 1 << 12,
     Async = 1 << 14,
-    Extension = 1 << 16
+    Extension = 1 << 16,
 }

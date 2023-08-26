@@ -129,6 +129,6 @@ internal readonly struct ProjectName
         "wp75",
         "wp8",
         "wp81",
-        "wpa81"
+        "wpa81",
     });
 }

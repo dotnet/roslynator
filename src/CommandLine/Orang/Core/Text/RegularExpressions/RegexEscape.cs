@@ -755,7 +755,7 @@ internal static class RegexEscape
         // 254 0xFE þ
         CharEscapeMode.None,
         // 255 0xFF ÿ
-        CharEscapeMode.None
+        CharEscapeMode.None,
     };
 
     private static readonly CharEscapeMode[] _charGroupEscapeModes = new[] {
@@ -1270,6 +1270,6 @@ internal static class RegexEscape
         // 254 0xFE þ
         CharEscapeMode.None,
         // 255 0xFF ÿ
-        CharEscapeMode.None
+        CharEscapeMode.None,
     };
 }

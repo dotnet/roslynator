@@ -26,5 +26,5 @@ public enum MemberDocumentationParts
     SeeAlso = 1 << 14,
     AppliesTo = 1 << 15,
     Content = 1 << 16,
-    All = int.MaxValue
+    All = int.MaxValue,
 }

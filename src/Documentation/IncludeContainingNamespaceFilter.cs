@@ -19,5 +19,5 @@ public enum IncludeContainingNamespaceFilter
     ImplementedMember = 1 << 8,
     Exception = 1 << 9,
     SeeAlso = 1 << 10,
-    All = int.MaxValue
+    All = int.MaxValue,
 }

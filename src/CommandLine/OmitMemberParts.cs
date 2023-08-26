@@ -11,5 +11,5 @@ internal enum OmitMemberParts
     ConstantValue = 1,
     Implements = 1 << 1,
     InheritedFrom = 1 << 2,
-    Overrides = 1 << 3
+    Overrides = 1 << 3,
 }
