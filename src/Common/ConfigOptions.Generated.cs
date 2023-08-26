@@ -186,7 +186,7 @@ namespace Roslynator
             key:                     ConfigOptionKeys.TabLength, 
             defaultValue:            "4", 
             defaultValuePlaceholder: "<NUM>", 
-            description:             "A length of a tab character.");
+            description:             "A number of spaces that are equivalent to a tab character.");
 
         public static readonly ConfigOptionDescriptor TrailingCommaStyle = new(
             key:                     ConfigOptionKeys.TrailingCommaStyle, 
