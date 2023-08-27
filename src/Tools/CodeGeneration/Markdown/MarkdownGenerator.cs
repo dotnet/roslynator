@@ -50,7 +50,7 @@ public static class MarkdownGenerator
     public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring, int position)
     {
         MDocument document = Document(
-            CreateFrontMatter(position: position, label: refactoring.Title),
+            CreateFrontMatter(title: refactoring.Title, position: position, label: refactoring.Title),
             Heading1(refactoring.Title),
             Table(
                 TableRow("Property", "Value"),
@@ -132,11 +132,13 @@ public static class MarkdownGenerator
             .Select(f => InlineCode(f.Key))
             .ToArray();
 
-        string title = analyzer.Title.TrimEnd('.');
+        string title = $"{analyzer.Id}: {analyzer.Title.TrimEnd('.')}";
 
         MDocument document = Document(
-            CreateFrontMatter(label: (string.IsNullOrEmpty(analyzer.ObsoleteMessage)) ? analyzer.Id : $"[deprecated] {analyzer.Id}"),
-            Heading1($"{analyzer.Id}: {title}"),
+            CreateFrontMatter(
+                title: title,
+                label: (string.IsNullOrEmpty(analyzer.ObsoleteMessage)) ? analyzer.Id : $"[deprecated] {analyzer.Id}"),
+            Heading1(title),
             CreateObsoleteWarning(analyzer),
             Heading2("Properties"),
             Table(
@@ -471,12 +473,15 @@ public static class MarkdownGenerator
         }
     }
 
-    private static MObject CreateFrontMatter(int? position = null, string label = null)
+    private static MObject CreateFrontMatter(string title = null, int? position = null, string label = null)
     {
         return DocusaurusMarkdownFactory.FrontMatter(GetLabels());
 
         IEnumerable<(string, object)> GetLabels()
         {
+            if (title is not null)
+                yield return ("title", title);
+
             if (position is not null)
                 yield return ("sidebar_position", position);
 
