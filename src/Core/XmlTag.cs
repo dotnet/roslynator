@@ -27,5 +27,5 @@ internal enum XmlTag
     Summary = 18,
     TypeParam = 19,
     TypeParamRef = 20,
-    Value = 21
+    Value = 21,
 }

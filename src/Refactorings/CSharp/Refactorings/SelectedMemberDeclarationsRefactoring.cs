@@ -17,7 +17,7 @@ internal static class SelectedMemberDeclarationsRefactoring
             new KeyValuePair<Accessibility, string>(Accessibility.Public, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Public))),
             new KeyValuePair<Accessibility, string>(Accessibility.Internal, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Internal))),
             new KeyValuePair<Accessibility, string>(Accessibility.Protected, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Protected))),
-            new KeyValuePair<Accessibility, string>(Accessibility.Private, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Private)))
+            new KeyValuePair<Accessibility, string>(Accessibility.Private, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Private))),
         });
 
     public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberDeclarationListSelection selectedMembers)

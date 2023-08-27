@@ -8,5 +8,5 @@ internal enum DiagnosticFixKind
     PartiallyFixed = 1,
     NotFixed = 2,
     MultipleFixers = 3,
-    CompilerError = 4
+    CompilerError = 4,
 }

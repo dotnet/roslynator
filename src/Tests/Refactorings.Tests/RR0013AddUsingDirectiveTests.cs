@@ -92,7 +92,7 @@ namespace A.B.C
     {
     }
 }
-" }, equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", }, equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]

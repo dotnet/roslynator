@@ -461,7 +461,7 @@ partial class C
         _f = null;
     }
 }
-" });
+", });
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]

@@ -53,7 +53,7 @@ public static class CodeFixDescriptorsGenerator
 
                 Argument(
                     NameColon("isEnabledByDefault"),
-                    BooleanLiteralExpression(true))
+                    BooleanLiteralExpression(true)),
             };
 
             foreach (string diagnosticId in codeFix.FixableDiagnosticIds.OrderBy(f => f))

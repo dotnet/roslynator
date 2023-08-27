@@ -18,5 +18,5 @@ internal enum ProjectFixKind
 
     CompilerError = 4,
     Skipped = 5,
-    InfiniteLoop = 6
+    InfiniteLoop = 6,
 }

@@ -560,7 +560,7 @@ public partial class CSharpSyntaxWalkerGenerator
                                 InvocationExpression(
                                     IdentifierName("Visit" + name2.Remove(name2.Length - 6)),
                                     ArgumentList(Argument(CastExpression(IdentifierName(name2), IdentifierName("node")))))),
-                            BreakStatement()
+                            BreakStatement(),
                         }));
             }
 
@@ -579,7 +579,7 @@ public partial class CSharpSyntaxWalkerGenerator
                                 BaseExpression(),
                                 IdentifierName("Visit"),
                                 ArgumentList(Argument(IdentifierName("node"))))),
-                        BreakStatement()
+                        BreakStatement(),
                     }));
         }
     }

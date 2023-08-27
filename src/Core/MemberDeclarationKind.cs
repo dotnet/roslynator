@@ -19,5 +19,5 @@ internal enum MemberDeclarationKind
     ExplicitlyImplementedIndexer = 12,
     ExplicitlyImplementedMethod = 13,
     ConversionOperator = 14,
-    Operator = 15
+    Operator = 15,
 }

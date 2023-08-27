@@ -200,7 +200,7 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
             new[]
             {
                 new TextChange(new TextSpan(summaryElement.StartTag.Span.End, 0), startOfLine),
-                new TextChange(new TextSpan(summaryElement.EndTag.SpanStart, 0), startOfLine)
+                new TextChange(new TextSpan(summaryElement.EndTag.SpanStart, 0), startOfLine),
             },
             cancellationToken);
     }

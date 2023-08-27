@@ -17,5 +17,5 @@ internal enum SymbolGroup
     Event = 10,
     Property = 11,
     Indexer = 12,
-    Method = 13
+    Method = 13,
 }

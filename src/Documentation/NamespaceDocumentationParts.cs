@@ -20,5 +20,5 @@ public enum NamespaceDocumentationParts
     Delegates = 1 << 9,
     Namespaces = 1 << 10,
     SeeAlso = 1 << 11,
-    All = int.MaxValue
+    All = int.MaxValue,
 }

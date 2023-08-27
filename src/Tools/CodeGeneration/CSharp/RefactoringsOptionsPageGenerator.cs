@@ -23,7 +23,7 @@ public static class RefactoringsOptionsPageGenerator
                 ClassDeclaration(
                     Modifiers.Public_Partial(),
                     "RefactoringsOptionsPage",
-                    CreateMembers(refactorings, comparer).ToSyntaxList())
+                    CreateMembers(refactorings, comparer).ToSyntaxList()),
             }));
     }
 

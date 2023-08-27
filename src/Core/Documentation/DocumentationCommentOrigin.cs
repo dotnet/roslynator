@@ -5,5 +5,5 @@ namespace Roslynator.Documentation;
 internal enum DocumentationCommentOrigin
 {
     BaseMember = 0,
-    InterfaceMember = 1
+    InterfaceMember = 1,
 }

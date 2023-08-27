@@ -22,21 +22,21 @@ public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
     private static readonly Accessibility[] _publicOrInternal = new[]
     {
         Accessibility.Public,
-        Accessibility.Internal
+        Accessibility.Internal,
     };
 
     private static readonly Accessibility[] _publicOrInternalOrProtected = new[]
     {
         Accessibility.Public,
         Accessibility.Internal,
-        Accessibility.Protected
+        Accessibility.Protected,
     };
 
     private static readonly Accessibility[] _publicOrInternalOrPrivate = new[]
     {
         Accessibility.Public,
         Accessibility.Internal,
-        Accessibility.Private
+        Accessibility.Private,
     };
 
     public override ImmutableArray<string> FixableDiagnosticIds

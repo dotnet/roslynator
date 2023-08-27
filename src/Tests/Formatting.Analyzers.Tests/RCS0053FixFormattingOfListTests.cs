@@ -1294,6 +1294,6 @@ public class Foo
     {
     }
 }
-" }, options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+", }, options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 }

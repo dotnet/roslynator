@@ -25,7 +25,7 @@ public class LegacyAnalyzerOptionMetadata
             MinLanguageVersion = MinLanguageVersion ?? parent.MinLanguageVersion,
             Summary = Summary,
             Kind = Kind,
-            Parent = parent
+            Parent = parent,
         };
 
         analyzer.Samples.AddRange(Samples);

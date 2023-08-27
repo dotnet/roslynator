@@ -88,7 +88,7 @@ internal static partial class Symbols
                 {
                     CorLibReference,
                     CreateFromAssemblyName("Microsoft.CodeAnalysis.dll"),
-                    CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll")
+                    CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll"),
                 });
         }
     }

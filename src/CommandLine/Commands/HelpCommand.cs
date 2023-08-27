@@ -70,7 +70,7 @@ internal class HelpCommand
                 var psi = new ProcessStartInfo()
                 {
                     FileName = url,
-                    UseShellExecute = true
+                    UseShellExecute = true,
                 };
 
                 Process.Start(psi);

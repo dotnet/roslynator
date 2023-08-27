@@ -115,7 +115,7 @@ public class IdentifierNameWalkerGenerator : CSharpSyntaxWalkerGenerator
                                     IdentifierName("Visit" + name.Remove(name.Length - 6)),
                                     ArgumentList(Argument(CastExpression(IdentifierName(name), IdentifierName("node")))))),
 
-                            BreakStatement()
+                            BreakStatement(),
                         }));
             }
 

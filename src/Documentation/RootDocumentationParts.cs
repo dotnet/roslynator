@@ -13,5 +13,5 @@ public enum RootDocumentationParts
     ClassHierarchy = 1 << 2,
     Types = 1 << 3,
     Other = 1 << 4,
-    All = int.MaxValue
+    All = int.MaxValue,
 }

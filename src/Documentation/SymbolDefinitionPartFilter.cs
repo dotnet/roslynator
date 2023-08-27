@@ -24,5 +24,5 @@ internal enum SymbolDefinitionPartFilter
     Constraints = 1 << 12,
     TrailingSemicolon = 1 << 13,
     TrailingComma = 1 << 14,
-    All = Assemblies | ContainingNamespace | ContainingNamespaceInTypeHierarchy | Attributes | AssemblyAttributes | AttributeArguments | Accessibility | Modifiers | ParameterName | ParameterDefaultValue | BaseType | BaseInterfaces | Constraints | TrailingSemicolon | TrailingComma
+    All = Assemblies | ContainingNamespace | ContainingNamespaceInTypeHierarchy | Attributes | AssemblyAttributes | AttributeArguments | Accessibility | Modifiers | ParameterName | ParameterDefaultValue | BaseType | BaseInterfaces | Constraints | TrailingSemicolon | TrailingComma,
 }

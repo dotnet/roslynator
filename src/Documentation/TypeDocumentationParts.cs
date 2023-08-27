@@ -41,5 +41,5 @@ public enum TypeDocumentationParts
     SeeAlso = 1 << 29,
     AppliesTo = 1 << 30,
     AllExceptNestedTypes = All & ~NestedTypes,
-    All = int.MaxValue
+    All = int.MaxValue,
 }

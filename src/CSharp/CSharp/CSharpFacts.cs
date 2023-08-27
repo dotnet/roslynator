@@ -23,7 +23,7 @@ public static class CSharpFacts
             SyntaxKind.ExclusiveOrAssignmentExpression,
             SyntaxKind.OrAssignmentExpression,
             SyntaxKind.LeftShiftAssignmentExpression,
-            SyntaxKind.RightShiftAssignmentExpression
+            SyntaxKind.RightShiftAssignmentExpression,
         });
 
     internal static string GetTitle(SyntaxNode node)

@@ -51,7 +51,7 @@ internal static class RuntimeMetadataReference
                     "Roslynator.Core.dll" ,
                     "Roslynator.CSharp.dll" ,
                     "Roslynator.Workspaces.Core.dll" ,
-                    "Roslynator.CSharp.Workspaces.dll"
+                    "Roslynator.CSharp.Workspaces.dll",
                 })
                 {
                     Debug.Assert(references.OfType<PortableExecutableReference>().Any(f => f.FilePath.EndsWith(assemblyName, StringComparison.OrdinalIgnoreCase)), assemblyName);

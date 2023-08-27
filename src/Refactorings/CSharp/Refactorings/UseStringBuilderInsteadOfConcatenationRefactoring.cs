@@ -66,7 +66,7 @@ internal static class UseStringBuilderInsteadOfConcatenationRefactoring
                 ObjectCreationExpression(
                     ParseTypeName("System.Text.StringBuilder").WithSimplifierAnnotation(),
                     ArgumentList()))
-                .WithLeadingTrivia(statement.GetLeadingTrivia())
+                .WithLeadingTrivia(statement.GetLeadingTrivia()),
         };
 
         ExpressionSyntax newInvocation = null;

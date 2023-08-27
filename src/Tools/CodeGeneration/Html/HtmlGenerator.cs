@@ -88,7 +88,7 @@ internal static class HtmlGenerator
             OmitXmlDeclaration = true,
             NewLineChars = "\r\n",
             IndentChars = "    ",
-            Indent = true
+            Indent = true,
         };
     }
 }

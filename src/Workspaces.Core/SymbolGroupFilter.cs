@@ -23,5 +23,5 @@ internal enum SymbolGroupFilter
     Property = 1 << 11,
     Indexer = 1 << 12,
     Member = Event | Field | EnumField | Const | Method | Property | Indexer,
-    TypeOrMember = Type | Member
+    TypeOrMember = Type | Member,
 }
