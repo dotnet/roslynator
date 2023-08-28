@@ -19,7 +19,7 @@ Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://g
 ## Documentation
 
 - [Configuration](https://josefpihrt.github.io/docs/roslynator/configuration)
-- [Guides](https://josefpihrt.github.io/docs/roslynator/guides)
+- [Guides](https://josefpihrt.github.io/docs/roslynator/category/guides)
 - [Roslynator CLI](https://josefpihrt.github.io/docs/roslynator/cli)
 - [Roslynator Client Libraries](https://josefpihrt.github.io/docs/roslynator/ref)
 
