@@ -26,6 +26,7 @@
     <RoslynatorCorePackageVersion>$(RoslynatorPackageVersion)</RoslynatorCorePackageVersion>
     <RoslynatorAnalyzersPackageVersion>$(RoslynatorPackageVersion)</RoslynatorAnalyzersPackageVersion>
     <RoslynatorTestingPackageVersion>$(RoslynatorPackageVersion)</RoslynatorTestingPackageVersion>
+    <RoslynatorMicrosoftBuildLocatorVersion>1.6.1</RoslynatorMicrosoftBuildLocatorVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true OR '$(RoslynatorCommandLine)' == true">
