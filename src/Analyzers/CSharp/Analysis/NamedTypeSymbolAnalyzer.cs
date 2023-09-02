@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -130,19 +132,19 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
 
     private static void ReportDiagnostic(SymbolAnalysisContext context, INamedTypeSymbol symbol, string interfaceName, string genericInterfaceName)
     {
-        SyntaxToken identifier = default;
+        SyntaxNode node = symbol.GetSyntax(context.CancellationToken);
 
-        if (symbol.TypeKind == TypeKind.Class)
+        SyntaxToken identifier = GetIdentifier();
+
+        SyntaxToken GetIdentifier()
         {
-            var classDeclaration = (ClassDeclarationSyntax)symbol.GetSyntax(context.CancellationToken);
-
-            identifier = classDeclaration.Identifier;
-        }
-        else if (symbol.TypeKind == TypeKind.Struct)
-        {
-            var structDeclaration = (StructDeclarationSyntax)symbol.GetSyntax(context.CancellationToken);
-
-            identifier = structDeclaration.Identifier;
+            return node switch
+            {
+                ClassDeclarationSyntax classDeclaration => classDeclaration.Identifier,
+                StructDeclarationSyntax structDeclaration => structDeclaration.Identifier,
+                RecordDeclarationSyntax recordDeclaration => recordDeclaration.Identifier,
+                _ => throw new InvalidOperationException($"Unknown syntax node kind '{node.Kind()}'."),
+            };
         }
 
         DiagnosticHelpers.ReportDiagnostic(

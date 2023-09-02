@@ -65,6 +65,51 @@ public abstract class Comparable : IComparable<C>, IComparable
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    public async Task Test_Record_IComparable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Collections.Generic;
+
+public class C
+{
+}
+
+public abstract record class [|Comparable|] : IComparable<C>
+{
+    public abstract int CompareTo(C other);
+}
+", @"
+using System;
+using System.Collections.Generic;
+
+public class C
+{
+}
+
+public abstract record class Comparable : IComparable<C>, IComparable
+{
+    public abstract int CompareTo(C other);
+
+    public int CompareTo(object obj)
+    {
+        if (obj == null)
+        {
+            return 1;
+        }
+
+        if (obj is C x)
+        {
+            return CompareTo(x);
+        }
+
+        throw new ArgumentException("""", nameof(obj));
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
     public async Task Test_IComparable_Explicit()
     {
         await VerifyDiagnosticAndFixAsync(@"

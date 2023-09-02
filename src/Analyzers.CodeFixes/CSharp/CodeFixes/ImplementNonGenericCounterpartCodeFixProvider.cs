@@ -290,6 +290,18 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 
             newTypeDeclaration = classDeclaration.WithBaseList(baseList.WithTypes(baseTypes));
         }
+        else if (kind == SyntaxKind.RecordDeclaration)
+        {
+            var recordDeclaration = (RecordDeclarationSyntax)newTypeDeclaration;
+
+            BaseListSyntax baseList = recordDeclaration.BaseList;
+
+            SeparatedSyntaxList<BaseTypeSyntax> baseTypes = baseList.Types;
+
+            baseTypes = AddBaseType(baseTypes, baseType);
+
+            newTypeDeclaration = recordDeclaration.WithBaseList(baseList.WithTypes(baseTypes));
+        }
         else if (kind == SyntaxKind.StructDeclaration
             || kind == SyntaxKind.RecordStructDeclaration)
         {
