@@ -182,7 +182,7 @@ internal class UnusedParameterWalker : CSharpSyntaxNodeWalker
 
     public override void VisitParameterList(ParameterListSyntax node)
     {
-        if (node.IsParentKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
+        if (node.IsParentKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement, SyntaxKind.ParenthesizedLambdaExpression))
             base.VisitParameterList(node);
     }
 
