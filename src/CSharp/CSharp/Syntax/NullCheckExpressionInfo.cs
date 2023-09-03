@@ -107,13 +107,13 @@ public readonly struct NullCheckExpressionInfo
 
     private static NullCheckExpressionInfo CreateImpl(
         SyntaxNode node,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         NullCheckStyles allowedStyles,
         bool walkDownParentheses,
         bool allowMissing,
         CancellationToken cancellationToken)
     {
-        ExpressionSyntax expression = WalkAndCheck(node, walkDownParentheses, allowMissing);
+        ExpressionSyntax? expression = WalkAndCheck(node, walkDownParentheses, allowMissing);
 
         if (expression is null)
             return default;
@@ -127,12 +127,12 @@ public readonly struct NullCheckExpressionInfo
                 {
                     var binaryExpression = (BinaryExpressionSyntax)expression;
 
-                    ExpressionSyntax left = WalkAndCheck(binaryExpression.Left, walkDownParentheses, allowMissing);
+                    ExpressionSyntax? left = WalkAndCheck(binaryExpression.Left, walkDownParentheses, allowMissing);
 
                     if (left is null)
                         break;
 
-                    ExpressionSyntax right = WalkAndCheck(binaryExpression.Right, walkDownParentheses, allowMissing);
+                    ExpressionSyntax? right = WalkAndCheck(binaryExpression.Right, walkDownParentheses, allowMissing);
 
                     if (right is null)
                         break;
@@ -151,6 +151,9 @@ public readonly struct NullCheckExpressionInfo
             case SyntaxKind.SimpleMemberAccessExpression:
                 {
                     if ((allowedStyles & NullCheckStyles.HasValue) == 0)
+                        break;
+
+                    if (semanticModel is null)
                         break;
 
                     var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
@@ -189,7 +192,7 @@ public readonly struct NullCheckExpressionInfo
                     if (!constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
                         break;
 
-                    ExpressionSyntax e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
+                    ExpressionSyntax? e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
 
                     if (e is null)
                         break;
@@ -209,7 +212,7 @@ public readonly struct NullCheckExpressionInfo
 
                     var logicalNotExpression = (PrefixUnaryExpressionSyntax)expression;
 
-                    ExpressionSyntax operand = WalkAndCheck(logicalNotExpression.Operand, walkDownParentheses, allowMissing);
+                    ExpressionSyntax? operand = WalkAndCheck(logicalNotExpression.Operand, walkDownParentheses, allowMissing);
 
                     if (operand is null)
                         break;
@@ -219,6 +222,9 @@ public readonly struct NullCheckExpressionInfo
                         case SyntaxKind.SimpleMemberAccessExpression:
                             {
                                 if (!isNotHasValueAllowed)
+                                    break;
+
+                                if (semanticModel is null)
                                     break;
 
                                 var memberAccessExpression = (MemberAccessExpressionSyntax)operand;
@@ -241,7 +247,7 @@ public readonly struct NullCheckExpressionInfo
                                 if (!constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
                                     break;
 
-                                ExpressionSyntax e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
+                                ExpressionSyntax? e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
 
                                 if (e is null)
                                     break;
@@ -264,7 +270,7 @@ public readonly struct NullCheckExpressionInfo
         ExpressionSyntax expression2,
         NullCheckStyles allowedStyles,
         bool allowMissing,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         CancellationToken cancellationToken)
     {
         switch (expression1.Kind())
@@ -323,10 +329,13 @@ public readonly struct NullCheckExpressionInfo
         NullCheckStyles style,
         NullCheckStyles allowedStyles,
         bool allowMissing,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         CancellationToken cancellationToken)
     {
         if ((allowedStyles & (NullCheckStyles.HasValueProperty)) == 0)
+            return default;
+
+        if (semanticModel is null)
             return default;
 
         if (expression is not MemberAccessExpressionSyntax memberAccessExpression)
@@ -363,7 +372,7 @@ public readonly struct NullCheckExpressionInfo
     private static bool IsNullOrDefault(
         ExpressionSyntax left,
         ExpressionSyntax right,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         CancellationToken cancellationToken)
     {
         switch (right?.Kind())
@@ -377,19 +386,19 @@ public readonly struct NullCheckExpressionInfo
                     if (semanticModel is null)
                         return false;
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);
+                    ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);
 
                     if (typeSymbol?.IsReferenceType != true)
                         return false;
 
-                    ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(right, cancellationToken);
+                    ITypeSymbol? typeSymbol2 = semanticModel.GetTypeSymbol(right, cancellationToken);
 
                     return SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2);
                 }
             case SyntaxKind.DefaultLiteralExpression:
                 {
                     return semanticModel?
-                        .GetTypeSymbol(left, cancellationToken)
+                        .GetTypeSymbol(left, cancellationToken)?
                         .IsReferenceType == true;
                 }
             default:

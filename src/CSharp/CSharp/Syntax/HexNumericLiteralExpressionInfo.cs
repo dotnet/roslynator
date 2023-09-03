@@ -32,7 +32,7 @@ internal readonly struct HexNumericLiteralExpressionInfo
         get { return Token.ValueText; }
     }
 
-    public object Value
+    public object? Value
     {
         get { return Token.Value; }
     }
@@ -99,7 +99,7 @@ internal readonly struct HexNumericLiteralExpressionInfo
         return Create(Walk(node, walkDownParentheses) as LiteralExpressionSyntax);
     }
 
-    internal static HexNumericLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
+    internal static HexNumericLiteralExpressionInfo Create(LiteralExpressionSyntax? literalExpression)
     {
         if (literalExpression is null)
             return default;

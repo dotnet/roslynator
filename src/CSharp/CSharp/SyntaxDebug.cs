@@ -73,7 +73,7 @@ internal static class SyntaxDebug
         string text,
         TextSpan span,
         SyntaxKind kind,
-        SyntaxTree syntaxTree)
+        SyntaxTree? syntaxTree)
     {
         int maxLength = 300;
         int lineCount = 1;
@@ -95,20 +95,31 @@ internal static class SyntaxDebug
         if (text.Length > maxLength)
             text = text.Remove(maxLength) + "....." + Environment.NewLine + "<truncated>";
 
-        FileLinePositionSpan lineSpan = syntaxTree.GetLineSpan(span);
-        LinePosition startSpan = lineSpan.StartLinePosition;
-        LinePosition endSpan = lineSpan.EndLinePosition;
+        string message;
+        if (syntaxTree is not null)
+        {
+            FileLinePositionSpan lineSpan = syntaxTree.GetLineSpan(span);
+            LinePosition startSpan = lineSpan.StartLinePosition;
+            LinePosition endSpan = lineSpan.EndLinePosition;
 
-        string message = $"Path: {syntaxTree.FilePath}"
-            + Environment.NewLine
-            + $"Kind: {kind}"
-            + Environment.NewLine
-            + $"Start L: {startSpan.Line + 1} CH: {startSpan.Character + 1}"
-            + Environment.NewLine
-            + $"End L: {endSpan.Line + 1} CH: {endSpan.Character + 1}"
-            + Environment.NewLine
-            + Environment.NewLine
-            + text;
+            message = $"Path: {syntaxTree.FilePath}"
+                + Environment.NewLine
+                + $"Kind: {kind}"
+                + Environment.NewLine
+                + $"Start L: {startSpan.Line + 1} CH: {startSpan.Character + 1}"
+                + Environment.NewLine
+                + $"End L: {endSpan.Line + 1} CH: {endSpan.Character + 1}"
+                + Environment.NewLine
+                + Environment.NewLine
+                + text;
+        }
+        else
+        {
+            message = $"Kind: {kind}"
+                + Environment.NewLine
+                + Environment.NewLine
+                + text;
+        }
 
         Debug.Fail(message);
     }

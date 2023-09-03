@@ -72,12 +72,12 @@ internal static class CSharpOverriddenSymbolInfo
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+        IMethodSymbol? methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
         if (methodSymbol is null)
             return Default;
 
-        IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+        IMethodSymbol? overriddenMethod = methodSymbol.OverriddenMethod;
 
         if (overriddenMethod is null)
             return Default;
@@ -90,12 +90,12 @@ internal static class CSharpOverriddenSymbolInfo
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        var propertySymbol = (IPropertySymbol)semanticModel.GetDeclaredSymbol(basePropertyDeclaration, cancellationToken);
+        var propertySymbol = (IPropertySymbol?)semanticModel.GetDeclaredSymbol(basePropertyDeclaration, cancellationToken);
 
         if (propertySymbol is null)
             return Default;
 
-        IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+        IPropertySymbol? overriddenProperty = propertySymbol.OverriddenProperty;
 
         if (overriddenProperty is null)
             return Default;
@@ -108,12 +108,12 @@ internal static class CSharpOverriddenSymbolInfo
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        IEventSymbol eventSymbol = semanticModel.GetDeclaredSymbol(eventDeclaration, cancellationToken);
+        IEventSymbol? eventSymbol = semanticModel.GetDeclaredSymbol(eventDeclaration, cancellationToken);
 
         if (eventSymbol is null)
             return Default;
 
-        IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
+        IEventSymbol? overriddenEvent = eventSymbol.OverriddenEvent;
 
         if (overriddenEvent is null)
             return Default;
@@ -135,7 +135,7 @@ internal static class CSharpOverriddenSymbolInfo
         if (semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken) is not IEventSymbol eventSymbol)
             return Default;
 
-        IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
+        IEventSymbol? overriddenEvent = eventSymbol.OverriddenEvent;
 
         if (overriddenEvent is null)
             return Default;
@@ -148,12 +148,12 @@ internal static class CSharpOverriddenSymbolInfo
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(accessorDeclaration, cancellationToken);
+        IMethodSymbol? methodSymbol = semanticModel.GetDeclaredSymbol(accessorDeclaration, cancellationToken);
 
         if (methodSymbol is null)
             return Default;
 
-        IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+        IMethodSymbol? overriddenMethod = methodSymbol.OverriddenMethod;
 
         if (overriddenMethod is null)
             return Default;

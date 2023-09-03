@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -37,7 +38,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public ExpressionSyntax Expression
     {
-        get { return MemberAccessExpression?.Expression; }
+        get { return MemberAccessExpression?.Expression ?? throw new InvalidOperationException("Object is not initialized"); }
     }
 
     /// <summary>
@@ -45,7 +46,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public SimpleNameSyntax Name
     {
-        get { return MemberAccessExpression?.Name; }
+        get { return MemberAccessExpression?.Name ?? throw new InvalidOperationException("Object is not initialized"); }
     }
 
     /// <summary>
@@ -53,7 +54,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public ArgumentListSyntax ArgumentList
     {
-        get { return InvocationExpression?.ArgumentList; }
+        get { return InvocationExpression?.ArgumentList ?? throw new InvalidOperationException("Object is not initialized"); }
     }
 
     /// <summary>
@@ -77,7 +78,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public string NameText
     {
-        get { return Name?.Identifier.ValueText; }
+        get { return Name?.Identifier.ValueText ?? throw new InvalidOperationException("Object is not initialized"); }
     }
 
     /// <summary>
@@ -112,7 +113,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     }
 
     private static SimpleMemberInvocationExpressionInfo CreateImpl(
-        InvocationExpressionSyntax invocationExpression,
+        InvocationExpressionSyntax? invocationExpression,
         bool allowMissing = false)
     {
         if (invocationExpression?.Expression is not MemberAccessExpressionSyntax memberAccessExpression)

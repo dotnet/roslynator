@@ -62,14 +62,14 @@ public readonly struct SimpleIfStatementInfo
     }
 
     internal static SimpleIfStatementInfo Create(
-        IfStatementSyntax ifStatement,
+        IfStatementSyntax? ifStatement,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (ifStatement?.IsSimpleIf() != true)
             return default;
 
-        ExpressionSyntax condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
+        ExpressionSyntax? condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
 
         if (condition is null)
             return default;

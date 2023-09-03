@@ -21,7 +21,7 @@ internal static class DocumentationCommentGenerator
 {
     private static readonly XmlReaderSettings _xmlReaderSettings = new() { ConformanceLevel = ConformanceLevel.Fragment };
 
-    public static SyntaxTriviaList Generate(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (memberDeclaration is null)
             throw new ArgumentNullException(nameof(memberDeclaration));
@@ -70,7 +70,7 @@ internal static class DocumentationCommentGenerator
         }
     }
 
-    public static SyntaxTriviaList Generate(NamespaceDeclarationSyntax namespaceDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(NamespaceDeclarationSyntax namespaceDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (namespaceDeclaration is null)
             throw new ArgumentNullException(nameof(namespaceDeclaration));
@@ -78,7 +78,7 @@ internal static class DocumentationCommentGenerator
         return Generate(settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(ClassDeclarationSyntax classDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(ClassDeclarationSyntax classDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (classDeclaration is null)
             throw new ArgumentNullException(nameof(classDeclaration));
@@ -90,7 +90,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(RecordDeclarationSyntax recordDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(RecordDeclarationSyntax recordDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (recordDeclaration is null)
             throw new ArgumentNullException(nameof(recordDeclaration));
@@ -102,7 +102,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(StructDeclarationSyntax structDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(StructDeclarationSyntax structDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (structDeclaration is null)
             throw new ArgumentNullException(nameof(structDeclaration));
@@ -114,7 +114,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(InterfaceDeclarationSyntax interfaceDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(InterfaceDeclarationSyntax interfaceDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (interfaceDeclaration is null)
             throw new ArgumentNullException(nameof(interfaceDeclaration));
@@ -126,7 +126,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(EnumDeclarationSyntax enumDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(EnumDeclarationSyntax enumDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (enumDeclaration is null)
             throw new ArgumentNullException(nameof(enumDeclaration));
@@ -134,7 +134,7 @@ internal static class DocumentationCommentGenerator
         return Generate(settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(DelegateDeclarationSyntax delegateDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(DelegateDeclarationSyntax delegateDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (delegateDeclaration is null)
             throw new ArgumentNullException(nameof(delegateDeclaration));
@@ -146,7 +146,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(EnumMemberDeclarationSyntax enumMemberDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(EnumMemberDeclarationSyntax enumMemberDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (enumMemberDeclaration is null)
             throw new ArgumentNullException(nameof(enumMemberDeclaration));
@@ -154,7 +154,7 @@ internal static class DocumentationCommentGenerator
         return Generate(settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(FieldDeclarationSyntax fieldDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(FieldDeclarationSyntax fieldDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (fieldDeclaration is null)
             throw new ArgumentNullException(nameof(fieldDeclaration));
@@ -162,7 +162,7 @@ internal static class DocumentationCommentGenerator
         return Generate(settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(EventFieldDeclarationSyntax eventFieldDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(EventFieldDeclarationSyntax eventFieldDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (eventFieldDeclaration is null)
             throw new ArgumentNullException(nameof(eventFieldDeclaration));
@@ -170,7 +170,7 @@ internal static class DocumentationCommentGenerator
         return Generate(settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(MethodDeclarationSyntax methodDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(MethodDeclarationSyntax methodDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (methodDeclaration is null)
             throw new ArgumentNullException(nameof(methodDeclaration));
@@ -182,7 +182,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(OperatorDeclarationSyntax operatorDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(OperatorDeclarationSyntax operatorDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (operatorDeclaration is null)
             throw new ArgumentNullException(nameof(operatorDeclaration));
@@ -194,7 +194,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (conversionOperatorDeclaration is null)
             throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
@@ -206,7 +206,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(ConstructorDeclarationSyntax constructorDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(ConstructorDeclarationSyntax constructorDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (constructorDeclaration is null)
             throw new ArgumentNullException(nameof(constructorDeclaration));
@@ -218,7 +218,7 @@ internal static class DocumentationCommentGenerator
             settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(DestructorDeclarationSyntax destructorDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(DestructorDeclarationSyntax destructorDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (destructorDeclaration is null)
             throw new ArgumentNullException(nameof(destructorDeclaration));
@@ -226,7 +226,7 @@ internal static class DocumentationCommentGenerator
         return Generate(settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(PropertyDeclarationSyntax propertyDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(PropertyDeclarationSyntax propertyDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (propertyDeclaration is null)
             throw new ArgumentNullException(nameof(propertyDeclaration));
@@ -234,7 +234,7 @@ internal static class DocumentationCommentGenerator
         return Generate(settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(EventDeclarationSyntax eventDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(EventDeclarationSyntax eventDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (eventDeclaration is null)
             throw new ArgumentNullException(nameof(eventDeclaration));
@@ -242,7 +242,7 @@ internal static class DocumentationCommentGenerator
         return Generate(settings: settings);
     }
 
-    public static SyntaxTriviaList Generate(IndexerDeclarationSyntax indexerDeclaration, DocumentationCommentGeneratorSettings settings = null)
+    public static SyntaxTriviaList Generate(IndexerDeclarationSyntax indexerDeclaration, DocumentationCommentGeneratorSettings? settings = null)
     {
         if (indexerDeclaration is null)
             throw new ArgumentNullException(nameof(indexerDeclaration));
@@ -255,10 +255,10 @@ internal static class DocumentationCommentGenerator
     }
 
     private static SyntaxTriviaList Generate(
-        TypeParameterListSyntax typeParameterList,
-        BaseParameterListSyntax parameterList,
+        TypeParameterListSyntax? typeParameterList,
+        BaseParameterListSyntax? parameterList,
         bool canGenerateReturns = false,
-        DocumentationCommentGeneratorSettings settings = null)
+        DocumentationCommentGeneratorSettings? settings = null)
     {
         SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default;
 
@@ -271,7 +271,7 @@ internal static class DocumentationCommentGenerator
         SeparatedSyntaxList<TypeParameterSyntax> typeParameters = default,
         SeparatedSyntaxList<ParameterSyntax> parameters = default,
         bool canGenerateReturns = false,
-        DocumentationCommentGeneratorSettings settings = null)
+        DocumentationCommentGeneratorSettings? settings = null)
     {
         settings ??= DocumentationCommentGeneratorSettings.Default;
 
@@ -391,11 +391,11 @@ internal static class DocumentationCommentGenerator
             return default;
         }
 
-        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+        IMethodSymbol? methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
         if (methodSymbol?.IsErrorType() == false)
         {
-            string xml = GenerateFromOverriddenMethods(methodSymbol, cancellationToken);
+            string? xml = GenerateFromOverriddenMethods(methodSymbol, cancellationToken);
 
             if (xml is not null)
                 return new DocumentationCommentData(xml, DocumentationCommentOrigin.BaseMember);
@@ -418,7 +418,7 @@ internal static class DocumentationCommentGenerator
             return default;
         }
 
-        IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
+        IPropertySymbol? propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
         return GenerateFromBase(propertySymbol, cancellationToken);
     }
@@ -432,16 +432,16 @@ internal static class DocumentationCommentGenerator
             return default;
         }
 
-        IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
+        IPropertySymbol? propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
 
         return GenerateFromBase(propertySymbol, cancellationToken);
     }
 
-    private static DocumentationCommentData GenerateFromBase(IPropertySymbol propertySymbol, CancellationToken cancellationToken)
+    private static DocumentationCommentData GenerateFromBase(IPropertySymbol? propertySymbol, CancellationToken cancellationToken)
     {
         if (propertySymbol?.IsErrorType() == false)
         {
-            string xml = GenerateFromOverriddenProperties(propertySymbol, cancellationToken);
+            string? xml = GenerateFromOverriddenProperties(propertySymbol, cancellationToken);
 
             if (xml is not null)
                 return new DocumentationCommentData(xml, DocumentationCommentOrigin.BaseMember);
@@ -464,7 +464,7 @@ internal static class DocumentationCommentGenerator
             return default;
         }
 
-        IEventSymbol eventSymbol = semanticModel.GetDeclaredSymbol(eventDeclaration, cancellationToken);
+        IEventSymbol? eventSymbol = semanticModel.GetDeclaredSymbol(eventDeclaration, cancellationToken);
 
         return GenerateFromBase(eventSymbol, cancellationToken);
     }
@@ -477,7 +477,7 @@ internal static class DocumentationCommentGenerator
             return default;
         }
 
-        VariableDeclaratorSyntax variableDeclarator = eventFieldDeclaration.Declaration?.Variables.FirstOrDefault();
+        VariableDeclaratorSyntax? variableDeclarator = eventFieldDeclaration.Declaration?.Variables.FirstOrDefault();
 
         if (variableDeclarator is not null)
         {
@@ -489,11 +489,11 @@ internal static class DocumentationCommentGenerator
         return default;
     }
 
-    private static DocumentationCommentData GenerateFromBase(IEventSymbol eventSymbol, CancellationToken cancellationToken)
+    private static DocumentationCommentData GenerateFromBase(IEventSymbol? eventSymbol, CancellationToken cancellationToken)
     {
         if (eventSymbol?.IsErrorType() == false)
         {
-            string xml = GenerateFromOverriddenEvents(eventSymbol, cancellationToken);
+            string? xml = GenerateFromOverriddenEvents(eventSymbol, cancellationToken);
 
             if (xml is not null)
                 return new DocumentationCommentData(xml, DocumentationCommentOrigin.BaseMember);
@@ -509,15 +509,15 @@ internal static class DocumentationCommentGenerator
 
     internal static DocumentationCommentData GenerateFromBase(ConstructorDeclarationSyntax constructorDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken = default)
     {
-        ConstructorInitializerSyntax initializer = constructorDeclaration.Initializer;
+        ConstructorInitializerSyntax? initializer = constructorDeclaration.Initializer;
 
         if (initializer?.Kind() == SyntaxKind.BaseConstructorInitializer)
         {
-            ISymbol baseConstructor = semanticModel.GetSymbol(initializer, cancellationToken);
+            ISymbol? baseConstructor = semanticModel.GetSymbol(initializer, cancellationToken);
 
             if (baseConstructor?.IsErrorType() == false)
             {
-                string xml = GetDocumentationCommentXml(baseConstructor, cancellationToken);
+                string? xml = GetDocumentationCommentXml(baseConstructor, cancellationToken);
 
                 if (xml is not null)
                     return new DocumentationCommentData(xml, DocumentationCommentOrigin.BaseMember);
@@ -527,11 +527,11 @@ internal static class DocumentationCommentGenerator
         return default;
     }
 
-    private static string GenerateFromOverriddenMethods(IMethodSymbol methodSymbol, CancellationToken cancellationToken)
+    private static string? GenerateFromOverriddenMethods(IMethodSymbol methodSymbol, CancellationToken cancellationToken)
     {
-        for (IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod; overriddenMethod is not null; overriddenMethod = overriddenMethod.OverriddenMethod)
+        for (IMethodSymbol? overriddenMethod = methodSymbol.OverriddenMethod; overriddenMethod is not null; overriddenMethod = overriddenMethod.OverriddenMethod)
         {
-            string xml = GetDocumentationCommentXml(overriddenMethod, cancellationToken);
+            string? xml = GetDocumentationCommentXml(overriddenMethod, cancellationToken);
 
             if (xml is not null)
                 return xml;
@@ -540,11 +540,11 @@ internal static class DocumentationCommentGenerator
         return null;
     }
 
-    private static string GenerateFromOverriddenProperties(IPropertySymbol propertySymbol, CancellationToken cancellationToken)
+    private static string? GenerateFromOverriddenProperties(IPropertySymbol propertySymbol, CancellationToken cancellationToken)
     {
-        for (IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty; overriddenProperty is not null; overriddenProperty = overriddenProperty.OverriddenProperty)
+        for (IPropertySymbol? overriddenProperty = propertySymbol.OverriddenProperty; overriddenProperty is not null; overriddenProperty = overriddenProperty.OverriddenProperty)
         {
-            string xml = GetDocumentationCommentXml(overriddenProperty, cancellationToken);
+            string? xml = GetDocumentationCommentXml(overriddenProperty, cancellationToken);
 
             if (xml is not null)
                 return xml;
@@ -553,11 +553,11 @@ internal static class DocumentationCommentGenerator
         return null;
     }
 
-    private static string GenerateFromOverriddenEvents(IEventSymbol eventSymbol, CancellationToken cancellationToken)
+    private static string? GenerateFromOverriddenEvents(IEventSymbol eventSymbol, CancellationToken cancellationToken)
     {
-        for (IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent; overriddenEvent is not null; overriddenEvent = overriddenEvent.OverriddenEvent)
+        for (IEventSymbol? overriddenEvent = eventSymbol.OverriddenEvent; overriddenEvent is not null; overriddenEvent = overriddenEvent.OverriddenEvent)
         {
-            string xml = GetDocumentationCommentXml(overriddenEvent, cancellationToken);
+            string? xml = GetDocumentationCommentXml(overriddenEvent, cancellationToken);
 
             if (xml is not null)
                 return xml;
@@ -566,15 +566,15 @@ internal static class DocumentationCommentGenerator
         return null;
     }
 
-    private static string GenerateFromInterfaceMember<TInterfaceSymbol>(
+    private static string? GenerateFromInterfaceMember<TInterfaceSymbol>(
         ISymbol memberSymbol,
         CancellationToken cancellationToken) where TInterfaceSymbol : ISymbol
     {
-        TInterfaceSymbol interfaceMember = memberSymbol.FindFirstImplementedInterfaceMember<TInterfaceSymbol>();
+        TInterfaceSymbol? interfaceMember = memberSymbol.FindFirstImplementedInterfaceMember<TInterfaceSymbol>();
 
-        if (!EqualityComparer<TInterfaceSymbol>.Default.Equals(interfaceMember, default))
+        if (!EqualityComparer<TInterfaceSymbol>.Default.Equals(interfaceMember!, default!))
         {
-            return GetDocumentationCommentXml(interfaceMember, cancellationToken);
+            return GetDocumentationCommentXml(interfaceMember!, cancellationToken);
         }
         else
         {
@@ -582,9 +582,9 @@ internal static class DocumentationCommentGenerator
         }
     }
 
-    private static string GetDocumentationCommentXml(ISymbol symbol, CancellationToken cancellationToken = default)
+    private static string? GetDocumentationCommentXml(ISymbol symbol, CancellationToken cancellationToken = default)
     {
-        string xml = symbol.GetDocumentationCommentXml(cancellationToken: cancellationToken);
+        string? xml = symbol.GetDocumentationCommentXml(cancellationToken: cancellationToken);
 
         if (xml is null)
             return null;
@@ -626,9 +626,9 @@ internal static class DocumentationCommentGenerator
 
     private static bool ContainingTypeHasBaseType(MemberDeclarationSyntax memberDeclaration)
     {
-        SyntaxNode parent = memberDeclaration.Parent;
+        SyntaxNode? parent = memberDeclaration.Parent;
 
-        switch (parent.Kind())
+        switch (parent?.Kind())
         {
             case SyntaxKind.ClassDeclaration:
                 return ((ClassDeclarationSyntax)parent).BaseList?.Types.Any() == true;

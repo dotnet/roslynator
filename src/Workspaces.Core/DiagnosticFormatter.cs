@@ -12,8 +12,8 @@ internal static class DiagnosticFormatter
 {
     public static string FormatDiagnostic(
         Diagnostic diagnostic,
-        string baseDirectoryPath = null,
-        IFormatProvider formatProvider = null)
+        string? baseDirectoryPath = null,
+        IFormatProvider? formatProvider = null)
     {
         StringBuilder sb = StringBuilderCache.GetInstance();
 
@@ -33,7 +33,7 @@ internal static class DiagnosticFormatter
 
     internal static void FormatLocation(
         Location location,
-        string baseDirectoryPath,
+        string? baseDirectoryPath,
         ref StringBuilder sb)
     {
         switch (location.Kind)

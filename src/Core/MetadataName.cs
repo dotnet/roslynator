@@ -346,7 +346,7 @@ public readonly struct MetadataName : IEquatable<MetadataName>
             return default;
         }
 
-        string containingType = null;
+        string? containingType = null;
 
         int prevIndex = 0;
 
@@ -389,11 +389,11 @@ public readonly struct MetadataName : IEquatable<MetadataName>
             }
         }
 
-        ImmutableArray<string>.Builder containingNamespaces = (containingNamespaceCount > 0)
+        ImmutableArray<string>.Builder? containingNamespaces = (containingNamespaceCount > 0)
             ? ImmutableArray.CreateBuilder<string>(containingNamespaceCount)
             : null;
 
-        ImmutableArray<string>.Builder containingTypes = (containingTypeCount > 1)
+        ImmutableArray<string>.Builder? containingTypes = (containingTypeCount > 1)
             ? ImmutableArray.CreateBuilder<string>(containingTypeCount)
             : null;
 
@@ -405,7 +405,7 @@ public readonly struct MetadataName : IEquatable<MetadataName>
             {
                 string n = name.Substring(prevIndex, i - prevIndex);
 
-                containingNamespaces.Add(n);
+                containingNamespaces!.Add(n);
 
                 prevIndex = i + 1;
             }

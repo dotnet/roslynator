@@ -8,6 +8,7 @@
     <Version>$(RoslynatorCoreVersion)</Version>
     <AssemblyName>$(RoslynatorDllPrefix)Roslynator.CSharp</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

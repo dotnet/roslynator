@@ -11,7 +11,7 @@ internal interface IFindSymbolService : ILanguageService
 {
     ISyntaxFactsService SyntaxFacts { get; }
 
-    SyntaxNode FindDeclaration(SyntaxNode node);
+    SyntaxNode? FindDeclaration(SyntaxNode node);
 
     bool CanBeRenamed(SyntaxToken token);
 

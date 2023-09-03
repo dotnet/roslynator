@@ -39,7 +39,7 @@ public readonly partial struct ExpressionChain
             if (!en.MoveNext())
                 return false;
 
-            var binaryExpression = (BinaryExpressionSyntax)en.Current.Parent;
+            var binaryExpression = (BinaryExpressionSyntax)en.Current.Parent!;
 
             if (!en.MoveNext())
                 return false;
@@ -53,7 +53,7 @@ public readonly partial struct ExpressionChain
 
                 if (en.MoveNext())
                 {
-                    binaryExpression = (BinaryExpressionSyntax)prev.Parent;
+                    binaryExpression = (BinaryExpressionSyntax)prev.Parent!;
                 }
                 else
                 {
@@ -119,7 +119,7 @@ public readonly partial struct ExpressionChain
         public struct Enumerator
         {
             private readonly ExpressionChain _chain;
-            private ExpressionSyntax _current;
+            private ExpressionSyntax? _current;
             private State _state;
 
             internal Enumerator(in ExpressionChain chain)
@@ -191,7 +191,7 @@ public readonly partial struct ExpressionChain
                         }
                     case State.Right:
                         {
-                            var binaryExpression = (BinaryExpressionSyntax)_current.Parent;
+                            var binaryExpression = (BinaryExpressionSyntax)_current!.Parent!;
 
                             ExpressionSyntax left = binaryExpression.Left;
 

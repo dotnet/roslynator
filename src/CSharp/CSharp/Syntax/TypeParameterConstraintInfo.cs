@@ -43,7 +43,7 @@ internal readonly struct TypeParameterConstraintInfo
     /// <summary>
     /// The identifier name of this constraint.
     /// </summary>
-    public IdentifierNameSyntax Name
+    public IdentifierNameSyntax? Name
     {
         get { return ConstraintClause?.Name; }
     }
@@ -51,7 +51,7 @@ internal readonly struct TypeParameterConstraintInfo
     /// <summary>
     /// The name of this constraint.
     /// </summary>
-    public string NameText
+    public string? NameText
     {
         get { return Name?.Identifier.ValueText; }
     }
@@ -114,7 +114,7 @@ internal readonly struct TypeParameterConstraintInfo
         if (!Check(name, allowMissing))
             return default;
 
-        SyntaxNode parent = constraintClause.Parent;
+        SyntaxNode? parent = constraintClause.Parent;
 
         switch (parent?.Kind())
         {
@@ -122,7 +122,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var classDeclaration = (ClassDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = classDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = classDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -133,7 +133,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var delegateDeclaration = (DelegateDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = delegateDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = delegateDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -144,7 +144,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var interfaceDeclaration = (InterfaceDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = interfaceDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = interfaceDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -155,7 +155,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var localFunctionStatement = (LocalFunctionStatementSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = localFunctionStatement.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = localFunctionStatement.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -166,7 +166,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var methodDeclaration = (MethodDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = methodDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = methodDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -178,7 +178,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var recordDeclaration = (RecordDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = recordDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = recordDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -189,7 +189,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var structDeclaration = (StructDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = structDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = structDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;

@@ -11,12 +11,12 @@ namespace Roslynator;
 internal abstract class CodeAnalysisOptions
 {
     internal CodeAnalysisOptions(
-        FileSystemFilter fileSystemFilter = null,
+        FileSystemFilter? fileSystemFilter = null,
         DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
         bool ignoreAnalyzerReferences = false,
         bool concurrentAnalysis = true,
-        IEnumerable<string> supportedDiagnosticIds = null,
-        IEnumerable<string> ignoredDiagnosticIds = null)
+        IEnumerable<string>? supportedDiagnosticIds = null,
+        IEnumerable<string>? ignoredDiagnosticIds = null)
     {
         if (supportedDiagnosticIds?.Any() == true
             && ignoredDiagnosticIds?.Any() == true)
@@ -42,7 +42,7 @@ internal abstract class CodeAnalysisOptions
 
     public ImmutableHashSet<string> IgnoredDiagnosticIds { get; }
 
-    public FileSystemFilter FileSystemFilter { get; }
+    public FileSystemFilter? FileSystemFilter { get; }
 
     internal bool IsSupportedDiagnosticId(string diagnosticId)
     {

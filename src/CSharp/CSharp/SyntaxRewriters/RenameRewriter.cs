@@ -38,13 +38,13 @@ internal class RenameRewriter : CSharpSyntaxRewriter
     {
         if (string.Equals(node.Identifier.ValueText, _name, StringComparison.Ordinal))
         {
-            ISymbol symbol = SemanticModel.GetSymbol(node, CancellationToken);
+            ISymbol? symbol = SemanticModel.GetSymbol(node, CancellationToken);
 
             if (SymbolEqualityComparer.Default.Equals(Symbol, symbol))
                 return Rename(node);
         }
 
-        return base.VisitIdentifierName(node);
+        return base.VisitIdentifierName(node)!;
     }
 
     protected virtual SyntaxNode Rename(IdentifierNameSyntax node)

@@ -72,10 +72,13 @@ public readonly struct StringConcatenationExpressionInfo
     }
 
     internal static StringConcatenationExpressionInfo Create(
-        BinaryExpressionSyntax binaryExpression,
+        BinaryExpressionSyntax? binaryExpression,
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
+        if (binaryExpression is null)
+            return default;
+
         ExpressionChain chain = binaryExpression.AsChain();
 
         if (!chain.Reverse().IsStringConcatenation(semanticModel, cancellationToken))

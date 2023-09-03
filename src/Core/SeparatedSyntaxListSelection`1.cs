@@ -133,25 +133,25 @@ public class SeparatedSyntaxListSelection<TNode> : ISelection<TNode> where TNode
     /// <param name="span"></param>
     /// <param name="selection"></param>
     /// <returns>True if the specified span contains at least one node; otherwise, false.</returns>
-    public static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, out SeparatedSyntaxListSelection<TNode> selection)
+    public static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, out SeparatedSyntaxListSelection<TNode>? selection)
     {
         selection = Create(list, span, 1, int.MaxValue);
         return selection is not null;
     }
 
-    internal static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, out SeparatedSyntaxListSelection<TNode> selection)
+    internal static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, out SeparatedSyntaxListSelection<TNode>? selection)
     {
         selection = Create(list, span, minCount, int.MaxValue);
         return selection is not null;
     }
 
-    internal static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, int maxCount, out SeparatedSyntaxListSelection<TNode> selection)
+    internal static bool TryCreate(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, int maxCount, out SeparatedSyntaxListSelection<TNode>? selection)
     {
         selection = Create(list, span, minCount, maxCount);
         return selection is not null;
     }
 
-    private static SeparatedSyntaxListSelection<TNode> Create(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, int maxCount)
+    private static SeparatedSyntaxListSelection<TNode>? Create(SeparatedSyntaxList<TNode> list, TextSpan span, int minCount, int maxCount)
     {
         SelectionResult result = SelectionResult.Create(list, span, minCount, maxCount);
 

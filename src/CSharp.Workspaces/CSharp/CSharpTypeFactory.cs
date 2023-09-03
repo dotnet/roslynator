@@ -7,13 +7,13 @@ namespace Roslynator.CSharp;
 
 internal static class CSharpTypeFactory
 {
-    private static TypeSyntax _boolType;
-    private static TypeSyntax _intType;
-    private static TypeSyntax _doubleType;
-    private static TypeSyntax _stringType;
-    private static TypeSyntax _objectType;
-    private static TypeSyntax _notImplementedException;
-    private static TypeSyntax _notSupportedException;
+    private static TypeSyntax? _boolType;
+    private static TypeSyntax? _intType;
+    private static TypeSyntax? _doubleType;
+    private static TypeSyntax? _stringType;
+    private static TypeSyntax? _objectType;
+    private static TypeSyntax? _notImplementedException;
+    private static TypeSyntax? _notSupportedException;
 
     public static TypeSyntax BoolType()
     {

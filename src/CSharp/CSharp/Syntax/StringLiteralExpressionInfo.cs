@@ -141,7 +141,7 @@ public readonly struct StringLiteralExpressionInfo
         return Create(Walk(node, walkDownParentheses) as LiteralExpressionSyntax);
     }
 
-    internal static StringLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
+    internal static StringLiteralExpressionInfo Create(LiteralExpressionSyntax? literalExpression)
     {
         if (literalExpression?.Kind() != SyntaxKind.StringLiteralExpression)
             return default;

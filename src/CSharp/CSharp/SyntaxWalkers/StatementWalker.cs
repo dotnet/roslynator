@@ -136,7 +136,7 @@ internal class StatementWalker : CSharpSyntaxWalker
         foreach (CatchClauseSyntax catchClause in node.Catches)
             VisitBlockIfNotNull(catchClause.Block);
 
-        FinallyClauseSyntax finallyClause = node.Finally;
+        FinallyClauseSyntax? finallyClause = node.Finally;
 
         if (finallyClause is not null)
             VisitBlockIfNotNull(finallyClause.Block);
@@ -161,7 +161,7 @@ internal class StatementWalker : CSharpSyntaxWalker
     {
     }
 
-    private void VisitBlockIfNotNull(BlockSyntax node)
+    private void VisitBlockIfNotNull(BlockSyntax? node)
     {
         if (node is not null
             && ShouldVisit)
@@ -170,7 +170,7 @@ internal class StatementWalker : CSharpSyntaxWalker
         }
     }
 
-    private void VisitStatementIfNotNull(StatementSyntax node)
+    private void VisitStatementIfNotNull(StatementSyntax? node)
     {
         if (node is not null
             && ShouldVisit)

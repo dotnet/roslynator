@@ -8,12 +8,12 @@ namespace Roslynator;
 
 internal static class CodeFixContextExtensions
 {
-    public static Task<SyntaxNode> GetSyntaxRootAsync(this CodeFixContext context)
+    public static Task<SyntaxNode?> GetSyntaxRootAsync(this CodeFixContext context)
     {
         return context.Document.GetSyntaxRootAsync(context.CancellationToken);
     }
 
-    public static Task<SemanticModel> GetSemanticModelAsync(this CodeFixContext context)
+    public static Task<SemanticModel?> GetSemanticModelAsync(this CodeFixContext context)
     {
         return context.Document.GetSemanticModelAsync(context.CancellationToken);
     }

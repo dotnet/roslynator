@@ -281,39 +281,39 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
             case SyntaxKind.CompilationUnit:
                 {
                     var compilationUnit = (CompilationUnitSyntax)Parent;
-                    compilationUnit = compilationUnit.RemoveNode(node, options);
+                    compilationUnit = compilationUnit.RemoveNode(node, options)!;
                     return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                 }
             case SyntaxKind.NamespaceDeclaration:
             case SyntaxKind.FileScopedNamespaceDeclaration:
                 {
                     var declaration = (BaseNamespaceDeclarationSyntax)Parent;
-                    declaration = declaration.RemoveNode(node, options);
+                    declaration = declaration.RemoveNode(node, options)!;
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
             case SyntaxKind.ClassDeclaration:
                 {
                     var declaration = (ClassDeclarationSyntax)Parent;
-                    declaration = declaration.RemoveNode(node, options);
+                    declaration = declaration.RemoveNode(node, options)!;
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.RecordStructDeclaration:
                 {
                     var declaration = (RecordDeclarationSyntax)Parent;
-                    declaration = declaration.RemoveNode(node, options);
+                    declaration = declaration.RemoveNode(node, options)!;
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
             case SyntaxKind.StructDeclaration:
                 {
                     var declaration = (StructDeclarationSyntax)Parent;
-                    declaration = declaration.RemoveNode(node, options);
+                    declaration = declaration.RemoveNode(node, options)!;
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
             case SyntaxKind.InterfaceDeclaration:
                 {
                     var declaration = (InterfaceDeclarationSyntax)Parent;
-                    declaration = declaration.RemoveNode(node, options);
+                    declaration = declaration.RemoveNode(node, options)!;
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
         }
@@ -412,7 +412,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
     /// <summary>
     /// The first member in the list or null if the list is empty.
     /// </summary>
-    public MemberDeclarationSyntax FirstOrDefault()
+    public MemberDeclarationSyntax? FirstOrDefault()
     {
         return Members.FirstOrDefault();
     }
@@ -466,7 +466,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
     /// <summary>
     /// The last member in the list or null if the list is empty.
     /// </summary>
-    public MemberDeclarationSyntax LastOrDefault()
+    public MemberDeclarationSyntax? LastOrDefault()
     {
         return Members.LastOrDefault();
     }

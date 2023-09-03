@@ -39,7 +39,7 @@ internal class EnumMemberDeclarationValueComparer : IComparer<EnumMemberDeclarat
             _valueComparer);
     }
 
-    private static int Compare(IFieldSymbol fieldSymbol1, IFieldSymbol fieldSymbol2, IComparer<object> comparer)
+    private static int Compare(IFieldSymbol? fieldSymbol1, IFieldSymbol? fieldSymbol2, IComparer<object> comparer)
     {
         if (fieldSymbol1?.HasConstantValue == true
             && fieldSymbol2?.HasConstantValue == true)
@@ -67,15 +67,15 @@ internal class EnumMemberDeclarationValueComparer : IComparer<EnumMemberDeclarat
         {
             if (en.MoveNext())
             {
-                IFieldSymbol fieldSymbol1 = semanticModel.GetDeclaredSymbol(en.Current, cancellationToken);
+                IFieldSymbol fieldSymbol1 = semanticModel.GetDeclaredSymbol(en.Current, cancellationToken)!;
 
-                SpecialType enumSpecialType = fieldSymbol1.ContainingType.EnumUnderlyingType.SpecialType;
+                SpecialType enumSpecialType = fieldSymbol1.ContainingType.EnumUnderlyingType!.SpecialType;
 
                 IComparer<object> comparer = EnumValueComparer.GetInstance(enumSpecialType);
 
                 while (en.MoveNext())
                 {
-                    IFieldSymbol fieldSymbol2 = semanticModel.GetDeclaredSymbol(en.Current, cancellationToken);
+                    IFieldSymbol fieldSymbol2 = semanticModel.GetDeclaredSymbol(en.Current, cancellationToken)!;
 
                     if (Compare(fieldSymbol1, fieldSymbol2, comparer) > 0)
                         return false;

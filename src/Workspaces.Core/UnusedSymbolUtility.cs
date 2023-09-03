@@ -196,7 +196,7 @@ internal static class UnusedSymbolUtility
         if (symbol.DeclaredAccessibility == Accessibility.Private
             && CanBeReferencedInDebuggerDisplayAttribute())
         {
-            string value = symbol.ContainingType
+            string? value = symbol.ContainingType
                 .GetAttribute(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute)?
                 .ConstructorArguments
                 .SingleOrDefault(shouldThrow: false)

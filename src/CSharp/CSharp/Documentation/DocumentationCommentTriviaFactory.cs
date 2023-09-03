@@ -24,12 +24,12 @@ internal static class DocumentationCommentTriviaFactory
 
         SyntaxTrivia trivia = ParseLeadingTrivia(triviaText).Single();
 
-        var commentTrivia = (DocumentationCommentTriviaSyntax)trivia.GetStructure();
+        var commentTrivia = (DocumentationCommentTriviaSyntax)trivia.GetStructure()!;
 
         var rewriter = new DocumentationCommentTriviaRewriter(position, semanticModel);
 
         // Remove T: from cref attribute and replace `1 with {T}
-        commentTrivia = (DocumentationCommentTriviaSyntax)rewriter.VisitDocumentationCommentTrivia(commentTrivia);
+        commentTrivia = (DocumentationCommentTriviaSyntax)rewriter.VisitDocumentationCommentTrivia(commentTrivia)!;
 
         // Remove <filterpriority> element
         commentTrivia = RemoveFilterPriorityElement(commentTrivia);
@@ -64,7 +64,7 @@ internal static class DocumentationCommentTriviaFactory
     {
         StringBuilder sb = StringBuilderCache.GetInstance();
 
-        string indent = null;
+        string? indent = null;
 
         using (var sr = new StringReader(innerXml))
         {

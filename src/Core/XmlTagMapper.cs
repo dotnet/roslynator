@@ -40,10 +40,13 @@ internal static class XmlTagMapper
             });
     }
 
-    public static XmlTag GetTagOrDefault(string name)
+    public static XmlTag GetTagOrDefault(string? name)
     {
-        if (_map.TryGetValue(name, out XmlTag kind))
+        if (name is not null
+            && _map.TryGetValue(name, out XmlTag kind))
+        {
             return kind;
+        }
 
         return XmlTag.None;
     }

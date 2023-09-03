@@ -49,7 +49,7 @@ public static class SymbolExtensions
         }
     }
 
-    internal static ISymbol FindFirstImplementedInterfaceMember(this ISymbol symbol, bool allInterfaces = false)
+    internal static ISymbol? FindFirstImplementedInterfaceMember(this ISymbol symbol, bool allInterfaces = false)
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
@@ -57,7 +57,7 @@ public static class SymbolExtensions
         return FindFirstImplementedInterfaceMemberImpl(symbol, null, allInterfaces);
     }
 
-    internal static ISymbol FindImplementedInterfaceMember(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false)
+    internal static ISymbol? FindImplementedInterfaceMember(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false)
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
@@ -68,7 +68,7 @@ public static class SymbolExtensions
         return FindFirstImplementedInterfaceMemberImpl(symbol, interfaceSymbol, allInterfaces);
     }
 
-    private static ISymbol FindFirstImplementedInterfaceMemberImpl(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces)
+    private static ISymbol? FindFirstImplementedInterfaceMemberImpl(this ISymbol symbol, INamedTypeSymbol? interfaceSymbol, bool allInterfaces)
     {
         INamedTypeSymbol containingType = symbol.ContainingType;
 
@@ -116,7 +116,7 @@ public static class SymbolExtensions
         return FindImplementedInterfaceMember(symbol, interfaceSymbol, allInterfaces) is not null;
     }
 
-    internal static TSymbol FindFirstImplementedInterfaceMember<TSymbol>(this ISymbol symbol, bool allInterfaces = false) where TSymbol : ISymbol
+    internal static TSymbol? FindFirstImplementedInterfaceMember<TSymbol>(this ISymbol symbol, bool allInterfaces = false) where TSymbol : ISymbol
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
@@ -124,7 +124,7 @@ public static class SymbolExtensions
         return FindFirstImplementedInterfaceMemberImpl<TSymbol>(symbol, null, allInterfaces);
     }
 
-    internal static TSymbol FindFirstImplementedInterfaceMember<TSymbol>(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false) where TSymbol : ISymbol
+    internal static TSymbol? FindFirstImplementedInterfaceMember<TSymbol>(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false) where TSymbol : ISymbol
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
@@ -135,7 +135,7 @@ public static class SymbolExtensions
         return FindFirstImplementedInterfaceMemberImpl<TSymbol>(symbol, interfaceSymbol, allInterfaces);
     }
 
-    private static TSymbol FindFirstImplementedInterfaceMemberImpl<TSymbol>(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false) where TSymbol : ISymbol
+    private static TSymbol? FindFirstImplementedInterfaceMemberImpl<TSymbol>(this ISymbol symbol, INamedTypeSymbol? interfaceSymbol, bool allInterfaces = false) where TSymbol : ISymbol
     {
         INamedTypeSymbol containingType = symbol.ContainingType;
 
@@ -174,8 +174,8 @@ public static class SymbolExtensions
     public static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol, bool allInterfaces = false) where TSymbol : ISymbol
     {
         return !EqualityComparer<TSymbol>.Default.Equals(
-            FindFirstImplementedInterfaceMember<TSymbol>(symbol, allInterfaces),
-            default(TSymbol));
+            FindFirstImplementedInterfaceMember<TSymbol>(symbol, allInterfaces)!,
+            default(TSymbol)!);
     }
 
     /// <summary>
@@ -188,8 +188,8 @@ public static class SymbolExtensions
     public static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false) where TSymbol : ISymbol
     {
         return !EqualityComparer<TSymbol>.Default.Equals(
-            FindFirstImplementedInterfaceMember<TSymbol>(symbol, interfaceSymbol, allInterfaces),
-            default(TSymbol));
+            FindFirstImplementedInterfaceMember<TSymbol>(symbol, interfaceSymbol, allInterfaces)!,
+            default(TSymbol)!);
     }
 
     /// <summary>
@@ -197,7 +197,7 @@ public static class SymbolExtensions
     /// </summary>
     /// <param name="symbol"></param>
     /// <param name="kind"></param>
-    public static bool IsKind(this ISymbol symbol, SymbolKind kind)
+    public static bool IsKind(this ISymbol? symbol, SymbolKind kind)
     {
         return symbol?.Kind == kind;
     }
@@ -208,7 +208,7 @@ public static class SymbolExtensions
     /// <param name="symbol"></param>
     /// <param name="kind1"></param>
     /// <param name="kind2"></param>
-    public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2)
+    public static bool IsKind(this ISymbol? symbol, SymbolKind kind1, SymbolKind kind2)
     {
         if (symbol is null)
             return false;
@@ -226,7 +226,7 @@ public static class SymbolExtensions
     /// <param name="kind1"></param>
     /// <param name="kind2"></param>
     /// <param name="kind3"></param>
-    public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3)
+    public static bool IsKind(this ISymbol? symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3)
     {
         if (symbol is null)
             return false;
@@ -246,7 +246,7 @@ public static class SymbolExtensions
     /// <param name="kind2"></param>
     /// <param name="kind3"></param>
     /// <param name="kind4"></param>
-    public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4)
+    public static bool IsKind(this ISymbol? symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4)
     {
         if (symbol is null)
             return false;
@@ -268,7 +268,7 @@ public static class SymbolExtensions
     /// <param name="kind3"></param>
     /// <param name="kind4"></param>
     /// <param name="kind5"></param>
-    public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4, SymbolKind kind5)
+    public static bool IsKind(this ISymbol? symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4, SymbolKind kind5)
     {
         if (symbol is null)
             return false;
@@ -286,7 +286,7 @@ public static class SymbolExtensions
     /// Returns true if the symbol represents an error.
     /// </summary>
     /// <param name="symbol"></param>
-    public static bool IsErrorType(this ISymbol symbol)
+    public static bool IsErrorType(this ISymbol? symbol)
     {
         return symbol?.Kind == SymbolKind.ErrorType;
     }
@@ -295,7 +295,7 @@ public static class SymbolExtensions
     /// Returns true if the symbol is an async method.
     /// </summary>
     /// <param name="symbol"></param>
-    public static bool IsAsyncMethod(this ISymbol symbol)
+    public static bool IsAsyncMethod(this ISymbol? symbol)
     {
         return symbol?.Kind == SymbolKind.Method
             && ((IMethodSymbol)symbol).IsAsync;
@@ -321,7 +321,7 @@ public static class SymbolExtensions
             .GetSyntaxAsync(cancellationToken);
     }
 
-    internal static SyntaxNode GetSyntaxOrDefault(this ISymbol symbol, CancellationToken cancellationToken = default)
+    internal static SyntaxNode? GetSyntaxOrDefault(this ISymbol symbol, CancellationToken cancellationToken = default)
     {
         return symbol
             .DeclaringSyntaxReferences
@@ -334,7 +334,7 @@ public static class SymbolExtensions
     /// </summary>
     /// <param name="symbol"></param>
     /// <param name="attributeClass"></param>
-    public static AttributeData GetAttribute(this ISymbol symbol, INamedTypeSymbol attributeClass)
+    public static AttributeData? GetAttribute(this ISymbol symbol, INamedTypeSymbol attributeClass)
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
@@ -358,14 +358,14 @@ public static class SymbolExtensions
     /// </summary>
     /// <param name="symbol"></param>
     /// <param name="attributeName"></param>
-    public static AttributeData GetAttribute(this ISymbol symbol, in MetadataName attributeName)
+    public static AttributeData? GetAttribute(this ISymbol symbol, in MetadataName attributeName)
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
 
         foreach (AttributeData attributeData in symbol.GetAttributes())
         {
-            if (attributeData.AttributeClass.HasMetadataName(attributeName))
+            if (attributeData.AttributeClass?.HasMetadataName(attributeName) == true)
                 return attributeData;
         }
 
@@ -393,7 +393,7 @@ public static class SymbolExtensions
         if (!includeBaseTypes)
             return HasAttribute(typeSymbol, attributeClass);
 
-        ITypeSymbol t = typeSymbol;
+        ITypeSymbol? t = typeSymbol;
 
         do
         {
@@ -429,7 +429,7 @@ public static class SymbolExtensions
         if (!includeBaseTypes)
             return HasAttribute(typeSymbol, attributeName);
 
-        ITypeSymbol t = typeSymbol;
+        ITypeSymbol? t = typeSymbol;
 
         do
         {
@@ -460,7 +460,7 @@ public static class SymbolExtensions
         }
     }
 
-    internal static ISymbol OverriddenSymbol(this ISymbol symbol)
+    internal static ISymbol? OverriddenSymbol(this ISymbol symbol)
     {
         switch (symbol.Kind)
         {
@@ -475,7 +475,7 @@ public static class SymbolExtensions
         return null;
     }
 
-    internal static ISymbol BaseOverriddenSymbol(this ISymbol symbol)
+    internal static ISymbol? BaseOverriddenSymbol(this ISymbol symbol)
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
@@ -681,7 +681,7 @@ public static class SymbolExtensions
         return ImmutableArray<IParameterSymbol>.Empty;
     }
 
-    internal static INamespaceSymbol GetRootNamespace(this ISymbol symbol)
+    internal static INamespaceSymbol? GetRootNamespace(this ISymbol symbol)
     {
         INamespaceSymbol n = symbol.ContainingNamespace;
 
@@ -703,7 +703,7 @@ public static class SymbolExtensions
     #endregion ISymbol
 
     #region IAssemblySymbol
-    internal static ImmutableArray<INamedTypeSymbol> GetTypes(this IAssemblySymbol assemblySymbol, Func<INamedTypeSymbol, bool> predicate = null)
+    internal static ImmutableArray<INamedTypeSymbol> GetTypes(this IAssemblySymbol assemblySymbol, Func<INamedTypeSymbol, bool>? predicate = null)
     {
         ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>();
 
@@ -729,7 +729,7 @@ public static class SymbolExtensions
         }
     }
 
-    internal static ImmutableArray<INamespaceSymbol> GetNamespaces(this IAssemblySymbol assemblySymbol, Func<INamespaceSymbol, bool> predicate = null)
+    internal static ImmutableArray<INamespaceSymbol> GetNamespaces(this IAssemblySymbol assemblySymbol, Func<INamespaceSymbol, bool>? predicate = null)
     {
         ImmutableArray<INamespaceSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamespaceSymbol>();
 
@@ -749,19 +749,19 @@ public static class SymbolExtensions
     #endregion IAssemblySymbol
 
     #region IEventSymbol
-    internal static IEventSymbol BaseOverriddenEvent(this IEventSymbol eventSymbol)
+    internal static IEventSymbol? BaseOverriddenEvent(this IEventSymbol eventSymbol)
     {
         if (eventSymbol is null)
             throw new ArgumentNullException(nameof(eventSymbol));
 
-        IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
+        IEventSymbol? overriddenEvent = eventSymbol.OverriddenEvent;
 
         if (overriddenEvent is null)
             return null;
 
         while (true)
         {
-            IEventSymbol symbol = overriddenEvent.OverriddenEvent;
+            IEventSymbol? symbol = overriddenEvent.OverriddenEvent;
 
             if (symbol is null)
                 return overriddenEvent;
@@ -1068,19 +1068,19 @@ public static class SymbolExtensions
     #endregion IFieldSymbol
 
     #region IMethodSymbol
-    internal static IMethodSymbol BaseOverriddenMethod(this IMethodSymbol methodSymbol)
+    internal static IMethodSymbol? BaseOverriddenMethod(this IMethodSymbol methodSymbol)
     {
         if (methodSymbol is null)
             throw new ArgumentNullException(nameof(methodSymbol));
 
-        IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+        IMethodSymbol? overriddenMethod = methodSymbol.OverriddenMethod;
 
         if (overriddenMethod is null)
             return null;
 
         while (true)
         {
-            IMethodSymbol symbol = overriddenMethod.OverriddenMethod;
+            IMethodSymbol? symbol = overriddenMethod.OverriddenMethod;
 
             if (symbol is null)
                 return overriddenMethod;
@@ -1093,7 +1093,7 @@ public static class SymbolExtensions
     /// If this method is a reduced extension method, returns the definition of extension method from which this was reduced. Otherwise, returns this symbol.
     /// </summary>
     /// <param name="methodSymbol"></param>
-    public static IMethodSymbol ReducedFromOrSelf(this IMethodSymbol methodSymbol)
+    public static IMethodSymbol? ReducedFromOrSelf(this IMethodSymbol? methodSymbol)
     {
         return methodSymbol?.ReducedFrom ?? methodSymbol;
     }
@@ -1212,19 +1212,19 @@ public static class SymbolExtensions
     #endregion IParameterSymbol
 
     #region IPropertySymbol
-    internal static IPropertySymbol BaseOverriddenProperty(this IPropertySymbol propertySymbol)
+    internal static IPropertySymbol? BaseOverriddenProperty(this IPropertySymbol propertySymbol)
     {
         if (propertySymbol is null)
             throw new ArgumentNullException(nameof(propertySymbol));
 
-        IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+        IPropertySymbol? overriddenProperty = propertySymbol.OverriddenProperty;
 
         if (overriddenProperty is null)
             return null;
 
         while (true)
         {
-            IPropertySymbol symbol = overriddenProperty.OverriddenProperty;
+            IPropertySymbol? symbol = overriddenProperty.OverriddenProperty;
 
             if (symbol is null)
                 return overriddenProperty;
@@ -1264,7 +1264,7 @@ public static class SymbolExtensions
     /// <param name="typeSymbol"></param>
     /// <param name="predicate"></param>
     /// <param name="includeBaseTypes"></param>
-    public static TSymbol FindMember<TSymbol>(
+    public static TSymbol? FindMember<TSymbol>(
         this INamedTypeSymbol typeSymbol,
         Func<TSymbol, bool> predicate,
         bool includeBaseTypes = false) where TSymbol : ISymbol
@@ -1286,10 +1286,10 @@ public static class SymbolExtensions
     /// <param name="name"></param>
     /// <param name="predicate"></param>
     /// <param name="includeBaseTypes"></param>
-    public static TSymbol FindMember<TSymbol>(
+    public static TSymbol? FindMember<TSymbol>(
         this INamedTypeSymbol typeSymbol,
         string name,
-        Func<TSymbol, bool> predicate = null,
+        Func<TSymbol, bool>? predicate = null,
         bool includeBaseTypes = false) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
@@ -1298,10 +1298,10 @@ public static class SymbolExtensions
         return FindMemberImpl(typeSymbol, name, predicate, includeBaseTypes);
     }
 
-    private static TSymbol FindMemberImpl<TSymbol>(
+    private static TSymbol? FindMemberImpl<TSymbol>(
         this INamedTypeSymbol typeSymbol,
-        string name,
-        Func<TSymbol, bool> predicate = null,
+        string? name,
+        Func<TSymbol, bool>? predicate = null,
         bool includeBaseTypes = false) where TSymbol : ISymbol
     {
         ImmutableArray<ISymbol> members;
@@ -1312,7 +1312,7 @@ public static class SymbolExtensions
                 ? typeSymbol.GetMembers(name)
                 : typeSymbol.GetMembers();
 
-            TSymbol symbol = FindMemberImpl(members, predicate);
+            TSymbol? symbol = FindMemberImpl(members, predicate);
 
             if (symbol is not null)
                 return symbol;
@@ -1320,7 +1320,7 @@ public static class SymbolExtensions
             if (!includeBaseTypes)
                 break;
 
-            typeSymbol = typeSymbol.BaseType;
+            typeSymbol = typeSymbol.BaseType!;
         }
         while (typeSymbol is not null);
 
@@ -1333,7 +1333,7 @@ public static class SymbolExtensions
     /// <param name="typeSymbol"></param>
     /// <param name="predicate"></param>
     /// <param name="includeBaseTypes"></param>
-    public static INamedTypeSymbol FindTypeMember(
+    public static INamedTypeSymbol? FindTypeMember(
         this INamedTypeSymbol typeSymbol,
         Func<INamedTypeSymbol, bool> predicate,
         bool includeBaseTypes = false)
@@ -1354,10 +1354,10 @@ public static class SymbolExtensions
     /// <param name="name"></param>
     /// <param name="predicate"></param>
     /// <param name="includeBaseTypes"></param>
-    public static INamedTypeSymbol FindTypeMember(
+    public static INamedTypeSymbol? FindTypeMember(
         this INamedTypeSymbol typeSymbol,
         string name,
-        Func<INamedTypeSymbol, bool> predicate = null,
+        Func<INamedTypeSymbol, bool>? predicate = null,
         bool includeBaseTypes = false)
     {
         if (typeSymbol is null)
@@ -1377,11 +1377,11 @@ public static class SymbolExtensions
     /// <param name="arity"></param>
     /// <param name="predicate"></param>
     /// <param name="includeBaseTypes"></param>
-    public static INamedTypeSymbol FindTypeMember(
+    public static INamedTypeSymbol? FindTypeMember(
         this INamedTypeSymbol typeSymbol,
         string name,
         int arity,
-        Func<INamedTypeSymbol, bool> predicate = null,
+        Func<INamedTypeSymbol, bool>? predicate = null,
         bool includeBaseTypes = false)
     {
         if (typeSymbol is null)
@@ -1393,11 +1393,11 @@ public static class SymbolExtensions
         return FindTypeMemberImpl(typeSymbol, name, arity, predicate, includeBaseTypes);
     }
 
-    private static INamedTypeSymbol FindTypeMemberImpl(
+    private static INamedTypeSymbol? FindTypeMemberImpl(
         this INamedTypeSymbol typeSymbol,
-        string name,
+        string? name,
         int? arity,
-        Func<INamedTypeSymbol, bool> predicate = null,
+        Func<INamedTypeSymbol, bool>? predicate = null,
         bool includeBaseTypes = false)
     {
         ImmutableArray<INamedTypeSymbol> members;
@@ -1420,7 +1420,7 @@ public static class SymbolExtensions
                 members = typeSymbol.GetTypeMembers();
             }
 
-            INamedTypeSymbol symbol = FindMemberImpl(members, predicate);
+            INamedTypeSymbol? symbol = FindMemberImpl(members, predicate);
 
             if (symbol is not null)
                 return symbol;
@@ -1428,7 +1428,7 @@ public static class SymbolExtensions
             if (!includeBaseTypes)
                 break;
 
-            typeSymbol = typeSymbol.BaseType;
+            typeSymbol = typeSymbol.BaseType!;
         }
         while (typeSymbol is not null);
 
@@ -1497,7 +1497,7 @@ public static class SymbolExtensions
 
         IEnumerable<INamedTypeSymbol> BaseTypesIterator()
         {
-            INamedTypeSymbol baseType = type.BaseType;
+            INamedTypeSymbol? baseType = type.BaseType;
 
             while (baseType is not null)
             {
@@ -1520,7 +1520,7 @@ public static class SymbolExtensions
 
         IEnumerable<ITypeSymbol> BaseTypesAndSelfIterator()
         {
-            ITypeSymbol current = typeSymbol;
+            ITypeSymbol? current = typeSymbol;
 
             while (current is not null)
             {
@@ -1740,7 +1740,7 @@ public static class SymbolExtensions
         if (baseType is null)
             return false;
 
-        INamedTypeSymbol t = type.BaseType;
+        INamedTypeSymbol? t = type.BaseType;
 
         while (t is not null)
         {
@@ -1776,7 +1776,7 @@ public static class SymbolExtensions
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        INamedTypeSymbol baseType = type.BaseType;
+        INamedTypeSymbol? baseType = type.BaseType;
 
         while (baseType is not null)
         {
@@ -1834,7 +1834,7 @@ public static class SymbolExtensions
     /// <typeparam name="TSymbol"></typeparam>
     /// <param name="typeSymbol"></param>
     /// <param name="predicate"></param>
-    public static TSymbol FindMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
+    public static TSymbol? FindMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool>? predicate = null) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));
@@ -1849,7 +1849,7 @@ public static class SymbolExtensions
     /// <param name="typeSymbol"></param>
     /// <param name="name"></param>
     /// <param name="predicate"></param>
-    public static TSymbol FindMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
+    public static TSymbol? FindMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool>? predicate = null) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));
@@ -1857,7 +1857,7 @@ public static class SymbolExtensions
         return FindMemberImpl(typeSymbol.GetMembers(name), predicate);
     }
 
-    private static TSymbol FindMemberImpl<TSymbol, TMemberSymbol>(ImmutableArray<TMemberSymbol> members, Func<TSymbol, bool> predicate)
+    private static TSymbol? FindMemberImpl<TSymbol, TMemberSymbol>(ImmutableArray<TMemberSymbol> members, Func<TSymbol, bool>? predicate)
         where TSymbol : ISymbol
         where TMemberSymbol : ISymbol
     {
@@ -1890,7 +1890,7 @@ public static class SymbolExtensions
     /// <typeparam name="TSymbol"></typeparam>
     /// <param name="typeSymbol"></param>
     /// <param name="predicate"></param>
-    internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
+    internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool>? predicate = null) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));
@@ -1905,7 +1905,7 @@ public static class SymbolExtensions
     /// <param name="typeSymbol"></param>
     /// <param name="name"></param>
     /// <param name="predicate"></param>
-    internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
+    internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool>? predicate = null) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));
@@ -1942,17 +1942,17 @@ public static class SymbolExtensions
     /// Returns true if the type is a reference type or a nullable type.
     /// </summary>
     /// <param name="typeSymbol"></param>
-    public static bool IsReferenceTypeOrNullableType(this ITypeSymbol typeSymbol)
+    public static bool IsReferenceTypeOrNullableType(this ITypeSymbol? typeSymbol)
     {
         return typeSymbol?.IsReferenceType == true
-            || typeSymbol.IsNullableType();
+            || IsNullableType(typeSymbol);
     }
 
     /// <summary>
     /// Returns true if the type is a nullable type.
     /// </summary>
     /// <param name="typeSymbol"></param>
-    public static bool IsNullableType(this ITypeSymbol typeSymbol)
+    public static bool IsNullableType(this ITypeSymbol? typeSymbol)
     {
         return typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
     }

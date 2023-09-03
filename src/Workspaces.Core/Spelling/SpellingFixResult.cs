@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -13,7 +14,7 @@ internal sealed class SpellingFixResult
     private int _lineEndIndex = -1;
 
     private SpellingFixResult(
-        string sourceText,
+        string? sourceText,
         SpellingCapture capture,
         TextSpan span,
         SpellingFix fix,
@@ -26,12 +27,12 @@ internal sealed class SpellingFixResult
         LineSpan = lineSpan;
     }
 
-    public static SpellingFixResult Create(string sourceText, SpellingDiagnostic diagnostic)
+    public static SpellingFixResult Create(string? sourceText, SpellingDiagnostic diagnostic)
     {
         return Create(sourceText, diagnostic, default);
     }
 
-    public static SpellingFixResult Create(string sourceText, SpellingDiagnostic diagnostic, SpellingFix fix)
+    public static SpellingFixResult Create(string? sourceText, SpellingDiagnostic diagnostic, SpellingFix fix)
     {
         return new SpellingFixResult(
             sourceText,
@@ -41,7 +42,7 @@ internal sealed class SpellingFixResult
             diagnostic.Location.GetMappedLineSpan());
     }
 
-    public string SourceText { get; }
+    public string? SourceText { get; }
 
     public SpellingCapture Capture { get; }
 
@@ -51,7 +52,7 @@ internal sealed class SpellingFixResult
 
     public int Length => Capture.Length;
 
-    public string ContainingValue => Capture.ContainingValue;
+    public string? ContainingValue => Capture.ContainingValue;
 
     public int ContainingValueIndex => Capture.ContainingValueIndex;
 
@@ -90,7 +91,12 @@ internal sealed class SpellingFixResult
         get
         {
             if (_lineEndIndex == -1)
+            {
+                if (SourceText is null)
+                    throw new InvalidOperationException("Source text is not provided.");
+
                 _lineEndIndex = TextUtility.GetLineEndIndex(SourceText, Index + Length);
+            }
 
             return _lineEndIndex;
         }

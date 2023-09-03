@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.Text;
@@ -35,9 +36,14 @@ internal static class TextExtensions
 
     public static bool IsEmptyOrWhiteSpace(this TextLine textLine, TextSpan span)
     {
+        SourceText? text = textLine.Text;
+
+        if (text is null)
+            throw new ArgumentException("Text line is not part of a source text.", nameof(textLine));
+
         for (int i = span.Start; i < span.End; i++)
         {
-            if (!char.IsWhiteSpace(textLine.Text[i]))
+            if (!char.IsWhiteSpace(text[i]))
                 return false;
         }
 

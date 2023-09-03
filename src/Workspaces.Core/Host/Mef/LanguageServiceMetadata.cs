@@ -6,13 +6,13 @@ namespace Roslynator.Host.Mef;
 
 internal class LanguageServiceMetadata : LanguageMetadata
 {
-    public string ServiceType { get; }
+    public string? ServiceType { get; }
 
     public IReadOnlyDictionary<string, object> Data { get; }
 
     public LanguageServiceMetadata(IDictionary<string, object> data) : base(data)
     {
-        ServiceType = (string)data.GetValueOrDefault("ServiceType");
+        ServiceType = (string?)data.GetValueOrDefault("ServiceType");
 
         Data = (IReadOnlyDictionary<string, object>)data;
     }

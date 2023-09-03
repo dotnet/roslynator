@@ -35,7 +35,7 @@ public readonly struct LocalDeclarationStatementInfo
     /// <summary>
     /// The type of the declaration.
     /// </summary>
-    public TypeSyntax Type
+    public TypeSyntax? Type
     {
         get { return Statement?.Declaration.Type; }
     }
@@ -43,7 +43,7 @@ public readonly struct LocalDeclarationStatementInfo
     /// <summary>
     /// The variable declaration.
     /// </summary>
-    public VariableDeclarationSyntax Declaration
+    public VariableDeclarationSyntax? Declaration
     {
         get { return Statement?.Declaration; }
     }
@@ -82,12 +82,12 @@ public readonly struct LocalDeclarationStatementInfo
         LocalDeclarationStatementSyntax localDeclarationStatement,
         bool allowMissing = false)
     {
-        VariableDeclarationSyntax variableDeclaration = localDeclarationStatement?.Declaration;
+        VariableDeclarationSyntax? variableDeclaration = localDeclarationStatement?.Declaration;
 
         if (!Check(variableDeclaration, allowMissing))
             return default;
 
-        TypeSyntax type = variableDeclaration.Type;
+        TypeSyntax? type = variableDeclaration!.Type;
 
         if (!Check(type, allowMissing))
             return default;
@@ -95,14 +95,14 @@ public readonly struct LocalDeclarationStatementInfo
         if (!variableDeclaration.Variables.Any())
             return default;
 
-        return new LocalDeclarationStatementInfo(localDeclarationStatement);
+        return new LocalDeclarationStatementInfo(localDeclarationStatement!);
     }
 
     internal static LocalDeclarationStatementInfo Create(
         ExpressionSyntax value,
         bool allowMissing = false)
     {
-        SyntaxNode node = value?.WalkUpParentheses().Parent;
+        SyntaxNode? node = value?.WalkUpParentheses().Parent;
 
         if (!node.IsKind(SyntaxKind.EqualsValueClause))
             return default;

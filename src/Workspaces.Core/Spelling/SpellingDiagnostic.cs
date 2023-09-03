@@ -10,14 +10,14 @@ namespace Roslynator.Spelling;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal abstract class SpellingDiagnostic
 {
-    private string _valueLower;
+    private string? _valueLower;
     private TextCasing? _casing;
 
     protected SpellingDiagnostic(
         Diagnostic diagnostic,
         string value,
         int index,
-        string parent,
+        string? parent,
         int parentIndex,
         SyntaxToken identifier = default)
     {
@@ -39,7 +39,7 @@ internal abstract class SpellingDiagnostic
 
     public int EndIndex => Index + Value.Length;
 
-    public string Parent { get; }
+    public string? Parent { get; }
 
     public int ParentIndex { get; }
 
@@ -47,9 +47,9 @@ internal abstract class SpellingDiagnostic
 
     public Location Location => Diagnostic.Location;
 
-    public SyntaxTree SyntaxTree => Location.SourceTree;
+    public SyntaxTree? SyntaxTree => Location.SourceTree;
 
-    public string FilePath => SyntaxTree?.FilePath;
+    public string? FilePath => SyntaxTree?.FilePath;
 
     public TextSpan Span => Location.SourceSpan;
 

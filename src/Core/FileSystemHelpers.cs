@@ -37,12 +37,12 @@ internal static class FileSystemHelpers
             || ch == Path.AltDirectorySeparatorChar;
     }
 
-    public static bool TryGetNormalizedFullPath(string path, out string result)
+    public static bool TryGetNormalizedFullPath(string path, out string? result)
     {
         return TryGetNormalizedFullPath(path, basePath: null, out result);
     }
 
-    public static bool TryGetNormalizedFullPath(string path, string basePath, out string result)
+    public static bool TryGetNormalizedFullPath(string path, string? basePath, out string? result)
     {
         try
         {

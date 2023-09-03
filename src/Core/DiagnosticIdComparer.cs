@@ -10,13 +10,13 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
 {
     public static DiagnosticIdComparer Prefix { get; } = new DiagnosticIdPrefixComparer();
 
-    public abstract int Compare(string x, string y);
+    public abstract int Compare(string? x, string? y);
 
-    public abstract bool Equals(string x, string y);
+    public abstract bool Equals(string? x, string? y);
 
-    public abstract int GetHashCode(string obj);
+    public abstract int GetHashCode(string? obj);
 
-    public int Compare(object x, object y)
+    public int Compare(object? x, object? y)
     {
         if (x == y)
             return 0;
@@ -36,7 +36,7 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
         throw new ArgumentException("", nameof(x));
     }
 
-    new public bool Equals(object x, object y)
+    new public bool Equals(object? x, object? y)
     {
         if (x == y)
             return true;
@@ -56,7 +56,7 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
         throw new ArgumentException("", nameof(x));
     }
 
-    public int GetHashCode(object obj)
+    public int GetHashCode(object? obj)
     {
         if (obj is null)
             return 0;
@@ -69,7 +69,7 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
 
     private class DiagnosticIdPrefixComparer : DiagnosticIdComparer
     {
-        public override int Compare(string x, string y)
+        public override int Compare(string? x, string? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -96,7 +96,7 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
             return length1.CompareTo(length2);
         }
 
-        public override bool Equals(string x, string y)
+        public override bool Equals(string? x, string? y)
         {
             if (object.ReferenceEquals(x, y))
                 return true;
@@ -114,10 +114,10 @@ internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityCompa
                 && string.Compare(x, 0, y, 0, length1, StringComparison.Ordinal) == 0;
         }
 
-        public override int GetHashCode(string obj)
+        public override int GetHashCode(string? obj)
         {
             if (obj is null)
-                throw new ArgumentNullException(nameof(obj));
+                return 0;
 
             int length = DiagnosticIdPrefix.GetPrefixLength(obj);
 

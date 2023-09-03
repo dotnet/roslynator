@@ -19,7 +19,7 @@ internal readonly struct AttributeInfo
 
     public AttributeData AttributeData { get; }
 
-    public INamedTypeSymbol AttributeClass
+    public INamedTypeSymbol? AttributeClass
     {
         get { return AttributeData?.AttributeClass; }
     }

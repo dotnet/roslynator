@@ -109,7 +109,10 @@ public static class WorkspaceExtensions
         if (newNode is null)
             throw new ArgumentNullException(nameof(newNode));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.ReplaceNode(oldNode, newNode);
 
@@ -138,7 +141,10 @@ public static class WorkspaceExtensions
         if (newNodes is null)
             throw new ArgumentNullException(nameof(newNodes));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.ReplaceNode(oldNode, newNodes);
 
@@ -168,7 +174,10 @@ public static class WorkspaceExtensions
         if (computeReplacementNode is null)
             throw new ArgumentNullException(nameof(computeReplacementNode));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.ReplaceNodes(nodes, computeReplacementNode);
 
@@ -191,7 +200,10 @@ public static class WorkspaceExtensions
         if (document is null)
             throw new ArgumentNullException(nameof(document));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.ReplaceToken(oldToken, newToken);
 
@@ -217,7 +229,10 @@ public static class WorkspaceExtensions
         if (newTokens is null)
             throw new ArgumentNullException(nameof(newTokens));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.ReplaceToken(oldToken, newTokens);
 
@@ -240,7 +255,10 @@ public static class WorkspaceExtensions
         if (document is null)
             throw new ArgumentNullException(nameof(document));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.ReplaceTrivia(oldTrivia, newTrivia);
 
@@ -266,7 +284,10 @@ public static class WorkspaceExtensions
         if (newTrivia is null)
             throw new ArgumentNullException(nameof(newTrivia));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.ReplaceTrivia(oldTrivia, newTrivia);
 
@@ -314,7 +335,10 @@ public static class WorkspaceExtensions
         if (newNodes is null)
             throw new ArgumentNullException(nameof(newNodes));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.InsertNodesBefore(nodeInList, newNodes);
 
@@ -362,7 +386,10 @@ public static class WorkspaceExtensions
         if (newNodes is null)
             throw new ArgumentNullException(nameof(newNodes));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.InsertNodesAfter(nodeInList, newNodes);
 
@@ -388,11 +415,14 @@ public static class WorkspaceExtensions
         if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-        SyntaxNode newRoot = root.RemoveNode(node, options);
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
-        return document.WithSyntaxRoot(newRoot);
+        SyntaxNode? newRoot = root.RemoveNode(node, options);
+
+        return document.WithSyntaxRoot(newRoot!);
     }
 
     /// <summary>
@@ -414,11 +444,14 @@ public static class WorkspaceExtensions
         if (nodes is null)
             throw new ArgumentNullException(nameof(nodes));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-        SyntaxNode newRoot = root.RemoveNodes(nodes, options);
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
-        return document.WithSyntaxRoot(newRoot);
+        SyntaxNode? newRoot = root.RemoveNodes(nodes, options);
+
+        return document.WithSyntaxRoot(newRoot!);
     }
 
     internal static Solution Solution(this Document document)
@@ -451,9 +484,15 @@ public static class WorkspaceExtensions
         if (newNode is null)
             throw new ArgumentNullException(nameof(newNode));
 
-        Document document = solution.GetDocument(oldNode.SyntaxTree);
+        Document? document = solution.GetDocument(oldNode.SyntaxTree);
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        if (document is null)
+            throw new InvalidOperationException($"Document not found for syntax tree '{oldNode.SyntaxTree.FilePath}'.");
+
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            throw new InvalidOperationException("Document does not support syntax tree.");
 
         SyntaxNode newRoot = root.ReplaceNode(oldNode, newNode);
 
@@ -487,9 +526,15 @@ public static class WorkspaceExtensions
 
         foreach (IGrouping<SyntaxTree, TNode> grouping in nodes.GroupBy(f => f.SyntaxTree))
         {
-            Document document = solution.GetDocument(grouping.Key);
+            Document? document = solution.GetDocument(grouping.Key);
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            if (document is null)
+                throw new InvalidOperationException($"Document not found for syntax tree '{grouping.Key.FilePath}'.");
+
+            SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            if (root is null)
+                throw new InvalidOperationException("Document does not support syntax tree.");
 
             SyntaxNode newRoot = root.ReplaceNodes(grouping, computeReplacementNodes);
 

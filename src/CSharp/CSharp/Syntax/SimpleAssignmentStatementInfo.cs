@@ -44,9 +44,9 @@ public readonly struct SimpleAssignmentStatementInfo
     /// <summary>
     /// The expression statement the simple assignment expression is contained in.
     /// </summary>
-    public ExpressionStatementSyntax Statement
+    public ExpressionStatementSyntax? Statement
     {
-        get { return (ExpressionStatementSyntax)AssignmentExpression?.Parent; }
+        get { return (ExpressionStatementSyntax?)AssignmentExpression?.Parent; }
     }
 
     /// <summary>
@@ -69,11 +69,11 @@ public readonly struct SimpleAssignmentStatementInfo
     }
 
     internal static SimpleAssignmentStatementInfo Create(
-        ExpressionStatementSyntax expressionStatement,
+        ExpressionStatementSyntax? expressionStatement,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
-        ExpressionSyntax expression = expressionStatement?.Expression;
+        ExpressionSyntax? expression = expressionStatement?.Expression;
 
         if (Check(expression, allowMissing))
             return CreateImpl(expression as AssignmentExpressionSyntax, walkDownParentheses, allowMissing);
@@ -93,7 +93,7 @@ public readonly struct SimpleAssignmentStatementInfo
     }
 
     private static SimpleAssignmentStatementInfo CreateImpl(
-        AssignmentExpressionSyntax assignmentExpression,
+        AssignmentExpressionSyntax? assignmentExpression,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {

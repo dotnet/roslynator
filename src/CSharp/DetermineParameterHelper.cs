@@ -12,7 +12,7 @@ namespace Roslynator.CSharp;
 
 internal static class DetermineParameterHelper
 {
-    public static IParameterSymbol DetermineParameter(
+    public static IParameterSymbol? DetermineParameter(
         ArgumentSyntax argument,
         SemanticModel semanticModel,
         bool allowParams = false,
@@ -25,7 +25,7 @@ internal static class DetermineParameterHelper
         if (argumentList.Parent is null)
             return null;
 
-        ISymbol symbol = GetSymbol(argumentList.Parent, allowCandidate, semanticModel, cancellationToken);
+        ISymbol? symbol = GetSymbol(argumentList.Parent, allowCandidate, semanticModel, cancellationToken);
 
         if (symbol is null)
             return null;
@@ -40,13 +40,13 @@ internal static class DetermineParameterHelper
         return DetermineParameter(argument, argumentList.Arguments, parameters, allowParams);
     }
 
-    internal static IParameterSymbol DetermineParameter(
+    internal static IParameterSymbol? DetermineParameter(
         ArgumentSyntax argument,
         SeparatedSyntaxList<ArgumentSyntax> arguments,
         ImmutableArray<IParameterSymbol> parameters,
         bool allowParams = false)
     {
-        string name = argument.NameColon?.Name?.Identifier.ValueText;
+        string? name = argument.NameColon?.Name?.Identifier.ValueText;
 
         if (name is not null)
         {
@@ -68,7 +68,7 @@ internal static class DetermineParameterHelper
 
             if (allowParams)
             {
-                IParameterSymbol lastParameter = parameters.LastOrDefault();
+                IParameterSymbol? lastParameter = parameters.LastOrDefault();
 
                 if (lastParameter?.IsParams == true)
                     return lastParameter;
@@ -78,7 +78,7 @@ internal static class DetermineParameterHelper
         return null;
     }
 
-    public static IParameterSymbol DetermineParameter(
+    public static IParameterSymbol? DetermineParameter(
         AttributeArgumentSyntax attributeArgument,
         SemanticModel semanticModel,
         bool allowParams = false,
@@ -88,7 +88,7 @@ internal static class DetermineParameterHelper
         if (attributeArgument.NameEquals is not null)
             return null;
 
-        SyntaxNode parent = attributeArgument.Parent;
+        SyntaxNode? parent = attributeArgument.Parent;
 
         if (parent is not AttributeArgumentListSyntax argumentList)
             return null;
@@ -96,7 +96,7 @@ internal static class DetermineParameterHelper
         if (argumentList.Parent is not AttributeSyntax attribute)
             return null;
 
-        ISymbol symbol = GetSymbol(attribute, allowCandidate, semanticModel, cancellationToken);
+        ISymbol? symbol = GetSymbol(attribute, allowCandidate, semanticModel, cancellationToken);
 
         if (symbol is null)
             return null;
@@ -111,13 +111,13 @@ internal static class DetermineParameterHelper
         return DetermineParameter(attributeArgument, argumentList.Arguments, parameters, allowParams);
     }
 
-    internal static IParameterSymbol DetermineParameter(
+    internal static IParameterSymbol? DetermineParameter(
         AttributeArgumentSyntax attributeArgument,
         SeparatedSyntaxList<AttributeArgumentSyntax> arguments,
         ImmutableArray<IParameterSymbol> parameters,
         bool allowParams = false)
     {
-        string name = attributeArgument.NameColon?.Name?.Identifier.ValueText;
+        string? name = attributeArgument.NameColon?.Name?.Identifier.ValueText;
 
         if (name is not null)
         {
@@ -139,7 +139,7 @@ internal static class DetermineParameterHelper
 
             if (allowParams)
             {
-                IParameterSymbol lastParameter = parameters.LastOrDefault();
+                IParameterSymbol? lastParameter = parameters.LastOrDefault();
 
                 if (lastParameter?.IsParams == true)
                     return lastParameter;
@@ -149,11 +149,11 @@ internal static class DetermineParameterHelper
         return null;
     }
 
-    private static ISymbol GetSymbol(SyntaxNode node, bool allowCandidate, SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static ISymbol? GetSymbol(SyntaxNode node, bool allowCandidate, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         SymbolInfo symbolInfo = GetSymbolInfo(node, semanticModel, cancellationToken);
 
-        ISymbol symbol = symbolInfo.Symbol;
+        ISymbol? symbol = symbolInfo.Symbol;
 
         if (symbol is null
             && allowCandidate)

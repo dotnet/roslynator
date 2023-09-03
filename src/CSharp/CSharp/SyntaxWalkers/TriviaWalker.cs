@@ -29,10 +29,13 @@ internal abstract class TriviaWalker : CSharpSyntaxWalker
         return result;
     }
 
-    public override void Visit(SyntaxNode node)
+    public override void Visit(SyntaxNode? node)
     {
-        if (IsInSpan(node.FullSpan))
+        if (node is not null
+            && IsInSpan(node.FullSpan))
+        {
             base.Visit(node);
+        }
     }
 
     private bool IsInSpan(TextSpan span)
@@ -80,7 +83,7 @@ internal abstract class TriviaWalker : CSharpSyntaxWalker
     private sealed class ContainsOnlyWhitespaceOrEndOfLineTriviaWalker : TriviaWalker
     {
         [ThreadStatic]
-        private static ContainsOnlyWhitespaceOrEndOfLineTriviaWalker _cachedInstance;
+        private static ContainsOnlyWhitespaceOrEndOfLineTriviaWalker? _cachedInstance;
 
         public bool Result { get; private set; } = true;
 
@@ -88,7 +91,7 @@ internal abstract class TriviaWalker : CSharpSyntaxWalker
         {
         }
 
-        public override void Visit(SyntaxNode node)
+        public override void Visit(SyntaxNode? node)
         {
             if (Result)
                 base.Visit(node);
@@ -102,7 +105,7 @@ internal abstract class TriviaWalker : CSharpSyntaxWalker
 
         public static ContainsOnlyWhitespaceOrEndOfLineTriviaWalker GetInstance(TextSpan span)
         {
-            ContainsOnlyWhitespaceOrEndOfLineTriviaWalker walker = _cachedInstance;
+            ContainsOnlyWhitespaceOrEndOfLineTriviaWalker? walker = _cachedInstance;
 
             if (walker is not null)
             {

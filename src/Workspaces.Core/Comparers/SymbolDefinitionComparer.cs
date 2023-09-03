@@ -161,9 +161,9 @@ internal abstract class SymbolDefinitionComparer : IComparer<ISymbol>
 
     private class DefaultSymbolDefinitionComparer : SymbolDefinitionComparer
     {
-        private IComparer<INamespaceSymbol> _namespaceComparer;
-        private IComparer<INamedTypeSymbol> _typeComparer;
-        private IComparer<ISymbol> _memberComparer;
+        private IComparer<INamespaceSymbol>? _namespaceComparer;
+        private IComparer<INamedTypeSymbol>? _typeComparer;
+        private IComparer<ISymbol>? _memberComparer;
 
         internal DefaultSymbolDefinitionComparer(SymbolDefinitionSortOptions options = SymbolDefinitionSortOptions.None)
             : base(options)

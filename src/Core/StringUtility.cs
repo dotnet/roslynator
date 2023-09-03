@@ -8,7 +8,7 @@ namespace Roslynator;
 
 internal static class StringUtility
 {
-    internal static bool IsNullOrEquals(string s, string value)
+    internal static bool IsNullOrEquals(string? s, string value)
     {
         return s is null
             || Equals(s, value);

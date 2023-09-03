@@ -43,7 +43,7 @@ internal class AnalyzerLoader
 
     public CodeAnalysisOptions Options { get; }
 
-    public event EventHandler<AnalyzerAssemblyEventArgs> AnalyzerAssemblyAdded;
+    public event EventHandler<AnalyzerAssemblyEventArgs>? AnalyzerAssemblyAdded;
 
     protected virtual void OnAnalyzerAssemblyAdded(AnalyzerAssemblyEventArgs e)
     {

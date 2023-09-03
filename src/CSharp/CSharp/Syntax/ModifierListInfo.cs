@@ -375,7 +375,7 @@ public readonly struct ModifierListInfo
     /// </summary>
     /// <param name="newAccessibility"></param>
     /// <param name="comparer"></param>
-    public ModifierListInfo WithExplicitAccessibility(Accessibility newAccessibility, IComparer<SyntaxKind> comparer = null)
+    public ModifierListInfo WithExplicitAccessibility(Accessibility newAccessibility, IComparer<SyntaxKind>? comparer = null)
     {
         ThrowInvalidOperationIfNotInitialized();
 

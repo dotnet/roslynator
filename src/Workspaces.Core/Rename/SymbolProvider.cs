@@ -20,7 +20,7 @@ internal class SymbolProvider
 {
     public bool IncludeGeneratedCode { get; init; }
 
-    public Matcher FileSystemMatcher { get; init; }
+    public Matcher? FileSystemMatcher { get; init; }
 
     public async Task<IEnumerable<ISymbol>> GetSymbolsAsync(
         Project project,
@@ -30,13 +30,13 @@ internal class SymbolProvider
         cancellationToken.ThrowIfCancellationRequested();
 
         var compilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
-            options: default(AnalyzerOptions),
+            options: default(AnalyzerOptions)!,
             onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
             concurrentAnalysis: true,
             logAnalyzerExecutionTime: false,
             reportSuppressedDiagnostics: false);
 
-        Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+        Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
         ImmutableArray<SymbolKind> symbolKinds = scope switch
         {
@@ -88,7 +88,7 @@ internal class SymbolProvider
 
         public bool IncludeGeneratedCode { get; init; }
 
-        public Matcher FileSystemMatcher { get; init; }
+        public Matcher? FileSystemMatcher { get; init; }
 
         public override void Initialize(AnalysisContext context)
         {

@@ -22,7 +22,7 @@ internal sealed class FileSystemFilter
 
     public Matcher Matcher { get; }
 
-    public static FileSystemFilter CreateOrDefault(
+    public static FileSystemFilter? CreateOrDefault(
         IEnumerable<string> include,
         IEnumerable<string> exclude)
     {

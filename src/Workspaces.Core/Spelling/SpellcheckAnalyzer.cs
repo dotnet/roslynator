@@ -35,8 +35,8 @@ internal class SpellcheckAnalyzer
     public SpellcheckAnalyzer(
         Solution solution,
         SpellingData spellingData,
-        IFormatProvider formatProvider = null,
-        SpellcheckOptions options = null)
+        IFormatProvider? formatProvider = null,
+        SpellcheckOptions? options = null)
     {
         Workspace = solution.Workspace;
 
@@ -49,7 +49,7 @@ internal class SpellcheckAnalyzer
 
     public SpellingData SpellingData { get; private set; }
 
-    public IFormatProvider FormatProvider { get; }
+    public IFormatProvider? FormatProvider { get; }
 
     public SpellcheckOptions Options { get; }
 
@@ -72,7 +72,7 @@ internal class SpellcheckAnalyzer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Project project = CurrentSolution.GetProject(projects[i]);
+            Project project = CurrentSolution.GetProject(projects[i])!;
 
             if (predicate is null || predicate(project))
             {
@@ -105,9 +105,15 @@ internal class SpellcheckAnalyzer
         Project project,
         CancellationToken cancellationToken = default)
     {
-        project = CurrentSolution.GetProject(project.Id);
+        if (project is null)
+            throw new ArgumentNullException(nameof(project));
 
-        ISpellingService service = MefWorkspaceServices.Default.GetService<ISpellingService>(project.Language);
+        if (!project.SupportsCompilation)
+            return ImmutableArray<SpellingFixResult>.Empty;
+
+        project = CurrentSolution.GetProject(project.Id)!;
+
+        ISpellingService? service = MefWorkspaceServices.Default.GetService<ISpellingService>(project.Language);
 
         if (service is null)
             return ImmutableArray<SpellingFixResult>.Empty;
@@ -124,13 +130,13 @@ internal class SpellcheckAnalyzer
             cancellationToken.ThrowIfCancellationRequested();
 
             var compilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
-                options: default(AnalyzerOptions),
+                options: default(AnalyzerOptions)!,
                 onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
                 concurrentAnalysis: true,
                 logAnalyzerExecutionTime: false,
                 reportSuppressedDiagnostics: false);
 
-            Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+            Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
             DiagnosticAnalyzer analyzer = service.CreateAnalyzer(SpellingData, Options);
 
@@ -216,7 +222,7 @@ internal class SpellcheckAnalyzer
             if (Options.DryRun)
                 break;
 
-            project = CurrentSolution.GetProject(project.Id);
+            project = CurrentSolution.GetProject(project.Id)!;
 
             previousPreviousDiagnostics = previousDiagnostics;
             previousDiagnostics = diagnostics;
@@ -236,20 +242,20 @@ internal class SpellcheckAnalyzer
 
         var applyChanges = false;
 
-        project = CurrentSolution.GetProject(project.Id);
+        project = CurrentSolution.GetProject(project.Id)!;
 
-        foreach (IGrouping<SyntaxTree, SpellingDiagnostic> grouping in commentDiagnostics
+        foreach (IGrouping<SyntaxTree?, SpellingDiagnostic> grouping in commentDiagnostics
             .GroupBy(f => f.SyntaxTree))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Document document = project.GetDocument(grouping.Key);
+            Document document = project.GetDocument(grouping.Key)!;
 
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-            string sourceTextText = (ShouldWrite(Verbosity.Detailed)) ? sourceText.ToString() : null;
+            string? sourceTextText = (ShouldWrite(Verbosity.Detailed)) ? sourceText.ToString() : null;
 
-            List<TextChange> textChanges = null;
+            List<TextChange>? textChanges = null;
 
             foreach (SpellingDiagnostic diagnostic in grouping.OrderBy(f => f.Span.Start))
             {
@@ -315,13 +321,13 @@ internal class SpellcheckAnalyzer
         var results = new List<SpellingFixResult>();
         var allIgnored = true;
 
-        List<(SyntaxToken identifier, List<SpellingDiagnostic> diagnostics, DocumentId documentId)> symbolDiagnostics = spellingDiagnostics
+        List<(SyntaxToken identifier, List<SpellingDiagnostic?> diagnostics, DocumentId documentId)> symbolDiagnostics = spellingDiagnostics
             .Where(f => f.IsSymbol)
             .GroupBy(f => f.Identifier)
             .Select(f => (
                 identifier: f.Key,
-                diagnostics: f.OrderBy(f => f.Span.Start).ToList(),
-                documentId: project.GetDocument(f.Key.SyntaxTree).Id))
+                diagnostics: f.OrderBy(f => f.Span.Start).Cast<SpellingDiagnostic?>().ToList(),
+                documentId: project.GetDocument(f.Key.SyntaxTree)!.Id))
             .OrderBy(f => f.documentId.Id)
             .ThenByDescending(f => f.identifier.SpanStart)
             .ToList();
@@ -330,11 +336,11 @@ internal class SpellcheckAnalyzer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            (SyntaxToken identifier, List<SpellingDiagnostic> diagnostics, DocumentId documentId) = symbolDiagnostics[i];
+            (SyntaxToken identifier, List<SpellingDiagnostic?> diagnostics, DocumentId documentId) = symbolDiagnostics[i];
 
-            SyntaxNode node = null;
+            SyntaxNode? node = null;
 
-            foreach (SpellingDiagnostic diagnostic in diagnostics)
+            foreach (SpellingDiagnostic? diagnostic in diagnostics)
             {
                 if (diagnostic is not null)
                 {
@@ -346,7 +352,7 @@ internal class SpellcheckAnalyzer
             if (node is null)
                 continue;
 
-            Document document = project.GetDocument(documentId);
+            Document document = project.GetDocument(documentId)!;
 
             if (document is null)
             {
@@ -356,7 +362,7 @@ internal class SpellcheckAnalyzer
                 continue;
             }
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
             if (identifier.SyntaxTree != root.SyntaxTree)
             {
@@ -369,13 +375,13 @@ internal class SpellcheckAnalyzer
                     continue;
                 }
 
-                SyntaxNode node2 = identifier2.Parent;
+                SyntaxNode node2 = identifier2.Parent!;
 
-                SyntaxNode n = identifier.Parent;
+                SyntaxNode n = identifier.Parent!;
                 while (n != node)
                 {
-                    node2 = node2.Parent;
-                    n = n.Parent;
+                    node2 = node2.Parent!;
+                    n = n.Parent!;
                 }
 
                 identifier = identifier2;
@@ -384,23 +390,23 @@ internal class SpellcheckAnalyzer
 
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-            string sourceTextText = null;
+            string? sourceTextText = null;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken)
+            ISymbol? symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken)
                 ?? semanticModel.GetSymbol(node, cancellationToken);
 
             if (symbol is null)
             {
                 // 8925 - C# tuple element
-                Debug.Assert(identifier.Parent.RawKind == 8925, identifier.ToString());
+                Debug.Assert(identifier.Parent?.RawKind == 8925, identifier.ToString());
 
                 if (ShouldWrite(Verbosity.Detailed))
                 {
                     string message = $"    Cannot find symbol for '{identifier.ValueText}'";
 
-                    string locationText = GetLocationText(identifier.GetLocation(), project);
+                    string? locationText = GetLocationText(identifier.GetLocation(), project);
 
                     if (locationText is not null)
                         message += $" at {locationText}";
@@ -425,7 +431,7 @@ internal class SpellcheckAnalyzer
 
             for (int j = 0; j < diagnostics.Count; j++)
             {
-                SpellingDiagnostic diagnostic = diagnostics[j];
+                SpellingDiagnostic? diagnostic = diagnostics[j];
 
                 if (diagnostic is null)
                     continue;
@@ -450,11 +456,11 @@ internal class SpellcheckAnalyzer
                     {
                         for (int k = 0; k < symbolDiagnostics.Count; k++)
                         {
-                            List<SpellingDiagnostic> diagnostics2 = symbolDiagnostics[k].diagnostics;
+                            List<SpellingDiagnostic?> diagnostics2 = symbolDiagnostics[k].diagnostics;
 
                             for (int l = 0; l < diagnostics2.Count; l++)
                             {
-                                if (SpellingData.IgnoredValues.KeyComparer.Equals(diagnostics2[l]?.Value, diagnostic.Value))
+                                if (SpellingData.IgnoredValues.KeyComparer.Equals(diagnostics2[l]?.Value!, diagnostic.Value))
                                     diagnostics2[l] = null;
                             }
                         }
@@ -472,7 +478,7 @@ internal class SpellcheckAnalyzer
             if (string.Equals(identifier.Text, newName, StringComparison.Ordinal))
                 continue;
 
-            Solution newSolution = null;
+            Solution? newSolution = null;
             if (!Options.DryRun)
             {
                 WriteLine($"    Rename '{identifier.ValueText}' to '{newName}'", ConsoleColors.Green, Verbosity.Minimal);
@@ -497,7 +503,9 @@ internal class SpellcheckAnalyzer
                 {
                     WriteLine($"    Cannot rename '{symbol.Name}'", ConsoleColors.Yellow, Verbosity.Normal);
 #if DEBUG
-                    WriteLine(document.FilePath);
+                    if (document.FilePath is not null)
+                        WriteLine(document.FilePath);
+
                     WriteLine(identifier.ValueText);
                     WriteLine(ex.ToString());
 #endif
@@ -509,7 +517,7 @@ internal class SpellcheckAnalyzer
             {
                 if (Workspace.TryApplyChanges(newSolution))
                 {
-                    project = CurrentSolution.GetProject(project.Id);
+                    project = CurrentSolution.GetProject(project.Id)!;
                 }
                 else
                 {
@@ -534,7 +542,7 @@ internal class SpellcheckAnalyzer
             SpellingDiagnostic diagnostic,
             SpellingFix fix,
             SourceText sourceText,
-            ref string sourceTextText)
+            ref string? sourceTextText)
         {
             if (sourceTextText is null)
                 sourceTextText = (ShouldWrite(Verbosity.Detailed)) ? sourceText.ToString() : "";
@@ -557,9 +565,9 @@ internal class SpellcheckAnalyzer
             TextCasing textCasing = TextUtility.GetTextCasing(value);
 
             if (textCasing != TextCasing.Undefined
-                && SpellingData.Fixes.TryGetValue(value, out ImmutableHashSet<SpellingFix> possibleFixes))
+                && SpellingData.Fixes.TryGetValue(value, out ImmutableHashSet<SpellingFix>? possibleFixes))
             {
-                SpellingFix fix = possibleFixes.SingleOrDefault(
+                SpellingFix fix = possibleFixes!.SingleOrDefault(
                     f => (TextUtility.GetTextCasing(f.Value) != TextCasing.Undefined
                         || string.Equals(value, f.Value, StringComparison.OrdinalIgnoreCase))
                         && diagnostic.IsApplicableFix(f.Value),
@@ -631,7 +639,7 @@ internal class SpellcheckAnalyzer
         SpellingData = SpellingData.AddIgnoredValue(diagnostic.Value);
     }
 
-    private static string GetLocationText(Location location, Project project)
+    private static string? GetLocationText(Location location, Project project)
     {
         if (location.Kind == LocationKind.SourceFile
             || location.Kind == LocationKind.XmlFile

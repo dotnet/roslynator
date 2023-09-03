@@ -8,7 +8,7 @@ namespace Roslynator;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal readonly struct SimpleProjectInfo
 {
-    public SimpleProjectInfo(string name, string filePath)
+    public SimpleProjectInfo(string name, string? filePath)
     {
         Name = name;
         FilePath = filePath;
@@ -16,7 +16,7 @@ internal readonly struct SimpleProjectInfo
 
     public string Name { get; }
 
-    public string FilePath { get; }
+    public string? FilePath { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{Name}  {FilePath}";

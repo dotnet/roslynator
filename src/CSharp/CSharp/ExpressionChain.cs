@@ -162,8 +162,8 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
     public struct Enumerator
     {
         private readonly ExpressionChain _chain;
-        private ExpressionSyntax _last;
-        private ExpressionSyntax _current;
+        private ExpressionSyntax? _last;
+        private ExpressionSyntax? _current;
         private State _state;
 
         internal Enumerator(in ExpressionChain chain)
@@ -290,7 +290,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
                             return false;
                         }
 
-                        _current = ((BinaryExpressionSyntax)_current.Parent.Parent).Right;
+                        _current = ((BinaryExpressionSyntax)_current!.Parent!.Parent!).Right;
                         return true;
                     }
                 case State.Left:
@@ -303,7 +303,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
                             return false;
                         }
 
-                        _current = ((BinaryExpressionSyntax)_current.Parent).Right;
+                        _current = ((BinaryExpressionSyntax)_current!.Parent!).Right;
                         _state = State.Right;
                         return true;
                     }

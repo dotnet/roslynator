@@ -35,7 +35,7 @@ public readonly struct SingleLocalDeclarationStatementInfo
     /// <summary>
     /// The variable declaration.
     /// </summary>
-    public VariableDeclarationSyntax Declaration
+    public VariableDeclarationSyntax? Declaration
     {
         get { return Statement?.Declaration; }
     }
@@ -43,7 +43,7 @@ public readonly struct SingleLocalDeclarationStatementInfo
     /// <summary>
     /// The variable initializer, if any.
     /// </summary>
-    public EqualsValueClauseSyntax Initializer
+    public EqualsValueClauseSyntax? Initializer
     {
         get { return Declarator?.Initializer; }
     }
@@ -51,7 +51,7 @@ public readonly struct SingleLocalDeclarationStatementInfo
     /// <summary>
     /// The initialized value, if any.
     /// </summary>
-    public ExpressionSyntax Value
+    public ExpressionSyntax? Value
     {
         get { return Initializer?.Value; }
     }
@@ -67,7 +67,7 @@ public readonly struct SingleLocalDeclarationStatementInfo
     /// <summary>
     /// The type of a declaration.
     /// </summary>
-    public TypeSyntax Type
+    public TypeSyntax? Type
     {
         get { return Statement?.Declaration.Type; }
     }
@@ -132,17 +132,17 @@ public readonly struct SingleLocalDeclarationStatementInfo
         LocalDeclarationStatementSyntax localDeclarationStatement,
         bool allowMissing = false)
     {
-        VariableDeclarationSyntax variableDeclaration = localDeclarationStatement?.Declaration;
+        VariableDeclarationSyntax? variableDeclaration = localDeclarationStatement?.Declaration;
 
         if (!Check(variableDeclaration, allowMissing))
             return default;
 
-        VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
+        VariableDeclaratorSyntax? variableDeclarator = variableDeclaration!.Variables.SingleOrDefault(shouldThrow: false);
 
         if (!Check(variableDeclarator, allowMissing))
             return default;
 
-        return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclarator);
+        return new SingleLocalDeclarationStatementInfo(localDeclarationStatement!, variableDeclarator!);
     }
 
     internal static SingleLocalDeclarationStatementInfo Create(
@@ -155,17 +155,17 @@ public readonly struct SingleLocalDeclarationStatementInfo
         if (variableDeclaration.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
             return default;
 
-        VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
+        VariableDeclaratorSyntax? variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
 
         if (!Check(variableDeclarator, allowMissing))
             return default;
 
-        return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclarator);
+        return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclarator!);
     }
 
     internal static SingleLocalDeclarationStatementInfo Create(ExpressionSyntax value)
     {
-        SyntaxNode node = value?.WalkUpParentheses().Parent;
+        SyntaxNode? node = value?.WalkUpParentheses().Parent;
 
         if (!node.IsKind(SyntaxKind.EqualsValueClause))
             return default;

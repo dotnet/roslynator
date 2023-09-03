@@ -12,7 +12,7 @@ internal sealed class CSharpSpellingDiagnostic : SpellingDiagnostic
         Diagnostic diagnostic,
         string value,
         int valueIndex,
-        string containingValue,
+        string? containingValue,
         int containingValueIndex,
         SyntaxToken identifier = default) : base(diagnostic, value, valueIndex, containingValue, containingValueIndex, identifier)
     {

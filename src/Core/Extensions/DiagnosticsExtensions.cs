@@ -26,7 +26,7 @@ public static class DiagnosticsExtensions
         this SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxNode node,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -49,7 +49,7 @@ public static class DiagnosticsExtensions
         this SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxToken token,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -69,7 +69,7 @@ public static class DiagnosticsExtensions
         this SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxTrivia trivia,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -88,8 +88,8 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
-        params object[] messageArgs)
+        Location? location,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -108,9 +108,9 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
+        Location? location,
         IEnumerable<Location> additionalLocations,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -130,9 +130,9 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        Location? location,
+        ImmutableDictionary<string, string?>? properties,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -153,10 +153,10 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SymbolAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
+        Location? location,
         IEnumerable<Location> additionalLocations,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?>? properties,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -179,7 +179,7 @@ public static class DiagnosticsExtensions
         this SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxNode node,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -202,7 +202,7 @@ public static class DiagnosticsExtensions
         this SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxToken token,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -222,7 +222,7 @@ public static class DiagnosticsExtensions
         this SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxTrivia trivia,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -241,8 +241,8 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
-        params object[] messageArgs)
+        Location? location,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -261,9 +261,9 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
+        Location? location,
         IEnumerable<Location> additionalLocations,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -283,9 +283,9 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        Location? location,
+        ImmutableDictionary<string, string?>? properties,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -306,10 +306,10 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SyntaxNodeAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
+        Location? location,
         IEnumerable<Location> additionalLocations,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?>? properties,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -332,7 +332,7 @@ public static class DiagnosticsExtensions
         this SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxNode node,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -355,7 +355,7 @@ public static class DiagnosticsExtensions
         this SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxToken token,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -375,7 +375,7 @@ public static class DiagnosticsExtensions
         this SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
         SyntaxTrivia trivia,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         ReportDiagnostic(
             context: context,
@@ -394,8 +394,8 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
-        params object[] messageArgs)
+        Location? location,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -414,9 +414,9 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
+        Location? location,
         IEnumerable<Location> additionalLocations,
-        params object[] messageArgs)
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -436,9 +436,9 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        Location? location,
+        ImmutableDictionary<string, string?>? properties,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -459,10 +459,10 @@ public static class DiagnosticsExtensions
     public static void ReportDiagnostic(
         this SyntaxTreeAnalysisContext context,
         DiagnosticDescriptor descriptor,
-        Location location,
+        Location? location,
         IEnumerable<Location> additionalLocations,
-        ImmutableDictionary<string, string> properties,
-        params object[] messageArgs)
+        ImmutableDictionary<string, string?>? properties,
+        params object?[]? messageArgs)
     {
         context.ReportDiagnostic(Diagnostic.Create(
             descriptor: descriptor,
@@ -531,7 +531,7 @@ public static class DiagnosticsExtensions
     {
         return IsEffective(
             descriptor,
-            context.Symbol.Locations[0].SourceTree,
+            context.Symbol.Locations[0].SourceTree!,
             context.Compilation.Options,
             context.CancellationToken);
     }
@@ -551,7 +551,7 @@ public static class DiagnosticsExtensions
         CompilationOptions compilationOptions,
         CancellationToken cancellationToken = default)
     {
-        SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
+        SyntaxTreeOptionsProvider? provider = compilationOptions.SyntaxTreeOptionsProvider;
 
         if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic reportDiagnostic) != true
             && !compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out reportDiagnostic))
@@ -569,20 +569,26 @@ public static class DiagnosticsExtensions
 
     internal static ReportDiagnostic GetEffectiveSeverity(
         this DiagnosticDescriptor descriptor,
-        SyntaxTree syntaxTree,
-        CompilationOptions compilationOptions,
+        SyntaxTree? syntaxTree,
+        CompilationOptions? compilationOptions,
         CancellationToken cancellationToken = default)
     {
-        SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
+        if (compilationOptions is not null)
+        {
+            SyntaxTreeOptionsProvider? provider = compilationOptions.SyntaxTreeOptionsProvider;
 
-        if (provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic) == true)
-            return treeReportDiagnostic;
+            if (syntaxTree is not null
+                && provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic) == true)
+            {
+                return treeReportDiagnostic;
+            }
 
-        if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out ReportDiagnostic reportDiagnostic))
-            return reportDiagnostic;
+            if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out ReportDiagnostic reportDiagnostic))
+                return reportDiagnostic;
 
-        if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out ReportDiagnostic globalReportDiagnostic) == true)
-            return globalReportDiagnostic;
+            if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out ReportDiagnostic globalReportDiagnostic) == true)
+                return globalReportDiagnostic;
+        }
 
         return (descriptor.IsEnabledByDefault)
             ? descriptor.DefaultSeverity.ToReportDiagnostic()

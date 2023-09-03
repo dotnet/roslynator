@@ -17,8 +17,8 @@ internal readonly struct ConditionalStatementInfo
     private ConditionalStatementInfo(
         IfStatementSyntax ifStatement,
         ExpressionSyntax condition,
-        StatementSyntax whenTrue,
-        StatementSyntax whenFalse)
+        StatementSyntax? whenTrue,
+        StatementSyntax? whenFalse)
     {
         IfStatement = ifStatement;
         Condition = condition;
@@ -39,17 +39,17 @@ internal readonly struct ConditionalStatementInfo
     /// <summary>
     /// The statement that is executed if the condition evaluates to true.
     /// </summary>
-    public StatementSyntax WhenTrue { get; }
+    public StatementSyntax? WhenTrue { get; }
 
     /// <summary>
     /// The statement that is executed if the condition evaluates to false.
     /// </summary>
-    public StatementSyntax WhenFalse { get; }
+    public StatementSyntax? WhenFalse { get; }
 
     /// <summary>
     /// The else clause.
     /// </summary>
-    public ElseClauseSyntax Else
+    public ElseClauseSyntax? Else
     {
         get { return IfStatement?.Else; }
     }
@@ -69,19 +69,19 @@ internal readonly struct ConditionalStatementInfo
     }
 
     internal static ConditionalStatementInfo Create(
-        IfStatementSyntax ifStatement,
+        IfStatementSyntax? ifStatement,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (ifStatement?.IsParentKind(SyntaxKind.ElseClause) != false)
             return default;
 
-        StatementSyntax whenTrue = ifStatement.Statement.SingleNonBlockStatementOrDefault();
+        StatementSyntax? whenTrue = ifStatement.Statement.SingleNonBlockStatementOrDefault();
 
         if (!Check(whenTrue, allowMissing))
             return default;
 
-        StatementSyntax whenFalse = ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault();
+        StatementSyntax? whenFalse = ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault();
 
         if (!Check(whenFalse, allowMissing))
             return default;
@@ -89,7 +89,7 @@ internal readonly struct ConditionalStatementInfo
         if (whenFalse.IsKind(SyntaxKind.IfStatement))
             return default;
 
-        ExpressionSyntax condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
+        ExpressionSyntax? condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
 
         if (condition is null)
             return default;

@@ -7,8 +7,8 @@ namespace Roslynator;
 
 internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
 {
-    private readonly Project _project;
-    private readonly Solution _solution;
+    private readonly Project? _project;
+    private readonly Solution? _solution;
 
     internal ProjectOrSolution(Project project)
     {
@@ -28,19 +28,19 @@ internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
 
     public bool IsDefault => _project is null && _solution is null;
 
-    public string FilePath => (IsProject) ? _project.FilePath : _solution?.FilePath;
+    public string? FilePath => (IsProject) ? _project!.FilePath : _solution?.FilePath;
 
-    public VersionStamp Version => (IsProject) ? _project.Version : (_solution?.Version ?? default);
+    public VersionStamp Version => (IsProject) ? _project!.Version : (_solution?.Version ?? default);
 
-    public Workspace Workspace => (IsProject) ? _project.Solution.Workspace : _solution?.Workspace;
+    public Workspace? Workspace => (IsProject) ? _project!.Solution.Workspace : _solution?.Workspace;
 
-    public Project AsProject() => _project;
+    public Project? AsProject() => _project;
 
-    public Solution AsSolution() => _solution;
+    public Solution? AsSolution() => _solution;
 
-    public override string ToString()
+    public override string? ToString()
     {
-        return (_project ?? (object)_solution)?.ToString();
+        return (_project ?? (object?)_solution)?.ToString();
     }
 
     public override bool Equals(object obj)
@@ -65,7 +65,7 @@ internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
 
     public override int GetHashCode()
     {
-        return (_project ?? (object)_solution)?.GetHashCode() ?? 0;
+        return (_project ?? (object?)_solution)?.GetHashCode() ?? 0;
     }
 
     public static bool operator ==(in ProjectOrSolution left, in ProjectOrSolution right)
@@ -83,9 +83,9 @@ internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
         return new ProjectOrSolution(project);
     }
 
-    public static implicit operator Project(in ProjectOrSolution ifOrElse)
+    public static implicit operator Project?(in ProjectOrSolution projectOrSolution)
     {
-        return ifOrElse.AsProject();
+        return projectOrSolution.AsProject();
     }
 
     public static implicit operator ProjectOrSolution(Solution solution)
@@ -93,8 +93,8 @@ internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
         return new ProjectOrSolution(solution);
     }
 
-    public static implicit operator Solution(in ProjectOrSolution ifOrElse)
+    public static implicit operator Solution?(in ProjectOrSolution projectOrSolution)
     {
-        return ifOrElse.AsSolution();
+        return projectOrSolution.AsSolution();
     }
 }

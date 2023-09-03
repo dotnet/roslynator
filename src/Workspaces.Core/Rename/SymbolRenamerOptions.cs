@@ -65,5 +65,5 @@ public class SymbolRenamerOptions
     public bool RenameFile { get; set; }
 
     //TODO: SymbolRenameOptions.FileSystemMatcher
-    internal Matcher FileSystemMatcher { get; set; }
+    internal Matcher? FileSystemMatcher { get; set; }
 }

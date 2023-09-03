@@ -31,8 +31,11 @@ internal static class LocalSymbolFinder
                 {
                     var eventDeclaration = (EventDeclarationSyntax)node;
 
-                    foreach (AccessorDeclarationSyntax accessor in eventDeclaration.AccessorList.Accessors)
-                        walker.Visit(accessor.BodyOrExpressionBody());
+                    if (eventDeclaration.AccessorList is not null)
+                    {
+                        foreach (AccessorDeclarationSyntax accessor in eventDeclaration.AccessorList.Accessors)
+                            walker.Visit(accessor.BodyOrExpressionBody());
+                    }
 
                     break;
                 }
@@ -40,8 +43,11 @@ internal static class LocalSymbolFinder
                 {
                     var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
-                    foreach (AccessorDeclarationSyntax accessor in indexerDeclaration.AccessorList.Accessors)
-                        walker.Visit(accessor.BodyOrExpressionBody());
+                    if (indexerDeclaration.AccessorList is not null)
+                    {
+                        foreach (AccessorDeclarationSyntax accessor in indexerDeclaration.AccessorList.Accessors)
+                            walker.Visit(accessor.BodyOrExpressionBody());
+                    }
 
                     break;
                 }
@@ -57,13 +63,13 @@ internal static class LocalSymbolFinder
                 {
                     var propertyDeclaration = (PropertyDeclarationSyntax)node;
 
-                    ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
+                    ArrowExpressionClauseSyntax? expressionBody = propertyDeclaration.ExpressionBody;
 
                     if (expressionBody is not null)
                     {
                         walker.Visit(expressionBody);
                     }
-                    else
+                    else if (propertyDeclaration.AccessorList is not null)
                     {
                         foreach (AccessorDeclarationSyntax accessor in propertyDeclaration.AccessorList.Accessors)
                             walker.Visit(accessor.BodyOrExpressionBody());
@@ -75,7 +81,7 @@ internal static class LocalSymbolFinder
                 {
                     var declarator = (VariableDeclaratorSyntax)node;
 
-                    ExpressionSyntax expression = declarator.Initializer?.Value;
+                    ExpressionSyntax? expression = declarator.Initializer?.Value;
 
                     if (expression is not null)
                         walker.Visit(expression);
@@ -133,7 +139,7 @@ internal static class LocalSymbolFinder
 
         public override void VisitLocal(SyntaxNode node)
         {
-            ISymbol symbol = SemanticModel.GetDeclaredSymbol(node, CancellationToken);
+            ISymbol? symbol = SemanticModel.GetDeclaredSymbol(node, CancellationToken);
 
             if (symbol is not null)
             {

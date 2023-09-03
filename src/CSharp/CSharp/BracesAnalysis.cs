@@ -57,7 +57,7 @@ internal readonly struct BracesAnalysis : IEquatable<BracesAnalysis>
         {
             cnt++;
 
-            StatementSyntax statement = ifOrElse.Statement;
+            StatementSyntax statement = ifOrElse.Statement!;
 
             if (!anyHasEmbedded
                 && statement.Kind() != SyntaxKind.Block)
@@ -104,7 +104,7 @@ internal readonly struct BracesAnalysis : IEquatable<BracesAnalysis>
         static bool SupportsEmbedded(StatementSyntax statement)
         {
             if (statement.IsParentKind(SyntaxKind.IfStatement)
-                && ((IfStatementSyntax)statement.Parent).Condition?.IsMultiLine() == true)
+                && ((IfStatementSyntax)statement.Parent!).Condition?.IsMultiLine() == true)
             {
                 return false;
             }
@@ -119,14 +119,14 @@ internal readonly struct BracesAnalysis : IEquatable<BracesAnalysis>
                 if (!block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
                     return false;
 
-                statement = block.Statements.SingleOrDefault(shouldThrow: false);
+                statement = block.Statements.SingleOrDefault(shouldThrow: false)!;
 
                 if (statement is null)
                     return false;
 
                 if (statement.Kind() == SyntaxKind.IfStatement
                     && block.IsParentKind(SyntaxKind.IfStatement)
-                    && ((IfStatementSyntax)block.Parent).Else is not null
+                    && ((IfStatementSyntax)block.Parent!).Else is not null
                     && ((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf)
                 {
                     return false;

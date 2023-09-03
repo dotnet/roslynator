@@ -13,7 +13,7 @@ internal static class SyntaxUtility
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        ISymbol symbol = semanticModel.GetSymbol(node, cancellationToken);
+        ISymbol? symbol = semanticModel.GetSymbol(node, cancellationToken);
 
         return SymbolUtility.IsPropertyOfNullableOfT(symbol, name);
     }
@@ -23,15 +23,15 @@ internal static class SyntaxUtility
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(node, cancellationToken);
+        var enumTypeSymbol = (INamedTypeSymbol?)semanticModel.GetTypeSymbol(node, cancellationToken);
 
-        if (enumTypeSymbol.EnumUnderlyingType is not null)
+        if (enumTypeSymbol?.EnumUnderlyingType is not null)
         {
-            Optional<object> constantValue = semanticModel.GetConstantValue(node, cancellationToken);
+            Optional<object?> constantValue = semanticModel.GetConstantValue(node, cancellationToken);
 
             if (constantValue.HasValue)
             {
-                ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value, enumTypeSymbol);
+                ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value!, enumTypeSymbol);
 
                 return FlagsUtility<ulong>.Instance.IsComposite(value);
             }

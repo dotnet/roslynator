@@ -10,7 +10,7 @@ internal abstract class FindSymbolService : IFindSymbolService
 {
     public abstract ISyntaxFactsService SyntaxFacts { get; }
 
-    public abstract SyntaxNode FindDeclaration(SyntaxNode node);
+    public abstract SyntaxNode? FindDeclaration(SyntaxNode node);
 
     public abstract bool CanBeRenamed(SyntaxToken token);
 

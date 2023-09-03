@@ -11,6 +11,8 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp;
 
+#nullable disable
+
 /// <summary>
 /// Provides static methods for syntax inversion.
 /// </summary>

@@ -61,7 +61,7 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
             case SyntaxKind.MultiLineCommentTrivia:
                 {
                     if (ShouldVisit(SpellingScopeFilter.NonDocumentationComment))
-                        AnalyzeText(trivia.ToString(), trivia.SyntaxTree, trivia.Span);
+                        AnalyzeText(trivia.ToString(), trivia.SyntaxTree!, trivia.Span);
 
                     break;
                 }
@@ -85,7 +85,7 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
                 {
                     Debug.Assert(ShouldVisit(SpellingScopeFilter.Region));
 
-                    AnalyzeText(trivia.ToString(), trivia.SyntaxTree, trivia.Span);
+                    AnalyzeText(trivia.ToString(), trivia.SyntaxTree!, trivia.Span);
                     break;
                 }
         }
@@ -234,7 +234,7 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
 
     public override void VisitVariableDeclarator(VariableDeclaratorSyntax node)
     {
-        SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.VariableDeclaration), node.Parent);
+        SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.VariableDeclaration), node.Parent!);
 
         SyntaxNode containingNode = _stack.Peek();
 

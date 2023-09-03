@@ -17,7 +17,7 @@ internal class CSharpFindSymbolService : FindSymbolService
 {
     public override ISyntaxFactsService SyntaxFacts => CSharpSyntaxFactsService.Instance;
 
-    public override SyntaxNode FindDeclaration(SyntaxNode node)
+    public override SyntaxNode? FindDeclaration(SyntaxNode node)
     {
         return node.FirstAncestorOrSelf(
             n =>

@@ -11,9 +11,9 @@ internal class ProjectFixResult
 
     internal ProjectFixResult(
         ProjectFixKind kind,
-        IEnumerable<DiagnosticInfo> fixedDiagnostics = default,
-        IEnumerable<DiagnosticInfo> unfixedDiagnostics = default,
-        IEnumerable<DiagnosticInfo> unfixableDiagnostics = default,
+        IEnumerable<DiagnosticInfo>? fixedDiagnostics = default,
+        IEnumerable<DiagnosticInfo>? unfixedDiagnostics = default,
+        IEnumerable<DiagnosticInfo>? unfixableDiagnostics = default,
         int numberOfFormattedDocuments = -1,
         int numberOfAddedFileBanners = -1)
     {

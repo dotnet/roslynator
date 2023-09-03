@@ -51,12 +51,12 @@ internal class DocumentationCommentTriviaRewriter : CSharpSyntaxRewriter
             }
         }
 
-        return base.VisitXmlTextAttribute(node);
+        return base.VisitXmlTextAttribute(node)!;
     }
 
     private string GetMinimalDisplayString(string metadataName)
     {
-        INamedTypeSymbol typeSymbol = _semanticModel.GetTypeByMetadataName(metadataName);
+        INamedTypeSymbol? typeSymbol = _semanticModel.GetTypeByMetadataName(metadataName);
 
         if (typeSymbol is not null)
         {

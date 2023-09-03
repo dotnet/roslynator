@@ -14,11 +14,11 @@ internal class SymbolFilterOptions
     public static SymbolFilterOptions Default { get; } = new();
 
     internal SymbolFilterOptions(
-        FileSystemFilter fileSystemFilter = null,
+        FileSystemFilter? fileSystemFilter = null,
         VisibilityFilter visibility = VisibilityFilter.All,
         SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
-        IEnumerable<SymbolFilterRule> rules = null,
-        IEnumerable<AttributeFilterRule> attributeRules = null)
+        IEnumerable<SymbolFilterRule>? rules = null,
+        IEnumerable<AttributeFilterRule>? attributeRules = null)
     {
         FileSystemFilter = fileSystemFilter;
         Visibility = visibility;
@@ -28,7 +28,7 @@ internal class SymbolFilterOptions
         AttributeRules = attributeRules?.ToImmutableArray() ?? ImmutableArray<AttributeFilterRule>.Empty;
     }
 
-    public FileSystemFilter FileSystemFilter { get; }
+    public FileSystemFilter? FileSystemFilter { get; }
 
     public VisibilityFilter Visibility { get; }
 
