@@ -8,6 +8,7 @@
     <Version>$(RoslynatorTestingVersion)</Version>
     <AssemblyName>Roslynator.Testing.VisualBasic</AssemblyName>
     <RootNamespace>Roslynator.Testing</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

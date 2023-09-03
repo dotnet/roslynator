@@ -15,4 +15,14 @@ internal class MSTestAssert : IAssert
     {
         global::Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(condition, userMessage);
     }
+
+    public void Null(object? value)
+    {
+        global::Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsNull(value);
+    }
+
+    public void NotNull(object? value)
+    {
+        global::Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsNotNull(value);
+    }
 }

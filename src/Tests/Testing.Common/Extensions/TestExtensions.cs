@@ -13,7 +13,7 @@ namespace Roslynator;
 
 internal static class TestExtensions
 {
-    public static async Task<SyntaxNode> GetSyntaxRootAsync(
+    public static async Task<SyntaxNode?> GetSyntaxRootAsync(
         this Document document,
         bool simplify,
         bool format,
@@ -22,10 +22,13 @@ internal static class TestExtensions
         if (simplify)
             document = await Simplifier.ReduceAsync(document, Simplifier.Annotation, cancellationToken: cancellationToken);
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken);
 
-        if (format)
+        if (root is not null
+            && format)
+        {
             root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace, cancellationToken: cancellationToken);
+        }
 
         return root;
     }

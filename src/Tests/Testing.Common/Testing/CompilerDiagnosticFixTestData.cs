@@ -23,8 +23,8 @@ public sealed class CompilerDiagnosticFixTestData
     public CompilerDiagnosticFixTestData(
         string diagnosticId,
         string source,
-        IEnumerable<AdditionalFile> additionalFiles = null,
-        string equivalenceKey = null)
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? equivalenceKey = null)
     {
         DiagnosticId = diagnosticId ?? throw new ArgumentNullException(nameof(diagnosticId));
         Source = source ?? throw new ArgumentNullException(nameof(source));
@@ -59,7 +59,7 @@ public sealed class CompilerDiagnosticFixTestData
     /// <summary>
     /// Gets code action's equivalence key.
     /// </summary>
-    public string EquivalenceKey { get; }
+    public string? EquivalenceKey { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{DiagnosticId}  {Source}";

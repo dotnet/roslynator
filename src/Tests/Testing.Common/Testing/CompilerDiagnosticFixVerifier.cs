@@ -32,7 +32,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     public async Task VerifyFixAsync(
         CompilerDiagnosticFixTestData data,
         ExpectedTestState expected,
-        TestOptions options = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         if (data is null)
@@ -55,7 +55,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
             Project project = document.Project;
 
-            document = project.GetDocument(document.Id);
+            document = project.GetDocument(document.Id)!;
 
             ImmutableArray<Diagnostic> previousDiagnostics = ImmutableArray<Diagnostic>.Empty;
 
@@ -65,7 +65,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
+                Compilation compilation = (await document.Project.GetCompilationAsync(cancellationToken))!;
 
                 ImmutableArray<Diagnostic> diagnostics = compilation.GetDiagnostics(cancellationToken: cancellationToken);
 
@@ -85,7 +85,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                 if (DiagnosticDeepEqualityComparer.Equals(diagnostics, previousDiagnostics))
                     Fail("Same diagnostics returned before and after the fix was applied.", diagnostics);
 
-                Diagnostic diagnostic = FindDiagnosticToFix(diagnostics);
+                Diagnostic? diagnostic = FindDiagnosticToFix(diagnostics);
 
                 if (diagnostic is null)
                 {
@@ -95,8 +95,8 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                     break;
                 }
 
-                CodeAction action = null;
-                List<CodeAction> candidateActions = null;
+                CodeAction? action = null;
+                List<CodeAction>? candidateActions = null;
 
                 var context = new CodeFixContext(
                     document,
@@ -126,7 +126,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
                 fixRegistered = true;
 
-                document = await VerifyAndApplyCodeActionAsync(document, action, expected.CodeActionTitle);
+                document = await VerifyAndApplyCodeActionAsync(document, action!, expected.CodeActionTitle);
 
                 previousDiagnostics = diagnostics;
             }
@@ -137,9 +137,9 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                 await VerifyAdditionalDocumentsAsync(document.Project, expectedDocuments, cancellationToken);
         }
 
-        Diagnostic FindDiagnosticToFix(ImmutableArray<Diagnostic> diagnostics)
+        Diagnostic? FindDiagnosticToFix(ImmutableArray<Diagnostic> diagnostics)
         {
-            Diagnostic match = null;
+            Diagnostic? match = null;
 
             foreach (Diagnostic diagnostic in diagnostics)
             {
@@ -165,7 +165,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     /// <param name="cancellationToken"></param>
     public async Task VerifyNoFixAsync(
         CompilerDiagnosticFixTestData data,
-        TestOptions options = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         if (data is null)
@@ -182,7 +182,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
         {
             (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options);
 
-            Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
+            Compilation compilation = (await document.Project.GetCompilationAsync(cancellationToken))!;
 
             foreach (Diagnostic diagnostic in compilation.GetDiagnostics(cancellationToken: cancellationToken))
             {

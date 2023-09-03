@@ -15,4 +15,14 @@ internal class XunitAssert : IAssert
     {
         global::Xunit.Assert.True(condition, userMessage);
     }
+
+    public void Null(object? value)
+    {
+        global::Xunit.Assert.Null(value);
+    }
+
+    public void NotNull(object? value)
+    {
+        global::Xunit.Assert.NotNull(value);
+    }
 }

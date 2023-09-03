@@ -17,4 +17,14 @@ internal interface IAssert
     /// <param name="condition"></param>
     /// <param name="userMessage"></param>
     void True(bool condition, string userMessage);
+
+    /// <summary>
+    /// Throws an error if <paramref name="value"/> is not <c>null</c>.
+    /// </summary>
+    void Null(object? value);
+
+    /// <summary>
+    /// Throws an error if <paramref name="value"/> is <c>null</c>.
+    /// </summary>
+    void NotNull(object? value);
 }

@@ -12,12 +12,12 @@ namespace Roslynator.Testing;
 public sealed class VisualBasicTestOptions : TestOptions
 {
     public VisualBasicTestOptions(
-        VisualBasicCompilationOptions compilationOptions = null,
-        VisualBasicParseOptions parseOptions = null,
-        IEnumerable<MetadataReference> metadataReferences = null,
-        IEnumerable<string> allowedCompilerDiagnosticIds = null,
+        VisualBasicCompilationOptions? compilationOptions = null,
+        VisualBasicParseOptions? parseOptions = null,
+        IEnumerable<MetadataReference>? metadataReferences = null,
+        IEnumerable<string>? allowedCompilerDiagnosticIds = null,
         DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
-        IEnumerable<KeyValuePair<string, string>> configOptions = null)
+        IEnumerable<KeyValuePair<string, string>>? configOptions = null)
         : base(metadataReferences, allowedCompilerDiagnosticIds, allowedCompilerDiagnosticSeverity, configOptions)
     {
         CompilationOptions = compilationOptions ?? new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary);

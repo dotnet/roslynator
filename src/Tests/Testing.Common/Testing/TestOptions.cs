@@ -19,10 +19,10 @@ public abstract class TestOptions
     /// <param name="allowedCompilerDiagnosticSeverity"></param>
     /// <param name="configOptions"></param>
     internal TestOptions(
-        IEnumerable<MetadataReference> metadataReferences = null,
-        IEnumerable<string> allowedCompilerDiagnosticIds = null,
+        IEnumerable<MetadataReference>? metadataReferences = null,
+        IEnumerable<string>? allowedCompilerDiagnosticIds = null,
         DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
-        IEnumerable<KeyValuePair<string, string>> configOptions = null)
+        IEnumerable<KeyValuePair<string, string>>? configOptions = null)
     {
         MetadataReferences = metadataReferences?.ToImmutableArray() ?? ImmutableArray<MetadataReference>.Empty;
         AllowedCompilerDiagnosticIds = allowedCompilerDiagnosticIds?.ToImmutableArray() ?? ImmutableArray<string>.Empty;

@@ -29,7 +29,7 @@ internal static class TextProcessor
 
     private static (string source, ImmutableArray<(string kind, TextSpan span)> annotations) FindAnnotatedSpansAndRemoveImpl(
         string text,
-        string annotationIdentifier = null)
+        string? annotationIdentifier = null)
     {
         int offset = 0;
         int lastPos = 0;
@@ -41,7 +41,7 @@ internal static class TextProcessor
 
         StringBuilder sb = StringBuilderCache.GetInstance(text.Length);
 
-        ImmutableArray<(string, TextSpan)>.Builder annotations = null;
+        ImmutableArray<(string, TextSpan)>.Builder? annotations = null;
 
         do
         {
@@ -80,8 +80,8 @@ internal static class TextProcessor
 
         var startPending = false;
         LinePositionInfo start = default;
-        Stack<LinePositionInfo> stack = null;
-        List<LinePositionSpanInfo> spans = null;
+        Stack<LinePositionInfo>? stack = null;
+        List<LinePositionSpanInfo>? spans = null;
 
         int lastPos = 0;
 
@@ -225,10 +225,10 @@ internal static class TextProcessor
         }
     }
 
-    public static (string source, string expected, ImmutableArray<TextSpan> spans) FindSpansAndReplace(
+    public static (string source, string? expected, ImmutableArray<TextSpan> spans) FindSpansAndReplace(
         string input,
         string replacement1,
-        string replacement2 = null)
+        string? replacement2 = null)
     {
         (string source, ImmutableArray<TextSpan> spans) = FindSpansAndRemove(input);
 
@@ -238,7 +238,7 @@ internal static class TextProcessor
         if (spans.Length > 1)
             throw new InvalidOperationException("Text contains more than one span.");
 
-        string expected = (replacement2 is not null)
+        string? expected = (replacement2 is not null)
             ? source.Remove(spans[0].Start) + replacement2 + source.Substring(spans[0].End)
             : null;
 

@@ -33,7 +33,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     public async Task VerifyRefactoringAsync(
         RefactoringTestData data,
         ExpectedTestState expected,
-        TestOptions options = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         if (data is null)
@@ -57,14 +57,14 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
             {
                 (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options);
 
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+                SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
                 ImmutableArray<Diagnostic> compilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
 
                 VerifyCompilerDiagnostics(compilerDiagnostics, options);
 
-                CodeAction action = null;
-                List<CodeAction> candidateActions = null;
+                CodeAction? action = null;
+                List<CodeAction>? candidateActions = null;
 
                 var context = new CodeRefactoringContext(
                     document,
@@ -91,8 +91,8 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
                 if (action is null)
                     Fail("No code refactoring has been registered.", candidateActions);
 
-                document = await VerifyAndApplyCodeActionAsync(document, action, expected.CodeActionTitle);
-                semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+                document = await VerifyAndApplyCodeActionAsync(document, action!, expected.CodeActionTitle);
+                semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
                 ImmutableArray<Diagnostic> newCompilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
 
@@ -115,7 +115,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// <param name="cancellationToken"></param>
     public async Task VerifyNoRefactoringAsync(
         RefactoringTestData data,
-        TestOptions options = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         if (data is null)
@@ -134,7 +134,7 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
         {
             (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken))!;
 
             ImmutableArray<Diagnostic> compilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
 

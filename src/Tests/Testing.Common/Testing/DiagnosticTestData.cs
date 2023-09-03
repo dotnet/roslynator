@@ -32,11 +32,11 @@ public sealed class DiagnosticTestData
         DiagnosticDescriptor descriptor,
         string source,
         IEnumerable<TextSpan> spans,
-        IEnumerable<TextSpan> additionalSpans = null,
-        IEnumerable<AdditionalFile> additionalFiles = null,
-        string diagnosticMessage = null,
-        IFormatProvider formatProvider = null,
-        string equivalenceKey = null,
+        IEnumerable<TextSpan>? additionalSpans = null,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? diagnosticMessage = null,
+        IFormatProvider? formatProvider = null,
+        string? equivalenceKey = null,
         bool alwaysVerifyAdditionalLocations = false)
     {
         Descriptor = descriptor ?? throw new ArgumentNullException(nameof(descriptor));
@@ -98,17 +98,17 @@ public sealed class DiagnosticTestData
     /// <summary>
     /// Gets diagnostic's message
     /// </summary>
-    public string DiagnosticMessage { get; }
+    public string? DiagnosticMessage { get; }
 
     /// <summary>
     /// Gets format provider to be used to format diagnostic's message.
     /// </summary>
-    public IFormatProvider FormatProvider { get; }
+    public IFormatProvider? FormatProvider { get; }
 
     /// <summary>
     /// Gets code action's equivalence key.
     /// </summary>
-    public string EquivalenceKey { get; }
+    public string? EquivalenceKey { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => $"{Descriptor.Id}  {Source}";

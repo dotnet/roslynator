@@ -14,8 +14,8 @@ internal static class RuntimeMetadataReference
 {
     internal static readonly MetadataReference CorLibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
 
-    private static ImmutableDictionary<string, string> _trustedPlatformAssemblyMap;
-    private static ImmutableDictionary<string, MetadataReference> _metadataReferences;
+    private static ImmutableDictionary<string, string>? _trustedPlatformAssemblyMap;
+    private static ImmutableDictionary<string, MetadataReference>? _metadataReferences;
 
     internal static ImmutableDictionary<string, string> TrustedPlatformAssemblyMap
     {
