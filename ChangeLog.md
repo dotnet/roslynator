@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+  - Add nullable annotation to public API ([#1198](https://github.com/JosefPihrt/Roslynator/pull/1198)).
+
 ### Fixed
 
 - Fix [RCS1164](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1164) ([#1196](https://github.com/JosefPihrt/Roslynator/pull/1196)).
