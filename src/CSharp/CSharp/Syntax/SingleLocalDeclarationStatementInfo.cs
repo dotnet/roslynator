@@ -44,17 +44,17 @@ public readonly struct SingleLocalDeclarationStatementInfo
     /// <summary>
     /// The variable initializer, if any.
     /// </summary>
-    public EqualsValueClauseSyntax Initializer
+    public EqualsValueClauseSyntax? Initializer
     {
-        get { return Declarator?.Initializer ?? throw new InvalidOperationException("Object is not initialized."); }
+        get { return Declarator?.Initializer; }
     }
 
     /// <summary>
     /// The initialized value, if any.
     /// </summary>
-    public ExpressionSyntax Value
+    public ExpressionSyntax? Value
     {
-        get { return Initializer?.Value ?? throw new InvalidOperationException("Object is not initialized."); }
+        get { return Initializer?.Value; }
     }
 
     /// <summary>
