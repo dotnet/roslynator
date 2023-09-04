@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -43,17 +44,17 @@ internal readonly struct TypeParameterConstraintInfo
     /// <summary>
     /// The identifier name of this constraint.
     /// </summary>
-    public IdentifierNameSyntax? Name
+    public IdentifierNameSyntax Name
     {
-        get { return ConstraintClause?.Name; }
+        get { return ConstraintClause?.Name ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
     /// The name of this constraint.
     /// </summary>
-    public string? NameText
+    public string NameText
     {
-        get { return Name?.Identifier.ValueText; }
+        get { return Name?.Identifier.ValueText ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>

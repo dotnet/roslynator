@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -44,9 +45,9 @@ public readonly struct SimpleAssignmentStatementInfo
     /// <summary>
     /// The expression statement the simple assignment expression is contained in.
     /// </summary>
-    public ExpressionStatementSyntax? Statement
+    public ExpressionStatementSyntax Statement
     {
-        get { return (ExpressionStatementSyntax?)AssignmentExpression?.Parent; }
+        get { return (ExpressionStatementSyntax?)AssignmentExpression?.Parent ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>

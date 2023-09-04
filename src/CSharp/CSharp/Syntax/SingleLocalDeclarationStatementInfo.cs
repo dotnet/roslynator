@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -35,25 +36,25 @@ public readonly struct SingleLocalDeclarationStatementInfo
     /// <summary>
     /// The variable declaration.
     /// </summary>
-    public VariableDeclarationSyntax? Declaration
+    public VariableDeclarationSyntax Declaration
     {
-        get { return Statement?.Declaration; }
+        get { return Statement?.Declaration ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
     /// The variable initializer, if any.
     /// </summary>
-    public EqualsValueClauseSyntax? Initializer
+    public EqualsValueClauseSyntax Initializer
     {
-        get { return Declarator?.Initializer; }
+        get { return Declarator?.Initializer ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
     /// The initialized value, if any.
     /// </summary>
-    public ExpressionSyntax? Value
+    public ExpressionSyntax Value
     {
-        get { return Initializer?.Value; }
+        get { return Initializer?.Value ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -67,9 +68,9 @@ public readonly struct SingleLocalDeclarationStatementInfo
     /// <summary>
     /// The type of a declaration.
     /// </summary>
-    public TypeSyntax? Type
+    public TypeSyntax Type
     {
-        get { return Statement?.Declaration.Type; }
+        get { return Statement?.Declaration.Type ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>

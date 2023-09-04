@@ -61,7 +61,7 @@ public readonly struct SimpleMemberInvocationStatementInfo
     /// </summary>
     public ExpressionStatementSyntax Statement
     {
-        get { return (ExpressionStatementSyntax?)InvocationExpression?.Parent ?? throw new InvalidOperationException("Object is not initialized"); }
+        get { return (ExpressionStatementSyntax?)InvocationExpression?.Parent ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>

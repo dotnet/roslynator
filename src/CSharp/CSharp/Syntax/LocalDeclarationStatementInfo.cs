@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -35,17 +36,17 @@ public readonly struct LocalDeclarationStatementInfo
     /// <summary>
     /// The type of the declaration.
     /// </summary>
-    public TypeSyntax? Type
+    public TypeSyntax Type
     {
-        get { return Statement?.Declaration.Type; }
+        get { return Statement?.Declaration.Type ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
     /// The variable declaration.
     /// </summary>
-    public VariableDeclarationSyntax? Declaration
+    public VariableDeclarationSyntax Declaration
     {
-        get { return Statement?.Declaration; }
+        get { return Statement?.Declaration ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>

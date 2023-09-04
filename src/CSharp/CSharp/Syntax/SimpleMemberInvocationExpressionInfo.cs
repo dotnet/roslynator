@@ -38,7 +38,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public ExpressionSyntax Expression
     {
-        get { return MemberAccessExpression?.Expression ?? throw new InvalidOperationException("Object is not initialized"); }
+        get { return MemberAccessExpression?.Expression ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public SimpleNameSyntax Name
     {
-        get { return MemberAccessExpression?.Name ?? throw new InvalidOperationException("Object is not initialized"); }
+        get { return MemberAccessExpression?.Name ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public ArgumentListSyntax ArgumentList
     {
-        get { return InvocationExpression?.ArgumentList ?? throw new InvalidOperationException("Object is not initialized"); }
+        get { return InvocationExpression?.ArgumentList ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public readonly struct SimpleMemberInvocationExpressionInfo
     /// </summary>
     public string NameText
     {
-        get { return Name?.Identifier.ValueText ?? throw new InvalidOperationException("Object is not initialized"); }
+        get { return Name?.Identifier.ValueText ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -17,8 +18,8 @@ internal readonly struct ConditionalStatementInfo
     private ConditionalStatementInfo(
         IfStatementSyntax ifStatement,
         ExpressionSyntax condition,
-        StatementSyntax? whenTrue,
-        StatementSyntax? whenFalse)
+        StatementSyntax whenTrue,
+        StatementSyntax whenFalse)
     {
         IfStatement = ifStatement;
         Condition = condition;
@@ -39,19 +40,19 @@ internal readonly struct ConditionalStatementInfo
     /// <summary>
     /// The statement that is executed if the condition evaluates to true.
     /// </summary>
-    public StatementSyntax? WhenTrue { get; }
+    public StatementSyntax WhenTrue { get; }
 
     /// <summary>
     /// The statement that is executed if the condition evaluates to false.
     /// </summary>
-    public StatementSyntax? WhenFalse { get; }
+    public StatementSyntax WhenFalse { get; }
 
     /// <summary>
     /// The else clause.
     /// </summary>
-    public ElseClauseSyntax? Else
+    public ElseClauseSyntax Else
     {
-        get { return IfStatement?.Else; }
+        get { return IfStatement?.Else ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -94,6 +95,6 @@ internal readonly struct ConditionalStatementInfo
         if (condition is null)
             return default;
 
-        return new ConditionalStatementInfo(ifStatement, condition, whenTrue, whenFalse);
+        return new ConditionalStatementInfo(ifStatement, condition, whenTrue!, whenFalse!);
     }
 }
