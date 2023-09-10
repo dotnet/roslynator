@@ -11,7 +11,7 @@ namespace Roslynator.CSharp;
 internal static class SyntaxDebug
 {
     [Conditional("DEBUG")]
-    internal static void Assert(bool condition, SyntaxNode node)
+    internal static void Assert(bool condition, SyntaxNode? node)
     {
         if (!condition)
             Fail(node);
@@ -32,8 +32,14 @@ internal static class SyntaxDebug
     }
 
     [Conditional("DEBUG")]
-    internal static void Fail(SyntaxNode node)
+    internal static void Fail(SyntaxNode? node)
     {
+        if (node is null)
+        {
+            Debug.Fail("");
+            return;
+        }
+
         TextSpan span = node.Span;
         SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
         SyntaxTriviaList trailingTrivia = node.GetTrailingTrivia();

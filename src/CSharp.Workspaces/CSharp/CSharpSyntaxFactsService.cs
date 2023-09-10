@@ -109,14 +109,7 @@ internal sealed class CSharpSyntaxFactsService : ISyntaxFactsService
                             return parent;
                         }
 
-                        if (parent is not null)
-                        {
-                            SyntaxDebug.Fail(parent);
-                        }
-                        else
-                        {
-                            Debug.Fail("");
-                        }
+                        SyntaxDebug.Fail(parent);
 
                         return null;
                     }
