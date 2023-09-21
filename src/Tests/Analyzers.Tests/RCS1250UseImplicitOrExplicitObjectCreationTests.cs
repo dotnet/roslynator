@@ -854,6 +854,62 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_PreferImplicitWhenTypeIsObvious_PropertyLazyInitialization()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+public record R(C? P = null)
+{
+    public C P { get; init; } = P ?? new [|C|]();
+}
+
+public class C
+{
+}
+", @"
+#nullable enable
+
+public record R(C? P = null)
+{
+    public C P { get; init; } = P ?? new();
+}
+
+public class C
+{
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_PreferImplicitWhenTypeIsObvious_FieldLazyInitialization()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+public record R(C? P = null)
+{
+    public C F = P ?? new [|C|]();
+}
+
+public class C
+{
+}
+", @"
+#nullable enable
+
+public record R(C? P = null)
+{
+    public C F = P ?? new();
+}
+
+public class C
+{
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_ConvertImplicitToExplicit_ThrowStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
