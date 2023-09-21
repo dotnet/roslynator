@@ -122,7 +122,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
                     return SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetDefaultAccessibility((EventDeclarationSyntax)containingDeclaration);
             }
 
-            SyntaxDebug.Assert(containingDeclaration is null, containingDeclaration!);
+            SyntaxDebug.Assert(containingDeclaration is null, containingDeclaration);
 
             return Accessibility.NotApplicable;
         }
