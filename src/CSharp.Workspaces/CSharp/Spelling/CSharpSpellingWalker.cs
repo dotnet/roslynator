@@ -234,7 +234,7 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
 
     public override void VisitVariableDeclarator(VariableDeclaratorSyntax node)
     {
-        SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.VariableDeclaration), node.Parent!);
+        SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.VariableDeclaration), node.Parent);
 
         SyntaxNode containingNode = _stack.Peek();
 

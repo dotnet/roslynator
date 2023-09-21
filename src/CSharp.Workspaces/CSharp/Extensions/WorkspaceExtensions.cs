@@ -127,7 +127,7 @@ public static class WorkspaceExtensions
                 }
             default:
                 {
-                    SyntaxDebug.Assert(parent is null, parent!);
+                    SyntaxDebug.Assert(parent is null, parent);
 
                     return document.RemoveNodeAsync(member, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
                 }
