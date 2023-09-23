@@ -4,9 +4,9 @@
     <Identity Id="f326ee1b-81a6-4577-b251-1f29d391cef3" Version="1.0.0" Language="en-US" Publisher="Josef Pihrt" />
     <DisplayName>Roslynator 2022</DisplayName>
     <Description xml:space="preserve">A collection of 500+ analyzers, refactorings and fixes for C#, powered by Roslyn.</Description>
-    <MoreInfo>https://github.com/JosefPihrt/Roslynator</MoreInfo>
+    <MoreInfo>https://github.com/dotnet/roslynator</MoreInfo>
     <License>LICENSE.txt</License>
-    <ReleaseNotes>https://github.com/JosefPihrt/Roslynator/blob/main/ChangeLog.md</ReleaseNotes>
+    <ReleaseNotes>https://github.com/dotnet/roslynator/blob/main/ChangeLog.md</ReleaseNotes>
     <Icon>Roslynator.ico</Icon>
     <PreviewImage>RoslynatorPreview.png</PreviewImage>
     <Tags>Roslyn;Refactoring;Analyzer;CodeAnalysis;C#;CSharp;Productivity;Diagnostic</Tags>

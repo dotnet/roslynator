@@ -27,7 +27,7 @@ Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://g
 
 Contributions are welcome! If you are interested please see:
 - documentation for [developers](https://josefpihrt.github.io/docs/roslynator/developers)
-- available [issues](https://github.com/JosefPihrt/Roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs)
+- available [issues](https://github.com/dotnet/roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs)
 
 TIP: Bugfixes or small improvements can be implemented right away. Larger task like adding new analyzer or refactoring should be discussed first.
 
@@ -52,9 +52,9 @@ See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for furthe
 - Roslynator Testing Framework can be used for unit testing of analyzers, refactorings and code fixes.
 - Framework is distributed as NuGet [package](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Testing.CSharp.Xunit.svg)](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit)
 - Learn how to use the framework from actual usages in Roslynator repo:
-  - Tests of analyzers are [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/Analyzers.Tests), [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/CodeAnalysis.Analyzers.Tests) and [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/Formatting.Analyzers.Tests)
-  - Tests of refactorings are [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/Refactorings.Tests)
-  - Tests of fixes of compiler diagnostics are [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/CodeFixes.Tests)
+  - Tests of analyzers are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Analyzers.Tests), [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/CodeAnalysis.Analyzers.Tests) and [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Formatting.Analyzers.Tests)
+  - Tests of refactorings are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Refactorings.Tests)
+  - Tests of fixes of compiler diagnostics are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/CodeFixes.Tests)
 
 ## Client Libraries
 
