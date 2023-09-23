@@ -3,7 +3,7 @@
   "publisher": "josefpihrt-vscode",
   "displayName": "Roslynator",
   "description": "A collection of 500+ analyzers, refactorings and fixes for C#, powered by Roslyn.",
-  "icon": "images/icon.png",
+  "icon": "../../../images/roslynator-logo-small.png",
   "version": "1.0.0",
   "author": "Josef Pihrt",
   "license": "Apache-2.0",
