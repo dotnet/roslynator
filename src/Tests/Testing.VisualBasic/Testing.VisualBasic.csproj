@@ -22,11 +22,11 @@
     <Description>Test framework for Roslyn analyzers, refactorings and code fixes.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/dotnet/roslynator</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Roslyn;CodeAnalysis;Test</PackageTags>
-    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/dotnet/roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="..\..\..\images\roslynator-logo-small.png" Pack="true" PackagePath="icon.png" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>

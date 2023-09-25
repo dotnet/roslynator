@@ -59,7 +59,7 @@ internal static class Program
                 .Where(f => f.Id is not null)
                 .ToImmutableDictionary(f => f.Id, f => f);
 
-            s = issueRegex.Replace(s, "([issue](https://github.com/JosefPihrt/Roslynator/issues/${issue}))");
+            s = issueRegex.Replace(s, "([issue](https://github.com/dotnet/roslynator/issues/${issue}))");
 
             s = analyzerRegex.Replace(
                 s,

@@ -1,11 +1,11 @@
 ## Overview
 
 * A collection of 500+ analyzers, refactorings and fixes for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
-* [Project website](https://github.com/JosefPihrt/Roslynator)
+* [Project website](https://github.com/dotnet/roslynator)
 * [List of analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers)
 * [List of refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings)
 * [List of code fixes for CS diagnostics](https://josefpihrt.github.io/docs/roslynator/fixes)
-* [Release notes](https://github.com/JosefPihrt/Roslynator/blob/main/ChangeLog.md)
+* [Release notes](https://github.com/dotnet/roslynator/blob/main/ChangeLog.md)
 
 ## Donation
 

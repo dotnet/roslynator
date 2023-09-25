@@ -6,7 +6,7 @@
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
-    <projectUrl>https://github.com/josefpihrt/roslynator</projectUrl>
+    <projectUrl>https://github.com/dotnet/roslynator</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Roslynator command-line tool</description>
@@ -14,14 +14,14 @@
     <copyright>Copyright (c) 2017-2022 Josef Pihrt</copyright>
     <tags>CLI Roslyn C# CSharp VB VisualBasic</tags>
     <developmentDependency>true</developmentDependency>
-    <repository type="git" url="https://github.com/josefpihrt/roslynator.git" />
+    <repository type="git" url="https://github.com/dotnet/roslynator.git" />
     <readme>docs\README.md</readme>
   </metadata>
   <files>
     <file src="_._" target="lib/net45/" />
     <file src="_._" target="lib/netstandard1.0/" />
     <file src="$publishDir$net48\**\*" target="tools/net48/" exclude="**\*.pdb;**\*.xml" />
-    <file src="..\..\images\icon.png" target="" />
+    <file src="..\..\images\roslynator-logo-small.png" target="icon.png" />
     <file src="docs\NetFramework\NuGetReadme.md" target="docs\README.md" />
   </files>
 </package>

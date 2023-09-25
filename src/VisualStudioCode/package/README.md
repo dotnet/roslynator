@@ -2,7 +2,7 @@
 
 A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-For further information please visit Roslynator [repo](https://github.com/JosefPihrt/Roslynator).
+For further information please visit Roslynator [repo](https://github.com/dotnet/roslynator).
 
 ## Configuration
 
@@ -68,4 +68,4 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 ## Thanks
 
 * Thanks to [Pekka Savolainen](https://github.com/savpek) who pioneered the way for Roslyn analyzers on Visual Studio Code.
-* Thanks to [Adrian Wilczynski](https://github.com/AdrianWilczynski) who added several great [PRs](https://github.com/JosefPihrt/Roslynator/pulls?q=author%3AAdrianWilczynski).
+* Thanks to [Adrian Wilczynski](https://github.com/AdrianWilczynski) who added several great [PRs](https://github.com/dotnet/roslynator/pulls?q=author%3AAdrianWilczynski).

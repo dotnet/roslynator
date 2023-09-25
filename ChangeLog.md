@@ -9,7 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Update logo ([#1208](https://github.com/dotnet/roslynator/pull/1208)).
+- Migrate to .NET Foundation ([#1206](https://github.com/dotnet/roslynator/pull/1206))
 - Bump Microsoft.Build.Locator to 1.6.1 ([#1194](https://github.com/josefpihrt/roslynator/pull/1194))
+
+### Fixed
+
+- Fix [RCS1164](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1164) ([#1196](https://github.com/JosefPihrt/Roslynator/pull/1196)).
+- Fix [RCS1241](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1241) ([#1197](https://github.com/JosefPihrt/Roslynator/pull/1197)).
+- Fix [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) ([#1205](https://github.com/JosefPihrt/Roslynator/pull/1205)).
 
 ## [4.5.0] - 2023-08-27
 

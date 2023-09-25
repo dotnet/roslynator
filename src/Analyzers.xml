@@ -1450,7 +1450,7 @@ Default maximum length is 140.</Summary>
     </ConfigOptions>
     <Remarks>Code fixer is available for this analyzer but it cannot handle all cases as it's not possible to wrap a line in all cases (e.g. long string literals).
 
-If a particular line seems that it could be reasonably wrapped but it's not, please file an [issue](https://github.com/JosefPihrt/Roslynator/issues/new).
+If a particular line seems that it could be reasonably wrapped but it's not, please file an [issue](https://github.com/dotnet/roslynator/issues/new).
     </Remarks>
   </Analyzer>
   <Analyzer>

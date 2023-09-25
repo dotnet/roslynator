@@ -4,7 +4,7 @@ This package extends functionality of package [Microsoft.CodeAnalysis.CSharp](ht
 
 ## Feedback
 
-* File an issue on [GitHub](https://github.com/josefpihrt/roslynator/issues/new)
+* File an issue on [GitHub](https://github.com/dotnet/roslynator/issues/new)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
 ## Related Products

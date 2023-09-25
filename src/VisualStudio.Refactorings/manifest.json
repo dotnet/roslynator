@@ -9,5 +9,5 @@
   "publisher": "josefpihrt",
   "private": false,
   "qna": true,
-  "repo": "https://github.com/JosefPihrt/Roslynator"
+  "repo": "https://github.com/dotnet/roslynator"
 }

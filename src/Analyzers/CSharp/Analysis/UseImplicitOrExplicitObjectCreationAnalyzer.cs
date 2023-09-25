@@ -215,10 +215,28 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                 }
             case SyntaxKind.CoalesceExpression:
                 {
-                    if (UseImplicitObjectCreationWhenTypeIsNotObvious(context))
+                    ObjectCreationTypeStyle style = context.GetObjectCreationTypeStyle();
+
+                    if (style == ObjectCreationTypeStyle.Implicit)
                     {
                         var coalesceExpression = (BinaryExpressionSyntax)parent;
                         AnalyzeExpression(context, objectCreation, coalesceExpression.Left);
+                    }
+                    else if (style == ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious
+                        && parent.IsParentKind(SyntaxKind.EqualsValueClause))
+                    {
+                        if (parent.Parent.Parent is VariableDeclaratorSyntax variableDeclarator)
+                        {
+                            if (variableDeclarator.Parent is VariableDeclarationSyntax variableDeclaration
+                                && variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration))
+                            {
+                                AnalyzeType(context, objectCreation, variableDeclaration.Type);
+                            }
+                        }
+                        else if (parent.Parent.Parent is PropertyDeclarationSyntax propertyDeclaration)
+                        {
+                            AnalyzeType(context, objectCreation, propertyDeclaration.Type);
+                        }
                     }
 
                     break;
@@ -391,8 +409,40 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
             case SyntaxKind.CoalesceAssignmentExpression:
             case SyntaxKind.AddAssignmentExpression:
             case SyntaxKind.SubtractAssignmentExpression:
+                {
+                    if (UseExplicitObjectCreationWhenTypeIsNotObvious(context))
+                        ReportDiagnostic(context, implicitObjectCreation);
+
+                    break;
+                }
             case SyntaxKind.CoalesceExpression:
                 {
+                    if (parent.IsParentKind(SyntaxKind.EqualsValueClause))
+                    {
+                        switch (parent.Parent.Parent)
+                        {
+                            case VariableDeclaratorSyntax variableDeclarator:
+                                {
+                                    if (variableDeclarator.Parent is VariableDeclarationSyntax)
+                                    {
+                                        if (UseExplicitObjectCreation(context))
+                                            ReportDiagnostic(context, implicitObjectCreation);
+
+                                        return;
+                                    }
+
+                                    break;
+                                }
+                            case PropertyDeclarationSyntax:
+                                {
+                                    if (UseExplicitObjectCreation(context))
+                                        ReportDiagnostic(context, implicitObjectCreation);
+
+                                    return;
+                                }
+                        }
+                    }
+
                     if (UseExplicitObjectCreationWhenTypeIsNotObvious(context))
                         ReportDiagnostic(context, implicitObjectCreation);
 

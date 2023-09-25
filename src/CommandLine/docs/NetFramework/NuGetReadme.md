@@ -26,7 +26,7 @@ See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for a full
 
 ## Feedback
 
-* File an issue on [GitHub](https://github.com/josefpihrt/roslynator/issues/new)
+* File an issue on [GitHub](https://github.com/dotnet/roslynator/issues/new)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
 ## Related Products
