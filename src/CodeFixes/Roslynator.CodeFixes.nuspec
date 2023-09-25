@@ -22,6 +22,6 @@
   <files>
     <file src="bin\$Configuration$\netstandard1.3\Roslynator*.dll" target="analyzers\dotnet\cs" />
     <file src="tools\*.ps1" target="tools\" />
-    <file src="..\..\images\icon.png" target="" />
+    <file src="..\..\images\roslynator-logo-small.png" target="icon.png" />
   </files>
 </package>

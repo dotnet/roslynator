@@ -7,8 +7,8 @@
     <MoreInfo>https://github.com/JosefPihrt/Roslynator</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>https://github.com/JosefPihrt/Roslynator/blob/main/ChangeLog.md</ReleaseNotes>
-    <Icon>Roslynator.ico</Icon>
-    <PreviewImage>RoslynatorPreview.png</PreviewImage>
+    <Icon>roslynator-logo-small.png</Icon>
+    <PreviewImage>roslynator-logo-large.png</PreviewImage>
     <Tags>Roslyn;Refactoring;Analyzer;CodeAnalysis;C#;CSharp;Productivity;Diagnostic</Tags>
   </Metadata>
   <Installation>
