@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="..\..\..\images\roslynator-logo-small.png" Pack="true" PackagePath="icon.png" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>

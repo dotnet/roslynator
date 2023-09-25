@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Migrate to .NET Foundation ([#1206](https://github.com/josefpihrt/roslynator/pull/1206))
+- Update logo ([#1208](https://github.com/dotnet/roslynator/pull/1208)).
+- Migrate to .NET Foundation ([#1206](https://github.com/dotnet/roslynator/pull/1206))
 
 ### Fixed
 
