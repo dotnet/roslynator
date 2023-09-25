@@ -1,4 +1,6 @@
-﻿Copyright (c) .NET Foundation and Contributors. All Rights Reserved.
+This project contains code from https://github.com/JosefPihrt/Orang
+
+Copyright (c) Josef Pihrt. All rights reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 these files except in compliance with the License. You may obtain a copy of the

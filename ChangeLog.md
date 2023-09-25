@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   - Add nullable annotation to public API ([#1198](https://github.com/JosefPihrt/Roslynator/pull/1198)).
 
+### Changed
+
+- Update logo ([#1208](https://github.com/dotnet/roslynator/pull/1208)).
+- Migrate to .NET Foundation ([#1206](https://github.com/dotnet/roslynator/pull/1206))
+
 ### Fixed
 
 - Fix [RCS1164](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1164) ([#1196](https://github.com/JosefPihrt/Roslynator/pull/1196)).

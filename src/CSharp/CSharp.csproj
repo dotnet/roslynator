@@ -29,12 +29,12 @@ Roslynator.CSharp.SyntaxInfo
 Roslynator.NameGenerator</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/josefpihrt/roslynator</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/dotnet/roslynator</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Roslyn;Analyzer;Refactoring;Productivity;CodeAnalysis;C#;CSharp</PackageTags>
     <PackageReadmeFile>docs/README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/josefpihrt/roslynator.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/dotnet/roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
@@ -123,7 +123,7 @@ Roslynator.NameGenerator</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="..\..\images\roslynator-logo-small.png" Pack="true" PackagePath="icon.png" Visible="false" />
     <None Include="docs\NuGetReadme.md" Pack="true" PackagePath="docs\README.md" />
   </ItemGroup>
 

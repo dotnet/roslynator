@@ -4,7 +4,7 @@ A shared package used by the Roslynator Testing Framework. Do not install this p
 
 ## Feedback
 
-* File an issue on [GitHub](https://github.com/josefpihrt/roslynator/issues/new)
+* File an issue on [GitHub](https://github.com/dotnet/roslynator/issues/new)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
 ## Related Products

@@ -21,5 +21,5 @@ Any vulnerabilities that affect older versions will be considered on a case-by-c
 
 ## Reporting a Vulnerability
 
-Please report (suspected) security vulnerabilities to GitHub [issues](https://github.com/JosefPihrt/Roslynator/issues/new).
+Please report (suspected) security vulnerabilities to GitHub [issues](https://github.com/dotnet/roslynator/issues/new).
 Once confirmed, we will release a patch as soon as possible.
