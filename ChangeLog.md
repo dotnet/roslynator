@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update logo ([#1208](https://github.com/dotnet/roslynator/pull/1208)).
-- Migrate to .NET Foundation ([#1206](https://github.com/dotnet/roslynator/pull/1206))
+- Migrate to .NET Foundation ([#1206](https://github.com/dotnet/roslynator/pull/1206), [#1207](https://github.com/dotnet/roslynator/pull/1207)).
 
 ### Fixed
 
