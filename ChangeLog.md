@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add social card ([#1212](https://github.com/dotnet/roslynator/pull/1212)).
+
 ### Changed
 
 - Update logo ([#1208](https://github.com/dotnet/roslynator/pull/1208), [#1210](https://github.com/dotnet/roslynator/pull/1210)).
