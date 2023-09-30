@@ -9,11 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-  - Add nullable annotation to public API ([#1198](https://github.com/JosefPihrt/Roslynator/pull/1198)).
+- Add social card ([#1212](https://github.com/dotnet/roslynator/pull/1212)).
+- Add nullable annotation to public API ([#1198](https://github.com/JosefPihrt/Roslynator/pull/1198)).
 
 ### Changed
 
-- Update logo ([#1208](https://github.com/dotnet/roslynator/pull/1208)).
+- Update logo ([#1208](https://github.com/dotnet/roslynator/pull/1208), [#1210](https://github.com/dotnet/roslynator/pull/1210)).
 - Migrate to .NET Foundation ([#1206](https://github.com/dotnet/roslynator/pull/1206), [#1207](https://github.com/dotnet/roslynator/pull/1207)).
 
 ### Fixed
