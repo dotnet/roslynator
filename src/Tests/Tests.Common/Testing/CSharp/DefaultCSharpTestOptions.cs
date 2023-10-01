@@ -28,10 +28,8 @@ internal static class DefaultCSharpTestOptions
         return CSharpTestOptions.Default
             .WithParseOptions(CSharpTestOptions.Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp10))
             .WithAllowedCompilerDiagnosticIds(allowedCompilerDiagnosticIds)
-            .WithConfigOptions(new KeyValuePair<string, string>[]
-            {
-                new("indent_size", "4"),
-                new("indent_style", "space"),
-            });
+            .AddConfigOptions(
+                ("indent_size", "4"),
+                ("indent_style", "space"));
     }
 }

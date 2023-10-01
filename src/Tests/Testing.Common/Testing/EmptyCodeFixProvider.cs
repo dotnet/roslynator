@@ -5,9 +5,15 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
 
+#pragma warning disable RCS1223
+
 namespace Roslynator.Testing;
 
-public sealed class DummyCodeFixProvider : CodeFixProvider
+/// <summary>
+/// Represents code fix provider that does not provide any code fixes.
+/// Use this code fix provider in <see cref="DiagnosticVerifier{TAnalyzer, TFixProvider}"/> when testing analyzers that do not provide any code fixes.
+/// </summary>
+public sealed class EmptyCodeFixProvider : CodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds => throw new NotSupportedException();
 

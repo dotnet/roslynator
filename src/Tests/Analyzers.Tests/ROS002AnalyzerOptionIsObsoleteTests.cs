@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class ROS0002AnalyzerOptionIsObsoleteTests : AbstractCSharpDiagnosticVerifier<AnalyzerOptionIsObsoleteAnalyzer, DummyCodeFixProvider>
+public class ROS0002AnalyzerOptionIsObsoleteTests : AbstractCSharpDiagnosticVerifier<AnalyzerOptionIsObsoleteAnalyzer, EmptyCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = CommonDiagnosticRules.AnalyzerOptionIsObsolete;
 

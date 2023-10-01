@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
 using Xunit;
 
-namespace Roslynator.Analyzers.Tests.UnitTests;
+namespace Roslynator.CSharp.Analysis.Tests;
 
 public class PatternMatchingVariableDeclarationHelperTests
 {
