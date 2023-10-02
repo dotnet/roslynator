@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix [RCS1164](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1164) ([#1196](https://github.com/JosefPihrt/Roslynator/pull/1196)).
 - Fix [RCS1241](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1241) ([#1197](https://github.com/JosefPihrt/Roslynator/pull/1197)).
 - Fix [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) ([#1205](https://github.com/JosefPihrt/Roslynator/pull/1205)).
+- [CLI] Fix globbing ([#1215](https://github.com/JosefPihrt/Roslynator/pull/1215)).
 
 ## [4.5.0] - 2023-08-27
 
