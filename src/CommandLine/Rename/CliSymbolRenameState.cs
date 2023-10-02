@@ -47,7 +47,10 @@ internal class CliSymbolRenameState : SymbolRenameState
 
     public ConsoleDialog UserDialog { get; set; }
 
-    protected override async Task RenameSymbolsAsync(ImmutableArray<ProjectId> projects, CancellationToken cancellationToken = default)
+    protected override async Task RenameSymbolsAsync(
+        ImmutableArray<ProjectId> projects,
+        bool isSolution,
+        CancellationToken cancellationToken = default)
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
         TimeSpan lastElapsed = TimeSpan.Zero;
@@ -64,6 +67,9 @@ internal class CliSymbolRenameState : SymbolRenameState
                 Project project = CurrentSolution.GetProject(projects[j]);
 
                 WriteLine($"  Rename {GetScopePluralName(renameScopes[i])} in '{project.Name}' {$"{j + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
+
+                if (!isSolution)
+                    CurrentDirectoryPath = Path.GetDirectoryName(project.FilePath);
 
                 await AnalyzeProjectAsync(project, renameScopes[i], cancellationToken);
 
