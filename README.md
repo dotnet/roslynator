@@ -12,8 +12,8 @@ Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://g
   - [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers)
   - [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers)
   - [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers)
-- [Testing framework](testing-framework) that allows unit testing of analyzers, refactoring and code fixes
-- [.NET client libraries](ref) that extend Roslyn API
+- [Testing framework](#testing-framework) that allows unit testing of analyzers, refactoring and code fixes
+- [.NET client libraries](#client-libraries) that extend Roslyn API
 - [Command line tool](#command-line-tool)
 
 ## Documentation
