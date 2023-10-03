@@ -22,6 +22,8 @@ internal class SymbolProvider
 
     public Matcher? FileSystemMatcher { get; init; }
 
+    public string RootDirectoryPath { get; init; }
+
     public async Task<IEnumerable<ISymbol>> GetSymbolsAsync(
         Project project,
         RenameScope scope,
@@ -50,6 +52,7 @@ internal class SymbolProvider
         {
             IncludeGeneratedCode = IncludeGeneratedCode,
             FileSystemMatcher = FileSystemMatcher,
+            RootDirectoryPath = RootDirectoryPath,
         };
 
         analyzer.SymbolKinds.AddRange(symbolKinds);
@@ -89,6 +92,8 @@ internal class SymbolProvider
         public bool IncludeGeneratedCode { get; init; }
 
         public Matcher? FileSystemMatcher { get; init; }
+
+        public string RootDirectoryPath { get; init; }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -146,7 +151,7 @@ internal class SymbolProvider
 
         private void AddSymbol(ISymbol symbol)
         {
-            if (FileSystemMatcher?.IsMatch(symbol) != false)
+            if (FileSystemMatcher?.IsMatch(symbol, RootDirectoryPath) != false)
                 Symbols.Add(symbol);
         }
     }

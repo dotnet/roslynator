@@ -18,16 +18,20 @@ namespace Roslynator;
 
 internal static class Extensions
 {
-    public static bool IsMatch(this Matcher matcher, ISymbol symbol)
+    public static bool IsMatch(this Matcher matcher, ISymbol symbol, string rootDirectoryPath)
     {
         foreach (Location location in symbol.Locations)
         {
             SyntaxTree? tree = location.SourceTree;
 
-            if (tree is not null
-                && !matcher.Match(tree.FilePath).HasMatches)
+            if (tree is not null)
             {
-                return false;
+                PatternMatchingResult result = (rootDirectoryPath is not null)
+                    ? matcher.Match(tree.FilePath, rootDirectoryPath)
+                    : matcher.Match(tree.FilePath);
+
+                if (!result.HasMatches)
+                    return false;
             }
         }
 
