@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,6 +49,8 @@ internal class SymbolRenameState
 
     private bool DryRun => Options.DryRun;
 
+    protected string CurrentDirectoryPath { get; set; }
+
     public Task RenameSymbolsAsync(CancellationToken cancellationToken = default)
     {
         ImmutableArray<ProjectId> projectIds = CurrentSolution
@@ -55,7 +58,9 @@ internal class SymbolRenameState
             .GetTopologicallySortedProjects(cancellationToken)
             .ToImmutableArray();
 
-        return RenameSymbolsAsync(projectIds, cancellationToken);
+        CurrentDirectoryPath = Path.GetDirectoryName(CurrentSolution.FilePath);
+
+        return RenameSymbolsAsync(projectIds, isSolution: true, cancellationToken);
     }
 
     public Task RenameSymbolsAsync(
@@ -68,11 +73,12 @@ internal class SymbolRenameState
             .Join(projects, id => id, p => p.Id, (id, _) => id)
             .ToImmutableArray();
 
-        return RenameSymbolsAsync(projectIds, cancellationToken);
+        return RenameSymbolsAsync(projectIds, isSolution: false, cancellationToken);
     }
 
     protected virtual async Task RenameSymbolsAsync(
         ImmutableArray<ProjectId> projects,
+        bool isSolution,
         CancellationToken cancellationToken = default)
     {
         foreach (RenameScope renameScope in GetRenameScopes())
@@ -83,6 +89,9 @@ internal class SymbolRenameState
 
                 Project project = CurrentSolution.GetProject(projects[j]);
 
+                if (!isSolution)
+                    CurrentDirectoryPath = Path.GetDirectoryName(project.FilePath);
+
                 await AnalyzeProjectAsync(project, renameScope, cancellationToken).ConfigureAwait(false);
             }
         }
@@ -92,6 +101,8 @@ internal class SymbolRenameState
         Project project,
         CancellationToken cancellationToken = default)
     {
+        CurrentDirectoryPath = Path.GetDirectoryName(project.FilePath);
+
         foreach (RenameScope renameScope in GetRenameScopes())
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -135,6 +146,7 @@ internal class SymbolRenameState
             {
                 IncludeGeneratedCode = Options.IncludeGeneratedCode,
                 FileSystemMatcher = Options.FileSystemMatcher,
+                RootDirectoryPath = CurrentDirectoryPath,
             };
 
             IEnumerable<ISymbol> symbols = await symbolProvider.GetSymbolsAsync(project, scope, cancellationToken).ConfigureAwait(false);
