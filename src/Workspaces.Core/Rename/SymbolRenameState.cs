@@ -49,7 +49,7 @@ internal class SymbolRenameState
 
     private bool DryRun => Options.DryRun;
 
-    protected string CurrentDirectoryPath { get; set; }
+    protected string? CurrentDirectoryPath { get; set; }
 
     public Task RenameSymbolsAsync(CancellationToken cancellationToken = default)
     {

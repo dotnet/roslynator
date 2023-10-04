@@ -22,7 +22,7 @@ internal class SymbolProvider
 
     public Matcher? FileSystemMatcher { get; init; }
 
-    public string RootDirectoryPath { get; init; }
+    public string? RootDirectoryPath { get; init; }
 
     public async Task<IEnumerable<ISymbol>> GetSymbolsAsync(
         Project project,
@@ -93,7 +93,7 @@ internal class SymbolProvider
 
         public Matcher? FileSystemMatcher { get; init; }
 
-        public string RootDirectoryPath { get; init; }
+        public string? RootDirectoryPath { get; init; }
 
         public override void Initialize(AnalysisContext context)
         {

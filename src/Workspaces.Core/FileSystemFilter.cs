@@ -22,7 +22,7 @@ internal sealed class FileSystemFilter
 
     public Matcher Matcher { get; }
 
-    public string RootDirectoryPath { get; set; }
+    public string? RootDirectoryPath { get; set; }
 
     public static FileSystemFilter? CreateOrDefault(
         IEnumerable<string> include,

@@ -18,7 +18,7 @@ namespace Roslynator;
 
 internal static class Extensions
 {
-    public static bool IsMatch(this Matcher matcher, ISymbol symbol, string rootDirectoryPath)
+    public static bool IsMatch(this Matcher matcher, ISymbol symbol, string? rootDirectoryPath)
     {
         foreach (Location location in symbol.Locations)
         {
