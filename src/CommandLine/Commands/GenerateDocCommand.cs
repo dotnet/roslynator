@@ -230,7 +230,7 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
 
         WriteLine($"Generate documentation to '{Options.Output}'", Verbosity.Minimal);
 
-        IEnumerable<DocumentationGeneratorResult> results = generator.Generate(heading: Options.Heading, cancellationToken);
+        IEnumerable<DocumentationGeneratorResult> results = generator.Generate(cancellationToken);
 
         if (DocumentationHost == DocumentationHost.Sphinx)
         {

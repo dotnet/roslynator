@@ -151,7 +151,7 @@ public class DocumentationGenerator
         return writer;
     }
 
-    public IEnumerable<DocumentationGeneratorResult> Generate(string heading = null, CancellationToken cancellationToken = default)
+    public IEnumerable<DocumentationGeneratorResult> Generate(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
