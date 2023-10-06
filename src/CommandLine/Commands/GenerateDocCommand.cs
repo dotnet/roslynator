@@ -283,6 +283,8 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
         File.WriteAllText(rootFilePath, result.Content, _defaultEncoding);
 
         WriteLine($"Documentation root successfully generated to '{rootFilePath}'.", Verbosity.Minimal);
+
+        generator.Options.RootDirectoryUrl = null;
     }
 
     private static void AddTableOfContents(IEnumerable<DocumentationGeneratorResult> results)
