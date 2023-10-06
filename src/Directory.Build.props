@@ -5,7 +5,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Roslynator.snk</AssemblyOriginatorKeyFile>
     <Authors>Josef Pihrt</Authors>
-    <Copyright>Copyright (c) 2016-2023 Josef Pihrt</Copyright>
+    <Copyright>Copyright (c) .NET Foundation and Contributors</Copyright>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <RoslynatorPublicKey>0024000004800000940000000602000000240000525341310004000001000100d348e1a51bc190259aed17cfe132736241fef462de45a5de6c881c7f9d705073c7a2a08ba5ae493c7e878fe5f3cf7909e89045cca696422f03b284b147daf6b93c47bc53dd61ceeae60f73149d183032f029761d0d59aab49a26be4f6af71cd8194ace937642bdcb515f07530096122e97cfe6c8549a843530f71c24c7e3dab8</RoslynatorPublicKey>
     <IsPackable>false</IsPackable>
@@ -15,8 +15,8 @@
     <Version Condition="'$(Version)' == ''">1.0.0</Version>
     <RoslynatorRoslynVersion>4.4.0</RoslynatorRoslynVersion>
     <RoslynatorRoslynAnalyzersVersion>3.3.4</RoslynatorRoslynAnalyzersVersion>
-    <RoslynatorCliRoslynVersion>4.6.0</RoslynatorCliRoslynVersion>
-    <RoslynatorTestingRoslynVersion>4.6.0</RoslynatorTestingRoslynVersion>
+    <RoslynatorCliRoslynVersion>4.7.0</RoslynatorCliRoslynVersion>
+    <RoslynatorTestingRoslynVersion>4.7.0</RoslynatorTestingRoslynVersion>
     <RoslynatorCliPackageVersion>$(RoslynatorCliVersion)</RoslynatorCliPackageVersion>
     <RoslynatorPackageVersion>$(Version)</RoslynatorPackageVersion>
     <RoslynatorVersion>$(RoslynatorPackageVersion)</RoslynatorVersion>

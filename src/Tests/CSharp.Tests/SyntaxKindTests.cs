@@ -584,6 +584,10 @@ public static class SyntaxKindTests
                 // new in 4.4.0
                 case SyntaxKind.FileKeyword:
                 case SyntaxKind.ScopedType:
+                // new in 4.7.0
+                case SyntaxKind.CollectionExpression:
+                case SyntaxKind.ExpressionElement:
+                case SyntaxKind.SpreadElement:
                     {
                         break;
                     }
