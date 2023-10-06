@@ -157,14 +157,6 @@ public class DocumentationGenerator
 
         DocumentationDepth depth = Options.Depth;
 
-        using (DocumentationWriter writer = CreateWriter())
-        {
-            DocumentationGeneratorResult result = GenerateRoot(writer, heading);
-
-            if (result.Content is not null)
-                yield return result;
-        }
-
         if (depth <= DocumentationDepth.Namespace)
         {
             IEnumerable<INamedTypeSymbol> typeSymbols = DocumentationModel.Types.Where(f => !Options.ShouldBeIgnored(f));
