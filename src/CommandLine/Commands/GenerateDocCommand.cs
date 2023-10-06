@@ -230,7 +230,7 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
 
         WriteLine($"Generate documentation to '{Options.Output}'", Verbosity.Minimal);
 
-        IEnumerable<DocumentationGeneratorResult> results = generator.Generate(heading: Options.Heading, cancellationToken);
+        IEnumerable<DocumentationGeneratorResult> results = generator.Generate(cancellationToken);
 
         if (DocumentationHost == DocumentationHost.Sphinx)
         {
@@ -283,6 +283,8 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
         File.WriteAllText(rootFilePath, result.Content, _defaultEncoding);
 
         WriteLine($"Documentation root successfully generated to '{rootFilePath}'.", Verbosity.Minimal);
+
+        generator.Options.RootDirectoryUrl = null;
     }
 
     private static void AddTableOfContents(IEnumerable<DocumentationGeneratorResult> results)

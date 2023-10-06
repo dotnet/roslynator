@@ -158,6 +158,9 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
             return null;
         }
 
+        if (FileSystemFilter is not null)
+            FileSystemFilter.RootDirectoryPath = Path.GetDirectoryName(path);
+
         return await ExecuteAsync(projectOrSolution, cancellationToken);
     }
 
