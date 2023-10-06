@@ -12,12 +12,5 @@ $rootDirectoryUrl="build/ref"
  --group-by-common-namespace `
  --ignored-common-parts content `
  --ignored-root-parts all `
- --max-derived-types 10
-
-& $roslynatorExe generate-doc-root generate_ref_docs.sln `
- --properties Configuration=Release `
- -o "build/ref.md" `
- --host docusaurus `
- --heading "Roslynator .NET API Reference" `
- --ignored-parts content `
- --root-directory-url "ref"
+ --max-derived-types 10 `
+ --root-file-path "build"
