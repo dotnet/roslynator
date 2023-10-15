@@ -16,7 +16,6 @@ namespace Roslynator.Testing;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public sealed class DiagnosticTestData
 {
-    [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     /// <summary>
     /// Initializes a new instance of <see cref="DiagnosticTestData"/>.
     /// </summary>
@@ -29,6 +28,7 @@ public sealed class DiagnosticTestData
     /// <param name="formatProvider"></param>
     /// <param name="equivalenceKey"></param>
     /// <param name="alwaysVerifyAdditionalLocations"></param>
+    [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     public DiagnosticTestData(
         DiagnosticDescriptor descriptor,
         string source,

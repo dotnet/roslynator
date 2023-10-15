@@ -13,7 +13,6 @@ namespace Roslynator.Testing;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public sealed class CompilerDiagnosticFixTestData
 {
-    [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     /// <summary>
     /// Initializes a new instance of <see cref="CompilerDiagnosticFixTestData"/>
     /// </summary>
@@ -21,6 +20,7 @@ public sealed class CompilerDiagnosticFixTestData
     /// <param name="source"></param>
     /// <param name="additionalFiles"></param>
     /// <param name="equivalenceKey"></param>
+    [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     public CompilerDiagnosticFixTestData(
         string diagnosticId,
         string source,
