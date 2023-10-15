@@ -8,7 +8,7 @@ internal static class Logger
 {
     public static ConsoleWriter ConsoleOut { get; } = ConsoleWriter.Instance;
 
-    public static TextWriterWithVerbosity Out { get; set; }
+    public static TextWriterWithVerbosity? Out { get; set; }
 
     public static void Write(char value)
     {
@@ -94,13 +94,13 @@ internal static class Logger
         Out?.Write(value);
     }
 
-    public static void Write(string value)
+    public static void Write(string? value)
     {
         ConsoleOut.Write(value);
         Out?.Write(value);
     }
 
-    public static void Write(string value, Verbosity verbosity)
+    public static void Write(string? value, Verbosity verbosity)
     {
         ConsoleOut.Write(value, verbosity: verbosity);
         Out?.Write(value, verbosity: verbosity);

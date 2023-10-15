@@ -33,7 +33,7 @@ internal static class SplitUtility
         "-|" + _splitCasePattern,
         RegexOptions.IgnorePatternWhitespace);
 
-    public static Regex GetSplitRegex(SplitMode splitMode)
+    public static Regex? GetSplitRegex(SplitMode splitMode)
     {
         return splitMode switch
         {

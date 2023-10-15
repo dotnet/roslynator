@@ -9,7 +9,7 @@ namespace Roslynator.Text;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal readonly struct IndentationChange : IEquatable<IndentationChange>
 {
-    public IndentationChange(ImmutableArray<IndentationInfo> indentations, string replacement)
+    public IndentationChange(ImmutableArray<IndentationInfo> indentations, string? replacement)
     {
         Indentations = indentations;
         Replacement = replacement;
@@ -19,7 +19,7 @@ internal readonly struct IndentationChange : IEquatable<IndentationChange>
 
     public ImmutableArray<IndentationInfo> Indentations { get; }
 
-    public string Replacement { get; }
+    public string? Replacement { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay

@@ -42,9 +42,9 @@ public readonly struct SingleParameterLambdaExpressionInfo
     /// <summary>
     /// The parameter list that contains the parameter.
     /// </summary>
-    public ParameterListSyntax ParameterList
+    public ParameterListSyntax? ParameterList
     {
-        get { return (IsParenthesizedLambda) ? (ParameterListSyntax)Parameter.Parent : null; }
+        get { return (IsParenthesizedLambda) ? (ParameterListSyntax?)Parameter.Parent : null; }
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public readonly struct SingleParameterLambdaExpressionInfo
     }
 
     private static SingleParameterLambdaExpressionInfo CreateImpl(
-        LambdaExpressionSyntax lambdaExpression,
+        LambdaExpressionSyntax? lambdaExpression,
         bool allowMissing = false)
     {
         switch (lambdaExpression?.Kind())
@@ -118,7 +118,7 @@ public readonly struct SingleParameterLambdaExpressionInfo
                 {
                     var parenthesizedLambda = (ParenthesizedLambdaExpressionSyntax)lambdaExpression;
 
-                    ParameterSyntax parameter = parenthesizedLambda
+                    ParameterSyntax? parameter = parenthesizedLambda
                         .ParameterList?
                         .Parameters
                         .SingleOrDefault(shouldThrow: false);
@@ -131,7 +131,7 @@ public readonly struct SingleParameterLambdaExpressionInfo
                     if (!Check(body, allowMissing))
                         break;
 
-                    return new SingleParameterLambdaExpressionInfo(parenthesizedLambda, parameter, body);
+                    return new SingleParameterLambdaExpressionInfo(parenthesizedLambda, parameter!, body);
                 }
         }
 

@@ -20,7 +20,7 @@ internal readonly struct EnumFieldSymbolInfo
 
     public bool HasValue => Symbol?.HasConstantValue == true;
 
-    public string Name => Symbol?.Name;
+    public string? Name => Symbol?.Name;
 
     public static EnumFieldSymbolInfo Create(IFieldSymbol fieldSymbol)
     {

@@ -19,7 +19,7 @@ internal class DiffTracker
         return _dic.TryGetValue(documentId, out spans);
     }
 
-    internal static TextSpan GetCurrentSpan(TextSpan span, DocumentId documentId, DiffTracker diffTracker)
+    internal static TextSpan GetCurrentSpan(TextSpan span, DocumentId documentId, DiffTracker? diffTracker)
     {
         return diffTracker?.GetCurrentSpan(span, documentId) ?? span;
     }
@@ -80,7 +80,7 @@ internal class DiffTracker
         int diff,
         Solution solution)
     {
-        foreach (IGrouping<DocumentId, Location> grouping in locations.GroupBy(f => solution.GetDocument(f.SourceTree).Id))
+        foreach (IGrouping<DocumentId, Location> grouping in locations.GroupBy(f => solution.GetDocument(f.SourceTree)!.Id))
         {
             DocumentId documentId = grouping.Key;
 

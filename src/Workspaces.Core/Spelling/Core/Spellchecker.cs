@@ -53,7 +53,7 @@ internal partial class Spellchecker
 
     public Spellchecker(
         SpellingData data,
-        SpellcheckerOptions options = null)
+        SpellcheckerOptions? options = null)
     {
         Data = data;
         Options = options ?? SpellcheckerOptions.Default;
@@ -61,7 +61,7 @@ internal partial class Spellchecker
 
     public ImmutableArray<SpellingMatch> AnalyzeText(string value)
     {
-        ImmutableArray<SpellingMatch>.Builder builder = null;
+        ImmutableArray<SpellingMatch>.Builder? builder = null;
 
         int prevEnd = 0;
 
@@ -85,7 +85,7 @@ internal partial class Spellchecker
         string value,
         int startIndex,
         int length,
-        ref ImmutableArray<SpellingMatch>.Builder builder)
+        ref ImmutableArray<SpellingMatch>.Builder? builder)
     {
         int sequenceEndIndex = -1;
 
@@ -125,7 +125,7 @@ internal partial class Spellchecker
         string input,
         string value,
         int index,
-        ref ImmutableArray<SpellingMatch>.Builder builder)
+        ref ImmutableArray<SpellingMatch>.Builder? builder)
     {
         Match match = _splitRegex.Match(value);
 
@@ -154,9 +154,9 @@ internal partial class Spellchecker
         string input,
         string value,
         int index,
-        string parentValue,
+        string? parentValue,
         int parentIndex,
-        ref ImmutableArray<SpellingMatch>.Builder builder)
+        ref ImmutableArray<SpellingMatch>.Builder? builder)
     {
         if (IsMatch(value)
             && !IsContainedInNonWord(input, value, index, Data.WordList)

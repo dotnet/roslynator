@@ -132,7 +132,7 @@ public static class SyntaxInfo
     /// <param name="walkDownParentheses"></param>
     /// <param name="allowMissing"></param>
     public static ConditionalExpressionInfo ConditionalExpressionInfo(
-        ConditionalExpressionSyntax conditionalExpression,
+        ConditionalExpressionSyntax? conditionalExpression,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
@@ -166,7 +166,7 @@ public static class SyntaxInfo
     /// <param name="walkDownParentheses"></param>
     /// <param name="allowMissing"></param>
     internal static ConditionalStatementInfo ConditionalStatementInfo(
-        IfStatementSyntax ifStatement,
+        IfStatementSyntax? ifStatement,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {

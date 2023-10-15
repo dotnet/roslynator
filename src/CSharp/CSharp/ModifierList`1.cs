@@ -106,7 +106,7 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <param name="node"></param>
     /// <param name="kind"></param>
     /// <param name="comparer"></param>
-    public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
+    public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind>? comparer = null)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -124,7 +124,7 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <param name="node"></param>
     /// <param name="modifier"></param>
     /// <param name="comparer"></param>
-    public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null)
+    public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken>? comparer = null)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -149,7 +149,7 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
             }
             else
             {
-                AttributeListSyntax attributeList = GetAttributeLists(node).LastOrDefault();
+                AttributeListSyntax? attributeList = GetAttributeLists(node).LastOrDefault();
 
                 if (attributeList is not null)
                 {

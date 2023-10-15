@@ -112,10 +112,10 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSy
         if (object.ReferenceEquals(x, y))
             return true;
 
-        if (Default.Equals(x, default(TSymbol)))
+        if (Default.Equals(x, default(TSymbol)!))
             return false;
 
-        if (Default.Equals(y, default(TSymbol)))
+        if (Default.Equals(y, default(TSymbol)!))
             return false;
 
         if (!StringComparer.Ordinal.Equals(x.MetadataName, y.MetadataName))
@@ -171,7 +171,7 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSy
         if (obj is null)
             throw new ArgumentNullException(nameof(obj));
 
-        if (Default.Equals(obj, default(TSymbol)))
+        if (Default.Equals(obj, default(TSymbol)!))
             return 0;
 
         int hashCode = Hash.Create(MetadataName.GetHashCode(obj.MetadataName));

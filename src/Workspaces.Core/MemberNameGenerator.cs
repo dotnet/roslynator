@@ -68,7 +68,7 @@ internal static class MemberNameGenerator
                 if (!referenceLocation.IsImplicit
                     && !referenceLocation.IsCandidateLocation)
                 {
-                    SemanticModel semanticModel = await referenceLocation.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                    SemanticModel semanticModel = (await referenceLocation.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
                     foreach (ISymbol symbol in semanticModel.LookupSymbols(referenceLocation.Location.SourceSpan.Start))
                     {
