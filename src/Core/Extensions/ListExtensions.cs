@@ -8,7 +8,7 @@ namespace Roslynator;
 
 internal static class ListExtensions
 {
-    public static T SingleOrDefault<T>(this IReadOnlyList<T> list, bool shouldThrow)
+    public static T? SingleOrDefault<T>(this IReadOnlyList<T> list, bool shouldThrow)
     {
         if (list is null)
             throw new ArgumentNullException(nameof(list));
@@ -23,7 +23,7 @@ internal static class ListExtensions
         }
     }
 
-    public static T SingleOrDefault<T>(this IReadOnlyList<T> list, Func<T, bool> predicate, bool shouldThrow)
+    public static T? SingleOrDefault<T>(this IReadOnlyList<T> list, Func<T, bool> predicate, bool shouldThrow)
     {
         if (list is null)
             throw new ArgumentNullException(nameof(list));

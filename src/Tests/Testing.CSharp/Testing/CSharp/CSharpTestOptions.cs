@@ -26,12 +26,12 @@ public sealed class CSharpTestOptions : TestOptions
     /// <param name="allowedCompilerDiagnosticSeverity"></param>
     /// <param name="configOptions"></param>
     public CSharpTestOptions(
-        CSharpCompilationOptions compilationOptions = null,
-        CSharpParseOptions parseOptions = null,
-        IEnumerable<MetadataReference> metadataReferences = null,
-        IEnumerable<string> allowedCompilerDiagnosticIds = null,
+        CSharpCompilationOptions? compilationOptions = null,
+        CSharpParseOptions? parseOptions = null,
+        IEnumerable<MetadataReference>? metadataReferences = null,
+        IEnumerable<string>? allowedCompilerDiagnosticIds = null,
         DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
-        IEnumerable<KeyValuePair<string, string>> configOptions = null)
+        IEnumerable<KeyValuePair<string, string>>? configOptions = null)
         : base(metadataReferences, allowedCompilerDiagnosticIds, allowedCompilerDiagnosticSeverity, configOptions)
     {
         CompilationOptions = compilationOptions ?? new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);

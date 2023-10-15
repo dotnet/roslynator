@@ -120,7 +120,7 @@ internal class CSharpPhysicalLinesWalker : CSharpLinesWalker
 
     private void VisitBraceTrivia(in SyntaxToken braceToken)
     {
-        SyntaxTree tree = braceToken.SyntaxTree;
+        SyntaxTree tree = braceToken.SyntaxTree!;
 
         if (AnalyzeLeadingTrivia(braceToken.LeadingTrivia)
             && AnalyzeTrailingTrivia(braceToken.TrailingTrivia))

@@ -7,7 +7,7 @@ namespace Roslynator;
 
 internal static class PathUtilities
 {
-    internal static string TrimStart(string path, string basePath, bool trimLeadingDirectorySeparator = true)
+    internal static string TrimStart(string path, string? basePath, bool trimLeadingDirectorySeparator = true)
     {
         if (basePath is not null)
         {

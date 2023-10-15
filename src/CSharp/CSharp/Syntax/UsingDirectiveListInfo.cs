@@ -178,12 +178,12 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
         {
             case CompilationUnitSyntax compilationUnit:
                 {
-                    compilationUnit = compilationUnit.RemoveNode(node, options);
+                    compilationUnit = compilationUnit.RemoveNode(node, options)!;
                     return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
                 }
             case NamespaceDeclarationSyntax declaration:
                 {
-                    declaration = declaration.RemoveNode(node, options);
+                    declaration = declaration.RemoveNode(node, options)!;
                     return new UsingDirectiveListInfo(declaration, declaration.Usings);
                 }
         }
@@ -254,7 +254,7 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
     /// <summary>
     /// The first using directive in the list or null if the list is empty.
     /// </summary>
-    public UsingDirectiveSyntax FirstOrDefault()
+    public UsingDirectiveSyntax? FirstOrDefault()
     {
         return Usings.FirstOrDefault();
     }
@@ -308,7 +308,7 @@ public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSynt
     /// <summary>
     /// The last using directive in the list or null if the list is empty.
     /// </summary>
-    public UsingDirectiveSyntax LastOrDefault()
+    public UsingDirectiveSyntax? LastOrDefault()
     {
         return Usings.LastOrDefault();
     }

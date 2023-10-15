@@ -76,25 +76,25 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <param name="span"></param>
     /// <param name="selectedStatements"></param>
     /// <returns>True if the specified span contains at least one statement; otherwise, false.</returns>
-    public static bool TryCreate(BlockSyntax block, TextSpan span, out StatementListSelection selectedStatements)
+    public static bool TryCreate(BlockSyntax block, TextSpan span, out StatementListSelection? selectedStatements)
     {
         selectedStatements = Create(block, span, 1, int.MaxValue);
         return selectedStatements is not null;
     }
 
-    internal static bool TryCreate(BlockSyntax block, TextSpan span, int minCount, out StatementListSelection selectedStatements)
+    internal static bool TryCreate(BlockSyntax block, TextSpan span, int minCount, out StatementListSelection? selectedStatements)
     {
         selectedStatements = Create(block, span, minCount, int.MaxValue);
         return selectedStatements is not null;
     }
 
-    internal static bool TryCreate(BlockSyntax block, TextSpan span, int minCount, int maxCount, out StatementListSelection selectedStatements)
+    internal static bool TryCreate(BlockSyntax block, TextSpan span, int minCount, int maxCount, out StatementListSelection? selectedStatements)
     {
         selectedStatements = Create(block, span, minCount, maxCount);
         return selectedStatements is not null;
     }
 
-    private static StatementListSelection Create(BlockSyntax block, TextSpan span, int minCount, int maxCount)
+    private static StatementListSelection? Create(BlockSyntax block, TextSpan span, int minCount, int maxCount)
     {
         if (block is null)
             return null;
@@ -109,25 +109,25 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <param name="span"></param>
     /// <param name="selectedStatements"></param>
     /// <returns>True if the specified span contains at least one statement; otherwise, false.</returns>
-    public static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, out StatementListSelection selectedStatements)
+    public static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, out StatementListSelection? selectedStatements)
     {
         selectedStatements = Create(switchSection, span, 1, int.MaxValue);
         return selectedStatements is not null;
     }
 
-    internal static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, int minCount, out StatementListSelection selectedStatements)
+    internal static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, int minCount, out StatementListSelection? selectedStatements)
     {
         selectedStatements = Create(switchSection, span, minCount, int.MaxValue);
         return selectedStatements is not null;
     }
 
-    internal static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, int minCount, int maxCount, out StatementListSelection selectedStatements)
+    internal static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, int minCount, int maxCount, out StatementListSelection? selectedStatements)
     {
         selectedStatements = Create(switchSection, span, minCount, maxCount);
         return selectedStatements is not null;
     }
 
-    private static StatementListSelection Create(SwitchSectionSyntax switchSection, TextSpan span, int minCount, int maxCount)
+    private static StatementListSelection? Create(SwitchSectionSyntax switchSection, TextSpan span, int minCount, int maxCount)
     {
         if (switchSection is null)
             return null;
@@ -135,7 +135,7 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
         return Create(switchSection.Statements, span, minCount, maxCount);
     }
 
-    private static StatementListSelection Create(SyntaxList<StatementSyntax> statements, TextSpan span, int minCount, int maxCount)
+    private static StatementListSelection? Create(SyntaxList<StatementSyntax> statements, TextSpan span, int minCount, int maxCount)
     {
         SelectionResult result = SelectionResult.Create(statements, span, minCount, maxCount);
 

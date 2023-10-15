@@ -244,9 +244,9 @@ public abstract class NameGenerator
     /// </summary>
     /// <param name="typeSymbol"></param>
     /// <param name="firstCharToLower"></param>
-    public static string CreateName(ITypeSymbol typeSymbol, bool firstCharToLower = false)
+    public static string? CreateName(ITypeSymbol typeSymbol, bool firstCharToLower = false)
     {
-        string name = CreateNameFromTypeSymbolHelper.CreateName(typeSymbol);
+        string? name = CreateNameFromTypeSymbolHelper.CreateName(typeSymbol);
 
         if (name is not null
             && firstCharToLower)
@@ -257,7 +257,7 @@ public abstract class NameGenerator
         return name;
     }
 
-    internal string CreateUniqueLocalName(
+    internal string? CreateUniqueLocalName(
         ITypeSymbol typeSymbol,
         SemanticModel semanticModel,
         int position,
@@ -266,7 +266,7 @@ public abstract class NameGenerator
     {
         if (typeSymbol is not null)
         {
-            string name = CreateName(typeSymbol, firstCharToLower: true);
+            string? name = CreateName(typeSymbol, firstCharToLower: true);
 
             if (name is not null)
                 return EnsureUniqueLocalName(name, semanticModel, position, isCaseSensitive, cancellationToken);
@@ -275,7 +275,7 @@ public abstract class NameGenerator
         return null;
     }
 
-    internal string CreateUniqueLocalName(
+    internal string? CreateUniqueLocalName(
         ITypeSymbol typeSymbol,
         string oldName,
         SemanticModel semanticModel,
@@ -283,7 +283,7 @@ public abstract class NameGenerator
         bool isCaseSensitive = true,
         CancellationToken cancellationToken = default)
     {
-        string newName = CreateName(typeSymbol, firstCharToLower: true);
+        string? newName = CreateName(typeSymbol, firstCharToLower: true);
 
         if (newName is not null
             && !string.Equals(oldName, newName, StringComparison.Ordinal))
@@ -297,14 +297,14 @@ public abstract class NameGenerator
         return null;
     }
 
-    internal string CreateUniqueParameterName(
+    internal string? CreateUniqueParameterName(
         string oldName,
         IParameterSymbol parameterSymbol,
         SemanticModel semanticModel,
         bool isCaseSensitive = true,
         CancellationToken cancellationToken = default)
     {
-        string newName = CreateName(parameterSymbol.Type, firstCharToLower: true);
+        string? newName = CreateName(parameterSymbol.Type, firstCharToLower: true);
 
         if (newName is not null
             && !string.Equals(oldName, newName, StringComparison.Ordinal))

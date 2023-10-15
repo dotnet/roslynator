@@ -5,6 +5,7 @@
     <Version>$(RoslynatorTestingVersion)</Version>
     <AssemblyName>Roslynator.Testing.CSharp</AssemblyName>
     <RootNamespace>Roslynator.Testing.CSharp</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

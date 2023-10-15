@@ -69,6 +69,9 @@ public sealed class UseConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
 
         SimpleMemberInvocationStatementInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationStatementInfo(ifStatement.SingleNonBlockStatementOrDefault());
 
+        if (!invocationInfo.Success)
+            return;
+
         ExpressionSyntax expression2 = invocationInfo.Expression;
 
         if (expression2 is null)

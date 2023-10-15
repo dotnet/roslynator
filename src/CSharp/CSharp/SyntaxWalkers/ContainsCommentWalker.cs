@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
 {
     [ThreadStatic]
-    private static ContainsCommentWalker _cachedInstance;
+    private static ContainsCommentWalker? _cachedInstance;
 
     public ContainsCommentWalker(TextSpan span)
         : base(SyntaxWalkerDepth.Trivia)
@@ -59,7 +59,7 @@ internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
 
     public static ContainsCommentWalker GetInstance(TextSpan span)
     {
-        ContainsCommentWalker walker = _cachedInstance;
+        ContainsCommentWalker? walker = _cachedInstance;
 
         if (walker is not null)
         {

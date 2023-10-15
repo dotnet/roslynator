@@ -80,17 +80,17 @@ internal class TextWriterWithVerbosity : TextWriter
         Writer.Write(value);
     }
 
-    public override void Write(string value)
+    public override void Write(string? value)
     {
         Writer.Write(value);
     }
 
-    public void Write(string value, Verbosity verbosity)
+    public void Write(string? value, Verbosity verbosity)
     {
         WriteIf(ShouldWrite(verbosity), value);
     }
 
-    public void WriteIf(bool condition, string value)
+    public void WriteIf(bool condition, string? value)
     {
         if (condition)
             Write(value);

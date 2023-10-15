@@ -457,7 +457,7 @@ public static class CSharpFactory
             modifiers,
             identifier,
             parameterList,
-            default(ConstructorInitializerSyntax),
+            default(ConstructorInitializerSyntax)!,
             expressionBody,
             SemicolonToken());
     }
@@ -495,7 +495,7 @@ public static class CSharpFactory
             value);
     }
 
-    public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, string identifier, ExpressionSyntax value = null)
+    public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, string identifier, ExpressionSyntax? value = null)
     {
         return FieldDeclaration(
             modifiers,
@@ -513,7 +513,7 @@ public static class CSharpFactory
             initializer);
     }
 
-    public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
+    public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, ExpressionSyntax? value = null)
     {
         return FieldDeclaration(
             modifiers,
@@ -522,7 +522,7 @@ public static class CSharpFactory
             (value is not null) ? EqualsValueClause(value) : default);
     }
 
-    public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
+    public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax? initializer)
     {
         return SyntaxFactory.FieldDeclaration(
             default(SyntaxList<AttributeListSyntax>),
@@ -740,7 +740,7 @@ public static class CSharpFactory
         TypeSyntax type,
         SyntaxToken identifier,
         AccessorListSyntax accessorList,
-        ExpressionSyntax value = null)
+        ExpressionSyntax? value = null)
     {
         return SyntaxFactory.PropertyDeclaration(
             default(SyntaxList<AttributeListSyntax>),
@@ -949,7 +949,7 @@ public static class CSharpFactory
             default(SyntaxList<AttributeListSyntax>),
             modifiers,
             Token(AccessorDeclarationKeywordKind(kind)),
-            default(BlockSyntax),
+            default(BlockSyntax)!,
             SemicolonToken());
     }
 
@@ -976,12 +976,12 @@ public static class CSharpFactory
     #endregion AccessorDeclaration
 
     #region Statement
-    public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, string identifier, ExpressionSyntax value = null)
+    public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, string identifier, ExpressionSyntax? value = null)
     {
         return LocalDeclarationStatement(type, Identifier(identifier), value);
     }
 
-    public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
+    public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax? value = null)
     {
         VariableDeclaratorSyntax variableDeclarator = (value is not null)
             ? VariableDeclarator(identifier, EqualsValueClause(value))
@@ -1016,7 +1016,7 @@ public static class CSharpFactory
         return YieldStatement(SyntaxKind.YieldBreakStatement);
     }
 
-    public static TryStatementSyntax TryStatement(BlockSyntax block, CatchClauseSyntax @catch, FinallyClauseSyntax @finally = null)
+    public static TryStatementSyntax TryStatement(BlockSyntax block, CatchClauseSyntax @catch, FinallyClauseSyntax? @finally = null)
     {
         return SyntaxFactory.TryStatement(block, SingletonList(@catch), @finally);
     }
@@ -1648,7 +1648,7 @@ public static class CSharpFactory
         return SyntaxFactory.LiteralExpression(SyntaxKind.DefaultLiteralExpression);
     }
 
-    public static LiteralExpressionSyntax LiteralExpression(object value)
+    public static LiteralExpressionSyntax LiteralExpression(object? value)
     {
         if (value is null)
             return NullLiteralExpression();
@@ -1837,17 +1837,17 @@ public static class CSharpFactory
         return VariableDeclarator(Identifier(identifier), initializer);
     }
 
-    public static VariableDeclaratorSyntax VariableDeclarator(SyntaxToken identifier, EqualsValueClauseSyntax initializer)
+    public static VariableDeclaratorSyntax VariableDeclarator(SyntaxToken identifier, EqualsValueClauseSyntax? initializer)
     {
         return SyntaxFactory.VariableDeclarator(identifier, default(BracketedArgumentListSyntax), initializer);
     }
 
-    public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, string identifier, ExpressionSyntax value = null)
+    public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, string identifier, ExpressionSyntax? value = null)
     {
         return VariableDeclaration(type, Identifier(identifier), value);
     }
 
-    public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
+    public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax? value = null)
     {
         if (value is not null)
         {
@@ -1859,7 +1859,7 @@ public static class CSharpFactory
         }
     }
 
-    public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
+    public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax? initializer)
     {
         return VariableDeclaration(
             type,
@@ -1919,12 +1919,12 @@ public static class CSharpFactory
         return SyntaxFactory.Argument(nameColon, default(SyntaxToken), expression);
     }
 
-    public static ParameterSyntax Parameter(TypeSyntax type, string identifier, ExpressionSyntax @default = null)
+    public static ParameterSyntax Parameter(TypeSyntax type, string identifier, ExpressionSyntax? @default = null)
     {
         return Parameter(type, Identifier(identifier), @default);
     }
 
-    public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax @default = null)
+    public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax? @default = null)
     {
         if (@default is not null)
         {
@@ -1975,7 +1975,7 @@ public static class CSharpFactory
         return ClassOrStructConstraint(SyntaxKind.StructConstraint, Token(SyntaxKind.StructKeyword));
     }
 
-    public static ConstructorInitializerSyntax BaseConstructorInitializer(ArgumentListSyntax argumentList = null)
+    public static ConstructorInitializerSyntax BaseConstructorInitializer(ArgumentListSyntax? argumentList = null)
     {
         return ConstructorInitializer(SyntaxKind.BaseConstructorInitializer, argumentList);
     }
@@ -1985,7 +1985,7 @@ public static class CSharpFactory
         return ConstructorInitializer(SyntaxKind.BaseConstructorInitializer, semicolonToken, Token(SyntaxKind.BaseKeyword), argumentList);
     }
 
-    public static ConstructorInitializerSyntax ThisConstructorInitializer(ArgumentListSyntax argumentList = null)
+    public static ConstructorInitializerSyntax ThisConstructorInitializer(ArgumentListSyntax? argumentList = null)
     {
         return ConstructorInitializer(SyntaxKind.ThisConstructorInitializer, argumentList);
     }

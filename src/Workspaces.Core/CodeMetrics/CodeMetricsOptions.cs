@@ -4,6 +4,8 @@ namespace Roslynator.CodeMetrics;
 
 internal class CodeMetricsOptions
 {
+    public static CodeMetricsOptions Default { get; } = new();
+
     public CodeMetricsOptions(
         bool includeGenerated = false,
         bool includeWhitespace = false,

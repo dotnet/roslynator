@@ -24,8 +24,8 @@ public sealed class RefactoringTestData
     public RefactoringTestData(
         string source,
         IEnumerable<TextSpan> spans,
-        IEnumerable<AdditionalFile> additionalFiles = null,
-        string equivalenceKey = null)
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? equivalenceKey = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
@@ -51,7 +51,7 @@ public sealed class RefactoringTestData
     /// <summary>
     /// Gets code action's equivalence key.
     /// </summary>
-    public string EquivalenceKey { get; }
+    public string? EquivalenceKey { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Source;

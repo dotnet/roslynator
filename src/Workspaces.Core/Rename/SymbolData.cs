@@ -8,7 +8,7 @@ namespace Roslynator.Rename;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal readonly struct SymbolData
 {
-    public SymbolData(ISymbol symbol, string id, DocumentId documentId)
+    public SymbolData(ISymbol symbol, string? id, DocumentId documentId)
     {
         Symbol = symbol;
         Id = id;
@@ -17,7 +17,7 @@ internal readonly struct SymbolData
 
     public ISymbol Symbol { get; }
 
-    public string Id { get; }
+    public string? Id { get; }
 
     public DocumentId DocumentId { get; }
 

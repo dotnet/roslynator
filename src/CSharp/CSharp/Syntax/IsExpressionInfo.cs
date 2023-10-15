@@ -81,14 +81,14 @@ public readonly struct IsExpressionInfo
     }
 
     private static IsExpressionInfo CreateImpl(
-        BinaryExpressionSyntax binaryExpression,
+        BinaryExpressionSyntax? binaryExpression,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (binaryExpression?.Kind() != SyntaxKind.IsExpression)
             return default;
 
-        ExpressionSyntax expression = Walk(binaryExpression.Left, walkDownParentheses);
+        ExpressionSyntax? expression = Walk(binaryExpression.Left, walkDownParentheses);
 
         if (!Check(expression, allowMissing))
             return default;
@@ -98,6 +98,6 @@ public readonly struct IsExpressionInfo
         if (!Check(type, allowMissing))
             return default;
 
-        return new IsExpressionInfo(binaryExpression, expression, type);
+        return new IsExpressionInfo(binaryExpression, expression!, type!);
     }
 }

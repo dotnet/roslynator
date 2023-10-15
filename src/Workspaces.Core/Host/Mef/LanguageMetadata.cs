@@ -6,11 +6,11 @@ namespace Roslynator.Host.Mef;
 
 internal class LanguageMetadata
 {
-    public string Language { get; }
+    public string? Language { get; }
 
     public LanguageMetadata(IDictionary<string, object> data)
     {
-        Language = (string)data.GetValueOrDefault("Language");
+        Language = (string?)data.GetValueOrDefault("Language");
     }
 
     public LanguageMetadata(string language)

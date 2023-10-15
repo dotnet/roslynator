@@ -14,7 +14,7 @@ namespace Roslynator;
 /// </summary>
 public static class SemanticModelExtensions
 {
-    internal static Diagnostic GetDiagnostic(
+    internal static Diagnostic? GetDiagnostic(
         this SemanticModel semanticModel,
         string id,
         TextSpan? span = null,
@@ -40,7 +40,7 @@ public static class SemanticModelExtensions
     /// <param name="semanticModel"></param>
     /// <param name="position"></param>
     /// <param name="cancellationToken"></param>
-    public static INamedTypeSymbol GetEnclosingNamedType(
+    public static INamedTypeSymbol? GetEnclosingNamedType(
         this SemanticModel semanticModel,
         int position,
         CancellationToken cancellationToken = default)
@@ -55,7 +55,7 @@ public static class SemanticModelExtensions
     /// <param name="semanticModel"></param>
     /// <param name="position"></param>
     /// <param name="cancellationToken"></param>
-    public static TSymbol GetEnclosingSymbol<TSymbol>(
+    public static TSymbol? GetEnclosingSymbol<TSymbol>(
         this SemanticModel semanticModel,
         int position,
         CancellationToken cancellationToken = default) where TSymbol : ISymbol
@@ -63,7 +63,7 @@ public static class SemanticModelExtensions
         if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
 
-        ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+        ISymbol? symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
         while (symbol is not null)
         {
@@ -82,7 +82,7 @@ public static class SemanticModelExtensions
     /// <param name="semanticModel"></param>
     /// <param name="node"></param>
     /// <param name="cancellationToken"></param>
-    public static ISymbol GetSymbol(
+    public static ISymbol? GetSymbol(
         this SemanticModel semanticModel,
         SyntaxNode node,
         CancellationToken cancellationToken = default)
@@ -96,7 +96,7 @@ public static class SemanticModelExtensions
     /// <param name="semanticModel"></param>
     /// <param name="node"></param>
     /// <param name="cancellationToken"></param>
-    public static ITypeSymbol GetTypeSymbol(
+    public static ITypeSymbol? GetTypeSymbol(
         this SemanticModel semanticModel,
         SyntaxNode node,
         CancellationToken cancellationToken = default)
@@ -109,7 +109,7 @@ public static class SemanticModelExtensions
     /// </summary>
     /// <param name="semanticModel"></param>
     /// <param name="fullyQualifiedMetadataName"></param>
-    public static INamedTypeSymbol GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
+    public static INamedTypeSymbol? GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
     {
         if (semanticModel is null)
             throw new ArgumentNullException(nameof(semanticModel));
@@ -119,7 +119,7 @@ public static class SemanticModelExtensions
             .GetTypeByMetadataName(fullyQualifiedMetadataName);
     }
 
-    internal static IMethodSymbol GetSpeculativeMethodSymbol(
+    internal static IMethodSymbol? GetSpeculativeMethodSymbol(
         this SemanticModel semanticModel,
         int position,
         SyntaxNode expression)
@@ -139,7 +139,7 @@ public static class SemanticModelExtensions
         bool excludeAnonymousTypeProperty = false,
         CancellationToken cancellationToken = default)
     {
-        SyntaxNode node = GetEnclosingSymbolSyntax(semanticModel, position, cancellationToken);
+        SyntaxNode? node = GetEnclosingSymbolSyntax(semanticModel, position, cancellationToken);
 
         if (node is not null)
             return GetDeclaredSymbols(semanticModel, node, excludeAnonymousTypeProperty, cancellationToken);
@@ -147,29 +147,32 @@ public static class SemanticModelExtensions
         return ImmutableArray<ISymbol>.Empty;
     }
 
-    internal static SyntaxNode GetEnclosingSymbolSyntax(
+    internal static SyntaxNode? GetEnclosingSymbolSyntax(
         this SemanticModel semanticModel,
         int position,
         CancellationToken cancellationToken = default)
     {
-        ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+        ISymbol? enclosingSymbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
-        ImmutableArray<SyntaxReference> syntaxReferences = enclosingSymbol.DeclaringSyntaxReferences;
+        if (enclosingSymbol is not null)
+        {
+            ImmutableArray<SyntaxReference> syntaxReferences = enclosingSymbol.DeclaringSyntaxReferences;
 
-        if (syntaxReferences.Length == 1)
-        {
-            return syntaxReferences[0].GetSyntax(cancellationToken);
-        }
-        else
-        {
-            foreach (SyntaxReference syntaxReference in syntaxReferences)
+            if (syntaxReferences.Length == 1)
             {
-                SyntaxNode node = syntaxReference.GetSyntax(cancellationToken);
-
-                if (node.SyntaxTree == semanticModel.SyntaxTree
-                    && node.FullSpan.Contains(position))
+                return syntaxReferences[0].GetSyntax(cancellationToken);
+            }
+            else
+            {
+                foreach (SyntaxReference syntaxReference in syntaxReferences)
                 {
-                    return node;
+                    SyntaxNode node = syntaxReference.GetSyntax(cancellationToken);
+
+                    if (node.SyntaxTree == semanticModel.SyntaxTree
+                        && node.FullSpan.Contains(position))
+                    {
+                        return node;
+                    }
                 }
             }
         }
@@ -183,11 +186,11 @@ public static class SemanticModelExtensions
         bool excludeAnonymousTypeProperty = false,
         CancellationToken cancellationToken = default)
     {
-        HashSet<ISymbol> symbols = null;
+        HashSet<ISymbol>? symbols = null;
 
         foreach (SyntaxNode node in container.DescendantNodesAndSelf())
         {
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
+            ISymbol? symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
 
             if (symbol is not null)
             {

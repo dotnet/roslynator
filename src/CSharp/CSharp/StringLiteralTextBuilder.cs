@@ -13,7 +13,7 @@ namespace Roslynator.CSharp;
 
 internal class StringLiteralTextBuilder
 {
-    public StringLiteralTextBuilder(StringBuilder stringBuilder = null, bool isVerbatim = false, bool isInterpolated = false)
+    public StringLiteralTextBuilder(StringBuilder? stringBuilder = null, bool isVerbatim = false, bool isInterpolated = false)
     {
         StringBuilder = stringBuilder ?? new StringBuilder();
         IsVerbatim = isVerbatim;

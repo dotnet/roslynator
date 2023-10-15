@@ -18,15 +18,15 @@ internal class WordList
 
     public static WordList Default { get; } = new(null, DefaultComparison);
 
-    public WordList(IEnumerable<string> values, StringComparison? comparison = null)
+    public WordList(IEnumerable<string>? values, StringComparison? comparison = null)
         : this(values, null, ImmutableArray<WordSequence>.Empty, comparison)
     {
     }
 
     public WordList(
-        IEnumerable<string> words,
-        IEnumerable<string> nonWords,
-        IEnumerable<WordSequence> sequences,
+        IEnumerable<string>? words,
+        IEnumerable<string>? nonWords,
+        IEnumerable<WordSequence>? sequences,
         StringComparison? comparison = null)
     {
         Comparer = StringComparerUtility.FromComparison(comparison ?? DefaultComparison);

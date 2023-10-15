@@ -7,7 +7,7 @@ namespace Roslynator.Spelling;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal readonly struct SpellingMatch
 {
-    public SpellingMatch(string value, int index, string parent = null, int parentIndex = 0)
+    public SpellingMatch(string value, int index, string? parent = null, int parentIndex = 0)
     {
         Value = value;
         Index = index;
@@ -19,7 +19,7 @@ internal readonly struct SpellingMatch
 
     public int Index { get; }
 
-    public string Parent { get; }
+    public string? Parent { get; }
 
     public int ParentIndex { get; }
 
