@@ -30,7 +30,7 @@ public static class CSharpTestOptionsExtensions
     }
 
     /// <summary>
-    /// Adds config options to the test options.
+    /// Sets config options to the test options.
     /// </summary>
     /// <param name="testOptions"></param>
     /// <param name="options"></param>
@@ -40,7 +40,7 @@ public static class CSharpTestOptionsExtensions
     }
 
     /// <summary>
-    /// Adds config options to the test options.
+    /// Sets config options to the test options.
     /// </summary>
     /// <param name="testOptions"></param>
     /// <param name="options"></param>
