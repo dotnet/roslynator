@@ -61,10 +61,10 @@ public sealed class CompilerDiagnosticFixTestData
     }
 #pragma warning restore CS0618 // Type or member is obsolete
 
-    [Obsolete("This method is obsolete and will be removed in future versions.")]
     /// <summary>
     /// Gets compiler diagnostic ID to be fixed.
     /// </summary>
+    [Obsolete("This method is obsolete and will be removed in future versions.")]
     public string DiagnosticId { get; }
 
     /// <summary>

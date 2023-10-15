@@ -111,10 +111,10 @@ public sealed class DiagnosticTestData
     }
 #pragma warning restore CS0618 // Type or member is obsolete
 
-    [Obsolete("This method is obsolete and will be removed in future versions.")]
     /// <summary>
     /// Gets diagnostic's descriptor.
     /// </summary>
+    [Obsolete("This method is obsolete and will be removed in future versions.")]
     public DiagnosticDescriptor Descriptor { get; }
 
     /// <summary>
