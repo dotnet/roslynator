@@ -31,7 +31,7 @@ public sealed class DiagnosticTestData
     public DiagnosticTestData(
         DiagnosticDescriptor descriptor,
         string source,
-        IEnumerable<TextSpan> spans,
+        IEnumerable<TextSpan>? spans,
         IEnumerable<TextSpan>? additionalSpans = null,
         IEnumerable<AdditionalFile>? additionalFiles = null,
         string? diagnosticMessage = null,

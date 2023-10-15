@@ -29,16 +29,16 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
         string source,
         string sourceData,
         string expectedData,
-        IEnumerable<(string source, string expectedSource)> additionalFiles = null,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        IEnumerable<(string source, string expectedSource)>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source, sourceData, expectedData);
 
         Debug.Assert(code.Spans.Length == 0);
 
-        var expected = ExpectedTestState.Parse(code.ExpectedValue);
+        var expected = ExpectedTestState.Parse(code.ExpectedValue!);
 
         var data = new CompilerDiagnosticFixTestData(
             DiagnosticId,
@@ -65,9 +65,9 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     public async Task VerifyFixAsync(
         string source,
         string expectedSource,
-        IEnumerable<(string source, string expectedSource)> additionalFiles = null,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        IEnumerable<(string source, string expectedSource)>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var expected = ExpectedTestState.Parse(expectedSource);
@@ -230,9 +230,9 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     /// <param name="cancellationToken"></param>
     public async Task VerifyNoFixAsync(
         string source,
-        IEnumerable<string> additionalFiles = null,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        IEnumerable<string>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var data = new CompilerDiagnosticFixTestData(

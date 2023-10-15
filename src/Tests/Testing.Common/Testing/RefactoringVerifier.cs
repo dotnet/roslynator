@@ -35,9 +35,9 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     public async Task VerifyRefactoringAsync(
         string source,
         string expectedSource,
-        IEnumerable<string> additionalFiles = null,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        IEnumerable<string>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source);
@@ -61,14 +61,14 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
         string source,
         string sourceData,
         string expectedData,
-        IEnumerable<string> additionalFiles = null,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        IEnumerable<string>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source, sourceData, expectedData);
 
-        var expected = ExpectedTestState.Parse(code.ExpectedValue);
+        var expected = ExpectedTestState.Parse(code.ExpectedValue!);
 
         var data = new RefactoringTestData(
             code.Value,
@@ -176,8 +176,8 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// <param name="cancellationToken"></param>
     public async Task VerifyNoRefactoringAsync(
         string source,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source);

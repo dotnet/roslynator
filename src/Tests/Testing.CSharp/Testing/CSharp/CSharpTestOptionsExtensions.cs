@@ -13,9 +13,9 @@ public static class CSharpTestOptionsExtensions
     /// <param name="testOptions"></param>
     /// <param name="key"></param>
     /// <param name="value"></param>
-    public static CSharpTestOptions SetConfigOption(this CSharpTestOptions testOptions, string key, string value)
+    public static CSharpTestOptions SetConfigOption(this CSharpTestOptions testOptions, string key, bool value)
     {
-        return testOptions.WithConfigOptions(testOptions.ConfigOptions.SetItem(key, value));
+        return testOptions.SetConfigOption(key, (value) ? "true" : "false");
     }
 
     /// <summary>
@@ -24,20 +24,29 @@ public static class CSharpTestOptionsExtensions
     /// <param name="testOptions"></param>
     /// <param name="key"></param>
     /// <param name="value"></param>
-    public static CSharpTestOptions SetConfigOption(this CSharpTestOptions testOptions, string key, bool value)
+    public static CSharpTestOptions SetConfigOption(this CSharpTestOptions testOptions, string key, string value)
     {
-        return testOptions.SetConfigOption(key, (value) ? "true" : "false");
+        return testOptions.WithConfigOptions(testOptions.ConfigOptions.SetItem(key, value));
     }
 
     /// <summary>
-    /// Adds config option to the test options.
+    /// Adds config options to the test options.
     /// </summary>
     /// <param name="testOptions"></param>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    public static CSharpTestOptions AddConfigOption(this CSharpTestOptions testOptions, string key, string value)
+    /// <param name="options"></param>
+    public static CSharpTestOptions SetConfigOptions(this CSharpTestOptions testOptions, params (string Key, string Value)[] options)
     {
-        return testOptions.WithConfigOptions(testOptions.ConfigOptions.Add(key, value));
+        return testOptions.SetConfigOptions(options.Select(f => new KeyValuePair<string, string>(f.Key, f.Value)));
+    }
+
+    /// <summary>
+    /// Adds config options to the test options.
+    /// </summary>
+    /// <param name="testOptions"></param>
+    /// <param name="options"></param>
+    internal static CSharpTestOptions SetConfigOptions(this CSharpTestOptions testOptions, IEnumerable<KeyValuePair<string, string>> options)
+    {
+        return testOptions.WithConfigOptions(testOptions.ConfigOptions.SetItems(options));
     }
 
     /// <summary>
@@ -49,6 +58,17 @@ public static class CSharpTestOptionsExtensions
     public static CSharpTestOptions AddConfigOption(this CSharpTestOptions testOptions, string key, bool value)
     {
         return testOptions.AddConfigOption(key, (value) ? "true" : "false");
+    }
+
+    /// <summary>
+    /// Adds config option to the test options.
+    /// </summary>
+    /// <param name="testOptions"></param>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public static CSharpTestOptions AddConfigOption(this CSharpTestOptions testOptions, string key, string value)
+    {
+        return testOptions.WithConfigOptions(testOptions.ConfigOptions.Add(key, value));
     }
 
     /// <summary>
@@ -66,7 +86,7 @@ public static class CSharpTestOptionsExtensions
     /// </summary>
     /// <param name="testOptions"></param>
     /// <param name="options"></param>
-    public static CSharpTestOptions AddConfigOptions(this CSharpTestOptions testOptions, IEnumerable<KeyValuePair<string, string>> options)
+    internal static CSharpTestOptions AddConfigOptions(this CSharpTestOptions testOptions, IEnumerable<KeyValuePair<string, string>> options)
     {
         return testOptions.WithConfigOptions(testOptions.ConfigOptions.AddRange(options));
     }

@@ -38,13 +38,13 @@ public readonly struct AdditionalFile
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Source;
 
-    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<string> additionalFiles)
+    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<string>? additionalFiles)
     {
         return additionalFiles?.Select(f => new AdditionalFile(f)).ToImmutableArray()
             ?? ImmutableArray<AdditionalFile>.Empty;
     }
 
-    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<(string source, string expectedSource)> additionalFiles)
+    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<(string source, string expectedSource)>? additionalFiles)
     {
         return additionalFiles?.Select(f => new AdditionalFile(f.source, f.expectedSource)).ToImmutableArray()
             ?? ImmutableArray<AdditionalFile>.Empty;

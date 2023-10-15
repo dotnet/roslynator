@@ -36,8 +36,8 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <param name="cancellationToken"></param>
     public async Task VerifyDiagnosticAsync(
         string source,
-        IEnumerable<string> additionalFiles = null,
-        TestOptions options = null,
+        IEnumerable<string>? additionalFiles = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source);
@@ -58,8 +58,8 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     internal async Task VerifyDiagnosticAsync(
         string source,
         string sourceData,
-        IEnumerable<string> additionalFiles = null,
-        TestOptions options = null,
+        IEnumerable<string>? additionalFiles = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source, sourceData);
@@ -155,8 +155,8 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     internal async Task VerifyNoDiagnosticAsync(
         string source,
         string sourceData,
-        IEnumerable<string> additionalFiles = null,
-        TestOptions options = null,
+        IEnumerable<string>? additionalFiles = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source, sourceData);
@@ -183,8 +183,8 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <param name="cancellationToken"></param>
     public async Task VerifyNoDiagnosticAsync(
         string source,
-        IEnumerable<string> additionalFiles = null,
-        TestOptions options = null,
+        IEnumerable<string>? additionalFiles = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var data = new DiagnosticTestData(
@@ -258,9 +258,9 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     public async Task VerifyDiagnosticAndFixAsync(
         string source,
         string expectedSource,
-        IEnumerable<(string source, string expectedSource)> additionalFiles = null,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        IEnumerable<(string source, string expectedSource)>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source);
@@ -282,14 +282,14 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         string source,
         string sourceData,
         string expectedData,
-        IEnumerable<(string source, string expectedSource)> additionalFiles = null,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        IEnumerable<(string source, string expectedSource)>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source, sourceData, expectedData);
 
-        var expected = ExpectedTestState.Parse(code.ExpectedValue);
+        var expected = ExpectedTestState.Parse(code.ExpectedValue!);
 
         var data = new DiagnosticTestData(
             Descriptor,
@@ -329,9 +329,9 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <param name="cancellationToken"></param>
     public async Task VerifyDiagnosticAndNoFixAsync(
         string source,
-        IEnumerable<string> additionalFiles = null,
-        string equivalenceKey = null,
-        TestOptions options = null,
+        IEnumerable<string>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var code = TestCode.Parse(source);
