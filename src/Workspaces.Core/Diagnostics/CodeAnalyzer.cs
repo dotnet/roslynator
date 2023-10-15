@@ -24,8 +24,8 @@ internal class CodeAnalyzer
 
     public CodeAnalyzer(
         AnalyzerLoader analyzerLoader,
-        IFormatProvider formatProvider = null,
-        CodeAnalyzerOptions options = null)
+        IFormatProvider? formatProvider = null,
+        CodeAnalyzerOptions? options = null)
     {
         _analyzerLoader = analyzerLoader;
 
@@ -33,7 +33,7 @@ internal class CodeAnalyzer
         Options = options ?? CodeAnalyzerOptions.Default;
     }
 
-    public IFormatProvider FormatProvider { get; }
+    public IFormatProvider? FormatProvider { get; }
 
     public CodeAnalyzerOptions Options { get; }
 
@@ -62,7 +62,7 @@ internal class CodeAnalyzer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Project project = solution.GetProject(projectIds[i]);
+            Project project = solution.GetProject(projectIds[i])!;
 
             if (predicate is null || predicate(project))
             {
@@ -109,6 +109,18 @@ internal class CodeAnalyzer
 
     private async Task<ProjectAnalysisResult> AnalyzeProjectCoreAsync(Project project, CancellationToken cancellationToken = default)
     {
+        if (!MefWorkspaceServices.Default.SupportedLanguages.Contains(project.Language))
+        {
+            WriteLine($"  Language '{project.Language}' is not supported.", ConsoleColors.DarkGray, Verbosity.Normal);
+            ProjectAnalysisResult.Create(project);
+        }
+
+        if (!project.SupportsCompilation)
+        {
+            WriteLine("  Project does not support compilation", ConsoleColors.DarkGray, Verbosity.Normal);
+            ProjectAnalysisResult.Create(project);
+        }
+
         ImmutableArray<DiagnosticAnalyzer> analyzers = _analyzerLoader.GetAnalyzers(project: project);
 
         if (!analyzers.Any())
@@ -129,7 +141,7 @@ internal class CodeAnalyzer
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+        Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
         ImmutableArray<Diagnostic> compilerDiagnostics = (Options.IgnoreCompilerDiagnostics)
             ? ImmutableArray<Diagnostic>.Empty
@@ -198,13 +210,13 @@ internal class CodeAnalyzer
                 {
                     Debug.Assert(diagnostic.Id.StartsWith("CS", "VB", StringComparison.Ordinal), diagnostic.Id);
 
-                    SyntaxTree tree = diagnostic.Location.SourceTree;
+                    SyntaxTree? tree = diagnostic.Location.SourceTree;
 
                     if (tree is null
                         || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
                     {
                         if (tree is null
-                            || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language).IsComment(f), cancellationToken))
+                            || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language)!.IsComment(f), cancellationToken))
                         {
                             yield return diagnostic;
                         }

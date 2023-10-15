@@ -32,48 +32,13 @@ internal class IgnoredAttributeNameFilterRule : AttributeFilterRule
 
     public override bool IsMatch(AttributeInfo attributeInfo)
     {
-        return !AttributeNames.Contains(attributeInfo.AttributeClass);
+        return attributeInfo.AttributeClass is null
+            || !AttributeNames.Contains(attributeInfo.AttributeClass);
     }
 
     private class DefaultIgnoredAttributeNameFilterRule : IgnoredAttributeNameFilterRule
     {
         private static readonly MetadataName _defaultMemberAttribute = MetadataName.Parse("System.Reflection.DefaultMemberAttribute");
-
-#if DEBUG
-        //private static readonly MetadataNameSet _knownVisibleAttributes = new(new[]
-        //    {
-        //        "Microsoft.CodeAnalysis.CommitHashAttribute",
-        //        "System.AttributeUsageAttribute",
-        //        "System.CLSCompliantAttribute",
-        //        "System.ComVisibleAttribute",
-        //        "System.FlagsAttribute",
-        //        "System.ObsoleteAttribute",
-        //        "System.ComponentModel.DefaultValueAttribute",
-        //        "System.ComponentModel.EditorBrowsableAttribute",
-        //        "System.Composition.MetadataAttributeAttribute",
-        //        "System.Reflection.AssemblyCompanyAttribute",
-        //        "System.Reflection.AssemblyConfigurationAttribute",
-        //        "System.Reflection.AssemblyCopyrightAttribute",
-        //        "System.Reflection.AssemblyDescriptionAttribute",
-        //        "System.Reflection.AssemblyFileVersionAttribute",
-        //        "System.Reflection.AssemblyInformationalVersionAttribute",
-        //        "System.Reflection.AssemblyMetadataAttribute",
-        //        "System.Reflection.AssemblyProductAttribute",
-        //        "System.Reflection.AssemblyTitleAttribute",
-        //        "System.Reflection.AssemblyTrademarkAttribute",
-        //        "System.Reflection.AssemblyVersionAttribute",
-        //        "System.Resources.NeutralResourcesLanguageAttribute",
-        //        "System.Runtime.CompilerServices.InternalsVisibleToAttribute",
-        //        "System.Runtime.CompilerServices.InternalImplementationOnlyAttribute",
-        //        "System.Runtime.CompilerServices.RuntimeCompatibilityAttribute",
-        //        "System.Runtime.InteropServices.GuidAttribute",
-        //        "System.Runtime.Versioning.TargetFrameworkAttribute",
-        //        "System.Xml.Serialization.XmlArrayItemAttribute",
-        //        "System.Xml.Serialization.XmlAttributeAttribute",
-        //        "System.Xml.Serialization.XmlElementAttribute",
-        //        "System.Xml.Serialization.XmlRootAttribute",
-        //    });
-#endif
 
         public static DefaultIgnoredAttributeNameFilterRule Instance { get; } = new(GetIgnoredAttributes().Select(f => MetadataName.Parse(f)).ToImmutableArray());
 
@@ -84,7 +49,10 @@ internal class IgnoredAttributeNameFilterRule : AttributeFilterRule
 
         public override bool IsMatch(AttributeInfo attributeInfo)
         {
-            INamedTypeSymbol attributeClass = attributeInfo.AttributeClass;
+            INamedTypeSymbol? attributeClass = attributeInfo.AttributeClass;
+
+            if (attributeClass is null)
+                return true;
 
             if (AttributeNames.Contains(attributeClass))
                 return false;
@@ -99,9 +67,7 @@ internal class IgnoredAttributeNameFilterRule : AttributeFilterRule
                 if (namedType.GetMembers().Any(f => f.IsKind(SymbolKind.Property) && ((IPropertySymbol)f).IsIndexer))
                     return false;
             }
-#if DEBUG
-            //Debug.Assert(_knownVisibleAttributes.Contains(attributeClass), attributeClass.ToDisplayString());
-#endif
+
             return true;
         }
 

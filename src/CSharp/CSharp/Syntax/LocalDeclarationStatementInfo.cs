@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -37,7 +38,7 @@ public readonly struct LocalDeclarationStatementInfo
     /// </summary>
     public TypeSyntax Type
     {
-        get { return Statement?.Declaration.Type; }
+        get { return Statement?.Declaration.Type ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -45,7 +46,7 @@ public readonly struct LocalDeclarationStatementInfo
     /// </summary>
     public VariableDeclarationSyntax Declaration
     {
-        get { return Statement?.Declaration; }
+        get { return Statement?.Declaration ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -82,12 +83,12 @@ public readonly struct LocalDeclarationStatementInfo
         LocalDeclarationStatementSyntax localDeclarationStatement,
         bool allowMissing = false)
     {
-        VariableDeclarationSyntax variableDeclaration = localDeclarationStatement?.Declaration;
+        VariableDeclarationSyntax? variableDeclaration = localDeclarationStatement?.Declaration;
 
         if (!Check(variableDeclaration, allowMissing))
             return default;
 
-        TypeSyntax type = variableDeclaration.Type;
+        TypeSyntax? type = variableDeclaration!.Type;
 
         if (!Check(type, allowMissing))
             return default;
@@ -95,14 +96,14 @@ public readonly struct LocalDeclarationStatementInfo
         if (!variableDeclaration.Variables.Any())
             return default;
 
-        return new LocalDeclarationStatementInfo(localDeclarationStatement);
+        return new LocalDeclarationStatementInfo(localDeclarationStatement!);
     }
 
     internal static LocalDeclarationStatementInfo Create(
         ExpressionSyntax value,
         bool allowMissing = false)
     {
-        SyntaxNode node = value?.WalkUpParentheses().Parent;
+        SyntaxNode? node = value?.WalkUpParentheses().Parent;
 
         if (!node.IsKind(SyntaxKind.EqualsValueClause))
             return default;

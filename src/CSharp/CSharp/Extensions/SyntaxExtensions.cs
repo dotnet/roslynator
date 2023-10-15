@@ -40,12 +40,12 @@ public static class SyntaxExtensions
     /// Returns accessor body or an expression body if the body is null.
     /// </summary>
     /// <param name="accessorDeclaration"></param>
-    public static CSharpSyntaxNode BodyOrExpressionBody(this AccessorDeclarationSyntax accessorDeclaration)
+    public static CSharpSyntaxNode? BodyOrExpressionBody(this AccessorDeclarationSyntax accessorDeclaration)
     {
         if (accessorDeclaration is null)
             throw new ArgumentNullException(nameof(accessorDeclaration));
 
-        return accessorDeclaration.Body ?? (CSharpSyntaxNode)accessorDeclaration.ExpressionBody;
+        return accessorDeclaration.Body ?? (CSharpSyntaxNode?)accessorDeclaration.ExpressionBody;
     }
     #endregion AccessorDeclarationSyntax
 
@@ -54,7 +54,7 @@ public static class SyntaxExtensions
     /// Returns a get accessor contained in the specified list.
     /// </summary>
     /// <param name="accessorList"></param>
-    public static AccessorDeclarationSyntax Getter(this AccessorListSyntax accessorList)
+    public static AccessorDeclarationSyntax? Getter(this AccessorListSyntax accessorList)
     {
         return Accessor(accessorList, SyntaxKind.GetAccessorDeclaration);
     }
@@ -63,12 +63,12 @@ public static class SyntaxExtensions
     /// Returns a set accessor contained in the specified list.
     /// </summary>
     /// <param name="accessorList"></param>
-    public static AccessorDeclarationSyntax Setter(this AccessorListSyntax accessorList)
+    public static AccessorDeclarationSyntax? Setter(this AccessorListSyntax accessorList)
     {
         return Accessor(accessorList, SyntaxKind.SetAccessorDeclaration, SyntaxKind.InitAccessorDeclaration);
     }
 
-    private static AccessorDeclarationSyntax Accessor(this AccessorListSyntax accessorList, SyntaxKind kind)
+    private static AccessorDeclarationSyntax? Accessor(this AccessorListSyntax accessorList, SyntaxKind kind)
     {
         if (accessorList is null)
             throw new ArgumentNullException(nameof(accessorList));
@@ -82,7 +82,7 @@ public static class SyntaxExtensions
         return null;
     }
 
-    private static AccessorDeclarationSyntax Accessor(this AccessorListSyntax accessorList, SyntaxKind kind1, SyntaxKind kind2)
+    private static AccessorDeclarationSyntax? Accessor(this AccessorListSyntax accessorList, SyntaxKind kind1, SyntaxKind kind2)
     {
         if (accessorList is null)
             throw new ArgumentNullException(nameof(accessorList));
@@ -98,15 +98,15 @@ public static class SyntaxExtensions
     #endregion AccessorListSyntax
 
     #region BlockSyntax
-    internal static StatementSyntax SingleNonBlockStatementOrDefault(this BlockSyntax body, bool recursive = false)
+    internal static StatementSyntax? SingleNonBlockStatementOrDefault(this BlockSyntax? body, bool recursive = false)
     {
         if (recursive)
         {
-            StatementSyntax statement;
+            StatementSyntax? statement;
 
             do
             {
-                statement = body.Statements.SingleOrDefault(shouldThrow: false);
+                statement = body?.Statements.SingleOrDefault(shouldThrow: false);
 
                 body = statement as BlockSyntax;
             }
@@ -116,7 +116,7 @@ public static class SyntaxExtensions
         }
         else
         {
-            StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
+            StatementSyntax? statement = body?.Statements.SingleOrDefault(shouldThrow: false);
 
             if (statement is not null
                 && statement.Kind() != SyntaxKind.Block)
@@ -135,7 +135,7 @@ public static class SyntaxExtensions
     #endregion BlockSyntax
 
     #region BaseArgumentListSyntax
-    internal static BaseArgumentListSyntax WithArguments(this BaseArgumentListSyntax baseArgumentList, SeparatedSyntaxList<ArgumentSyntax> arguments)
+    internal static BaseArgumentListSyntax? WithArguments(this BaseArgumentListSyntax baseArgumentList, SeparatedSyntaxList<ArgumentSyntax> arguments)
     {
         switch (baseArgumentList.Kind())
         {
@@ -238,7 +238,7 @@ public static class SyntaxExtensions
         return TextSpan.FromBounds(forEachStatement.OpenParenToken.SpanStart, forEachStatement.CloseParenToken.Span.End);
     }
 
-    internal static StatementSyntax EmbeddedStatement(this CommonForEachStatementSyntax forEachStatement)
+    internal static StatementSyntax? EmbeddedStatement(this CommonForEachStatementSyntax forEachStatement)
     {
         StatementSyntax statement = forEachStatement.Statement;
 
@@ -295,7 +295,7 @@ public static class SyntaxExtensions
             && usings.Length > 0
             && !compilationUnit.Usings.Any())
         {
-            List<SyntaxTrivia> topTrivia = null;
+            List<SyntaxTrivia>? topTrivia = null;
 
             SyntaxTriviaList leadingTrivia = compilationUnit.GetLeadingTrivia();
 
@@ -380,12 +380,12 @@ public static class SyntaxExtensions
     /// Returns constructor body or an expression body if the body is null.
     /// </summary>
     /// <param name="constructorDeclaration"></param>
-    public static CSharpSyntaxNode BodyOrExpressionBody(this ConstructorDeclarationSyntax constructorDeclaration)
+    public static CSharpSyntaxNode? BodyOrExpressionBody(this ConstructorDeclarationSyntax constructorDeclaration)
     {
         if (constructorDeclaration is null)
             throw new ArgumentNullException(nameof(constructorDeclaration));
 
-        return constructorDeclaration.Body ?? (CSharpSyntaxNode)constructorDeclaration.ExpressionBody;
+        return constructorDeclaration.Body ?? (CSharpSyntaxNode?)constructorDeclaration.ExpressionBody;
     }
     #endregion ConstructorDeclarationSyntax
 
@@ -394,12 +394,12 @@ public static class SyntaxExtensions
     /// Returns conversion operator body or an expression body if the body is null.
     /// </summary>
     /// <param name="conversionOperatorDeclaration"></param>
-    public static CSharpSyntaxNode BodyOrExpressionBody(this ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
+    public static CSharpSyntaxNode? BodyOrExpressionBody(this ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
     {
         if (conversionOperatorDeclaration is null)
             throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
 
-        return conversionOperatorDeclaration.Body ?? (CSharpSyntaxNode)conversionOperatorDeclaration.ExpressionBody;
+        return conversionOperatorDeclaration.Body ?? (CSharpSyntaxNode?)conversionOperatorDeclaration.ExpressionBody;
     }
 
     internal static TextSpan HeaderSpan(this ConversionOperatorDeclarationSyntax operatorDeclaration)
@@ -451,12 +451,12 @@ public static class SyntaxExtensions
     /// Returns destructor body or an expression body if the body is null.
     /// </summary>
     /// <param name="destructorDeclaration"></param>
-    public static CSharpSyntaxNode BodyOrExpressionBody(this DestructorDeclarationSyntax destructorDeclaration)
+    public static CSharpSyntaxNode? BodyOrExpressionBody(this DestructorDeclarationSyntax destructorDeclaration)
     {
         if (destructorDeclaration is null)
             throw new ArgumentNullException(nameof(destructorDeclaration));
 
-        return destructorDeclaration.Body ?? (CSharpSyntaxNode)destructorDeclaration.ExpressionBody;
+        return destructorDeclaration.Body ?? (CSharpSyntaxNode?)destructorDeclaration.ExpressionBody;
     }
 
     internal static TextSpan HeaderSpan(this DestructorDeclarationSyntax destructorDeclaration)
@@ -490,9 +490,9 @@ public static class SyntaxExtensions
     /// Returns the next related directive.
     /// </summary>
     /// <param name="directiveTrivia"></param>
-    public static DirectiveTriviaSyntax GetNextRelatedDirective(this DirectiveTriviaSyntax directiveTrivia)
+    public static DirectiveTriviaSyntax? GetNextRelatedDirective(this DirectiveTriviaSyntax directiveTrivia)
     {
-        DirectiveTriviaSyntax d = directiveTrivia;
+        DirectiveTriviaSyntax? d = directiveTrivia;
 
         switch (d.Kind())
         {
@@ -552,9 +552,9 @@ public static class SyntaxExtensions
         return null;
     }
 
-    private static DirectiveTriviaSyntax GetNextPossiblyRelatedDirective(this DirectiveTriviaSyntax directiveTrivia)
+    private static DirectiveTriviaSyntax? GetNextPossiblyRelatedDirective(this DirectiveTriviaSyntax directiveTrivia)
     {
-        DirectiveTriviaSyntax d = directiveTrivia;
+        DirectiveTriviaSyntax? d = directiveTrivia;
 
         while (d is not null)
         {
@@ -595,7 +595,7 @@ public static class SyntaxExtensions
     #endregion DirectiveTriviaSyntax
 
     #region DocumentationCommentTriviaSyntax
-    internal static XmlElementSyntax SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
+    internal static XmlElementSyntax? SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
     {
         if (documentationComment is null)
             throw new ArgumentNullException(nameof(documentationComment));
@@ -651,15 +651,15 @@ public static class SyntaxExtensions
 
     internal static bool IsPartOfMemberDeclaration(this DocumentationCommentTriviaSyntax documentationComment)
     {
-        SyntaxNode node = documentationComment.ParentTrivia.Token.Parent;
+        SyntaxNode? node = documentationComment.ParentTrivia.Token.Parent;
 
         return node is MemberDeclarationSyntax
-            || node.Parent is MemberDeclarationSyntax;
+            || node?.Parent is MemberDeclarationSyntax;
     }
     #endregion DocumentationCommentTriviaSyntax
 
     #region DoStatementSyntax
-    internal static StatementSyntax EmbeddedStatement(this DoStatementSyntax doStatement)
+    internal static StatementSyntax? EmbeddedStatement(this DoStatementSyntax doStatement)
     {
         StatementSyntax statement = doStatement.Statement;
 
@@ -668,7 +668,7 @@ public static class SyntaxExtensions
     #endregion DoStatementSyntax
 
     #region ElseClauseSyntax
-    internal static StatementSyntax SingleNonBlockStatementOrDefault(this ElseClauseSyntax elseClause)
+    internal static StatementSyntax? SingleNonBlockStatementOrDefault(this ElseClauseSyntax elseClause)
     {
         return SingleNonBlockStatementOrDefault(elseClause.Statement);
     }
@@ -677,7 +677,7 @@ public static class SyntaxExtensions
     /// Returns topmost if statement of the if-else cascade the specified else clause is part of.
     /// </summary>
     /// <param name="elseClause"></param>
-    public static IfStatementSyntax GetTopmostIf(this ElseClauseSyntax elseClause)
+    public static IfStatementSyntax? GetTopmostIf(this ElseClauseSyntax elseClause)
     {
         if (elseClause is null)
             throw new ArgumentNullException(nameof(elseClause));
@@ -688,7 +688,7 @@ public static class SyntaxExtensions
         return null;
     }
 
-    internal static StatementSyntax EmbeddedStatement(this ElseClauseSyntax elseClause, bool allowIfStatement = true)
+    internal static StatementSyntax? EmbeddedStatement(this ElseClauseSyntax elseClause, bool allowIfStatement = true)
     {
         StatementSyntax statement = elseClause.Statement;
 
@@ -715,7 +715,7 @@ public static class SyntaxExtensions
     /// Returns region directive that is related to the specified endregion directive. Returns null if no matching region directive is found.
     /// </summary>
     /// <param name="endRegionDirective"></param>
-    public static RegionDirectiveTriviaSyntax GetRegionDirective(this EndRegionDirectiveTriviaSyntax endRegionDirective)
+    public static RegionDirectiveTriviaSyntax? GetRegionDirective(this EndRegionDirectiveTriviaSyntax endRegionDirective)
     {
         if (endRegionDirective is null)
             throw new ArgumentNullException(nameof(endRegionDirective));
@@ -795,7 +795,7 @@ public static class SyntaxExtensions
     public static ExpressionSyntax WalkUpParentheses(this ExpressionSyntax expression)
     {
         while (expression.IsParentKind(SyntaxKind.ParenthesizedExpression))
-            expression = (ExpressionSyntax)expression.Parent;
+            expression = (ExpressionSyntax)expression.Parent!;
 
         return expression;
     }
@@ -828,7 +828,7 @@ public static class SyntaxExtensions
     #endregion ExpressionSyntax
 
     #region FixedStatementSyntax
-    internal static StatementSyntax EmbeddedStatement(this FixedStatementSyntax fixedStatement)
+    internal static StatementSyntax? EmbeddedStatement(this FixedStatementSyntax fixedStatement)
     {
         StatementSyntax statement = fixedStatement.Statement;
 
@@ -849,7 +849,7 @@ public static class SyntaxExtensions
         return TextSpan.FromBounds(forStatement.OpenParenToken.SpanStart, forStatement.CloseParenToken.Span.End);
     }
 
-    internal static StatementSyntax EmbeddedStatement(this ForStatementSyntax forStatement)
+    internal static StatementSyntax? EmbeddedStatement(this ForStatementSyntax forStatement)
     {
         StatementSyntax statement = forStatement.Statement;
 
@@ -858,7 +858,7 @@ public static class SyntaxExtensions
     #endregion ForStatementSyntax
 
     #region IfStatementSyntax
-    internal static StatementSyntax SingleNonBlockStatementOrDefault(this IfStatementSyntax ifStatement)
+    internal static StatementSyntax? SingleNonBlockStatementOrDefault(this IfStatementSyntax ifStatement)
     {
         return SingleNonBlockStatementOrDefault(ifStatement.Statement);
     }
@@ -885,7 +885,7 @@ public static class SyntaxExtensions
 
         while (true)
         {
-            IfStatementSyntax parentIf = GetPreviousIf(ifStatement);
+            IfStatementSyntax? parentIf = GetPreviousIf(ifStatement);
 
             if (parentIf is not null)
             {
@@ -909,9 +909,9 @@ public static class SyntaxExtensions
         return ifStatement?.IsParentKind(SyntaxKind.ElseClause) == false;
     }
 
-    internal static IfStatementSyntax GetNextIf(this IfStatementSyntax ifStatement)
+    internal static IfStatementSyntax? GetNextIf(this IfStatementSyntax ifStatement)
     {
-        StatementSyntax statement = ifStatement.Else?.Statement;
+        StatementSyntax? statement = ifStatement.Else?.Statement;
 
         if (statement?.Kind() == SyntaxKind.IfStatement)
             return (IfStatementSyntax)statement;
@@ -919,9 +919,9 @@ public static class SyntaxExtensions
         return null;
     }
 
-    internal static IfStatementSyntax GetPreviousIf(this IfStatementSyntax ifStatement)
+    internal static IfStatementSyntax? GetPreviousIf(this IfStatementSyntax ifStatement)
     {
-        SyntaxNode parent = ifStatement.Parent;
+        SyntaxNode? parent = ifStatement.Parent;
 
         if (parent.IsKind(SyntaxKind.ElseClause))
         {
@@ -934,7 +934,7 @@ public static class SyntaxExtensions
         return null;
     }
 
-    internal static StatementSyntax EmbeddedStatement(this IfStatementSyntax ifStatement)
+    internal static StatementSyntax? EmbeddedStatement(this IfStatementSyntax ifStatement)
     {
         StatementSyntax statement = ifStatement.Statement;
 
@@ -1037,7 +1037,7 @@ public static class SyntaxExtensions
     /// Returns a get accessor that is contained in the specified indexer declaration.
     /// </summary>
     /// <param name="indexerDeclaration"></param>
-    public static AccessorDeclarationSyntax Getter(this IndexerDeclarationSyntax indexerDeclaration)
+    public static AccessorDeclarationSyntax? Getter(this IndexerDeclarationSyntax indexerDeclaration)
     {
         if (indexerDeclaration is null)
             throw new ArgumentNullException(nameof(indexerDeclaration));
@@ -1051,7 +1051,7 @@ public static class SyntaxExtensions
     /// Returns a set accessor that is contained in the specified indexer declaration.
     /// </summary>
     /// <param name="indexerDeclaration"></param>
-    public static AccessorDeclarationSyntax Setter(this IndexerDeclarationSyntax indexerDeclaration)
+    public static AccessorDeclarationSyntax? Setter(this IndexerDeclarationSyntax indexerDeclaration)
     {
         if (indexerDeclaration is null)
             throw new ArgumentNullException(nameof(indexerDeclaration));
@@ -1189,12 +1189,12 @@ public static class SyntaxExtensions
     /// Returns local function body or an expression body if the body is null.
     /// </summary>
     /// <param name="localFunctionStatement"></param>
-    public static CSharpSyntaxNode BodyOrExpressionBody(this LocalFunctionStatementSyntax localFunctionStatement)
+    public static CSharpSyntaxNode? BodyOrExpressionBody(this LocalFunctionStatementSyntax localFunctionStatement)
     {
         if (localFunctionStatement is null)
             throw new ArgumentNullException(nameof(localFunctionStatement));
 
-        return localFunctionStatement.Body ?? (CSharpSyntaxNode)localFunctionStatement.ExpressionBody;
+        return localFunctionStatement.Body ?? (CSharpSyntaxNode?)localFunctionStatement.ExpressionBody;
     }
 
     /// <summary>
@@ -1229,7 +1229,7 @@ public static class SyntaxExtensions
     #endregion LocalFunctionStatementSyntax
 
     #region LockStatementSyntax
-    internal static StatementSyntax EmbeddedStatement(this LockStatementSyntax lockStatement)
+    internal static StatementSyntax? EmbeddedStatement(this LockStatementSyntax lockStatement)
     {
         StatementSyntax statement = lockStatement.Statement;
 
@@ -1278,12 +1278,12 @@ public static class SyntaxExtensions
     /// Returns single-line documentation comment syntax that is part of the specified declaration.
     /// </summary>
     /// <param name="member"></param>
-    public static DocumentationCommentTriviaSyntax GetSingleLineDocumentationComment(this MemberDeclarationSyntax member)
+    public static DocumentationCommentTriviaSyntax? GetSingleLineDocumentationComment(this MemberDeclarationSyntax member)
     {
         if (member is null)
             throw new ArgumentNullException(nameof(member));
 
-        SyntaxNode structure = member.GetSingleLineDocumentationCommentTrivia().GetStructure();
+        SyntaxNode? structure = member.GetSingleLineDocumentationCommentTrivia().GetStructure();
 
         if (structure.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
             return (DocumentationCommentTriviaSyntax)structure;
@@ -1295,7 +1295,7 @@ public static class SyntaxExtensions
     /// Returns documentation comment syntax that is part of the specified declaration.
     /// </summary>
     /// <param name="member"></param>
-    public static DocumentationCommentTriviaSyntax GetDocumentationComment(this MemberDeclarationSyntax member)
+    public static DocumentationCommentTriviaSyntax? GetDocumentationComment(this MemberDeclarationSyntax member)
     {
         if (member is null)
             throw new ArgumentNullException(nameof(member));
@@ -1342,7 +1342,7 @@ public static class SyntaxExtensions
 
     internal static TMember WithNewSingleLineDocumentationComment<TMember>(
         this TMember member,
-        DocumentationCommentGeneratorSettings settings = null) where TMember : MemberDeclarationSyntax
+        DocumentationCommentGeneratorSettings? settings = null) where TMember : MemberDeclarationSyntax
     {
         if (member is null)
             throw new ArgumentNullException(nameof(member));
@@ -1363,7 +1363,7 @@ public static class SyntaxExtensions
     internal static TMember WithBaseOrNewSingleLineDocumentationComment<TMember>(
         this TMember member,
         SemanticModel semanticModel,
-        DocumentationCommentGeneratorSettings settings = null,
+        DocumentationCommentGeneratorSettings? settings = null,
         CancellationToken cancellationToken = default) where TMember : MemberDeclarationSyntax
     {
         if (member is null)
@@ -1452,12 +1452,12 @@ public static class SyntaxExtensions
     /// Returns method body or an expression body if the body is null.
     /// </summary>
     /// <param name="methodDeclaration"></param>
-    public static CSharpSyntaxNode BodyOrExpressionBody(this MethodDeclarationSyntax methodDeclaration)
+    public static CSharpSyntaxNode? BodyOrExpressionBody(this MethodDeclarationSyntax methodDeclaration)
     {
         if (methodDeclaration is null)
             throw new ArgumentNullException(nameof(methodDeclaration));
 
-        return methodDeclaration.Body ?? (CSharpSyntaxNode)methodDeclaration.ExpressionBody;
+        return methodDeclaration.Body ?? (CSharpSyntaxNode?)methodDeclaration.ExpressionBody;
     }
     #endregion MethodDeclarationSyntax
 
@@ -1512,12 +1512,12 @@ public static class SyntaxExtensions
     /// Returns operator body or an expression body if the body is null.
     /// </summary>
     /// <param name="operatorDeclaration"></param>
-    public static CSharpSyntaxNode BodyOrExpressionBody(this OperatorDeclarationSyntax operatorDeclaration)
+    public static CSharpSyntaxNode? BodyOrExpressionBody(this OperatorDeclarationSyntax operatorDeclaration)
     {
         if (operatorDeclaration is null)
             throw new ArgumentNullException(nameof(operatorDeclaration));
 
-        return operatorDeclaration.Body ?? (CSharpSyntaxNode)operatorDeclaration.ExpressionBody;
+        return operatorDeclaration.Body ?? (CSharpSyntaxNode?)operatorDeclaration.ExpressionBody;
     }
 
     internal static TextSpan HeaderSpan(this OperatorDeclarationSyntax operatorDeclaration)
@@ -1586,7 +1586,7 @@ public static class SyntaxExtensions
     /// Returns property get accessor, if any.
     /// </summary>
     /// <param name="propertyDeclaration"></param>
-    public static AccessorDeclarationSyntax Getter(this PropertyDeclarationSyntax propertyDeclaration)
+    public static AccessorDeclarationSyntax? Getter(this PropertyDeclarationSyntax propertyDeclaration)
     {
         if (propertyDeclaration is null)
             throw new ArgumentNullException(nameof(propertyDeclaration));
@@ -1598,7 +1598,7 @@ public static class SyntaxExtensions
     /// Returns property set accessor, if any.
     /// </summary>
     /// <param name="propertyDeclaration"></param>
-    public static AccessorDeclarationSyntax Setter(this PropertyDeclarationSyntax propertyDeclaration)
+    public static AccessorDeclarationSyntax? Setter(this PropertyDeclarationSyntax propertyDeclaration)
     {
         if (propertyDeclaration is null)
             throw new ArgumentNullException(nameof(propertyDeclaration));
@@ -1612,7 +1612,7 @@ public static class SyntaxExtensions
         AccessorDeclarationSyntax newAccessor)
     {
         return propertyDeclaration.WithAccessorList(
-            propertyDeclaration.AccessorList.WithAccessors(
+            propertyDeclaration.AccessorList!.WithAccessors(
                 propertyDeclaration.AccessorList.Accessors.Replace(accessor, newAccessor)));
     }
     #endregion PropertyDeclarationSyntax
@@ -1668,7 +1668,7 @@ public static class SyntaxExtensions
     /// Returns endregion directive that is related to the specified region directive. Returns null if no matching endregion directive is found.
     /// </summary>
     /// <param name="regionDirective"></param>
-    public static EndRegionDirectiveTriviaSyntax GetEndRegionDirective(this RegionDirectiveTriviaSyntax regionDirective)
+    public static EndRegionDirectiveTriviaSyntax? GetEndRegionDirective(this RegionDirectiveTriviaSyntax regionDirective)
     {
         if (regionDirective is null)
             throw new ArgumentNullException(nameof(regionDirective));
@@ -1741,7 +1741,7 @@ public static class SyntaxExtensions
     /// <typeparam name="TNode"></typeparam>
     /// <param name="list"></param>
     /// <param name="kind"></param>
-    public static TNode Find<TNode>(this SeparatedSyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
+    public static TNode? Find<TNode>(this SeparatedSyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
     {
         int index = list.IndexOf(kind);
 
@@ -1974,7 +1974,7 @@ public static class SyntaxExtensions
     /// If the specified statement is not contained in the list, or if there is no previous statement, then this method returns null.
     /// </summary>
     /// <param name="statement"></param>
-    public static StatementSyntax PreviousStatement(this StatementSyntax statement)
+    public static StatementSyntax? PreviousStatement(this StatementSyntax statement)
     {
         if (statement is null)
             throw new ArgumentNullException(nameof(statement));
@@ -1997,7 +1997,7 @@ public static class SyntaxExtensions
     /// If the specified statement is not contained in the list, or if there is no next statement, then this method returns null.
     /// </summary>
     /// <param name="statement"></param>
-    public static StatementSyntax NextStatement(this StatementSyntax statement)
+    public static StatementSyntax? NextStatement(this StatementSyntax statement)
     {
         if (statement is null)
             throw new ArgumentNullException(nameof(statement));
@@ -2029,7 +2029,7 @@ public static class SyntaxExtensions
         return statements.Any();
     }
 
-    internal static StatementSyntax SingleNonBlockStatementOrDefault(this StatementSyntax statement, bool recursive = false)
+    internal static StatementSyntax? SingleNonBlockStatementOrDefault(this StatementSyntax statement, bool recursive = false)
     {
         return (statement.Kind() == SyntaxKind.Block)
             ? SingleNonBlockStatementOrDefault((BlockSyntax)statement, recursive)
@@ -2063,7 +2063,7 @@ public static class SyntaxExtensions
         if (!CSharpFacts.CanBeEmbeddedStatement(kind))
             return false;
 
-        SyntaxNode parent = statement.Parent;
+        SyntaxNode? parent = statement.Parent;
 
         if (parent is null)
             return false;
@@ -2154,7 +2154,7 @@ public static class SyntaxExtensions
     /// Returns a section that contains default label, or null if the specified switch statement does not contains section with default label.
     /// </summary>
     /// <param name="switchStatement"></param>
-    public static SwitchSectionSyntax DefaultSection(this SwitchStatementSyntax switchStatement)
+    public static SwitchSectionSyntax? DefaultSection(this SwitchStatementSyntax switchStatement)
     {
         if (switchStatement is null)
             throw new ArgumentNullException(nameof(switchStatement));
@@ -2198,7 +2198,7 @@ public static class SyntaxExtensions
     /// <typeparam name="TNode"></typeparam>
     /// <param name="list"></param>
     /// <param name="kind"></param>
-    public static TNode Find<TNode>(this SyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
+    public static TNode? Find<TNode>(this SyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
     {
         int index = list.IndexOf(kind);
 
@@ -2259,7 +2259,7 @@ public static class SyntaxExtensions
             GetEndIndex(list.Last(), includeExteriorTrivia, trim));
     }
 
-    internal static StatementSyntax SingleOrDefault(this SyntaxList<StatementSyntax> statements, bool ignoreLocalFunctions, bool shouldThrow)
+    internal static StatementSyntax? SingleOrDefault(this SyntaxList<StatementSyntax> statements, bool ignoreLocalFunctions, bool shouldThrow)
     {
         return (ignoreLocalFunctions)
             ? statements.SingleOrDefault(statement => statement.Kind() != SyntaxKind.LocalFunctionStatement, shouldThrow: shouldThrow)
@@ -2416,7 +2416,7 @@ public static class SyntaxExtensions
         return ReplaceRange(list, index, count, Empty.ReadOnlyList<TNode>());
     }
 
-    internal static StatementSyntax LastOrDefault(this SyntaxList<StatementSyntax> statements, bool ignoreLocalFunction)
+    internal static StatementSyntax? LastOrDefault(this SyntaxList<StatementSyntax> statements, bool ignoreLocalFunction)
     {
         if (!ignoreLocalFunction)
             return statements.LastOrDefault();
@@ -2460,12 +2460,12 @@ public static class SyntaxExtensions
     #endregion SyntaxList<T>
 
     #region SyntaxNode
-    internal static IEnumerable<DirectiveTriviaSyntax> DescendantPreprocessorDirectives(this SyntaxNode node, Func<DirectiveTriviaSyntax, bool> predicate = null)
+    internal static IEnumerable<DirectiveTriviaSyntax> DescendantPreprocessorDirectives(this SyntaxNode node, Func<DirectiveTriviaSyntax, bool>? predicate = null)
     {
         return DescendantPreprocessorDirectives(node, node.FullSpan, predicate);
     }
 
-    internal static IEnumerable<DirectiveTriviaSyntax> DescendantPreprocessorDirectives(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool> predicate = null)
+    internal static IEnumerable<DirectiveTriviaSyntax> DescendantPreprocessorDirectives(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool>? predicate = null)
     {
         foreach (SyntaxTrivia trivia in node.DescendantTrivia(span: span, descendIntoTrivia: true))
         {
@@ -2502,7 +2502,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="kind1"></param>
     /// <param name="kind2"></param>
-    public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
+    public static bool IsKind(this SyntaxNode? node, SyntaxKind kind1, SyntaxKind kind2)
     {
         if (node is null)
             return false;
@@ -2520,7 +2520,7 @@ public static class SyntaxExtensions
     /// <param name="kind1"></param>
     /// <param name="kind2"></param>
     /// <param name="kind3"></param>
-    public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
+    public static bool IsKind(this SyntaxNode? node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
     {
         if (node is null)
             return false;
@@ -2540,7 +2540,7 @@ public static class SyntaxExtensions
     /// <param name="kind2"></param>
     /// <param name="kind3"></param>
     /// <param name="kind4"></param>
-    public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
+    public static bool IsKind(this SyntaxNode? node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
     {
         if (node is null)
             return false;
@@ -2562,7 +2562,7 @@ public static class SyntaxExtensions
     /// <param name="kind3"></param>
     /// <param name="kind4"></param>
     /// <param name="kind5"></param>
-    public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
+    public static bool IsKind(this SyntaxNode? node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
     {
         if (node is null)
             return false;
@@ -2586,7 +2586,7 @@ public static class SyntaxExtensions
     /// <param name="kind4"></param>
     /// <param name="kind5"></param>
     /// <param name="kind6"></param>
-    public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
+    public static bool IsKind(this SyntaxNode? node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
     {
         if (node is null)
             return false;
@@ -2606,7 +2606,7 @@ public static class SyntaxExtensions
     /// </summary>
     /// <param name="node"></param>
     /// <param name="kind"></param>
-    public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind)
+    public static bool IsParentKind(this SyntaxNode? node, SyntaxKind kind)
     {
         return node?.Parent.IsKind(kind) == true;
     }
@@ -2865,7 +2865,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="kind"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static SyntaxNode FirstAncestor(
+    public static SyntaxNode? FirstAncestor(
         this SyntaxNode node,
         SyntaxKind kind,
         bool ascendOutOfTrivia = true)
@@ -2880,7 +2880,7 @@ public static class SyntaxExtensions
     /// <param name="kind1"></param>
     /// <param name="kind2"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static SyntaxNode FirstAncestor(
+    public static SyntaxNode? FirstAncestor(
         this SyntaxNode node,
         SyntaxKind kind1,
         SyntaxKind kind2,
@@ -2897,7 +2897,7 @@ public static class SyntaxExtensions
     /// <param name="kind2"></param>
     /// <param name="kind3"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static SyntaxNode FirstAncestor(
+    public static SyntaxNode? FirstAncestor(
         this SyntaxNode node,
         SyntaxKind kind1,
         SyntaxKind kind2,
@@ -2913,7 +2913,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="predicate"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static SyntaxNode FirstAncestor(this SyntaxNode node, Func<SyntaxNode, bool> predicate, bool ascendOutOfTrivia = true)
+    public static SyntaxNode? FirstAncestor(this SyntaxNode node, Func<SyntaxNode, bool> predicate, bool ascendOutOfTrivia = true)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -2921,7 +2921,7 @@ public static class SyntaxExtensions
         if (predicate is null)
             throw new ArgumentNullException(nameof(predicate));
 
-        SyntaxNode parent = node.GetParent(ascendOutOfTrivia);
+        SyntaxNode? parent = node.GetParent(ascendOutOfTrivia);
 
         if (parent is not null)
         {
@@ -2939,7 +2939,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="kind"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static SyntaxNode FirstAncestorOrSelf(
+    public static SyntaxNode? FirstAncestorOrSelf(
         this SyntaxNode node,
         SyntaxKind kind,
         bool ascendOutOfTrivia = true)
@@ -2954,7 +2954,7 @@ public static class SyntaxExtensions
     /// <param name="kind1"></param>
     /// <param name="kind2"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static SyntaxNode FirstAncestorOrSelf(
+    public static SyntaxNode? FirstAncestorOrSelf(
         this SyntaxNode node,
         SyntaxKind kind1,
         SyntaxKind kind2,
@@ -2971,7 +2971,7 @@ public static class SyntaxExtensions
     /// <param name="kind2"></param>
     /// <param name="kind3"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static SyntaxNode FirstAncestorOrSelf(
+    public static SyntaxNode? FirstAncestorOrSelf(
         this SyntaxNode node,
         SyntaxKind kind1,
         SyntaxKind kind2,
@@ -2987,7 +2987,7 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="predicate"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, Func<SyntaxNode, bool> predicate, bool ascendOutOfTrivia = true)
+    public static SyntaxNode? FirstAncestorOrSelf(this SyntaxNode node, Func<SyntaxNode, bool> predicate, bool ascendOutOfTrivia = true)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -3000,18 +3000,18 @@ public static class SyntaxExtensions
             if (predicate(node))
                 return node;
 
-            node = node.GetParent(ascendOutOfTrivia);
+            node = node.GetParent(ascendOutOfTrivia)!;
         }
 
         return null;
     }
 
-    internal static TRoot RemoveNode<TRoot>(this TRoot root, SyntaxNode node) where TRoot : SyntaxNode
+    internal static TRoot? RemoveNode<TRoot>(this TRoot root, SyntaxNode node) where TRoot : SyntaxNode
     {
         return SyntaxRefactorings.RemoveNode(root, node);
     }
 
-    internal static TNode RemoveStatement<TNode>(this TNode node, StatementSyntax statement) where TNode : SyntaxNode
+    internal static TNode? RemoveStatement<TNode>(this TNode node, StatementSyntax statement) where TNode : SyntaxNode
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -3039,7 +3039,7 @@ public static class SyntaxExtensions
         return ModifierList.Remove(node, modifier);
     }
 
-    internal static TNode InsertModifier<TNode>(this TNode node, SyntaxKind modifierKind, IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
+    internal static TNode InsertModifier<TNode>(this TNode node, SyntaxKind modifierKind, IComparer<SyntaxKind>? comparer = null) where TNode : SyntaxNode
     {
         return ModifierList.Insert(node, modifierKind, comparer);
     }
@@ -3099,7 +3099,7 @@ public static class SyntaxExtensions
                 return true;
             }
 
-            node = node.Parent;
+            node = node.Parent!;
         }
 
         return false;
@@ -3116,7 +3116,7 @@ public static class SyntaxExtensions
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        for (SyntaxNode current = node; current is not null; current = current.Parent)
+        for (SyntaxNode? current = node; current is not null; current = current.Parent)
         {
             switch (current.Kind())
             {
@@ -3256,7 +3256,7 @@ public static class SyntaxExtensions
 
         static bool IsMethodThatAcceptsExpressionAsFirstParameter(SymbolInfo info)
         {
-            ISymbol symbol = info.Symbol;
+            ISymbol? symbol = info.Symbol;
 
             if (symbol is not null)
                 return IsMethodThatAcceptsExpressionAsFirstParameter2(symbol);
@@ -3306,14 +3306,14 @@ public static class SyntaxExtensions
 
         if (node.ContainsDirectives)
         {
-            DirectiveTriviaSyntax first = node.GetFirstDirective(span, f => CSharpFacts.IsIfElseDirective(f.Kind()));
+            DirectiveTriviaSyntax? first = node.GetFirstDirective(span, f => CSharpFacts.IsIfElseDirective(f.Kind()));
 
             if (first is not null)
             {
                 if (!first.IsKind(SyntaxKind.IfDirectiveTrivia))
                     return true;
 
-                DirectiveTriviaSyntax last = node.GetLastDirective(span, f => CSharpFacts.IsIfElseDirective(f.Kind()));
+                DirectiveTriviaSyntax? last = node.GetLastDirective(span, f => CSharpFacts.IsIfElseDirective(f.Kind()));
 
                 if (last == first)
                     return true;
@@ -3321,7 +3321,7 @@ public static class SyntaxExtensions
                 if (!last.IsKind(SyntaxKind.EndIfDirectiveTrivia))
                     return true;
 
-                DirectiveTriviaSyntax d = first;
+                DirectiveTriviaSyntax? d = first;
 
                 do
                 {
@@ -3346,9 +3346,9 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="span"></param>
     /// <param name="predicate"></param>
-    public static DirectiveTriviaSyntax GetFirstDirective(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool> predicate = null)
+    public static DirectiveTriviaSyntax? GetFirstDirective(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool>? predicate = null)
     {
-        DirectiveTriviaSyntax directive = node.GetFirstDirective(predicate);
+        DirectiveTriviaSyntax? directive = node.GetFirstDirective(predicate);
 
         if (directive is null)
             return null;
@@ -3367,9 +3367,9 @@ public static class SyntaxExtensions
         return directive;
     }
 
-    internal static DirectiveTriviaSyntax GetLastDirective(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool> predicate = null)
+    internal static DirectiveTriviaSyntax? GetLastDirective(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool>? predicate = null)
     {
-        DirectiveTriviaSyntax directive = node.GetLastDirective(predicate);
+        DirectiveTriviaSyntax? directive = node.GetLastDirective(predicate);
 
         if (directive is null)
             return null;
@@ -4211,7 +4211,7 @@ public static class SyntaxExtensions
     #endregion TypeSyntax
 
     #region UsingDirectiveSyntax
-    internal static IdentifierNameSyntax GetRootNamespace(this UsingDirectiveSyntax usingDirective)
+    internal static IdentifierNameSyntax? GetRootNamespace(this UsingDirectiveSyntax usingDirective)
     {
         NameSyntax name = usingDirective.Name;
 
@@ -4232,7 +4232,7 @@ public static class SyntaxExtensions
                 if (left is IdentifierNameSyntax identifierName2)
                     return identifierName2;
 
-                qualifiedName = left as QualifiedNameSyntax;
+                qualifiedName = (left as QualifiedNameSyntax)!;
             }
             while (qualifiedName is not null);
 
@@ -4252,15 +4252,15 @@ public static class SyntaxExtensions
     /// Returns using statement's declaration or an expression if the declaration is null.
     /// </summary>
     /// <param name="usingStatement"></param>
-    public static CSharpSyntaxNode DeclarationOrExpression(this UsingStatementSyntax usingStatement)
+    public static CSharpSyntaxNode? DeclarationOrExpression(this UsingStatementSyntax usingStatement)
     {
         if (usingStatement is null)
             throw new ArgumentNullException(nameof(usingStatement));
 
-        return usingStatement.Declaration ?? (CSharpSyntaxNode)usingStatement.Expression;
+        return usingStatement.Declaration ?? (CSharpSyntaxNode?)usingStatement.Expression;
     }
 
-    internal static StatementSyntax EmbeddedStatement(this UsingStatementSyntax usingStatement, bool allowUsingStatement = true)
+    internal static StatementSyntax? EmbeddedStatement(this UsingStatementSyntax usingStatement, bool allowUsingStatement = true)
     {
         StatementSyntax statement = usingStatement.Statement;
 
@@ -4283,7 +4283,7 @@ public static class SyntaxExtensions
     #endregion UsingStatementSyntax
 
     #region WhileStatementSyntax
-    internal static StatementSyntax EmbeddedStatement(this WhileStatementSyntax whileStatement)
+    internal static StatementSyntax? EmbeddedStatement(this WhileStatementSyntax whileStatement)
     {
         StatementSyntax statement = whileStatement.Statement;
 
@@ -4307,7 +4307,7 @@ public static class SyntaxExtensions
         return xmlElement.StartTag?.Name?.IsLocalName(localName, comparison) == true;
     }
 
-    internal static string GetAttributeValue(this XmlElementSyntax element, string attributeName)
+    internal static string? GetAttributeValue(this XmlElementSyntax element, string attributeName)
     {
         XmlElementStartTagSyntax startTag = element.StartTag;
 
@@ -4343,7 +4343,7 @@ public static class SyntaxExtensions
     #endregion XmlElementSyntax
 
     #region XmlEmptyElementSyntax
-    internal static string GetAttributeValue(this XmlEmptyElementSyntax element, string attributeName)
+    internal static string? GetAttributeValue(this XmlEmptyElementSyntax element, string attributeName)
     {
         foreach (XmlAttributeSyntax attribute in element.Attributes)
         {

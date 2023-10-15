@@ -19,7 +19,7 @@ internal static class SpellingFixProvider
         if (length <= 3)
             return ImmutableArray<string>.Empty;
 
-        ImmutableHashSet<string>.Builder matches = null;
+        ImmutableHashSet<string>.Builder? matches = null;
         WordCharMap map = spellingData.CharIndexMap;
         WordCharMap reversedMap = spellingData.ReversedCharIndexMap;
         var intersects = new ImmutableHashSet<string>[length];
@@ -29,12 +29,12 @@ internal static class SpellingFixProvider
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!map.TryGetValue(value, i, out ImmutableHashSet<string> values))
+            if (!map.TryGetValue(value, i, out ImmutableHashSet<string>? values))
                 break;
 
             ImmutableHashSet<string> intersect = (i == 0)
-                ? values
-                : intersects[i - 1].Intersect(values);
+                ? values!
+                : intersects[i - 1].Intersect(values!);
 
             if (i == length - 2)
             {
@@ -59,12 +59,12 @@ internal static class SpellingFixProvider
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!reversedMap.TryGetValue(value[j], length - j - 1, out ImmutableHashSet<string> values))
+            if (!reversedMap.TryGetValue(value[j], length - j - 1, out ImmutableHashSet<string>? values))
                 break;
 
             ImmutableHashSet<string> intersect = (j == length - 1)
-                ? values
-                : values.Intersect(intersects[j + 1]);
+                ? values!
+                : values!.Intersect(intersects[j + 1]);
 
             if (j == 1)
             {
@@ -108,7 +108,7 @@ internal static class SpellingFixProvider
     private static bool TryAddMatches(
         ImmutableHashSet<string> values,
         int requiredLength,
-        ref ImmutableHashSet<string>.Builder matches)
+        ref ImmutableHashSet<string>.Builder? matches)
     {
         return TryAddMatches(values, requiredLength, requiredLength, ref matches);
     }
@@ -117,7 +117,7 @@ internal static class SpellingFixProvider
         ImmutableHashSet<string> values,
         int minRequiredLength,
         int maxRequiredLength,
-        ref ImmutableHashSet<string>.Builder matches)
+        ref ImmutableHashSet<string>.Builder? matches)
     {
         var success = false;
 
@@ -143,7 +143,7 @@ internal static class SpellingFixProvider
         if (length < 4)
             return ImmutableArray<string>.Empty;
 
-        ImmutableArray<string>.Builder fixes = null;
+        ImmutableArray<string>.Builder? fixes = null;
 
         char[] arr = value.ToCharArray();
 
@@ -151,7 +151,7 @@ internal static class SpellingFixProvider
 
         var key = new string(arr);
 
-        if (!spellingData.CharMap.TryGetValue(key, out ImmutableHashSet<string> values))
+        if (!spellingData.CharMap.TryGetValue(key, out ImmutableHashSet<string>? values))
             return ImmutableArray<string>.Empty;
 
         int maxCharDiff = (length <= 6) ? 2 : 3;

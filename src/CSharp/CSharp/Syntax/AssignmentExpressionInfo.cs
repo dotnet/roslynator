@@ -78,19 +78,19 @@ public readonly struct AssignmentExpressionInfo
     }
 
     internal static AssignmentExpressionInfo Create(
-        AssignmentExpressionSyntax assignmentExpression,
+        AssignmentExpressionSyntax? assignmentExpression,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (assignmentExpression is null)
             return default;
 
-        ExpressionSyntax left = WalkAndCheck(assignmentExpression.Left, walkDownParentheses, allowMissing);
+        ExpressionSyntax? left = WalkAndCheck(assignmentExpression.Left, walkDownParentheses, allowMissing);
 
         if (left is null)
             return default;
 
-        ExpressionSyntax right = WalkAndCheck(assignmentExpression.Right, walkDownParentheses, allowMissing);
+        ExpressionSyntax? right = WalkAndCheck(assignmentExpression.Right, walkDownParentheses, allowMissing);
 
         if (right is null)
             return default;

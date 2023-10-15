@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Roslynator.FindSymbols;
+using Roslynator.Host.Mef;
 using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine;
@@ -161,6 +162,18 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         IFindSymbolsProgress progress,
         CancellationToken cancellationToken)
     {
+        if (!project.SupportsCompilation)
+        {
+            WriteLine("  Project does not support compilation", Verbosity.Normal);
+            return Task.FromResult(ImmutableArray<ISymbol>.Empty);
+        }
+
+        if (!MefWorkspaceServices.Default.SupportedLanguages.Contains(project.Language))
+        {
+            WriteLine($"  Language '{project.Language}' is not supported", Verbosity.Normal);
+            return Task.FromResult(ImmutableArray<ISymbol>.Empty);
+        }
+
         return SymbolFinder.FindSymbolsAsync(project, options, progress, cancellationToken);
     }
 

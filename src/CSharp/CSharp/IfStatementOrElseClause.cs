@@ -15,8 +15,8 @@ namespace Roslynator.CSharp;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseClause>
 {
-    private readonly IfStatementSyntax _ifStatement;
-    private readonly ElseClauseSyntax _elseClause;
+    private readonly IfStatementSyntax? _ifStatement;
+    private readonly ElseClauseSyntax? _elseClause;
 
     internal IfStatementOrElseClause(SyntaxNode node)
     {
@@ -53,9 +53,9 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
         _ifStatement = null;
     }
 
-    internal SyntaxNode Node
+    internal SyntaxNode? Node
     {
-        get { return _ifStatement ?? (SyntaxNode)_elseClause; }
+        get { return _ifStatement ?? (SyntaxNode?)_elseClause; }
     }
 
     /// <summary>
@@ -94,7 +94,7 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
     /// <summary>
     /// Gets <see cref="IfStatementSyntax.Statement"/> or <see cref="ElseClauseSyntax.Statement"/>.
     /// </summary>
-    public StatementSyntax Statement
+    public StatementSyntax? Statement
     {
         get
         {
@@ -111,7 +111,7 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
     /// <summary>
     /// The node that contains the underlying node in its <see cref="SyntaxNode.ChildNodes"/> collection.
     /// </summary>
-    public SyntaxNode Parent
+    public SyntaxNode? Parent
     {
         get { return _ifStatement?.Parent ?? _elseClause?.Parent; }
     }
@@ -159,7 +159,7 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
     /// <summary>
     /// Returns the underlying if statement if this <see cref="IfStatementOrElseClause"/> is wrapping if statement.
     /// </summary>
-    public IfStatementSyntax AsIf()
+    public IfStatementSyntax? AsIf()
     {
         return _ifStatement;
     }
@@ -167,7 +167,7 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
     /// <summary>
     /// Returns the underlying else clause if this <see cref="ElseClauseSyntax"/> is wrapping else clause.
     /// </summary>
-    public ElseClauseSyntax AsElse()
+    public ElseClauseSyntax? AsElse()
     {
         return _elseClause;
     }
@@ -226,7 +226,7 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
         return new IfStatementOrElseClause(ifStatement);
     }
 
-    public static implicit operator IfStatementSyntax(in IfStatementOrElseClause ifOrElse)
+    public static implicit operator IfStatementSyntax?(in IfStatementOrElseClause ifOrElse)
     {
         return ifOrElse.AsIf();
     }
@@ -236,7 +236,7 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
         return new IfStatementOrElseClause(elseClause);
     }
 
-    public static implicit operator ElseClauseSyntax(in IfStatementOrElseClause ifOrElse)
+    public static implicit operator ElseClauseSyntax?(in IfStatementOrElseClause ifOrElse)
     {
         return ifOrElse.AsElse();
     }

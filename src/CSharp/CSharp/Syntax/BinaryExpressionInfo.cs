@@ -97,23 +97,23 @@ public readonly struct BinaryExpressionInfo
     }
 
     private static BinaryExpressionInfo CreateImpl(
-        BinaryExpressionSyntax binaryExpression,
+        BinaryExpressionSyntax? binaryExpression,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (binaryExpression is null)
             return default;
 
-        ExpressionSyntax left = Walk(binaryExpression.Left, walkDownParentheses);
+        ExpressionSyntax? left = Walk(binaryExpression.Left, walkDownParentheses);
 
         if (!Check(left, allowMissing))
             return default;
 
-        ExpressionSyntax right = Walk(binaryExpression.Right, walkDownParentheses);
+        ExpressionSyntax? right = Walk(binaryExpression.Right, walkDownParentheses);
 
         if (!Check(right, allowMissing))
             return default;
 
-        return new BinaryExpressionInfo(binaryExpression, left, right);
+        return new BinaryExpressionInfo(binaryExpression, left!, right!);
     }
 }

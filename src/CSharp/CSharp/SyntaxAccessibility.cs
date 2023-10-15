@@ -345,7 +345,7 @@ public static class SyntaxAccessibility
                 return false;
             }
 
-            SyntaxNode parent = declaration.Parent;
+            SyntaxNode? parent = declaration.Parent;
 
             if (parent is null)
                 return true;
@@ -355,7 +355,7 @@ public static class SyntaxAccessibility
 
             SyntaxDebug.Assert(parent is MemberDeclarationSyntax, parent);
 
-            declaration = parent as MemberDeclarationSyntax;
+            declaration = (parent as MemberDeclarationSyntax)!;
         }
         while (declaration is not null);
 
@@ -382,7 +382,7 @@ public static class SyntaxAccessibility
     public static TNode WithExplicitAccessibility<TNode>(
         TNode node,
         Accessibility newAccessibility,
-        IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
+        IComparer<SyntaxKind>? comparer = null) where TNode : SyntaxNode
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -541,7 +541,7 @@ public static class SyntaxAccessibility
                     .ContainsAny(SyntaxKind.StaticKeyword, SyntaxKind.SealedKeyword) != true;
         }
 
-        bool CheckAccessorAccessibility(AccessorListSyntax accessorList)
+        bool CheckAccessorAccessibility(AccessorListSyntax? accessorList)
         {
             if (accessorList is not null)
             {

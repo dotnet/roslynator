@@ -10,7 +10,7 @@ internal class BinaryExpressionToMultiLineRewriter : CSharpSyntaxRewriter
 {
     private readonly SyntaxTriviaList _leadingTrivia;
 
-    private BinaryExpressionSyntax _previous;
+    private BinaryExpressionSyntax? _previous;
 
     public BinaryExpressionToMultiLineRewriter(SyntaxTriviaList leadingTrivia)
     {
@@ -23,12 +23,12 @@ internal class BinaryExpressionToMultiLineRewriter : CSharpSyntaxRewriter
             || (_previous.Equals(node.Parent) && node.IsKind(_previous.Kind())))
         {
             node = node
-                .WithLeft(node.Left?.TrimTrivia())
+                .WithLeft(node.Left.TrimTrivia())
                 .WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_leadingTrivia));
 
             _previous = node;
         }
 
-        return base.VisitBinaryExpression(node);
+        return base.VisitBinaryExpression(node)!;
     }
 }
