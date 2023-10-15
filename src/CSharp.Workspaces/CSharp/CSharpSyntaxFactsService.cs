@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Composition;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Host;
@@ -59,9 +60,9 @@ internal sealed class CSharpSyntaxFactsService : ISyntaxFactsService
         return SyntaxFactory.AreEquivalent(oldTree, newTree, topLevel: false);
     }
 
-    public SyntaxNode GetSymbolDeclaration(SyntaxToken identifier)
+    public SyntaxNode? GetSymbolDeclaration(SyntaxToken identifier)
     {
-        SyntaxNode parent = identifier.Parent;
+        SyntaxNode? parent = identifier.Parent;
 
         if (!identifier.IsKind(SyntaxKind.IdentifierToken))
             return null;
@@ -109,6 +110,7 @@ internal sealed class CSharpSyntaxFactsService : ISyntaxFactsService
                         }
 
                         SyntaxDebug.Fail(parent);
+
                         return null;
                     }
 

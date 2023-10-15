@@ -18,21 +18,21 @@ internal static class CSharpUtility
     {
         if (type.IsKind(SyntaxKind.NullableType))
         {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+            ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
-            return !typeSymbol.IsKind(SymbolKind.ErrorType)
+            return typeSymbol?.IsKind(SymbolKind.ErrorType) == false
                 && typeSymbol.IsReferenceType;
         }
 
         return false;
     }
 
-    public static string GetCountOrLengthPropertyName(
+    public static string? GetCountOrLengthPropertyName(
         ExpressionSyntax expression,
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
         if (typeSymbol is null)
             return null;
@@ -109,7 +109,7 @@ internal static class CSharpUtility
     {
         if (name is not null)
         {
-            ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
+            ISymbol? symbol = semanticModel.GetSymbol(name, cancellationToken);
 
             if (symbol?.Kind == SymbolKind.Namespace)
             {
@@ -199,7 +199,7 @@ internal static class CSharpUtility
 
             if (memberAccess.Name?.Identifier.ValueText == "Empty")
             {
-                ISymbol symbol = semanticModel.GetSymbol(memberAccess, cancellationToken);
+                ISymbol? symbol = semanticModel.GetSymbol(memberAccess, cancellationToken);
 
                 if (symbol?.Kind == SymbolKind.Field)
                 {
@@ -215,7 +215,7 @@ internal static class CSharpUtility
             }
         }
 
-        Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+        Optional<object?> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
         if (optional.HasValue)
         {
@@ -273,7 +273,7 @@ internal static class CSharpUtility
             if (binaryExpression.Right?.WalkDownParentheses().Kind() != SyntaxKind.StringLiteralExpression)
                 return false;
 
-            ExpressionSyntax left = binaryExpression.Left?.WalkDownParentheses();
+            ExpressionSyntax? left = binaryExpression.Left?.WalkDownParentheses();
 
             switch (left?.Kind())
             {
@@ -366,7 +366,7 @@ internal static class CSharpUtility
 
     public static bool IsPartOfExpressionThatMustBeConstant(ExpressionSyntax expression)
     {
-        for (SyntaxNode parent = expression.Parent; parent is not null; parent = parent.Parent)
+        for (SyntaxNode? parent = expression.Parent; parent is not null; parent = parent.Parent)
         {
             switch (parent.Kind())
             {
@@ -472,102 +472,7 @@ internal static class CSharpUtility
         return false;
     }
 
-    public static IEnumerable<SyntaxNode> EnumerateExpressionChain(ExpressionSyntax expression)
-    {
-        SyntaxNode e = expression;
-
-        yield return e;
-
-        while (true)
-        {
-            ExpressionSyntax last = GetLastChild(e);
-
-            if (last is not null)
-            {
-                e = last;
-            }
-            else
-            {
-                while (e != expression
-                    && IsFirstChild(e))
-                {
-                    e = e.Parent;
-                }
-
-                if (e == expression)
-                    break;
-
-                e = GetPreviousSibling(e);
-            }
-
-            yield return e;
-        }
-
-        static ExpressionSyntax GetLastChild(SyntaxNode node)
-        {
-            switch (node?.Kind())
-            {
-                case SyntaxKind.ConditionalAccessExpression:
-                    return ((ConditionalAccessExpressionSyntax)node).WhenNotNull;
-                case SyntaxKind.MemberBindingExpression:
-                    return ((MemberBindingExpressionSyntax)node).Name;
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    return ((MemberAccessExpressionSyntax)node).Name;
-                case SyntaxKind.ElementAccessExpression:
-                    return ((ElementAccessExpressionSyntax)node).Expression;
-                case SyntaxKind.InvocationExpression:
-                    return ((InvocationExpressionSyntax)node).Expression;
-            }
-
-            return null;
-        }
-
-        static SyntaxNode GetPreviousSibling(SyntaxNode node)
-        {
-            SyntaxNode parent = node.Parent;
-
-            switch (parent.Kind())
-            {
-                case SyntaxKind.ConditionalAccessExpression:
-                    {
-                        var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
-
-                        if (conditionalAccess.WhenNotNull == node)
-                            return conditionalAccess.Expression;
-
-                        break;
-                    }
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        var memberAccess = (MemberAccessExpressionSyntax)parent;
-
-                        if (memberAccess.Name == node)
-                            return memberAccess.Expression;
-
-                        break;
-                    }
-            }
-
-            return null;
-        }
-
-        static bool IsFirstChild(SyntaxNode node)
-        {
-            SyntaxNode parent = node.Parent;
-
-            switch (parent.Kind())
-            {
-                case SyntaxKind.ConditionalAccessExpression:
-                    return ((ConditionalAccessExpressionSyntax)parent).Expression == node;
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    return ((MemberAccessExpressionSyntax)parent).Expression == node;
-            }
-
-            return true;
-        }
-    }
-
-    public static ArrowExpressionClauseSyntax GetExpressionBody(SyntaxNode node)
+    public static ArrowExpressionClauseSyntax? GetExpressionBody(SyntaxNode node)
     {
         switch (node.Kind())
         {
@@ -603,7 +508,7 @@ internal static class CSharpUtility
     {
         SyntaxNode prev = node;
 
-        for (SyntaxNode parent = node.Parent; parent is not null; parent = parent.Parent)
+        for (SyntaxNode? parent = node.Parent; parent is not null; parent = parent.Parent)
         {
             switch (parent.Kind())
             {
@@ -642,7 +547,7 @@ internal static class CSharpUtility
             SyntaxKind.InvocationExpression));
     }
 
-    internal static IFieldSymbol FindEnumDefaultField(INamedTypeSymbol enumSymbol)
+    internal static IFieldSymbol? FindEnumDefaultField(INamedTypeSymbol enumSymbol)
     {
         if (enumSymbol is null)
             throw new ArgumentNullException(nameof(enumSymbol));
@@ -667,7 +572,7 @@ internal static class CSharpUtility
         return default;
     }
 
-    public static TypeSyntax GetTypeOrReturnType(SyntaxNode node)
+    public static TypeSyntax? GetTypeOrReturnType(SyntaxNode node)
     {
         switch (node.Kind())
         {
@@ -722,7 +627,7 @@ internal static class CSharpUtility
         return GetParameterList(declaration)?.Parameters ?? default;
     }
 
-    public static BaseParameterListSyntax GetParameterList(SyntaxNode declaration)
+    public static BaseParameterListSyntax? GetParameterList(SyntaxNode declaration)
     {
         switch (declaration.Kind())
         {
@@ -753,7 +658,7 @@ internal static class CSharpUtility
         return GetTypeParameterList(declaration)?.Parameters ?? default;
     }
 
-    public static TypeParameterListSyntax GetTypeParameterList(SyntaxNode declaration)
+    public static TypeParameterListSyntax? GetTypeParameterList(SyntaxNode declaration)
     {
         switch (declaration.Kind())
         {

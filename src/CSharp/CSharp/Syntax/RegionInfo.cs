@@ -88,7 +88,7 @@ public readonly struct RegionInfo
         get { return SyntaxInfoHelpers.ToDebugString(Success, this, Directive); }
     }
 
-    private static EndRegionDirectiveTriviaSyntax FindEndRegionDirective(SyntaxTriviaList list, int index)
+    private static EndRegionDirectiveTriviaSyntax? FindEndRegionDirective(SyntaxTriviaList list, int index)
     {
         for (int i = index + 1; i < list.Count; i++)
         {
@@ -104,7 +104,7 @@ public readonly struct RegionInfo
                 case SyntaxKind.EndRegionDirectiveTrivia:
                     {
                         if (trivia.HasStructure)
-                            return (EndRegionDirectiveTriviaSyntax)trivia.GetStructure();
+                            return (EndRegionDirectiveTriviaSyntax)trivia.GetStructure()!;
 
                         return null;
                     }

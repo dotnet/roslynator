@@ -9,7 +9,7 @@ namespace Roslynator;
 
 internal static class SymbolUtility
 {
-    public static bool IsPublicStaticReadOnly(IFieldSymbol fieldSymbol, string name = null)
+    public static bool IsPublicStaticReadOnly(IFieldSymbol fieldSymbol, string? name = null)
     {
         return fieldSymbol?.DeclaredAccessibility == Accessibility.Public
             && fieldSymbol.IsStatic
@@ -17,7 +17,7 @@ internal static class SymbolUtility
             && StringUtility.IsNullOrEquals(name, fieldSymbol.Name);
     }
 
-    public static bool IsPublicStaticNonGeneric(IMethodSymbol methodSymbol, string name = null)
+    public static bool IsPublicStaticNonGeneric(IMethodSymbol methodSymbol, string? name = null)
     {
         return methodSymbol?.DeclaredAccessibility == Accessibility.Public
             && methodSymbol.IsStatic
@@ -25,7 +25,7 @@ internal static class SymbolUtility
             && StringUtility.IsNullOrEquals(name, methodSymbol.Name);
     }
 
-    public static bool IsPublicInstanceNonGeneric(IMethodSymbol methodSymbol, string name = null)
+    public static bool IsPublicInstanceNonGeneric(IMethodSymbol methodSymbol, string? name = null)
     {
         return methodSymbol?.DeclaredAccessibility == Accessibility.Public
             && !methodSymbol.IsStatic
@@ -33,14 +33,14 @@ internal static class SymbolUtility
             && StringUtility.IsNullOrEquals(name, methodSymbol.Name);
     }
 
-    public static bool IsPublicInstance(IPropertySymbol propertySymbol, string name = null)
+    public static bool IsPublicInstance(IPropertySymbol propertySymbol, string? name = null)
     {
         return propertySymbol?.DeclaredAccessibility == Accessibility.Public
             && !propertySymbol.IsStatic
             && StringUtility.IsNullOrEquals(name, propertySymbol.Name);
     }
 
-    public static bool IsStringAdditionOperator(IMethodSymbol methodSymbol)
+    public static bool IsStringAdditionOperator(IMethodSymbol? methodSymbol)
     {
         return methodSymbol?.MethodKind == MethodKind.BuiltinOperator
             && methodSymbol.Name == WellKnownMemberNames.AdditionOperatorName
@@ -155,7 +155,7 @@ internal static class SymbolUtility
         }
     }
 
-    public static string GetCountOrLengthPropertyName(
+    public static string? GetCountOrLengthPropertyName(
         ITypeSymbol typeSymbol,
         SemanticModel semanticModel,
         int position)
@@ -168,7 +168,7 @@ internal static class SymbolUtility
         if (kind == SymbolKind.ArrayType)
             return "Length";
 
-        string propertyName = GetCountOrLengthPropertyName(typeSymbol.SpecialType);
+        string? propertyName = GetCountOrLengthPropertyName(typeSymbol.SpecialType);
 
         if (propertyName is not null)
             return (propertyName.Length > 0) ? propertyName : null;
@@ -212,13 +212,13 @@ internal static class SymbolUtility
                     }
                 }
 
-                typeSymbol = typeSymbol.BaseType;
+                typeSymbol = typeSymbol.BaseType!;
             }
         }
 
         return null;
 
-        static string GetCountOrLengthPropertyName(SpecialType specialType)
+        static string? GetCountOrLengthPropertyName(SpecialType specialType)
         {
             switch (specialType)
             {
@@ -275,7 +275,7 @@ internal static class SymbolUtility
             && typeArguments[2].SpecialType == SpecialType.System_Boolean;
     }
 
-    internal static bool IsPropertyOfNullableOfT(ISymbol symbol, string name)
+    internal static bool IsPropertyOfNullableOfT(ISymbol? symbol, string name)
     {
         return symbol?.Kind == SymbolKind.Property
             && symbol.ContainingType?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
@@ -385,7 +385,7 @@ internal static class SymbolUtility
 
     internal static bool IsLinqExtensionOfIEnumerableOfT(
         IMethodSymbol methodSymbol,
-        string name = null,
+        string? name = null,
         int parameterCount = 1,
         bool allowImmutableArrayExtension = false)
     {
@@ -401,7 +401,7 @@ internal static class SymbolUtility
 
     internal static bool IsLinqExtensionOfIEnumerableOfT(
         IMethodSymbol methodSymbol,
-        string name,
+        string? name,
         Interval interval,
         bool allowImmutableArrayExtension = false)
     {
@@ -440,7 +440,7 @@ internal static class SymbolUtility
 
     internal static bool IsLinqExtensionOfIEnumerableOfTWithPredicate(
         IMethodSymbol methodSymbol,
-        string name = null,
+        string? name = null,
         bool allowImmutableArrayExtension = false)
     {
         return IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol, name, parameterCount: 2, allowImmutableArrayExtension: allowImmutableArrayExtension);
@@ -448,7 +448,7 @@ internal static class SymbolUtility
 
     private static bool IsLinqExtensionOfIEnumerableOfTWithPredicate(
         IMethodSymbol methodSymbol,
-        string name,
+        string? name,
         int parameterCount,
         bool allowImmutableArrayExtension = false)
     {
@@ -575,27 +575,32 @@ internal static class SymbolUtility
 
     public static ulong GetEnumValueAsUInt64(object value, INamedTypeSymbol enumType)
     {
-        return ConvertHelpers.ConvertToUInt64(value, enumType.EnumUnderlyingType.SpecialType);
+        INamedTypeSymbol? enumUnderlyingType = enumType.EnumUnderlyingType;
+
+        if (enumUnderlyingType is null)
+            throw new InvalidOperationException($"Type is not an enum: {enumType.ToDisplayString(SymbolDisplayFormats.FullName)}");
+
+        return ConvertHelpers.ConvertToUInt64(value, enumUnderlyingType.SpecialType);
     }
 
-    public static IMethodSymbol FindMethodThatRaisePropertyChanged(INamedTypeSymbol typeSymbol, int position, SemanticModel semanticModel)
+    public static IMethodSymbol? FindMethodThatRaisePropertyChanged(INamedTypeSymbol typeSymbol, int position, SemanticModel semanticModel)
     {
         do
         {
-            IMethodSymbol methodSymbol = FindMethod(typeSymbol.GetMembers("RaisePropertyChanged"))
+            IMethodSymbol? methodSymbol = FindMethod(typeSymbol.GetMembers("RaisePropertyChanged"))
                 ?? FindMethod(typeSymbol.GetMembers("OnPropertyChanged"));
 
             if (methodSymbol is not null)
                 return methodSymbol;
 
-            typeSymbol = typeSymbol.BaseType;
+            typeSymbol = typeSymbol.BaseType!;
         }
         while (typeSymbol is not null
             && typeSymbol.SpecialType != SpecialType.System_Object);
 
         return null;
 
-        IMethodSymbol FindMethod(ImmutableArray<ISymbol> symbols)
+        IMethodSymbol? FindMethod(ImmutableArray<ISymbol> symbols)
         {
             foreach (ISymbol symbol in symbols)
             {
@@ -617,7 +622,7 @@ internal static class SymbolUtility
 
     public static bool IsAwaitable(ITypeSymbol typeSymbol, bool shouldCheckWindowsRuntimeTypes = false)
     {
-        INamedTypeSymbol namedTypeSymbol = GetPossiblyAwaitableType(typeSymbol);
+        INamedTypeSymbol? namedTypeSymbol = GetPossiblyAwaitableType(typeSymbol);
 
         if (namedTypeSymbol is null)
             return false;
@@ -664,13 +669,13 @@ internal static class SymbolUtility
         return false;
     }
 
-    internal static INamedTypeSymbol GetPossiblyAwaitableType(ITypeSymbol typeSymbol)
+    internal static INamedTypeSymbol? GetPossiblyAwaitableType(ITypeSymbol typeSymbol)
     {
         if (typeSymbol.Kind == SymbolKind.TypeParameter)
         {
             var typeParameterSymbol = (ITypeParameterSymbol)typeSymbol;
 
-            typeSymbol = typeParameterSymbol.ConstraintTypes.SingleOrDefault(f => f.TypeKind == TypeKind.Class, shouldThrow: false);
+            typeSymbol = typeParameterSymbol.ConstraintTypes.SingleOrDefault(f => f.TypeKind == TypeKind.Class, shouldThrow: false)!;
 
             if (typeSymbol is null)
                 return null;

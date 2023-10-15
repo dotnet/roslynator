@@ -110,7 +110,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            SyntaxNode containingDeclaration = declaration.Parent?.Parent;
+            SyntaxNode? containingDeclaration = declaration.Parent?.Parent;
 
             switch (containingDeclaration?.Kind())
             {
@@ -134,7 +134,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
             Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
 
-            SyntaxNode containingDeclaration = declaration.Parent?.Parent;
+            SyntaxNode? containingDeclaration = declaration.Parent?.Parent;
 
             if (containingDeclaration is null)
                 return accessibility;

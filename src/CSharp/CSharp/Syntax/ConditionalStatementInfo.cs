@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -51,7 +52,7 @@ internal readonly struct ConditionalStatementInfo
     /// </summary>
     public ElseClauseSyntax Else
     {
-        get { return IfStatement?.Else; }
+        get { return IfStatement?.Else ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -69,19 +70,19 @@ internal readonly struct ConditionalStatementInfo
     }
 
     internal static ConditionalStatementInfo Create(
-        IfStatementSyntax ifStatement,
+        IfStatementSyntax? ifStatement,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (ifStatement?.IsParentKind(SyntaxKind.ElseClause) != false)
             return default;
 
-        StatementSyntax whenTrue = ifStatement.Statement.SingleNonBlockStatementOrDefault();
+        StatementSyntax? whenTrue = ifStatement.Statement.SingleNonBlockStatementOrDefault();
 
         if (!Check(whenTrue, allowMissing))
             return default;
 
-        StatementSyntax whenFalse = ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault();
+        StatementSyntax? whenFalse = ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault();
 
         if (!Check(whenFalse, allowMissing))
             return default;
@@ -89,11 +90,11 @@ internal readonly struct ConditionalStatementInfo
         if (whenFalse.IsKind(SyntaxKind.IfStatement))
             return default;
 
-        ExpressionSyntax condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
+        ExpressionSyntax? condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
 
         if (condition is null)
             return default;
 
-        return new ConditionalStatementInfo(ifStatement, condition, whenTrue, whenFalse);
+        return new ConditionalStatementInfo(ifStatement, condition, whenTrue!, whenFalse!);
     }
 }

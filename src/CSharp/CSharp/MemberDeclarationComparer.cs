@@ -104,7 +104,7 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
             }
         }
 
-        private static string GetName(MemberDeclarationSyntax member)
+        private static string? GetName(MemberDeclarationSyntax member)
         {
             switch (member.Kind())
             {

@@ -30,8 +30,11 @@ internal class WithAttributeFilterRule : SymbolFilterRule
     {
         foreach (AttributeData attribute in value.GetAttributes())
         {
-            if (AttributeNames.Contains(attribute.AttributeClass))
+            if (attribute.AttributeClass is not null
+                && AttributeNames.Contains(attribute.AttributeClass))
+            {
                 return true;
+            }
         }
 
         return false;

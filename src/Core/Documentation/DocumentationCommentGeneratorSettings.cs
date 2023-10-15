@@ -8,9 +8,9 @@ namespace Roslynator.Documentation;
 internal class DocumentationCommentGeneratorSettings
 {
     public DocumentationCommentGeneratorSettings(
-        IEnumerable<string> summary = null,
-        IEnumerable<string> ignoredTags = null,
-        string indentation = null,
+        IEnumerable<string>? summary = null,
+        IEnumerable<string>? ignoredTags = null,
+        string? indentation = null,
         bool singleLineSummary = false)
     {
         Summary = (summary is not null) ? ImmutableArray.CreateRange(summary) : ImmutableArray<string>.Empty;

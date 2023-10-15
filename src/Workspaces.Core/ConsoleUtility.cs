@@ -9,7 +9,7 @@ namespace Roslynator;
 
 internal static class ConsoleUtility
 {
-    public static string ReadUserInput(string defaultValue, string prompt = null)
+    public static string ReadUserInput(string defaultValue, string? prompt = null)
     {
         bool treatControlCAsInput = Console.TreatControlCAsInput;
 
