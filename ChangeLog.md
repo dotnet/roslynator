@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add methods to `DiagnosticVerifier`, `RefactoringVerifier` and `CompilerDiagnosticFixVerifier`.
   - Add property `DiagnosticVerifier.Descriptor` (BREAKING CHANGE).
   - Add property `CompilerDiagnosticFixVerifier.DiagnosticId` (BREAKING CHANGE).
-  - Make property `DiagnosticTestData.DiagnosticDescriptor` obsolete.
+  - Make property `DiagnosticTestData.Descriptor` obsolete.
   - Make property `CompilerDiagnosticFixTestData.DiagnosticId` obsolete.
 
 ### Fixed
