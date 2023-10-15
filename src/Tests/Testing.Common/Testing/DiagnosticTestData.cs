@@ -16,6 +16,7 @@ namespace Roslynator.Testing;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public sealed class DiagnosticTestData
 {
+    [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     /// <summary>
     /// Initializes a new instance of <see cref="DiagnosticTestData"/>.
     /// </summary>
@@ -56,6 +57,45 @@ public sealed class DiagnosticTestData
         }
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
+    /// <summary>
+    /// Initializes a new instance of <see cref="DiagnosticTestData"/>.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="spans"></param>
+    /// <param name="additionalSpans"></param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="diagnosticMessage"></param>
+    /// <param name="formatProvider"></param>
+    /// <param name="equivalenceKey"></param>
+    /// <param name="alwaysVerifyAdditionalLocations"></param>
+    public DiagnosticTestData(
+        string source,
+        IEnumerable<TextSpan>? spans,
+        IEnumerable<TextSpan>? additionalSpans = null,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? diagnosticMessage = null,
+        IFormatProvider? formatProvider = null,
+        string? equivalenceKey = null,
+        bool alwaysVerifyAdditionalLocations = false)
+    {
+        Descriptor = null!;
+        Source = source ?? throw new ArgumentNullException(nameof(source));
+        Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
+        AdditionalSpans = additionalSpans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
+        AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
+        DiagnosticMessage = diagnosticMessage;
+        FormatProvider = formatProvider;
+        EquivalenceKey = equivalenceKey;
+        AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+
+        if (Spans.Length > 1
+            && !AdditionalSpans.IsEmpty)
+        {
+            throw new ArgumentException("", nameof(additionalSpans));
+        }
+    }
+
     internal DiagnosticTestData(DiagnosticTestData other)
         : this(
             descriptor: other.Descriptor,
@@ -69,7 +109,9 @@ public sealed class DiagnosticTestData
             alwaysVerifyAdditionalLocations: other.AlwaysVerifyAdditionalLocations)
     {
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 
+    [Obsolete("This method is obsolete and will be removed in future versions.")]
     /// <summary>
     /// Gets diagnostic's descriptor.
     /// </summary>
@@ -111,25 +153,25 @@ public sealed class DiagnosticTestData
     public string? EquivalenceKey { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => $"{Descriptor.Id}  {Source}";
+    private string DebuggerDisplay => $"{Source}";
 
     /// <summary>
     /// True if additional locations should be always verified.
     /// </summary>
     public bool AlwaysVerifyAdditionalLocations { get; }
 
-    internal ImmutableArray<Diagnostic> GetDiagnostics(SyntaxTree tree)
+    internal ImmutableArray<Diagnostic> GetDiagnostics(DiagnosticDescriptor descriptor, SyntaxTree tree)
     {
         if (Spans.IsEmpty)
         {
-            return ImmutableArray.Create(Diagnostic.Create(Descriptor, Location.None));
+            return ImmutableArray.Create(Diagnostic.Create(descriptor, Location.None));
         }
         else
         {
             return ImmutableArray.CreateRange(
                 Spans,
                 span => Diagnostic.Create(
-                    Descriptor,
+                    descriptor,
                     Location.Create(tree, span),
                     additionalLocations: AdditionalSpans.Select(span => Location.Create(tree, span)).ToImmutableArray()));
         }

@@ -41,7 +41,6 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
         var expected = ExpectedTestState.Parse(code.ExpectedValue!);
 
         var data = new CompilerDiagnosticFixTestData(
-            DiagnosticId,
             code.Value,
             AdditionalFile.CreateRange(additionalFiles),
             equivalenceKey: equivalenceKey);
@@ -73,7 +72,6 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
         var expected = ExpectedTestState.Parse(expectedSource);
 
         var data = new CompilerDiagnosticFixTestData(
-            DiagnosticId,
             source,
             AdditionalFile.CreateRange(additionalFiles),
             equivalenceKey: equivalenceKey);
@@ -110,7 +108,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
         TFixProvider fixProvider = Activator.CreateInstance<TFixProvider>();
 
-        VerifyFixableDiagnostics(fixProvider, data.DiagnosticId);
+        VerifyFixableDiagnostics(fixProvider, DiagnosticId);
 
         using (Workspace workspace = new AdhocWorkspace())
         {
@@ -153,7 +151,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                 if (diagnostic is null)
                 {
                     if (!fixRegistered)
-                        Fail($"No compiler diagnostic with ID '{data.DiagnosticId}' found.", diagnostics);
+                        Fail($"No compiler diagnostic with ID '{DiagnosticId}' found.", diagnostics);
 
                     break;
                 }
@@ -206,7 +204,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
             foreach (Diagnostic diagnostic in diagnostics)
             {
-                if (string.Equals(diagnostic.Id, data.DiagnosticId, StringComparison.Ordinal))
+                if (string.Equals(diagnostic.Id, DiagnosticId, StringComparison.Ordinal))
                 {
                     if (match is null
                         || diagnostic.Location.SourceSpan.Start > match.Location.SourceSpan.Start)
@@ -236,7 +234,6 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
         CancellationToken cancellationToken = default)
     {
         var data = new CompilerDiagnosticFixTestData(
-            DiagnosticId,
             source,
             additionalFiles: AdditionalFile.CreateRange(additionalFiles),
             equivalenceKey: equivalenceKey);

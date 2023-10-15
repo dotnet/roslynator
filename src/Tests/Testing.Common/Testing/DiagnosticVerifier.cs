@@ -43,7 +43,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         var code = TestCode.Parse(source);
 
         var data = new DiagnosticTestData(
-            Descriptor,
             code.Value,
             code.Spans,
             code.AdditionalSpans,
@@ -65,7 +64,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         var code = TestCode.Parse(source, sourceData);
 
         var data = new DiagnosticTestData(
-            Descriptor,
             source,
             code.Spans,
             code.AdditionalSpans,
@@ -100,11 +98,11 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, Descriptor);
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
-            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
+            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(Descriptor, tree);
 
             VerifySupportedDiagnostics(analyzer, expectedDiagnostics);
 
@@ -162,7 +160,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         var code = TestCode.Parse(source, sourceData);
 
         var data = new DiagnosticTestData(
-            Descriptor,
             code.Value,
             spans: null,
             code.AdditionalSpans,
@@ -188,7 +185,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         CancellationToken cancellationToken = default)
     {
         var data = new DiagnosticTestData(
-            Descriptor,
             source,
             spans: null,
             additionalFiles: AdditionalFile.CreateRange(additionalFiles));
@@ -221,11 +217,11 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, Descriptor);
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
-            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
+            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(Descriptor, tree);
 
             VerifySupportedDiagnostics(analyzer, expectedDiagnostics);
 
@@ -238,7 +234,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
             ImmutableArray<Diagnostic> actualDiagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, document.Project.AnalyzerOptions, DiagnosticComparer.SpanStart, cancellationToken);
 
             actualDiagnostics = actualDiagnostics
-                .Where(diagnostic => string.Equals(diagnostic.Id, data.Descriptor.Id))
+                .Where(diagnostic => string.Equals(diagnostic.Id, Descriptor.Id))
                 .ToImmutableArray();
 
             if (!actualDiagnostics.IsEmpty)
@@ -268,7 +264,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         var expected = ExpectedTestState.Parse(expectedSource);
 
         var data = new DiagnosticTestData(
-            Descriptor,
             code.Value,
             code.Spans,
             additionalSpans: code.AdditionalSpans,
@@ -292,7 +287,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         var expected = ExpectedTestState.Parse(code.ExpectedValue!);
 
         var data = new DiagnosticTestData(
-            Descriptor,
             code.Value,
             code.Spans,
             code.AdditionalSpans,
@@ -337,7 +331,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         var code = TestCode.Parse(source);
 
         var data = new DiagnosticTestData(
-            Descriptor,
             code.Value,
             code.Spans,
             additionalSpans: code.AdditionalSpans,
@@ -385,13 +378,13 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, Descriptor);
 
             Project project = document.Project;
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
-            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
+            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(Descriptor, tree);
 
             foreach (Diagnostic diagnostic in expectedDiagnostics)
                 VerifyFixableDiagnostics(fixProvider, diagnostic.Id);
@@ -453,7 +446,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
                 if (diagnostic is null)
                 {
                     if (!fixRegistered)
-                        Fail($"No diagnostic with ID '{data.Descriptor.Id}' found.", diagnostics);
+                        Fail($"No diagnostic with ID '{Descriptor.Id}' found.", diagnostics);
 
                     break;
                 }
@@ -528,13 +521,13 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, Descriptor);
 
             Compilation compilation = (await document.Project.GetCompilationAsync(cancellationToken))!;
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
-            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
+            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(Descriptor, tree);
 
             VerifySupportedDiagnostics(analyzer, expectedDiagnostics);
 
