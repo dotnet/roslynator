@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Migrate to .NET Foundation ([#1206](https://github.com/dotnet/roslynator/pull/1206), [#1207](https://github.com/dotnet/roslynator/pull/1207), [#1219](https://github.com/dotnet/roslynator/pull/1219)).
 - Bump Roslyn to 4.7.0 ([#1218](https://github.com/dotnet/roslynator/pull/1218)).
   - Applies to CLI and testing library. 
+- Bump Microsoft.Build.Locator to 1.6.1 ([#1194](https://github.com/josefpihrt/roslynator/pull/1194))
 
 ### Fixed
 

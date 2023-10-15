@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorRoslynVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="$(RoslynatorRoslynVersion)" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.4.1" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="$(RoslynatorMicrosoftBuildLocatorVersion)" />
   </ItemGroup>
 
   <ItemGroup>
