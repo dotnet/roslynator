@@ -79,7 +79,6 @@ public sealed class DiagnosticTestData
         string? equivalenceKey = null,
         bool alwaysVerifyAdditionalLocations = false)
     {
-        Descriptor = null!;
         Source = source ?? throw new ArgumentNullException(nameof(source));
         Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
         AdditionalSpans = additionalSpans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
@@ -88,6 +87,7 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+        Descriptor = null!;
 
         if (Spans.Length > 1
             && !AdditionalSpans.IsEmpty)
