@@ -114,7 +114,7 @@ public sealed class DiagnosticTestData
     /// <summary>
     /// Gets diagnostic's descriptor.
     /// </summary>
-    [Obsolete("This method is obsolete and will be removed in future versions.")]
+    [Obsolete("This property is obsolete and will be removed in future versions.")]
     public DiagnosticDescriptor Descriptor { get; }
 
     /// <summary>

@@ -64,7 +64,7 @@ public sealed class CompilerDiagnosticFixTestData
     /// <summary>
     /// Gets compiler diagnostic ID to be fixed.
     /// </summary>
-    [Obsolete("This method is obsolete and will be removed in future versions.")]
+    [Obsolete("This property is obsolete and will be removed in future versions.")]
     public string DiagnosticId { get; }
 
     /// <summary>
