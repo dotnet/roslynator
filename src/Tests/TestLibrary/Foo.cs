@@ -21,9 +21,7 @@ namespace Roslynator;
 
 class C
 {
-    #region
     void M()
     {
     }
-    #endregion
 }
