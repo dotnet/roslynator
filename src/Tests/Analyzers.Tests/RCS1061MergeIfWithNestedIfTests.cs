@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS061MergeIfWithNestedIfTests : AbstractCSharpDiagnosticVerifier<MergeIfWithNestedIfAnalyzer, IfStatementCodeFixProvider>
+public class RCS1061MergeIfWithNestedIfTests : AbstractCSharpDiagnosticVerifier<MergeIfWithNestedIfAnalyzer, IfStatementCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor => DiagnosticRules.MergeIfWithNestedIf;
 

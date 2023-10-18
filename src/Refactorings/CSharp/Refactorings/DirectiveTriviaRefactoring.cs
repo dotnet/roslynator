@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,9 +26,27 @@ internal static class DirectiveTriviaRefactoring
                 {
                     return context.Document.RemovePreprocessorDirectivesAsync(
                         directive.GetRelatedDirectives().ToImmutableArray(),
+                        PreprocessorDirectiveRemoveOptions.None,
                         ct);
                 },
                 RefactoringDescriptors.RemovePreprocessorDirective);
+
+            List<DirectiveTriviaSyntax> directives = directive.GetRelatedDirectives();
+
+            if (directives.Count > 1)
+            {
+                context.RegisterRefactoring(
+                    "Remove directive (including content)",
+                    ct =>
+                    {
+                        return context.Document.RemovePreprocessorDirectivesAsync(
+                            directives,
+                            PreprocessorDirectiveRemoveOptions.IncludeContent,
+                            ct);
+                    },
+                    RefactoringDescriptors.RemovePreprocessorDirective,
+                    "IncludingContent");
+            }
         }
     }
 }

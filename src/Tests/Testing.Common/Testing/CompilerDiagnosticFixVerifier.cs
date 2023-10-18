@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +21,66 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 {
     internal CompilerDiagnosticFixVerifier(IAssert assert) : base(assert)
     {
+    }
+
+    public abstract string DiagnosticId { get; }
+
+    internal async Task VerifyFixAsync(
+        string source,
+        string sourceData,
+        string expectedData,
+        IEnumerable<(string source, string expectedSource)>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source, sourceData, expectedData);
+
+        Debug.Assert(code.Spans.Length == 0);
+
+        var expected = ExpectedTestState.Parse(code.ExpectedValue!);
+
+        var data = new CompilerDiagnosticFixTestData(
+            code.Value,
+            AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
+
+        await VerifyFixAsync(
+            data,
+            expected,
+            options: options,
+            cancellationToken: cancellationToken);
+    }
+
+    /// <summary>
+    /// Verifies that specified source will produce compiler diagnostic.
+    /// </summary>
+    /// <param name="source">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="expectedSource"></param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="equivalenceKey"></param>
+    /// <param name="options"></param>
+    /// <param name="cancellationToken"></param>
+    public async Task VerifyFixAsync(
+        string source,
+        string expectedSource,
+        IEnumerable<(string source, string expectedSource)>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var expected = ExpectedTestState.Parse(expectedSource);
+
+        var data = new CompilerDiagnosticFixTestData(
+            source,
+            AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
+
+        await VerifyFixAsync(
+            data,
+            expected,
+            options,
+            cancellationToken);
     }
 
     /// <summary>
@@ -47,7 +108,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
         TFixProvider fixProvider = Activator.CreateInstance<TFixProvider>();
 
-        VerifyFixableDiagnostics(fixProvider, data.DiagnosticId);
+        VerifyFixableDiagnostics(fixProvider, DiagnosticId);
 
         using (Workspace workspace = new AdhocWorkspace())
         {
@@ -90,7 +151,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                 if (diagnostic is null)
                 {
                     if (!fixRegistered)
-                        Fail($"No compiler diagnostic with ID '{data.DiagnosticId}' found.", diagnostics);
+                        Fail($"No compiler diagnostic with ID '{DiagnosticId}' found.", diagnostics);
 
                     break;
                 }
@@ -143,7 +204,7 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
             foreach (Diagnostic diagnostic in diagnostics)
             {
-                if (string.Equals(diagnostic.Id, data.DiagnosticId, StringComparison.Ordinal))
+                if (string.Equals(diagnostic.Id, DiagnosticId, StringComparison.Ordinal))
                 {
                     if (match is null
                         || diagnostic.Location.SourceSpan.Start > match.Location.SourceSpan.Start)
@@ -155,6 +216,32 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
             return match;
         }
+    }
+
+    /// <summary>
+    /// Verifies that specified source will not produce compiler diagnostic.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="equivalenceKey"></param>
+    /// <param name="options"></param>
+    /// <param name="cancellationToken"></param>
+    public async Task VerifyNoFixAsync(
+        string source,
+        IEnumerable<string>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var data = new CompilerDiagnosticFixTestData(
+            source,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
+
+        await VerifyNoFixAsync(
+            data,
+            options,
+            cancellationToken);
     }
 
     /// <summary>

@@ -25,6 +25,56 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     {
     }
 
+    public abstract DiagnosticDescriptor Descriptor { get; }
+
+    /// <summary>
+    /// Verifies that specified source will produce specified diagnostic(s).
+    /// </summary>
+    /// <param name="source">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="options"></param>
+    /// <param name="cancellationToken"></param>
+    public async Task VerifyDiagnosticAsync(
+        string source,
+        IEnumerable<string>? additionalFiles = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source);
+
+        var data = new DiagnosticTestData(
+            code.Value,
+            code.Spans,
+            code.AdditionalSpans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles));
+
+        await VerifyDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken: cancellationToken);
+    }
+
+    internal async Task VerifyDiagnosticAsync(
+        string source,
+        string sourceData,
+        IEnumerable<string>? additionalFiles = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source, sourceData);
+
+        var data = new DiagnosticTestData(
+            source,
+            code.Spans,
+            code.AdditionalSpans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles));
+
+        await VerifyDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken: cancellationToken);
+    }
+
     /// <summary>
     /// Verifies that specified source will produce specified diagnostic(s).
     /// </summary>
@@ -48,11 +98,11 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, Descriptor);
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
-            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
+            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(Descriptor, tree);
 
             VerifySupportedDiagnostics(analyzer, expectedDiagnostics);
 
@@ -100,6 +150,51 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
         }
     }
 
+    internal async Task VerifyNoDiagnosticAsync(
+        string source,
+        string sourceData,
+        IEnumerable<string>? additionalFiles = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source, sourceData);
+
+        var data = new DiagnosticTestData(
+            code.Value,
+            spans: null,
+            code.AdditionalSpans,
+            AdditionalFile.CreateRange(additionalFiles));
+
+        await VerifyNoDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Verifies that specified source will not produce specified diagnostic.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="options"></param>
+    /// <param name="cancellationToken"></param>
+    public async Task VerifyNoDiagnosticAsync(
+        string source,
+        IEnumerable<string>? additionalFiles = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var data = new DiagnosticTestData(
+            source,
+            spans: null,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles));
+
+        await VerifyNoDiagnosticAsync(
+            data,
+            options: options,
+            cancellationToken);
+    }
+
     /// <summary>
     /// Verifies that specified source will not produce specified diagnostic.
     /// </summary>
@@ -122,11 +217,11 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, Descriptor);
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
-            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
+            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(Descriptor, tree);
 
             VerifySupportedDiagnostics(analyzer, expectedDiagnostics);
 
@@ -139,12 +234,66 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
             ImmutableArray<Diagnostic> actualDiagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, document.Project.AnalyzerOptions, DiagnosticComparer.SpanStart, cancellationToken);
 
             actualDiagnostics = actualDiagnostics
-                .Where(diagnostic => string.Equals(diagnostic.Id, data.Descriptor.Id))
+                .Where(diagnostic => string.Equals(diagnostic.Id, Descriptor.Id))
                 .ToImmutableArray();
 
             if (!actualDiagnostics.IsEmpty)
                 Fail("No diagnostic expected.", actualDiagnostics);
         }
+    }
+
+    /// <summary>
+    /// Verifies that specified source will produce specified diagnostic and that the diagnostic will be fixed.
+    /// </summary>
+    /// <param name="source">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="expectedSource"></param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="equivalenceKey"></param>
+    /// <param name="options"></param>
+    /// <param name="cancellationToken"></param>
+    public async Task VerifyDiagnosticAndFixAsync(
+        string source,
+        string expectedSource,
+        IEnumerable<(string source, string expectedSource)>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source);
+
+        var expected = ExpectedTestState.Parse(expectedSource);
+
+        var data = new DiagnosticTestData(
+            code.Value,
+            code.Spans,
+            additionalSpans: code.AdditionalSpans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
+
+        await VerifyDiagnosticAndFixAsync(data, expected, options, cancellationToken);
+    }
+
+    internal async Task VerifyDiagnosticAndFixAsync(
+        string source,
+        string sourceData,
+        string expectedData,
+        IEnumerable<(string source, string expectedSource)>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source, sourceData, expectedData);
+
+        var expected = ExpectedTestState.Parse(code.ExpectedValue!);
+
+        var data = new DiagnosticTestData(
+            code.Value,
+            code.Spans,
+            code.AdditionalSpans,
+            AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
+
+        await VerifyDiagnosticAndFixAsync(data, expected, options, cancellationToken);
     }
 
     /// <summary>
@@ -162,6 +311,33 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     {
         await VerifyDiagnosticAsync(data, options, cancellationToken);
         await VerifyFixAsync(data, expected, options, cancellationToken);
+    }
+
+    /// <summary>
+    /// Verifies that specified source will produce specified diagnostic and that the diagnostic will not be fixed.
+    /// </summary>
+    /// <param name="source">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="equivalenceKey"></param>
+    /// <param name="options"></param>
+    /// <param name="cancellationToken"></param>
+    public async Task VerifyDiagnosticAndNoFixAsync(
+        string source,
+        IEnumerable<string>? additionalFiles = null,
+        string? equivalenceKey = null,
+        TestOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        var code = TestCode.Parse(source);
+
+        var data = new DiagnosticTestData(
+            code.Value,
+            code.Spans,
+            additionalSpans: code.AdditionalSpans,
+            additionalFiles: AdditionalFile.CreateRange(additionalFiles),
+            equivalenceKey: equivalenceKey);
+
+        await VerifyDiagnosticAndNoFixAsync(data, options, cancellationToken);
     }
 
     /// <summary>
@@ -202,13 +378,13 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, Descriptor);
 
             Project project = document.Project;
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
-            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
+            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(Descriptor, tree);
 
             foreach (Diagnostic diagnostic in expectedDiagnostics)
                 VerifyFixableDiagnostics(fixProvider, diagnostic.Id);
@@ -270,7 +446,7 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
                 if (diagnostic is null)
                 {
                     if (!fixRegistered)
-                        Fail($"No diagnostic with ID '{data.Descriptor.Id}' found.", diagnostics);
+                        Fail($"No diagnostic with ID '{Descriptor.Id}' found.", diagnostics);
 
                     break;
                 }
@@ -345,13 +521,13 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
 
         using (Workspace workspace = new AdhocWorkspace())
         {
-            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+            (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, Descriptor);
 
             Compilation compilation = (await document.Project.GetCompilationAsync(cancellationToken))!;
 
             SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken))!;
 
-            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(tree);
+            ImmutableArray<Diagnostic> expectedDiagnostics = data.GetDiagnostics(Descriptor, tree);
 
             VerifySupportedDiagnostics(analyzer, expectedDiagnostics);
 
