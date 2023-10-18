@@ -299,9 +299,6 @@ public static class WorkspaceExtensions
         if (directives is null)
             throw new ArgumentNullException(nameof(directives));
 
-        if (!directives.Any())
-            throw new ArgumentException("Collection of directives is empty.", nameof(directives));
-
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
         SourceText newSourceText = sourceText;
@@ -311,11 +308,22 @@ public static class WorkspaceExtensions
 
             DirectiveTriviaSyntax firstDirective = sortedDirectives.FirstOrDefault();
 
+            int spanStart = firstDirective.FullSpan.Start;
+            SyntaxTrivia parentTrivia = firstDirective.ParentTrivia;
+            SyntaxTriviaList triviaList = parentTrivia.GetContainingList();
+            int parentTriviaIndex = triviaList.IndexOf(parentTrivia);
+
+            if (parentTriviaIndex > 0)
+            {
+                SyntaxTrivia previousTrivia = triviaList[parentTriviaIndex - 1];
+
+                if (previousTrivia.IsWhitespaceTrivia())
+                    spanStart = previousTrivia.SpanStart;
+            }
+
             if (firstDirective is not null)
             {
-                DirectiveTriviaSyntax lastDirective = sortedDirectives.Last();
-
-                TextSpan span = TextSpan.FromBounds(firstDirective.SpanStart, lastDirective.FullSpan.End);
+                TextSpan span = TextSpan.FromBounds(spanStart, sortedDirectives.Last().FullSpan.End);
 
                 newSourceText = sourceText.WithChange(span, "");
             }

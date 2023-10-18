@@ -104,11 +104,11 @@ class C
         await VerifyRefactoringAsync(@"
 class C
 {
-#[||]region // region
+    #[||]region // region
     void M()
     {
     }
-#endregion // endregion
+    #endregion // endregion
 }
 ", @"
 class C
@@ -123,11 +123,11 @@ class C
         await VerifyRefactoringAsync(@"
 class C
 {
-#region // region
+    #region // region
     void M()
     {
     }
-#[||]endregion // endregion
+    #[||]endregion // endregion
 }
 ", @"
 class C
