@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add social card ([#1212](https://github.com/dotnet/roslynator/pull/1212)).
+- Add nullable annotation to public API ([#1198](https://github.com/JosefPihrt/Roslynator/pull/1198)).
+- Add refactoring "Remove directive (including content)" ([#1224](https://github.com/dotnet/roslynator/pull/1224)).
 
 ### Changed
 
@@ -19,6 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Migrate to .NET Foundation ([#1206](https://github.com/dotnet/roslynator/pull/1206), [#1207](https://github.com/dotnet/roslynator/pull/1207), [#1219](https://github.com/dotnet/roslynator/pull/1219)).
 - Bump Roslyn to 4.7.0 ([#1218](https://github.com/dotnet/roslynator/pull/1218)).
   - Applies to CLI and testing library. 
+- Bump Microsoft.Build.Locator to 1.6.1 ([#1194](https://github.com/josefpihrt/roslynator/pull/1194))
+- Improve testing framework ([#1214](https://github.com/dotnet/roslynator/pull/1214))
+  - Add methods to `DiagnosticVerifier`, `RefactoringVerifier` and `CompilerDiagnosticFixVerifier`.
+  - Add property `DiagnosticVerifier.Descriptor` (BREAKING CHANGE).
+  - Add property `CompilerDiagnosticFixVerifier.DiagnosticId` (BREAKING CHANGE).
+  - Make property `DiagnosticTestData.Descriptor` obsolete.
+  - Make property `CompilerDiagnosticFixTestData.DiagnosticId` obsolete.
 
 ### Fixed
 
@@ -26,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix [RCS1241](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1241) ([#1197](https://github.com/JosefPihrt/Roslynator/pull/1197)).
 - Fix [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) ([#1205](https://github.com/JosefPihrt/Roslynator/pull/1205)).
 - [CLI] Fix globbing ([#1215](https://github.com/JosefPihrt/Roslynator/pull/1215)).
+- [CLI] Fix generation of root file ([#1221](https://github.com/JosefPihrt/Roslynator/pull/1221)).
 
 ## [4.5.0] - 2023-08-27
 
