@@ -325,7 +325,9 @@ public static class WorkspaceExtensions
 
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-        SourceText newSourceText = sourceText.WithChange(TextSpan.FromBounds(openDirective.SpanStart, closeDirective.FullSpan.End), "");
+        TextSpan span = TextSpan.FromBounds(openDirective.SpanStart, closeDirective.FullSpan.End);
+
+        SourceText newSourceText = sourceText.WithChange(span, "");
 
         return document.WithText(newSourceText);
     }
