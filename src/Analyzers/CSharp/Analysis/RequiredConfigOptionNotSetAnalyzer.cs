@@ -17,7 +17,7 @@ internal sealed class RequiredConfigOptionNotSetAnalyzer : AbstractRequiredConfi
     {
         ConfigOptions.BodyStyle,
         ConfigOptions.UseBlockBodyWhenDeclarationSpansOverMultipleLines,
-        ConfigOptions.UseBlockBodyWhenExpressionSpansOverMultipleLines
+        ConfigOptions.UseBlockBodyWhenExpressionSpansOverMultipleLines,
     };
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics

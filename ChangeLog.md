@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.6.0] - 2023-10-18
+
 ### Added
 
 - Add social card ([#1212](https://github.com/dotnet/roslynator/pull/1212)).
