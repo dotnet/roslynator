@@ -20,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump Roslyn to 4.7.0 ([#1218](https://github.com/dotnet/roslynator/pull/1218)).
   - Applies to CLI and testing library. 
 - Bump Microsoft.Build.Locator to 1.6.1 ([#1194](https://github.com/josefpihrt/roslynator/pull/1194))
+- Improve testing framework ([#1214](https://github.com/dotnet/roslynator/pull/1214))
+  - Add methods to `DiagnosticVerifier`, `RefactoringVerifier` and `CompilerDiagnosticFixVerifier`.
+  - Add property `DiagnosticVerifier.Descriptor` (BREAKING CHANGE).
+  - Add property `CompilerDiagnosticFixVerifier.DiagnosticId` (BREAKING CHANGE).
+  - Make property `DiagnosticTestData.Descriptor` obsolete.
+  - Make property `CompilerDiagnosticFixTestData.DiagnosticId` obsolete.
 
 ### Fixed
 

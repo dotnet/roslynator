@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1047NonAsynchronousMethodNameShouldNotEndWithAsyncTests : AbstractCSharpDiagnosticVerifier<AsyncSuffixAnalyzer, DummyCodeFixProvider>
+public class RCS1047NonAsynchronousMethodNameShouldNotEndWithAsyncTests : AbstractCSharpDiagnosticVerifier<AsyncSuffixAnalyzer, EmptyCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync;
 

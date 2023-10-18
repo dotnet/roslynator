@@ -20,4 +20,13 @@
     <ProjectReference Include="..\Testing.CSharp.Xunit\Testing.CSharp.Xunit.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Roslynator.Analyzers.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Roslynator.Refactorings.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>

@@ -160,6 +160,86 @@ public sealed class CSharpTestOptions : TestOptions
                 ParseOptions.PreprocessorSymbolNames.Concat(new[] { "DEBUG" })));
     }
 
+    /// <summary>
+    /// Sets config option.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public CSharpTestOptions SetConfigOption(string key, bool value)
+    {
+        return SetConfigOption(key, (value) ? "true" : "false");
+    }
+
+    /// <summary>
+    /// Sets config option.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public CSharpTestOptions SetConfigOption(string key, string value)
+    {
+        return WithConfigOptions(ConfigOptions.SetItem(key, value));
+    }
+
+    /// <summary>
+    /// Sets config options.
+    /// </summary>
+    /// <param name="options"></param>
+    public CSharpTestOptions SetConfigOptions(params (string Key, string Value)[] options)
+    {
+        return SetConfigOptions(options.Select(f => new KeyValuePair<string, string>(f.Key, f.Value)));
+    }
+
+    /// <summary>
+    /// Sets config options.
+    /// </summary>
+    /// <param name="options"></param>
+    internal CSharpTestOptions SetConfigOptions(IEnumerable<KeyValuePair<string, string>> options)
+    {
+        return WithConfigOptions(ConfigOptions.SetItems(options));
+    }
+
+    /// <summary>
+    /// Adds config option.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public CSharpTestOptions AddConfigOption(string key, bool value)
+    {
+        return AddConfigOption(key, (value) ? "true" : "false");
+    }
+
+    /// <summary>
+    /// Adds config option.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public CSharpTestOptions AddConfigOption(string key, string value)
+    {
+        return WithConfigOptions(ConfigOptions.Add(key, value));
+    }
+
+    /// <summary>
+    /// Adds config options.
+    /// </summary>
+    /// <param name="options"></param>
+    public CSharpTestOptions AddConfigOptions(params (string Key, string Value)[] options)
+    {
+        return AddConfigOptions(options.Select(f => new KeyValuePair<string, string>(f.Key, f.Value)));
+    }
+
+    /// <summary>
+    /// Adds config options.
+    /// </summary>
+    /// <param name="options"></param>
+    internal CSharpTestOptions AddConfigOptions(IEnumerable<KeyValuePair<string, string>> options)
+    {
+        return WithConfigOptions(ConfigOptions.AddRange(options));
+    }
+
+    internal CSharpTestOptions EnableConfigOption(string key)
+    {
+        return AddConfigOption(key, true);
+    }
 #pragma warning disable CS1591
     protected override TestOptions CommonWithMetadataReferences(IEnumerable<MetadataReference> values)
     {
