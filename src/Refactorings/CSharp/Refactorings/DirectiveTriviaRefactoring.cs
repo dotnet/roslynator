@@ -26,6 +26,7 @@ internal static class DirectiveTriviaRefactoring
                 {
                     return context.Document.RemovePreprocessorDirectivesAsync(
                         directive.GetRelatedDirectives().ToImmutableArray(),
+                        PreprocessorDirectiveRemoveOptions.None,
                         ct);
                 },
                 RefactoringDescriptors.RemovePreprocessorDirective);
@@ -40,7 +41,7 @@ internal static class DirectiveTriviaRefactoring
                     {
                         return context.Document.RemovePreprocessorDirectivesAsync(
                             directives,
-                            includeContent: true,
+                            PreprocessorDirectiveRemoveOptions.IncludeContent,
                             ct);
                     },
                     RefactoringDescriptors.RemovePreprocessorDirective,

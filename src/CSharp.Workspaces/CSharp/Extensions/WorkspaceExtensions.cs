@@ -279,18 +279,10 @@ public static class WorkspaceExtensions
         return document.WithText(newSourceText);
     }
 
-    internal static Task<Document> RemovePreprocessorDirectivesAsync(
-        this Document document,
-        IEnumerable<DirectiveTriviaSyntax> directives,
-        CancellationToken cancellationToken = default)
-    {
-        return RemovePreprocessorDirectivesAsync(document, directives, includeContent: false, cancellationToken);
-    }
-
     internal static async Task<Document> RemovePreprocessorDirectivesAsync(
         this Document document,
         IEnumerable<DirectiveTriviaSyntax> directives,
-        bool includeContent,
+        PreprocessorDirectiveRemoveOptions options,
         CancellationToken cancellationToken = default)
     {
         if (document is null)
@@ -301,7 +293,7 @@ public static class WorkspaceExtensions
 
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-        SourceText newSourceText = (includeContent)
+        SourceText newSourceText = ((options & PreprocessorDirectiveRemoveOptions.IncludeContent) != 0)
             ? RemovePreprocessorDirectivesIncludingContent(sourceText, directives)
             : sourceText.WithChanges(GetTextChanges());
 
