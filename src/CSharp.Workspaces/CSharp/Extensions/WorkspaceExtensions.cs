@@ -301,37 +301,9 @@ public static class WorkspaceExtensions
 
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-        SourceText newSourceText = sourceText;
-        if (includeContent)
-        {
-            IEnumerable<DirectiveTriviaSyntax> sortedDirectives = directives.OrderBy(f => f.SpanStart);
-
-            DirectiveTriviaSyntax firstDirective = sortedDirectives.FirstOrDefault();
-
-            int spanStart = firstDirective.FullSpan.Start;
-            SyntaxTrivia parentTrivia = firstDirective.ParentTrivia;
-            SyntaxTriviaList triviaList = parentTrivia.GetContainingList();
-            int parentTriviaIndex = triviaList.IndexOf(parentTrivia);
-
-            if (parentTriviaIndex > 0)
-            {
-                SyntaxTrivia previousTrivia = triviaList[parentTriviaIndex - 1];
-
-                if (previousTrivia.IsWhitespaceTrivia())
-                    spanStart = previousTrivia.SpanStart;
-            }
-
-            if (firstDirective is not null)
-            {
-                TextSpan span = TextSpan.FromBounds(spanStart, sortedDirectives.Last().FullSpan.End);
-
-                newSourceText = sourceText.WithChange(span, "");
-            }
-        }
-        else
-        {
-            newSourceText = sourceText.WithChanges(GetTextChanges());
-        }
+        SourceText newSourceText = (includeContent)
+            ? RemovePreprocessorDirectivesIncludingContent(sourceText, directives)
+            : sourceText.WithChanges(GetTextChanges());
 
         return document.WithText(newSourceText);
 
@@ -346,6 +318,38 @@ public static class WorkspaceExtensions
                 yield return new TextChange(lines[startLine].SpanIncludingLineBreak, "");
             }
         }
+    }
+
+    private static SourceText RemovePreprocessorDirectivesIncludingContent(
+        SourceText sourceText,
+        IEnumerable<DirectiveTriviaSyntax> directives)
+    {
+        SourceText newSourceText = sourceText;
+        IEnumerable<DirectiveTriviaSyntax> sortedDirectives = directives.OrderBy(f => f.SpanStart);
+
+        DirectiveTriviaSyntax firstDirective = sortedDirectives.FirstOrDefault();
+
+        int spanStart = firstDirective.FullSpan.Start;
+        SyntaxTrivia parentTrivia = firstDirective.ParentTrivia;
+        SyntaxTriviaList triviaList = parentTrivia.GetContainingList();
+        int parentTriviaIndex = triviaList.IndexOf(parentTrivia);
+
+        if (parentTriviaIndex > 0)
+        {
+            SyntaxTrivia previousTrivia = triviaList[parentTriviaIndex - 1];
+
+            if (previousTrivia.IsWhitespaceTrivia())
+                spanStart = previousTrivia.SpanStart;
+        }
+
+        if (firstDirective is not null)
+        {
+            TextSpan span = TextSpan.FromBounds(spanStart, sortedDirectives.Last().FullSpan.End);
+
+            return sourceText.WithChange(span, "");
+        }
+
+        return sourceText;
     }
 
     private static SourceText RemovePreprocessorDirectives(
