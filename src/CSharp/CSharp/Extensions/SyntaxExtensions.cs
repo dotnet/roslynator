@@ -592,6 +592,68 @@ public static class SyntaxExtensions
 
         return null;
     }
+
+    internal static (DirectiveTriviaSyntax OpenDirective, DirectiveTriviaSyntax CloseDirective) GetOpenAndCloseDirectives(this DirectiveTriviaSyntax directiveTrivia)
+    {
+        List<DirectiveTriviaSyntax> directives = directiveTrivia.GetRelatedDirectives();
+
+        switch (directiveTrivia.Kind())
+        {
+            case SyntaxKind.IfDirectiveTrivia:
+                {
+                    DirectiveTriviaSyntax? endIfDirective = directives.SingleOrDefault(f => f.IsKind(SyntaxKind.EndIfDirectiveTrivia), shouldThrow: false);
+
+                    if (endIfDirective is not null)
+                        return (directiveTrivia, endIfDirective);
+
+                    break;
+                }
+            case SyntaxKind.EndIfDirectiveTrivia:
+                {
+                    DirectiveTriviaSyntax? ifDirective = directives.SingleOrDefault(f => f.IsKind(SyntaxKind.IfDirectiveTrivia), shouldThrow: false);
+
+                    if (ifDirective is not null)
+                        return (ifDirective, directiveTrivia);
+
+                    break;
+                }
+            case SyntaxKind.ElseDirectiveTrivia:
+            case SyntaxKind.ElifDirectiveTrivia:
+                {
+                    DirectiveTriviaSyntax? ifDirective = directives.SingleOrDefault(f => f.IsKind(SyntaxKind.IfDirectiveTrivia), shouldThrow: false);
+
+                    if (ifDirective is not null)
+                    {
+                        DirectiveTriviaSyntax? endIfDirective = directives.SingleOrDefault(f => f.IsKind(SyntaxKind.EndIfDirectiveTrivia), shouldThrow: false);
+
+                        if (endIfDirective is not null)
+                            return (ifDirective, endIfDirective);
+                    }
+
+                    break;
+                }
+            case SyntaxKind.RegionDirectiveTrivia:
+                {
+                    DirectiveTriviaSyntax? endRegionDirective = directives.SingleOrDefault(f => f.IsKind(SyntaxKind.EndRegionDirectiveTrivia), shouldThrow: false);
+
+                    if (endRegionDirective is not null)
+                        return (directiveTrivia, endRegionDirective);
+
+                    break;
+                }
+            case SyntaxKind.EndRegionDirectiveTrivia:
+                {
+                    DirectiveTriviaSyntax? regionDirective = directives.SingleOrDefault(f => f.IsKind(SyntaxKind.RegionDirectiveTrivia), shouldThrow: false);
+
+                    if (regionDirective is not null)
+                        return (regionDirective, directiveTrivia);
+
+                    break;
+                }
+        }
+
+        return default;
+    }
     #endregion DirectiveTriviaSyntax
 
     #region DocumentationCommentTriviaSyntax

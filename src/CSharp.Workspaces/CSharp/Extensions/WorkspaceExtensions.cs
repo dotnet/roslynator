@@ -308,6 +308,28 @@ public static class WorkspaceExtensions
         }
     }
 
+    internal static async Task<Document> RemovePreprocessorDirectiveWithContentAsync(
+        this Document document,
+        DirectiveTriviaSyntax openDirective,
+        DirectiveTriviaSyntax closeDirective,
+        CancellationToken cancellationToken = default)
+    {
+        if (document is null)
+            throw new ArgumentNullException(nameof(document));
+
+        if (openDirective is null)
+            throw new ArgumentNullException(nameof(openDirective));
+
+        if (closeDirective is null)
+            throw new ArgumentNullException(nameof(closeDirective));
+
+        SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+        SourceText newSourceText = sourceText.WithChange(TextSpan.FromBounds(openDirective.SpanStart, closeDirective.FullSpan.End), "");
+
+        return document.WithText(newSourceText);
+    }
+
     private static SourceText RemovePreprocessorDirectives(
         SourceText sourceText,
         IEnumerable<DirectiveTriviaSyntax> directives,

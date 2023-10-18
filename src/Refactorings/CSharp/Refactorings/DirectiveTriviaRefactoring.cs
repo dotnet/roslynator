@@ -28,6 +28,23 @@ internal static class DirectiveTriviaRefactoring
                         ct);
                 },
                 RefactoringDescriptors.RemovePreprocessorDirective);
+
+            (DirectiveTriviaSyntax OpenDirective, DirectiveTriviaSyntax CloseDirective) = directive.GetOpenAndCloseDirectives();
+
+            if (OpenDirective is not null)
+            {
+                context.RegisterRefactoring(
+                    "Remove directive (including content)",
+                    ct =>
+                    {
+                        return context.Document.RemovePreprocessorDirectiveWithContentAsync(
+                            OpenDirective,
+                            CloseDirective,
+                            ct);
+                    },
+                    RefactoringDescriptors.RemovePreprocessorDirective,
+                    "IncludingContent");
+            }
         }
     }
 }
