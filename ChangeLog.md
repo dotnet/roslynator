@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add social card ([#1212](https://github.com/dotnet/roslynator/pull/1212)).
 - Add nullable annotation to public API ([#1198](https://github.com/JosefPihrt/Roslynator/pull/1198)).
+- Add refactoring "Remove directive (including content)" ([#1224](https://github.com/dotnet/roslynator/pull/1224)).
 
 ### Changed
 
