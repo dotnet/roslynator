@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -278,9 +279,18 @@ public static class WorkspaceExtensions
         return document.WithText(newSourceText);
     }
 
+    internal static Task<Document> RemovePreprocessorDirectivesAsync(
+        this Document document,
+        IEnumerable<DirectiveTriviaSyntax> directives,
+        CancellationToken cancellationToken = default)
+    {
+        return RemovePreprocessorDirectivesAsync(document, directives, includeContent: false, cancellationToken);
+    }
+
     internal static async Task<Document> RemovePreprocessorDirectivesAsync(
         this Document document,
         IEnumerable<DirectiveTriviaSyntax> directives,
+        bool includeContent,
         CancellationToken cancellationToken = default)
     {
         if (document is null)
@@ -289,9 +299,31 @@ public static class WorkspaceExtensions
         if (directives is null)
             throw new ArgumentNullException(nameof(directives));
 
+        if (!directives.Any())
+            throw new ArgumentException("Collection of directives is empty.", nameof(directives));
+
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-        SourceText newSourceText = sourceText.WithChanges(GetTextChanges());
+        SourceText newSourceText = sourceText;
+        if (includeContent)
+        {
+            IEnumerable<DirectiveTriviaSyntax> sortedDirectives = directives.OrderBy(f => f.SpanStart);
+
+            DirectiveTriviaSyntax firstDirective = sortedDirectives.FirstOrDefault();
+
+            if (firstDirective is not null)
+            {
+                DirectiveTriviaSyntax lastDirective = sortedDirectives.Last();
+
+                TextSpan span = TextSpan.FromBounds(firstDirective.SpanStart, lastDirective.FullSpan.End);
+
+                newSourceText = sourceText.WithChange(span, "");
+            }
+        }
+        else
+        {
+            newSourceText = sourceText.WithChanges(GetTextChanges());
+        }
 
         return document.WithText(newSourceText);
 
@@ -306,30 +338,6 @@ public static class WorkspaceExtensions
                 yield return new TextChange(lines[startLine].SpanIncludingLineBreak, "");
             }
         }
-    }
-
-    internal static async Task<Document> RemovePreprocessorDirectiveWithContentAsync(
-        this Document document,
-        DirectiveTriviaSyntax openDirective,
-        DirectiveTriviaSyntax closeDirective,
-        CancellationToken cancellationToken = default)
-    {
-        if (document is null)
-            throw new ArgumentNullException(nameof(document));
-
-        if (openDirective is null)
-            throw new ArgumentNullException(nameof(openDirective));
-
-        if (closeDirective is null)
-            throw new ArgumentNullException(nameof(closeDirective));
-
-        SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
-        TextSpan span = TextSpan.FromBounds(openDirective.SpanStart, closeDirective.FullSpan.End);
-
-        SourceText newSourceText = sourceText.WithChange(span, "");
-
-        return document.WithText(newSourceText);
     }
 
     private static SourceText RemovePreprocessorDirectives(
