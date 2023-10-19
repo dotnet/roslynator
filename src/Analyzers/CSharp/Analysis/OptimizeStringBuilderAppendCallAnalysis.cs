@@ -33,6 +33,9 @@ internal static class OptimizeStringBuilderAppendCallAnalysis
 
             SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
 
+            if (!invocationInfo2.Success)
+                return;
+
             if (invocationInfo2.NameText != "Append")
                 return;
 
