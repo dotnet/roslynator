@@ -44,12 +44,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add SECURITY.md ([PR](https://github.com/dotnet/roslynator/pull/1147))
 - Add custom FixAllProvider for [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) ([PR](https://github.com/dotnet/roslynator/pull/1070)).
 - Add more cases to [RCS1097](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1097) ([PR](https://github.com/dotnet/roslynator/pull/1160)).
-- Add analyzer "Use enum field explicitly" ([RCS1257](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1257)) ([#889](https://github.com/dotnet/roslynator/pull/889)).
+- Add analyzer "Use enum field explicitly" ([RCS1257](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1257)) ([PR](https://github.com/dotnet/roslynator/pull/889)).
   - Enabled by default.
-- Add analyzer "Unnecessary enum flag" [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([#886](https://github.com/dotnet/roslynator/pull/886)).
+- Add analyzer "Unnecessary enum flag" [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([PR](https://github.com/dotnet/roslynator/pull/886)).
   - Enabled by default.
 - Make `Roslynator.Rename.SymbolRenamer` public ([PR](https://github.com/dotnet/roslynator/pull/1161))
-- Analyzer 'Remove empty syntax' ([RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259)) ([#913](https://github.com/dotnet/roslynator/pull/913)).
+- Analyzer 'Remove empty syntax' ([RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259)) ([PR](https://github.com/dotnet/roslynator/pull/913)).
   - This analyzer replaces following analyzers:
     - Remove empty empty statement ([RCS1038](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1038))
     - Remove empty 'else' clause ([RCS1040](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1040))
@@ -59,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Remove empty region directive ([RCS1091](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1091))
     - Remove empty destructor ([RCS1106](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1106))
 - [CLI] Add glob pattern matching (`--include` or/and `--exclude`) ([PR](https://github.com/dotnet/roslynator/pull/1178), [PR](https://github.com/dotnet/roslynator/pull/1183)).
-- Add analyzer "Include/omit trailing comma" ([RCS1256](https://github.com/dotnet/roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#931](https://github.com/dotnet/roslynator/pull/931)).
+- Add analyzer "Include/omit trailing comma" ([RCS1256](https://github.com/dotnet/roslynator/blob/main/docs/analyzers/RCS1256.md)) ([PR](https://github.com/dotnet/roslynator/pull/931)).
   - Required option: `roslynator_trailing_comma_style = include|omit|omit_when_single_line`
   - Not enabled by default
 
