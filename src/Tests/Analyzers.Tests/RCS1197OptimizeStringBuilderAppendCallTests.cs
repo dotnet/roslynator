@@ -954,4 +954,23 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task TestNoDiagnostic_NoAppendMethodChain()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Text;
+
+class C
+{
+    string M()
+    {
+        var sb = new StringBuilder();
+        _ = sb.AppendLine();
+
+        return sb.ToString();
+    }
+}
+");
+    }
 }
