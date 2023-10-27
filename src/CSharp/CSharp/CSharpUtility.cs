@@ -1,7 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -680,5 +680,12 @@ internal static class CSharpUtility
             default:
                 return null;
         }
+    }
+
+    public static bool IsEnumMemberObsolete(EnumMemberDeclarationSyntax enumMember)
+    {
+        return enumMember.AttributeLists
+            .SelectMany(attrList => attrList.Attributes)
+            .Any(attribute => attribute.Name.ToString() == "Obsolete");
     }
 }

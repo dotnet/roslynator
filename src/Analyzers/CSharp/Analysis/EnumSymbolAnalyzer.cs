@@ -201,9 +201,15 @@ public sealed class EnumSymbolAnalyzer : BaseDiagnosticAnalyzer
                     if (enumMember1 is null)
                         continue;
 
+                    if (CSharpUtility.IsEnumMemberObsolete(enumMember1))
+                        continue;
+
                     var enumMember2 = (EnumMemberDeclarationSyntax)symbolInfo2.Symbol.GetSyntax(context.CancellationToken);
 
                     if (enumMember2 is null)
+                        continue;
+
+                    if (CSharpUtility.IsEnumMemberObsolete(enumMember2))
                         continue;
 
                     ExpressionSyntax value1 = enumMember1.EqualsValue?.Value?.WalkDownParentheses();
