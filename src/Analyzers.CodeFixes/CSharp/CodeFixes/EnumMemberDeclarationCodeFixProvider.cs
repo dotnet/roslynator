@@ -192,10 +192,10 @@ public sealed class EnumMemberDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         foreach (EnumMemberDeclarationSyntax enumMember in enumDeclaration.Members)
         {
-            if (CSharpUtility.IsEnumMemberObsolete(enumMember))
-                continue;
-
             IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
+
+            if (CSharpUtility.IsSymbolObsolete(fieldSymbol))
+                continue;
 
             if (!SymbolEqualityComparer.Default.Equals(fieldSymbolInfo.Symbol, fieldSymbol))
             {
