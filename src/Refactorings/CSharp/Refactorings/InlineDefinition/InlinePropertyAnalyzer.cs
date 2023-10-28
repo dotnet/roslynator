@@ -129,10 +129,9 @@ internal class InlinePropertyAnalyzer : InlineAnalyzer<IdentifierNameSyntax, Pro
         PropertyDeclarationSyntax declaration,
         ImmutableArray<ParameterInfo> parameterInfos,
         SemanticModel nodeSemanticModel,
-        SemanticModel declarationSemanticModel,
-        CancellationToken cancellationToken)
+        SemanticModel declarationSemanticModel)
     {
-        return new InlinePropertyRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
+        return new InlinePropertyRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel);
     }
 
     protected override RefactoringDescriptor GetDescriptor()
