@@ -18,8 +18,7 @@ internal class InlineMethodRefactoring : InlineRefactoring<InvocationExpressionS
         MethodDeclarationSyntax declaration,
         ImmutableArray<ParameterInfo> parameterInfos,
         SemanticModel nodeSemanticModel,
-        SemanticModel declarationSemanticModel,
-        CancellationToken cancellationToken) : base(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken)
+        SemanticModel declarationSemanticModel) : base(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel)
     {
     }
 

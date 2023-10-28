@@ -29,8 +29,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
         TDeclaration declaration,
         ImmutableArray<ParameterInfo> parameterInfos,
         SemanticModel invocationSemanticModel,
-        SemanticModel declarationSemanticModel,
-        CancellationToken cancellationToken)
+        SemanticModel declarationSemanticModel)
     {
         Document = document;
         Node = node;
@@ -40,7 +39,6 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
         ParameterInfos = parameterInfos;
         InvocationSemanticModel = invocationSemanticModel;
         DeclarationSemanticModel = declarationSemanticModel;
-        CancellationToken = cancellationToken;
     }
 
     public abstract SyntaxNode BodyOrExpressionBody { get; }
@@ -63,14 +61,12 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
 
     public SemanticModel DeclarationSemanticModel { get; }
 
-    public CancellationToken CancellationToken { get; }
-
     public virtual Task<Document> InlineAsync(
         SyntaxNode node,
         ExpressionSyntax expression,
         CancellationToken cancellationToken = default)
     {
-        ExpressionSyntax newExpression = RewriteExpression(node, expression);
+        ExpressionSyntax newExpression = RewriteExpression(node, expression, cancellationToken);
 
         return Document.ReplaceNodeAsync(node, newExpression, cancellationToken);
     }
@@ -84,7 +80,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
         {
             DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
 
-            ExpressionSyntax newExpression = RewriteExpression(node, expression);
+            ExpressionSyntax newExpression = RewriteExpression(node, expression, cancellationToken);
 
             editor.ReplaceNode(node, newExpression);
 
@@ -104,9 +100,9 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
         }
     }
 
-    private ParenthesizedExpressionSyntax RewriteExpression(SyntaxNode node, ExpressionSyntax expression)
+    private ParenthesizedExpressionSyntax RewriteExpression(SyntaxNode node, ExpressionSyntax expression, CancellationToken cancellationToken)
     {
-        return RewriteNode(expression)
+        return RewriteNode(expression, cancellationToken)
             .WithTriviaFrom(node)
             .Parenthesize()
             .WithFormatterAnnotation();
@@ -119,7 +115,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
     {
         int count = statements.Count;
 
-        StatementSyntax[] newStatements = RewriteStatements(statements);
+        StatementSyntax[] newStatements = RewriteStatements(statements, cancellationToken);
 
         newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
         newStatements[count - 1] = newStatements[count - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
@@ -147,7 +143,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
         {
             DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
 
-            StatementSyntax[] newStatements = RewriteStatements(statements);
+            StatementSyntax[] newStatements = RewriteStatements(statements, cancellationToken);
 
             int count = statements.Count;
 
@@ -183,28 +179,28 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
         }
     }
 
-    private StatementSyntax[] RewriteStatements(SyntaxList<StatementSyntax> statements)
+    private StatementSyntax[] RewriteStatements(SyntaxList<StatementSyntax> statements, CancellationToken cancellationToken)
     {
         var newStatements = new StatementSyntax[statements.Count];
 
         for (int i = 0; i < statements.Count; i++)
-            newStatements[i] = RewriteNode(statements[i]).WithFormatterAnnotation();
+            newStatements[i] = RewriteNode(statements[i], cancellationToken).WithFormatterAnnotation();
 
         return newStatements;
     }
 
-    private T RewriteNode<T>(T node) where T : SyntaxNode
+    private T RewriteNode<T>(T node, CancellationToken cancellationToken) where T : SyntaxNode
     {
-        Dictionary<ISymbol, string> symbolMap = GetSymbolsToRename();
+        Dictionary<ISymbol, string> symbolMap = GetSymbolsToRename(cancellationToken);
 
-        Dictionary<SyntaxNode, object> replacementMap = GetReplacementMap(node, symbolMap);
+        Dictionary<SyntaxNode, object> replacementMap = GetReplacementMap(node, symbolMap, cancellationToken);
 
         var rewriter = new InlineRewriter(replacementMap);
 
         return (T)rewriter.Visit(node);
     }
 
-    private Dictionary<SyntaxNode, object> GetReplacementMap(SyntaxNode node, Dictionary<ISymbol, string> symbolMap)
+    private Dictionary<SyntaxNode, object> GetReplacementMap(SyntaxNode node, Dictionary<ISymbol, string> symbolMap, CancellationToken cancellationToken)
     {
         var replacementMap = new Dictionary<SyntaxNode, object>();
 
@@ -216,7 +212,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
             {
                 var identifierName = (IdentifierNameSyntax)descendant;
 
-                ISymbol symbol = DeclarationSemanticModel.GetSymbol(identifierName, CancellationToken);
+                ISymbol symbol = DeclarationSemanticModel.GetSymbol(identifierName, cancellationToken);
 
                 if (symbol is not null)
                 {
@@ -286,7 +282,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
                     case SyntaxKind.ForEachStatement:
                     case SyntaxKind.ForEachVariableStatement:
                         {
-                            ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, CancellationToken);
+                            ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, cancellationToken);
 
                             Debug.Assert(symbol is not null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
 
@@ -327,12 +323,12 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
         }
     }
 
-    private Dictionary<ISymbol, string> GetSymbolsToRename()
+    private Dictionary<ISymbol, string> GetSymbolsToRename(CancellationToken cancellationToken)
     {
         ImmutableArray<ISymbol> declarationSymbols = DeclarationSemanticModel.GetDeclaredSymbols(
             BodyOrExpressionBody,
             excludeAnonymousTypeProperty: true,
-            cancellationToken: CancellationToken);
+            cancellationToken: cancellationToken);
 
         if (!declarationSymbols.Any())
             return null;
@@ -347,7 +343,7 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
         ImmutableArray<ISymbol> invocationSymbols = InvocationSemanticModel.GetSymbolsDeclaredInEnclosingSymbol(
             position,
             excludeAnonymousTypeProperty: true,
-            cancellationToken: CancellationToken);
+            cancellationToken: cancellationToken);
 
         invocationSymbols = invocationSymbols.AddRange(InvocationSemanticModel.LookupSymbols(position));
 

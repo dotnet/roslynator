@@ -202,10 +202,9 @@ internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax,
         MethodDeclarationSyntax declaration,
         ImmutableArray<ParameterInfo> parameterInfos,
         SemanticModel nodeSemanticModel,
-        SemanticModel declarationSemanticModel,
-        CancellationToken cancellationToken)
+        SemanticModel declarationSemanticModel)
     {
-        return new InlineMethodRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
+        return new InlineMethodRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel);
     }
 
     protected override RefactoringDescriptor GetDescriptor()

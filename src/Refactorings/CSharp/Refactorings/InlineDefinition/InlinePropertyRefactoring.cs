@@ -19,8 +19,7 @@ internal class InlinePropertyRefactoring : InlineRefactoring<IdentifierNameSynta
         PropertyDeclarationSyntax declaration,
         ImmutableArray<ParameterInfo> parameterInfos,
         SemanticModel invocationSemanticModel,
-        SemanticModel declarationSemanticModel,
-        CancellationToken cancellationToken) : base(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, invocationSemanticModel, declarationSemanticModel, cancellationToken)
+        SemanticModel declarationSemanticModel) : base(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, invocationSemanticModel, declarationSemanticModel)
     {
     }
 
