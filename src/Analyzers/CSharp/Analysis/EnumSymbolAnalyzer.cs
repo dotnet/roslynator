@@ -196,6 +196,10 @@ public sealed class EnumSymbolAnalyzer : BaseDiagnosticAnalyzer
                         continue;
                     }
 
+                    if (CSharpUtility.IsSymbolObsolete(symbolInfo1.Symbol)
+                        || CSharpUtility.IsSymbolObsolete(symbolInfo2.Symbol))
+                        continue;
+
                     var enumMember1 = (EnumMemberDeclarationSyntax)symbolInfo1.Symbol.GetSyntax(context.CancellationToken);
 
                     if (enumMember1 is null)

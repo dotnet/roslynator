@@ -194,6 +194,9 @@ public sealed class EnumMemberDeclarationCodeFixProvider : BaseCodeFixProvider
         {
             IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
 
+            if (CSharpUtility.IsSymbolObsolete(fieldSymbol))
+                continue;
+
             if (!SymbolEqualityComparer.Default.Equals(fieldSymbolInfo.Symbol, fieldSymbol))
             {
                 EnumFieldSymbolInfo fieldSymbolInfo2 = EnumFieldSymbolInfo.Create(fieldSymbol);
