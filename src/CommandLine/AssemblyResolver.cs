@@ -12,7 +12,7 @@ internal static class AssemblyResolver
 {
     static AssemblyResolver()
     {
-        AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => CurrentDomain_AssemblyResolve(sender, args);
+        //AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => CurrentDomain_AssemblyResolve(sender, args);
     }
 
     internal static void Register()
