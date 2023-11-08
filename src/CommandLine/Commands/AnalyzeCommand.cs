@@ -28,8 +28,6 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
 
     public override async Task<AnalyzeCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var codeAnalyzerOptions = new CodeAnalyzerOptions(
             fileSystemFilter: FileSystemFilter,
             ignoreAnalyzerReferences: Options.IgnoreAnalyzerReferences,
