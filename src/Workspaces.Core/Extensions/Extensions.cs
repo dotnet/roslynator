@@ -27,7 +27,7 @@ internal static class Extensions
             if (tree is not null)
             {
                 PatternMatchingResult result = (rootDirectoryPath is not null)
-                    ? matcher.Match(tree.FilePath, rootDirectoryPath)
+                    ? matcher.Match(rootDirectoryPath, tree.FilePath)
                     : matcher.Match(tree.FilePath);
 
                 if (!result.HasMatches)
