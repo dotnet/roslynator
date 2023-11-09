@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [CLI] Fix globbing ([PR](https://github.com/dotnet/roslynator/pull/1238))
 - [CLI] Remove assembly resolving ([PR](https://github.com/dotnet/roslynator/pull/1237))
 
+### Changed
+
+- Bump Microsoft.Build.Locator to `1.6.10` ([PR](https://github.com/dotnet/roslynator/pull/1240))
+
 ## [4.6.1] - 2023-10-23
 
 ### Fixed
