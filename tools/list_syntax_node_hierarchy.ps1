@@ -1,6 +1,8 @@
-dotnet build "../src/CommandLine.sln" -c Debug -v minimal /m
+#dotnet tool install -g roslynator.dotnet.cli
 
-roslynator list-symbols "../src/CommandLine/CommandLine.csproj" `
+dotnet build "$PSScriptRoot/../src/CommandLine.sln" -c Debug -v minimal /m
+
+roslynator list-symbols "$PSScriptRoot/../src/CommandLine/CommandLine.csproj" `
  --depth type `
  --visibility public `
  --external-assemblies Microsoft.CodeAnalysis.dll Microsoft.CodeAnalysis.CSharp.dll `
