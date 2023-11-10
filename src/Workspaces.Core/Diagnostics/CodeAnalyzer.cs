@@ -74,7 +74,7 @@ internal class CodeAnalyzer
             }
             else
             {
-                WriteLine($"Skip '{project.Name}' {$"{i + 1}/{projectIds.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
+                WriteLine($"Skipping '{project.Name}' {$"{i + 1}/{projectIds.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
             }
 
             lastElapsed = stopwatch.Elapsed;
@@ -82,7 +82,7 @@ internal class CodeAnalyzer
 
         stopwatch.Stop();
 
-        WriteLine($"Done analyzing solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Analyzed solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
         if (results.Count > 0)
             WriteProjectAnalysisResults(results);
@@ -100,7 +100,7 @@ internal class CodeAnalyzer
 
         stopwatch.Stop();
 
-        WriteLine($"Done analyzing project '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Analyzed project '{project.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
         WriteProjectAnalysisResults(new ProjectAnalysisResult[] { result });
 

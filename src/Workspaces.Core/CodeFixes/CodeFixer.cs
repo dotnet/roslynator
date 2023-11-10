@@ -64,7 +64,7 @@ internal class CodeFixer
 
             if (predicate is null || predicate(project))
             {
-                WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
+                WriteLine($"Analyze '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
                 ProjectFixResult result = await FixProjectAsync(project, cancellationToken).ConfigureAwait(false);
 
@@ -75,21 +75,21 @@ internal class CodeFixer
             }
             else
             {
-                WriteLine($"Skip '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
+                WriteLine($"Skipping '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
 
                 results.Add(ProjectFixResult.Skipped);
             }
 
             TimeSpan elapsed = stopwatch.Elapsed;
 
-            WriteLine($"Done fixing '{project.Name}' in {elapsed - lastElapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+            LogHelpers.WriteElapsedTime($"Analyzed '{project.Name}'", elapsed - lastElapsed, Verbosity.Normal);
 
             lastElapsed = elapsed;
         }
 
         stopwatch.Stop();
 
-        WriteLine($"Done fixing solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Analyzed solution '{CurrentSolution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
         return results.ToImmutableArray();
     }
@@ -209,9 +209,9 @@ internal class CodeFixer
 
             project = CurrentSolution.GetProject(project.Id)!;
 
-            WriteLine($"  Compile '{project.Name}'{((iterationCount > 1) ? $" iteration {iterationCount}" : "")}", Verbosity.Normal);
-
             Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
+
+            WriteLine($"  Compiled '{project.Name}'{((iterationCount > 1) ? $" iteration {iterationCount}" : "")}", Verbosity.Normal);
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 
@@ -598,7 +598,7 @@ internal class CodeFixer
 
             Document newDocument = document.WithSyntaxRoot(newRoot);
 
-            WriteLine($"  Add banner to '{PathUtilities.TrimStart(document.FilePath!, solutionDirectory)}'", ConsoleColors.DarkGray, Verbosity.Detailed);
+            WriteLine($"  Added banner to '{PathUtilities.TrimStart(document.FilePath!, solutionDirectory)}'", ConsoleColors.DarkGray, Verbosity.Detailed);
 
             project = newDocument.Project;
 

@@ -30,6 +30,26 @@ internal static class LogHelpers
             | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
             | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
 
+    public static void WriteElapsedTime(string message, TimeSpan elapsedTime, Verbosity verbosity)
+    {
+        if (!ShouldWrite(verbosity))
+            return;
+
+        Write(message, verbosity);
+        Write(" ", verbosity);
+
+        if (elapsedTime.TotalMilliseconds >= 1000)
+        {
+            double seconds = elapsedTime.TotalMilliseconds / 1000;
+
+            WriteLine($"(in {seconds:n1} s)", verbosity);
+        }
+        else
+        {
+            WriteLine($"(in {elapsedTime.TotalMilliseconds} ms)", verbosity);
+        }
+    }
+
     public static void WriteDiagnostic(
         Diagnostic diagnostic,
         string? baseDirectoryPath = null,

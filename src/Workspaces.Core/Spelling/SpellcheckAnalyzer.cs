@@ -76,7 +76,7 @@ internal class SpellcheckAnalyzer
 
             if (predicate is null || predicate(project))
             {
-                WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
+                WriteLine($"Analyze '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
                 ImmutableArray<SpellingFixResult> results2 = await FixProjectAsync(project, cancellationToken).ConfigureAwait(false);
 
@@ -84,19 +84,19 @@ internal class SpellcheckAnalyzer
             }
             else
             {
-                WriteLine($"Skip '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
+                WriteLine($"Skipping '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
             }
 
             TimeSpan elapsed = stopwatch.Elapsed;
 
-            WriteLine($"Done fixing '{project.Name}' in {elapsed - lastElapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+            LogHelpers.WriteElapsedTime($"Analyzed '{project.Name}'", elapsed - lastElapsed, Verbosity.Normal);
 
             lastElapsed = elapsed;
         }
 
         stopwatch.Stop();
 
-        WriteLine($"Done fixing solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Analyzed solution '{CurrentSolution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
         return results.SelectMany(f => f).ToImmutableArray();
     }

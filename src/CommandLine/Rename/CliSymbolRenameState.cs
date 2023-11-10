@@ -73,13 +73,13 @@ internal class CliSymbolRenameState : SymbolRenameState
 
                 await AnalyzeProjectAsync(project, renameScopes[i], cancellationToken);
 
-                WriteLine($"  Done renaming {GetScopePluralName(renameScopes[i])} in '{project.Name}' in {stopwatch.Elapsed - lastElapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+                LogHelpers.WriteElapsedTime($"  Renamed {GetScopePluralName(renameScopes[i])} in '{project.Name}'", stopwatch.Elapsed - lastElapsed, Verbosity.Normal);
             }
         }
 
         stopwatch.Stop();
 
-        WriteLine($"Done renaming symbols in solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Renamed symbols in solution '{CurrentSolution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
     }
 
     public override async Task RenameSymbolsAsync(Project project, CancellationToken cancellationToken = default)

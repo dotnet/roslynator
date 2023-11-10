@@ -62,7 +62,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
 
     private async Task<CodeMetricsInfo> CountLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)
     {
-        WriteLine($"Count lines for '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
+        WriteLine($"Counting lines for '{project.Name}'...", ConsoleColors.Cyan, Verbosity.Minimal);
 
         Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -84,14 +84,14 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
             codeMetrics.TotalLineCount);
 
         WriteLine(Verbosity.Minimal);
-        WriteLine($"Done counting lines for '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+        LogHelpers.WriteElapsedTime($"Counted lines for '{project.FilePath}'", stopwatch.Elapsed, Verbosity.Normal);
 
         return codeMetrics;
     }
 
     private async Task<ImmutableDictionary<ProjectId, CodeMetricsInfo>> CountLinesAsync(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
     {
-        WriteLine($"Count lines for solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
+        WriteLine($"Counting lines for solution '{solution.FilePath}'...", ConsoleColors.Cyan, Verbosity.Minimal);
 
         IEnumerable<Project> projects = FilterProjects(solution);
 
@@ -118,7 +118,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
             codeMetrics.Sum(f => f.Value.TotalLineCount));
 
         WriteLine(Verbosity.Minimal);
-        WriteLine($"Done counting lines for solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Counted lines for solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
         return codeMetrics;
     }
@@ -183,10 +183,5 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
             totalCommentLineCount: results.Sum(f => f.Metrics.CommentLineCount),
             totalPreprocessorDirectiveLineCount: results.Sum(f => f.Metrics.PreprocessorDirectiveLineCount),
             totalLineCount: results.Sum(f => f.Metrics.TotalLineCount));
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Lines counting was canceled.", Verbosity.Quiet);
     }
 }

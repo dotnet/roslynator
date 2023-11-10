@@ -54,7 +54,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
                 || analyzerAssembly.HasAnalyzers
                 || analyzerAssembly.HasFixers)
             {
-                WriteLine($"Add analyzer assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Detailed);
+                WriteLine($"Loaded analyzer assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Detailed);
             }
         };
 
@@ -126,10 +126,5 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
 
         WriteLine(Verbosity.Minimal);
         WriteLine($"{totalCount} {((totalCount == 1) ? "diagnostic" : "diagnostics")} found", ConsoleColors.Green, Verbosity.Minimal);
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Analysis was canceled.", Verbosity.Quiet);
     }
 }

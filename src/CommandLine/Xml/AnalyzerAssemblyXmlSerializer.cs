@@ -255,7 +255,7 @@ internal static class AnalyzerAssemblyXmlSerializer
                     diagnostics,
                     fixAllProviders)));
 
-        WriteLine($"Save analyzer assembly analysis to '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+        WriteLine($"Saving analyzer assembly analysis to '{filePath}'...", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
         using (var fileStream = new FileStream(filePath, FileMode.Create))
         using (XmlWriter xmlWriter = XmlWriter.Create(fileStream, new XmlWriterSettings() { Indent = true, CloseOutput = false }))
