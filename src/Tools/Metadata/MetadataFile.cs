@@ -290,7 +290,8 @@ public static class MetadataFile
                 Key: "roslynator_" + key,
                 DefaultValue: defaultValue,
                 DefaultValuePlaceholder: defaultValuePlaceholder,
-                Description: element.Element("Description").Value
+                Description: element.Element("Description").Value,
+                IsObsolete: element.AttributeValueAsBooleanOrDefault("IsObsolete")
             );
 
             analyzerOption.Values.AddRange(values ?? Enumerable.Empty<AnalyzerOptionValueMetadata>());

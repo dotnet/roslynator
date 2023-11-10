@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix refactoring [Inline method](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0062) ([PR](https://github.com/dotnet/roslynator/pull/1234))
 - [CLI] Fix globbing ([PR](https://github.com/dotnet/roslynator/pull/1238))
 - [CLI] Remove assembly resolving ([PR](https://github.com/dotnet/roslynator/pull/1237))
+- Detect false positive from Unity code ([RCS1169](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1169)) ([PR](https://github.com/dotnet/roslynator/pull/1245))
+  - Introduce config option `roslynator_unity_code_analysis.enabled = true|false`
+  - Make option `roslynator_suppress_unity_script_methods` obsolete
 
 ## [4.6.1] - 2023-10-23
 

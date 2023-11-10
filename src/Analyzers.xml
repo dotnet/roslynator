@@ -5178,6 +5178,9 @@ abstract class Foo : IFoo
     <Title>Make field read-only.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="unity_code_analysis.enabled" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[public class Foo
@@ -6117,6 +6120,7 @@ x = "";]]></Before>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <ConfigOptions>
+      <Option Key="unity_code_analysis.enabled" />
       <Option Key="suppress_unity_script_methods" />
     </ConfigOptions>
     <Options>
