@@ -209,9 +209,9 @@ internal class CodeFixer
 
             project = CurrentSolution.GetProject(project.Id)!;
 
-            Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
+            WriteLine($"  Compile '{project.Name}'{((iterationCount > 1) ? $" iteration {iterationCount}" : "")}", Verbosity.Normal);
 
-            WriteLine($"  Compiled '{project.Name}'{((iterationCount > 1) ? $" iteration {iterationCount}" : "")}", Verbosity.Normal);
+            Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 

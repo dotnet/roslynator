@@ -46,7 +46,7 @@ internal static class LogHelpers
         }
         else
         {
-            WriteLine($"(in {elapsedTime.TotalMilliseconds} ms)", verbosity);
+            WriteLine($"(in {elapsedTime.TotalMilliseconds:n0} ms)", verbosity);
         }
     }
 

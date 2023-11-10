@@ -365,9 +365,9 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         {
             Project project = projectOrSolution.AsProject();
 
-            Compilation compilation = await project.GetCompilationAsync(cancellationToken);
+            WriteLine($"Compile '{project.Name}'", Verbosity.Minimal);
 
-            WriteLine($"Compiled '{project.Name}'", Verbosity.Minimal);
+            Compilation compilation = await project.GetCompilationAsync(cancellationToken);
 
             return ImmutableArray.Create(compilation);
         }
@@ -390,9 +390,9 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                Compilation compilation = await project.GetCompilationAsync(cancellationToken);
+                WriteLine($"  Compile '{project.Name}'", Verbosity.Minimal);
 
-                WriteLine($"  Compiled '{project.Name}'", Verbosity.Minimal);
+                Compilation compilation = await project.GetCompilationAsync(cancellationToken);
 
                 compilations.Add(compilation);
             }
