@@ -173,11 +173,12 @@
   <Option Id="SuppressUnityScriptMethods">
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Suppress false positives from Unity script methods</Description>
-    <ObsoleteMessage>This option is obsolete, use option 'roslynator_suppress_unity' instead.</ObsoleteMessage>
+    <ObsoleteMessage>This option is obsolete, use option 'roslynator_unity_code_analysis.enabled' instead.</ObsoleteMessage>
   </Option>
-  <Option Id="SuppressUnity">
+  <Option Id="UnityCodeAnalysisEnabled">
+    <Key>unity_code_analysis.enabled</Key>
     <ValuePlaceholder>true|false</ValuePlaceholder>
-    <Description>Suppress false positives from Unity code</Description>
+    <Description>Enabled additional code analysis to detect Unity-specific types</Description>
   </Option>
   <Option Id="UseAnonymousFunctionOrMethodGroup">
     <Description>Use anonymous function or method group</Description>

@@ -386,6 +386,6 @@ namespace UnityEngine
     {
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.SuppressUnity, true));
+", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
     }
 }

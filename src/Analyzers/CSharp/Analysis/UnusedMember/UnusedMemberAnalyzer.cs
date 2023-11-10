@@ -159,7 +159,7 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
                             break;
 
                         if (declaration.ReturnsVoid()
-                            && context.SuppressUnity() == true)
+                            && context.GetUnityCodeAnalysisEnabled() == true)
                         {
                             if (canContainUnityScriptMethods is null)
                             {

@@ -177,12 +177,6 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Prefix field identifier with underscore");
 
-        public static readonly ConfigOptionDescriptor SuppressUnity = new(
-            key:                     ConfigOptionKeys.SuppressUnity, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "true|false", 
-            description:             "Suppress false positives from Unity code");
-
         [Obsolete("", error: false)]
         public static readonly ConfigOptionDescriptor SuppressUnityScriptMethods = new(
             key:                     ConfigOptionKeys.SuppressUnityScriptMethods, 
@@ -201,6 +195,12 @@ namespace Roslynator
             defaultValue:            null, 
             defaultValuePlaceholder: "include|omit|omit_when_single_line", 
             description:             "Include/omit trailing comma in initializer or enum");
+
+        public static readonly ConfigOptionDescriptor UnityCodeAnalysisEnabled = new(
+            key:                     ConfigOptionKeys.UnityCodeAnalysisEnabled, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Enabled additional code analysis to detect Unity-specific types");
 
         public static readonly ConfigOptionDescriptor UseAnonymousFunctionOrMethodGroup = new(
             key:                     ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, 

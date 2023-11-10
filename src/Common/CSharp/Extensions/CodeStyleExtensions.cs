@@ -565,9 +565,9 @@ internal static class CodeStyleExtensions
         return BlankLineStyle.None;
     }
 
-    public static bool? SuppressUnity(this SyntaxNodeAnalysisContext context)
+    public static bool? GetUnityCodeAnalysisEnabled(this SyntaxNodeAnalysisContext context)
     {
-        if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.SuppressUnity, out bool value))
+        if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.UnityCodeAnalysisEnabled, out bool value))
             return value;
 
 #pragma warning disable CS0618 // Type or member is obsolete
