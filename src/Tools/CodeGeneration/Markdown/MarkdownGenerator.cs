@@ -50,7 +50,7 @@ public static class MarkdownGenerator
     public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring, int position)
     {
         MDocument document = Document(
-            CreateFrontMatter(title: refactoring.Title, position: position, label: refactoring.Title),
+            CreateFrontMatter(title: $"Refactoring: {refactoring.Title}", position: position, label: refactoring.Title),
             Heading1(refactoring.Title),
             Table(
                 TableRow("Property", "Value"),
@@ -333,7 +333,7 @@ public static class MarkdownGenerator
         IComparer<string> comparer)
     {
         MDocument document = Document(
-            CreateFrontMatter(label: diagnostic.Id),
+            CreateFrontMatter(title: $"Code fix for {diagnostic.Id}", label: diagnostic.Id),
             Heading1(diagnostic.Id),
             Table(
                 TableRow("Property", "Value"),
