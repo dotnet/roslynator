@@ -20,7 +20,6 @@ namespace Roslynator
         public const string ConditionalOperatorConditionParenthesesStyle      = "roslynator_conditional_operator_condition_parentheses_style";
         public const string ConditionalOperatorNewLine                        = "roslynator_conditional_operator_new_line";
         public const string ConfigureAwait                                    = "roslynator_configure_await";
-        public const string DetectUnityFeatures                               = "roslynator_detect_unity_features";
         public const string DocCommentSummaryStyle                            = "roslynator_doc_comment_summary_style";
         public const string EmptyStringStyle                                  = "roslynator_empty_string_style";
         public const string EnumFlagValueStyle                                = "roslynator_enum_flag_value_style";
@@ -35,6 +34,7 @@ namespace Roslynator
         public const string ObjectCreationParenthesesStyle                    = "roslynator_object_creation_parentheses_style";
         public const string ObjectCreationTypeStyle                           = "roslynator_object_creation_type_style";
         public const string PrefixFieldIdentifierWithUnderscore               = "roslynator_prefix_field_identifier_with_underscore";
+        public const string SuppressUnity                                     = "roslynator_suppress_unity";
         public const string SuppressUnityScriptMethods                        = "roslynator_suppress_unity_script_methods";
         public const string TabLength                                         = "roslynator_tab_length";
         public const string TrailingCommaStyle                                = "roslynator_trailing_comma_style";

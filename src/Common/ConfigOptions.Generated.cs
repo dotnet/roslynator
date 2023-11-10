@@ -93,12 +93,6 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Add/remove 'ConfigureAwait(false)' call");
 
-        public static readonly ConfigOptionDescriptor DetectUnityFeatures = new(
-            key:                     ConfigOptionKeys.DetectUnityFeatures, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "true|false", 
-            description:             "Detect false positives from Unity code");
-
         public static readonly ConfigOptionDescriptor DocCommentSummaryStyle = new(
             key:                     ConfigOptionKeys.DocCommentSummaryStyle, 
             defaultValue:            null, 
@@ -183,12 +177,18 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Prefix field identifier with underscore");
 
+        public static readonly ConfigOptionDescriptor SuppressUnity = new(
+            key:                     ConfigOptionKeys.SuppressUnity, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Suppress false positives from Unity code");
+
         [Obsolete("", error: false)]
         public static readonly ConfigOptionDescriptor SuppressUnityScriptMethods = new(
             key:                     ConfigOptionKeys.SuppressUnityScriptMethods, 
             defaultValue:            null, 
             defaultValuePlaceholder: "true|false", 
-            description:             "Suppress Unity script methods");
+            description:             "Suppress false positives from Unity script methods");
 
         public static readonly ConfigOptionDescriptor TabLength = new(
             key:                     ConfigOptionKeys.TabLength, 

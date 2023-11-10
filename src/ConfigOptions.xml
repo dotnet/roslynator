@@ -172,12 +172,12 @@
   </Option>
   <Option Id="SuppressUnityScriptMethods">
     <ValuePlaceholder>true|false</ValuePlaceholder>
-    <Description>Suppress Unity script methods</Description>
-    <ObsoleteMessage>This option is obsolete, use option 'detect_unity_features' instead.</ObsoleteMessage>
+    <Description>Suppress false positives from Unity script methods</Description>
+    <ObsoleteMessage>This option is obsolete, use option 'roslynator_suppress_unity' instead.</ObsoleteMessage>
   </Option>
-  <Option Id="DetectUnityFeatures">
+  <Option Id="SuppressUnity">
     <ValuePlaceholder>true|false</ValuePlaceholder>
-    <Description>Detect false positives from Unity code</Description>
+    <Description>Suppress false positives from Unity code</Description>
   </Option>
   <Option Id="UseAnonymousFunctionOrMethodGroup">
     <Description>Use anonymous function or method group</Description>
