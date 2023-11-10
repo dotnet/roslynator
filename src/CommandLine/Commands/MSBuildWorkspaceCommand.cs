@@ -209,7 +209,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
     {
     }
 
-    protected void OperationCanceled(OperationCanceledException ex)
+    protected virtual void OperationCanceled(OperationCanceledException ex)
     {
         WriteLine("Operation was canceled.", Verbosity.Quiet);
     }
