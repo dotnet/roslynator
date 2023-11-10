@@ -178,7 +178,7 @@
   <Option Id="UnityCodeAnalysisEnabled">
     <Key>unity_code_analysis.enabled</Key>
     <ValuePlaceholder>true|false</ValuePlaceholder>
-    <Description>Enabled additional code analysis to detect Unity-specific types</Description>
+    <Description>Enable additional analysis to detect Unity-specific code</Description>
   </Option>
   <Option Id="UseAnonymousFunctionOrMethodGroup">
     <Description>Use anonymous function or method group</Description>
