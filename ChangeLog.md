@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- [CLI] Add note to docs that Roslynator CLI does not contain any analyzers itself ([PR](https://github.com/dotnet/roslynator/pull/1241))
+
 ### Fixed
 
 - Fix [RCS1234](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1234) ([PR](https://github.com/dotnet/roslynator/pull/1233))
