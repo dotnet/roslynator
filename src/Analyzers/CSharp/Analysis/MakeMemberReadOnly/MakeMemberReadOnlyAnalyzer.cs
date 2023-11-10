@@ -137,7 +137,7 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
                                 && !fieldSymbol.IsReadOnly
                                 && !fieldSymbol.IsVolatile
                                 && ValidateType(fieldSymbol.Type)
-                                && (context.GetUnityCodeAnalysisEnabled() != true
+                                && (context.IsUnityCodeAnalysisEnabled() != true
                                     || !fieldSymbol.HasAttribute(UnityEngine_SerializeFieldAttribute)))
                             {
                                 symbols[fieldSymbol.Name] = (declarator, fieldSymbol);

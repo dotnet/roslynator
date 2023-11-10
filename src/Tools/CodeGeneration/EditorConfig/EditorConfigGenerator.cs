@@ -88,6 +88,7 @@ public static class EditorConfigGenerator
                         + string.Join(
                             ", ",
                             analyzer.ConfigOptions
+                                .Where(f => metadata.ConfigOptions.FirstOrDefault(ff => ff.Key == f.Key)?.IsObsolete != true)
                                 .OrderBy(f => f.Key)
                                 .Select(f2 => metadata.ConfigOptions.First(f => f.Key == f2.Key).Key)));
                 }

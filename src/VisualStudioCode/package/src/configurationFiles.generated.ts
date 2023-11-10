@@ -763,7 +763,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Remove unused member declaration
 #dotnet_diagnostic.rcs1213.severity = suggestion
-# Options: roslynator_suppress_unity_script_methods, roslynator_unity_code_analysis.enabled
+# Options: roslynator_unity_code_analysis.enabled
 
 # Unnecessary interpolated string
 #dotnet_diagnostic.rcs1214.severity = suggestion

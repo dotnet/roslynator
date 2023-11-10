@@ -565,7 +565,7 @@ internal static class CodeStyleExtensions
         return BlankLineStyle.None;
     }
 
-    public static bool? GetUnityCodeAnalysisEnabled(this SyntaxNodeAnalysisContext context)
+    public static bool? IsUnityCodeAnalysisEnabled(this SyntaxNodeAnalysisContext context)
     {
         if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.UnityCodeAnalysisEnabled, out bool value))
             return value;
