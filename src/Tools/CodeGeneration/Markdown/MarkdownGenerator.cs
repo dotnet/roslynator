@@ -210,13 +210,8 @@ public static class MarkdownGenerator
 
                         sb.Append("# ");
 
-                        string description = en.Current.Description;
-
-                        if (en.Current.IsObsolete)
-                            description = "[deprecated] " + en.Current.ObsoleteMessage;
-
-                        if (!string.IsNullOrEmpty(description))
-                            sb.AppendLine(description);
+                        if (!string.IsNullOrEmpty(en.Current.Description))
+                            sb.AppendLine(en.Current.Description);
 
                         string defaultValue = en.Current.DefaultValue;
 

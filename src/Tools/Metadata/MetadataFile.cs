@@ -291,7 +291,7 @@ public static class MetadataFile
                 DefaultValue: defaultValue,
                 DefaultValuePlaceholder: defaultValuePlaceholder,
                 Description: element.Element("Description").Value,
-                ObsoleteMessage: element.Element("ObsoleteMessage")?.Value
+                IsObsolete: element.AttributeValueAsBooleanOrDefault("IsObsolete")
             );
 
             analyzerOption.Values.AddRange(values ?? Enumerable.Empty<AnalyzerOptionValueMetadata>());

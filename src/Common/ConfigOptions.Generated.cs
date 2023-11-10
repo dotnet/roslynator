@@ -182,7 +182,7 @@ namespace Roslynator
             key:                     ConfigOptionKeys.SuppressUnityScriptMethods, 
             defaultValue:            null, 
             defaultValuePlaceholder: "true|false", 
-            description:             "Suppress false positives from Unity script methods");
+            description:             "[deprecated] This option is obsolete, use option 'roslynator_unity_code_analysis.enabled' instead.");
 
         public static readonly ConfigOptionDescriptor TabLength = new(
             key:                     ConfigOptionKeys.TabLength, 
@@ -200,7 +200,7 @@ namespace Roslynator
             key:                     ConfigOptionKeys.UnityCodeAnalysisEnabled, 
             defaultValue:            null, 
             defaultValuePlaceholder: "true|false", 
-            description:             "Enable additional analysis to detect Unity-specific code");
+            description:             "Enable code analysis to detect Unity-specific code");
 
         public static readonly ConfigOptionDescriptor UseAnonymousFunctionOrMethodGroup = new(
             key:                     ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, 
