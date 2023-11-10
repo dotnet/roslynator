@@ -18,7 +18,7 @@ public static class CodeGenerator
     public static CompilationUnitSyntax GenerateConfigOptions(IEnumerable<AnalyzerOptionMetadata> options, IEnumerable<AnalyzerMetadata> analyzers)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(
-            UsingDirectives("System.Collections.Generic"),
+            UsingDirectives("System", "System.Collections.Generic"),
             NamespaceDeclaration(
                 "Roslynator",
                 ClassDeclaration(
@@ -38,7 +38,8 @@ public static class CodeGenerator
                                         Argument(NameColon("defaultValue"), (f.DefaultValue is not null) ? StringLiteralExpression(f.DefaultValue) : NullLiteralExpression()),
                                         Argument(NameColon("defaultValuePlaceholder"), StringLiteralExpression(f.DefaultValuePlaceholder)),
                                         Argument(NameColon("description"), StringLiteralExpression(f.Description))),
-                                    default(InitializerExpressionSyntax)));
+                                    default(InitializerExpressionSyntax)))
+                                .AddObsoleteAttributeIf(f.IsObsolete);
                         })
                         .Concat(new MemberDeclarationSyntax[]
                             {
