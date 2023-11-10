@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,9 @@ internal sealed class FileSystemFilter
 
     public Matcher Matcher { get; }
 
-    public static FileSystemFilter CreateOrDefault(
+    public string? RootDirectoryPath { get; set; }
+
+    public static FileSystemFilter? CreateOrDefault(
         IEnumerable<string> include,
         IEnumerable<string> exclude)
     {
@@ -51,7 +53,7 @@ internal sealed class FileSystemFilter
 
     public bool IsMatch(ISymbol symbol)
     {
-        bool isMatch = Matcher.IsMatch(symbol);
+        bool isMatch = Matcher.IsMatch(symbol, RootDirectoryPath);
 #if DEBUG
         if (!isMatch
             && Logger.ShouldWrite(Verbosity.Diagnostic))
@@ -65,7 +67,9 @@ internal sealed class FileSystemFilter
 
     public bool IsMatch(string filePath)
     {
-        PatternMatchingResult result = Matcher.Match(filePath);
+        PatternMatchingResult result = (RootDirectoryPath is not null)
+            ? Matcher.Match(RootDirectoryPath, filePath)
+            : Matcher.Match(filePath);
 
 #if DEBUG
         Debug.Assert(result.Files.Count() <= 1, result.Files.Count().ToString());

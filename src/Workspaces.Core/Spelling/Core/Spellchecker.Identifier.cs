@@ -22,7 +22,7 @@ internal partial class Spellchecker
             return ImmutableArray<SpellingMatch>.Empty;
         }
 
-        ImmutableArray<SpellingMatch>.Builder builder = null;
+        ImmutableArray<SpellingMatch>.Builder? builder = null;
 
         Match match = _splitIdentifierRegex.Match(value, prefixLength);
 
@@ -68,8 +68,8 @@ internal partial class Spellchecker
     private void AnalyzeIdentifierValue(
         string value,
         int valueIndex,
-        string parentValue,
-        ref ImmutableArray<SpellingMatch>.Builder builder)
+        string? parentValue,
+        ref ImmutableArray<SpellingMatch>.Builder? builder)
     {
         if (IsMatch(value))
         {

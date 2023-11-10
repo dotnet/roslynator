@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -20,28 +20,28 @@ internal static class DetermineParameterTypeHelper
     {
         if (argument.Parent is BaseArgumentListSyntax argumentList)
         {
-            SyntaxNode parent = argumentList.Parent;
+            SyntaxNode? parent = argumentList.Parent;
 
             if (parent is not null)
             {
                 SymbolInfo symbolInfo = GetSymbolInfo(parent, semanticModel, cancellationToken);
 
-                ISymbol symbol = symbolInfo.Symbol;
+                ISymbol? symbol = symbolInfo.Symbol;
 
                 if (symbol is not null)
                 {
-                    ITypeSymbol typeSymbol = DetermineParameterType(symbol, argument, argumentList);
+                    ITypeSymbol? typeSymbol = DetermineParameterType(symbol, argument, argumentList);
 
                     if (typeSymbol?.IsErrorType() == false)
                         return ImmutableArray.Create(typeSymbol);
                 }
                 else
                 {
-                    HashSet<ITypeSymbol> typeSymbols = null;
+                    HashSet<ITypeSymbol>? typeSymbols = null;
 
                     foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
                     {
-                        ITypeSymbol typeSymbol = DetermineParameterType(candidateSymbol, argument, argumentList);
+                        ITypeSymbol? typeSymbol = DetermineParameterType(candidateSymbol, argument, argumentList);
 
                         if (typeSymbol?.IsErrorType() == false)
                         {
@@ -69,12 +69,12 @@ internal static class DetermineParameterTypeHelper
         return default;
     }
 
-    private static ITypeSymbol DetermineParameterType(
+    private static ITypeSymbol? DetermineParameterType(
         ISymbol symbol,
         ArgumentSyntax argument,
         BaseArgumentListSyntax argumentList)
     {
-        IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
+        IParameterSymbol? parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
 
         if (parameterSymbol is null)
             return null;
@@ -103,7 +103,7 @@ internal static class DetermineParameterTypeHelper
         return typeSymbol;
     }
 
-    private static IParameterSymbol DetermineParameterSymbol(
+    private static IParameterSymbol? DetermineParameterSymbol(
         ISymbol symbol,
         ArgumentSyntax argument,
         BaseArgumentListSyntax argumentList)
@@ -115,7 +115,7 @@ internal static class DetermineParameterTypeHelper
         if (parameters.IsDefault)
             return null;
 
-        string name = argument.NameColon?.Name?.Identifier.ValueText;
+        string? name = argument.NameColon?.Name?.Identifier.ValueText;
 
         if (name is not null)
             return parameters.FirstOrDefault(f => f.Name == name);
@@ -128,7 +128,7 @@ internal static class DetermineParameterTypeHelper
             return parameters[index];
         }
 
-        IParameterSymbol lastParameter = parameters.LastOrDefault();
+        IParameterSymbol? lastParameter = parameters.LastOrDefault();
 
         if (lastParameter?.IsParams == true)
             return lastParameter;

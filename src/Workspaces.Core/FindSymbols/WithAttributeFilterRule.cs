@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,8 +30,11 @@ internal class WithAttributeFilterRule : SymbolFilterRule
     {
         foreach (AttributeData attribute in value.GetAttributes())
         {
-            if (AttributeNames.Contains(attribute.AttributeClass))
+            if (attribute.AttributeClass is not null
+                && AttributeNames.Contains(attribute.AttributeClass))
+            {
                 return true;
+            }
         }
 
         return false;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -849,6 +849,62 @@ class C
     {
         string[] x = { new(' ', 0) };
     }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_PreferImplicitWhenTypeIsObvious_PropertyLazyInitialization()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+public record R(C? P = null)
+{
+    public C P { get; init; } = P ?? new [|C|]();
+}
+
+public class C
+{
+}
+", @"
+#nullable enable
+
+public record R(C? P = null)
+{
+    public C P { get; init; } = P ?? new();
+}
+
+public class C
+{
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_PreferImplicitWhenTypeIsObvious_FieldLazyInitialization()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+public record R(C? P = null)
+{
+    public C F = P ?? new [|C|]();
+}
+
+public class C
+{
+}
+", @"
+#nullable enable
+
+public record R(C? P = null)
+{
+    public C F = P ?? new();
+}
+
+public class C
+{
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }

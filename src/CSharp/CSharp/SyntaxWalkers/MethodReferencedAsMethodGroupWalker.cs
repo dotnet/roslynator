@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -12,13 +12,13 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
 {
     [ThreadStatic]
-    private static MethodReferencedAsMethodGroupWalker _cachedInstance;
+    private static MethodReferencedAsMethodGroupWalker? _cachedInstance;
 
     public bool Result { get; set; }
 
-    public IMethodSymbol Symbol { get; set; }
+    public IMethodSymbol? Symbol { get; set; }
 
-    public SemanticModel SemanticModel { get; set; }
+    public SemanticModel? SemanticModel { get; set; }
 
     public CancellationToken CancellationToken { get; set; }
 
@@ -28,16 +28,16 @@ internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
     {
         CancellationToken.ThrowIfCancellationRequested();
 
-        if (string.Equals(Symbol.Name, node.Identifier.ValueText, StringComparison.Ordinal)
+        if (string.Equals(Symbol!.Name, node.Identifier.ValueText, StringComparison.Ordinal)
             && !IsInvoked(node)
-            && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(node, CancellationToken), Symbol))
+            && SymbolEqualityComparer.Default.Equals(SemanticModel!.GetSymbol(node, CancellationToken), Symbol))
         {
             Result = true;
         }
 
         static bool IsInvoked(IdentifierNameSyntax identifierName)
         {
-            SyntaxNode parent = identifierName.Parent;
+            SyntaxNode parent = identifierName.Parent!;
 
             switch (parent.Kind())
             {
@@ -65,7 +65,7 @@ internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        var typeDeclaration = (TypeDeclarationSyntax)methodDeclaration.Parent;
+        var typeDeclaration = (TypeDeclarationSyntax)methodDeclaration.Parent!;
 
         return IsReferencedAsMethodGroup(typeDeclaration, methodSymbol, semanticModel, cancellationToken);
     }
@@ -76,7 +76,7 @@ internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        MemberDeclarationSyntax memberDeclaration = localFunction.FirstAncestor<MemberDeclarationSyntax>();
+        MemberDeclarationSyntax? memberDeclaration = localFunction.FirstAncestor<MemberDeclarationSyntax>()!;
 
         return IsReferencedAsMethodGroup(memberDeclaration, methodSymbol, semanticModel, cancellationToken);
     }
@@ -89,7 +89,7 @@ internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
     {
         var result = false;
 
-        MethodReferencedAsMethodGroupWalker walker = null;
+        MethodReferencedAsMethodGroupWalker? walker = null;
 
         try
         {
@@ -114,7 +114,7 @@ internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
 
     private static MethodReferencedAsMethodGroupWalker GetInstance()
     {
-        MethodReferencedAsMethodGroupWalker walker = _cachedInstance;
+        MethodReferencedAsMethodGroupWalker? walker = _cachedInstance;
 
         if (walker is not null)
         {

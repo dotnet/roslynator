@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Threading;
@@ -19,8 +19,7 @@ internal class InlinePropertyRefactoring : InlineRefactoring<IdentifierNameSynta
         PropertyDeclarationSyntax declaration,
         ImmutableArray<ParameterInfo> parameterInfos,
         SemanticModel invocationSemanticModel,
-        SemanticModel declarationSemanticModel,
-        CancellationToken cancellationToken) : base(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, invocationSemanticModel, declarationSemanticModel, cancellationToken)
+        SemanticModel declarationSemanticModel) : base(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, invocationSemanticModel, declarationSemanticModel)
     {
     }
 

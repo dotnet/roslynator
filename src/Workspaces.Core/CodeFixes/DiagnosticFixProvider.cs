@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -23,18 +23,18 @@ internal static class DiagnosticFixProvider
         ImmutableArray<CodeFixProvider> fixers,
         Project project,
         CodeFixerOptions options,
-        IFormatProvider formatProvider = null,
+        IFormatProvider? formatProvider = null,
         CancellationToken cancellationToken = default)
     {
-        CodeFixProvider fixer = null;
-        CodeAction fix = null;
-        Document document = null;
+        CodeFixProvider? fixer = null;
+        CodeAction? fix = null;
+        Document? document = null;
 
         for (int i = 0; i < fixers.Length; i++)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            (CodeAction fixCandidate, Document documentCandidate) = await GetFixAsync(
+            (CodeAction? fixCandidate, Document documentCandidate) = await GetFixAsync(
                 diagnostics,
                 descriptor,
                 fixers[i],
@@ -49,7 +49,7 @@ internal static class DiagnosticFixProvider
                 if (fix is null)
                 {
                     if (options.DiagnosticFixerMap.IsEmpty
-                        || !options.DiagnosticFixerMap.TryGetValue(descriptor.Id, out string fullTypeName)
+                        || !options.DiagnosticFixerMap.TryGetValue(descriptor.Id, out string? fullTypeName)
                         || string.Equals(fixers[i].GetType().FullName, fullTypeName, StringComparison.Ordinal))
                     {
                         fix = fixCandidate;
@@ -60,7 +60,7 @@ internal static class DiagnosticFixProvider
                 else if (options.DiagnosticFixerMap.IsEmpty
                     || !options.DiagnosticFixerMap.ContainsKey(descriptor.Id))
                 {
-                    LogHelpers.WriteMultipleFixersSummary(descriptor.Id, fixer, fixers[i]);
+                    LogHelpers.WriteMultipleFixersSummary(descriptor.Id, fixer!, fixers[i]);
                     return new DiagnosticFix(null, null, fixer, fixers[i]);
                 }
             }
@@ -69,19 +69,19 @@ internal static class DiagnosticFixProvider
         return new DiagnosticFix(fix, document, fixer, null);
     }
 
-    private static async Task<(CodeAction, Document)> GetFixAsync(
+    private static async Task<(CodeAction?, Document)> GetFixAsync(
         ImmutableArray<Diagnostic> diagnostics,
         DiagnosticDescriptor descriptor,
         CodeFixProvider fixer,
         Project project,
         CodeFixerOptions options,
-        IFormatProvider formatProvider = null,
+        IFormatProvider? formatProvider = null,
         CancellationToken cancellationToken = default)
     {
         if (diagnostics.Length == 1)
             return await GetFixAsync(diagnostics[0], fixer, project, options, formatProvider, cancellationToken).ConfigureAwait(false);
 
-        FixAllProvider fixAllProvider = fixer.GetFixAllProvider();
+        FixAllProvider? fixAllProvider = fixer.GetFixAllProvider();
 
         if (fixAllProvider is null)
         {
@@ -115,12 +115,12 @@ internal static class DiagnosticFixProvider
             if (!diagnostic.Location.IsInSource)
                 continue;
 
-            Document document = project.GetDocument(diagnostic.Location.SourceTree);
+            Document? document = project.GetDocument(diagnostic.Location.SourceTree);
 
             if (document is null)
                 continue;
 
-            CodeAction fix = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos, equivalenceKeys, cancellationToken).ConfigureAwait(false);
+            CodeAction? fix = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos, equivalenceKeys, cancellationToken).ConfigureAwait(false);
 
             if (fix is null)
                 continue;
@@ -134,7 +134,7 @@ internal static class DiagnosticFixProvider
                 new FixAllDiagnosticProvider(diagnostics),
                 cancellationToken);
 
-            CodeAction fixAll = await fixAllProvider.GetFixAsync(fixAllContext).ConfigureAwait(false);
+            CodeAction? fixAll = await fixAllProvider.GetFixAsync(fixAllContext).ConfigureAwait(false);
 
             if (fixAll is not null)
             {
@@ -155,18 +155,18 @@ internal static class DiagnosticFixProvider
         return default;
     }
 
-    private static async Task<(CodeAction, Document)> GetFixAsync(
+    private static async Task<(CodeAction?, Document)> GetFixAsync(
         Diagnostic diagnostic,
         CodeFixProvider fixer,
         Project project,
         CodeFixerOptions options,
-        IFormatProvider formatProvider,
+        IFormatProvider? formatProvider,
         CancellationToken cancellationToken)
     {
         if (!diagnostic.Location.IsInSource)
             return default;
 
-        Document document = project.GetDocument(diagnostic.Location.SourceTree);
+        Document? document = project.GetDocument(diagnostic.Location.SourceTree);
 
         Debug.Assert(document is not null, "");
 
@@ -175,7 +175,7 @@ internal static class DiagnosticFixProvider
 
         options.DiagnosticFixMap.TryGetValue(diagnostic.Id, out ImmutableArray<string> equivalenceKeys);
 
-        CodeAction action = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos: default, equivalenceKeys, cancellationToken).ConfigureAwait(false);
+        CodeAction? action = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos: default, equivalenceKeys, cancellationToken).ConfigureAwait(false);
 
         if (action is null)
         {
@@ -186,15 +186,15 @@ internal static class DiagnosticFixProvider
         return (action, document);
     }
 
-    private static async Task<CodeAction> GetFixAsync(
+    private static async Task<CodeAction?> GetFixAsync(
         Diagnostic diagnostic,
         CodeFixProvider fixer,
         Document document,
-        HashSet<MultipleFixesInfo> multipleFixesInfos,
+        HashSet<MultipleFixesInfo>? multipleFixesInfos,
         ImmutableArray<string> equivalenceKeys,
         CancellationToken cancellationToken)
     {
-        CodeAction action = null;
+        CodeAction? action = null;
 
         var context = new CodeFixContext(
             document,
@@ -240,7 +240,7 @@ internal static class DiagnosticFixProvider
 
     private readonly struct MultipleFixesInfo : IEquatable<MultipleFixesInfo>
     {
-        public MultipleFixesInfo(string diagnosticId, CodeFixProvider fixer, string equivalenceKey1, string equivalenceKey2)
+        public MultipleFixesInfo(string diagnosticId, CodeFixProvider fixer, string? equivalenceKey1, string? equivalenceKey2)
         {
             DiagnosticId = diagnosticId;
             Fixer = fixer;
@@ -252,9 +252,9 @@ internal static class DiagnosticFixProvider
 
         public CodeFixProvider Fixer { get; }
 
-        public string EquivalenceKey1 { get; }
+        public string? EquivalenceKey1 { get; }
 
-        public string EquivalenceKey2 { get; }
+        public string? EquivalenceKey2 { get; }
 
         public override bool Equals(object obj)
         {

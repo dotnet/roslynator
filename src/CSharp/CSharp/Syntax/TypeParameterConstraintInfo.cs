@@ -1,5 +1,6 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -45,7 +46,7 @@ internal readonly struct TypeParameterConstraintInfo
     /// </summary>
     public IdentifierNameSyntax Name
     {
-        get { return ConstraintClause?.Name; }
+        get { return ConstraintClause?.Name ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -53,7 +54,7 @@ internal readonly struct TypeParameterConstraintInfo
     /// </summary>
     public string NameText
     {
-        get { return Name?.Identifier.ValueText; }
+        get { return Name?.Identifier.ValueText ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
     /// <summary>
@@ -114,7 +115,7 @@ internal readonly struct TypeParameterConstraintInfo
         if (!Check(name, allowMissing))
             return default;
 
-        SyntaxNode parent = constraintClause.Parent;
+        SyntaxNode? parent = constraintClause.Parent;
 
         switch (parent?.Kind())
         {
@@ -122,7 +123,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var classDeclaration = (ClassDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = classDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = classDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -133,7 +134,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var delegateDeclaration = (DelegateDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = delegateDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = delegateDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -144,7 +145,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var interfaceDeclaration = (InterfaceDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = interfaceDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = interfaceDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -155,7 +156,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var localFunctionStatement = (LocalFunctionStatementSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = localFunctionStatement.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = localFunctionStatement.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -166,7 +167,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var methodDeclaration = (MethodDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = methodDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = methodDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -178,7 +179,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var recordDeclaration = (RecordDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = recordDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = recordDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;
@@ -189,7 +190,7 @@ internal readonly struct TypeParameterConstraintInfo
                 {
                     var structDeclaration = (StructDeclarationSyntax)parent;
 
-                    TypeParameterListSyntax typeParameterList = structDeclaration.TypeParameterList;
+                    TypeParameterListSyntax? typeParameterList = structDeclaration.TypeParameterList;
 
                     if (!Check(typeParameterList, allowMissing))
                         return default;

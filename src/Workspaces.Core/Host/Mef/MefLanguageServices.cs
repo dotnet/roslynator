@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -11,8 +11,8 @@ internal class MefLanguageServices
 {
     private readonly ImmutableArray<Lazy<ILanguageService, LanguageServiceMetadata>> _services;
 
-    private ImmutableDictionary<Type, Lazy<ILanguageService, LanguageServiceMetadata>> _serviceMap
-        = ImmutableDictionary<Type, Lazy<ILanguageService, LanguageServiceMetadata>>.Empty;
+    private ImmutableDictionary<Type, Lazy<ILanguageService, LanguageServiceMetadata>?> _serviceMap
+        = ImmutableDictionary<Type, Lazy<ILanguageService, LanguageServiceMetadata>?>.Empty;
 
     public MefLanguageServices(
         MefWorkspaceServices workspaceServices,
@@ -32,11 +32,11 @@ internal class MefLanguageServices
 
     public bool HasServices => _services.Length > 0;
 
-    public TLanguageService GetService<TLanguageService>()
+    public TLanguageService? GetService<TLanguageService>()
     {
-        if (TryGetService(typeof(TLanguageService), out Lazy<ILanguageService, LanguageServiceMetadata> service))
+        if (TryGetService(typeof(TLanguageService), out Lazy<ILanguageService, LanguageServiceMetadata>? service))
         {
-            return (TLanguageService)service.Value;
+            return (TLanguageService)service!.Value;
         }
         else
         {
@@ -44,7 +44,7 @@ internal class MefLanguageServices
         }
     }
 
-    internal bool TryGetService(Type serviceType, out Lazy<ILanguageService, LanguageServiceMetadata> service)
+    internal bool TryGetService(Type serviceType, out Lazy<ILanguageService, LanguageServiceMetadata>? service)
     {
         if (!_serviceMap.TryGetValue(serviceType, out service))
         {

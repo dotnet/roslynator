@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class ROS0002AnalyzerOptionIsObsoleteTests : AbstractCSharpDiagnosticVerifier<AnalyzerOptionIsObsoleteAnalyzer, DummyCodeFixProvider>
+public class ROS0002AnalyzerOptionIsObsoleteTests : AbstractCSharpDiagnosticVerifier<AnalyzerOptionIsObsoleteAnalyzer, EmptyCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = CommonDiagnosticRules.AnalyzerOptionIsObsolete;
 

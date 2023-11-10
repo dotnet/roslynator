@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using Microsoft.CodeAnalysis;
@@ -51,12 +51,12 @@ internal class DocumentationCommentTriviaRewriter : CSharpSyntaxRewriter
             }
         }
 
-        return base.VisitXmlTextAttribute(node);
+        return base.VisitXmlTextAttribute(node)!;
     }
 
     private string GetMinimalDisplayString(string metadataName)
     {
-        INamedTypeSymbol typeSymbol = _semanticModel.GetTypeByMetadataName(metadataName);
+        INamedTypeSymbol? typeSymbol = _semanticModel.GetTypeByMetadataName(metadataName);
 
         if (typeSymbol is not null)
         {

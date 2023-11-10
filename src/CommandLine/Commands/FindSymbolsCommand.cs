@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Roslynator.FindSymbols;
+using Roslynator.Host.Mef;
 using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine;
@@ -41,8 +42,6 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         HashSet<string> ignoredSymbolIds = (Options.IgnoredSymbolIds.Any())
             ? new HashSet<string>(Options.IgnoredSymbolIds)
             : null;
@@ -119,7 +118,7 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
             allSymbols = symbols?.ToImmutableArray() ?? ImmutableArray<ISymbol>.Empty;
 
-            WriteLine($"Done analyzing solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+            LogHelpers.WriteElapsedTime($"Analyzed solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
         }
 
         if (allSymbols.Any())
@@ -161,12 +160,19 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         IFindSymbolsProgress progress,
         CancellationToken cancellationToken)
     {
-        return SymbolFinder.FindSymbolsAsync(project, options, progress, cancellationToken);
-    }
+        if (!project.SupportsCompilation)
+        {
+            WriteLine("  Project does not support compilation", Verbosity.Normal);
+            return Task.FromResult(ImmutableArray<ISymbol>.Empty);
+        }
 
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Analysis was canceled.", Verbosity.Quiet);
+        if (!MefWorkspaceServices.Default.SupportedLanguages.Contains(project.Language))
+        {
+            WriteLine($"  Language '{project.Language}' is not supported", Verbosity.Normal);
+            return Task.FromResult(ImmutableArray<ISymbol>.Empty);
+        }
+
+        return SymbolFinder.FindSymbolsAsync(project, options, progress, cancellationToken);
     }
 
     private static void WriteSymbol(

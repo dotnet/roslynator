@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -61,7 +61,7 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
             case SyntaxKind.MultiLineCommentTrivia:
                 {
                     if (ShouldVisit(SpellingScopeFilter.NonDocumentationComment))
-                        AnalyzeText(trivia.ToString(), trivia.SyntaxTree, trivia.Span);
+                        AnalyzeText(trivia.ToString(), trivia.SyntaxTree!, trivia.Span);
 
                     break;
                 }
@@ -85,7 +85,7 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
                 {
                     Debug.Assert(ShouldVisit(SpellingScopeFilter.Region));
 
-                    AnalyzeText(trivia.ToString(), trivia.SyntaxTree, trivia.Span);
+                    AnalyzeText(trivia.ToString(), trivia.SyntaxTree!, trivia.Span);
                     break;
                 }
         }

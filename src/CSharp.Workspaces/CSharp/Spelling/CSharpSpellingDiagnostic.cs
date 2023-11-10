@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -12,7 +12,7 @@ internal sealed class CSharpSpellingDiagnostic : SpellingDiagnostic
         Diagnostic diagnostic,
         string value,
         int valueIndex,
-        string containingValue,
+        string? containingValue,
         int containingValueIndex,
         SyntaxToken identifier = default) : base(diagnostic, value, valueIndex, containingValue, containingValueIndex, identifier)
     {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.IO;
@@ -45,12 +45,12 @@ internal static class GeneratedCodeUtility
         return false;
     }
 
-    public static bool IsGeneratedCodeFile(string filePath)
+    public static bool IsGeneratedCodeFile(string? filePath)
     {
         if (string.IsNullOrEmpty(filePath))
             return false;
 
-        int directorySeparatorIndex = filePath.LastIndexOfAny(_separators);
+        int directorySeparatorIndex = filePath!.LastIndexOfAny(_separators);
 
         if (string.Compare("TemporaryGeneratedFile_", 0, filePath, directorySeparatorIndex + 1, "TemporaryGeneratedFile_".Length, StringComparison.OrdinalIgnoreCase) == 0)
             return true;

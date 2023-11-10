@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections;
@@ -11,7 +11,7 @@ namespace Roslynator;
 internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T>>
 {
     private readonly State _state;
-    private readonly T _value;
+    private readonly T? _value;
     private readonly ImmutableArray<T> _values;
 
     internal OneOrMany(T value)
@@ -39,7 +39,7 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
                 case State.One:
                     {
                         if (index == 0)
-                            return _value;
+                            return _value!;
 
                         break;
                     }
@@ -108,7 +108,7 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
             case State.One:
                 {
                     return other._state == State.One
-                        && EqualityComparer<T>.Default.Equals(_value, other._value);
+                        && EqualityComparer<T>.Default.Equals(_value!, other._value!);
                 }
             case State.Many:
                 {
@@ -125,7 +125,7 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
         int hashCode = Hash.Create((int)_state);
 
         if (_state == State.One)
-            return Hash.Combine(EqualityComparer<T>.Default.GetHashCode(_value), hashCode);
+            return Hash.Combine(EqualityComparer<T>.Default.GetHashCode(_value!), hashCode);
 
         if (_state == State.Many)
             return Hash.Combine(_values.GetHashCode(), hashCode);
@@ -186,7 +186,7 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
 
         public T Current => _en.Current;
 
-        object IEnumerator.Current => _en.Current;
+        object? IEnumerator.Current => _en.Current;
 
         public bool MoveNext() => _en.MoveNext();
 

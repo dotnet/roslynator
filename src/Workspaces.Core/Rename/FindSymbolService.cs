@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Threading;
@@ -10,7 +10,7 @@ internal abstract class FindSymbolService : IFindSymbolService
 {
     public abstract ISyntaxFactsService SyntaxFacts { get; }
 
-    public abstract SyntaxNode FindDeclaration(SyntaxNode node);
+    public abstract SyntaxNode? FindDeclaration(SyntaxNode node);
 
     public abstract bool CanBeRenamed(SyntaxToken token);
 

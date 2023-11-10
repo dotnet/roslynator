@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Text;
@@ -12,8 +12,8 @@ internal static class DiagnosticFormatter
 {
     public static string FormatDiagnostic(
         Diagnostic diagnostic,
-        string baseDirectoryPath = null,
-        IFormatProvider formatProvider = null)
+        string? baseDirectoryPath = null,
+        IFormatProvider? formatProvider = null)
     {
         StringBuilder sb = StringBuilderCache.GetInstance();
 
@@ -33,7 +33,7 @@ internal static class DiagnosticFormatter
 
     internal static void FormatLocation(
         Location location,
-        string baseDirectoryPath,
+        string? baseDirectoryPath,
         ref StringBuilder sb)
     {
         switch (location.Kind)

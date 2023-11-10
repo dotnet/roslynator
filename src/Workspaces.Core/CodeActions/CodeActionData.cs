@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Threading;
@@ -10,7 +10,7 @@ namespace Roslynator.CodeActions;
 
 internal readonly struct CodeActionData
 {
-    public CodeActionData(string title, string equivalenceKey = null)
+    public CodeActionData(string title, string? equivalenceKey = null)
     {
         Title = title ?? throw new ArgumentNullException(nameof(title));
         EquivalenceKey = equivalenceKey;
@@ -18,7 +18,7 @@ internal readonly struct CodeActionData
 
     public string Title { get; }
 
-    public string EquivalenceKey { get; }
+    public string? EquivalenceKey { get; }
 
     public bool IsDefault => Title is null;
 

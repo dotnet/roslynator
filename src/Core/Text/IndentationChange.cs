@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -9,7 +9,7 @@ namespace Roslynator.Text;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal readonly struct IndentationChange : IEquatable<IndentationChange>
 {
-    public IndentationChange(ImmutableArray<IndentationInfo> indentations, string replacement)
+    public IndentationChange(ImmutableArray<IndentationInfo> indentations, string? replacement)
     {
         Indentations = indentations;
         Replacement = replacement;
@@ -19,7 +19,7 @@ internal readonly struct IndentationChange : IEquatable<IndentationChange>
 
     public ImmutableArray<IndentationInfo> Indentations { get; }
 
-    public string Replacement { get; }
+    public string? Replacement { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay

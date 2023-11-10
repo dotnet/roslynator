@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +19,7 @@ internal class DiffTracker
         return _dic.TryGetValue(documentId, out spans);
     }
 
-    internal static TextSpan GetCurrentSpan(TextSpan span, DocumentId documentId, DiffTracker diffTracker)
+    internal static TextSpan GetCurrentSpan(TextSpan span, DocumentId documentId, DiffTracker? diffTracker)
     {
         return diffTracker?.GetCurrentSpan(span, documentId) ?? span;
     }
@@ -80,7 +80,7 @@ internal class DiffTracker
         int diff,
         Solution solution)
     {
-        foreach (IGrouping<DocumentId, Location> grouping in locations.GroupBy(f => solution.GetDocument(f.SourceTree).Id))
+        foreach (IGrouping<DocumentId, Location> grouping in locations.GroupBy(f => solution.GetDocument(f.SourceTree)!.Id))
         {
             DocumentId documentId = grouping.Key;
 

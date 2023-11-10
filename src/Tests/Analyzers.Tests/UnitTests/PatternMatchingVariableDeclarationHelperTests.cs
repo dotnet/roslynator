@@ -1,4 +1,4 @@
-// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
 using Xunit;
 
-namespace Roslynator.Analyzers.Tests.UnitTests;
+namespace Roslynator.CSharp.Analysis.Tests;
 
 public class PatternMatchingVariableDeclarationHelperTests
 {

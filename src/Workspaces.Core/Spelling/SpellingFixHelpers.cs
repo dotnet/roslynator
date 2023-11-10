@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -131,7 +131,7 @@ internal class SpellingFixHelpers
         bool interactive)
     {
         string value = diagnostic.Value;
-        string containingValue = diagnostic.Parent;
+        string? containingValue = diagnostic.Parent;
 
         if (index == 0)
         {
@@ -187,7 +187,7 @@ internal class SpellingFixHelpers
     {
         Write("    Enter number of a suggestion: ");
 
-        string text = Console.ReadLine()?.Trim();
+        string? text = Console.ReadLine()?.Trim();
 
         if (text?.Length == 1)
         {
@@ -224,7 +224,7 @@ internal class SpellingFixHelpers
         string value = diagnostic.Value;
         int length = value.Length;
 
-        ImmutableArray<int>.Builder splitIndexes = null;
+        ImmutableArray<int>.Builder? splitIndexes = null;
 
         if (length >= 4)
         {
@@ -253,10 +253,10 @@ internal class SpellingFixHelpers
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!map.TryGetValue(value, i, out ImmutableHashSet<string> values2))
+            if (!map.TryGetValue(value, i, out ImmutableHashSet<string>? values2))
                 break;
 
-            values = (i == 0) ? values2 : values.Intersect(values2);
+            values = (i == 0) ? values2! : values.Intersect(values2!);
 
             if (values.Count == 0)
                 break;
@@ -273,10 +273,10 @@ internal class SpellingFixHelpers
 
                 for (int j = i + 1; j < length; j++)
                 {
-                    if (!map.TryGetValue(value[j], j - i - 1, out ImmutableHashSet<string> values4))
+                    if (!map.TryGetValue(value[j], j - i - 1, out ImmutableHashSet<string>? values4))
                         break;
 
-                    values3 = (j == i + 1) ? values4 : values3.Intersect(values4);
+                    values3 = (j == i + 1) ? values4! : values3.Intersect(values4!);
 
                     if (values3.Count == 0)
                         break;

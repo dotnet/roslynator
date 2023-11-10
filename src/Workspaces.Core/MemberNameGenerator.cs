@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -68,7 +68,7 @@ internal static class MemberNameGenerator
                 if (!referenceLocation.IsImplicit
                     && !referenceLocation.IsCandidateLocation)
                 {
-                    SemanticModel semanticModel = await referenceLocation.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                    SemanticModel semanticModel = (await referenceLocation.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
                     foreach (ISymbol symbol in semanticModel.LookupSymbols(referenceLocation.Location.SourceSpan.Start))
                     {

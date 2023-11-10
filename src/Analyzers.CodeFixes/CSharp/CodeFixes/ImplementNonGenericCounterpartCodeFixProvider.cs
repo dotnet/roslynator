@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -289,6 +289,18 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
             baseTypes = AddBaseType(baseTypes, baseType);
 
             newTypeDeclaration = classDeclaration.WithBaseList(baseList.WithTypes(baseTypes));
+        }
+        else if (kind == SyntaxKind.RecordDeclaration)
+        {
+            var recordDeclaration = (RecordDeclarationSyntax)newTypeDeclaration;
+
+            BaseListSyntax baseList = recordDeclaration.BaseList;
+
+            SeparatedSyntaxList<BaseTypeSyntax> baseTypes = baseList.Types;
+
+            baseTypes = AddBaseType(baseTypes, baseType);
+
+            newTypeDeclaration = recordDeclaration.WithBaseList(baseList.WithTypes(baseTypes));
         }
         else if (kind == SyntaxKind.StructDeclaration
             || kind == SyntaxKind.RecordStructDeclaration)

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -9,7 +9,7 @@ namespace Roslynator;
 
 internal static class CreateNameFromTypeSymbolHelper
 {
-    public static string CreateName(ITypeSymbol typeSymbol)
+    public static string? CreateName(ITypeSymbol typeSymbol)
     {
         if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));
@@ -21,19 +21,19 @@ internal static class CreateNameFromTypeSymbolHelper
 
         ITypeSymbol typeSymbol3 = ExtractFromArrayOrGenericCollection(typeSymbol2);
 
-        string name = GetName(typeSymbol3);
+        string? name = GetName(typeSymbol3);
 
         if (string.IsNullOrEmpty(name))
             return null;
 
         if (typeSymbol3.TypeKind == TypeKind.Interface
-            && name.Length > 1
+            && name!.Length > 1
             && name[0] == 'I')
         {
             name = name.Substring(1);
         }
 
-        if (name.Length >= 8
+        if (name!.Length >= 8
             && name.EndsWith("Syntax", StringComparison.Ordinal)
             && typeSymbol.EqualsOrInheritsFrom(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
         {
@@ -145,7 +145,7 @@ internal static class CreateNameFromTypeSymbolHelper
         return false;
     }
 
-    private static string GetName(ITypeSymbol typeSymbol)
+    private static string? GetName(ITypeSymbol typeSymbol)
     {
         if (typeSymbol.Kind == SymbolKind.TypeParameter)
         {

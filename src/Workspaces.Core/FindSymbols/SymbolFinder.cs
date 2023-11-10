@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -14,15 +14,17 @@ internal static class SymbolFinder
 {
     internal static async Task<ImmutableArray<ISymbol>> FindSymbolsAsync(
         Project project,
-        SymbolFinderOptions options = null,
-        IFindSymbolsProgress progress = null,
+        SymbolFinderOptions? options = null,
+        IFindSymbolsProgress? progress = null,
         CancellationToken cancellationToken = default)
     {
-        Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+        options ??= SymbolFinderOptions.Default;
 
-        INamedTypeSymbol generatedCodeAttribute = compilation.GetTypeByMetadataName("System.CodeDom.Compiler.GeneratedCodeAttribute");
+        Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
-        ImmutableArray<ISymbol>.Builder symbols = null;
+        INamedTypeSymbol? generatedCodeAttribute = compilation.GetTypeByMetadataName("System.CodeDom.Compiler.GeneratedCodeAttribute");
+
+        ImmutableArray<ISymbol>.Builder? symbols = null;
 
         var namespaceOrTypeSymbols = new Stack<INamespaceOrTypeSymbol>();
 
@@ -60,7 +62,8 @@ internal static class SymbolFinder
                         case SymbolFilterReason.None:
                             {
                                 if (options.IgnoreGeneratedCode
-                                    && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(compilation.Language).IsComment(f), cancellationToken))
+                                    && generatedCodeAttribute is not null
+                                    && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(compilation.Language)!.IsComment(f), cancellationToken))
                                 {
                                     continue;
                                 }

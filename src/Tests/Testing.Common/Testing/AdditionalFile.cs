@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ public readonly struct AdditionalFile
     /// </summary>
     /// <param name="source"></param>
     /// <param name="expectedSource"></param>
-    public AdditionalFile(string source, string expectedSource = null)
+    public AdditionalFile(string source, string? expectedSource = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         ExpectedSource = expectedSource;
@@ -33,18 +33,18 @@ public readonly struct AdditionalFile
     /// <summary>
     /// Gets expected source code.
     /// </summary>
-    public string ExpectedSource { get; }
+    public string? ExpectedSource { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Source;
 
-    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<string> additionalFiles)
+    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<string>? additionalFiles)
     {
         return additionalFiles?.Select(f => new AdditionalFile(f)).ToImmutableArray()
             ?? ImmutableArray<AdditionalFile>.Empty;
     }
 
-    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<(string source, string expectedSource)> additionalFiles)
+    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<(string source, string expectedSource)>? additionalFiles)
     {
         return additionalFiles?.Select(f => new AdditionalFile(f.source, f.expectedSource)).ToImmutableArray()
             ?? ImmutableArray<AdditionalFile>.Empty;

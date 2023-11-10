@@ -1,23 +1,15 @@
-dotnet restore "../src/CommandLine.sln" -v minimal /m
-dotnet build "../src/CommandLine.sln" --no-restore -c Release -v minimal /m
+dotnet restore generate_ref_docs.sln -v minimal /m
+dotnet build generate_ref_docs.sln --no-restore -c Release -v minimal /m
 
-$roslynatorExe="../src/CommandLine/bin/Release/net7.0/Roslynator"
-$rootDirectoryUrl="build/ref"
+dotnet restore "$PSScriptRoot/../src/CommandLine.sln" -v minimal /m
+dotnet build "$PSScriptRoot/../src/CommandLine.sln" --no-restore -c Release -v minimal /m
 
-& $roslynatorExe generate-doc generate_ref_docs.sln `
+& "$PSScriptRoot/../src/CommandLine/bin/Release/net7.0/Roslynator" generate-doc generate_ref_docs.sln `
  --properties Configuration=Release `
- -o $rootDirectoryUrl `
+ -o "build/ref" `
  --host docusaurus `
  --heading "Roslynator .NET API Reference" `
  --group-by-common-namespace `
  --ignored-common-parts content `
- --ignored-root-parts all `
- --max-derived-types 10
-
-& $roslynatorExe generate-doc-root generate_ref_docs.sln `
- --properties Configuration=Release `
- -o "build/ref.md" `
- --host docusaurus `
- --heading "Roslynator .NET API Reference" `
- --ignored-parts content `
- --root-directory-url "ref"
+ --max-derived-types 10 `
+ --root-file-path "build/ref.md"

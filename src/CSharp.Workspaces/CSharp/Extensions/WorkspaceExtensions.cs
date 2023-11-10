@@ -1,7 +1,8 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -42,7 +43,7 @@ public static class WorkspaceExtensions
 
     internal static bool SupportsLanguageVersion(this Document document, LanguageVersion languageVersion)
     {
-        return ((CSharpParseOptions)document.Project.ParseOptions).LanguageVersion >= languageVersion;
+        return ((CSharpParseOptions?)document.Project.ParseOptions)?.LanguageVersion >= languageVersion;
     }
 
     internal static DefaultSyntaxOptions GetDefaultSyntaxOptions(this Document document, DefaultSyntaxOptions options = DefaultSyntaxOptions.None)
@@ -83,7 +84,7 @@ public static class WorkspaceExtensions
         if (member is null)
             throw new ArgumentNullException(nameof(member));
 
-        SyntaxNode parent = member.Parent;
+        SyntaxNode? parent = member.Parent;
 
         switch (parent?.Kind())
         {
@@ -162,7 +163,10 @@ public static class WorkspaceExtensions
         if (document is null)
             throw new ArgumentNullException(nameof(document));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            return document;
 
         SyntaxNode newRoot = SyntaxRefactorings.RemoveComments(root, comments)
             .WithFormatterAnnotation();
@@ -186,7 +190,10 @@ public static class WorkspaceExtensions
         if (document is null)
             throw new ArgumentNullException(nameof(document));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            return document;
 
         SyntaxNode newRoot = SyntaxRefactorings.RemoveComments(root, span, comments)
             .WithFormatterAnnotation();
@@ -208,7 +215,10 @@ public static class WorkspaceExtensions
         if (document is null)
             throw new ArgumentNullException(nameof(document));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            return document;
 
         SyntaxNode newRoot = SyntaxRefactorings.RemoveTrivia(root, span);
 
@@ -229,7 +239,10 @@ public static class WorkspaceExtensions
         if (document is null)
             throw new ArgumentNullException(nameof(document));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            return document;
 
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
@@ -254,7 +267,10 @@ public static class WorkspaceExtensions
         if (document is null)
             throw new ArgumentNullException(nameof(document));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        if (root is null)
+            return document;
 
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
@@ -266,6 +282,7 @@ public static class WorkspaceExtensions
     internal static async Task<Document> RemovePreprocessorDirectivesAsync(
         this Document document,
         IEnumerable<DirectiveTriviaSyntax> directives,
+        PreprocessorDirectiveRemoveOptions options,
         CancellationToken cancellationToken = default)
     {
         if (document is null)
@@ -276,7 +293,9 @@ public static class WorkspaceExtensions
 
         SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-        SourceText newSourceText = sourceText.WithChanges(GetTextChanges());
+        SourceText newSourceText = ((options & PreprocessorDirectiveRemoveOptions.IncludeContent) != 0)
+            ? RemovePreprocessorDirectivesIncludingContent(sourceText, directives)
+            : sourceText.WithChanges(GetTextChanges());
 
         return document.WithText(newSourceText);
 
@@ -291,6 +310,38 @@ public static class WorkspaceExtensions
                 yield return new TextChange(lines[startLine].SpanIncludingLineBreak, "");
             }
         }
+    }
+
+    private static SourceText RemovePreprocessorDirectivesIncludingContent(
+        SourceText sourceText,
+        IEnumerable<DirectiveTriviaSyntax> directives)
+    {
+        SourceText newSourceText = sourceText;
+        IEnumerable<DirectiveTriviaSyntax> sortedDirectives = directives.OrderBy(f => f.SpanStart);
+
+        DirectiveTriviaSyntax firstDirective = sortedDirectives.FirstOrDefault();
+
+        int spanStart = firstDirective.FullSpan.Start;
+        SyntaxTrivia parentTrivia = firstDirective.ParentTrivia;
+        SyntaxTriviaList triviaList = parentTrivia.GetContainingList();
+        int parentTriviaIndex = triviaList.IndexOf(parentTrivia);
+
+        if (parentTriviaIndex > 0)
+        {
+            SyntaxTrivia previousTrivia = triviaList[parentTriviaIndex - 1];
+
+            if (previousTrivia.IsWhitespaceTrivia())
+                spanStart = previousTrivia.SpanStart;
+        }
+
+        if (firstDirective is not null)
+        {
+            TextSpan span = TextSpan.FromBounds(spanStart, sortedDirectives.Last().FullSpan.End);
+
+            return sourceText.WithChange(span, "");
+        }
+
+        return sourceText;
     }
 
     private static SourceText RemovePreprocessorDirectives(
@@ -400,7 +451,7 @@ public static class WorkspaceExtensions
         DocumentationCommentTriviaSyntax documentationComment,
         CancellationToken cancellationToken = default)
     {
-        SyntaxNode node = documentationComment.ParentTrivia.Token.Parent;
+        SyntaxNode node = documentationComment.ParentTrivia.Token.Parent!;
         SyntaxNode newNode = SyntaxRefactorings.RemoveSingleLineDocumentationComment(node, documentationComment);
 
         return document.ReplaceNodeAsync(node, newNode, cancellationToken);

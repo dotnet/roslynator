@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,9 +8,9 @@ namespace Roslynator.Documentation;
 internal class DocumentationCommentGeneratorSettings
 {
     public DocumentationCommentGeneratorSettings(
-        IEnumerable<string> summary = null,
-        IEnumerable<string> ignoredTags = null,
-        string indentation = null,
+        IEnumerable<string>? summary = null,
+        IEnumerable<string>? ignoredTags = null,
+        string? indentation = null,
         bool singleLineSummary = false)
     {
         Summary = (summary is not null) ? ImmutableArray.CreateRange(summary) : ImmutableArray<string>.Empty;

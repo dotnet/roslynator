@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -151,19 +151,11 @@ public class DocumentationGenerator
         return writer;
     }
 
-    public IEnumerable<DocumentationGeneratorResult> Generate(string heading = null, CancellationToken cancellationToken = default)
+    public IEnumerable<DocumentationGeneratorResult> Generate(CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         DocumentationDepth depth = Options.Depth;
-
-        using (DocumentationWriter writer = CreateWriter())
-        {
-            DocumentationGeneratorResult result = GenerateRoot(writer, heading);
-
-            if (result.Content is not null)
-                yield return result;
-        }
 
         if (depth <= DocumentationDepth.Namespace)
         {

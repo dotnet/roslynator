@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ internal readonly struct EnumSymbolInfo
         Fields = fields;
     }
 
-    public INamedTypeSymbol Symbol => (!Fields.IsDefault) ? Fields.FirstOrDefault().Symbol?.ContainingType : default;
+    public INamedTypeSymbol? Symbol => (!Fields.IsDefault) ? Fields.FirstOrDefault().Symbol?.ContainingType : default;
 
     public ImmutableArray<EnumFieldSymbolInfo> Fields { get; }
 
@@ -35,14 +35,14 @@ internal readonly struct EnumSymbolInfo
         return false;
     }
 
-    public List<EnumFieldSymbolInfo> Decompose(in EnumFieldSymbolInfo fieldInfo)
+    public List<EnumFieldSymbolInfo>? Decompose(in EnumFieldSymbolInfo fieldInfo)
     {
         return Decompose(fieldInfo.Value);
     }
 
-    public List<EnumFieldSymbolInfo> Decompose(ulong value)
+    public List<EnumFieldSymbolInfo>? Decompose(ulong value)
     {
-        List<EnumFieldSymbolInfo> values = null;
+        List<EnumFieldSymbolInfo>? values = null;
 
         int i = Fields.Length - 1;
 

@@ -1,7 +1,8 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -102,12 +103,12 @@ public static class SyntaxExtensions
         return list.IndexOf(node) != -1;
     }
 
-    internal static TNode SingleOrDefault<TNode>(this SeparatedSyntaxList<TNode> list, bool shouldThrow) where TNode : SyntaxNode
+    internal static TNode? SingleOrDefault<TNode>(this SeparatedSyntaxList<TNode> list, bool shouldThrow) where TNode : SyntaxNode
     {
         return (shouldThrow) ? list.SingleOrDefault() : (list.Count == 1) ? list[0] : default;
     }
 
-    internal static TNode SingleOrDefault<TNode>(this SeparatedSyntaxList<TNode> list, Func<TNode, bool> predicate, bool shouldThrow) where TNode : SyntaxNode
+    internal static TNode? SingleOrDefault<TNode>(this SeparatedSyntaxList<TNode> list, Func<TNode, bool> predicate, bool shouldThrow) where TNode : SyntaxNode
     {
         if (shouldThrow)
             return list.SingleOrDefault(predicate);
@@ -138,7 +139,7 @@ public static class SyntaxExtensions
         return list[list.Count - 2];
     }
 
-    internal static TNode LastButOneOrDefault<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+    internal static TNode? LastButOneOrDefault<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
     {
         return (list.Count > 1) ? list.LastButOne() : default;
     }
@@ -352,12 +353,12 @@ public static class SyntaxExtensions
         return list.IndexOf(node) != -1;
     }
 
-    internal static TNode SingleOrDefault<TNode>(this SyntaxList<TNode> list, bool shouldThrow) where TNode : SyntaxNode
+    internal static TNode? SingleOrDefault<TNode>(this SyntaxList<TNode> list, bool shouldThrow) where TNode : SyntaxNode
     {
         return (shouldThrow) ? list.SingleOrDefault() : ((list.Count == 1) ? list[0] : default);
     }
 
-    internal static TNode SingleOrDefault<TNode>(this SyntaxList<TNode> list, Func<TNode, bool> predicate, bool shouldThrow) where TNode : SyntaxNode
+    internal static TNode? SingleOrDefault<TNode>(this SyntaxList<TNode> list, Func<TNode, bool> predicate, bool shouldThrow) where TNode : SyntaxNode
     {
         if (shouldThrow)
             return list.SingleOrDefault(predicate);
@@ -408,7 +409,7 @@ public static class SyntaxExtensions
         return list[list.Count - 2];
     }
 
-    internal static TNode LastButOneOrDefault<TNode>(this SyntaxList<TNode> list) where TNode : SyntaxNode
+    internal static TNode? LastButOneOrDefault<TNode>(this SyntaxList<TNode> list) where TNode : SyntaxNode
     {
         return (list.Count > 1) ? list.LastButOne() : default;
     }
@@ -447,7 +448,7 @@ public static class SyntaxExtensions
     /// <param name="descendIntoTrivia"></param>
     public static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
         this SyntaxList<TNode> list,
-        Func<SyntaxNode, bool> descendIntoChildren = null,
+        Func<SyntaxNode, bool>? descendIntoChildren = null,
         bool descendIntoTrivia = false) where TNode : SyntaxNode
     {
         foreach (TNode node in list)
@@ -470,7 +471,7 @@ public static class SyntaxExtensions
     public static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
         this SyntaxList<TNode> list,
         TextSpan span,
-        Func<SyntaxNode, bool> descendIntoChildren = null,
+        Func<SyntaxNode, bool>? descendIntoChildren = null,
         bool descendIntoTrivia = false) where TNode : SyntaxNode
     {
         foreach (TNode node in list)
@@ -748,9 +749,9 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="predicate"></param>
     /// <param name="ascendOutOfTrivia"></param>
-    public static TNode FirstAncestor<TNode>(
+    public static TNode? FirstAncestor<TNode>(
         this SyntaxNode node,
-        Func<TNode, bool> predicate = null,
+        Func<TNode, bool>? predicate = null,
         bool ascendOutOfTrivia = true) where TNode : SyntaxNode
     {
         if (node is null)
@@ -810,9 +811,9 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="descendIntoChildren"></param>
     /// <param name="descendIntoTrivia"></param>
-    public static TNode FirstDescendant<TNode>(
+    public static TNode? FirstDescendant<TNode>(
         this SyntaxNode node,
-        Func<SyntaxNode, bool> descendIntoChildren = null,
+        Func<SyntaxNode, bool>? descendIntoChildren = null,
         bool descendIntoTrivia = false) where TNode : SyntaxNode
     {
         foreach (SyntaxNode descendant in node.DescendantNodes(descendIntoChildren: descendIntoChildren, descendIntoTrivia: descendIntoTrivia))
@@ -832,10 +833,10 @@ public static class SyntaxExtensions
     /// <param name="span"></param>
     /// <param name="descendIntoChildren"></param>
     /// <param name="descendIntoTrivia"></param>
-    public static TNode FirstDescendant<TNode>(
+    public static TNode? FirstDescendant<TNode>(
         this SyntaxNode node,
         TextSpan span,
-        Func<SyntaxNode, bool> descendIntoChildren = null,
+        Func<SyntaxNode, bool>? descendIntoChildren = null,
         bool descendIntoTrivia = false) where TNode : SyntaxNode
     {
         foreach (SyntaxNode descendant in node.DescendantNodes(span, descendIntoChildren: descendIntoChildren, descendIntoTrivia: descendIntoTrivia))
@@ -854,9 +855,9 @@ public static class SyntaxExtensions
     /// <param name="node"></param>
     /// <param name="descendIntoChildren"></param>
     /// <param name="descendIntoTrivia"></param>
-    public static TNode FirstDescendantOrSelf<TNode>(
+    public static TNode? FirstDescendantOrSelf<TNode>(
         this SyntaxNode node,
-        Func<SyntaxNode, bool> descendIntoChildren = null,
+        Func<SyntaxNode, bool>? descendIntoChildren = null,
         bool descendIntoTrivia = false) where TNode : SyntaxNode
     {
         foreach (SyntaxNode descendant in node.DescendantNodesAndSelf(descendIntoChildren: descendIntoChildren, descendIntoTrivia: descendIntoTrivia))
@@ -876,10 +877,10 @@ public static class SyntaxExtensions
     /// <param name="span"></param>
     /// <param name="descendIntoChildren"></param>
     /// <param name="descendIntoTrivia"></param>
-    public static TNode FirstDescendantOrSelf<TNode>(
+    public static TNode? FirstDescendantOrSelf<TNode>(
         this SyntaxNode node,
         TextSpan span,
-        Func<SyntaxNode, bool> descendIntoChildren = null,
+        Func<SyntaxNode, bool>? descendIntoChildren = null,
         bool descendIntoTrivia = false) where TNode : SyntaxNode
     {
         foreach (SyntaxNode descendant in node.DescendantNodesAndSelf(span, descendIntoChildren: descendIntoChildren, descendIntoTrivia: descendIntoTrivia))
@@ -891,9 +892,9 @@ public static class SyntaxExtensions
         return default;
     }
 
-    internal static SyntaxNode GetParent(this SyntaxNode node, bool ascendOutOfTrivia)
+    internal static SyntaxNode? GetParent(this SyntaxNode node, bool ascendOutOfTrivia)
     {
-        SyntaxNode parent = node.Parent;
+        SyntaxNode? parent = node.Parent;
 
         if (parent is null
             && ascendOutOfTrivia
@@ -909,7 +910,7 @@ public static class SyntaxExtensions
     {
         while (true)
         {
-            SyntaxNode parent = node.Parent;
+            SyntaxNode? parent = node.Parent;
 
             if (parent is not null
                 && predicate(parent))
@@ -935,7 +936,7 @@ public static class SyntaxExtensions
     {
         if (nodeOrToken.IsNode)
         {
-            return nodeOrToken.AsNode().WithoutTrivia();
+            return nodeOrToken.AsNode()!.WithoutTrivia();
         }
         else
         {
@@ -951,7 +952,7 @@ public static class SyntaxExtensions
     {
         if (nodeOrToken.IsNode)
         {
-            return nodeOrToken.AsNode().WithoutLeadingTrivia();
+            return nodeOrToken.AsNode()!.WithoutLeadingTrivia();
         }
         else
         {
@@ -967,7 +968,7 @@ public static class SyntaxExtensions
     {
         if (nodeOrToken.IsNode)
         {
-            return nodeOrToken.AsNode().WithoutTrailingTrivia();
+            return nodeOrToken.AsNode()!.WithoutTrailingTrivia();
         }
         else
         {
@@ -1094,22 +1095,26 @@ public static class SyntaxExtensions
 
     internal static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default)
     {
-        return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).StartLine();
+        return token.SyntaxTree?.GetLineSpan(token.Span, cancellationToken).StartLine()
+            ?? throw new InvalidOperationException("Token is not contained in a syntax tree.");
     }
 
     internal static int GetFullSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default)
     {
-        return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).StartLine();
+        return token.SyntaxTree?.GetLineSpan(token.FullSpan, cancellationToken).StartLine()
+            ?? throw new InvalidOperationException("Token is not contained in a syntax tree.");
     }
 
     internal static int GetSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default)
     {
-        return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).EndLine();
+        return token.SyntaxTree?.GetLineSpan(token.Span, cancellationToken).EndLine()
+            ?? throw new InvalidOperationException("Token is not contained in a syntax tree.");
     }
 
     internal static int GetFullSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default)
     {
-        return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).EndLine();
+        return token.SyntaxTree?.GetLineSpan(token.FullSpan, cancellationToken).EndLine()
+            ?? throw new InvalidOperationException("Token is not contained in a syntax tree.");
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -7,13 +7,13 @@ namespace Roslynator.CSharp;
 
 internal static class CSharpTypeFactory
 {
-    private static TypeSyntax _boolType;
-    private static TypeSyntax _intType;
-    private static TypeSyntax _doubleType;
-    private static TypeSyntax _stringType;
-    private static TypeSyntax _objectType;
-    private static TypeSyntax _notImplementedException;
-    private static TypeSyntax _notSupportedException;
+    private static TypeSyntax? _boolType;
+    private static TypeSyntax? _intType;
+    private static TypeSyntax? _doubleType;
+    private static TypeSyntax? _stringType;
+    private static TypeSyntax? _objectType;
+    private static TypeSyntax? _notImplementedException;
+    private static TypeSyntax? _notSupportedException;
 
     public static TypeSyntax BoolType()
     {

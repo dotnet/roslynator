@@ -1,9 +1,10 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,8 +24,8 @@ internal class SymbolRenameState
         Solution solution,
         Func<ISymbol, bool> predicate,
         Func<ISymbol, string> getNewName,
-        SymbolRenamerOptions options = null,
-        IProgress<SymbolRenameProgress> progress = null)
+        SymbolRenamerOptions? options = null,
+        IProgress<SymbolRenameProgress>? progress = null)
     {
         Workspace = solution.Workspace;
 
@@ -40,13 +41,15 @@ internal class SymbolRenameState
 
     public SymbolRenamerOptions Options { get; }
 
-    protected IProgress<SymbolRenameProgress> Progress { get; }
+    protected IProgress<SymbolRenameProgress>? Progress { get; }
 
     protected Func<ISymbol, string> GetNewName { get; }
 
     protected Func<ISymbol, bool> Predicate { get; }
 
     private bool DryRun => Options.DryRun;
+
+    protected string? CurrentDirectoryPath { get; set; }
 
     public Task RenameSymbolsAsync(CancellationToken cancellationToken = default)
     {
@@ -55,7 +58,9 @@ internal class SymbolRenameState
             .GetTopologicallySortedProjects(cancellationToken)
             .ToImmutableArray();
 
-        return RenameSymbolsAsync(projectIds, cancellationToken);
+        CurrentDirectoryPath = Path.GetDirectoryName(CurrentSolution.FilePath);
+
+        return RenameSymbolsAsync(projectIds, isSolution: true, cancellationToken);
     }
 
     public Task RenameSymbolsAsync(
@@ -68,11 +73,12 @@ internal class SymbolRenameState
             .Join(projects, id => id, p => p.Id, (id, _) => id)
             .ToImmutableArray();
 
-        return RenameSymbolsAsync(projectIds, cancellationToken);
+        return RenameSymbolsAsync(projectIds, isSolution: false, cancellationToken);
     }
 
     protected virtual async Task RenameSymbolsAsync(
         ImmutableArray<ProjectId> projects,
+        bool isSolution,
         CancellationToken cancellationToken = default)
     {
         foreach (RenameScope renameScope in GetRenameScopes())
@@ -81,7 +87,10 @@ internal class SymbolRenameState
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                Project project = CurrentSolution.GetProject(projects[j]);
+                Project project = CurrentSolution.GetProject(projects[j])!;
+
+                if (!isSolution)
+                    CurrentDirectoryPath = Path.GetDirectoryName(project.FilePath);
 
                 await AnalyzeProjectAsync(project, renameScope, cancellationToken).ConfigureAwait(false);
             }
@@ -92,6 +101,8 @@ internal class SymbolRenameState
         Project project,
         CancellationToken cancellationToken = default)
     {
+        CurrentDirectoryPath = Path.GetDirectoryName(project.FilePath);
+
         foreach (RenameScope renameScope in GetRenameScopes())
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -117,9 +128,9 @@ internal class SymbolRenameState
         RenameScope scope,
         CancellationToken cancellationToken = default)
     {
-        project = CurrentSolution.GetProject(project.Id);
+        project = CurrentSolution.GetProject(project.Id)!;
 
-        IFindSymbolService findSymbolService = MefWorkspaceServices.Default.GetService<IFindSymbolService>(project.Language);
+        IFindSymbolService? findSymbolService = MefWorkspaceServices.Default.GetService<IFindSymbolService>(project.Language);
 
         if (findSymbolService is null)
             throw new InvalidOperationException($"Language '{project.Language}' not supported.");
@@ -135,6 +146,7 @@ internal class SymbolRenameState
             {
                 IncludeGeneratedCode = Options.IncludeGeneratedCode,
                 FileSystemMatcher = Options.FileSystemMatcher,
+                RootDirectoryPath = CurrentDirectoryPath,
             };
 
             IEnumerable<ISymbol> symbols = await symbolProvider.GetSymbolsAsync(project, scope, cancellationToken).ConfigureAwait(false);
@@ -158,7 +170,7 @@ internal class SymbolRenameState
             }
 
             ImmutableArray<SymbolData> symbolData = symbols
-                .Select(symbol => new SymbolData(symbol, GetSymbolId(symbol), project.GetDocumentId(symbol.Locations[0].SourceTree)))
+                .Select(symbol => new SymbolData(symbol, GetSymbolId(symbol), project.GetDocumentId(symbol.Locations[0].SourceTree)!))
                 .ToImmutableArray();
 
             int length = symbolData.Length;
@@ -179,11 +191,11 @@ internal class SymbolRenameState
             }
 
             ImmutableArray<SymbolData> symbolData2 = symbolData
-                .Where(f => !ignoreSymbolIds.Contains(f.Id)
+                .Where(f => (f.Id is null || !ignoreSymbolIds.Contains(f.Id))
                     && Predicate?.Invoke(f.Symbol) != false)
                 .ToImmutableArray();
 
-            List<string> ignoredSymbolIds = await RenameSymbolsAsync(
+            List<string>? ignoredSymbolIds = await RenameSymbolsAsync(
                 symbolData2,
                 findSymbolService,
                 cancellationToken)
@@ -191,31 +203,31 @@ internal class SymbolRenameState
 
             if (DryRun
                 || scope == RenameScope.Local
-                || symbolData2.Length == ignoredSymbolIds.Count)
+                || symbolData2.Length == ignoredSymbolIds!.Count)
             {
                 break;
             }
 
-            foreach (string symbolId in ignoredSymbolIds)
+            foreach (string symbolId in ignoredSymbolIds!)
             {
                 Debug.Assert(!ignoreSymbolIds.Contains(symbolId), symbolId);
                 ignoreSymbolIds.Add(symbolId);
             }
 
             previousPreviousIds = previousIds;
-            previousIds = ImmutableArray.CreateRange(symbolData, f => f.Id);
+            previousIds = symbolData.Select(f => f.Id).Where(f => f is not null).Cast<string>().ToImmutableArray();
 
-            project = CurrentSolution.GetProject(project.Id);
+            project = CurrentSolution.GetProject(project.Id)!;
         }
     }
 
-    private async Task<List<string>> RenameSymbolsAsync(
+    private async Task<List<string>?> RenameSymbolsAsync(
         IEnumerable<SymbolData> symbols,
         IFindSymbolService findSymbolService,
         CancellationToken cancellationToken)
     {
-        List<string> ignoredSymbolIds = null;
-        DiffTracker diffTracker = null;
+        List<string>? ignoredSymbolIds = null;
+        DiffTracker? diffTracker = null;
 
         if (!DryRun)
         {
@@ -228,12 +240,12 @@ internal class SymbolRenameState
             cancellationToken.ThrowIfCancellationRequested();
 
             ISymbol symbol = symbolData.Symbol;
-            Document document = CurrentSolution.GetDocument(symbolData.DocumentId);
+            Document document = CurrentSolution.GetDocument(symbolData.DocumentId)!;
 
             if (document is null)
                 throw new InvalidOperationException($"Cannot find document for symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'.");
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
             TextSpan span = DiffTracker.GetCurrentSpan(symbol.Locations[0].SourceSpan, document.Id, diffTracker);
 
@@ -266,8 +278,8 @@ internal class SymbolRenameState
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Document document = CurrentSolution.GetDocument(grouping.Key);
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            Document document = CurrentSolution.GetDocument(grouping.Key)!;
+            SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
             foreach (SyntaxReference syntaxReference in grouping
                 .OrderByDescending(f => f.Span.Start))
@@ -275,9 +287,9 @@ internal class SymbolRenameState
                 cancellationToken.ThrowIfCancellationRequested();
 
                 SyntaxNode node = await syntaxReference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
-                DiffTracker diffTracker = (DryRun) ? null : new DiffTracker();
-                HashSet<int> localFunctionIndexes = null;
-                HashSet<int> localSymbolIndexes = null;
+                DiffTracker? diffTracker = (DryRun) ? null : new DiffTracker();
+                HashSet<int>? localFunctionIndexes = null;
+                HashSet<int>? localSymbolIndexes = null;
                 int i = 0;
 
                 foreach (ISymbol symbol in findSymbolService.FindLocalSymbols(node, semanticModel, cancellationToken)
@@ -333,7 +345,7 @@ internal class SymbolRenameState
         SyntaxNode node,
         DocumentId documentId,
         HashSet<int> indexes,
-        DiffTracker diffTracker,
+        DiffTracker? diffTracker,
         IFindSymbolService findSymbolService,
         CancellationToken cancellationToken)
     {
@@ -341,8 +353,8 @@ internal class SymbolRenameState
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Document document = CurrentSolution.GetDocument(documentId);
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            Document document = CurrentSolution.GetDocument(documentId)!;
+            SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
             TextSpan span = DiffTracker.GetCurrentSpan(node.Span, documentId, diffTracker);
 
@@ -362,18 +374,18 @@ internal class SymbolRenameState
             }
 
             int i = 0;
-            DiffTracker diffTracker2 = (DryRun) ? null : new DiffTracker();
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            DiffTracker? diffTracker2 = (DryRun) ? null : new DiffTracker();
+            SemanticModel? semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            foreach (ISymbol symbol in findSymbolService.FindLocalSymbols(currentNode, semanticModel, cancellationToken)
+            foreach (ISymbol symbol in findSymbolService.FindLocalSymbols(currentNode, semanticModel!, cancellationToken)
                 .OrderBy(f => f, LocalSymbolComparer.Instance))
             {
                 if (indexes.Contains(i))
                 {
                     if (semanticModel is null)
                     {
-                        document = CurrentSolution.GetDocument(documentId);
-                        semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                        document = CurrentSolution.GetDocument(documentId)!;
+                        semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
                     }
 
                     var symbolData = new SymbolData(symbol, GetSymbolId(symbol), documentId);
@@ -421,7 +433,7 @@ internal class SymbolRenameState
         SyntaxNode node,
         DocumentId documentId,
         HashSet<int> indexes,
-        DiffTracker diffTracker,
+        DiffTracker? diffTracker,
         IFindSymbolService findSymbolService,
         CancellationToken cancellationToken)
     {
@@ -429,8 +441,8 @@ internal class SymbolRenameState
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Document document = CurrentSolution.GetDocument(documentId);
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            Document document = CurrentSolution.GetDocument(documentId)!;
+            SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
             TextSpan span = DiffTracker.GetCurrentSpan(node.Span, documentId, diffTracker);
 
@@ -449,7 +461,7 @@ internal class SymbolRenameState
                 break;
             }
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
             int i = 0;
             foreach (ISymbol symbol in findSymbolService.FindLocalSymbols(currentNode, semanticModel, cancellationToken)
@@ -485,14 +497,14 @@ internal class SymbolRenameState
         Document document,
         SemanticModel semanticModel,
         IFindSymbolService findSymbolService,
-        DiffTracker diffTracker,
-        List<string> ignoreIds,
+        DiffTracker? diffTracker,
+        List<string>? ignoreIds,
         CancellationToken cancellationToken)
     {
-        ISymbol symbol = symbolData.Symbol;
-        string symbolId = symbolData.Id;
+        ISymbol? symbol = symbolData.Symbol;
+        string? symbolId = symbolData.Id;
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
         if (!root.FullSpan.Contains(span))
         {
@@ -504,32 +516,35 @@ internal class SymbolRenameState
 
         Debug.Assert(span == identifier.Span, $"{span}\n{identifier.Span}");
 
-        SyntaxNode node = findSymbolService.FindDeclaration(identifier.Parent);
+        SyntaxNode? node = findSymbolService.FindDeclaration(identifier.Parent!);
+
+        if (node is null)
+            throw new InvalidOperationException($"Cannot find declaration for symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'.");
 
         if (!string.Equals(symbol.Name, identifier.ValueText, StringComparison.Ordinal))
             return false;
 
-        semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
 
-        ISymbol currentSymbol = semanticModel.GetDeclaredSymbol(node, cancellationToken)
+        ISymbol? currentSymbol = semanticModel.GetDeclaredSymbol(node, cancellationToken)
             ?? semanticModel.GetSymbol(node, cancellationToken);
 
         if (currentSymbol is null)
         {
             Debug.Fail(symbolId);
 
-            ignoreIds?.Add(symbolId);
+            IgnoreSymbolId(symbolId, ignoreIds);
             return false;
         }
 
         if (diffTracker is not null
             && _diffTracker.SpanExists(span, document.Id))
         {
-            ignoreIds?.Add(GetSymbolId(currentSymbol));
+            IgnoreSymbol(currentSymbol, ignoreIds);
             return false;
         }
 
-        string currentSymbolId = GetSymbolId(currentSymbol);
+        string? currentSymbolId = GetSymbolId(currentSymbol);
 
         if (currentSymbolId is not null)
         {
@@ -569,9 +584,9 @@ internal class SymbolRenameState
 
         HashSet<Location> locations = await GetLocationsAsync(referencedSymbols, symbol).ConfigureAwait(false);
 
-        document = CurrentSolution.GetDocument(symbolData.DocumentId);
-        semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-        root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        document = CurrentSolution.GetDocument(symbolData.DocumentId)!;
+        semanticModel = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
+        root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
 
         Location oldLocation = symbol.Locations[0];
         TextSpan oldSpan = oldLocation.SourceSpan;
@@ -615,10 +630,10 @@ internal class SymbolRenameState
         Debug.Assert(string.Equals(newName, newIdentifier.ValueText, StringComparison.Ordinal), $"{newName}\n{newIdentifier.ValueText}");
 
         foreach (IGrouping<DocumentId, Location> grouping in locations
-            .GroupBy(f => newSolution.GetDocument(oldSolution.GetDocumentId(f.SourceTree)).Id))
+            .GroupBy(f => newSolution.GetDocument(oldSolution.GetDocumentId(f.SourceTree))!.Id))
         {
             DocumentId documentId = grouping.Key;
-            Document newDocument = newSolution.GetDocument(documentId);
+            Document newDocument = newSolution.GetDocument(documentId)!;
             int offset = 0;
 
             foreach (TextSpan span2 in grouping
@@ -626,7 +641,7 @@ internal class SymbolRenameState
                 .OrderBy(f => f.Start))
             {
                 var s = new TextSpan(span2.Start + offset, span2.Length + diff);
-                SyntaxNode r = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+                SyntaxNode r = (await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
                 SyntaxToken t = r.FindToken(s.Start, findInsideTrivia: true);
 
                 // C# string literal token (inside SuppressMessageAttribute)
@@ -649,20 +664,23 @@ internal class SymbolRenameState
         if (string.Equals(newName, newIdentifier.ValueText, StringComparison.Ordinal)
             && ignoreIds is not null)
         {
-            SyntaxNode newNode = findSymbolService.FindDeclaration(newIdentifier.Parent);
+            SyntaxNode? newNode = findSymbolService.FindDeclaration(newIdentifier.Parent!);
+
+            if (newNode is null)
+                throw new InvalidOperationException($"Cannot find declaration for symbol '{symbol.ToDisplayString(SymbolDisplayFormats.FullName)}'.");
 
             symbol = semanticModel.GetDeclaredSymbol(newNode, cancellationToken)
                 ?? semanticModel.GetSymbol(newNode, cancellationToken);
 
-            Debug.Assert(symbol is not null, GetSymbolId(symbol));
+            Debug.Assert(symbol is not null);
 
             if (symbol is not null)
-                ignoreIds.Add(GetSymbolId(symbol));
+                IgnoreSymbol(symbol, ignoreIds);
         }
 
         return true;
 
-        async Task<HashSet<Location>> GetLocationsAsync(IEnumerable<ReferencedSymbol> referencedSymbols, ISymbol symbol = null)
+        async Task<HashSet<Location>> GetLocationsAsync(IEnumerable<ReferencedSymbol> referencedSymbols, ISymbol? symbol = null)
         {
             var locations = new HashSet<Location>();
 
@@ -676,7 +694,7 @@ internal class SymbolRenameState
                     if (symbol.Name.Length == 4
                         || symbol.Name.Length != span.Length)
                     {
-                        SyntaxNode root = await location.SourceTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
+                        SyntaxNode root = await location.SourceTree!.GetRootAsync(cancellationToken).ConfigureAwait(false);
                         SyntaxToken token = root.FindToken(span.Start, findInsideTrivia: true);
 
                         Debug.Assert(token.Span == span);
@@ -717,14 +735,14 @@ internal class SymbolRenameState
 
     protected virtual async Task<(string NewName, Solution NewSolution)> RenameSymbolAsync(
         ISymbol symbol,
-        string symbolId,
-        List<string> ignoreIds,
+        string? symbolId,
+        List<string>? ignoreIds,
         IFindSymbolService findSymbolService,
         TextSpan span,
         Document document,
         CancellationToken cancellationToken)
     {
-        Solution newSolution = null;
+        Solution? newSolution = null;
         string newName = GetNewName(symbol);
 
         if (!findSymbolService.SyntaxFacts.IsValidIdentifier(newName))
@@ -756,7 +774,7 @@ internal class SymbolRenameState
         {
             Report(symbol, newName, SymbolRenameResult.Error, ex);
 
-            ignoreIds?.Add(symbolId);
+            IgnoreSymbolId(symbolId, ignoreIds);
             return default;
         }
 
@@ -764,8 +782,8 @@ internal class SymbolRenameState
 
         if (resolution != CompilationErrorResolution.Ignore)
         {
-            Project newProject = newSolution.GetDocument(document.Id).Project;
-            Compilation compilation = await newProject.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+            Project newProject = newSolution.GetDocument(document.Id)!.Project;
+            Compilation compilation = (await newProject.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
             foreach (Diagnostic diagnostic in compilation.GetDiagnostics(cancellationToken))
             {
@@ -775,7 +793,7 @@ internal class SymbolRenameState
 
                     if (resolution == CompilationErrorResolution.Skip)
                     {
-                        ignoreIds?.Add(symbolId);
+                        IgnoreSymbolId(symbolId, ignoreIds);
                         return default;
                     }
                     else if (resolution == CompilationErrorResolution.Throw)
@@ -799,12 +817,12 @@ internal class SymbolRenameState
         ISymbol symbol,
         string newName,
         SymbolRenameResult result,
-        Exception exception = null)
+        Exception? exception = null)
     {
         Progress?.Report(new SymbolRenameProgress(symbol, newName, result, exception));
     }
 
-    private static string GetSymbolId(ISymbol symbol)
+    private static string? GetSymbolId(ISymbol symbol)
     {
         string id;
 
@@ -864,5 +882,25 @@ internal class SymbolRenameState
         }
 
         return symbol.GetDocumentationCommentId();
+    }
+
+    private static void IgnoreSymbol(ISymbol symbol, List<string>? ignoreIds)
+    {
+        if (ignoreIds is not null)
+        {
+            string? id = GetSymbolId(symbol);
+
+            if (id is not null)
+                ignoreIds.Add(id);
+        }
+    }
+
+    private static void IgnoreSymbolId(string? symbolId, List<string>? ignoreIds)
+    {
+        if (symbolId is not null
+            && ignoreIds is not null)
+        {
+            ignoreIds.Add(symbolId);
+        }
     }
 }

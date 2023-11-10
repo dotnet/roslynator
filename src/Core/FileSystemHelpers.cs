@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -37,12 +37,12 @@ internal static class FileSystemHelpers
             || ch == Path.AltDirectorySeparatorChar;
     }
 
-    public static bool TryGetNormalizedFullPath(string path, out string result)
+    public static bool TryGetNormalizedFullPath(string path, out string? result)
     {
         return TryGetNormalizedFullPath(path, basePath: null, out result);
     }
 
-    public static bool TryGetNormalizedFullPath(string path, string basePath, out string result)
+    public static bool TryGetNormalizedFullPath(string path, string? basePath, out string? result)
     {
         try
         {

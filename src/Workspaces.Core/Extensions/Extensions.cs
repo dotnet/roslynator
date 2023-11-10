@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -18,16 +18,20 @@ namespace Roslynator;
 
 internal static class Extensions
 {
-    public static bool IsMatch(this Matcher matcher, ISymbol symbol)
+    public static bool IsMatch(this Matcher matcher, ISymbol symbol, string? rootDirectoryPath)
     {
         foreach (Location location in symbol.Locations)
         {
-            SyntaxTree tree = location.SourceTree;
+            SyntaxTree? tree = location.SourceTree;
 
-            if (tree is not null
-                && !matcher.Match(tree.FilePath).HasMatches)
+            if (tree is not null)
             {
-                return false;
+                PatternMatchingResult result = (rootDirectoryPath is not null)
+                    ? matcher.Match(rootDirectoryPath, tree.FilePath)
+                    : matcher.Match(tree.FilePath);
+
+                if (!result.HasMatches)
+                    return false;
             }
         }
 
@@ -250,7 +254,7 @@ internal static class Extensions
         return "";
     }
 
-    public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+    public static TValue? GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
     {
         if (dictionary.TryGetValue(key, out TValue value))
             return value;
@@ -314,7 +318,7 @@ internal static class Extensions
         Project project,
         LinesOfCodeKind kind,
         FileSystemFilter fileSystemFilter,
-        CodeMetricsOptions options = null,
+        CodeMetricsOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         CodeMetricsInfo codeMetrics = default;
@@ -324,7 +328,7 @@ internal static class Extensions
             if (!document.SupportsSyntaxTree)
                 continue;
 
-            string filePath = document.FilePath;
+            string? filePath = document.FilePath;
 
             if (filePath is not null
                 && fileSystemFilter?.IsMatch(filePath) == false)
@@ -344,13 +348,15 @@ internal static class Extensions
         this ICodeMetricsService service,
         Document document,
         LinesOfCodeKind kind,
-        CodeMetricsOptions options = null,
+        CodeMetricsOptions? options = null,
         CancellationToken cancellationToken = default)
     {
-        SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxTree? tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
 
         if (tree is null)
             return default;
+
+        options ??= CodeMetricsOptions.Default;
 
         if (!options.IncludeGeneratedCode
             && GeneratedCodeUtility.IsGeneratedCode(tree, f => service.SyntaxFacts.IsComment(f), cancellationToken))
@@ -373,9 +379,9 @@ internal static class Extensions
         }
     }
 
-    public static OperationCanceledException GetOperationCanceledException(this AggregateException aggregateException)
+    public static OperationCanceledException? GetOperationCanceledException(this AggregateException aggregateException)
     {
-        OperationCanceledException operationCanceledException = null;
+        OperationCanceledException? operationCanceledException = null;
 
         foreach (Exception ex in aggregateException.InnerExceptions)
         {
@@ -431,7 +437,7 @@ internal static class Extensions
     public static bool IsEffective(
         this Diagnostic diagnostic,
         CodeAnalysisOptions codeAnalysisOptions,
-        CompilationOptions compilationOptions,
+        CompilationOptions? compilationOptions,
         CancellationToken cancellationToken = default)
     {
         if (!codeAnalysisOptions.IsSupportedDiagnosticId(diagnostic.Id))
@@ -440,11 +446,9 @@ internal static class Extensions
         if (diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
             return true;
 
-        SyntaxTree tree = diagnostic.Location.SourceTree;
+        SyntaxTree? tree = diagnostic.Location.SourceTree;
 
-        ReportDiagnostic reportDiagnostic = (tree is not null)
-            ? diagnostic.Descriptor.GetEffectiveSeverity(tree, compilationOptions, cancellationToken)
-            : diagnostic.Descriptor.GetEffectiveSeverity(compilationOptions);
+        ReportDiagnostic reportDiagnostic = diagnostic.Descriptor.GetEffectiveSeverity(tree, compilationOptions, cancellationToken);
 
         return reportDiagnostic != ReportDiagnostic.Suppress
             && reportDiagnostic.ToDiagnosticSeverity() >= codeAnalysisOptions.SeverityLevel;
