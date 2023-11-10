@@ -565,17 +565,26 @@ internal static class CodeStyleExtensions
         return BlankLineStyle.None;
     }
 
+    [Obsolete]
     public static bool? GetSuppressUnityScriptMethods(this SyntaxNodeAnalysisContext context)
     {
         if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.SuppressUnityScriptMethods, out bool value))
-        {
             return value;
-        }
 
         if (context.TryGetOptionAsBool(LegacyConfigOptions.SuppressUnityScriptMethods, out value))
             return value;
 
         return null;
+    }
+
+    public static bool? DetectUnityFeatures(this SyntaxNodeAnalysisContext context)
+    {
+        if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.DetectUnityFeatures, out bool value))
+            return value;
+
+#pragma warning disable CS0612 // Type or member is obsolete
+        return GetSuppressUnityScriptMethods(context);
+#pragma warning restore CS0612 // Type or member is obsolete
     }
 
     public static NewLinePosition GetEqualsSignNewLinePosition(this SyntaxNodeAnalysisContext context)

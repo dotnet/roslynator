@@ -173,6 +173,11 @@
   <Option Id="SuppressUnityScriptMethods">
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Suppress Unity script methods</Description>
+    <ObsoleteMessage>This option is obsolete, use option 'detect_unity_features' instead.</ObsoleteMessage>
+  </Option>
+  <Option Id="DetectUnityFeatures">
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Detect false positives from Unity code</Description>
   </Option>
   <Option Id="UseAnonymousFunctionOrMethodGroup">
     <Description>Use anonymous function or method group</Description>

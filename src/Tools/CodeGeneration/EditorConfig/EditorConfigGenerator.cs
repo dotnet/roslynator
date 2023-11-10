@@ -36,7 +36,9 @@ public static class EditorConfigGenerator
 
             var isSeparatedWithNewLine = true;
 
-            foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions.OrderBy(f => f.Key))
+            foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions
+                .Where(f => !f.IsObsolete)
+                .OrderBy(f => f.Key))
             {
                 if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
                     && !isSeparatedWithNewLine)

@@ -377,4 +377,26 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
+    public async Task TestNoDiagnostic_UnitySerializeAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using UnityEngine;
+
+class C
+{
+    [SerializeField]
+    private string f;
+}
+
+namespace UnityEngine
+{
+    class SerializeFieldAttribute : Attribute
+    {
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.DetectUnityFeatures, true));
+    }
 }

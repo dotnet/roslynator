@@ -20,6 +20,7 @@ namespace Roslynator
         public const string ConditionalOperatorConditionParenthesesStyle      = "roslynator_conditional_operator_condition_parentheses_style";
         public const string ConditionalOperatorNewLine                        = "roslynator_conditional_operator_new_line";
         public const string ConfigureAwait                                    = "roslynator_configure_await";
+        public const string DetectUnityFeatures                               = "roslynator_detect_unity_features";
         public const string DocCommentSummaryStyle                            = "roslynator_doc_comment_summary_style";
         public const string EmptyStringStyle                                  = "roslynator_empty_string_style";
         public const string EnumFlagValueStyle                                = "roslynator_enum_flag_value_style";
