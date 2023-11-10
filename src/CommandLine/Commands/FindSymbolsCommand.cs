@@ -118,7 +118,7 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
             allSymbols = symbols?.ToImmutableArray() ?? ImmutableArray<ISymbol>.Empty;
 
-            WriteLine($"Done analyzing solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+            LogHelpers.WriteElapsedTime($"Analyzed solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
         }
 
         if (allSymbols.Any())
@@ -173,11 +173,6 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         }
 
         return SymbolFinder.FindSymbolsAsync(project, options, progress, cancellationToken);
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Analysis was canceled.", Verbosity.Quiet);
     }
 
     private static void WriteSymbol(

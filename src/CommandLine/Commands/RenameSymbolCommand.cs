@@ -61,7 +61,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
             renamer = GetSymbolRenamer(solution);
 
-            WriteLine($"Fix '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
+            WriteLine($"Analyze '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -69,7 +69,7 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
 
             stopwatch.Stop();
 
-            WriteLine($"Done fixing project '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+            LogHelpers.WriteElapsedTime($"Analyzed project '{project.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
         }
         else
         {
@@ -110,10 +110,5 @@ internal class RenameSymbolCommand : MSBuildWorkspaceCommand<RenameSymbolCommand
                 errorResolution: ErrorResolution,
                 options: options);
         }
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Renaming was canceled.", Verbosity.Minimal);
     }
 }

@@ -57,7 +57,7 @@ internal class LogicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCod
 
     private async Task<CodeMetricsInfo> CountLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)
     {
-        WriteLine($"Count logical lines for '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
+        WriteLine($"Counting logical lines for '{project.Name}'...", ConsoleColors.Cyan, Verbosity.Minimal);
 
         Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -78,14 +78,14 @@ internal class LogicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCod
             codeMetrics.TotalLineCount);
 
         WriteLine(Verbosity.Minimal);
-        WriteLine($"Done counting logical lines for '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+        LogHelpers.WriteElapsedTime($"Counted logical lines for '{project.FilePath}'", stopwatch.Elapsed, Verbosity.Normal);
 
         return codeMetrics;
     }
 
     private async Task<ImmutableDictionary<ProjectId, CodeMetricsInfo>> CountLinesAsync(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
     {
-        WriteLine($"Count logical lines for solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
+        WriteLine($"Counting logical lines for solution '{solution.FilePath}'...", ConsoleColors.Cyan, Verbosity.Minimal);
 
         IEnumerable<Project> projects = FilterProjects(solution);
 
@@ -111,7 +111,7 @@ internal class LogicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCod
             codeMetrics.Sum(f => f.Value.TotalLineCount));
 
         WriteLine(Verbosity.Minimal);
-        WriteLine($"Done counting logical lines for solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+        LogHelpers.WriteElapsedTime($"Counted logical lines for solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Normal);
 
         return codeMetrics;
     }
@@ -156,10 +156,5 @@ internal class LogicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCod
             totalCommentLineCount: results.Sum(f => f.Metrics.CommentLineCount),
             totalPreprocessorDirectiveLineCount: results.Sum(f => f.Metrics.PreprocessorDirectiveLineCount),
             totalLineCount: results.Sum(f => f.Metrics.TotalLineCount));
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Logical lines counting was canceled.", Verbosity.Quiet);
     }
 }

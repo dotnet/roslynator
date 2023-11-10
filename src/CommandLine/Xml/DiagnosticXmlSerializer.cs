@@ -122,7 +122,7 @@ internal static class DiagnosticXmlSerializer
                     summary,
                     new XElement("Projects", projects))));
 
-        WriteLine($"Save code analysis to '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+        WriteLine($"Saving code analysis to '{filePath}'...", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
         using (var fileStream = new FileStream(filePath, FileMode.Create))
         using (XmlWriter xmlWriter = XmlWriter.Create(fileStream, new XmlWriterSettings() { Indent = true, CloseOutput = false }))

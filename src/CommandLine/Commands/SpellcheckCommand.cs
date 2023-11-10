@@ -89,7 +89,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             spellingFixer = GetSpellingFixer(solution);
 
-            WriteLine($"Fix '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
+            WriteLine($"Analyze '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -97,7 +97,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             stopwatch.Stop();
 
-            WriteLine($"Done fixing project '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+            LogHelpers.WriteElapsedTime($"Analyzed project '{project.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
         }
         else
         {
@@ -126,11 +126,6 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
                 formatProvider: formatProvider,
                 options: options);
         }
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Spellchecking was canceled.", Verbosity.Minimal);
     }
 
     private void WriteSummary(ImmutableArray<SpellingFixResult> results)
