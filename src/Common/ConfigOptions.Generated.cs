@@ -200,7 +200,7 @@ namespace Roslynator
             key:                     ConfigOptionKeys.UnityCodeAnalysisEnabled, 
             defaultValue:            null, 
             defaultValuePlaceholder: "true|false", 
-            description:             "Enabled additional code analysis to detect Unity-specific types");
+            description:             "Enable additional analysis to detect Unity-specific code");
 
         public static readonly ConfigOptionDescriptor UseAnonymousFunctionOrMethodGroup = new(
             key:                     ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, 
