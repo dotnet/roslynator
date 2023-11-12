@@ -13,7 +13,7 @@ No installation is required. Unzip nuget package and run roslynator.exe.
 ## Usage
 
 Roslynator command-line tool does not contain any analyzers (such as [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
-Analyzers are either referenced as NuGet packages or it is possible to add analyzer assemblies with parameter `--analyzer-assemblies`. 
+Analyzers are either referenced as NuGet packages or it is possible to add analyzer assemblies with parameter `--analyzer-assemblies`.
 
 Analyze project/solution:
 ```shell
