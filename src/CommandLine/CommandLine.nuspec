@@ -9,8 +9,8 @@
     <projectUrl>https://github.com/dotnet/roslynator</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Roslynator command-line tool</description>
-    <summary>Roslynator command-line tool</summary>
+    <description>Roslynator command-line tool for .NET Framework</description>
+    <summary>Roslynator command-line tool for .NET Framework</summary>
     <copyright>Copyright (c) 2017-2022 Josef Pihrt</copyright>
     <tags>CLI Roslyn C# CSharp VB VisualBasic</tags>
     <developmentDependency>true</developmentDependency>
