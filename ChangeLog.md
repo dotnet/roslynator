@@ -22,9 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Detect false positive from Unity code ([RCS1169](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1169)) ([PR](https://github.com/dotnet/roslynator/pull/1245))
   - Introduce config option `roslynator_unity_code_analysis.enabled = true|false`
   - Make option `roslynator_suppress_unity_script_methods` obsolete
-
-### Added
-- Tests for [RCS1196](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1196/) ([PR](https://github.com/dotnet/roslynator/pull/1235))
+- Fix [RCS1196](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1196/) ([PR](https://github.com/dotnet/roslynator/pull/1235))
 
 ## [4.6.1] - 2023-10-23
 

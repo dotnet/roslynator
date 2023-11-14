@@ -110,14 +110,14 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
                 case SyntaxKind.GenericName:
                     {
                         return SimpleMemberAccessExpression(
-                            ParenthesizedExpression(argument.Expression),
+                            argument.Expression,
                             (SimpleNameSyntax)expression);
                     }
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
                         var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                        return memberAccess.WithExpression(ParenthesizedExpression(argument.Expression));
+                        return memberAccess.WithExpression(argument.Expression);
                     }
                 default:
                     {
