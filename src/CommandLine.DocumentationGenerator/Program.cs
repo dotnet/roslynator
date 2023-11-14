@@ -103,6 +103,11 @@ internal static class Program
                     ? File.ReadAllText(additionalContentFilePath)
                     : "";
 
+                string summaryContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_summary.md");
+
+                if (File.Exists(summaryContentFilePath))
+                    dw.WriteRaw(File.ReadAllText(summaryContentFilePath));
+
                 writer.WriteCommandSynopsis(command, application);
                 writer.WriteArguments(command.Arguments);
                 writer.WriteOptions(command.Options);

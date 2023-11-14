@@ -53,8 +53,6 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var format = new DefinitionListFormat(
             layout: Layout,
             parts: SymbolDefinitionPartFilter.All & ~IgnoredParts,

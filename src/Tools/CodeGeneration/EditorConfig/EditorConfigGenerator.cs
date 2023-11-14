@@ -36,7 +36,9 @@ public static class EditorConfigGenerator
 
             var isSeparatedWithNewLine = true;
 
-            foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions.OrderBy(f => f.Key))
+            foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions
+                .Where(f => !f.IsObsolete)
+                .OrderBy(f => f.Key))
             {
                 if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
                     && !isSeparatedWithNewLine)
@@ -86,6 +88,7 @@ public static class EditorConfigGenerator
                         + string.Join(
                             ", ",
                             analyzer.ConfigOptions
+                                .Where(f => metadata.ConfigOptions.FirstOrDefault(ff => ff.Key == f.Key)?.IsObsolete != true)
                                 .OrderBy(f => f.Key)
                                 .Select(f2 => metadata.ConfigOptions.First(f => f.Key == f2.Key).Key)));
                 }

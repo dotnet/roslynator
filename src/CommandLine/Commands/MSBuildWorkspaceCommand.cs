@@ -227,7 +227,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
     {
         bool isSolution = string.Equals(Path.GetExtension(path), ".sln", StringComparison.OrdinalIgnoreCase);
 
-        WriteLine($"Load {((isSolution) ? "solution" : "project")} '{path}'", Verbosity.Minimal);
+        WriteLine($"Loading {((isSolution) ? "solution" : "project")} '{path}'...", Verbosity.Minimal);
 
         ProjectOrSolution projectOrSolution;
 
@@ -246,8 +246,6 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         {
             throw new ProjectOrSolutionLoadException($"Error occurred while loading {((isSolution) ? "solution" : "project")} '{path}'", ex);
         }
-
-        WriteLine($"Done loading {((projectOrSolution.IsSolution) ? "solution" : "project")} '{projectOrSolution.FilePath}'", Verbosity.Minimal);
 
         return projectOrSolution;
     }
@@ -379,7 +377,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
             Solution solution = projectOrSolution.AsSolution();
 
-            WriteLine($"Compile solution '{solution.FilePath}'", Verbosity.Minimal);
+            WriteLine($"Compiling solution '{solution.FilePath}'", Verbosity.Minimal);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -401,7 +399,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
             stopwatch.Stop();
 
-            WriteLine($"Done compiling solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+            LogHelpers.WriteElapsedTime($"Compiled solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
             return compilations.ToImmutableArray();
         }
