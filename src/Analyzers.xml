@@ -2811,9 +2811,8 @@ public void Foo()
   </Analyzer>
   <Analyzer>
     <Id>RCS1055</Id>
-    <Identifier>AvoidSemicolonAtEndOfDeclaration</Identifier>
-    <Title>Avoid semicolon at the end of declaration.</Title>
-    <MessageFormat>Remove semicolon from the end of declaration.</MessageFormat>
+    <Identifier>UnnecessarySemicolonAtEndOfDeclaration</Identifier>
+    <Title>Unnecessary semicolon at the end of declaration.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>

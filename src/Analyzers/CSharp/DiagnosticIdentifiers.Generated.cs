@@ -48,7 +48,7 @@ namespace Roslynator.CSharp
         public const string IncludeParenthesesWhenCreatingNewObject = "RCS1050";
         public const string AddOrRemoveParenthesesFromConditionInConditionalOperator = "RCS1051";
         public const string DeclareEachAttributeSeparately = "RCS1052";
-        public const string AvoidSemicolonAtEndOfDeclaration = "RCS1055";
+        public const string UnnecessarySemicolonAtEndOfDeclaration = "RCS1055";
         public const string AvoidUsageOfUsingAliasDirective = "RCS1056";
         public const string UseCompoundAssignment = "RCS1058";
         public const string AvoidLockingOnPubliclyAccessibleInstance = "RCS1059";

@@ -229,18 +229,21 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     public override void VisitClassDeclaration(ClassDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+        VisitParameterList(node.ParameterList);
         VisitMembers(node.Members);
     }
 
     public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+        VisitParameterList(node.ParameterList);
         VisitMembers(node.Members);
     }
 
     public override void VisitStructDeclaration(StructDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+        VisitParameterList(node.ParameterList);
         VisitMembers(node.Members);
     }
 
