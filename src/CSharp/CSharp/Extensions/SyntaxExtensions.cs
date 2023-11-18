@@ -4213,7 +4213,7 @@ public static class SyntaxExtensions
     #region UsingDirectiveSyntax
     internal static IdentifierNameSyntax? GetRootNamespace(this UsingDirectiveSyntax usingDirective)
     {
-        NameSyntax name = usingDirective.Name;
+        NameSyntax? name = usingDirective.Name;
 
         if (name is AliasQualifiedNameSyntax aliasQualifiedName)
             name = aliasQualifiedName.Name;
