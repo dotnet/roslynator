@@ -388,4 +388,24 @@ namespace UnityEngine
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+    public async Task TestNoDiagnostic_PrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class Class([My(Class.Const)] int i)
+{
+    private const string Const = ""const"";
+}
+
+class MyAttribute : Attribute
+{
+    public MyAttribute(string s)
+    {
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS9113"));
+    }
 }
