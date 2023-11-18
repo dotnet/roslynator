@@ -515,7 +515,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UnnecessarySemicolonAtEndOfDeclaration = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration, 
             title:              "Unnecessary semicolon at the end of declaration.", 
-            messageFormat:      "Unnecessary semicolon from the end of declaration.", 
+            messageFormat:      "Unnecessary semicolon at the end of declaration.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 

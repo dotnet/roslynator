@@ -2813,7 +2813,6 @@ public void Foo()
     <Id>RCS1055</Id>
     <Identifier>UnnecessarySemicolonAtEndOfDeclaration</Identifier>
     <Title>Unnecessary semicolon at the end of declaration.</Title>
-    <MessageFormat>Unnecessary semicolon from the end of declaration.</MessageFormat>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
