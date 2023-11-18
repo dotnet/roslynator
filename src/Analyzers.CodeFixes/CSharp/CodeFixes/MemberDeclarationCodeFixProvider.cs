@@ -29,7 +29,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                 DiagnosticIdentifiers.RemoveRedundantOverridingMember,
                 DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers,
                 DiagnosticIdentifiers.RemoveRedundantSealedModifier,
-                DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
+                DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration,
                 DiagnosticIdentifiers.OrderModifiers,
                 DiagnosticIdentifiers.MakeFieldReadOnly,
                 DiagnosticIdentifiers.UseConstantInsteadOfField,
@@ -97,11 +97,11 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                         ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, memberDeclaration, SyntaxKind.SealedKeyword);
                         break;
                     }
-                case DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration:
+                case DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Remove unnecessary semicolon",
-                            ct => AvoidSemicolonAtEndOfDeclarationRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
+                            ct => RemoveSemicolonAtEndOfDeclarationRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);

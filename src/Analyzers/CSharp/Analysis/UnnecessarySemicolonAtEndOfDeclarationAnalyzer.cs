@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAnalyzer
+public sealed class UnnecessarySemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAnalyzer
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -18,7 +18,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration);
 
             return _supportedDiagnostics;
         }
@@ -45,7 +45,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
         if (semicolon.Parent is not null
             && !semicolon.IsMissing)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration, semicolon);
         }
     }
 
@@ -60,7 +60,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
             if (semicolon.Parent is not null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration, semicolon);
             }
         }
     }
@@ -76,7 +76,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
             if (semicolon.Parent is not null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration, semicolon);
             }
         }
     }
@@ -92,7 +92,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
             if (semicolon.Parent is not null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration, semicolon);
             }
         }
     }
@@ -108,7 +108,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
             if (semicolon.Parent is not null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration, semicolon);
             }
         }
     }
@@ -122,7 +122,7 @@ public sealed class AvoidSemicolonAtEndOfDeclarationAnalyzer : BaseDiagnosticAna
         if (semicolon.Parent is not null
             && !semicolon.IsMissing)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration, semicolon);
         }
     }
 }

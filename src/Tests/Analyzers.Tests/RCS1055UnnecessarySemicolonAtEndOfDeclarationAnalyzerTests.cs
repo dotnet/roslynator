@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1055AvoidSemicolonAtEndOfDeclarationAnalyzerTests : AbstractCSharpDiagnosticVerifier<AvoidSemicolonAtEndOfDeclarationAnalyzer, MemberDeclarationCodeFixProvider>
+public class RCS1055UnnecessarySemicolonAtEndOfDeclarationAnalyzerTests : AbstractCSharpDiagnosticVerifier<UnnecessarySemicolonAtEndOfDeclarationAnalyzer, MemberDeclarationCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidSemicolonAtEndOfDeclaration;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration)]
     public async Task TestNoDiagnostic_Class()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -20,7 +20,7 @@ class C;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration)]
     public async Task TestNoDiagnostic_Struct()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -28,7 +28,7 @@ struct C;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration)]
     public async Task TestNoDiagnostic_Interface()
     {
         await VerifyNoDiagnosticAsync(@"
