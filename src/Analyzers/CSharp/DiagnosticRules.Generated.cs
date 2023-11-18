@@ -512,15 +512,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1055</summary>
-        public static readonly DiagnosticDescriptor AvoidSemicolonAtEndOfDeclaration = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration, 
-            title:              "Avoid semicolon at the end of declaration.", 
-            messageFormat:      "Remove semicolon from the end of declaration.", 
+        public static readonly DiagnosticDescriptor UnnecessarySemicolonAtEndOfDeclaration = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration, 
+            title:              "Unnecessary semicolon at the end of declaration.", 
+            messageFormat:      "Unnecessary semicolon at the end of declaration.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1056</summary>

@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings;
 
-internal static class AvoidSemicolonAtEndOfDeclarationRefactoring
+internal static class RemoveSemicolonAtEndOfDeclarationRefactoring
 {
     public static Task<Document> RefactorAsync(
         Document document,
