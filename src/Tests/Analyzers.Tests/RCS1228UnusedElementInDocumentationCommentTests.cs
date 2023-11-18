@@ -342,7 +342,7 @@ public record struct Foo(string Bar);
 /// x
 /// </summary>
 /// <param name=""value"">x</param>
-public class C(string value)
+public class Foo(string value)
 {
     public string Value { get; } = value;
 }
@@ -357,7 +357,7 @@ public class C(string value)
 /// x
 /// </summary>
 /// <param name=""value"">x</param>
-public struct FooC(string value)
+public struct Foo(string value)
 {
     public string Value { get; } = value;
 }
