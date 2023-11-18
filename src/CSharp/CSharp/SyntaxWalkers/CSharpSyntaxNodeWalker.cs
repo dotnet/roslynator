@@ -695,6 +695,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 return;
             }
 
+            ParameterListSyntax parameterList = node.ParameterList;
+            if (parameterList != null)
+            {
+                VisitParameterList(parameterList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
             BaseListSyntax baseList = node.BaseList;
             if (baseList != null)
             {
@@ -2284,6 +2295,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (typeParameterList != null)
             {
                 VisitTypeParameterList(typeParameterList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ParameterListSyntax parameterList = node.ParameterList;
+            if (parameterList != null)
+            {
+                VisitParameterList(parameterList);
             }
 
             if (!ShouldVisit)
@@ -3974,6 +3996,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 return;
             }
 
+            ParameterListSyntax parameterList = node.ParameterList;
+            if (parameterList != null)
+            {
+                VisitParameterList(parameterList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
             BaseListSyntax baseList = node.BaseList;
             if (baseList != null)
             {
@@ -4409,6 +4442,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 return;
             }
 
+            NameSyntax name = node.Name;
+            if (name != null)
+            {
+                VisitType(name);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
             NameEqualsSyntax alias = node.Alias;
             if (alias != null)
             {
@@ -4420,10 +4464,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 return;
             }
 
-            NameSyntax name = node.Name;
-            if (name != null)
+            TypeSyntax namespaceOrType = node.NamespaceOrType;
+            if (namespaceOrType != null)
             {
-                VisitType(name);
+                VisitType(namespaceOrType);
             }
         }
 
