@@ -84,7 +84,7 @@ public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixPr
         }
     }
 
-    private CodeAction CreateCodeActionForIfElse(Document document, Diagnostic diagnostic, SyntaxNode node)
+    private static CodeAction CreateCodeActionForIfElse(Document document, Diagnostic diagnostic, SyntaxNode node)
     {
         switch (node?.Kind())
         {

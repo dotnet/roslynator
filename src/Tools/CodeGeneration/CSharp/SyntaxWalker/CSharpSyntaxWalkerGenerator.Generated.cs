@@ -464,6 +464,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Modifiers":
                         case "Keyword":
                         case "Identifier":
+                        case "ParameterList":
                         case "TypeParameterList":
                         case "BaseList":
                         case "ConstraintClauses":
@@ -1407,6 +1408,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Modifiers":
                         case "Keyword":
                         case "Identifier":
+                        case "ParameterList":
                         case "TypeParameterList":
                         case "BaseList":
                         case "ConstraintClauses":
@@ -2348,6 +2350,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Modifiers":
                         case "Keyword":
                         case "Identifier":
+                        case "ParameterList":
                         case "TypeParameterList":
                         case "BaseList":
                         case "ConstraintClauses":
@@ -2609,8 +2612,10 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "GlobalKeyword":
                         case "UsingKeyword":
                         case "StaticKeyword":
+                        case "UnsafeKeyword":
                         case "Alias":
                         case "Name":
+                        case "NamespaceOrType":
                         case "SemicolonToken":
                             return true;
                         default:

@@ -102,7 +102,7 @@ internal static class CSharpUtility
 
     private static bool IsNamespace(
         INamespaceSymbol namespaceSymbol,
-        NameSyntax name,
+        NameSyntax? name,
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
@@ -157,7 +157,7 @@ internal static class CSharpUtility
             {
                 if (usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
                 {
-                    NameSyntax name = usingDirective.Name;
+                    NameSyntax? name = usingDirective.Name;
 
                     if (name is not null
                         && SymbolEqualityComparer.Default.Equals(staticClassSymbol, semanticModel.GetSymbol(name, cancellationToken)))
@@ -647,6 +647,10 @@ internal static class CSharpUtility
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.RecordStructDeclaration:
                 return ((RecordDeclarationSyntax)declaration).ParameterList;
+            case SyntaxKind.ClassDeclaration:
+            case SyntaxKind.StructDeclaration:
+            case SyntaxKind.InterfaceDeclaration:
+                return ((TypeDeclarationSyntax)declaration).ParameterList;
             default:
                 return null;
         }

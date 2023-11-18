@@ -203,7 +203,7 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
         return ((LocalFunctionStatementSyntax)node).WithBody(newBody);
     }
 
-    private static SyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
+    private static CSharpSyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
     {
         if (node is MethodDeclarationSyntax methodDeclaration)
             return methodDeclaration.BodyOrExpressionBody();
