@@ -104,7 +104,7 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
             return null;
         }
 
-        private static SyntaxNode? GetPreviousSibling(SyntaxNode node)
+        private static ExpressionSyntax? GetPreviousSibling(SyntaxNode node)
         {
             SyntaxNode? parent = node.Parent;
 
