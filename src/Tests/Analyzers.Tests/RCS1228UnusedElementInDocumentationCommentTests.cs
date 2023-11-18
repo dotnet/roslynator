@@ -333,4 +333,34 @@ public record Foo(string Bar);
 public record struct Foo(string Bar);
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_ClassPrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+/// <summary>
+/// x
+/// </summary>
+/// <param name=""value"">x</param>
+public class C(string value)
+{
+    public string Value { get; } = value;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_StructPrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+/// <summary>
+/// x
+/// </summary>
+/// <param name=""value"">x</param>
+public struct FooC(string value)
+{
+    public string Value { get; } = value;
+}
+");
+    }
 }
