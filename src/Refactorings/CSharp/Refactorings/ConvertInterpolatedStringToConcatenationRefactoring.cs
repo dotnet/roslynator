@@ -146,7 +146,7 @@ internal static class ConvertInterpolatedStringToConcatenationRefactoring
         }
     }
 
-    private static ExpressionSyntax GetExpression(InterpolatedStringTextSyntax interpolatedStringText, bool isVerbatim)
+    private static LiteralExpressionSyntax GetExpression(InterpolatedStringTextSyntax interpolatedStringText, bool isVerbatim)
     {
         SyntaxToken token = interpolatedStringText.TextToken;
 

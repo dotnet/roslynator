@@ -285,14 +285,14 @@ internal static class ConvertIfToSwitchRefactoring
                     throw new InvalidOperationException();
                 }
         }
-    }
 
-    private static SwitchLabelSyntax CreateCaseSwitchLabel(ExpressionSyntax expression)
-    {
-        if (expression.IsKind(SyntaxKind.DefaultLiteralExpression))
-            expression = NullLiteralExpression().WithTriviaFrom(expression);
+        static SwitchLabelSyntax CreateCaseSwitchLabel(ExpressionSyntax expression)
+        {
+            if (expression.IsKind(SyntaxKind.DefaultLiteralExpression))
+                expression = NullLiteralExpression().WithTriviaFrom(expression);
 
-        return CaseSwitchLabel(expression);
+            return CaseSwitchLabel(expression);
+        }
     }
 
     private static SyntaxList<StatementSyntax> AddBreakStatementIfNecessary(StatementSyntax statement)
