@@ -414,7 +414,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Declare each attribute separately
 #dotnet_diagnostic.rcs1052.severity = none
 
-# Avoid semicolon at the end of declaration
+# Unnecessary semicolon at the end of declaration
 #dotnet_diagnostic.rcs1055.severity = silent
 
 # Avoid usage of using alias directive
