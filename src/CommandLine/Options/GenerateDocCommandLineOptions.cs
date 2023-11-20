@@ -144,8 +144,4 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
         HelpText = "Defines culture that should be used when searching for xml documentation files.",
         MetaValue = "<CULTURE_ID>")]
     public string PreferredCulture { get; set; }
-#if DEBUG
-    [Option(longName: "source-references")]
-    public IEnumerable<string> SourceReferences { get; set; }
-#endif
 }
