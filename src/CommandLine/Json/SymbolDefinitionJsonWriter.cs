@@ -19,7 +19,7 @@ internal class SymbolDefinitionJsonWriter : SymbolDefinitionWriter
     private JsonWriter _writer;
     private StringBuilder _attributeStringBuilder;
 
-    private SymbolDefinitionWriter _definitionWriter;
+    private SymbolDefinitionTextWriter _definitionWriter;
 
     public SymbolDefinitionJsonWriter(
         JsonWriter writer,
