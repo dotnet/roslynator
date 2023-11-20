@@ -21,6 +21,7 @@ Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://g
 - [Configuration](https://josefpihrt.github.io/docs/roslynator/configuration)
 - [Guides](https://josefpihrt.github.io/docs/roslynator/category/guides)
 - [Roslynator CLI](https://josefpihrt.github.io/docs/roslynator/cli)
+- [Roslynator Testing Framework](https://josefpihrt.github.io/docs/roslynator/testing)
 - [Roslynator Client Libraries](https://josefpihrt.github.io/docs/roslynator/ref)
 
 ## Contributions
@@ -50,11 +51,7 @@ See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for furthe
 ## Testing Framework
 
 - Roslynator Testing Framework can be used for unit testing of analyzers, refactorings and code fixes.
-- Framework is distributed as NuGet [package](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Testing.CSharp.Xunit.svg)](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit)
-- Learn how to use the framework from actual usages in Roslynator repo:
-  - Tests of analyzers are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Analyzers.Tests), [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/CodeAnalysis.Analyzers.Tests) and [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Formatting.Analyzers.Tests)
-  - Tests of refactorings are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/Refactorings.Tests)
-  - Tests of fixes of compiler diagnostics are [here](https://github.com/dotnet/roslynator/tree/main/src/Tests/CodeFixes.Tests)
+- See [documentation](https://josefpihrt.github.io/docs/roslynator/testing) for further information.
 
 ## Client Libraries
 
