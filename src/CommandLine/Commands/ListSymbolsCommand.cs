@@ -112,7 +112,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             : null;
 
         using (var stringWriter = new StringWriter())
-        using (var writer = new SymbolDefinitionTextWriter(
+        using (SymbolDefinitionWriter writer = new SymbolDefinitionTextWriter(
             stringWriter,
             filter: SymbolFilterOptions,
             format: format,
@@ -138,7 +138,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
                 var xmlWriterSettings = new XmlWriterSettings() { Indent = true, IndentChars = Options.IndentChars };
 
                 using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
-                using (var writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
+                using (SymbolDefinitionWriter writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
                 {
                     writer.WriteDocument(assemblies, cancellationToken);
                 }
@@ -148,7 +148,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
                 var xmlWriterSettings = new XmlWriterSettings() { OmitXmlDeclaration = true, Indent = true, IndentChars = "" };
 
                 using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
-                using (var writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
+                using (SymbolDefinitionWriter writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
                 {
                     writer.WriteDocument(assemblies, cancellationToken);
                 }
@@ -160,7 +160,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
                 using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
                 using (var streamWriter = new StreamWriter(fileStream, Encodings.UTF8NoBom))
                 using (MarkdownWriter markdownWriter = MarkdownWriter.Create(streamWriter, markdownWriterSettings))
-                using (var writer = new SymbolDefinitionMarkdownWriter(
+                using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(
                     markdownWriter,
                     SymbolFilterOptions,
                     format,
@@ -189,7 +189,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
                         jsonWriter.Formatting = Newtonsoft.Json.Formatting.None;
                     }
 
-                    using (var writer = new SymbolDefinitionJsonWriter(jsonWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
+                    using (SymbolDefinitionWriter writer = new SymbolDefinitionJsonWriter(jsonWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
                     {
                         writer.WriteDocument(assemblies, cancellationToken);
                     }
@@ -304,7 +304,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         INamedTypeSymbol hierarchyRoot,
         CancellationToken cancellationToken)
     {
-        using (var textWriter = new SymbolDefinitionTextWriter(
+        using (SymbolDefinitionWriter textWriter = new SymbolDefinitionTextWriter(
             ConsoleOut,
             filter: SymbolFilterOptions,
             format: format,
@@ -328,7 +328,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
                 jsonWriter.Formatting = Newtonsoft.Json.Formatting.None;
             }
 
-            using (var writer = new SymbolDefinitionJsonWriter(jsonWriter, SymbolFilterOptions, format, default(SymbolDocumentationProvider), hierarchyRoot))
+            using (SymbolDefinitionWriter writer = new SymbolDefinitionJsonWriter(jsonWriter, SymbolFilterOptions, format, default(SymbolDocumentationProvider), hierarchyRoot))
             {
                 writer.WriteDocument(assemblies, cancellationToken);
             }
@@ -337,7 +337,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         WriteLine();
 
         using (XmlWriter xmlWriter = XmlWriter.Create(ConsoleOut, new XmlWriterSettings() { Indent = true, IndentChars = Options.IndentChars }))
-        using (var writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, new SymbolDocumentationProvider(compilations), hierarchyRoot))
+        using (SymbolDefinitionWriter writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, new SymbolDocumentationProvider(compilations), hierarchyRoot))
         {
             writer.WriteDocument(assemblies, cancellationToken);
         }
@@ -345,13 +345,13 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         WriteLine();
 
         using (XmlWriter xmlWriter = XmlWriter.Create(ConsoleOut, new XmlWriterSettings() { OmitXmlDeclaration = true, Indent = true, IndentChars = "" }))
-        using (var writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, new SymbolDocumentationProvider(compilations), hierarchyRoot))
+        using (SymbolDefinitionWriter writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, new SymbolDocumentationProvider(compilations), hierarchyRoot))
             writer.WriteDocument(assemblies, cancellationToken);
 
         WriteLine();
 
         using (MarkdownWriter markdownWriter = MarkdownWriter.Create(ConsoleOut))
-        using (var writer = new SymbolDefinitionMarkdownWriter(
+        using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(
             markdownWriter,
             SymbolFilterOptions,
             format,
