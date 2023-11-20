@@ -4,6 +4,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Analysis;
@@ -109,14 +110,14 @@ public static class CallExtensionMethodAsInstanceMethodAnalysis
                 case SyntaxKind.GenericName:
                     {
                         return SimpleMemberAccessExpression(
-                            argument.Expression.Parenthesize(),
+                            ParenthesizedExpression(argument.Expression),
                             (SimpleNameSyntax)expression);
                     }
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
                         var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                        return memberAccess.WithExpression(argument.Expression.Parenthesize());
+                        return memberAccess.WithExpression(ParenthesizedExpression(argument.Expression));
                     }
                 default:
                     {

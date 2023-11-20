@@ -79,7 +79,6 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Roslynator.VisualStudio, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
-    <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
   </ItemGroup>
 
