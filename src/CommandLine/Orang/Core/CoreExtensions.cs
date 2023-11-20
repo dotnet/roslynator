@@ -91,8 +91,7 @@ internal static class CoreExtensions
 
     public static T SingleOrDefault<T>(this IReadOnlyCollection<T> values, bool shouldThrow)
     {
-        if (values is null)
-            throw new ArgumentNullException(nameof(values));
+        ArgumentNullException.ThrowIfNull(values);
 
         if (shouldThrow)
         {
@@ -109,8 +108,7 @@ internal static class CoreExtensions
         Func<T, bool> predicate,
         bool shouldThrow)
     {
-        if (list is null)
-            throw new ArgumentNullException(nameof(list));
+        ArgumentNullException.ThrowIfNull(list);
 
         if (shouldThrow)
             return list.SingleOrDefault(predicate);

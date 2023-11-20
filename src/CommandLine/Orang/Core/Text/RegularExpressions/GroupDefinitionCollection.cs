@@ -22,8 +22,7 @@ internal class GroupDefinitionCollection : ReadOnlyCollection<GroupDefinition>
 
     private static GroupDefinition[] CreateGroupDefinitions(Regex regex)
     {
-        if (regex is null)
-            throw new ArgumentNullException(nameof(regex));
+        ArgumentNullException.ThrowIfNull(regex);
 
         string[] names = regex.GetGroupNames();
 
@@ -37,16 +36,14 @@ internal class GroupDefinitionCollection : ReadOnlyCollection<GroupDefinition>
 
     public bool Contains(string name)
     {
-        if (name is null)
-            throw new ArgumentNullException(nameof(name));
+        ArgumentNullException.ThrowIfNull(name);
 
         return _names.ContainsKey(name);
     }
 
     public bool Contains(int number)
     {
-        if (number < 0)
-            throw new ArgumentOutOfRangeException(nameof(number));
+        ArgumentOutOfRangeException.ThrowIfNegative(number);
 
         return _numbers.ContainsKey(number);
     }
@@ -55,8 +52,7 @@ internal class GroupDefinitionCollection : ReadOnlyCollection<GroupDefinition>
     {
         get
         {
-            if (name is null)
-                throw new ArgumentNullException(nameof(name));
+            ArgumentNullException.ThrowIfNull(name);
 
             try
             {
