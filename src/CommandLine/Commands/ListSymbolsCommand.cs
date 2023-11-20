@@ -145,14 +145,10 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             }
             else if (string.Equals(extension, ".html", StringComparison.OrdinalIgnoreCase))
             {
-                SourceReferenceProvider sourceReferenceProvider = (!string.IsNullOrEmpty(Options.SourceReferences))
-                    ? SourceReferenceProvider.Load(Options.SourceReferences)
-                    : null;
-
                 var xmlWriterSettings = new XmlWriterSettings() { OmitXmlDeclaration = true, Indent = true, IndentChars = "" };
 
                 using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
-                using (SymbolDefinitionWriter writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot, sourceReferenceProvider))
+                using (SymbolDefinitionWriter writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
                 {
                     writer.WriteDocument(assemblies, cancellationToken);
                 }
