@@ -66,7 +66,7 @@ internal static class ParseHelpers
 
         foreach (string property in values)
         {
-            int index = property.IndexOf("=");
+            int index = property.IndexOf('=');
 
             if (index == -1)
             {
@@ -99,7 +99,7 @@ internal static class ParseHelpers
 
         foreach (string property in values)
         {
-            int index = property.IndexOf("=");
+            int index = property.IndexOf('=');
 
             if (index == -1)
             {
