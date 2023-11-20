@@ -5,9 +5,7 @@ using CommandLine;
 
 namespace Roslynator.CommandLine;
 
-#if DEBUG
 [Verb("find-symbols", HelpText = "Finds symbols in the specified project or solution.")]
-#endif
 public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
 {
     [Value(

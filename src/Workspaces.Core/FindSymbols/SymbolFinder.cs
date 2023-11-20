@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -12,6 +13,11 @@ namespace Roslynator.FindSymbols;
 
 internal static class SymbolFinder
 {
+    private static readonly MetadataName Microsoft_CodeAnalysis_CodeFixes_ExportCodeFixProviderAttribute = MetadataName.Parse("Microsoft.CodeAnalysis.CodeFixes.ExportCodeFixProviderAttribute");
+    private static readonly MetadataName Microsoft_CodeAnalysis_CodeRefactorings_ExportCodeRefactoringProviderAttribute = MetadataName.Parse("Microsoft.CodeAnalysis.CodeRefactorings.ExportCodeRefactoringProviderAttribute");
+    private static readonly MetadataName Microsoft_CodeAnalysis_Diagnostics_DiagnosticAnalyzerAttribute = MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute");
+    private static readonly MetadataName System_Composition_ExportAttribute = MetadataName.Parse("System.Composition.ExportAttribute");
+
     internal static async Task<ImmutableArray<ISymbol>> FindSymbolsAsync(
         Project project,
         SymbolFinderOptions? options = null,
@@ -77,9 +83,12 @@ internal static class SymbolFinder
                                 if (!options.UnusedOnly
                                     || isUnused)
                                 {
-                                    progress?.OnSymbolFound(symbol);
+                                    if (!CanBeUnreferenced(symbol))
+                                    {
+                                        progress?.OnSymbolFound(symbol);
 
-                                    (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).Add(symbol);
+                                        (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).Add(symbol);
+                                    }
                                 }
 
                                 break;
@@ -114,5 +123,22 @@ internal static class SymbolFinder
         }
 
         return symbols?.ToImmutableArray() ?? ImmutableArray<ISymbol>.Empty;
+    }
+
+    private static bool CanBeUnreferenced(ISymbol symbol)
+    {
+        if (symbol.HasAttribute(Microsoft_CodeAnalysis_Diagnostics_DiagnosticAnalyzerAttribute))
+            return true;
+
+        if (symbol.HasAttribute(Microsoft_CodeAnalysis_CodeFixes_ExportCodeFixProviderAttribute))
+            return true;
+
+        if (symbol.HasAttribute(Microsoft_CodeAnalysis_CodeRefactorings_ExportCodeRefactoringProviderAttribute))
+            return true;
+
+        if (symbol.HasAttribute(System_Composition_ExportAttribute))
+            return true;
+
+        return false;
     }
 }
