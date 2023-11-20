@@ -106,9 +106,7 @@ internal static class Program
                     typeof(PhysicalLinesOfCodeCommandLineOptions),
                     typeof(RenameSymbolCommandLineOptions),
                     typeof(SpellcheckCommandLineOptions),
-#if DEBUG
                     typeof(FindSymbolsCommandLineOptions),
-#endif
                 });
 
             parserResult.WithNotParsed(e =>
@@ -193,10 +191,8 @@ internal static class Program
                             return RenameSymbolAsync(renameSymbolCommandLineOptions).Result;
                         case SpellcheckCommandLineOptions spellcheckCommandLineOptions:
                             return SpellcheckAsync(spellcheckCommandLineOptions).Result;
-#if DEBUG
                         case FindSymbolsCommandLineOptions findSymbolsCommandLineOptions:
                             return FindSymbolsAsync(findSymbolsCommandLineOptions).Result;
-#endif
                         default:
                             throw new InvalidOperationException();
                     }
@@ -349,7 +345,6 @@ internal static class Program
         return GetExitCode(status);
     }
 
-#if DEBUG
     private static async Task<int> FindSymbolsAsync(FindSymbolsCommandLineOptions options)
     {
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
@@ -410,7 +405,6 @@ internal static class Program
 
         return GetExitCode(status);
     }
-#endif
 
     private static async Task<int> RenameSymbolAsync(RenameSymbolCommandLineOptions options)
     {
