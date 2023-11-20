@@ -56,9 +56,9 @@ internal static class InvocationExpressionRefactoring
                                 CallExtensionMethodAsInstanceMethodRefactoring.Title,
                                 ct =>
                                 {
-                                    return context.Document.ReplaceNodeAsync(
+                                    return CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(
+                                        context.Document,
                                         analysis.InvocationExpression,
-                                        analysis.NewInvocationExpression,
                                         ct);
                                 },
                                 RefactoringDescriptors.CallExtensionMethodAsInstanceMethod);
