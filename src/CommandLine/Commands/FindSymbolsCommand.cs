@@ -1,0 +1,252 @@
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Roslynator.FindSymbols;
+using Roslynator.Host.Mef;
+using static Roslynator.Logger;
+
+namespace Roslynator.CommandLine;
+
+internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
+{
+    private static readonly SymbolDisplayFormat _nameAndContainingTypesSymbolDisplayFormat = SymbolDisplayFormat.CSharpErrorMessageFormat.Update(
+        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+        parameterOptions: SymbolDisplayParameterOptions.IncludeParamsRefOut
+            | SymbolDisplayParameterOptions.IncludeType
+            | SymbolDisplayParameterOptions.IncludeName
+            | SymbolDisplayParameterOptions.IncludeDefaultValue,
+        miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+            | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+            | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
+
+    public FindSymbolsCommand(
+        FindSymbolsCommandLineOptions options,
+        SymbolFinderOptions symbolFinderOptions,
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
+    {
+        Options = options;
+        SymbolFinderOptions = symbolFinderOptions;
+    }
+
+    public FindSymbolsCommandLineOptions Options { get; }
+
+    public SymbolFinderOptions SymbolFinderOptions { get; }
+
+    public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
+    {
+        HashSet<string> ignoredSymbolIds = (Options.IgnoredSymbolIds.Any())
+            ? new HashSet<string>(Options.IgnoredSymbolIds)
+            : null;
+
+        var progress = new FindSymbolsProgress();
+
+        ImmutableArray<ISymbol> allSymbols;
+
+        if (projectOrSolution.IsProject)
+        {
+            Project project = projectOrSolution.AsProject();
+
+            WriteLine($"Analyze '{project.Name}'", Verbosity.Minimal);
+
+            allSymbols = await AnalyzeProject(project, SymbolFinderOptions, progress, cancellationToken);
+        }
+        else
+        {
+            Solution solution = projectOrSolution.AsSolution();
+
+            WriteLine($"Analyze solution '{solution.FilePath}'", Verbosity.Minimal);
+
+            ImmutableArray<ISymbol>.Builder symbols = null;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            foreach (Project project in FilterProjects(
+                solution,
+                s => s
+                    .GetProjectDependencyGraph()
+                    .GetTopologicallySortedProjects(cancellationToken)
+                    .ToImmutableArray()))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                WriteLine($"  Analyze '{project.Name}'", Verbosity.Minimal);
+
+                ImmutableArray<ISymbol> projectSymbols = await AnalyzeProject(project, SymbolFinderOptions, progress, cancellationToken);
+
+                if (!projectSymbols.Any())
+                    continue;
+
+                if (ignoredSymbolIds?.Count > 0)
+                {
+                    Compilation compilation = await project.GetCompilationAsync(cancellationToken);
+
+                    ImmutableDictionary<string, ISymbol> symbolsById = ignoredSymbolIds
+                        .Select(f => (id: f, symbol: DocumentationCommentId.GetFirstSymbolForDeclarationId(f, compilation)))
+                        .Where(f => f.id is not null)
+                        .ToImmutableDictionary(f => f.id, f => f.symbol);
+
+                    ignoredSymbolIds.ExceptWith(symbolsById.Select(f => f.Key));
+
+                    projectSymbols = projectSymbols.Except(symbolsById.Select(f => f.Value)).ToImmutableArray();
+
+                    if (!projectSymbols.Any())
+                        continue;
+                }
+
+                int maxKindLength = projectSymbols
+                    .Select(f => f.GetSymbolGroup())
+                    .Distinct()
+                    .Max(f => f.ToString().Length);
+
+                foreach (ISymbol symbol in projectSymbols.OrderBy(f => f, SymbolDefinitionComparer.SystemFirst))
+                {
+                    WriteSymbol(symbol, Verbosity.Normal, indentation: "    ", addCommentId: true, padding: maxKindLength);
+                }
+
+                (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).AddRange(projectSymbols);
+            }
+
+            stopwatch.Stop();
+
+            allSymbols = symbols?.ToImmutableArray() ?? ImmutableArray<ISymbol>.Empty;
+
+            LogHelpers.WriteElapsedTime($"Analyzed solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
+        }
+
+        if (allSymbols.Any())
+        {
+            Dictionary<SymbolGroup, int> countByGroup = allSymbols
+                .GroupBy(f => f.GetSymbolGroup())
+                .OrderByDescending(f => f.Count())
+                .ThenBy(f => f.Key)
+                .ToDictionary(f => f.Key, f => f.Count());
+
+            int maxKindLength = countByGroup.Max(f => f.Key.ToString().Length);
+
+            int maxCountLength = countByGroup.Max(f => f.Value.ToString().Length);
+
+            WriteLine(Verbosity.Normal);
+
+            foreach (ISymbol symbol in allSymbols.OrderBy(f => f, SymbolDefinitionComparer.SystemFirst))
+            {
+                WriteSymbol(symbol, Verbosity.Normal, colorNamespace: true, padding: maxKindLength);
+            }
+
+            WriteLine(Verbosity.Normal);
+
+            foreach (KeyValuePair<SymbolGroup, int> kvp in countByGroup)
+            {
+                WriteLine($"{kvp.Value.ToString().PadLeft(maxCountLength)} {kvp.Key.ToString().ToLowerInvariant()} symbols", Verbosity.Normal);
+            }
+        }
+
+        WriteLine(Verbosity.Minimal);
+        WriteLine($"{allSymbols.Length} {((allSymbols.Length == 1) ? "symbol" : "symbols")} found", ConsoleColors.Green, Verbosity.Minimal);
+
+        return CommandResults.Success;
+    }
+
+    private static Task<ImmutableArray<ISymbol>> AnalyzeProject(
+        Project project,
+        SymbolFinderOptions options,
+        IFindSymbolsProgress progress,
+        CancellationToken cancellationToken)
+    {
+        if (!project.SupportsCompilation)
+        {
+            WriteLine("  Project does not support compilation", Verbosity.Normal);
+            return Task.FromResult(ImmutableArray<ISymbol>.Empty);
+        }
+
+        if (!MefWorkspaceServices.Default.SupportedLanguages.Contains(project.Language))
+        {
+            WriteLine($"  Language '{project.Language}' is not supported", Verbosity.Normal);
+            return Task.FromResult(ImmutableArray<ISymbol>.Empty);
+        }
+
+        return SymbolFinder.FindSymbolsAsync(project, options, progress, cancellationToken);
+    }
+
+    private static void WriteSymbol(
+        ISymbol symbol,
+        Verbosity verbosity,
+        string indentation = "",
+        bool addCommentId = false,
+        bool colorNamespace = false,
+        int padding = 0)
+    {
+        if (!ShouldWrite(verbosity))
+            return;
+
+        bool isObsolete = symbol.HasAttribute(MetadataNames.System_ObsoleteAttribute);
+
+        Write(indentation, verbosity);
+
+        string kindText = symbol.GetSymbolGroup().ToString().ToLowerInvariant();
+
+        if (isObsolete)
+        {
+            Write(kindText, ConsoleColors.DarkGray, verbosity);
+        }
+        else
+        {
+            Write(kindText, verbosity);
+        }
+
+        Write(' ', padding - kindText.Length + 1, verbosity);
+
+        string namespaceText = symbol.ContainingNamespace.ToDisplayString();
+
+        if (namespaceText.Length > 0)
+        {
+            if (colorNamespace || isObsolete)
+            {
+                Write(namespaceText, ConsoleColors.DarkGray, verbosity);
+                Write(".", ConsoleColors.DarkGray, verbosity);
+            }
+            else
+            {
+                Write(namespaceText, verbosity);
+                Write(".", verbosity);
+            }
+        }
+
+        string nameText = symbol.ToDisplayString(_nameAndContainingTypesSymbolDisplayFormat);
+
+        if (isObsolete)
+        {
+            Write(nameText, ConsoleColors.DarkGray, verbosity);
+        }
+        else
+        {
+            Write(nameText, verbosity);
+        }
+
+        if (addCommentId
+            && ShouldWrite(Verbosity.Diagnostic))
+        {
+            WriteLine(Verbosity.Diagnostic);
+            Write(indentation, Verbosity.Diagnostic);
+            Write("ID:", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+            Write(' ', padding - 2, Verbosity.Diagnostic);
+            Write(symbol.GetDocumentationCommentId(), ConsoleColors.DarkGray, Verbosity.Diagnostic);
+        }
+
+        WriteLine(verbosity);
+    }
+
+    private class FindSymbolsProgress : IFindSymbolsProgress
+    {
+        public void OnSymbolFound(ISymbol symbol)
+        {
+        }
+    }
+}
