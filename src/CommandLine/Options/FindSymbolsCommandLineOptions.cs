@@ -17,7 +17,7 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
     [Option(
         longName: "ignored-symbols",
         HelpText = "Defines a list of symbols that should be ignored. Namespace of types can be specified.",
-        MetaValue = "<FULLY_QUALIFIED_METADATA_NAME>")]
+        MetaValue = "<METADATA_NAME>")]
     public IEnumerable<string> IgnoredSymbols { get; set; }
 
     [Option(longName: "ignore-generated-code")]
