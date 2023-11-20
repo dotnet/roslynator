@@ -106,9 +106,6 @@ internal static class Program
                     typeof(PhysicalLinesOfCodeCommandLineOptions),
                     typeof(RenameSymbolCommandLineOptions),
                     typeof(SpellcheckCommandLineOptions),
-#if DEBUG
-                    typeof(FindSymbolsCommandLineOptions),
-#endif
                 });
 
             parserResult.WithNotParsed(e =>
@@ -193,10 +190,6 @@ internal static class Program
                             return RenameSymbolAsync(renameSymbolCommandLineOptions).Result;
                         case SpellcheckCommandLineOptions spellcheckCommandLineOptions:
                             return SpellcheckAsync(spellcheckCommandLineOptions).Result;
-#if DEBUG
-                        case FindSymbolsCommandLineOptions findSymbolsCommandLineOptions:
-                            return FindSymbolsAsync(findSymbolsCommandLineOptions).Result;
-#endif
                         default:
                             throw new InvalidOperationException();
                     }
@@ -348,69 +341,6 @@ internal static class Program
 
         return GetExitCode(status);
     }
-
-#if DEBUG
-    private static async Task<int> FindSymbolsAsync(FindSymbolsCommandLineOptions options)
-    {
-        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnumFlags(options.SymbolGroups, OptionNames.SymbolGroups, out SymbolGroupFilter symbolGroups, SymbolFinderOptions.Default.SymbolGroups))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnumFlags(options.Visibility, OptionNames.Visibility, out VisibilityFilter visibility, SymbolFinderOptions.Default.Visibility))
-            return ExitCodes.Error;
-
-        if (!TryParseMetadataNames(options.WithAttributes, out ImmutableArray<MetadataName> withAttributes))
-            return ExitCodes.Error;
-
-        if (!TryParseMetadataNames(options.WithoutAttributes, out ImmutableArray<MetadataName> withoutAttributes))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnumFlags(options.WithFlags, OptionNames.WithFlags, out SymbolFlags withFlags, SymbolFlags.None))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnumFlags(options.WithoutFlags, OptionNames.WithoutFlags, out SymbolFlags withoutFlags, SymbolFlags.None))
-            return ExitCodes.Error;
-
-        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
-            return ExitCodes.Error;
-
-        ImmutableArray<SymbolFilterRule>.Builder rules = ImmutableArray.CreateBuilder<SymbolFilterRule>();
-
-        if (withAttributes.Any())
-            rules.Add(new WithAttributeFilterRule(withAttributes));
-
-        if (withoutAttributes.Any())
-            rules.Add(new WithoutAttributeFilterRule(withoutAttributes));
-
-        if (withFlags != SymbolFlags.None)
-            rules.AddRange(SymbolFilterRuleFactory.FromFlags(withFlags));
-
-        if (withoutFlags != SymbolFlags.None)
-            rules.AddRange(SymbolFilterRuleFactory.FromFlags(withoutFlags, invert: true));
-
-        FileSystemFilter fileSystemFilter = CreateFileSystemFilter(options);
-
-        var symbolFinderOptions = new SymbolFinderOptions(
-            fileSystemFilter,
-            visibility: visibility,
-            symbolGroups: symbolGroups,
-            rules: rules,
-            ignoreGeneratedCode: options.IgnoreGeneratedCode,
-            unusedOnly: options.UnusedOnly);
-
-        var command = new FindSymbolsCommand(
-            options: options,
-            symbolFinderOptions: symbolFinderOptions,
-            projectFilter: projectFilter,
-            fileSystemFilter: fileSystemFilter);
-
-        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
-
-        return GetExitCode(status);
-    }
-#endif
 
     private static async Task<int> RenameSymbolAsync(RenameSymbolCommandLineOptions options)
     {

@@ -5,7 +5,7 @@ dotnet build "$PSScriptRoot/../src/CommandLine.DocumentationGenerator/CommandLin
 
  if(!$?) { Read-Host; Exit }
 
-& "$PSScriptRoot/../src/CommandLine.DocumentationGenerator/bin/Release/net7.0/Roslynator.CommandLine.DocumentationGenerator.exe" `
+& "$PSScriptRoot/../src/CommandLine.DocumentationGenerator/bin/Release/net8.0/Roslynator.CommandLine.DocumentationGenerator.exe" `
  build `
  "$PSScriptRoot/../src/CommandLine.DocumentationGenerator/data" `
  "help,migrate"

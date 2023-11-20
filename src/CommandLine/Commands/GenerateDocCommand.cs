@@ -193,17 +193,11 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
             }
         }
 
-        SourceReferenceProvider sourceReferenceProvider = null;
-#if DEBUG
-        if (Options.SourceReferences.Any())
-            sourceReferenceProvider = SourceReferenceProvider.Load(Options.SourceReferences);
-#endif
         var context = new DocumentationContext(
             documentationModel,
             GetUrlProvider(),
             documentationOptions,
             c => CreateDocumentationWriter(c),
-            sourceReferenceProvider: sourceReferenceProvider,
             commonNamespaces: commonNamespaces);
 
         var generator = new DocumentationGenerator(context);
