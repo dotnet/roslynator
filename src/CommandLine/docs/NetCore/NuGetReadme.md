@@ -4,7 +4,7 @@
 
 ## Requirements
 
-.NET Core SDK 5.0 or 6.0.
+.NET Core SDK 6.0, 7.0 or 8.0.
 
 ## Installation
 
