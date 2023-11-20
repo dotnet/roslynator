@@ -33,7 +33,7 @@ internal abstract class ConsoleDialogDefinition
 
     public abstract bool TryGetValue(string key, out DialogResult result);
 
-    private static ConsoleDialogDefinition CreateDefaultDefinition()
+    private static DefaultDialogDefinition CreateDefaultDefinition()
     {
         ImmutableDictionary<string, DialogResult>.Builder builder
             = ImmutableDictionary.CreateBuilder<string, DialogResult>();
