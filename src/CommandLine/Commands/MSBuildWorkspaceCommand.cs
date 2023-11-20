@@ -37,7 +37,8 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
     public async Task<CommandStatus> ExecuteAsync(IEnumerable<PathInfo> paths, string msbuildPath = null, IEnumerable<string> properties = null)
     {
-        ArgumentNullException.ThrowIfNull(paths);
+        if (paths is null)
+            throw new ArgumentNullException(nameof(paths));
 
         if (!paths.Any())
             throw new ArgumentException("", nameof(paths));

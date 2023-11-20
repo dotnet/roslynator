@@ -49,9 +49,11 @@ public class KeyValuePairOptionValue : OptionValue
         bool hidden = false,
         bool canContainExpression = false)
     {
-        ArgumentNullException.ThrowIfNull(key);
+        if (key is null)
+            throw new ArgumentNullException(nameof(key));
 
-        ArgumentNullException.ThrowIfNull(value);
+        if (value is null)
+            throw new ArgumentNullException(nameof(value));
 
         shortKey ??= key.Substring(0, 1);
 

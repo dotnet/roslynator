@@ -114,9 +114,11 @@ internal static class TextHelpers
 
     public static string SplitCamelCase(string value, string separator)
     {
-        ArgumentNullException.ThrowIfNull(value);
+        if (value is null)
+            throw new ArgumentNullException(nameof(value));
 
-        ArgumentNullException.ThrowIfNull(separator);
+        if (separator is null)
+            throw new ArgumentNullException(nameof(separator));
 
         int len = value.Length;
         if (len > 0)
