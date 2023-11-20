@@ -5,7 +5,7 @@ using CommandLine;
 
 namespace Roslynator.CommandLine;
 
-public abstract class AbstractGenerateDocCommandLineOptions : MSBuildCommandLineOptions 
+public abstract class AbstractGenerateDocCommandLineOptions : MSBuildCommandLineOptions
 {
     [Value(
         index: 0,
