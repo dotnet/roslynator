@@ -5,3 +5,4 @@ roslynator_configure_await = false
 
 dotnet_diagnostic.CA1510.severity = none
 dotnet_diagnostic.CA1512.severity = none
+dotnet_diagnostic.CA1866.severity = none

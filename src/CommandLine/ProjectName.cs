@@ -27,7 +27,7 @@ internal readonly struct ProjectName
 
     public static ProjectName Create(string name)
     {
-        if (name.EndsWith(')'))
+        if (name.EndsWith(")\"))
         {
             int openParenToken = name.LastIndexOf('(');
 
