@@ -76,4 +76,8 @@
     </AssemblyAttribute>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FindSymbols\" />
+  </ItemGroup>
+
 </Project>
