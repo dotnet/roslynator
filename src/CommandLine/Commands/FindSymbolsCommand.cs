@@ -42,8 +42,8 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        HashSet<string> ignoredSymbolIds = (Options.IgnoredSymbolIds.Any())
-            ? new HashSet<string>(Options.IgnoredSymbolIds)
+        HashSet<string> ignoredSymbolIds = (Options.IgnoredSymbols.Any())
+            ? new HashSet<string>(Options.IgnoredSymbols)
             : null;
 
         var progress = new FindSymbolsProgress();

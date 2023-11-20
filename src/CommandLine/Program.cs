@@ -355,7 +355,7 @@ internal static class Program
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
 
-        if (!TryParseOptionValueAsEnumFlags(options.SymbolGroups, OptionNames.SymbolGroups, out SymbolGroupFilter symbolGroups, SymbolFinderOptions.Default.SymbolGroups))
+        if (!TryParseOptionValueAsEnumFlags(options.SymbolKind, OptionNames.SymbolKind, out SymbolGroupFilter symbolGroups, SymbolFinderOptions.Default.SymbolGroups))
             return ExitCodes.Error;
 
         if (!TryParseOptionValueAsEnumFlags(options.Visibility, OptionNames.Visibility, out VisibilityFilter visibility, SymbolFinderOptions.Default.Visibility))
@@ -367,10 +367,10 @@ internal static class Program
         if (!TryParseMetadataNames(options.WithoutAttributes, out ImmutableArray<MetadataName> withoutAttributes))
             return ExitCodes.Error;
 
-        if (!TryParseOptionValueAsEnumFlags(options.WithFlags, OptionNames.WithFlags, out SymbolFlags withFlags, SymbolFlags.None))
+        if (!TryParseOptionValueAsEnumFlags(options.WithModifiers, OptionNames.WithModifiers, out SymbolModifier withModifiers, SymbolModifier.None))
             return ExitCodes.Error;
 
-        if (!TryParseOptionValueAsEnumFlags(options.WithoutFlags, OptionNames.WithoutFlags, out SymbolFlags withoutFlags, SymbolFlags.None))
+        if (!TryParseOptionValueAsEnumFlags(options.WithoutModifiers, OptionNames.WithoutModifiers, out SymbolModifier withoutModifiers, SymbolModifier.None))
             return ExitCodes.Error;
 
         if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
@@ -384,11 +384,11 @@ internal static class Program
         if (withoutAttributes.Any())
             rules.Add(new WithoutAttributeFilterRule(withoutAttributes));
 
-        if (withFlags != SymbolFlags.None)
-            rules.AddRange(SymbolFilterRuleFactory.FromFlags(withFlags));
+        if (withModifiers != SymbolModifier.None)
+            rules.AddRange(SymbolFilterRuleFactory.FromModifiers(withModifiers));
 
-        if (withoutFlags != SymbolFlags.None)
-            rules.AddRange(SymbolFilterRuleFactory.FromFlags(withoutFlags, invert: true));
+        if (withoutModifiers != SymbolModifier.None)
+            rules.AddRange(SymbolFilterRuleFactory.FromModifiers(withoutModifiers, invert: true));
 
         FileSystemFilter fileSystemFilter = CreateFileSystemFilter(options);
 
@@ -398,7 +398,7 @@ internal static class Program
             symbolGroups: symbolGroups,
             rules: rules,
             ignoreGeneratedCode: options.IgnoreGeneratedCode,
-            unusedOnly: options.UnusedOnly);
+            unusedOnly: options.Unused);
 
         var command = new FindSymbolsCommand(
             options: options,

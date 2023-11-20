@@ -5,7 +5,7 @@ using System;
 namespace Roslynator.FindSymbols;
 
 [Flags]
-internal enum SymbolFlags
+internal enum SymbolModifier
 {
     None = 0,
     Const = 1 << 5,
@@ -15,7 +15,5 @@ internal enum SymbolFlags
     Override = 1 << 9,
     Abstract = 1 << 10,
     ReadOnly = 1 << 11,
-    Extern = 1 << 12,
-    Async = 1 << 14,
-    Extension = 1 << 16,
+    Async = 1 << 12,
 }

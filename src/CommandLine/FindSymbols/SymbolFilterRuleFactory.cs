@@ -7,37 +7,31 @@ namespace Roslynator.FindSymbols;
 
 internal static class SymbolFilterRuleFactory
 {
-    public static IEnumerable<SymbolFilterRule> FromFlags(SymbolFlags flags, bool invert = false)
+    public static IEnumerable<SymbolFilterRule> FromModifiers(SymbolModifier modifiers, bool invert = false)
     {
-        if ((flags & SymbolFlags.Const) != 0)
+        if ((modifiers & SymbolModifier.Const) != 0)
             yield return (invert) ? IsNotConst : IsConst;
 
-        if ((flags & SymbolFlags.Static) != 0)
+        if ((modifiers & SymbolModifier.Static) != 0)
             yield return (invert) ? IsNotStatic : IsStatic;
 
-        if ((flags & SymbolFlags.Virtual) != 0)
+        if ((modifiers & SymbolModifier.Virtual) != 0)
             yield return (invert) ? IsNotVirtual : IsVirtual;
 
-        if ((flags & SymbolFlags.Sealed) != 0)
+        if ((modifiers & SymbolModifier.Sealed) != 0)
             yield return (invert) ? IsNotSealed : IsSealed;
 
-        if ((flags & SymbolFlags.Override) != 0)
+        if ((modifiers & SymbolModifier.Override) != 0)
             yield return (invert) ? IsNotOverride : IsOverride;
 
-        if ((flags & SymbolFlags.Abstract) != 0)
+        if ((modifiers & SymbolModifier.Abstract) != 0)
             yield return (invert) ? IsNotAbstract : IsAbstract;
 
-        if ((flags & SymbolFlags.ReadOnly) != 0)
+        if ((modifiers & SymbolModifier.ReadOnly) != 0)
             yield return (invert) ? IsNotReadOnly : IsReadOnly;
 
-        if ((flags & SymbolFlags.Extern) != 0)
-            yield return (invert) ? IsNotExtern : IsExtern;
-
-        if ((flags & SymbolFlags.Async) != 0)
+        if ((modifiers & SymbolModifier.Async) != 0)
             yield return (invert) ? IsNotAsync : IsAsync;
-
-        if ((flags & SymbolFlags.Extension) != 0)
-            yield return (invert) ? IsNotExtension : IsExtension;
     }
 
     public static PredicateSymbolFilterRule IsConst { get; } = new(f => ((IFieldSymbol)f).IsConst, f => f.IsKind(SymbolKind.Field), SymbolFilterReason.Other);
@@ -76,12 +70,6 @@ internal static class SymbolFilterRuleFactory
 
     public static PredicateSymbolFilterRule IsNotReadOnly { get; } = IsReadOnly.Invert();
 
-    public static PredicateSymbolFilterRule IsExtern { get; } = new(f => f.IsExtern, f => f.IsKind(SymbolKind.Event, SymbolKind.Method, SymbolKind.Property), SymbolFilterReason.Other);
-    public static PredicateSymbolFilterRule IsNotExtern { get; } = IsExtern.Invert();
-
     public static PredicateSymbolFilterRule IsAsync { get; } = new(f => ((IMethodSymbol)f).IsAsync, f => f.IsKind(SymbolKind.Method), SymbolFilterReason.Other);
     public static PredicateSymbolFilterRule IsNotAsync { get; } = IsAsync.Invert();
-
-    public static PredicateSymbolFilterRule IsExtension { get; } = new(f => ((IMethodSymbol)f).IsExtensionMethod, f => f.IsKind(SymbolKind.Method), SymbolFilterReason.Other);
-    public static PredicateSymbolFilterRule IsNotExtension { get; } = IsExtension.Invert();
 }

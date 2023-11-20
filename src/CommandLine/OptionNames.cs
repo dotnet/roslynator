@@ -39,11 +39,11 @@ internal static class OptionNames
     public const string RootDirectoryUrl = "root-directory-url";
     public const string Scope = "scope";
     public const string SeverityLevel = "severity-level";
-    public const string SymbolGroups = "symbol-groups";
+    public const string SymbolKind = "symbol-kind";
     public const string TargetVersion = "target-version";
     public const string Type = "type";
     public const string Visibility = "visibility";
-    public const string WithFlags = "with-flags";
-    public const string WithoutFlags = "without-flags";
     public const string WrapList = "wrap-list";
+    public const string WithModifiers = "with-modifiers";
+    public const string WithoutModifiers = "without-modifiers";
 }
