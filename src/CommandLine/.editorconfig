@@ -2,3 +2,5 @@
 
 [*.{cs,csx}]
 roslynator_configure_await = false
+
+dotnet_diagnostic.CA1510.severity = none
