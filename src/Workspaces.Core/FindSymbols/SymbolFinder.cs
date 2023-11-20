@@ -93,12 +93,12 @@ internal static class SymbolFinder
 
                                 break;
                             }
-                        case SymbolFilterReason.Visibility:
                         case SymbolFilterReason.WithoutAttribute:
                         case SymbolFilterReason.ImplicitlyDeclared:
                             {
                                 continue;
                             }
+                        case SymbolFilterReason.Visibility:
                         case SymbolFilterReason.SymbolGroup:
                         case SymbolFilterReason.Ignored:
                         case SymbolFilterReason.WithAttribute:
