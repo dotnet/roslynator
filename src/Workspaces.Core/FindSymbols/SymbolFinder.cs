@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -68,17 +67,13 @@ internal static class SymbolFinder
                         case SymbolFilterReason.None:
                             {
                                 if (options.IgnoreGeneratedCode
-                                    && generatedCodeAttribute is not null
                                     && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(compilation.Language)!.IsComment(f), cancellationToken))
                                 {
                                     continue;
                                 }
 
-                                if (options.UnusedOnly
-                                    && !symbol.IsImplicitlyDeclared)
-                                {
+                                if (options.UnusedOnly)
                                     isUnused = await UnusedSymbolUtility.IsUnusedSymbolAsync(symbol, project.Solution, cancellationToken).ConfigureAwait(false);
-                                }
 
                                 if (!options.UnusedOnly
                                     || isUnused)

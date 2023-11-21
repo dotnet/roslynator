@@ -186,20 +186,11 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         if (!ShouldWrite(verbosity))
             return;
 
-        bool isObsolete = symbol.HasAttribute(MetadataNames.System_ObsoleteAttribute);
-
         Write(indentation, verbosity);
 
         string kindText = symbol.GetSymbolGroup().ToString().ToLowerInvariant();
 
-        if (isObsolete)
-        {
-            Write(kindText, ConsoleColors.DarkGray, verbosity);
-        }
-        else
-        {
-            Write(kindText, verbosity);
-        }
+        Write(kindText, verbosity);
 
         Write(' ', padding - kindText.Length + 1, verbosity);
 
@@ -207,7 +198,7 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
         if (namespaceText.Length > 0)
         {
-            if (colorNamespace || isObsolete)
+            if (colorNamespace)
             {
                 Write(namespaceText, ConsoleColors.DarkGray, verbosity);
                 Write(".", ConsoleColors.DarkGray, verbosity);
@@ -221,14 +212,7 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
         string nameText = symbol.ToDisplayString(_nameAndContainingTypesSymbolDisplayFormat);
 
-        if (isObsolete)
-        {
-            Write(nameText, ConsoleColors.DarkGray, verbosity);
-        }
-        else
-        {
-            Write(nameText, verbosity);
-        }
+        Write(nameText, verbosity);
 
         if (addCommentId
             && ShouldWrite(Verbosity.Diagnostic))
