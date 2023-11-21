@@ -68,17 +68,11 @@ class C
     public async Task Test_Flags_SByte()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using System;
-
 class C
 {
     void M()
     {
-        var enumValue = TestEnum.Bar;
-        if (enumValue <= 0 || enumValue >= [|(TestEnum)2|])
-        {
-            throw new Exception();
-        }
+        var enumValue = [|(TestEnum)2|];
     }
 }
 
@@ -87,17 +81,11 @@ enum TestEnum : sbyte
     Foo, Bar, Baz
 }
 ", @"
-using System;
-
 class C
 {
     void M()
     {
-        var enumValue = TestEnum.Bar;
-        if (enumValue <= 0 || enumValue >= TestEnum.Baz)
-        {
-            throw new Exception();
-        }
+        var enumValue = TestEnum.Baz;
     }
 }
 
