@@ -16,31 +16,52 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
 
     [Option(
         longName: "ignored-symbols",
-        HelpText = "Defines a list of symbols that should be ignored. Namespace of types can be specified.",
+        HelpText = "Space separated list of namespaces and/or types that should be ignored.",
         MetaValue = "<METADATA_NAME>")]
     public IEnumerable<string> IgnoredSymbols { get; set; }
 
     [Option(longName: "ignore-generated-code")]
     public bool IgnoreGeneratedCode { get; set; }
 
-    [Option(longName: OptionNames.SymbolKind)]
+    [Option(
+        longName: OptionNames.SymbolKind,
+        HelpText = "Space separated list of symbol kinds to be included. "
+            + "Allowed values are class, delegate, enum, interface, struct, event, field, enum-field, const, method, property, indexer, member or type.")]
     public IEnumerable<string> SymbolKind { get; set; }
 
-    [Option(longName: "unused")]
+    [Option(
+        longName: "unused",
+        HelpText = "Search only for symbols that have 0 references.")]
     public bool Unused { get; set; }
 
-    [Option(longName: OptionNames.Visibility)]
+    [Option(
+        longName: OptionNames.Visibility,
+        Default = new[] { "public" },
+        HelpText = "Space separated list of accessibilities of a type or a member. Allowed values are public, internal or private.",
+        MetaValue = "<VISIBILITY>")]
     public IEnumerable<string> Visibility { get; set; }
 
-    [Option(longName: "with-attributes")]
+    [Option(
+        longName: "with-attributes",
+        HelpText = "Space separated list of attributes that should be included.",
+        MetaValue = "<METADATA_NAME>")]
     public IEnumerable<string> WithAttributes { get; set; }
 
-    [Option(longName: "without-attributes")]
+    [Option(
+        longName: "without-attributes",
+        HelpText = "Space separated list of attributes that should be excluded.",
+        MetaValue = "<METADATA_NAME>")]
     public IEnumerable<string> WithoutAttributes { get; set; }
 
-    [Option(longName: "with-modifiers")]
+    [Option(
+        longName: "with-modifiers",
+        HelpText = "Space separated list of modifiers that should be included.",
+        MetaValue = "<MODIFIER>")]
     public IEnumerable<string> WithModifiers { get; set; }
 
-    [Option(longName: "without-modifiers")]
+    [Option(
+        longName: "without-modifiers",
+        HelpText = "Space separated list of modifiers that should be excluded.",
+        MetaValue = "<MODIFIER>")]
     public IEnumerable<string> WithoutModifiers { get; set; }
 }
