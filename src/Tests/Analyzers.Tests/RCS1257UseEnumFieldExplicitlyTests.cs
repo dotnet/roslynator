@@ -65,6 +65,50 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
+    public async Task Test_Flags_SByte()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var enumValue = TestEnum.Bar;
+        if (enumValue <= 0 || enumValue >= [|(TestEnum)2|])
+        {
+            throw new Exception();
+        }
+    }
+}
+
+enum TestEnum : sbyte
+{
+    Foo, Bar, Baz
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var enumValue = TestEnum.Bar;
+        if (enumValue <= 0 || enumValue >= TestEnum.Baz)
+        {
+            throw new Exception();
+        }
+    }
+}
+
+enum TestEnum : sbyte
+{
+    Foo, Bar, Baz
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
     public async Task TestNoDiagnostic_UndefinedValue()
     {
         await VerifyNoDiagnosticAsync(@"

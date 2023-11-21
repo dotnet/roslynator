@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
@@ -56,7 +57,7 @@ public sealed class CastExpressionCodeFixProvider : BaseCodeFixProvider
 
         if (enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute))
         {
-            ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValueOpt.Value, enumSymbol);
+            ulong value = Convert.ToUInt64(constantValueOpt.Value);
 
             List<ulong> flags = FlagsUtility<ulong>.Instance.GetFlags(value).ToList();
 
@@ -86,7 +87,7 @@ public sealed class CastExpressionCodeFixProvider : BaseCodeFixProvider
                 .First(fieldSymbol =>
                 {
                     return fieldSymbol.HasConstantValue
-                        && constantValueOpt.Value.Equals(fieldSymbol.ConstantValue);
+                        && Convert.ToUInt64(constantValueOpt.Value) == Convert.ToUInt64(fieldSymbol.ConstantValue);
                 });
 
             ExpressionSyntax newExpression = CreateEnumFieldExpression(symbol).WithTriviaFrom(castExpression);
