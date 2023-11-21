@@ -64,13 +64,15 @@ public sealed class UseEnumFieldExplicitlyAnalyzer : BaseDiagnosticAnalyzer
         if (enumSymbol?.EnumUnderlyingType is null)
             return;
 
-        ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValueOpt.Value, enumSymbol);
+        if (!ConvertHelpers.TryConvertToUInt64(constantValueOpt.Value, out ulong value))
+            return;
 
         foreach (ISymbol member in enumSymbol.GetMembers())
         {
             if (member is IFieldSymbol fieldSymbol
                 && fieldSymbol.HasConstantValue
-                && value == SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumSymbol))
+                && ConvertHelpers.TryConvertToUInt64(fieldSymbol.ConstantValue, out ulong fieldValue)
+                && value == fieldValue)
             {
                 context.ReportDiagnostic(DiagnosticRules.UseEnumFieldExplicitly, castExpression);
                 return;
