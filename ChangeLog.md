@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1254))
 - Fix [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1253))
 - Fix [RCS1196](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1196/) ([PR](https://github.com/dotnet/roslynator/pull/1235))
+- [CLI] Fix reading of non-existent redirected input on git bash ([PR](https://github.com/dotnet/roslynator/pull/1265))
 
 ## [4.6.2] - 2023-11-10
 
