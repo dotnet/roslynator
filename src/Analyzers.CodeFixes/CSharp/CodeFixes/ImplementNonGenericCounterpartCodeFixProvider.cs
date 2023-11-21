@@ -353,16 +353,6 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
         }
     }
 
-    private class RemoveExplicitInterfaceSpecifierAddSimplifierAnnotationRewriter : CSharpSyntaxRewriter
-    {
-        public static AddSimplifierAnnotationRewriter Instance { get; } = new();
-
-        public override SyntaxNode VisitQualifiedName(QualifiedNameSyntax node)
-        {
-            return node.WithSimplifierAnnotation();
-        }
-    }
-
     private class AddTypeNameRewriter : CSharpSyntaxRewriter
     {
         private readonly TypeSyntax _type;
