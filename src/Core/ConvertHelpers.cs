@@ -99,4 +99,18 @@ internal static class ConvertHelpers
                 throw new ArgumentException("", nameof(numericType));
         }
     }
+
+    public static bool TryConvertToUInt64(object value, out ulong result)
+    {
+        try
+        {
+            result = Convert.ToUInt64(value);
+            return true;
+        }
+        catch (Exception ex) when (ex is InvalidCastException || ex is OverflowException)
+        {
+            result = 0;
+            return false;
+        }
+    }
 }
