@@ -55,13 +55,15 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
 
     [Option(
         longName: "with-modifiers",
-        HelpText = "Space separated list of modifiers that should be included.",
+        HelpText = "Space separated list of modifiers that should be included. "
+            + "Allowed values are const, static, virtual, sealed, override, abstract and read-only.",
         MetaValue = "<MODIFIER>")]
     public IEnumerable<string> WithModifiers { get; set; }
 
     [Option(
         longName: "without-modifiers",
-        HelpText = "Space separated list of modifiers that should be excluded.",
+        HelpText = "Space separated list of modifiers that should be excluded. "
+            + "Allowed values are const, static, virtual, sealed, override, abstract and read-only.",
         MetaValue = "<MODIFIER>")]
     public IEnumerable<string> WithoutModifiers { get; set; }
 }

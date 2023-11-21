@@ -29,9 +29,6 @@ internal static class SymbolFilterRuleFactory
 
         if ((modifiers & SymbolModifier.ReadOnly) != 0)
             yield return (invert) ? IsNotReadOnly : IsReadOnly;
-
-        if ((modifiers & SymbolModifier.Async) != 0)
-            yield return (invert) ? IsNotAsync : IsAsync;
     }
 
     public static PredicateSymbolFilterRule IsConst { get; } = new(f => ((IFieldSymbol)f).IsConst, f => f.IsKind(SymbolKind.Field), SymbolFilterReason.Other);
@@ -69,7 +66,4 @@ internal static class SymbolFilterRuleFactory
         SymbolFilterReason.Other);
 
     public static PredicateSymbolFilterRule IsNotReadOnly { get; } = IsReadOnly.Invert();
-
-    public static PredicateSymbolFilterRule IsAsync { get; } = new(f => ((IMethodSymbol)f).IsAsync, f => f.IsKind(SymbolKind.Method), SymbolFilterReason.Other);
-    public static PredicateSymbolFilterRule IsNotAsync { get; } = IsAsync.Invert();
 }
