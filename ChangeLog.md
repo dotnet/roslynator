@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- [CLI] Add command `find-symbols` ([PR](https://github.com/dotnet/roslynator/pull/1255))
+
 ### Changed
 
 - Bump Roslyn to 4.6.0 ([PR](https://github.com/dotnet/roslynator/pull/1248)).
