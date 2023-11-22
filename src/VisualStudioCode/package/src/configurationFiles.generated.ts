@@ -482,7 +482,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs1090.severity = none
 # Options: roslynator_configure_await
 
-# Remove file with no code
+# File contains no code
 #dotnet_diagnostic.rcs1093.severity = suggestion
 
 # Declare using directive on top level
