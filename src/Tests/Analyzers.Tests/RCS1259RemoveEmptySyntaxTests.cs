@@ -428,7 +428,7 @@ namespace N1
     {
         await VerifyDiagnosticAndFixAsync(@"
 [|namespace N1;|]
-", @"");
+", "");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
