@@ -25,7 +25,7 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
 
     [Option(
         longName: "unused",
-        HelpText = "Search only for symbols that have 0 references.")]
+        HelpText = "Search only for symbols that have zero references.")]
     public bool Unused { get; set; }
 
     [Option(
