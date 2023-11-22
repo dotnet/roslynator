@@ -17,6 +17,7 @@
     <RoslynatorRoslynAnalyzersVersion>3.3.4</RoslynatorRoslynAnalyzersVersion>
     <RoslynatorCliRoslynVersion>4.7.0</RoslynatorCliRoslynVersion>
     <RoslynatorTestingRoslynVersion>4.7.0</RoslynatorTestingRoslynVersion>
+    <RoslynatorAnalyzersPackageReferenceVersion>4.6.2</RoslynatorAnalyzersPackageReferenceVersion>
     <RoslynatorCliPackageVersion>$(RoslynatorCliVersion)</RoslynatorCliPackageVersion>
     <RoslynatorPackageVersion>$(Version)</RoslynatorPackageVersion>
     <RoslynatorVersion>$(RoslynatorPackageVersion)</RoslynatorVersion>
@@ -46,15 +47,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="roslynator.analyzers" Version="4.6.2" Condition="'$(MSBuildProjectName)'!='Analyzers'">
+    <PackageReference Include="roslynator.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)" Condition="'$(MSBuildProjectName)'!='Analyzers'">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="roslynator.formatting.analyzers" Version="4.6.2" Condition="'$(MSBuildProjectName)'!='Formatting.Analyzers'">
+    <PackageReference Include="roslynator.formatting.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)" Condition="'$(MSBuildProjectName)'!='Formatting.Analyzers'">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="roslynator.codeanalysis.analyzers" Version="4.6.2" Condition="'$(MSBuildProjectName)'!='CodeAnalysis.Analyzers'">
+    <PackageReference Include="roslynator.codeanalysis.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)" Condition="'$(MSBuildProjectName)'!='CodeAnalysis.Analyzers'">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
