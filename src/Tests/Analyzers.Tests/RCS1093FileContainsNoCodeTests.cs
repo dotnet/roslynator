@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1093RemoveFileWithNoCodeTests : AbstractCSharpDiagnosticVerifier<RemoveFileWithNoCodeAnalyzer, EmptyCodeFixProvider>
+public class RCS1093FileContainsNoCodeTests : AbstractCSharpDiagnosticVerifier<FileContainsNoCodeAnalyzer, EmptyCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveFileWithNoCode;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FileContainsNoCode;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveFileWithNoCode)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
     public async Task Test()
     {
         await VerifyDiagnosticAsync(@"[||]// copyright ...
@@ -20,7 +20,7 @@ public class RCS1093RemoveFileWithNoCodeTests : AbstractCSharpDiagnosticVerifier
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveFileWithNoCode)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
     public async Task Test_UsingDirective()
     {
         await VerifyDiagnosticAsync(@"[||]// copyright ...
@@ -30,7 +30,7 @@ using System;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveFileWithNoCode)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
     public async Task Test_FileScopedNamespaceDeclaration()
     {
         await VerifyDiagnosticAsync(@"[||]// copyright ...
@@ -40,7 +40,7 @@ namespace N;
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveFileWithNoCode)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
     public async Task Test_IfDirective()
     {
         await VerifyNoDiagnosticAsync(@"// copyright ...

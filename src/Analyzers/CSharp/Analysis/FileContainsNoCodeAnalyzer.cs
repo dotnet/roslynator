@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class RemoveFileWithNoCodeAnalyzer : BaseDiagnosticAnalyzer
+public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -20,7 +20,7 @@ public sealed class RemoveFileWithNoCodeAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveFileWithNoCode);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FileContainsNoCode);
 
             return _supportedDiagnostics;
         }
@@ -68,7 +68,6 @@ public sealed class RemoveFileWithNoCodeAnalyzer : BaseDiagnosticAnalyzer
                 ReportDiagnostic(context, compilationUnit);
             }
         }
-
     }
 
     private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, CompilationUnitSyntax compilationUnit)
@@ -79,7 +78,7 @@ public sealed class RemoveFileWithNoCodeAnalyzer : BaseDiagnosticAnalyzer
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.RemoveFileWithNoCode,
+                DiagnosticRules.FileContainsNoCode,
                 Location.Create(syntaxTree, default(TextSpan)));
         }
     }
