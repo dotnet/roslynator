@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -38,19 +39,48 @@ public sealed class RemoveFileWithNoCodeAnalyzer : BaseDiagnosticAnalyzer
 
         SyntaxToken token = compilationUnit.EndOfFileToken;
 
-        if (compilationUnit.Span == token.Span
-            && !token.HasTrailingTrivia
-            && token.LeadingTrivia.All(f => !f.IsDirective))
+        if (!compilationUnit.AttributeLists.Any()
+            && !compilationUnit.Externs.Any())
         {
-            SyntaxTree syntaxTree = compilationUnit.SyntaxTree;
-
-            if (!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath))
+            if (!compilationUnit.Members.Any()
+                && compilationUnit.Span == token.Span
+                && !token.HasTrailingTrivia
+                && token.LeadingTrivia.All(f => !f.IsDirective))
             {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.RemoveFileWithNoCode,
-                    Location.Create(syntaxTree, default(TextSpan)));
+                ReportDiagnostic(context, compilationUnit);
             }
+            else if ((!compilationUnit.Members.Any()
+                || compilationUnit.Members.SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.FileScopedNamespaceDeclaration))
+                && compilationUnit.DescendantTrivia().All(f =>
+                {
+                    switch (f.Kind())
+                    {
+                        case SyntaxKind.IfDirectiveTrivia:
+                        case SyntaxKind.ElseDirectiveTrivia:
+                        case SyntaxKind.ElifDirectiveTrivia:
+                        case SyntaxKind.EndIfDirectiveTrivia:
+                            return false;
+                        default:
+                            return true;
+                    }
+                }))
+            {
+                ReportDiagnostic(context, compilationUnit);
+            }
+        }
+
+    }
+
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, CompilationUnitSyntax compilationUnit)
+    {
+        SyntaxTree syntaxTree = compilationUnit.SyntaxTree;
+
+        if (!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath))
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.RemoveFileWithNoCode,
+                Location.Create(syntaxTree, default(TextSpan)));
         }
     }
 }
