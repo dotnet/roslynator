@@ -862,15 +862,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyRegionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveEmptyRegion);
 
         /// <summary>RCS1093</summary>
-        public static readonly DiagnosticDescriptor RemoveFileWithNoCode = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveFileWithNoCode, 
-            title:              "Remove file with no code.", 
-            messageFormat:      "Remove file with no code.", 
+        public static readonly DiagnosticDescriptor FileContainsNoCode = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.FileContainsNoCode, 
+            title:              "File contains no code.", 
+            messageFormat:      "File contains no code.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveFileWithNoCode, 
+            helpLinkUri:        DiagnosticIdentifiers.FileContainsNoCode, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1094</summary>

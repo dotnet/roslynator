@@ -76,7 +76,7 @@ namespace Roslynator.CSharp
         public const string UseUnaryOperatorInsteadOfAssignment = "RCS1089";
         public const string ConfigureAwait = "RCS1090";
         public const string RemoveEmptyRegion = "RCS1091";
-        public const string RemoveFileWithNoCode = "RCS1093";
+        public const string FileContainsNoCode = "RCS1093";
         public const string DeclareUsingDirectiveOnTopLevel = "RCS1094";
         public const string UseHasFlagMethodOrBitwiseOperator = "RCS1096";
         public const string RemoveRedundantToStringCall = "RCS1097";
