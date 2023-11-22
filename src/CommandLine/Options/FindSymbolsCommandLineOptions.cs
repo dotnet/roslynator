@@ -25,7 +25,7 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
     [Option(
         longName: OptionNames.SymbolKind,
         HelpText = "Space separated list of symbol kinds to be included. "
-            + "Allowed values are class, delegate, enum, interface, struct, event, field, enum-field, const, method, property, indexer, member or type.")]
+            + "Allowed values are class, delegate, enum, interface, struct, event, field, enum-field, const, method, property, indexer, member and type.")]
     public IEnumerable<string> SymbolKind { get; set; }
 
     [Option(
@@ -35,7 +35,7 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
 
     [Option(
         longName: OptionNames.Visibility,
-        HelpText = "Space separated list of visibilities of a type or a member. Allowed values are public, internal or private.",
+        HelpText = "Space separated list of visibilities of a type or a member. Allowed values are public, internal and private.",
         MetaValue = "<VISIBILITY>")]
     public IEnumerable<string> Visibility { get; set; }
 
