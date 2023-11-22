@@ -8,7 +8,7 @@ internal class SymbolFinderOptions : SymbolFilterOptions
 {
     internal SymbolFinderOptions(
         FileSystemFilter fileSystemFilter = null,
-        VisibilityFilter visibility = VisibilityFilter.Any,
+        VisibilityFilter visibility = VisibilityFilter.All,
         SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
         IEnumerable<SymbolFilterRule> rules = null,
         IEnumerable<AttributeFilterRule> attributeRules = null,

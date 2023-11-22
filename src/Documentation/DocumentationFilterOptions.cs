@@ -15,7 +15,7 @@ internal class DocumentationFilterOptions : SymbolFilterOptions
         attributeRules: ImmutableArray.Create<AttributeFilterRule>(IgnoredAttributeNameFilterRule.Default));
 
     internal DocumentationFilterOptions(
-        VisibilityFilter visibility = VisibilityFilter.Any,
+        VisibilityFilter visibility = VisibilityFilter.All,
         SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
         IEnumerable<SymbolFilterRule> rules = null,
         IEnumerable<AttributeFilterRule> attributeRules = null) : base(null, visibility, symbolGroups, rules, attributeRules)

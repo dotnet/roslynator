@@ -11,5 +11,5 @@ internal enum VisibilityFilter
     Public = 1,
     Internal = 1 << 1,
     Private = 1 << 2,
-    Any = Public | Internal | Private,
+    All = Public | Internal | Private,
 }

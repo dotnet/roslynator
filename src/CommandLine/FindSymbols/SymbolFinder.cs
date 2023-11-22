@@ -36,6 +36,7 @@ internal static class SymbolFinder
         Compilation compilation = (await project.GetCompilationAsync(cancellationToken))!;
 
         INamedTypeSymbol generatedCodeAttribute = compilation.GetTypeByMetadataName("System.CodeDom.Compiler.GeneratedCodeAttribute");
+        ISyntaxFactsService syntaxFactsService = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(compilation.Language);
 
         ImmutableArray<ISymbol>.Builder symbols = null;
 
@@ -72,7 +73,7 @@ internal static class SymbolFinder
                             case SymbolFilterReason.None:
                                 {
                                     if (options.IgnoreGeneratedCode
-                                        && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(compilation.Language)!.IsComment(f), cancellationToken))
+                                        && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => syntaxFactsService.IsComment(f), cancellationToken))
                                     {
                                         continue;
                                     }

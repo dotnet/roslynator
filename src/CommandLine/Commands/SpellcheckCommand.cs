@@ -46,7 +46,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
     {
         VisibilityFilter visibilityFilter = Visibility switch
         {
-            Visibility.Public => VisibilityFilter.Any,
+            Visibility.Public => VisibilityFilter.All,
             Visibility.Internal => VisibilityFilter.Internal | VisibilityFilter.Private,
             Visibility.Private => VisibilityFilter.Private,
             _ => throw new InvalidOperationException()
