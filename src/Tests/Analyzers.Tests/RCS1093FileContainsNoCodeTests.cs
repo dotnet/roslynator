@@ -21,34 +21,10 @@ public class RCS1093FileContainsNoCodeTests : AbstractCSharpDiagnosticVerifier<F
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
-    public async Task Test_UsingDirective()
-    {
-        await VerifyDiagnosticAsync(@"[||]// copyright ...
-
-using System;
-
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
-    public async Task Test_FileScopedNamespaceDeclaration()
-    {
-        await VerifyDiagnosticAsync(@"[||]// copyright ...
-
-namespace N;
-
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
-    public async Task TestNoDiagnostic()
+    public async Task TestNoDiagnostic_FileScopedNamespaceDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"// copyright ...
 namespace N;
-
-class C
-{
-}
 ");
     }
 

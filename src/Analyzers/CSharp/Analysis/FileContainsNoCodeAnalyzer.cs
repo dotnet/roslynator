@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -39,49 +38,23 @@ public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
 
         SyntaxToken token = compilationUnit.EndOfFileToken;
 
-        if (!compilationUnit.AttributeLists.Any()
-            && !compilationUnit.Externs.Any())
+        if (compilationUnit.Span == token.Span
+            && !token.HasTrailingTrivia
+            && !token.LeadingTrivia.Any(f => f.IsKind(
+                SyntaxKind.IfDirectiveTrivia,
+                SyntaxKind.ElseDirectiveTrivia,
+                SyntaxKind.ElifDirectiveTrivia,
+                SyntaxKind.EndIfDirectiveTrivia)))
         {
-            if (!compilationUnit.Members.Any()
-                && compilationUnit.Span == token.Span
-                && !token.HasTrailingTrivia
-                && token.LeadingTrivia.All(f => !f.IsDirective))
-            {
-                ReportDiagnostic(context, compilationUnit);
-            }
-            else if ((!compilationUnit.Members.Any()
-                || (compilationUnit.Members.Count == 1
-                    && compilationUnit.Members[0] is FileScopedNamespaceDeclarationSyntax namespaceDeclaration
-                    && !namespaceDeclaration.Members.Any()))
-                && !compilationUnit.DescendantTrivia().Any(f =>
-                {
-                    switch (f.Kind())
-                    {
-                        case SyntaxKind.IfDirectiveTrivia:
-                        case SyntaxKind.ElseDirectiveTrivia:
-                        case SyntaxKind.ElifDirectiveTrivia:
-                        case SyntaxKind.EndIfDirectiveTrivia:
-                            return true;
-                        default:
-                            return false;
-                    }
-                }))
-            {
-                ReportDiagnostic(context, compilationUnit);
-            }
-        }
-    }
+            SyntaxTree syntaxTree = compilationUnit.SyntaxTree;
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, CompilationUnitSyntax compilationUnit)
-    {
-        SyntaxTree syntaxTree = compilationUnit.SyntaxTree;
-
-        if (!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath))
-        {
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.FileContainsNoCode,
-                Location.Create(syntaxTree, default(TextSpan)));
+            if (!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath))
+            {
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.FileContainsNoCode,
+                    Location.Create(syntaxTree, default(TextSpan)));
+            }
         }
     }
 }
