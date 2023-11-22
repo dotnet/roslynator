@@ -3735,8 +3735,8 @@ public string Foo
   </Analyzer>
   <Analyzer>
     <Id>RCS1093</Id>
-    <Identifier>RemoveFileWithNoCode</Identifier>
-    <Title>Remove file with no code.</Title>
+    <Identifier>FileContainsNoCode</Identifier>
+    <Title>File contains no code.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>

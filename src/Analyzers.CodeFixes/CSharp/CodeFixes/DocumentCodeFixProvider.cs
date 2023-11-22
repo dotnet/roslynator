@@ -16,7 +16,7 @@ public sealed class DocumentCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveFileWithNoCode); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.FileContainsNoCode); }
     }
 
     public override FixAllProvider GetFixAllProvider()
@@ -30,7 +30,7 @@ public sealed class DocumentCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveFileWithNoCode:
+                case DiagnosticIdentifiers.FileContainsNoCode:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Remove file with no code",
