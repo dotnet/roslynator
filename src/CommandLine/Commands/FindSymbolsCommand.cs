@@ -94,12 +94,12 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
                     WriteSymbol(symbol, Verbosity.Normal, indentation: "    ", padding: maxKindLength);
                 }
 
-                if (Options.RemoveUnused)
+                if (Options.Remove)
                 {
-                    project = await RemoveUnusedSymbolsAsync(projectSymbols, project, cancellationToken);
+                    project = await RemoveSymbolsAsync(projectSymbols, project, cancellationToken);
 
                     if (!solution.Workspace.TryApplyChanges(project.Solution))
-                        WriteLine("Cannot apply changes to a solution", ConsoleColors.Yellow, Verbosity.Detailed);
+                        WriteLine("Cannot remove symbols from a solution", ConsoleColors.Yellow, Verbosity.Detailed);
 
                     solution = solution.Workspace.CurrentSolution;
                 }
@@ -167,7 +167,7 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         return SymbolFinder.FindSymbolsAsync(project, options, cancellationToken);
     }
 
-    private static async Task<Project> RemoveUnusedSymbolsAsync(
+    private static async Task<Project> RemoveSymbolsAsync(
         ImmutableArray<ISymbol> symbols,
         Project project,
         CancellationToken cancellationToken)
@@ -182,12 +182,24 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
                 SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
                 SyntaxNode node = root.FindNode(reference.Span);
 
-                Debug.Assert(node is MemberDeclarationSyntax, node.Kind().ToString());
-
                 if (node is MemberDeclarationSyntax memberDeclaration)
                 {
                     Document newDocument = await document.RemoveMemberAsync(memberDeclaration, cancellationToken);
                     project = newDocument.Project;
+                }
+                else if (node is VariableDeclaratorSyntax
+                    && node.Parent is VariableDeclarationSyntax variableDeclaration
+                    && node.Parent.Parent is FieldDeclarationSyntax fieldDeclaration)
+                {
+                    if (variableDeclaration.Variables.Count == 1)
+                    {
+                        Document newDocument = await document.RemoveMemberAsync(fieldDeclaration, cancellationToken);
+                        project = newDocument.Project;
+                    }
+                }
+                else
+                {
+                    Debug.Fail(node.Kind().ToString());
                 }
             }
         }

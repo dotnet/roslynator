@@ -15,7 +15,7 @@ internal class SymbolFilterOptions
 
     internal SymbolFilterOptions(
         FileSystemFilter? fileSystemFilter = null,
-        VisibilityFilter visibility = VisibilityFilter.All,
+        VisibilityFilter visibility = VisibilityFilter.Any,
         SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
         IEnumerable<SymbolFilterRule>? rules = null,
         IEnumerable<AttributeFilterRule>? attributeRules = null)

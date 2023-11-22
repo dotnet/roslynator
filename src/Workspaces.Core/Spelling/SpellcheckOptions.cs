@@ -10,7 +10,7 @@ internal class SpellcheckOptions
 
     public SpellingScopeFilter ScopeFilter { get; init; } = SpellingScopeFilter.All;
 
-    public VisibilityFilter SymbolVisibility { get; init; } = VisibilityFilter.All;
+    public VisibilityFilter SymbolVisibility { get; init; } = VisibilityFilter.Any;
 
     public SplitMode SplitMode { get; init; } = SplitMode.CaseAndHyphen;
 

@@ -8,20 +8,20 @@ internal class SymbolFinderOptions : SymbolFilterOptions
 {
     internal SymbolFinderOptions(
         FileSystemFilter fileSystemFilter = null,
-        VisibilityFilter visibility = VisibilityFilter.All,
+        VisibilityFilter visibility = VisibilityFilter.Any,
         SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
         IEnumerable<SymbolFilterRule> rules = null,
         IEnumerable<AttributeFilterRule> attributeRules = null,
         bool ignoreGeneratedCode = false,
-        bool unusedOnly = false) : base(fileSystemFilter, visibility, symbolGroups, rules, attributeRules)
+        bool unused = false) : base(fileSystemFilter, visibility, symbolGroups, rules, attributeRules)
     {
         IgnoreGeneratedCode = ignoreGeneratedCode;
-        UnusedOnly = unusedOnly;
+        Unused = unused;
     }
 
     new public static SymbolFinderOptions Default { get; } = new();
 
     public bool IgnoreGeneratedCode { get; }
 
-    public bool UnusedOnly { get; }
+    public bool Unused { get; }
 }

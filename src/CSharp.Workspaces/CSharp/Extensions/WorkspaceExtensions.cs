@@ -126,6 +126,12 @@ public static class WorkspaceExtensions
 
                     return document.ReplaceNodeAsync(recordDeclaration, SyntaxRefactorings.RemoveMember(recordDeclaration, member), cancellationToken);
                 }
+            case SyntaxKind.EnumDeclaration:
+                {
+                    var enumDeclaration = (EnumDeclarationSyntax)parent;
+
+                    return document.ReplaceNodeAsync(enumDeclaration, SyntaxRefactorings.RemoveMember(enumDeclaration, (EnumMemberDeclarationSyntax)member), cancellationToken);
+                }
             default:
                 {
                     SyntaxDebug.Assert(parent is null, parent);

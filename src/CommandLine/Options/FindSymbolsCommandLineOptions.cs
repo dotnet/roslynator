@@ -29,38 +29,37 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
     public bool Unused { get; set; }
 
     [Option(
-        longName: "remove-unused",
-        HelpText = "Search only for symbols that have 0 references and remove it.")]
-    public bool RemoveUnused { get; set; }
+        longName: "remove",
+        HelpText = "Remove found symbols' declarations.")]
+    public bool Remove { get; set; }
 
     [Option(
         longName: OptionNames.Visibility,
-        Default = new[] { "public" },
         HelpText = "Space separated list of accessibilities of a type or a member. Allowed values are public, internal or private.",
         MetaValue = "<VISIBILITY>")]
     public IEnumerable<string> Visibility { get; set; }
 
     [Option(
-        longName: "with-attributes",
+        longName: "with-attribute",
         HelpText = "Space separated list of attributes that should be included.",
         MetaValue = "<METADATA_NAME>")]
     public IEnumerable<string> WithAttributes { get; set; }
 
     [Option(
-        longName: "without-attributes",
+        longName: "without-attribute",
         HelpText = "Space separated list of attributes that should be excluded.",
         MetaValue = "<METADATA_NAME>")]
     public IEnumerable<string> WithoutAttributes { get; set; }
 
     [Option(
-        longName: "with-modifiers",
+        longName: "with-modifier",
         HelpText = "Space separated list of modifiers that should be included. "
             + "Allowed values are const, static, virtual, sealed, override, abstract and read-only.",
         MetaValue = "<MODIFIER>")]
     public IEnumerable<string> WithModifiers { get; set; }
 
     [Option(
-        longName: "without-modifiers",
+        longName: "without-modifier",
         HelpText = "Space separated list of modifiers that should be excluded. "
             + "Allowed values are const, static, virtual, sealed, override, abstract and read-only.",
         MetaValue = "<MODIFIER>")]

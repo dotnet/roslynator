@@ -23,30 +23,6 @@ internal static class UnusedSymbolUtility
                 }
             case SymbolKind.NamedType:
                 {
-                    var namedType = (INamedTypeSymbol)symbol;
-
-                    if ((namedType.TypeKind == TypeKind.Class || namedType.TypeKind == TypeKind.Module)
-                        && namedType.IsStatic)
-                    {
-                        foreach (ISymbol member in namedType.GetMembers())
-                        {
-                            switch (member.Kind)
-                            {
-                                case SymbolKind.NamedType:
-                                    {
-                                        return false;
-                                    }
-                                case SymbolKind.Method:
-                                    {
-                                        if (((IMethodSymbol)member).IsExtensionMethod)
-                                            return false;
-
-                                        break;
-                                    }
-                            }
-                        }
-                    }
-
                     return true;
                 }
             case SymbolKind.Event:
@@ -122,17 +98,19 @@ internal static class UnusedSymbolUtility
         if (IsReferencedInDebuggerDisplayAttribute(symbol))
             return false;
 
+        IEnumerable<ISymbol> overrides = await SymbolFinder.FindOverridesAsync(symbol, solution, null, cancellationToken);
+
+        if (overrides.Any())
+            return false;
+
         IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, solution, cancellationToken);
 
         foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
         {
             foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
             {
-                if (referenceLocation.IsImplicit)
-                    continue;
-
                 if (referenceLocation.IsCandidateLocation)
-                    return false;
+                    continue;
 
                 Location location = referenceLocation.Location;
 
