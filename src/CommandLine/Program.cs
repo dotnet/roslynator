@@ -362,12 +362,6 @@ internal static class Program
         if (!TryParseMetadataNames(options.WithoutAttributes, out ImmutableArray<MetadataName> withoutAttributes))
             return ExitCodes.Error;
 
-        if (!TryParseOptionValueAsEnumFlags(options.WithModifiers, OptionNames.WithModifiers, out SymbolModifier withModifiers, SymbolModifier.None))
-            return ExitCodes.Error;
-
-        if (!TryParseOptionValueAsEnumFlags(options.WithoutModifiers, OptionNames.WithoutModifiers, out SymbolModifier withoutModifiers, SymbolModifier.None))
-            return ExitCodes.Error;
-
         if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
             return ExitCodes.Error;
 
@@ -378,12 +372,6 @@ internal static class Program
 
         if (withoutAttributes.Any())
             rules.Add(new WithoutAttributeFilterRule(withoutAttributes));
-
-        if (withModifiers != SymbolModifier.None)
-            rules.AddRange(SymbolFilterRuleFactory.FromModifiers(withModifiers));
-
-        if (withoutModifiers != SymbolModifier.None)
-            rules.AddRange(SymbolFilterRuleFactory.FromModifiers(withoutModifiers, invert: true));
 
         FileSystemFilter fileSystemFilter = CreateFileSystemFilter(options);
 

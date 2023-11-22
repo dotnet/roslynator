@@ -50,18 +50,4 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
         HelpText = "Space separated list of attributes that should be excluded.",
         MetaValue = "<METADATA_NAME>")]
     public IEnumerable<string> WithoutAttributes { get; set; }
-
-    [Option(
-        longName: "with-modifier",
-        HelpText = "Space separated list of modifiers that should be included. "
-            + "Allowed values are const, static, virtual, sealed, override, abstract and read-only.",
-        MetaValue = "<MODIFIER>")]
-    public IEnumerable<string> WithModifiers { get; set; }
-
-    [Option(
-        longName: "without-modifier",
-        HelpText = "Space separated list of modifiers that should be excluded. "
-            + "Allowed values are const, static, virtual, sealed, override, abstract and read-only.",
-        MetaValue = "<MODIFIER>")]
-    public IEnumerable<string> WithoutModifiers { get; set; }
 }
