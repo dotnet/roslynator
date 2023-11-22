@@ -35,7 +35,7 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
 
     [Option(
         longName: OptionNames.Visibility,
-        HelpText = "Space separated list of accessibilities of a type or a member. Allowed values are public, internal or private.",
+        HelpText = "Space separated list of visibilities of a type or a member. Allowed values are public, internal or private.",
         MetaValue = "<VISIBILITY>")]
     public IEnumerable<string> Visibility { get; set; }
 
