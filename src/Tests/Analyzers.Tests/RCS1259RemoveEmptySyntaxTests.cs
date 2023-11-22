@@ -505,11 +505,10 @@ namespace N1
     public async Task TestNoDiagnostic_FileScopedNamespaceDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
-namespace N1
+namespace N1;
+
+class C
 {
-    class C
-    {
-    }
 }
 ");
     }
