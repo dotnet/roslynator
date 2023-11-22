@@ -41,7 +41,7 @@ public sealed class NamespaceDeclarationCodeFixProvider : BaseCodeFixProvider
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Remove empty namespace declaration",
-                            ct => RemoveEmptyNamespaceDeclarationRefactoring.RefactorAsync(context.Document, namespaceDeclaration, ct),
+                            ct => context.Document.RemoveNodeAsync(namespaceDeclaration, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);

@@ -43,6 +43,7 @@ public sealed class RemoveEmptySyntaxCodeFixProvider : BaseCodeFixProvider
                     case SyntaxKind.EmptyStatement:
                     case SyntaxKind.FinallyClause:
                     case SyntaxKind.NamespaceDeclaration:
+                    case SyntaxKind.FileScopedNamespaceDeclaration:
                     case SyntaxKind.ObjectCreationExpression:
                     case SyntaxKind.RegionDirectiveTrivia:
                         return true;
@@ -100,11 +101,11 @@ public sealed class RemoveEmptySyntaxCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
-            case NamespaceDeclarationSyntax namespaceDeclaration:
+            case BaseNamespaceDeclarationSyntax namespaceDeclaration:
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Remove empty namespace declaration",
-                        ct => RemoveEmptyNamespaceDeclarationRefactoring.RefactorAsync(document, namespaceDeclaration, ct),
+                        ct => document.RemoveNodeAsync(namespaceDeclaration, ct),
                         GetEquivalenceKey(diagnostic));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
