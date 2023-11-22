@@ -18,6 +18,11 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
     public bool IgnoreGeneratedCode { get; set; }
 
     [Option(
+        longName: "remove",
+        HelpText = "Remove found symbols' declarations.")]
+    public bool Remove { get; set; }
+
+    [Option(
         longName: OptionNames.SymbolKind,
         HelpText = "Space separated list of symbol kinds to be included. "
             + "Allowed values are class, delegate, enum, interface, struct, event, field, enum-field, const, method, property, indexer, member or type.")]
@@ -27,11 +32,6 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
         longName: "unused",
         HelpText = "Search only for symbols that have zero references.")]
     public bool Unused { get; set; }
-
-    [Option(
-        longName: "remove",
-        HelpText = "Remove found symbols' declarations.")]
-    public bool Remove { get; set; }
 
     [Option(
         longName: OptionNames.Visibility,
