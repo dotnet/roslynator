@@ -60,6 +60,9 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo((InvocationExpressionSyntax)firstExpression);
 
+        if (!invocationInfo.Success)
+            return;
+
         if (invocationInfo2.NameText != "First")
             return;
 
