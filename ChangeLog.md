@@ -14,12 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix [RCS1228](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1228) ([PR](https://github.com/dotnet/roslynator/pull/1249))
-- Fix [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1254))
-- Fix [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1253))
-- Fix [RCS1196](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1196) ([PR](https://github.com/dotnet/roslynator/pull/1235))
-- Fix [RCS1257](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1257) ([PR](https://github.com/dotnet/roslynator/pull/1264))
-- Fix [RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259) ([PR](https://github.com/dotnet/roslynator/pull/1268))
+- Fix analyzer [RCS1228](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1228) ([PR](https://github.com/dotnet/roslynator/pull/1249))
+- Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1254))
+- Fix analyzer [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1253))
+- Fix analyzer [RCS1196](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1196) ([PR](https://github.com/dotnet/roslynator/pull/1235))
+- Fix analyzer [RCS1257](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1257) ([PR](https://github.com/dotnet/roslynator/pull/1264))
+- Fix analyzer [RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259) ([PR](https://github.com/dotnet/roslynator/pull/1268))
 
 ## [4.6.2] - 2023-11-10
 
