@@ -41,7 +41,19 @@ namespace N;
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
-    public async Task Test_IfDirective()
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"// copyright ...
+namespace N;
+
+class C
+{
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
+    public async Task TestNoDiagnostic_IfDirective()
     {
         await VerifyNoDiagnosticAsync(@"// copyright ...
 

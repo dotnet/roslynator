@@ -50,8 +50,10 @@ public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
                 ReportDiagnostic(context, compilationUnit);
             }
             else if ((!compilationUnit.Members.Any()
-                || compilationUnit.Members.SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.FileScopedNamespaceDeclaration))
-                && compilationUnit.DescendantTrivia().All(f =>
+                || (compilationUnit.Members.Count == 1
+                    && compilationUnit.Members[0] is FileScopedNamespaceDeclarationSyntax namespaceDeclaration
+                    && !namespaceDeclaration.Members.Any()))
+                && !compilationUnit.DescendantTrivia().Any(f =>
                 {
                     switch (f.Kind())
                     {
@@ -59,9 +61,9 @@ public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
                         case SyntaxKind.ElseDirectiveTrivia:
                         case SyntaxKind.ElifDirectiveTrivia:
                         case SyntaxKind.EndIfDirectiveTrivia:
-                            return false;
-                        default:
                             return true;
+                        default:
+                            return false;
                     }
                 }))
             {
