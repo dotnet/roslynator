@@ -14,12 +14,6 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
         MetaName = "<PROJECT|SOLUTION>")]
     public IEnumerable<string> Paths { get; set; }
 
-    [Option(
-        longName: "ignored-symbols",
-        HelpText = "Space separated list of namespaces and/or types that should be ignored.",
-        MetaValue = "<METADATA_NAME>")]
-    public IEnumerable<string> IgnoredSymbols { get; set; }
-
     [Option(longName: "ignore-generated-code")]
     public bool IgnoreGeneratedCode { get; set; }
 
@@ -33,6 +27,11 @@ public class FindSymbolsCommandLineOptions : MSBuildCommandLineOptions
         longName: "unused",
         HelpText = "Search only for symbols that have 0 references.")]
     public bool Unused { get; set; }
+
+    [Option(
+        longName: "remove-unused",
+        HelpText = "Search only for symbols that have 0 references and remove it.")]
+    public bool RemoveUnused { get; set; }
 
     [Option(
         longName: OptionNames.Visibility,

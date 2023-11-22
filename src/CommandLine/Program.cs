@@ -393,7 +393,7 @@ internal static class Program
             symbolGroups: symbolGroups,
             rules: rules,
             ignoreGeneratedCode: options.IgnoreGeneratedCode,
-            unusedOnly: options.Unused);
+            unusedOnly: options.Unused || options.RemoveUnused);
 
         var command = new FindSymbolsCommand(
             options: options,

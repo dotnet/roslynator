@@ -7,11 +7,11 @@ namespace Roslynator.FindSymbols;
 internal class SymbolFinderOptions : SymbolFilterOptions
 {
     internal SymbolFinderOptions(
-        FileSystemFilter? fileSystemFilter = null,
+        FileSystemFilter fileSystemFilter = null,
         VisibilityFilter visibility = VisibilityFilter.All,
         SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
-        IEnumerable<SymbolFilterRule>? rules = null,
-        IEnumerable<AttributeFilterRule>? attributeRules = null,
+        IEnumerable<SymbolFilterRule> rules = null,
+        IEnumerable<AttributeFilterRule> attributeRules = null,
         bool ignoreGeneratedCode = false,
         bool unusedOnly = false) : base(fileSystemFilter, visibility, symbolGroups, rules, attributeRules)
     {

@@ -8,6 +8,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp;
 using Roslynator.FindSymbols;
 using Roslynator.Host.Mef;
 using static Roslynator.Logger;
@@ -42,12 +45,6 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        HashSet<string> ignoredSymbolIds = (Options.IgnoredSymbols.Any())
-            ? new HashSet<string>(Options.IgnoredSymbols)
-            : null;
-
-        var progress = new FindSymbolsProgress();
-
         ImmutableArray<ISymbol> allSymbols;
 
         if (projectOrSolution.IsProject)
@@ -56,7 +53,7 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
             WriteLine($"Analyze '{project.Name}'", Verbosity.Minimal);
 
-            allSymbols = await AnalyzeProject(project, SymbolFinderOptions, progress, cancellationToken);
+            allSymbols = await AnalyzeProject(project, SymbolFinderOptions, cancellationToken);
         }
         else
         {
@@ -68,38 +65,24 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            foreach (Project project in FilterProjects(
+            foreach (ProjectId projectId in FilterProjects(
                 solution,
                 s => s
                     .GetProjectDependencyGraph()
                     .GetTopologicallySortedProjects(cancellationToken)
-                    .ToImmutableArray()))
+                    .ToImmutableArray())
+                .Select(f => f.Id))
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
+                Project project = solution.GetProject(projectId);
+
                 WriteLine($"  Analyze '{project.Name}'", Verbosity.Minimal);
 
-                ImmutableArray<ISymbol> projectSymbols = await AnalyzeProject(project, SymbolFinderOptions, progress, cancellationToken);
+                ImmutableArray<ISymbol> projectSymbols = await AnalyzeProject(project, SymbolFinderOptions, cancellationToken);
 
                 if (!projectSymbols.Any())
                     continue;
-
-                if (ignoredSymbolIds?.Count > 0)
-                {
-                    Compilation compilation = await project.GetCompilationAsync(cancellationToken);
-
-                    ImmutableDictionary<string, ISymbol> symbolsById = ignoredSymbolIds
-                        .Select(f => (id: f, symbol: DocumentationCommentId.GetFirstSymbolForDeclarationId(f, compilation)))
-                        .Where(f => f.id is not null)
-                        .ToImmutableDictionary(f => f.id, f => f.symbol);
-
-                    ignoredSymbolIds.ExceptWith(symbolsById.Select(f => f.Key));
-
-                    projectSymbols = projectSymbols.Except(symbolsById.Select(f => f.Value)).ToImmutableArray();
-
-                    if (!projectSymbols.Any())
-                        continue;
-                }
 
                 int maxKindLength = projectSymbols
                     .Select(f => f.GetSymbolGroup())
@@ -108,7 +91,17 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
                 foreach (ISymbol symbol in projectSymbols.OrderBy(f => f, SymbolDefinitionComparer.SystemFirst))
                 {
-                    WriteSymbol(symbol, Verbosity.Normal, indentation: "    ", addCommentId: true, padding: maxKindLength);
+                    WriteSymbol(symbol, Verbosity.Normal, indentation: "    ", padding: maxKindLength);
+                }
+
+                if (Options.RemoveUnused)
+                {
+                    project = await RemoveUnusedSymbolsAsync(projectSymbols, project, cancellationToken);
+
+                    if (!solution.Workspace.TryApplyChanges(project.Solution))
+                        WriteLine("Cannot apply changes to a solution", ConsoleColors.Yellow, Verbosity.Detailed);
+
+                    solution = solution.Workspace.CurrentSolution;
                 }
 
                 (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).AddRange(projectSymbols);
@@ -157,7 +150,6 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
     private static Task<ImmutableArray<ISymbol>> AnalyzeProject(
         Project project,
         SymbolFinderOptions options,
-        IFindSymbolsProgress progress,
         CancellationToken cancellationToken)
     {
         if (!project.SupportsCompilation)
@@ -172,15 +164,42 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             return Task.FromResult(ImmutableArray<ISymbol>.Empty);
         }
 
-        return SymbolFinder.FindSymbolsAsync(project, options, progress, cancellationToken);
+        return SymbolFinder.FindSymbolsAsync(project, options, cancellationToken);
+    }
+
+    private static async Task<Project> RemoveUnusedSymbolsAsync(
+        ImmutableArray<ISymbol> symbols,
+        Project project,
+        CancellationToken cancellationToken)
+    {
+        foreach (IGrouping<DocumentId, SyntaxReference> grouping in symbols
+            .SelectMany(f => f.DeclaringSyntaxReferences)
+            .GroupBy(f => project.GetDocument(f.SyntaxTree).Id))
+        {
+            foreach (SyntaxReference reference in grouping.OrderByDescending(f => f.Span.Start))
+            {
+                Document document = project.GetDocument(grouping.Key);
+                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+                SyntaxNode node = root.FindNode(reference.Span);
+
+                Debug.Assert(node is MemberDeclarationSyntax, node.Kind().ToString());
+
+                if (node is MemberDeclarationSyntax memberDeclaration)
+                {
+                    Document newDocument = await document.RemoveMemberAsync(memberDeclaration, cancellationToken);
+                    project = newDocument.Project;
+                }
+            }
+        }
+
+        return project;
     }
 
     private static void WriteSymbol(
         ISymbol symbol,
         Verbosity verbosity,
         string indentation = "",
-        bool addCommentId = false,
-        bool colorNamespace = false,
+        bool colorNamespace = true,
         int padding = 0)
     {
         if (!ShouldWrite(verbosity))
@@ -190,7 +209,14 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
 
         string kindText = symbol.GetSymbolGroup().ToString().ToLowerInvariant();
 
-        Write(kindText, verbosity);
+        if (symbol.IsKind(SymbolKind.NamedType))
+        {
+            Write(kindText, ConsoleColors.Cyan, verbosity);
+        }
+        else
+        {
+            Write(kindText, verbosity);
+        }
 
         Write(' ', padding - kindText.Length + 1, verbosity);
 
@@ -210,27 +236,6 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             }
         }
 
-        string nameText = symbol.ToDisplayString(_nameAndContainingTypesSymbolDisplayFormat);
-
-        Write(nameText, verbosity);
-
-        if (addCommentId
-            && ShouldWrite(Verbosity.Diagnostic))
-        {
-            WriteLine(Verbosity.Diagnostic);
-            Write(indentation, Verbosity.Diagnostic);
-            Write("ID:", ConsoleColors.DarkGray, Verbosity.Diagnostic);
-            Write(' ', padding - 2, Verbosity.Diagnostic);
-            Write(symbol.GetDocumentationCommentId(), ConsoleColors.DarkGray, Verbosity.Diagnostic);
-        }
-
-        WriteLine(verbosity);
-    }
-
-    private class FindSymbolsProgress : IFindSymbolsProgress
-    {
-        public void OnSymbolFound(ISymbol symbol)
-        {
-        }
+        WriteLine(symbol.ToDisplayString(_nameAndContainingTypesSymbolDisplayFormat), verbosity);
     }
 }

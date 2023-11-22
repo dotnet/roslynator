@@ -122,7 +122,7 @@ internal static class UnusedSymbolUtility
         if (IsReferencedInDebuggerDisplayAttribute(symbol))
             return false;
 
-        IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, solution, cancellationToken).ConfigureAwait(false);
+        IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, solution, cancellationToken);
 
         foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
         {
@@ -196,7 +196,7 @@ internal static class UnusedSymbolUtility
         if (symbol.DeclaredAccessibility == Accessibility.Private
             && CanBeReferencedInDebuggerDisplayAttribute())
         {
-            string? value = symbol.ContainingType
+            string value = symbol.ContainingType
                 .GetAttribute(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute)?
                 .ConstructorArguments
                 .SingleOrDefault(shouldThrow: false)
