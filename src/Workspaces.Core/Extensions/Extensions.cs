@@ -20,6 +20,11 @@ internal static class Extensions
 {
     public static bool IsMatch(this Matcher matcher, ISymbol symbol, string? rootDirectoryPath)
     {
+        Debug.Assert(!symbol.IsKind(SymbolKind.Namespace), symbol.Kind.ToString());
+
+        if (symbol.IsKind(SymbolKind.Namespace))
+            return true;
+
         foreach (Location location in symbol.Locations)
         {
             SyntaxTree? tree = location.SourceTree;

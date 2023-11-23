@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- [CLI] Add command `find-symbol` ([PR](https://github.com/dotnet/roslynator/pull/1255))
+  - This command can be used not only to find symbols but also to find unused symbols and optionally remove them.
+  - Example: `roslynator find-symbol --symbol-kind type --visibility internal private --unused --remove`
+
 ### Changed
 
 - Bump Roslyn to 4.6.0 ([PR](https://github.com/dotnet/roslynator/pull/1248)).

@@ -93,8 +93,8 @@ public class ListSymbolsCommandLineOptions : MSBuildCommandLineOptions
 
     [Option(
         longName: OptionNames.Visibility,
-        Default = new string[] { nameof(Roslynator.Visibility.Public) },
-        HelpText = "Defines one or more visibility of a type or a member. Allowed values are public, internal or private.",
+        Default = new[] { "public" },
+        HelpText = "Space separated list of visibilities of a type or a member. Allowed values are public, internal and private.",
         MetaValue = "<VISIBILITY>")]
     public IEnumerable<string> Visibility { get; set; }
 }

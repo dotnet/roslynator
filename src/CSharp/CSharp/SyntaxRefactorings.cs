@@ -153,7 +153,7 @@ internal static class SyntaxRefactorings
         return removeOptions;
     }
 
-    internal static MemberDeclarationSyntax RemoveSingleLineDocumentationComment(MemberDeclarationSyntax declaration)
+    internal static TMemberDeclaration RemoveSingleLineDocumentationComment<TMemberDeclaration>(TMemberDeclaration declaration) where TMemberDeclaration : MemberDeclarationSyntax
     {
         if (declaration is null)
             throw new ArgumentNullException(nameof(declaration));
@@ -492,6 +492,23 @@ internal static class SyntaxRefactorings
         return RemoveNode(typeDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
     }
 
+    public static EnumDeclarationSyntax RemoveMember(EnumDeclarationSyntax typeDeclaration, EnumMemberDeclarationSyntax member)
+    {
+        if (typeDeclaration is null)
+            throw new ArgumentNullException(nameof(typeDeclaration));
+
+        if (member is null)
+            throw new ArgumentNullException(nameof(member));
+
+        int index = typeDeclaration.Members.IndexOf(member);
+
+        EnumMemberDeclarationSyntax newMember = RemoveSingleLineDocumentationComment(member);
+
+        typeDeclaration = typeDeclaration.WithMembers(typeDeclaration.Members.ReplaceAt(index, newMember));
+
+        return RemoveNode(typeDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
+    }
+
     private static T RemoveNode<T>(
         T declaration,
         Func<T, SyntaxList<MemberDeclarationSyntax>> getMembers,
@@ -516,6 +533,38 @@ internal static class SyntaxRefactorings
             if (trivia.IsEndOfLineTrivia())
             {
                 MemberDeclarationSyntax newNextMember = nextMember.WithLeadingTrivia(leadingTrivia.RemoveAt(0));
+
+                newDeclaration = newDeclaration.ReplaceNode(nextMember, newNextMember);
+            }
+        }
+
+        return newDeclaration;
+    }
+
+    private static T RemoveNode<T>(
+        T declaration,
+        Func<T, SeparatedSyntaxList<EnumMemberDeclarationSyntax>> getMembers,
+        int index,
+        SyntaxRemoveOptions removeOptions) where T : SyntaxNode
+    {
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = getMembers(declaration);
+
+        T newDeclaration = declaration.RemoveNode(members[index], removeOptions)!;
+
+        if (index == 0
+            && index < members.Count - 1)
+        {
+            members = getMembers(newDeclaration);
+
+            EnumMemberDeclarationSyntax nextMember = members[index];
+
+            SyntaxTriviaList leadingTrivia = nextMember.GetLeadingTrivia();
+
+            SyntaxTrivia trivia = leadingTrivia.FirstOrDefault();
+
+            if (trivia.IsEndOfLineTrivia())
+            {
+                EnumMemberDeclarationSyntax newNextMember = nextMember.WithLeadingTrivia(leadingTrivia.RemoveAt(0));
 
                 newDeclaration = newDeclaration.ReplaceNode(nextMember, newNextMember);
             }
