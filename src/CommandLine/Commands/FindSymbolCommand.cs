@@ -61,7 +61,7 @@ internal class FindSymbolCommand : MSBuildWorkspaceCommand<CommandResult>
 
             WriteLine($"Analyze solution '{solution.FilePath}'", Verbosity.Minimal);
 
-            ImmutableArray<ISymbol>.Builder symbols = null;
+            ImmutableArray<ISymbol>.Builder symbols = ImmutableArray.CreateBuilder<ISymbol>();
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -104,7 +104,7 @@ internal class FindSymbolCommand : MSBuildWorkspaceCommand<CommandResult>
                     solution = solution.Workspace.CurrentSolution;
                 }
 
-                (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).AddRange(projectSymbols);
+                symbols.AddRange(projectSymbols);
             }
 
             stopwatch.Stop();
@@ -123,7 +123,6 @@ internal class FindSymbolCommand : MSBuildWorkspaceCommand<CommandResult>
                 .ToDictionary(f => f.Key, f => f.Count());
 
             int maxKindLength = countByGroup.Max(f => f.Key.ToString().Length);
-
             int maxCountLength = countByGroup.Max(f => f.Value.ToString().Length);
 
             WriteLine(Verbosity.Normal);

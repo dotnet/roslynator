@@ -13,6 +13,20 @@ namespace Roslynator;
 
 internal static class UnusedSymbolUtility
 {
+    private static readonly MetadataNameSet _classAttributeSymbols = new(new[]
+        {
+            MetadataName.Parse("Microsoft.CodeAnalysis.CodeFixes.ExportCodeFixProviderAttribute"),
+            MetadataName.Parse("Microsoft.CodeAnalysis.CodeRefactorings.ExportCodeRefactoringProviderAttribute"),
+            MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute"),
+            MetadataName.Parse("System.Composition.ExportAttribute"),
+        });
+
+    private static readonly MetadataNameSet _methodAttributeSymbols = new(new[]
+        {
+            MetadataName.Parse("Xunit.FactAttribute"),
+            MetadataName.Parse("Xunit.TheoryAttribute"),
+        });
+
     public static bool CanBeUnusedSymbol(ISymbol symbol)
     {
         switch (symbol.Kind)
@@ -267,6 +281,48 @@ internal static class UnusedSymbolUtility
                             break;
                         }
                 }
+            }
+
+            return false;
+        }
+    }
+
+    public static bool CanBeUnreferenced(ISymbol symbol)
+    {
+        if (symbol is INamedTypeSymbol typeSymbol)
+        {
+            if (typeSymbol.TypeKind == TypeKind.Class
+                && HasAttribute(typeSymbol, _classAttributeSymbols))
+            {
+                return true;
+            }
+
+            foreach (ISymbol member in typeSymbol.GetMembers())
+            {
+                if (member is IMethodSymbol methodSymbol)
+                {
+                    if (methodSymbol.IsExtensionMethod)
+                        return true;
+
+                    if (HasAttribute(methodSymbol, _methodAttributeSymbols))
+                        return true;
+                }
+            }
+        }
+        else if (symbol is IMethodSymbol methodSymbol)
+        {
+            if (HasAttribute(methodSymbol, _methodAttributeSymbols))
+                return true;
+        }
+
+        return false;
+
+        static bool HasAttribute(ISymbol symbol, MetadataNameSet attributeNames)
+        {
+            foreach (AttributeData attributeData in symbol.GetAttributes())
+            {
+                if (attributeNames.Contains(attributeData.AttributeClass))
+                    return true;
             }
 
             return false;

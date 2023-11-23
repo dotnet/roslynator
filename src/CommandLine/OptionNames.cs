@@ -44,6 +44,4 @@ internal static class OptionNames
     public const string Type = "type";
     public const string Visibility = "visibility";
     public const string WrapList = "wrap-list";
-    public const string WithModifiers = "with-modifiers";
-    public const string WithoutModifiers = "without-modifiers";
 }

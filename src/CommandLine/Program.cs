@@ -191,8 +191,8 @@ internal static class Program
                             return RenameSymbolAsync(renameSymbolCommandLineOptions).Result;
                         case SpellcheckCommandLineOptions spellcheckCommandLineOptions:
                             return SpellcheckAsync(spellcheckCommandLineOptions).Result;
-                        case FindSymbolCommandLineOptions findSymbolsCommandLineOptions:
-                            return FindSymbolAsync(findSymbolsCommandLineOptions).Result;
+                        case FindSymbolCommandLineOptions findSymbolCommandLineOptions:
+                            return FindSymbolAsync(findSymbolCommandLineOptions).Result;
                         default:
                             throw new InvalidOperationException();
                     }
@@ -356,10 +356,10 @@ internal static class Program
         if (!TryParseOptionValueAsEnumFlags(options.Visibility, OptionNames.Visibility, out VisibilityFilter visibility, SymbolFinderOptions.Default.Visibility))
             return ExitCodes.Error;
 
-        if (!TryParseMetadataNames(options.WithAttributes, out ImmutableArray<MetadataName> withAttributes))
+        if (!TryParseMetadataNames(options.WithAttribute, out ImmutableArray<MetadataName> withAttributes))
             return ExitCodes.Error;
 
-        if (!TryParseMetadataNames(options.WithoutAttributes, out ImmutableArray<MetadataName> withoutAttributes))
+        if (!TryParseMetadataNames(options.WithoutAttribute, out ImmutableArray<MetadataName> withoutAttributes))
             return ExitCodes.Error;
 
         if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))

@@ -43,11 +43,11 @@ public class FindSymbolCommandLineOptions : MSBuildCommandLineOptions
         longName: "with-attribute",
         HelpText = "Space separated list of attributes that should be included.",
         MetaValue = "<METADATA_NAME>")]
-    public IEnumerable<string> WithAttributes { get; set; }
+    public IEnumerable<string> WithAttribute { get; set; }
 
     [Option(
         longName: "without-attribute",
         HelpText = "Space separated list of attributes that should be excluded.",
         MetaValue = "<METADATA_NAME>")]
-    public IEnumerable<string> WithoutAttributes { get; set; }
+    public IEnumerable<string> WithoutAttribute { get; set; }
 }
