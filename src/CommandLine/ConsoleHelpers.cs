@@ -27,6 +27,8 @@ internal static class ConsoleHelpers
                 if (readLineTask.Result is null)
                     return ImmutableArray<string>.Empty;
 
+                lines.Add(readLineTask.Result);
+
                 string line;
 
                 while ((line = streamReader.ReadLine()) is not null)

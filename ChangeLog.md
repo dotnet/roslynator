@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1196](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1196) ([PR](https://github.com/dotnet/roslynator/pull/1235))
 - Fix analyzer [RCS1257](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1257) ([PR](https://github.com/dotnet/roslynator/pull/1264))
 - Fix analyzer [RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259) ([PR](https://github.com/dotnet/roslynator/pull/1268))
-- [CLI] Fix reading of non-existent redirected input on git bash ([PR](https://github.com/dotnet/roslynator/pull/1265), [PR](https://github.com/dotnet/roslynator/pull/1274))
+- [CLI] Fix reading of non-existent redirected input on git bash ([PR](https://github.com/dotnet/roslynator/pull/1265), [PR](https://github.com/dotnet/roslynator/pull/1274), [PR](https://github.com/dotnet/roslynator/pull/1275))
 - [CLI] Fix exit code for `roslynator --version` ([PR](https://github.com/dotnet/roslynator/pull/1273))
 
 ## [4.6.2] - 2023-11-10
