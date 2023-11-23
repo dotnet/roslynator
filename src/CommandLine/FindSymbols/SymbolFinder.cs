@@ -46,6 +46,8 @@ internal static class SymbolFinder
 
         while (namespaceOrTypeSymbols.Count > 0)
         {
+            bool? canContainUnityScriptMethods = null;
+
             INamespaceOrTypeSymbol namespaceOrTypeSymbol = namespaceOrTypeSymbols.Pop();
 
             foreach (ISymbol symbol in namespaceOrTypeSymbol.GetMembers())
@@ -76,6 +78,21 @@ internal static class SymbolFinder
                                         && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => syntaxFactsService.IsComment(f), cancellationToken))
                                     {
                                         continue;
+                                    }
+
+                                    if (symbol.IsKind(SymbolKind.Method))
+                                    {
+                                        if (canContainUnityScriptMethods is null
+                                            && namespaceOrTypeSymbol is INamedTypeSymbol typeSymbol)
+                                        {
+                                            canContainUnityScriptMethods = typeSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
+                                        }
+
+                                        if (canContainUnityScriptMethods == true
+                                            && UnityScriptMethods.MethodNames.Contains(symbol.Name))
+                                        {
+                                            continue;
+                                        }
                                     }
 
                                     if (options.Unused)
