@@ -114,7 +114,7 @@ internal static class Program
                 if (e.Any(f => f.Tag == ErrorType.VersionRequestedError))
                 {
                     Console.WriteLine(typeof(Program).GetTypeInfo().Assembly.GetName().Version);
-                    success = false;
+                    success = true;
                     return;
                 }
 
