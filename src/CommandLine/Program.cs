@@ -209,10 +209,7 @@ internal static class Program
                             throw new InvalidOperationException();
                     }
                 },
-                _ =>
-                {
-                    return ExitCodes.Error;
-                });
+                _ => ExitCodes.Error);
         }
         catch (Exception ex) when (ex is AggregateException
             || ex is FileNotFoundException
