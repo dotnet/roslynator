@@ -9,7 +9,7 @@ namespace Roslynator.CommandLine;
 
 internal static class ConsoleHelpers
 {
-    public static async Task<ImmutableArray<string>> ReadRedirectedInputAsLines()
+    public static ImmutableArray<string> ReadRedirectedInputAsLines()
     {
         if (Console.IsInputRedirected)
         {
@@ -18,9 +18,18 @@ internal static class ConsoleHelpers
             using (Stream stream = Console.OpenStandardInput())
             using (var streamReader = new StreamReader(stream, Console.InputEncoding))
             {
+                Task<string> readLineTask = streamReader.ReadLineAsync();
+
+                // https://github.com/dotnet/runtime/issues/95079
+                if (!readLineTask.Wait(TimeSpan.FromMilliseconds(500)))
+                    return default;
+
+                if (readLineTask.Result is null)
+                    return ImmutableArray<string>.Empty;
+
                 string line;
 
-                while ((line = await streamReader.ReadLineAsync()) is not null)
+                while ((line = streamReader.ReadLine()) is not null)
                     lines.Add(line);
             }
 

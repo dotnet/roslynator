@@ -842,14 +842,17 @@ internal static class Program
 
         if (Console.IsInputRedirected)
         {
-            Task<ImmutableArray<string>> task = ConsoleHelpers.ReadRedirectedInputAsLines();
-
             WriteLine("Reading redirected input...", Verbosity.Diagnostic);
 
-            // https://github.com/dotnet/runtime/issues/95079
-            if (task.Wait(TimeSpan.FromMilliseconds(500)))
+            ImmutableArray<string> lines = ConsoleHelpers.ReadRedirectedInputAsLines();
+
+            if (lines.IsDefault)
             {
-                IEnumerable<string> paths1 = task.Result.Where(f => !string.IsNullOrEmpty(f));
+                WriteLine("Unable to read redirected input", Verbosity.Diagnostic);
+            }
+            else
+            {
+                IEnumerable<string> paths1 = lines.Where(f => !string.IsNullOrEmpty(f));
 
                 WriteLine("Successfully read redirected input:" + Environment.NewLine + "  " + string.Join(Environment.NewLine + "  ", paths1), Verbosity.Diagnostic);
 
@@ -857,10 +860,6 @@ internal static class Program
                     return false;
 
                 paths = paths.AddRange(ImmutableArray.CreateRange(paths2, f => new PathInfo(f, PathOrigin.PipedInput)));
-            }
-            else
-            {
-                WriteLine("Unable to read redirected input", Verbosity.Diagnostic);
             }
         }
 
