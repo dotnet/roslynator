@@ -7,9 +7,9 @@ using Microsoft.CodeAnalysis;
 namespace Roslynator.FindSymbols;
 
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
-internal class WithAttributeFilterRule : SymbolFilterRule
+internal class SymbolWithAttributeFilterRule : SymbolFilterRule
 {
-    public WithAttributeFilterRule(IEnumerable<MetadataName> attributeNames)
+    public SymbolWithAttributeFilterRule(IEnumerable<MetadataName> attributeNames)
     {
         AttributeNames = new MetadataNameSet(attributeNames);
     }

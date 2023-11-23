@@ -17,7 +17,7 @@ using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine;
 
-internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
+internal class FindSymbolCommand : MSBuildWorkspaceCommand<CommandResult>
 {
     private static readonly SymbolDisplayFormat _nameAndContainingTypesSymbolDisplayFormat = SymbolDisplayFormat.CSharpErrorMessageFormat.Update(
         typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
@@ -29,8 +29,8 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
             | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
 
-    public FindSymbolsCommand(
-        FindSymbolsCommandLineOptions options,
+    public FindSymbolCommand(
+        FindSymbolCommandLineOptions options,
         SymbolFinderOptions symbolFinderOptions,
         in ProjectFilter projectFilter,
         FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
@@ -39,7 +39,7 @@ internal class FindSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         SymbolFinderOptions = symbolFinderOptions;
     }
 
-    public FindSymbolsCommandLineOptions Options { get; }
+    public FindSymbolCommandLineOptions Options { get; }
 
     public SymbolFinderOptions SymbolFinderOptions { get; }
 

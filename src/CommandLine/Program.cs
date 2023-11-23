@@ -106,7 +106,7 @@ internal static class Program
                     typeof(PhysicalLinesOfCodeCommandLineOptions),
                     typeof(RenameSymbolCommandLineOptions),
                     typeof(SpellcheckCommandLineOptions),
-                    typeof(FindSymbolsCommandLineOptions),
+                    typeof(FindSymbolCommandLineOptions),
                 });
 
             parserResult.WithNotParsed(e =>
@@ -191,8 +191,8 @@ internal static class Program
                             return RenameSymbolAsync(renameSymbolCommandLineOptions).Result;
                         case SpellcheckCommandLineOptions spellcheckCommandLineOptions:
                             return SpellcheckAsync(spellcheckCommandLineOptions).Result;
-                        case FindSymbolsCommandLineOptions findSymbolsCommandLineOptions:
-                            return FindSymbolsAsync(findSymbolsCommandLineOptions).Result;
+                        case FindSymbolCommandLineOptions findSymbolsCommandLineOptions:
+                            return FindSymbolAsync(findSymbolsCommandLineOptions).Result;
                         default:
                             throw new InvalidOperationException();
                     }
@@ -345,7 +345,7 @@ internal static class Program
         return GetExitCode(status);
     }
 
-    private static async Task<int> FindSymbolsAsync(FindSymbolsCommandLineOptions options)
+    private static async Task<int> FindSymbolAsync(FindSymbolCommandLineOptions options)
     {
         if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
             return ExitCodes.Error;
@@ -368,10 +368,10 @@ internal static class Program
         ImmutableArray<SymbolFilterRule>.Builder rules = ImmutableArray.CreateBuilder<SymbolFilterRule>();
 
         if (withAttributes.Any())
-            rules.Add(new WithAttributeFilterRule(withAttributes));
+            rules.Add(new SymbolWithAttributeFilterRule(withAttributes));
 
         if (withoutAttributes.Any())
-            rules.Add(new WithoutAttributeFilterRule(withoutAttributes));
+            rules.Add(new SymbolWithoutAttributeFilterRule(withoutAttributes));
 
         FileSystemFilter fileSystemFilter = CreateFileSystemFilter(options);
 
@@ -383,7 +383,7 @@ internal static class Program
             ignoreGeneratedCode: options.IgnoreGeneratedCode,
             unused: options.Unused);
 
-        var command = new FindSymbolsCommand(
+        var command = new FindSymbolCommand(
             options: options,
             symbolFinderOptions: symbolFinderOptions,
             projectFilter: projectFilter,
