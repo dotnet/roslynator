@@ -242,28 +242,31 @@ namespace System.Windows
     public async Task TestNoDiagnostic_StreamingContextAttributes()
     {
         await VerifyNoDiagnosticAsync(@"
+using System;
 using System.Runtime.Serialization;
 
 class C
 {
     [Obsolete]
     [OnSerialized]
-    void M(string p, StreamingContext context)
+    void M1(string p, StreamingContext context)
     {
+        var x = p;
     }
 
     [OnDeserialized]
-    void M(StreamingContext context, string p)
+    void M2(StreamingContext context, string p)
     {
+        var x = p;
     }
 
     [OnSerializing]
-    void M(string p, StreamingContext context)
+    void M3(StreamingContext context)
     {
     }
 
     [OnDeserializing]
-    void M(StreamingContext context, string p)
+    void M4(StreamingContext context)
     {
     }
 }
