@@ -220,4 +220,13 @@ class C
 {
 }", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
+    public async Task TestNoDiagnostic_IfDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
+#if DEBUG
+#endif
+", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
+    }
 }
