@@ -378,9 +378,7 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
                 return;
             }
 
-            IParameterSymbol parameterSymbol = methodSymbol.Parameters[index];
-
-            if (parameterSymbol.Type.HasMetadataName(MetadataNames.System_Runtime_Serialization_StreamingContext)
+            if (methodSymbol.Parameters[index].Type.HasMetadataName(MetadataNames.System_Runtime_Serialization_StreamingContext)
                 && _attributes.ContainsAny(methodSymbol.GetAttributes()))
             {
                 return;
