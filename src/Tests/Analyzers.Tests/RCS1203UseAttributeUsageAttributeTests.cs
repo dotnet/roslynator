@@ -69,4 +69,16 @@ class Foo : Attribute
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
+    public async Task TestNoDiagnostic_AbstractAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+public abstract class MyAttribute : Attribute
+{
+}
+");
+    }
 }

@@ -53,6 +53,9 @@ public sealed class UseAttributeUsageAttributeAnalyzer : BaseDiagnosticAnalyzer
         if (typeSymbol.IsImplicitlyDeclared)
             return;
 
+        if (typeSymbol.IsAbstract)
+            return;
+
         if (typeSymbol.TypeKind != TypeKind.Class)
             return;
 
