@@ -17,7 +17,7 @@
     <RoslynatorRoslynAnalyzersVersion>3.3.4</RoslynatorRoslynAnalyzersVersion>
     <RoslynatorCliRoslynVersion>4.7.0</RoslynatorCliRoslynVersion>
     <RoslynatorTestingRoslynVersion>4.7.0</RoslynatorTestingRoslynVersion>
-    <RoslynatorAnalyzersPackageReferenceVersion>4.6.2</RoslynatorAnalyzersPackageReferenceVersion>
+    <RoslynatorAnalyzersPackageReferenceVersion>4.6.3</RoslynatorAnalyzersPackageReferenceVersion>
     <RoslynatorCliPackageVersion>$(RoslynatorCliVersion)</RoslynatorCliPackageVersion>
     <RoslynatorPackageVersion>$(Version)</RoslynatorPackageVersion>
     <RoslynatorVersion>$(RoslynatorPackageVersion)</RoslynatorVersion>
