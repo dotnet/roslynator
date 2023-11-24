@@ -102,6 +102,9 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
             if (SymbolUtility.CanBeEntryPoint(methodSymbol))
                 return;
 
+            if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
+                return;
+
             if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
                 && !methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(in MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
             {
