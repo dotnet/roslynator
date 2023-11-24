@@ -44,4 +44,18 @@ internal class MetadataNameSet
 
         return false;
     }
+
+    public bool ContainsAny(ImmutableArray<AttributeData> attributes)
+    {
+        foreach (AttributeData attributeData in attributes)
+        {
+            if (attributeData.AttributeClass is not null
+                && Contains(attributeData.AttributeClass))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
