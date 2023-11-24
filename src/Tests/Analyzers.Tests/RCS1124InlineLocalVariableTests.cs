@@ -165,4 +165,31 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+    public async Task TestNoDiagnostic_Disposable()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public class C
+{
+    public void M()
+    {
+        using var items = new Disposable();
+        foreach (var item in items)
+        {
+        }
+    }
+}
+
+public class Disposable : IDisposable, IEnumerable<string>
+{
+    public void Dispose() => throw new NotImplementedException();
+    public IEnumerator<string> GetEnumerator() => throw new NotImplementedException();
+    IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
+}");
+    }
 }
