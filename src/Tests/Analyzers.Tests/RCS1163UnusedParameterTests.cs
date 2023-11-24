@@ -251,6 +251,21 @@ class C
     void M(string p, StreamingContext context)
     {
     }
+
+    [OnDeserialized]
+    void M(StreamingContext context, string p)
+    {
+    }
+
+    [OnSerializing]
+    void M(string p, StreamingContext context)
+    {
+    }
+
+    [OnDeserializing]
+    void M(StreamingContext context, string p)
+    {
+    }
 }
  ");
     }
