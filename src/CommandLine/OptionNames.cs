@@ -39,6 +39,7 @@ internal static class OptionNames
     public const string RootDirectoryUrl = "root-directory-url";
     public const string Scope = "scope";
     public const string SeverityLevel = "severity-level";
+    public const string SymbolKind = "symbol-kind";
     public const string TargetVersion = "target-version";
     public const string Type = "type";
     public const string Visibility = "visibility";

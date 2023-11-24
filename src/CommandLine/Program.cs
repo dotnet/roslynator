@@ -106,6 +106,7 @@ internal static class Program
                     typeof(PhysicalLinesOfCodeCommandLineOptions),
                     typeof(RenameSymbolCommandLineOptions),
                     typeof(SpellcheckCommandLineOptions),
+                    typeof(FindSymbolCommandLineOptions),
                 });
 
             parserResult.WithNotParsed(e =>
@@ -113,7 +114,7 @@ internal static class Program
                 if (e.Any(f => f.Tag == ErrorType.VersionRequestedError))
                 {
                     Console.WriteLine(typeof(Program).GetTypeInfo().Assembly.GetName().Version);
-                    success = false;
+                    success = true;
                     return;
                 }
 
@@ -190,6 +191,8 @@ internal static class Program
                             return RenameSymbolAsync(renameSymbolCommandLineOptions).Result;
                         case SpellcheckCommandLineOptions spellcheckCommandLineOptions:
                             return SpellcheckAsync(spellcheckCommandLineOptions).Result;
+                        case FindSymbolCommandLineOptions findSymbolCommandLineOptions:
+                            return FindSymbolAsync(findSymbolCommandLineOptions).Result;
                         default:
                             throw new InvalidOperationException();
                     }
@@ -336,6 +339,55 @@ internal static class Program
             return ExitCodes.Error;
 
         var command = new AnalyzeCommand(options, severityLevel, projectFilter, CreateFileSystemFilter(options));
+
+        CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
+
+        return GetExitCode(status);
+    }
+
+    private static async Task<int> FindSymbolAsync(FindSymbolCommandLineOptions options)
+    {
+        if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
+            return ExitCodes.Error;
+
+        if (!TryParseOptionValueAsEnumFlags(options.SymbolKind, OptionNames.SymbolKind, out SymbolGroupFilter symbolGroups, SymbolFinderOptions.Default.SymbolGroups))
+            return ExitCodes.Error;
+
+        if (!TryParseOptionValueAsEnumFlags(options.Visibility, OptionNames.Visibility, out VisibilityFilter visibility, SymbolFinderOptions.Default.Visibility))
+            return ExitCodes.Error;
+
+        if (!TryParseMetadataNames(options.WithAttribute, out ImmutableArray<MetadataName> withAttributes))
+            return ExitCodes.Error;
+
+        if (!TryParseMetadataNames(options.WithoutAttribute, out ImmutableArray<MetadataName> withoutAttributes))
+            return ExitCodes.Error;
+
+        if (!TryParsePaths(options.Paths, out ImmutableArray<PathInfo> paths))
+            return ExitCodes.Error;
+
+        ImmutableArray<SymbolFilterRule>.Builder rules = ImmutableArray.CreateBuilder<SymbolFilterRule>();
+
+        if (withAttributes.Any())
+            rules.Add(new SymbolWithAttributeFilterRule(withAttributes));
+
+        if (withoutAttributes.Any())
+            rules.Add(new SymbolWithoutAttributeFilterRule(withoutAttributes));
+
+        FileSystemFilter fileSystemFilter = CreateFileSystemFilter(options);
+
+        var symbolFinderOptions = new SymbolFinderOptions(
+            fileSystemFilter,
+            visibility: visibility,
+            symbolGroups: symbolGroups,
+            rules: rules,
+            ignoreGeneratedCode: options.IgnoreGeneratedCode,
+            unused: options.Unused);
+
+        var command = new FindSymbolCommand(
+            options: options,
+            symbolFinderOptions: symbolFinderOptions,
+            projectFilter: projectFilter,
+            fileSystemFilter: fileSystemFilter);
 
         CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
@@ -790,14 +842,17 @@ internal static class Program
 
         if (Console.IsInputRedirected)
         {
-            Task<ImmutableArray<string>> task = ConsoleHelpers.ReadRedirectedInputAsLines();
-
             WriteLine("Reading redirected input...", Verbosity.Diagnostic);
 
-            // https://github.com/dotnet/runtime/issues/95079
-            if (task.Wait(TimeSpan.FromMilliseconds(500)))
+            ImmutableArray<string> lines = ConsoleHelpers.ReadRedirectedInputAsLines();
+
+            if (lines.IsDefault)
             {
-                IEnumerable<string> paths1 = task.Result.Where(f => !string.IsNullOrEmpty(f));
+                WriteLine("Unable to read redirected input", Verbosity.Diagnostic);
+            }
+            else
+            {
+                IEnumerable<string> paths1 = lines.Where(f => !string.IsNullOrEmpty(f));
 
                 WriteLine("Successfully read redirected input:" + Environment.NewLine + "  " + string.Join(Environment.NewLine + "  ", paths1), Verbosity.Diagnostic);
 
@@ -805,10 +860,6 @@ internal static class Program
                     return false;
 
                 paths = paths.AddRange(ImmutableArray.CreateRange(paths2, f => new PathInfo(f, PathOrigin.PipedInput)));
-            }
-            else
-            {
-                WriteLine("Unable to read redirected input", Verbosity.Diagnostic);
             }
         }
 

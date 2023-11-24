@@ -13,6 +13,20 @@ namespace Roslynator;
 
 internal static class UnusedSymbolUtility
 {
+    private static readonly MetadataNameSet _classAttributeSymbols = new(new[]
+        {
+            MetadataName.Parse("Microsoft.CodeAnalysis.CodeFixes.ExportCodeFixProviderAttribute"),
+            MetadataName.Parse("Microsoft.CodeAnalysis.CodeRefactorings.ExportCodeRefactoringProviderAttribute"),
+            MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute"),
+            MetadataName.Parse("System.Composition.ExportAttribute"),
+        });
+
+    private static readonly MetadataNameSet _methodAttributeSymbols = new(new[]
+        {
+            MetadataName.Parse("Xunit.FactAttribute"),
+            MetadataName.Parse("Xunit.TheoryAttribute"),
+        });
+
     public static bool CanBeUnusedSymbol(ISymbol symbol)
     {
         switch (symbol.Kind)
@@ -23,30 +37,6 @@ internal static class UnusedSymbolUtility
                 }
             case SymbolKind.NamedType:
                 {
-                    var namedType = (INamedTypeSymbol)symbol;
-
-                    if ((namedType.TypeKind == TypeKind.Class || namedType.TypeKind == TypeKind.Module)
-                        && namedType.IsStatic)
-                    {
-                        foreach (ISymbol member in namedType.GetMembers())
-                        {
-                            switch (member.Kind)
-                            {
-                                case SymbolKind.NamedType:
-                                    {
-                                        return false;
-                                    }
-                                case SymbolKind.Method:
-                                    {
-                                        if (((IMethodSymbol)member).IsExtensionMethod)
-                                            return false;
-
-                                        break;
-                                    }
-                            }
-                        }
-                    }
-
                     return true;
                 }
             case SymbolKind.Event:
@@ -122,17 +112,19 @@ internal static class UnusedSymbolUtility
         if (IsReferencedInDebuggerDisplayAttribute(symbol))
             return false;
 
-        IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, solution, cancellationToken).ConfigureAwait(false);
+        IEnumerable<ISymbol> overrides = await SymbolFinder.FindOverridesAsync(symbol, solution, null, cancellationToken);
+
+        if (overrides.Any())
+            return false;
+
+        IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, solution, cancellationToken);
 
         foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
         {
             foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
             {
-                if (referenceLocation.IsImplicit)
-                    continue;
-
                 if (referenceLocation.IsCandidateLocation)
-                    return false;
+                    continue;
 
                 Location location = referenceLocation.Location;
 
@@ -196,7 +188,7 @@ internal static class UnusedSymbolUtility
         if (symbol.DeclaredAccessibility == Accessibility.Private
             && CanBeReferencedInDebuggerDisplayAttribute())
         {
-            string? value = symbol.ContainingType
+            string value = symbol.ContainingType
                 .GetAttribute(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute)?
                 .ConstructorArguments
                 .SingleOrDefault(shouldThrow: false)
@@ -289,6 +281,48 @@ internal static class UnusedSymbolUtility
                             break;
                         }
                 }
+            }
+
+            return false;
+        }
+    }
+
+    public static bool CanBeUnreferenced(ISymbol symbol)
+    {
+        if (symbol is INamedTypeSymbol typeSymbol)
+        {
+            if (typeSymbol.TypeKind == TypeKind.Class
+                && HasAttribute(typeSymbol, _classAttributeSymbols))
+            {
+                return true;
+            }
+
+            foreach (ISymbol member in typeSymbol.GetMembers())
+            {
+                if (member is IMethodSymbol methodSymbol)
+                {
+                    if (methodSymbol.IsExtensionMethod)
+                        return true;
+
+                    if (HasAttribute(methodSymbol, _methodAttributeSymbols))
+                        return true;
+                }
+            }
+        }
+        else if (symbol is IMethodSymbol methodSymbol)
+        {
+            if (HasAttribute(methodSymbol, _methodAttributeSymbols))
+                return true;
+        }
+
+        return false;
+
+        static bool HasAttribute(ISymbol symbol, MetadataNameSet attributeNames)
+        {
+            foreach (AttributeData attributeData in symbol.GetAttributes())
+            {
+                if (attributeNames.Contains(attributeData.AttributeClass))
+                    return true;
             }
 
             return false;

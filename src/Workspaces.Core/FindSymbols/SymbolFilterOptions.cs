@@ -106,7 +106,16 @@ internal class SymbolFilterOptions
 
     public virtual SymbolFilterReason GetReason(INamespaceSymbol namespaceSymbol)
     {
-        return GetRulesReason(namespaceSymbol);
+        foreach (SymbolFilterRule rule in Rules)
+        {
+            if (rule.IsApplicable(namespaceSymbol)
+                && !rule.IsMatch(namespaceSymbol))
+            {
+                return rule.Reason;
+            }
+        }
+
+        return SymbolFilterReason.None;
     }
 
     public virtual SymbolFilterReason GetReason(INamedTypeSymbol typeSymbol)

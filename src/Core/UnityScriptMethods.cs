@@ -3,11 +3,11 @@
 using System.Collections.Immutable;
 using System.Threading;
 
-namespace Roslynator.CSharp.Analysis.UnusedMember;
+namespace Roslynator;
 
 internal static class UnityScriptMethods
 {
-    private static ImmutableHashSet<string> _methodNames;
+    private static ImmutableHashSet<string>? _methodNames;
 
     public static MetadataName MonoBehaviourClassName { get; } = MetadataName.Parse("UnityEngine.MonoBehaviour");
 
