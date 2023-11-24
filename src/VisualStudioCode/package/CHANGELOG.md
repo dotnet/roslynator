@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.6.4] - 2023-11-24
+
+## [4.6.3] - 2023-11-23
+
 ### Added
 
 - [CLI] Add command `find-symbol` ([PR](https://github.com/dotnet/roslynator/pull/1255))
