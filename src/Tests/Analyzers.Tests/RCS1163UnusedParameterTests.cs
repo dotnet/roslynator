@@ -237,4 +237,21 @@ namespace System.Windows
 }
  ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_StreamingContextAttributes()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Runtime.Serialization;
+
+class C
+{
+    [Obsolete]
+    [OnSerialized]
+    void M(string p, StreamingContext context)
+    {
+    }
+}
+ ");
+    }
 }
