@@ -13,7 +13,7 @@ public class RCS1261DisposeResourceAsynchronouslyTests : AbstractCSharpDiagnosti
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DisposeResourceAsynchronously;
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
-    public async Task Test_Method_WithAsync()
+    public async Task Test_Method_LocalStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -63,7 +63,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
-    public async Task Test_Method_WithoutAsync_Task()
+    public async Task Test_Method_LocalStatement_WithoutAsync_Task()
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -117,7 +117,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
-    public async Task Test_Method_WithoutAsync_TaskOfT()
+    public async Task Test_Method_LocalStatement_WithoutAsync_TaskOfT()
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -171,7 +171,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
-    public async Task Test_LocalFunction_WithAsync()
+    public async Task Test_LocalFunction_LocalStatement_WithAsync()
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -227,7 +227,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
-    public async Task Test_LocalFunction_WithoutAsync_Task()
+    public async Task Test_LocalFunction_LocalStatement_WithoutAsync_Task()
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -287,7 +287,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
-    public async Task Test_LocalFunction_WithoutAsync_TaskOfT()
+    public async Task Test_LocalFunction_LocalStatement_WithoutAsync_TaskOfT()
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
