@@ -24,7 +24,12 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.InlineLocalVariable, DiagnosticIdentifiers.DisposeResourceAsynchronously); }
+        get
+        {
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.InlineLocalVariable,
+                DiagnosticIdentifiers.DisposeResourceAsynchronously);
+        }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -34,35 +39,35 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
         if (!TryFindFirstAncestorOrSelf(root, context.Span, out LocalDeclarationStatementSyntax localDeclaration))
             return;
 
-        foreach (Diagnostic diagnostic in context.Diagnostics)
+        Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
+
+        switch (diagnostic.Id)
         {
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.InlineLocalVariable:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Inline local variable",
-                            ct => RefactorAsync(context.Document, localDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+            case DiagnosticIdentifiers.InlineLocalVariable:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Inline local variable",
+                        ct => RefactorAsync(document, localDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case DiagnosticIdentifiers.DisposeResourceAsynchronously:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Dispose resource asynchronously",
-                            ct => DisposeAsynchronouslyAsync(context.Document, localDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            case DiagnosticIdentifiers.DisposeResourceAsynchronously:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Dispose resource asynchronously",
+                        ct => DisposeResourceAsynchronouslyAsync(document, localDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-            }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
     }
 
-    private static Task<Document> DisposeAsynchronouslyAsync(
+    private static Task<Document> DisposeResourceAsynchronouslyAsync(
         Document document,
         LocalDeclarationStatementSyntax localDeclaration,
         CancellationToken cancellationToken)
