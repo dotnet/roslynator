@@ -53,7 +53,7 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
         if (value is null)
             return;
 
-        Analyze(context, statement, value);
+        Analyze(context, statement, statement.UsingKeyword, value);
     }
 
     private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
@@ -73,10 +73,10 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
         if (value is null)
             return;
 
-        Analyze(context, statement, value);
+        Analyze(context, statement, statement.UsingKeyword, value);
     }
 
-    private static void Analyze(SyntaxNodeAnalysisContext context, StatementSyntax statement, ExpressionSyntax value)
+    private static void Analyze(SyntaxNodeAnalysisContext context, StatementSyntax statement, SyntaxToken usingKeyword, ExpressionSyntax value)
     {
         ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(value, context.CancellationToken);
 
@@ -88,23 +88,23 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
             if (node is MemberDeclarationSyntax)
             {
                 if (node is MethodDeclarationSyntax methodDeclaration)
-                    Analyze(context, statement, methodDeclaration.Modifiers, methodDeclaration);
+                    Analyze(context, methodDeclaration.Modifiers, usingKeyword, methodDeclaration);
 
                 break;
             }
             else if (node is LocalFunctionStatementSyntax localFunction)
             {
-                Analyze(context, statement, localFunction.Modifiers, localFunction);
+                Analyze(context, localFunction.Modifiers, usingKeyword, localFunction);
                 break;
             }
             else if (node is LambdaExpressionSyntax lambdaExpression)
             {
-                Analyze(context, statement, lambdaExpression.Modifiers, lambdaExpression);
+                Analyze(context, lambdaExpression.Modifiers, usingKeyword, lambdaExpression);
                 break;
             }
             else if (node is AnonymousMethodExpressionSyntax anonymousMethod)
             {
-                Analyze(context, statement, anonymousMethod.Modifiers, anonymousMethod);
+                Analyze(context, anonymousMethod.Modifiers, usingKeyword, anonymousMethod);
                 break;
             }
         }
@@ -112,13 +112,13 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
 
     private static void Analyze(
         SyntaxNodeAnalysisContext context,
-        StatementSyntax statement,
         SyntaxTokenList modifiers,
+        SyntaxToken usingKeyword,
         SyntaxNode containingMethod)
     {
         if (modifiers.Contains(SyntaxKind.AsyncKeyword))
         {
-            ReportDiagnostic(context, statement);
+            ReportDiagnostic(context, usingKeyword);
         }
         else
         {
@@ -129,13 +129,13 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
             if (methodSymbol?.IsErrorType() == false
                 && SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
             {
-                ReportDiagnostic(context, statement);
+                ReportDiagnostic(context, usingKeyword);
             }
         }
     }
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, StatementSyntax statement)
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken usingKeyword)
     {
-        context.ReportDiagnostic(DiagnosticRules.DisposeResourceAsynchronously, statement);
+        context.ReportDiagnostic(DiagnosticRules.DisposeResourceAsynchronously, usingKeyword);
     }
 }
