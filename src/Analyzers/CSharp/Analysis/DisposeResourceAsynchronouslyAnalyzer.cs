@@ -62,13 +62,13 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
             if (node is MemberDeclarationSyntax)
             {
                 if (node is MethodDeclarationSyntax methodDeclaration)
-                    Analyze(context, statement, methodDeclaration.Modifiers);
+                    Analyze(context, statement, methodDeclaration.Modifiers, methodDeclaration.ReturnType);
 
                 break;
             }
             else if (node is LocalFunctionStatementSyntax localFunction)
             {
-                Analyze(context, statement, localFunction.Modifiers);
+                Analyze(context, statement, localFunction.Modifiers, localFunction.ReturnType);
                 break;
             }
         }
@@ -77,9 +77,24 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
     private static void Analyze(
         SyntaxNodeAnalysisContext context,
         LocalDeclarationStatementSyntax statement,
-        SyntaxTokenList modifiers)
+        SyntaxTokenList modifiers,
+        TypeSyntax returnType)
     {
         if (modifiers.Contains(SyntaxKind.AsyncKeyword))
-            context.ReportDiagnostic(DiagnosticRules.DisposeResourceAsynchronously, statement);
+        {
+            ReportDiagnostic(context, statement);
+        }
+        else
+        {
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(returnType, context.CancellationToken);
+
+            if (SymbolUtility.IsAwaitable(typeSymbol))
+                ReportDiagnostic(context, statement);
+        }
+    }
+
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, LocalDeclarationStatementSyntax statement)
+    {
+        context.ReportDiagnostic(DiagnosticRules.DisposeResourceAsynchronously, statement);
     }
 }

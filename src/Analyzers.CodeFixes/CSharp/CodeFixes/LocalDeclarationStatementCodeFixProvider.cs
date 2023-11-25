@@ -15,6 +15,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxRewriters;
 
 namespace Roslynator.CSharp.CodeFixes;
 
@@ -65,16 +66,6 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
                     break;
                 }
         }
-    }
-
-    private static Task<Document> DisposeResourceAsynchronouslyAsync(
-        Document document,
-        LocalDeclarationStatementSyntax localDeclaration,
-        CancellationToken cancellationToken)
-    {
-        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword));
-
-        return document.ReplaceNodeAsync(localDeclaration, newLocalDeclaration, cancellationToken);
     }
 
     private static async Task<Document> RefactorAsync(
@@ -211,5 +202,65 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
                     throw new InvalidOperationException();
                 }
         }
+    }
+
+    private static async Task<Document> DisposeResourceAsynchronouslyAsync(
+        Document document,
+        LocalDeclarationStatementSyntax localDeclaration,
+        CancellationToken cancellationToken)
+    {
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword));
+
+        for (SyntaxNode node = localDeclaration.Parent; node is not null; node = node.Parent)
+        {
+            if (node is MethodDeclarationSyntax methodDeclaration)
+            {
+                if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword))
+                {
+                    return await document.ReplaceNodeAsync(localDeclaration, newLocalDeclaration, cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    MethodDeclarationSyntax newMethodDeclaration = methodDeclaration.ReplaceNode(localDeclaration, newLocalDeclaration);
+
+                    IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+
+                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                    var newBody = (BlockSyntax)rewriter.VisitBlock(newMethodDeclaration.Body);
+
+                    newMethodDeclaration = newMethodDeclaration
+                        .WithBody(newBody)
+                        .InsertModifier(SyntaxKind.AsyncKeyword);
+
+                    return await document.ReplaceNodeAsync(methodDeclaration, newMethodDeclaration, cancellationToken).ConfigureAwait(false);
+                }
+            }
+            else if (node is LocalFunctionStatementSyntax localFunction)
+            {
+                if (localFunction.Modifiers.Contains(SyntaxKind.AsyncKeyword))
+                {
+                    return await document.ReplaceNodeAsync(localDeclaration, newLocalDeclaration, cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    LocalFunctionStatementSyntax newLocalFunction = localFunction.ReplaceNode(localDeclaration, newLocalDeclaration);
+
+                    IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, cancellationToken);
+
+                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                    var newBody = (BlockSyntax)rewriter.VisitBlock(newLocalFunction.Body);
+
+                    newLocalFunction = newLocalFunction
+                        .WithBody(newBody)
+                        .InsertModifier(SyntaxKind.AsyncKeyword);
+
+                    return await document.ReplaceNodeAsync(localFunction, newLocalFunction, cancellationToken).ConfigureAwait(false);
+                }
+            }
+        }
+
+        throw new InvalidOperationException();
     }
 }
