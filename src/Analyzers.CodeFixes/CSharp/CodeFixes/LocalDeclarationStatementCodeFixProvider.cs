@@ -15,7 +15,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Syntax;
-using Roslynator.CSharp.SyntaxRewriters;
 
 namespace Roslynator.CSharp.CodeFixes;
 
@@ -25,12 +24,7 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get
-        {
-            return ImmutableArray.Create(
-                DiagnosticIdentifiers.InlineLocalVariable,
-                DiagnosticIdentifiers.DisposeResourceAsynchronously);
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.InlineLocalVariable); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -50,16 +44,6 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
                     CodeAction codeAction = CodeAction.Create(
                         "Inline local variable",
                         ct => RefactorAsync(document, localDeclaration, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
-            case DiagnosticIdentifiers.DisposeResourceAsynchronously:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Dispose resource asynchronously",
-                        ct => DisposeResourceAsynchronouslyAsync(document, localDeclaration, ct),
                         GetEquivalenceKey(diagnostic));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
@@ -202,57 +186,5 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
                     throw new InvalidOperationException();
                 }
         }
-    }
-
-    private static async Task<Document> DisposeResourceAsynchronouslyAsync(
-        Document document,
-        LocalDeclarationStatementSyntax localDeclaration,
-        CancellationToken cancellationToken)
-    {
-        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword));
-
-        for (SyntaxNode node = localDeclaration.Parent; node is not null; node = node.Parent)
-        {
-            if (node is MethodDeclarationSyntax methodDeclaration)
-            {
-                if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword))
-                    return await document.ReplaceNodeAsync(localDeclaration, newLocalDeclaration, cancellationToken).ConfigureAwait(false);
-
-                MethodDeclarationSyntax newMethod = methodDeclaration.ReplaceNode(localDeclaration, newLocalDeclaration);
-
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
-
-                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
-                var newBody = (BlockSyntax)rewriter.VisitBlock(newMethod.Body);
-
-                newMethod = newMethod
-                    .WithBody(newBody)
-                    .InsertModifier(SyntaxKind.AsyncKeyword);
-
-                return await document.ReplaceNodeAsync(methodDeclaration, newMethod, cancellationToken).ConfigureAwait(false);
-            }
-            else if (node is LocalFunctionStatementSyntax localFunction)
-            {
-                if (localFunction.Modifiers.Contains(SyntaxKind.AsyncKeyword))
-                    return await document.ReplaceNodeAsync(localDeclaration, newLocalDeclaration, cancellationToken).ConfigureAwait(false);
-
-                LocalFunctionStatementSyntax newFunction = localFunction.ReplaceNode(localDeclaration, newLocalDeclaration);
-
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, cancellationToken);
-
-                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
-                var newBody = (BlockSyntax)rewriter.VisitBlock(newFunction.Body);
-
-                newFunction = newFunction
-                    .WithBody(newBody)
-                    .InsertModifier(SyntaxKind.AsyncKeyword);
-
-                return await document.ReplaceNodeAsync(localFunction, newFunction, cancellationToken).ConfigureAwait(false);
-            }
-        }
-
-        throw new InvalidOperationException();
     }
 }

@@ -62,32 +62,54 @@ internal class UseAsyncAwaitRewriter : SkipFunctionRewriter
 
     public override SyntaxNode VisitBlock(BlockSyntax node)
     {
-        node = (BlockSyntax)base.VisitBlock(node);
+        var newNode = (BlockSyntax)base.VisitBlock(node);
 
-        SyntaxList<StatementSyntax> statements = node.Statements;
+        SyntaxList<StatementSyntax> statements = newNode.Statements;
 
-        statements = RewriteStatements(statements, skipLastStatement: true);
+        statements = RewriteStatements(node, statements);
 
-        return node.WithStatements(statements);
+        return newNode.WithStatements(statements);
     }
 
     public override SyntaxNode VisitSwitchSection(SwitchSectionSyntax node)
     {
-        node = (SwitchSectionSyntax)base.VisitSwitchSection(node);
+        var newNode = (SwitchSectionSyntax)base.VisitSwitchSection(node);
 
-        SyntaxList<StatementSyntax> statements = node.Statements;
+        SyntaxList<StatementSyntax> statements = newNode.Statements;
 
-        statements = RewriteStatements(statements, skipLastStatement: false);
+        statements = RewriteStatements(node, statements);
 
-        return node.WithStatements(statements);
+        return newNode.WithStatements(statements);
     }
 
-    private static SyntaxList<StatementSyntax> RewriteStatements(SyntaxList<StatementSyntax> statements, bool skipLastStatement)
+    private static SyntaxList<StatementSyntax> RewriteStatements(SyntaxNode parent, SyntaxList<StatementSyntax> statements)
     {
+        if (!statements.Any())
+            return statements;
+
         int startIndex = statements.Count - 1;
 
-        if (skipLastStatement)
+        if (parent.IsKind(SyntaxKind.Block)
+            && (parent.IsParentKind(
+                SyntaxKind.MethodDeclaration,
+                SyntaxKind.LocalFunctionStatement,
+                SyntaxKind.SimpleLambdaExpression,
+                SyntaxKind.ParenthesizedLambdaExpression,
+                SyntaxKind.AnonymousMethodExpression)
+                || (parent.IsParentKind(SyntaxKind.UsingStatement)
+                    && parent.Parent.IsParentKind(SyntaxKind.Block)
+                    && parent.Parent.Parent.IsParentKind(
+                        SyntaxKind.MethodDeclaration,
+                        SyntaxKind.LocalFunctionStatement,
+                        SyntaxKind.SimpleLambdaExpression,
+                        SyntaxKind.ParenthesizedLambdaExpression,
+                        SyntaxKind.AnonymousMethodExpression))))
+        {
+            if (startIndex == 0)
+                return statements;
+
             startIndex--;
+        }
 
         for (int i = startIndex; i >= 0; i--)
         {

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1261DisposeResourceAsynchronouslyTests : AbstractCSharpDiagnosticVerifier<DisposeResourceAsynchronouslyAnalyzer, LocalDeclarationStatementCodeFixProvider>
+public class RCS1261DisposeResourceAsynchronouslyTests : AbstractCSharpDiagnosticVerifier<DisposeResourceAsynchronouslyAnalyzer, DisposeResourceAsynchronouslyCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DisposeResourceAsynchronously;
 

@@ -30,6 +30,7 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
         base.Initialize(context);
 
         context.RegisterSyntaxNodeAction(f => AnalyzeLocalDeclarationStatement(f), SyntaxKind.LocalDeclarationStatement);
+        context.RegisterSyntaxNodeAction(f => AnalyzeUsingStatement(f), SyntaxKind.UsingStatement);
     }
 
     private static void AnalyzeLocalDeclarationStatement(SyntaxNodeAnalysisContext context)
@@ -52,6 +53,31 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
         if (value is null)
             return;
 
+        Analyze(context, statement, value);
+    }
+
+    private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
+    {
+        var statement = (UsingStatementSyntax)context.Node;
+
+        if (statement.AwaitKeyword.IsKind(SyntaxKind.AwaitKeyword))
+            return;
+
+        VariableDeclaratorSyntax declaration = statement.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
+
+        if (declaration is null)
+            return;
+
+        ExpressionSyntax value = declaration.Initializer?.Value;
+
+        if (value is null)
+            return;
+
+        Analyze(context, statement, value);
+    }
+
+    private static void Analyze(SyntaxNodeAnalysisContext context, StatementSyntax statement, ExpressionSyntax value)
+    {
         ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(value, context.CancellationToken);
 
         if (typeSymbol?.Implements(MetadataNames.System_IAsyncDisposable, allInterfaces: true) != true)
@@ -62,13 +88,23 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
             if (node is MemberDeclarationSyntax)
             {
                 if (node is MethodDeclarationSyntax methodDeclaration)
-                    Analyze(context, statement, methodDeclaration.Modifiers, methodDeclaration.ReturnType);
+                    Analyze(context, statement, methodDeclaration.Modifiers, methodDeclaration);
 
                 break;
             }
             else if (node is LocalFunctionStatementSyntax localFunction)
             {
-                Analyze(context, statement, localFunction.Modifiers, localFunction.ReturnType);
+                Analyze(context, statement, localFunction.Modifiers, localFunction);
+                break;
+            }
+            else if (node is LambdaExpressionSyntax lambdaExpression)
+            {
+                Analyze(context, statement, lambdaExpression.Modifiers, lambdaExpression);
+                break;
+            }
+            else if (node is AnonymousMethodExpressionSyntax anonymousMethod)
+            {
+                Analyze(context, statement, anonymousMethod.Modifiers, anonymousMethod);
                 break;
             }
         }
@@ -76,9 +112,9 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
 
     private static void Analyze(
         SyntaxNodeAnalysisContext context,
-        LocalDeclarationStatementSyntax statement,
+        StatementSyntax statement,
         SyntaxTokenList modifiers,
-        TypeSyntax returnType)
+        SyntaxNode containingMethod)
     {
         if (modifiers.Contains(SyntaxKind.AsyncKeyword))
         {
@@ -86,17 +122,19 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
         }
         else
         {
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(returnType, context.CancellationToken);
+            var methodSymbol = ((containingMethod.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
+                ? context.SemanticModel.GetDeclaredSymbol(containingMethod, context.CancellationToken)
+                : context.SemanticModel.GetSymbol(containingMethod, context.CancellationToken)) as IMethodSymbol;
 
-            if (!typeSymbol.IsErrorType()
-                && SymbolUtility.IsAwaitable(typeSymbol))
+            if (methodSymbol?.IsErrorType() == false
+                && SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
             {
                 ReportDiagnostic(context, statement);
             }
         }
     }
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, LocalDeclarationStatementSyntax statement)
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, StatementSyntax statement)
     {
         context.ReportDiagnostic(DiagnosticRules.DisposeResourceAsynchronously, statement);
     }
