@@ -7414,8 +7414,9 @@ void M()
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptySyntax">
+  <Analyzer>
     <Id>RCS1259</Id>
+    <Identifier>RemoveEmptySyntax</Identifier>
     <Title>Remove empty syntax.</Title>
     <MessageFormat>Remove empty {0}.</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
@@ -7431,8 +7432,9 @@ void M()
   * empty statement
 </Summary>
   </Analyzer>
-  <Analyzer Identifier="AddOrRemoveTrailingComma">
+  <Analyzer>
     <Id>RCS1260</Id>
+    <Identifier>AddOrRemoveTrailingComma</Identifier>
     <Title>Add/remove trailing comma.</Title>
     <MessageFormat>{0} trailing comma.</MessageFormat>
     <Category>General</Category>
@@ -7458,6 +7460,35 @@ void M()
     B,
     C,
 }]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="trailing_comma_style" Value="omit_when_single_line" />
+        </ConfigOptions>
+        <Before><![CDATA[public enum Foo { A, B, C, }]]></Before>
+        <After><![CDATA[public enum Foo { A, B, C }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
+    <Id>RCS1261</Id>
+    <Identifier>DisposeResourceAsynchronously</Identifier>
+    <Title>Dispose resource asynchronously.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[async Task FooAsync()
+{
+    using var disposable = await GetDisposableAsync();
+}
+]]></Before>
+        <After><![CDATA[async Task FooAsync()
+{
+    await using var disposable = await GetDisposableAsync();
+}
+]]></After>
       </Sample>
       <Sample>
         <ConfigOptions>

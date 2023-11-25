@@ -2569,5 +2569,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1261</summary>
+        public static readonly DiagnosticDescriptor DisposeResourceAsynchronously = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.DisposeResourceAsynchronously, 
+            title:              "Dispose resource asynchronously.", 
+            messageFormat:      "Dispose resource asynchronously.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.DisposeResourceAsynchronously, 
+            customTags:         Array.Empty<string>());
+
     }
 }

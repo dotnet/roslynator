@@ -29,6 +29,16 @@ public readonly struct SingleLocalDeclarationStatementInfo
     public LocalDeclarationStatementSyntax Statement { get; }
 
     /// <summary>
+    /// The 'using' keyword.
+    /// </summary>
+    public SyntaxToken UsingKeyword => Statement?.UsingKeyword ?? default;
+
+    /// <summary>
+    /// The 'await' keyword.
+    /// </summary>
+    public SyntaxToken AwaitKeyword => Statement?.AwaitKeyword ?? default;
+
+    /// <summary>
     /// The variable declarator.
     /// </summary>
     public VariableDeclaratorSyntax Declarator { get; }

@@ -24,7 +24,7 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.InlineLocalVariable); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.InlineLocalVariable, DiagnosticIdentifiers.DisposeResourceAsynchronously); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -48,8 +48,28 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
+                case DiagnosticIdentifiers.DisposeResourceAsynchronously:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Dispose resource asynchronously",
+                            ct => DisposeAsynchronouslyAsync(context.Document, localDeclaration, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
+    }
+
+    private static Task<Document> DisposeAsynchronouslyAsync(
+        Document document,
+        LocalDeclarationStatementSyntax localDeclaration,
+        CancellationToken cancellationToken)
+    {
+        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword));
+
+        return document.ReplaceNodeAsync(localDeclaration, newLocalDeclaration, cancellationToken);
     }
 
     private static async Task<Document> RefactorAsync(
