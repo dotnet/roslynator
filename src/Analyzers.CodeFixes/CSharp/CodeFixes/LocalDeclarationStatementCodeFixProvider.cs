@@ -209,8 +209,6 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
         LocalDeclarationStatementSyntax localDeclaration,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
         LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword));
 
         for (SyntaxNode node = localDeclaration.Parent; node is not null; node = node.Parent)
@@ -218,46 +216,40 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
             if (node is MethodDeclarationSyntax methodDeclaration)
             {
                 if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword))
-                {
                     return await document.ReplaceNodeAsync(localDeclaration, newLocalDeclaration, cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    MethodDeclarationSyntax newMethodDeclaration = methodDeclaration.ReplaceNode(localDeclaration, newLocalDeclaration);
 
-                    IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+                MethodDeclarationSyntax newMethod = methodDeclaration.ReplaceNode(localDeclaration, newLocalDeclaration);
 
-                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
-                    var newBody = (BlockSyntax)rewriter.VisitBlock(newMethodDeclaration.Body);
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-                    newMethodDeclaration = newMethodDeclaration
-                        .WithBody(newBody)
-                        .InsertModifier(SyntaxKind.AsyncKeyword);
+                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                var newBody = (BlockSyntax)rewriter.VisitBlock(newMethod.Body);
 
-                    return await document.ReplaceNodeAsync(methodDeclaration, newMethodDeclaration, cancellationToken).ConfigureAwait(false);
-                }
+                newMethod = newMethod
+                    .WithBody(newBody)
+                    .InsertModifier(SyntaxKind.AsyncKeyword);
+
+                return await document.ReplaceNodeAsync(methodDeclaration, newMethod, cancellationToken).ConfigureAwait(false);
             }
             else if (node is LocalFunctionStatementSyntax localFunction)
             {
                 if (localFunction.Modifiers.Contains(SyntaxKind.AsyncKeyword))
-                {
                     return await document.ReplaceNodeAsync(localDeclaration, newLocalDeclaration, cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    LocalFunctionStatementSyntax newLocalFunction = localFunction.ReplaceNode(localDeclaration, newLocalDeclaration);
 
-                    IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, cancellationToken);
+                LocalFunctionStatementSyntax newFunction = localFunction.ReplaceNode(localDeclaration, newLocalDeclaration);
 
-                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
-                    var newBody = (BlockSyntax)rewriter.VisitBlock(newLocalFunction.Body);
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, cancellationToken);
 
-                    newLocalFunction = newLocalFunction
-                        .WithBody(newBody)
-                        .InsertModifier(SyntaxKind.AsyncKeyword);
+                UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                var newBody = (BlockSyntax)rewriter.VisitBlock(newFunction.Body);
 
-                    return await document.ReplaceNodeAsync(localFunction, newLocalFunction, cancellationToken).ConfigureAwait(false);
-                }
+                newFunction = newFunction
+                    .WithBody(newBody)
+                    .InsertModifier(SyntaxKind.AsyncKeyword);
+
+                return await document.ReplaceNodeAsync(localFunction, newFunction, cancellationToken).ConfigureAwait(false);
             }
         }
 

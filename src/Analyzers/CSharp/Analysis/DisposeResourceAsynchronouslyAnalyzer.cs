@@ -88,8 +88,11 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
         {
             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(returnType, context.CancellationToken);
 
-            if (SymbolUtility.IsAwaitable(typeSymbol))
+            if (!typeSymbol.IsErrorType()
+                && SymbolUtility.IsAwaitable(typeSymbol))
+            {
                 ReportDiagnostic(context, statement);
+            }
         }
     }
 
