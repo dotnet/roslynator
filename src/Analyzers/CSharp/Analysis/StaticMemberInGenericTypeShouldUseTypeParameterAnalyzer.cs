@@ -87,7 +87,6 @@ public sealed class StaticMemberInGenericTypeShouldUseTypeParameterAnalyzer : Ba
 
                         if (!ContainsAnyTypeParameter(typeParameters, fieldSymbol.Type)
                             && !IsTypeParameterReferenced(
-                                context,
                                 typeParameters,
                                 (fieldSymbol.GetSyntax(context.CancellationToken) as VariableDeclaratorSyntax)?.Initializer?.Value))
                         {
@@ -125,7 +124,6 @@ public sealed class StaticMemberInGenericTypeShouldUseTypeParameterAnalyzer : Ba
 
                             if (!ContainsAnyTypeParameter(typeParameters, propertySymbol.Type)
                                 && !IsTypeParameterReferenced(
-                                    context,
                                     typeParameters,
                                     (propertySymbol.GetSyntax(context.CancellationToken) as PropertyDeclarationSyntax)?.Initializer?.Value))
                             {
@@ -139,7 +137,7 @@ public sealed class StaticMemberInGenericTypeShouldUseTypeParameterAnalyzer : Ba
         }
     }
 
-    private static bool IsTypeParameterReferenced(SymbolAnalysisContext context, ImmutableArray<ITypeParameterSymbol> typeParameters, ExpressionSyntax value)
+    private static bool IsTypeParameterReferenced(ImmutableArray<ITypeParameterSymbol> typeParameters, ExpressionSyntax value)
     {
         if (value.IsKind(SyntaxKind.SimpleMemberAccessExpression))
         {
