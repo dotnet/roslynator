@@ -11,13 +11,13 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.SyntaxRewriters;
 
-internal class UseAsyncAwaitRewriter : SkipFunctionRewriter
+internal sealed class UseAsyncAwaitRewriter : SkipFunctionRewriter
 {
     private static readonly SyntaxAnnotation[] _asyncAwaitAnnotation = new[] { new SyntaxAnnotation() };
 
     private static readonly SyntaxAnnotation[] _asyncAwaitAnnotationAndFormatterAnnotation = new SyntaxAnnotation[] { _asyncAwaitAnnotation[0], Formatter.Annotation };
 
-    public UseAsyncAwaitRewriter(bool keepReturnStatement)
+    private UseAsyncAwaitRewriter(bool keepReturnStatement)
     {
         KeepReturnStatement = keepReturnStatement;
     }
@@ -90,20 +90,10 @@ internal class UseAsyncAwaitRewriter : SkipFunctionRewriter
         int startIndex = statements.Count - 1;
 
         if (parent.IsKind(SyntaxKind.Block)
-            && (parent.IsParentKind(
-                SyntaxKind.MethodDeclaration,
-                SyntaxKind.LocalFunctionStatement,
-                SyntaxKind.SimpleLambdaExpression,
-                SyntaxKind.ParenthesizedLambdaExpression,
-                SyntaxKind.AnonymousMethodExpression)
+            && (IsMethodLike(parent.Parent)
                 || (parent.IsParentKind(SyntaxKind.UsingStatement)
                     && parent.Parent.IsParentKind(SyntaxKind.Block)
-                    && parent.Parent.Parent.IsParentKind(
-                        SyntaxKind.MethodDeclaration,
-                        SyntaxKind.LocalFunctionStatement,
-                        SyntaxKind.SimpleLambdaExpression,
-                        SyntaxKind.ParenthesizedLambdaExpression,
-                        SyntaxKind.AnonymousMethodExpression))))
+                    && IsMethodLike(parent.Parent.Parent.Parent))))
         {
             if (startIndex == 0)
                 return statements;
@@ -128,5 +118,15 @@ internal class UseAsyncAwaitRewriter : SkipFunctionRewriter
         }
 
         return statements;
+    }
+
+    private static bool IsMethodLike(SyntaxNode node)
+    {
+        return node.IsKind(
+            SyntaxKind.MethodDeclaration,
+            SyntaxKind.LocalFunctionStatement,
+            SyntaxKind.SimpleLambdaExpression,
+            SyntaxKind.ParenthesizedLambdaExpression,
+            SyntaxKind.AnonymousMethodExpression);
     }
 }

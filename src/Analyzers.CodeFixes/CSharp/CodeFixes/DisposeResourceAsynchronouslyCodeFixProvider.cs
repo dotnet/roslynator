@@ -19,6 +19,8 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixProvider
 {
+    private const string Title = "Dispose resource asynchronously";
+
     public override ImmutableArray<string> FixableDiagnosticIds
     {
         get { return ImmutableArray.Create(DiagnosticIdentifiers.DisposeResourceAsynchronously); }
@@ -47,8 +49,8 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
                     if (node is LocalDeclarationStatementSyntax localDeclaration)
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Dispose resource asynchronously",
-                            ct => DisposeResourceAsynchronouslyAsync(document, localDeclaration, ct),
+                            Title,
+                            ct => RefactorAsync(document, localDeclaration, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -56,11 +58,15 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
                     else if (node is UsingStatementSyntax usingStatement)
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Dispose resource asynchronously",
-                            ct => DisposeResourceAsynchronouslyAsync(document, usingStatement, ct),
+                            Title,
+                            ct => RefactorAsync(document, usingStatement, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException();
                     }
 
                     break;
@@ -68,7 +74,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
         }
     }
 
-    private static async Task<Document> DisposeResourceAsynchronouslyAsync(
+    private static async Task<Document> RefactorAsync(
         Document document,
         UsingStatementSyntax usingStatement,
         CancellationToken cancellationToken)
@@ -77,10 +83,10 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
 
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        return await DisposeResourceAsynchronouslyAsync(document, usingStatement, newUsingStatement, semanticModel, cancellationToken).ConfigureAwait(false);
+        return await RefactorAsync(document, usingStatement, newUsingStatement, semanticModel, cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<Document> DisposeResourceAsynchronouslyAsync(
+    private static async Task<Document> RefactorAsync(
         Document document,
         LocalDeclarationStatementSyntax localDeclaration,
         CancellationToken cancellationToken)
@@ -89,10 +95,10 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
 
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        return await DisposeResourceAsynchronouslyAsync(document, localDeclaration, newLocalDeclaration, semanticModel, cancellationToken).ConfigureAwait(false);
+        return await RefactorAsync(document, localDeclaration, newLocalDeclaration, semanticModel, cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<Document> DisposeResourceAsynchronouslyAsync(
+    private static async Task<Document> RefactorAsync(
         Document document,
         StatementSyntax statement,
         StatementSyntax newStatement,

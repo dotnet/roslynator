@@ -7490,13 +7490,6 @@ void M()
 }
 ]]></After>
       </Sample>
-      <Sample>
-        <ConfigOptions>
-          <Option Key="trailing_comma_style" Value="omit_when_single_line" />
-        </ConfigOptions>
-        <Before><![CDATA[public enum Foo { A, B, C, }]]></Before>
-        <After><![CDATA[public enum Foo { A, B, C }]]></After>
-      </Sample>
     </Samples>
   </Analyzer>
   <Analyzer>
