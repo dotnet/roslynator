@@ -63,7 +63,7 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
         if (!localDeclarationInfo.Success)
             return;
 
-        if (localDeclarationInfo.Statement.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
+        if (localDeclarationInfo.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
             return;
 
         ExpressionSyntax value = localDeclarationInfo.Value;
