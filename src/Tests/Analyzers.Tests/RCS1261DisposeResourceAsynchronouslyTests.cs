@@ -26,10 +26,7 @@ class C
         [|using|] var disposable = await GetDisposableAsync();
     }
 
-    private Task<Disposable> GetDisposableAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -48,10 +45,7 @@ class C
         await using var disposable = await GetDisposableAsync();
     }
 
-    private Task<Disposable> GetDisposableAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -78,10 +72,7 @@ class C
         return Task.CompletedTask;
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -102,10 +93,7 @@ class C
         await Task.CompletedTask;
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -132,10 +120,7 @@ class C
         return Task.FromResult("""");
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -156,10 +141,7 @@ class C
         return await Task.FromResult("""");
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -187,10 +169,7 @@ class C
         }
     }
 
-    private Task<Disposable> GetDisposableAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -212,10 +191,7 @@ class C
         }
     }
 
-    private Task<Disposable> GetDisposableAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -245,10 +221,7 @@ class C
         }
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -272,10 +245,7 @@ class C
         }
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -305,10 +275,7 @@ class C
         }
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -332,10 +299,7 @@ class C
         }
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -360,10 +324,7 @@ class C
         [|using|] (var disposable = await GetDisposableAsync()) { }
     }
 
-    private Task<Disposable> GetDisposableAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -382,10 +343,7 @@ class C
         await using (var disposable = await GetDisposableAsync()) { }
     }
 
-    private Task<Disposable> GetDisposableAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -412,10 +370,7 @@ class C
         return Task.CompletedTask;
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -436,10 +391,7 @@ class C
         await Task.CompletedTask;
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -466,10 +418,7 @@ class C
         return Task.FromResult("""");
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -490,10 +439,7 @@ class C
         return await Task.FromResult("""");
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -521,10 +467,7 @@ class C
         }
     }
 
-    private Task<Disposable> GetDisposableAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -546,10 +489,7 @@ class C
         }
     }
 
-    private Task<Disposable> GetDisposableAsync()
-    {
-        throw new NotImplementedException();
-    }
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -579,10 +519,7 @@ class C
         }
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -606,10 +543,7 @@ class C
         }
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -639,10 +573,7 @@ class C
         }
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
-    }
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable
@@ -666,10 +597,313 @@ class C
         }
     }
 
-    private Disposable GetDisposable()
-    {
-        throw new NotImplementedException();
+    private Disposable GetDisposable() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task Test_SimpleLambda_LocalStatement_WithAsync()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = async f =>
+        {
+            [|using|] var disposable = await GetDisposableAsync();
+        };
+    }
+
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = async f =>
+        {
+            await using var disposable = await GetDisposableAsync();
+        };
+    }
+
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task Test_SimpleLambda_LocalStatement_WithoutAsync()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = f =>
+        {
+            [|using|] var disposable = GetDisposable();
+            return Task.CompletedTask;
+        };
+    }
+
+    private Disposable GetDisposable() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = async f =>
+        {
+            await using var disposable = GetDisposable();
+            await Task.CompletedTask;
+        };
+    }
+
+    private Disposable GetDisposable() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task Test_ParenthesizedLambda_LocalStatement_WithAsync()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        var action = async () =>
+        {
+            [|using|] var disposable = await GetDisposableAsync();
+        };
+    }
+
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        var action = async () =>
+        {
+            await using var disposable = await GetDisposableAsync();
+        };
+    }
+
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task Test_ParenthesizedLambda_LocalStatement_WithoutAsync()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = (f) =>
+        {
+            [|using|] var disposable = GetDisposable();
+            return Task.CompletedTask;
+        };
+    }
+
+    private Disposable GetDisposable() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = async (f) =>
+        {
+            await using var disposable = GetDisposable();
+            await Task.CompletedTask;
+        };
+    }
+
+    private Disposable GetDisposable() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task Test_AnonymousMethod_LocalStatement_WithAsync()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = async delegate (string f)
+        {
+            [|using|] var disposable = await GetDisposableAsync();
+        };
+    }
+
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = async delegate (string f)
+        {
+            await using var disposable = await GetDisposableAsync();
+        };
+    }
+
+    private Task<Disposable> GetDisposableAsync() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task Test_AnonymousMethod_LocalStatement_WithoutAsync()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = delegate (string f)
+        {
+            [|using|] var disposable = GetDisposable();
+            return Task.CompletedTask;
+        };
+    }
+
+    private Disposable GetDisposable() => throw new NotImplementedException();
+}
+
+internal class Disposable : IDisposable, IAsyncDisposable
+{
+    public void Dispose() => throw new NotImplementedException();
+    public ValueTask DisposeAsync() => throw new NotImplementedException();
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    void Foo()
+    {
+        Func<string, Task> action = async delegate (string f)
+        {
+            await using var disposable = GetDisposable();
+            await Task.CompletedTask;
+        };
+    }
+
+    private Disposable GetDisposable() => throw new NotImplementedException();
 }
 
 internal class Disposable : IDisposable, IAsyncDisposable

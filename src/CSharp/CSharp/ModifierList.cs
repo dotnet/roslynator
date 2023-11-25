@@ -175,6 +175,11 @@ public static class ModifierList
                 return (TNode)(SyntaxNode)ModifierList<LocalFunctionStatementSyntax>.Instance.Insert((LocalFunctionStatementSyntax)(SyntaxNode)node, kind, comparer);
             case SyntaxKind.Parameter:
                 return (TNode)(SyntaxNode)ModifierList<ParameterSyntax>.Instance.Insert((ParameterSyntax)(SyntaxNode)node, kind, comparer);
+            case SyntaxKind.SimpleLambdaExpression:
+            case SyntaxKind.ParenthesizedLambdaExpression:
+                return (TNode)(SyntaxNode)ModifierList<LambdaExpressionSyntax>.Instance.Insert((LambdaExpressionSyntax)(SyntaxNode)node, kind, comparer);
+            case SyntaxKind.AnonymousMethodExpression:
+                return (TNode)(SyntaxNode)ModifierList<AnonymousMethodExpressionSyntax>.Instance.Insert((AnonymousMethodExpressionSyntax)(SyntaxNode)node, kind, comparer);
             case SyntaxKind.IncompleteMember:
                 return (TNode)(SyntaxNode)ModifierList<IncompleteMemberSyntax>.Instance.Insert((IncompleteMemberSyntax)(SyntaxNode)node, kind, comparer);
         }
