@@ -115,4 +115,24 @@ class Program
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    public async Task TestNoDiagnostic_Interface()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+interface IFoo
+{
+#pragma warning disable RCS1046
+    Task Foo();
+#pragma warning restore RCS1046
+}
+
+class C : IFoo
+{
+    public Task Foo() => Task.CompletedTask;
+}
+");
+    }
 }
