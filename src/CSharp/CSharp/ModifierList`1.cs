@@ -97,6 +97,12 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
         if (typeof(TNode) == typeof(RecordDeclarationSyntax))
             return new RecordDeclarationModifierList();
 
+        if (typeof(TNode) == typeof(LambdaExpressionSyntax))
+            return new LambdaExpressionModifierList();
+
+        if (typeof(TNode) == typeof(AnonymousMethodExpressionSyntax))
+            return new AnonymousMethodExpressionModifierList();
+
         throw new InvalidOperationException();
     }
 
@@ -771,6 +777,42 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
         }
 
         internal override RecordDeclarationSyntax WithModifiers(RecordDeclarationSyntax node, SyntaxTokenList modifiers)
+        {
+            return node.WithModifiers(modifiers);
+        }
+    }
+
+    private class LambdaExpressionModifierList : ModifierList<LambdaExpressionSyntax>
+    {
+        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LambdaExpressionSyntax node)
+        {
+            return node.AttributeLists;
+        }
+
+        internal override SyntaxTokenList GetModifiers(LambdaExpressionSyntax node)
+        {
+            return node.Modifiers;
+        }
+
+        internal override LambdaExpressionSyntax WithModifiers(LambdaExpressionSyntax node, SyntaxTokenList modifiers)
+        {
+            return node.WithModifiers(modifiers);
+        }
+    }
+
+    private class AnonymousMethodExpressionModifierList : ModifierList<AnonymousMethodExpressionSyntax>
+    {
+        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(AnonymousMethodExpressionSyntax node)
+        {
+            return default;
+        }
+
+        internal override SyntaxTokenList GetModifiers(AnonymousMethodExpressionSyntax node)
+        {
+            return node.Modifiers;
+        }
+
+        internal override AnonymousMethodExpressionSyntax WithModifiers(AnonymousMethodExpressionSyntax node, SyntaxTokenList modifiers)
         {
             return node.WithModifiers(modifiers);
         }
