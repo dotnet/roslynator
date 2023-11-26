@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis;
@@ -84,8 +85,13 @@ public sealed class StaticMemberInGenericTypeShouldUseTypeParameterAnalyzer : Ba
                         if (typeParameters.IsDefault)
                             typeParameters = namedType.TypeParameters;
 
-                        if (!ContainsAnyTypeParameter(typeParameters, fieldSymbol.Type))
+                        if (!ContainsAnyTypeParameter(typeParameters, fieldSymbol.Type)
+                            && !IsTypeParameterReferenced(
+                                typeParameters,
+                                (fieldSymbol.GetSyntax(context.CancellationToken) as VariableDeclaratorSyntax)?.Initializer?.Value))
+                        {
                             ReportDiagnostic(context, fieldSymbol);
+                        }
 
                         break;
                     }
@@ -116,13 +122,53 @@ public sealed class StaticMemberInGenericTypeShouldUseTypeParameterAnalyzer : Ba
                             if (typeParameters.IsDefault)
                                 typeParameters = namedType.TypeParameters;
 
-                            if (!ContainsAnyTypeParameter(typeParameters, propertySymbol.Type))
+                            if (!ContainsAnyTypeParameter(typeParameters, propertySymbol.Type)
+                                && !IsTypeParameterReferenced(
+                                    typeParameters,
+                                    (propertySymbol.GetSyntax(context.CancellationToken) as PropertyDeclarationSyntax)?.Initializer?.Value))
+                            {
                                 ReportDiagnostic(context, propertySymbol);
+                            }
                         }
 
                         break;
                     }
             }
+        }
+    }
+
+    private static bool IsTypeParameterReferenced(ImmutableArray<ITypeParameterSymbol> typeParameters, ExpressionSyntax value)
+    {
+        if (value.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+        {
+            var memberAccess = (MemberAccessExpressionSyntax)value;
+
+            if (memberAccess.Expression is IdentifierNameSyntax identifierName)
+            {
+                if (IsTypeParameter(identifierName, typeParameters))
+                    return true;
+            }
+            else if (memberAccess.Expression is TypeOfExpressionSyntax typeOfExpression)
+            {
+                if (typeOfExpression.Type is IdentifierNameSyntax identifierName2
+                    && IsTypeParameter(identifierName2, typeParameters))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
+        static bool IsTypeParameter(IdentifierNameSyntax identifierName, ImmutableArray<ITypeParameterSymbol> typeParameters)
+        {
+            foreach (ITypeParameterSymbol typeParameter in typeParameters)
+            {
+                if (typeParameter.Name == identifierName.Identifier.ValueText)
+                    return true;
+            }
+
+            return false;
         }
     }
 
