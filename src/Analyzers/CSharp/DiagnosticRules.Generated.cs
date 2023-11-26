@@ -2572,8 +2572,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1261</summary>
         public static readonly DiagnosticDescriptor DisposeResourceAsynchronously = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.DisposeResourceAsynchronously, 
-            title:              "Dispose resource asynchronously.", 
-            messageFormat:      "Dispose resource asynchronously.", 
+            title:              "Resource can be disposed asynchronously.", 
+            messageFormat:      "Resource can be disposed asynchronously.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 

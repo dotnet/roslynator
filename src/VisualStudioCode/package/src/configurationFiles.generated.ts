@@ -903,7 +903,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs1260.severity = none
 # Options: roslynator_trailing_comma_style
 
-# Dispose resource asynchronously
+# Resource can be disposed asynchronously
 #dotnet_diagnostic.rcs1261.severity = suggestion
 
 # Use pattern matching

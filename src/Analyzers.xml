@@ -7473,7 +7473,7 @@ void M()
   <Analyzer>
     <Id>RCS1261</Id>
     <Identifier>DisposeResourceAsynchronously</Identifier>
-    <Title>Dispose resource asynchronously.</Title>
+    <Title>Resource can be disposed asynchronously.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
