@@ -30,7 +30,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
         return $"Dispose '{variableDeclaration.Variables.Single().Identifier.ValueText}' asynchronously";
     }
 
-public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
