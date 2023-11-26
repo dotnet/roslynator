@@ -31,7 +31,7 @@ internal static class CSharpTypeAnalysis
         if (!variables.Any())
             return default;
 
-        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration))
+        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.FixedStatement))
             return default;
 
         ExpressionSyntax? expression = variables[0].Initializer?.Value?.WalkDownParentheses();
@@ -126,7 +126,7 @@ internal static class CSharpTypeAnalysis
         if (!type.IsVar)
             return false;
 
-        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration))
+        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.FixedStatement))
             return false;
 
         Debug.Assert(variableDeclaration.Variables.Any());
@@ -193,6 +193,7 @@ internal static class CSharpTypeAnalysis
         {
             case SyntaxKind.FieldDeclaration:
             case SyntaxKind.EventFieldDeclaration:
+            case SyntaxKind.FixedStatement:
                 {
                     return false;
                 }
