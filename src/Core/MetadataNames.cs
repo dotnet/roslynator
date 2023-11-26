@@ -36,6 +36,7 @@ internal static class MetadataNames
     public static readonly MetadataName System_FormattableString = MetadataName.Parse("System.FormattableString");
     public static readonly MetadataName System_Func_T2 = MetadataName.Parse("System.Func`2");
     public static readonly MetadataName System_Func_T3 = MetadataName.Parse("System.Func`3");
+    public static readonly MetadataName System_IAsyncDisposable = MetadataName.Parse("System.IAsyncDisposable");
     public static readonly MetadataName System_IEquatable_T = MetadataName.Parse("System.IEquatable`1");
     public static readonly MetadataName System_IComparable = MetadataName.Parse("System.IComparable");
     public static readonly MetadataName System_IComparable_T = MetadataName.Parse("System.IComparable`1");

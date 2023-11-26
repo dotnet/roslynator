@@ -217,5 +217,6 @@ namespace Roslynator.CSharp
         public const string UnnecessaryEnumFlag = "RCS1258";
         public const string RemoveEmptySyntax = "RCS1259";
         public const string AddOrRemoveTrailingComma = "RCS1260";
+        public const string DisposeResourceAsynchronously = "RCS1261";
     }
 }

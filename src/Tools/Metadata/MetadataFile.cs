@@ -441,6 +441,8 @@ public static class MetadataFile
             }
         }
 
+        doc.Root.ReplaceAll(doc.Root.Elements().OrderBy(f => f.Element("Id").Value));
+
         using (var sw = new StreamWriter(filePath))
         using (XmlWriter xw = XmlWriter.Create(sw, new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8 }))
             doc.Save(xw);
