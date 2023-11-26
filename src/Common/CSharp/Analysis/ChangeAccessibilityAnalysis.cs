@@ -196,12 +196,10 @@ internal static class ChangeAccessibilityAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        switch (member.Kind())
+        switch (member)
         {
-            case SyntaxKind.EventFieldDeclaration:
+            case EventFieldDeclarationSyntax eventFieldDeclaration:
                 {
-                    var eventFieldDeclaration = (EventFieldDeclarationSyntax)member;
-
                     foreach (VariableDeclaratorSyntax declarator in eventFieldDeclaration.Declaration.Variables)
                     {
                         var symbol = (IEventSymbol)semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
@@ -218,10 +216,8 @@ internal static class ChangeAccessibilityAnalysis
 
                     break;
                 }
-            case SyntaxKind.MethodDeclaration:
+            case MethodDeclarationSyntax methodDeclaration:
                 {
-                    var methodDeclaration = (MethodDeclarationSyntax)member;
-
                     if (semanticModel
                         .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
                         .BaseOverriddenMethod()?
@@ -234,10 +230,8 @@ internal static class ChangeAccessibilityAnalysis
 
                     break;
                 }
-            case SyntaxKind.PropertyDeclaration:
+            case PropertyDeclarationSyntax propertyDeclaration:
                 {
-                    var propertyDeclaration = (PropertyDeclarationSyntax)member;
-
                     if (semanticModel
                         .GetDeclaredSymbol(propertyDeclaration, cancellationToken)?
                         .BaseOverriddenProperty()?
@@ -250,10 +244,8 @@ internal static class ChangeAccessibilityAnalysis
 
                     break;
                 }
-            case SyntaxKind.EventDeclaration:
+            case EventDeclarationSyntax eventDeclaration:
                 {
-                    var eventDeclaration = (EventDeclarationSyntax)member;
-
                     if (semanticModel
                         .GetDeclaredSymbol(eventDeclaration, cancellationToken)?
                         .BaseOverriddenEvent()?
@@ -266,10 +258,8 @@ internal static class ChangeAccessibilityAnalysis
 
                     break;
                 }
-            case SyntaxKind.IndexerDeclaration:
+            case IndexerDeclarationSyntax indexerDeclaration:
                 {
-                    var indexerDeclaration = (IndexerDeclarationSyntax)member;
-
                     if (semanticModel
                         .GetDeclaredSymbol(indexerDeclaration, cancellationToken)?
                         .BaseOverriddenProperty()?

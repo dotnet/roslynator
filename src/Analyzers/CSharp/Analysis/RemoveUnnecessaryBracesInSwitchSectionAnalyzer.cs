@@ -59,12 +59,10 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
         do
         {
-            if (en.Current.IsKind(SyntaxKind.LocalDeclarationStatement))
+            if (en.Current is LocalDeclarationStatementSyntax localDeclaration
+                && localDeclaration.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
             {
-                var localDeclaration = (LocalDeclarationStatementSyntax)en.Current;
-
-                if (localDeclaration.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
-                    return;
+                return;
             }
         }
         while (en.MoveNext());
