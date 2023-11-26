@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -20,14 +19,11 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixProvider
 {
+    private const string Title = "Dispose resource asynchronously";
+
     public override ImmutableArray<string> FixableDiagnosticIds
     {
         get { return ImmutableArray.Create(DiagnosticIdentifiers.DisposeResourceAsynchronously); }
-    }
-
-    private static string GetTitle(VariableDeclarationSyntax variableDeclaration)
-    {
-        return $"Dispose '{variableDeclaration.Variables.Single().Identifier.ValueText}' asynchronously";
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -53,7 +49,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
                     if (node is LocalDeclarationStatementSyntax localDeclaration)
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            GetTitle(localDeclaration.Declaration),
+                            Title,
                             ct => RefactorAsync(document, localDeclaration, ct),
                             GetEquivalenceKey(diagnostic));
 
@@ -62,7 +58,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
                     else if (node is UsingStatementSyntax usingStatement)
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            GetTitle(usingStatement.Declaration),
+                            Title,
                             ct => RefactorAsync(document, usingStatement, ct),
                             GetEquivalenceKey(diagnostic));
 
