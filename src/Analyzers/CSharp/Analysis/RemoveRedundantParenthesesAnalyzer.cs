@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Analysis;
 
@@ -83,7 +84,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.SwitchStatement:
             case SyntaxKind.ArrayRankSpecifier:
                 {
-                    ReportDiagnostic();
+                    ReportDiagnostic(context, parenthesizedExpression);
                     break;
                 }
             case SyntaxKind.LessThanExpression:
@@ -97,7 +98,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                     if (expression.IsKind(SyntaxKind.IdentifierName)
                         || expression is LiteralExpressionSyntax)
                     {
-                        ReportDiagnostic();
+                        ReportDiagnostic(context, parenthesizedExpression);
                     }
 
                     break;
@@ -120,12 +121,12 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                     if (kind == SyntaxKind.IdentifierName
                         || expression is LiteralExpressionSyntax)
                     {
-                        ReportDiagnostic();
+                        ReportDiagnostic(context, parenthesizedExpression);
                     }
                     else if (kind == parentKind
                         && ((BinaryExpressionSyntax)parent).Left == parenthesizedExpression)
                     {
-                        ReportDiagnostic();
+                        ReportDiagnostic(context, parenthesizedExpression);
                     }
 
                     break;
@@ -141,7 +142,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                         case SyntaxKind.ElementAccessExpression:
                         case SyntaxKind.ConditionalAccessExpression:
                             {
-                                ReportDiagnostic();
+                                ReportDiagnostic(context, parenthesizedExpression);
                                 break;
                             }
                     }
@@ -162,12 +163,12 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                 {
                     if (((AssignmentExpressionSyntax)parent).Left == parenthesizedExpression)
                     {
-                        ReportDiagnostic();
+                        ReportDiagnostic(context, parenthesizedExpression);
                     }
                     else if (expression.IsKind(SyntaxKind.IdentifierName)
                         || expression is LiteralExpressionSyntax)
                     {
-                        ReportDiagnostic();
+                        ReportDiagnostic(context, parenthesizedExpression);
                     }
 
                     break;
@@ -178,7 +179,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                         && !expression.DescendantNodes().Any(f => f.IsKind(SyntaxKind.AliasQualifiedName))
                         && ((InterpolationSyntax)parent).Expression == parenthesizedExpression)
                     {
-                        ReportDiagnostic();
+                        ReportDiagnostic(context, parenthesizedExpression);
                     }
 
                     break;
@@ -189,7 +190,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                         return;
 
                     if (CSharpFacts.GetOperatorPrecedence(expression.Kind()) <= CSharpFacts.GetOperatorPrecedence(SyntaxKind.AwaitExpression))
-                        ReportDiagnostic();
+                        ReportDiagnostic(context, parenthesizedExpression);
 
                     break;
                 }
@@ -197,7 +198,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.CollectionInitializerExpression:
                 {
                     if (expression is not AssignmentExpressionSyntax)
-                        ReportDiagnostic();
+                        ReportDiagnostic(context, parenthesizedExpression);
 
                     break;
                 }
@@ -215,7 +216,7 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                         case SyntaxKind.AddAssignmentExpression:
                         case SyntaxKind.SubtractAssignmentExpression:
                             {
-                                ReportDiagnostic();
+                                ReportDiagnostic(context, parenthesizedExpression);
                                 break;
                             }
 #if DEBUG
@@ -231,16 +232,34 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                 }
         }
 
-        void ReportDiagnostic()
+        static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
         {
+            if (parenthesizedExpression.Expression.IsKind(SyntaxKind.LessThanExpression)
+                && parenthesizedExpression.IsParentKind(SyntaxKind.Argument)
+                && parenthesizedExpression.Parent.Parent is BaseArgumentListSyntax argumentList)
+            {
+                int index = argumentList.Arguments.IndexOf((ArgumentSyntax)parenthesizedExpression.Parent);
+
+                if (index < argumentList.Arguments.Count - 1)
+                {
+                    string syntax = parenthesizedExpression.Expression
+                        + argumentList.ToString(TextSpan.FromBounds(argumentList.Arguments[index].Span.End, argumentList.Arguments[index + 1].Span.End));
+
+                    NameSyntax name = SyntaxFactory.ParseName(syntax);
+
+                    if (name.IsKind(SyntaxKind.GenericName))
+                        return;
+                }
+            }
+
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.RemoveRedundantParentheses,
-                openParen.GetLocation(),
-                additionalLocations: ImmutableArray.Create(closeParen.GetLocation()));
+                parenthesizedExpression.OpenParenToken.GetLocation(),
+                additionalLocations: ImmutableArray.Create(parenthesizedExpression.CloseParenToken.GetLocation()));
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantParenthesesFadeOut, openParen);
-            DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantParenthesesFadeOut, closeParen);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantParenthesesFadeOut, parenthesizedExpression.OpenParenToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantParenthesesFadeOut, parenthesizedExpression.CloseParenToken);
         }
     }
 }
