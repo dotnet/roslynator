@@ -238,12 +238,13 @@ public sealed class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
                 && parenthesizedExpression.IsParentKind(SyntaxKind.Argument)
                 && parenthesizedExpression.Parent.Parent is BaseArgumentListSyntax argumentList)
             {
-                int index = argumentList.Arguments.IndexOf((ArgumentSyntax)parenthesizedExpression.Parent);
+                SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+                int index = arguments.IndexOf((ArgumentSyntax)parenthesizedExpression.Parent);
 
-                if (index < argumentList.Arguments.Count - 1)
+                if (index < arguments.Count - 1)
                 {
                     string syntax = parenthesizedExpression.Expression
-                        + argumentList.ToString(TextSpan.FromBounds(argumentList.Arguments[index].Span.End, argumentList.Arguments[index + 1].Span.End));
+                        + argumentList.ToString(TextSpan.FromBounds(arguments[index].Span.End, arguments[index + 1].Span.End));
 
                     NameSyntax name = SyntaxFactory.ParseName(syntax);
 
