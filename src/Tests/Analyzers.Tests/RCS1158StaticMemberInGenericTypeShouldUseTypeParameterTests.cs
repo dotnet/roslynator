@@ -16,14 +16,14 @@ public class RCS1158StaticMemberInGenericTypeShouldUseTypeParameterTests : Abstr
     public async Task TestNoDiagnostic_Property()
     {
         await VerifyNoDiagnosticAsync(@"
-public sealed class C<T> where T : IFoo
+public sealed class C<T, T2> where T : IFoo<T2>
 {
-    public static string Name { get; } = T.Name;
+    public static T2 Name { get; } = T.Name;
 }
 
-public interface IFoo
+public interface IFoo<T>
 {
-    public static abstract string Name { get; }
+    public static abstract T Name { get; }
 }");
     }
 
