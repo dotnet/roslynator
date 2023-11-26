@@ -80,12 +80,10 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
             if (member.ContainsUnbalancedIfElseDirectives(member.Span))
                 continue;
 
-            switch (member.Kind())
+            switch (member)
             {
-                case SyntaxKind.DelegateDeclaration:
+                case DelegateDeclarationSyntax declaration:
                     {
-                        var declaration = (DelegateDeclarationSyntax)member;
-
                         if (SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                         {
                             if (walker is null)
@@ -96,10 +94,8 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
                         break;
                     }
-                case SyntaxKind.EventDeclaration:
+                case EventDeclarationSyntax declaration:
                     {
-                        var declaration = (EventDeclarationSyntax)member;
-
                         if (declaration.ExplicitInterfaceSpecifier is null
                             && SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                         {
@@ -111,10 +107,8 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
                         break;
                     }
-                case SyntaxKind.EventFieldDeclaration:
+                case EventFieldDeclarationSyntax declaration:
                     {
-                        var declaration = (EventFieldDeclarationSyntax)member;
-
                         if (SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                         {
                             if (walker is null)
@@ -125,9 +119,8 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
                         break;
                     }
-                case SyntaxKind.FieldDeclaration:
+                case FieldDeclarationSyntax declaration:
                     {
-                        var declaration = (FieldDeclarationSyntax)member;
                         SyntaxTokenList modifiers = declaration.Modifiers;
 
                         if (SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
@@ -140,10 +133,8 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
                         break;
                     }
-                case SyntaxKind.MethodDeclaration:
+                case MethodDeclarationSyntax declaration:
                     {
-                        var declaration = (MethodDeclarationSyntax)member;
-
                         SyntaxTokenList modifiers = declaration.Modifiers;
 
                         if (declaration.ExplicitInterfaceSpecifier is not null
@@ -183,10 +174,8 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
 
                         break;
                     }
-                case SyntaxKind.PropertyDeclaration:
+                case PropertyDeclarationSyntax declaration:
                     {
-                        var declaration = (PropertyDeclarationSyntax)member;
-
                         if (declaration.ExplicitInterfaceSpecifier is null
                             && SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                         {

@@ -136,10 +136,8 @@ public sealed class UseCompoundAssignmentAnalyzer : BaseDiagnosticAnalyzer
 
         ExpressionSyntax right = binaryExpressionInfo.Right;
 
-        if (!right.IsKind(SyntaxKind.ParenthesizedExpression))
+        if (right is not ParenthesizedExpressionSyntax parenthesizedExpression)
             return;
-
-        var parenthesizedExpression = (ParenthesizedExpressionSyntax)right;
 
         ExpressionSyntax expression = parenthesizedExpression.Expression;
 

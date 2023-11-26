@@ -45,10 +45,8 @@ public sealed class RemoveRedundantAssignmentCodeFixProvider : BaseCodeFixProvid
                             "Remove redundant assignment",
                             ct =>
                             {
-                                if (node.IsKind(SyntaxKind.VariableDeclarator))
+                                if (node is VariableDeclaratorSyntax variableDeclarator)
                                 {
-                                    var variableDeclarator = (VariableDeclaratorSyntax)node;
-
                                     return RemoveRedundantAssignmentAfterLocalDeclarationAsync(document, variableDeclarator, ct);
                                 }
                                 else
