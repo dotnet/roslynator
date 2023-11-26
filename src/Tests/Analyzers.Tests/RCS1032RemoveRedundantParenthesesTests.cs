@@ -591,4 +591,29 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
+    public async Task TestNoDiagnostic_GrammarAmbiguity()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+public class Foo
+{
+    public static void F(bool p1, bool p2)
+    {
+        int x = 0;
+        int y = 0;
+        Bar d = null;
+        F((x < y), d > (d ?? d));
+    }
+}
+
+public class Bar
+{
+    public static bool operator >(Bar left, Bar right) => throw new NotImplementedException();
+    public static bool operator <(Bar left, Bar right) => throw new NotImplementedException();
+}
+");
+    }
 }
