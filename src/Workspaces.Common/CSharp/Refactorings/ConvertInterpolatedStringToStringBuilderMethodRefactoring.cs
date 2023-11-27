@@ -72,15 +72,18 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
 
                     text = StringUtility.ReplaceDoubleBracesWithSingleBrace(text);
                     if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression
-                        && interpolatedStringExpression.StringStartToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken)
-                        )
+                        && interpolatedStringExpression.StringStartToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken))
                     {
-                        text = "\"\"\"" + text + "\"\"\"";
+                        text = interpolatedStringExpression.StringStartToken.ValueText.Substring(1)
+                            + text
+                            + interpolatedStringExpression.StringEndToken.ValueText;
                     }
                     else if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression2
                         && interpolatedStringExpression2.StringStartToken.IsKind(SyntaxKind.InterpolatedMultiLineRawStringStartToken))
                     {
-                        text = "\"\"\"\n" + text + "\n\"\"\"\n";
+                        text = interpolatedStringExpression2.StringStartToken.ValueText.Substring(1)
+                            + text
+                            + interpolatedStringExpression2.StringEndToken.ValueText;
                     }
                     else if (isVerbatim)
                     {
@@ -91,7 +94,7 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                         text = "\"" + text + "\"";
                     }
 
-                    ExpressionSyntax stringLiteral = ParseExpression(text);
+                    ExpressionSyntax stringLiteral = ParseExpression(text).WithTriviaFrom(interpolatedStringText);
 
                     return (kind, "Append", ImmutableArray.Create(Argument(stringLiteral)));
                 }

@@ -425,11 +425,9 @@ class C
         var sb = new StringBuilder();
         sb.Append(""""""
                     <a href=""somelink"">
-""""""
-        ).Append(s).Append(""""""
+"""""").Append(s).Append(""""""
 </a>
-""""""
-);
+"""""");
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp11);
