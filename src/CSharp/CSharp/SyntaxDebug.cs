@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ namespace Roslynator.CSharp;
 internal static class SyntaxDebug
 {
     [Conditional("DEBUG")]
-    internal static void Assert(bool condition, SyntaxNode node)
+    internal static void Assert(bool condition, SyntaxNode? node)
     {
         if (!condition)
             Fail(node);
@@ -32,8 +32,14 @@ internal static class SyntaxDebug
     }
 
     [Conditional("DEBUG")]
-    internal static void Fail(SyntaxNode node)
+    internal static void Fail(SyntaxNode? node)
     {
+        if (node is null)
+        {
+            Debug.Fail("");
+            return;
+        }
+
         TextSpan span = node.Span;
         SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
         SyntaxTriviaList trailingTrivia = node.GetTrailingTrivia();
@@ -73,7 +79,7 @@ internal static class SyntaxDebug
         string text,
         TextSpan span,
         SyntaxKind kind,
-        SyntaxTree syntaxTree)
+        SyntaxTree? syntaxTree)
     {
         int maxLength = 300;
         int lineCount = 1;
@@ -95,20 +101,31 @@ internal static class SyntaxDebug
         if (text.Length > maxLength)
             text = text.Remove(maxLength) + "....." + Environment.NewLine + "<truncated>";
 
-        FileLinePositionSpan lineSpan = syntaxTree.GetLineSpan(span);
-        LinePosition startSpan = lineSpan.StartLinePosition;
-        LinePosition endSpan = lineSpan.EndLinePosition;
+        string message;
+        if (syntaxTree is not null)
+        {
+            FileLinePositionSpan lineSpan = syntaxTree.GetLineSpan(span);
+            LinePosition startSpan = lineSpan.StartLinePosition;
+            LinePosition endSpan = lineSpan.EndLinePosition;
 
-        string message = $"Path: {syntaxTree.FilePath}"
-            + Environment.NewLine
-            + $"Kind: {kind}"
-            + Environment.NewLine
-            + $"Start L: {startSpan.Line + 1} CH: {startSpan.Character + 1}"
-            + Environment.NewLine
-            + $"End L: {endSpan.Line + 1} CH: {endSpan.Character + 1}"
-            + Environment.NewLine
-            + Environment.NewLine
-            + text;
+            message = $"Path: {syntaxTree.FilePath}"
+                + Environment.NewLine
+                + $"Kind: {kind}"
+                + Environment.NewLine
+                + $"Start L: {startSpan.Line + 1} CH: {startSpan.Character + 1}"
+                + Environment.NewLine
+                + $"End L: {endSpan.Line + 1} CH: {endSpan.Character + 1}"
+                + Environment.NewLine
+                + Environment.NewLine
+                + text;
+        }
+        else
+        {
+            message = $"Kind: {kind}"
+                + Environment.NewLine
+                + Environment.NewLine
+                + text;
+        }
 
         Debug.Fail(message);
     }

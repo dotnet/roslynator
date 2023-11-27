@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Linq;
@@ -59,12 +59,10 @@ public sealed class RemoveUnnecessaryBracesInSwitchSectionAnalyzer : BaseDiagnos
 
         do
         {
-            if (en.Current.IsKind(SyntaxKind.LocalDeclarationStatement))
+            if (en.Current is LocalDeclarationStatementSyntax localDeclaration
+                && localDeclaration.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
             {
-                var localDeclaration = (LocalDeclarationStatementSyntax)en.Current;
-
-                if (localDeclaration.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
-                    return;
+                return;
             }
         }
         while (en.MoveNext());

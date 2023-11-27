@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -21,9 +21,10 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
     public SpellcheckCommand(
         SpellcheckCommandLineOptions options,
         in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter,
         SpellingData spellingData,
         Visibility visibility,
-        SpellingScopeFilter scopeFilter) : base(projectFilter)
+        SpellingScopeFilter scopeFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         SpellingData = spellingData;
@@ -43,8 +44,6 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
     public override async Task<SpellcheckCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         VisibilityFilter visibilityFilter = Visibility switch
         {
             Visibility.Public => VisibilityFilter.All,
@@ -53,33 +52,33 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
             _ => throw new InvalidOperationException()
         };
 
-        var options = new SpellingFixerOptions(
-            scopeFilter: ScopeFilter,
-            symbolVisibility: visibilityFilter,
-            minWordLength: Options.MinWordLength,
-            maxWordLength: Options.MaxWordLength,
-            includeGeneratedCode: Options.IncludeGeneratedCode,
+        var options = new SpellcheckOptions()
+        {
+            FileSystemFilter = FileSystemFilter,
+            ScopeFilter = ScopeFilter,
+            SymbolVisibility = visibilityFilter,
+            MinWordLength = Options.MinWordLength,
+            MaxWordLength = Options.MaxWordLength,
+            IncludeGeneratedCode = Options.IncludeGeneratedCode,
 #if DEBUG
-            autofix: !Options.NoAutofix,
+            Autofix = !Options.NoAutofix,
 #endif
-            interactive: Options.Interactive,
-            dryRun: Options.DryRun);
+            Interactive = Options.Interactive,
+            DryRun = Options.DryRun,
+        };
 
         CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
-        var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
-
-        return await FixAsync(projectOrSolution, options, projectFilter, culture, cancellationToken);
+        return await FixAsync(projectOrSolution, options, culture, cancellationToken);
     }
 
     private async Task<SpellcheckCommandResult> FixAsync(
         ProjectOrSolution projectOrSolution,
-        SpellingFixerOptions options,
-        ProjectFilter projectFilter,
+        SpellcheckOptions options,
         IFormatProvider formatProvider = null,
         CancellationToken cancellationToken = default)
     {
-        SpellingFixer spellingFixer = null;
+        SpellcheckAnalyzer spellingFixer = null;
         ImmutableArray<SpellingFixResult> results = default;
 
         if (projectOrSolution.IsProject)
@@ -90,7 +89,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             spellingFixer = GetSpellingFixer(solution);
 
-            WriteLine($"Fix '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
+            WriteLine($"Analyze '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -98,7 +97,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             stopwatch.Stop();
 
-            WriteLine($"Done fixing project '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+            LogHelpers.WriteElapsedTime($"Analyzed project '{project.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
         }
         else
         {
@@ -106,28 +105,27 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             spellingFixer = GetSpellingFixer(solution);
 
-            results = await spellingFixer.FixSolutionAsync(f => projectFilter.IsMatch(f), cancellationToken);
+            results = await spellingFixer.FixSolutionAsync(f => IsMatch(f), cancellationToken);
         }
 
         SpellingData = spellingFixer.SpellingData;
 
         WriteSummary(results);
 
-        return new SpellcheckCommandResult(CommandStatus.Success, results);
+        return new SpellcheckCommandResult(
+            (results.Length == 0 || (!options.DryRun && results.All(f => f.HasFix)))
+                ? CommandStatus.Success
+                : CommandStatus.NotSuccess,
+            results);
 
-        SpellingFixer GetSpellingFixer(Solution solution)
+        SpellcheckAnalyzer GetSpellingFixer(Solution solution)
         {
-            return new SpellingFixer(
+            return new SpellcheckAnalyzer(
                 solution,
                 spellingData: SpellingData,
                 formatProvider: formatProvider,
                 options: options);
         }
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Spellchecking was canceled.", Verbosity.Minimal);
     }
 
     private void WriteSummary(ImmutableArray<SpellingFixResult> results)
@@ -162,8 +160,12 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
         isFirst = true;
 
-        foreach (IGrouping<string, SpellingFixResult> grouping in results
-            .Where(f => !f.HasFix)
+        IEnumerable<SpellingFixResult> filteredResults = results;
+
+        if (!Options.DryRun)
+            filteredResults = filteredResults.Where(f => !f.HasFix);
+
+        foreach (IGrouping<string, SpellingFixResult> grouping in filteredResults
             .GroupBy(f => f.Value, comparer)
             .OrderBy(f => f.Key, comparer))
         {
@@ -206,8 +208,14 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
                 WriteMatchingLines(grouping, comparer, ConsoleColors.Green);
         }
 
-        bool any1 = WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
-        bool any2 = WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
+        var any1 = false;
+        var any2 = false;
+
+        if (!Options.DryRun)
+        {
+            any1 = WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
+            any2 = WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
+        }
 
         if (!isFirst
             && !any1

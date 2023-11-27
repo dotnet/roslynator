@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -32,7 +32,7 @@ internal readonly struct HexNumericLiteralExpressionInfo
         get { return Token.ValueText; }
     }
 
-    public object Value
+    public object? Value
     {
         get { return Token.Value; }
     }
@@ -99,7 +99,7 @@ internal readonly struct HexNumericLiteralExpressionInfo
         return Create(Walk(node, walkDownParentheses) as LiteralExpressionSyntax);
     }
 
-    internal static HexNumericLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
+    internal static HexNumericLiteralExpressionInfo Create(LiteralExpressionSyntax? literalExpression)
     {
         if (literalExpression is null)
             return default;

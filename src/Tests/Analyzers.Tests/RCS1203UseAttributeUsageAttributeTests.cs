@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -65,6 +65,18 @@ class FooAttribute
 using System;
 
 class Foo : Attribute
+{
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
+    public async Task TestNoDiagnostic_AbstractAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+public abstract class MyAttribute : Attribute
 {
 }
 ");

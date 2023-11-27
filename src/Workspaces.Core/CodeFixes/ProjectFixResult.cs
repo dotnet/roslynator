@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -11,9 +11,9 @@ internal class ProjectFixResult
 
     internal ProjectFixResult(
         ProjectFixKind kind,
-        IEnumerable<DiagnosticInfo> fixedDiagnostics = default,
-        IEnumerable<DiagnosticInfo> unfixedDiagnostics = default,
-        IEnumerable<DiagnosticInfo> unfixableDiagnostics = default,
+        IEnumerable<DiagnosticInfo>? fixedDiagnostics = default,
+        IEnumerable<DiagnosticInfo>? unfixedDiagnostics = default,
+        IEnumerable<DiagnosticInfo>? unfixableDiagnostics = default,
         int numberOfFormattedDocuments = -1,
         int numberOfAddedFileBanners = -1)
     {

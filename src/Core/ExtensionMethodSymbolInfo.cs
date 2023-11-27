@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Roslynator;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public readonly struct ExtensionMethodSymbolInfo : IEquatable<ExtensionMethodSymbolInfo>
 {
-    internal ExtensionMethodSymbolInfo(IMethodSymbol symbol, IMethodSymbol reducedSymbol)
+    internal ExtensionMethodSymbolInfo(IMethodSymbol symbol, IMethodSymbol? reducedSymbol)
     {
         Symbol = symbol;
         ReducedSymbol = reducedSymbol;
@@ -22,7 +22,7 @@ public readonly struct ExtensionMethodSymbolInfo : IEquatable<ExtensionMethodSym
     /// <summary>
     /// The definition of extension method from which this symbol was reduced, or null, if the symbol was not reduced.
     /// </summary>
-    public IMethodSymbol ReducedSymbol { get; }
+    public IMethodSymbol? ReducedSymbol { get; }
 
     /// <summary>
     /// The extension method symbol.

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -88,7 +88,7 @@ internal static partial class Symbols
                 {
                     CorLibReference,
                     CreateFromAssemblyName("Microsoft.CodeAnalysis.dll"),
-                    CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll")
+                    CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll"),
                 });
         }
     }

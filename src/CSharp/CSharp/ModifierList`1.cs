@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -97,6 +97,12 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
         if (typeof(TNode) == typeof(RecordDeclarationSyntax))
             return new RecordDeclarationModifierList();
 
+        if (typeof(TNode) == typeof(LambdaExpressionSyntax))
+            return new LambdaExpressionModifierList();
+
+        if (typeof(TNode) == typeof(AnonymousMethodExpressionSyntax))
+            return new AnonymousMethodExpressionModifierList();
+
         throw new InvalidOperationException();
     }
 
@@ -106,7 +112,7 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <param name="node"></param>
     /// <param name="kind"></param>
     /// <param name="comparer"></param>
-    public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
+    public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind>? comparer = null)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -124,7 +130,7 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <param name="node"></param>
     /// <param name="modifier"></param>
     /// <param name="comparer"></param>
-    public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null)
+    public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken>? comparer = null)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -149,7 +155,7 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
             }
             else
             {
-                AttributeListSyntax attributeList = GetAttributeLists(node).LastOrDefault();
+                AttributeListSyntax? attributeList = GetAttributeLists(node).LastOrDefault();
 
                 if (attributeList is not null)
                 {
@@ -771,6 +777,42 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
         }
 
         internal override RecordDeclarationSyntax WithModifiers(RecordDeclarationSyntax node, SyntaxTokenList modifiers)
+        {
+            return node.WithModifiers(modifiers);
+        }
+    }
+
+    private class LambdaExpressionModifierList : ModifierList<LambdaExpressionSyntax>
+    {
+        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LambdaExpressionSyntax node)
+        {
+            return node.AttributeLists;
+        }
+
+        internal override SyntaxTokenList GetModifiers(LambdaExpressionSyntax node)
+        {
+            return node.Modifiers;
+        }
+
+        internal override LambdaExpressionSyntax WithModifiers(LambdaExpressionSyntax node, SyntaxTokenList modifiers)
+        {
+            return node.WithModifiers(modifiers);
+        }
+    }
+
+    private class AnonymousMethodExpressionModifierList : ModifierList<AnonymousMethodExpressionSyntax>
+    {
+        internal override SyntaxList<AttributeListSyntax> GetAttributeLists(AnonymousMethodExpressionSyntax node)
+        {
+            return default;
+        }
+
+        internal override SyntaxTokenList GetModifiers(AnonymousMethodExpressionSyntax node)
+        {
+            return node.Modifiers;
+        }
+
+        internal override AnonymousMethodExpressionSyntax WithModifiers(AnonymousMethodExpressionSyntax node, SyntaxTokenList modifiers)
         {
             return node.WithModifiers(modifiers);
         }

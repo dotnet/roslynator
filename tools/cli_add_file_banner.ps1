@@ -1,8 +1,8 @@
 #dotnet tool install -g roslynator.dotnet.cli
 
-dotnet build "../src/CommandLine.sln" /p:Configuration=Debug /v:m /m
+dotnet build "$PSScriptRoot/../src/CommandLine.sln" /p:Configuration=Debug /v:m /m
 
-roslynator fix "../src/Roslynator.sln" `
+roslynator fix "$PSScriptRoot/../src/Roslynator.sln" `
     --verbosity d `
     --file-log "roslynator.log" `
     --file-log-verbosity diag `

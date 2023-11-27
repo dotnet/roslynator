@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Documentation;
 
 internal class AddBaseOrNewDocumentationCommentRewriter : AddNewDocumentationCommentRewriter
 {
-    public AddBaseOrNewDocumentationCommentRewriter(SemanticModel semanticModel, DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true, CancellationToken cancellationToken = default)
+    public AddBaseOrNewDocumentationCommentRewriter(SemanticModel semanticModel, DocumentationCommentGeneratorSettings? settings = null, bool skipNamespaceDeclaration = true, CancellationToken cancellationToken = default)
         : base(settings, skipNamespaceDeclaration)
     {
         SemanticModel = semanticModel;

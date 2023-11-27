@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections;
@@ -128,7 +128,7 @@ public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnu
             }
             else if (_ifOrElse.IsIf)
             {
-                ElseClauseSyntax elseClause = _ifOrElse.AsIf().Else;
+                ElseClauseSyntax? elseClause = _ifOrElse.AsIf()!.Else;
 
                 if (elseClause is not null)
                 {
@@ -149,7 +149,7 @@ public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnu
             return false;
         }
 
-        public IfStatementOrElseClause Current
+        public readonly IfStatementOrElseClause Current
         {
             get { return (_count >= 0) ? _ifOrElse : throw new InvalidOperationException(); }
         }
@@ -163,22 +163,22 @@ public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnu
                 IfStatementSyntax ifStatement;
                 if (_ifOrElse.IsElse)
                 {
-                    ifStatement = (IfStatementSyntax)_ifOrElse.Parent;
+                    ifStatement = (IfStatementSyntax)_ifOrElse.Parent!;
                 }
                 else
                 {
-                    ifStatement = _ifOrElse.AsIf();
+                    ifStatement = _ifOrElse.AsIf()!;
                 }
 
                 count--;
 
                 while (count >= 0)
                 {
-                    ifStatement = (IfStatementSyntax)ifStatement.Parent.Parent;
+                    ifStatement = (IfStatementSyntax?)ifStatement.Parent!.Parent!;
                     count--;
                 }
 
-                _ifOrElse = ifStatement;
+                _ifOrElse = ifStatement!;
             }
         }
 

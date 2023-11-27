@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
@@ -19,7 +19,7 @@ internal readonly struct AttributeInfo
 
     public AttributeData AttributeData { get; }
 
-    public INamedTypeSymbol AttributeClass
+    public INamedTypeSymbol? AttributeClass
     {
         get { return AttributeData?.AttributeClass; }
     }

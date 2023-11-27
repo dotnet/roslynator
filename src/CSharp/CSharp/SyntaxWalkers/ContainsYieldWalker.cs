@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 internal sealed class ContainsYieldWalker : StatementWalker
 {
     [ThreadStatic]
-    private static ContainsYieldWalker _cachedInstance;
+    private static ContainsYieldWalker? _cachedInstance;
 
     public ContainsYieldWalker(
         bool searchForYieldBreak = true,
@@ -29,7 +29,7 @@ internal sealed class ContainsYieldWalker : StatementWalker
 
     public bool SearchForYieldReturn { get; private set; }
 
-    public YieldStatementSyntax YieldStatement { get; private set; }
+    public YieldStatementSyntax? YieldStatement { get; private set; }
 
     public static bool ContainsYield(StatementSyntax statement, bool searchForYieldReturn = true, bool searchForYieldBreak = true)
     {
@@ -73,7 +73,7 @@ internal sealed class ContainsYieldWalker : StatementWalker
 
     public static ContainsYieldWalker GetInstance()
     {
-        ContainsYieldWalker walker = _cachedInstance;
+        ContainsYieldWalker? walker = _cachedInstance;
 
         if (walker is not null)
         {

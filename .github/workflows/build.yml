@@ -16,7 +16,7 @@ env:
 
 jobs:
   pre_build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.version.outputs.version }}
       version3: ${{ steps.version.outputs.version3 }}
@@ -54,16 +54,26 @@ jobs:
       - run: dotnet restore Roslynator.sln
       - run: dotnet build Roslynator.sln --no-restore
       - run: |
-          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info --exclude-diagnostics \
-            IDE0220 `# 'foreach' statement implicitly converts type. Add an explicit cast to make intent clearer.` \
-            IDE0251 `# Property can be made read-only.` \
-            IDE0270 `# Null check can be simplified.`
+          dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
       - run: dotnet test Roslynator.sln --no-build
+      - uses: actions/checkout@v3
+        with:
+          repository: josefpihrt/wordb
+          path: wordb
+      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.7.0
+      - run: |
+          roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
+            spellcheck \
+            ../wordb/data/en \
+            ../wordb/data/en-us \
+            ../wordb/data/names.txt \
+            ../wordb/data/tech.names.txt \
+            ../wordb/data/tech.acronyms.txt
 
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: pre_build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
     defaults:
@@ -82,7 +92,7 @@ jobs:
   build_analyzers:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: pre_build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
     strategy:
@@ -139,7 +149,7 @@ jobs:
   build_vs_code_extension:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: [ pre_build, build_analyzers ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
     defaults:
@@ -189,7 +199,7 @@ jobs:
   build_core_cli:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'cli-v')
     needs: pre_build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       RoslynatorDotNetCli: true
       RoslynatorCliVersion: ${{ needs.pre_build.outputs.cliVersion }}
@@ -231,7 +241,7 @@ jobs:
 
   publish_nuget_packages:
     needs: [ build_core_and_testing, build_analyzers ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
       - uses: actions/download-artifact@v3
@@ -243,7 +253,7 @@ jobs:
 
   publish_cli_nuget_packages:
     needs: [ build_core_cli, build_framework_cli ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'cli-v')
     steps:
       - uses: actions/download-artifact@v3
@@ -254,8 +264,8 @@ jobs:
         working-directory: nuget_packages
 
   publish_vs_code_extension:
-    needs: build_vs_code_extension
-    runs-on: ubuntu-20.04
+    needs: [ pre_build, build_vs_code_extension ]
+    runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
       - uses: actions/download-artifact@v3
@@ -267,8 +277,8 @@ jobs:
         working-directory: vs_code_extension
 
   publish_ovsx_extension:
-    needs: build_vs_code_extension
-    runs-on: ubuntu-20.04
+    needs: [ pre_build, build_vs_code_extension ]
+    runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
       - uses: actions/download-artifact@v3

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -19,7 +19,7 @@ public readonly struct TestCode
     {
     }
 
-    internal TestCode(string value, string expectedValue, ImmutableArray<TextSpan> spans, ImmutableArray<TextSpan> additionalSpans)
+    internal TestCode(string value, string? expectedValue, ImmutableArray<TextSpan> spans, ImmutableArray<TextSpan> additionalSpans)
     {
         Value = value ?? throw new ArgumentNullException(nameof(value));
         ExpectedValue = expectedValue;
@@ -36,7 +36,7 @@ public readonly struct TestCode
     /// <summary>
     /// Gets a source code after a code fix or a refactoring was applied.
     /// </summary>
-    public string ExpectedValue { get; }
+    public string? ExpectedValue { get; }
 
     /// <summary>
     /// Gets a collection of spans that represent selected text.
@@ -76,7 +76,7 @@ public readonly struct TestCode
     public static TestCode Parse(
         string value,
         string replacement1,
-        string replacement2 = null)
+        string? replacement2 = null)
     {
         if (value is null)
             throw new ArgumentNullException(nameof(value));
@@ -84,7 +84,7 @@ public readonly struct TestCode
         if (replacement1 is null)
             throw new ArgumentNullException(nameof(replacement1));
 
-        (string source, string expected, ImmutableArray<TextSpan> spans) = FindSpansAndReplace(value, replacement1, replacement2);
+        (string source, string? expected, ImmutableArray<TextSpan> spans) = FindSpansAndReplace(value, replacement1, replacement2);
 
         (string source2, ImmutableArray<TextSpan> additionalSpans) = FindAnnotatedSpansAndRemove(source, "a");
 

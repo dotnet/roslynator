@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using Microsoft.CodeAnalysis;
@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
 {
     [ThreadStatic]
-    private static ContainsCommentWalker _cachedInstance;
+    private static ContainsCommentWalker? _cachedInstance;
 
     public ContainsCommentWalker(TextSpan span)
         : base(SyntaxWalkerDepth.Trivia)
@@ -59,7 +59,7 @@ internal sealed class ContainsCommentWalker : CSharpSyntaxWalker
 
     public static ContainsCommentWalker GetInstance(TextSpan span)
     {
-        ContainsCommentWalker walker = _cachedInstance;
+        ContainsCommentWalker? walker = _cachedInstance;
 
         if (walker is not null)
         {

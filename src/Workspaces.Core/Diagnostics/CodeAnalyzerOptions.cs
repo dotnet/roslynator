@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
@@ -10,6 +10,7 @@ internal class CodeAnalyzerOptions : CodeAnalysisOptions
     public static CodeAnalyzerOptions Default { get; } = new();
 
     public CodeAnalyzerOptions(
+        FileSystemFilter? fileSystemFilter = null,
         bool ignoreAnalyzerReferences = false,
         bool ignoreCompilerDiagnostics = false,
         bool reportNotConfigurable = false,
@@ -17,8 +18,9 @@ internal class CodeAnalyzerOptions : CodeAnalysisOptions
         bool logAnalyzerExecutionTime = false,
         bool concurrentAnalysis = true,
         DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
-        IEnumerable<string> supportedDiagnosticIds = null,
-        IEnumerable<string> ignoredDiagnosticIds = null) : base(
+        IEnumerable<string>? supportedDiagnosticIds = null,
+        IEnumerable<string>? ignoredDiagnosticIds = null) : base(
+            fileSystemFilter: fileSystemFilter,
             severityLevel: severityLevel,
             ignoreAnalyzerReferences: ignoreAnalyzerReferences,
             concurrentAnalysis: concurrentAnalysis,

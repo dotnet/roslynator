@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.IO;
@@ -80,17 +80,17 @@ internal class TextWriterWithVerbosity : TextWriter
         Writer.Write(value);
     }
 
-    public override void Write(string value)
+    public override void Write(string? value)
     {
         Writer.Write(value);
     }
 
-    public void Write(string value, Verbosity verbosity)
+    public void Write(string? value, Verbosity verbosity)
     {
         WriteIf(ShouldWrite(verbosity), value);
     }
 
-    public void WriteIf(bool condition, string value)
+    public void WriteIf(bool condition, string? value)
     {
         if (condition)
             Write(value);

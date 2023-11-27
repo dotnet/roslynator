@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -11,15 +11,17 @@ using System.Threading.Tasks;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
+using Microsoft.Extensions.FileSystemGlobbing;
 using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine;
 
 internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandResult : CommandResult
 {
-    protected MSBuildWorkspaceCommand(in ProjectFilter projectFilter)
+    protected MSBuildWorkspaceCommand(in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter)
     {
         ProjectFilter = projectFilter;
+        FileSystemFilter = fileSystemFilter;
     }
 
     public string Language
@@ -29,9 +31,11 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
     public ProjectFilter ProjectFilter { get; }
 
+    public FileSystemFilter FileSystemFilter { get; }
+
     public abstract Task<TCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default);
 
-    public async Task<CommandStatus> ExecuteAsync(IEnumerable<string> paths, string msbuildPath = null, IEnumerable<string> properties = null)
+    public async Task<CommandStatus> ExecuteAsync(IEnumerable<PathInfo> paths, string msbuildPath = null, IEnumerable<string> properties = null)
     {
         if (paths is null)
             throw new ArgumentNullException(nameof(paths));
@@ -64,12 +68,25 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                 var status = CommandStatus.Success;
                 var results = new List<TCommandResult>();
 
-                foreach (string path in paths)
+                foreach (PathInfo path in paths)
                 {
+                    if (path.Origin == PathOrigin.PipedInput)
+                    {
+                        Matcher matcher = (string.Equals(Path.GetExtension(path.Path), ".sln", StringComparison.OrdinalIgnoreCase))
+                            ? ProjectFilter.SolutionMatcher
+                            : ProjectFilter.Matcher;
+
+                        if (matcher?.Match(path.Path).HasMatches == false)
+                        {
+                            WriteLine($"Skip '{path.Path}'", ConsoleColors.DarkGray, Verbosity.Normal);
+                            continue;
+                        }
+                    }
+
                     TCommandResult result;
                     try
                     {
-                        result = await ExecuteAsync(path, workspace, cancellationToken);
+                        result = await ExecuteAsync(path.Path, workspace, cancellationToken);
 
                         if (result is null)
                         {
@@ -131,11 +148,6 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         if (!File.Exists(path))
             throw new FileNotFoundException($"Project or solution file not found: {path}");
 
-        TCommandResult result = await ExecuteAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
-
-        if (result is not null)
-            return result;
-
         ProjectOrSolution projectOrSolution = await OpenProjectOrSolutionAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
 
         Solution solution = projectOrSolution.AsSolution();
@@ -145,6 +157,9 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         {
             return null;
         }
+
+        if (FileSystemFilter is not null)
+            FileSystemFilter.RootDirectoryPath = Path.GetDirectoryName(path);
 
         return await ExecuteAsync(projectOrSolution, cancellationToken);
     }
@@ -204,15 +219,6 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         WriteLine($"  {e.Diagnostic.Message}", e.Diagnostic.Kind.GetColors(), Verbosity.Detailed);
     }
 
-    protected virtual Task<TCommandResult> ExecuteAsync(
-        string path,
-        MSBuildWorkspace workspace,
-        IProgress<ProjectLoadProgress> progress = null,
-        CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(default(TCommandResult));
-    }
-
     private static async Task<ProjectOrSolution> OpenProjectOrSolutionAsync(
         string path,
         MSBuildWorkspace workspace,
@@ -221,7 +227,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
     {
         bool isSolution = string.Equals(Path.GetExtension(path), ".sln", StringComparison.OrdinalIgnoreCase);
 
-        WriteLine($"Load {((isSolution) ? "solution" : "project")} '{path}'", Verbosity.Minimal);
+        WriteLine($"Loading {((isSolution) ? "solution" : "project")} '{path}'...", Verbosity.Minimal);
 
         ProjectOrSolution projectOrSolution;
 
@@ -240,8 +246,6 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         {
             throw new ProjectOrSolutionLoadException($"Error occurred while loading {((isSolution) ? "solution" : "project")} '{path}'", ex);
         }
-
-        WriteLine($"Done loading {((projectOrSolution.IsSolution) ? "solution" : "project")} '{projectOrSolution.FilePath}'", Verbosity.Minimal);
 
         return projectOrSolution;
     }
@@ -277,7 +281,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         return MSBuildWorkspace.Create(properties);
     }
 
-    private static bool TryGetVisualStudioInstance(out VisualStudioInstance instance)
+    private static bool TryGetVisualStudioInstance(out VisualStudioInstance result)
     {
         List<VisualStudioInstance> instances = MSBuildLocator.QueryVisualStudioInstances()
             .Distinct(VisualStudioInstanceComparer.MSBuildPath)
@@ -286,14 +290,14 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         if (instances.Count == 0)
         {
             WriteLine($"MSBuild location not found. Use option '-{OptionShortNames.MSBuildPath}, --{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
-            instance = null;
+            result = null;
             return false;
         }
 
         WriteLine("Available MSBuild locations:", Verbosity.Diagnostic);
 
-        foreach (VisualStudioInstance vsi in instances.OrderBy(f => f.Version))
-            WriteLine($"  {vsi.Name}, Version: {vsi.Version}, Path: {vsi.MSBuildPath}", Verbosity.Diagnostic);
+        foreach (VisualStudioInstance instance in instances.OrderBy(f => f.Version))
+            WriteLine($"  {instance.Name}, Version: {instance.Version}, Path: {instance.MSBuildPath}", Verbosity.Diagnostic);
 
         instances = instances
             .GroupBy(f => f.Version)
@@ -304,11 +308,11 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         if (instances.Count > 1)
         {
             WriteLine($"Cannot choose MSBuild location automatically. Use option '-{OptionShortNames.MSBuildPath}, --{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
-            instance = null;
+            result = null;
             return false;
         }
 
-        instance = instances[0];
+        result = instances[0];
         return true;
     }
 
@@ -337,7 +341,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         {
             Project project = workspace.CurrentSolution.GetProject(projectId);
 
-            if (ProjectFilter.IsMatch(project))
+            if (IsMatch(project))
             {
                 yield return project;
             }
@@ -346,6 +350,11 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                 WriteLine($"  Skip '{project.Name}'", ConsoleColors.DarkGray, Verbosity.Normal);
             }
         }
+    }
+
+    private protected bool IsMatch(Project project)
+    {
+        return ProjectFilter.IsMatch(project);
     }
 
     private protected async Task<ImmutableArray<Compilation>> GetCompilationsAsync(
@@ -368,7 +377,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
             Solution solution = projectOrSolution.AsSolution();
 
-            WriteLine($"Compile solution '{solution.FilePath}'", Verbosity.Minimal);
+            WriteLine($"Compiling solution '{solution.FilePath}'", Verbosity.Minimal);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -390,7 +399,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
             stopwatch.Stop();
 
-            WriteLine($"Done compiling solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+            LogHelpers.WriteElapsedTime($"Compiled solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
             return compilations.ToImmutableArray();
         }

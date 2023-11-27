@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using CommandLine;
@@ -91,23 +91,10 @@ public class ListSymbolsCommandLineOptions : MSBuildCommandLineOptions
         MetaValue = "<ASSEMBLY_FILE>")]
     public IEnumerable<string> ExternalAssemblies { get; set; }
 
-#if DEBUG
-    [Option(longName: "source-references")]
-    public string SourceReferences { get; set; }
-#endif
-
     [Option(
         longName: OptionNames.Visibility,
-        Default = new string[] { nameof(Roslynator.Visibility.Public) },
-        HelpText = "Defines one or more visibility of a type or a member. Allowed values are public, internal or private.",
+        Default = new[] { "public" },
+        HelpText = "Space separated list of visibilities of a type or a member. Allowed values are public, internal and private.",
         MetaValue = "<VISIBILITY>")]
     public IEnumerable<string> Visibility { get; set; }
-
-    //[Option(longName: "include-ienumerable",
-    //    HelpText = "Indicates whether interface System.Collections.IEnumerable should be included in a documentation if a type also implements interface System.Collections.Generic.IEnumerable<T>.")]
-    //public bool IncludeIEnumerable { get; set; }
-
-    //[Option(longName: "no-precedence-for-system",
-    //    HelpText = "Indicates whether symbols contained in 'System' namespace should be ordered as any other symbols and not before other symbols.")]
-    //public bool NoPrecedenceForSystem { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using CommandLine;
@@ -124,7 +124,7 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
     public bool OmitAttributeArguments { get; set; }
 
     [Option(
-        longName: "omit-inherited-atttributes",
+        longName: "omit-inherited-attributes",
         HelpText = "Indicates whether inherited attributes should be omitted.")]
     public bool OmitInheritedAttributes { get; set; }
 
@@ -144,8 +144,4 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
         HelpText = "Defines culture that should be used when searching for xml documentation files.",
         MetaValue = "<CULTURE_ID>")]
     public string PreferredCulture { get; set; }
-#if DEBUG
-    [Option(longName: "source-references")]
-    public IEnumerable<string> SourceReferences { get; set; }
-#endif
 }

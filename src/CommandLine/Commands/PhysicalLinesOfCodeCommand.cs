@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace Roslynator.CommandLine;
 
 internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCodeCommandResult>
 {
-    public PhysicalLinesOfCodeCommand(PhysicalLinesOfCodeCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
+    public PhysicalLinesOfCodeCommand(PhysicalLinesOfCodeCommandLineOptions options, in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
     }
@@ -52,7 +52,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
         }
         else
         {
-            ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetricsByProject = CountLines(projectOrSolution.AsSolution(), codeMetricsOptions, cancellationToken);
+            ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetricsByProject = await CountLinesAsync(projectOrSolution.AsSolution(), codeMetricsOptions, cancellationToken);
 
             codeMetrics = CodeMetricsInfo.Create(codeMetricsByProject.Values);
         }
@@ -62,11 +62,16 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
 
     private async Task<CodeMetricsInfo> CountLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)
     {
-        WriteLine($"Count lines for '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
+        WriteLine($"Counting lines for '{project.Name}'...", ConsoleColors.Cyan, Verbosity.Minimal);
 
         Stopwatch stopwatch = Stopwatch.StartNew();
 
-        CodeMetricsInfo codeMetrics = await service.CountLinesAsync(project, LinesOfCodeKind.Physical, options, cancellationToken);
+        CodeMetricsInfo codeMetrics = await service.CountLinesAsync(
+            project,
+            LinesOfCodeKind.Physical,
+            FileSystemFilter,
+            options,
+            cancellationToken);
 
         stopwatch.Stop();
 
@@ -79,20 +84,20 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
             codeMetrics.TotalLineCount);
 
         WriteLine(Verbosity.Minimal);
-        WriteLine($"Done counting lines for '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+        LogHelpers.WriteElapsedTime($"Counted lines for '{project.FilePath}'", stopwatch.Elapsed, Verbosity.Normal);
 
         return codeMetrics;
     }
 
-    private ImmutableDictionary<ProjectId, CodeMetricsInfo> CountLines(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
+    private async Task<ImmutableDictionary<ProjectId, CodeMetricsInfo>> CountLinesAsync(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
     {
-        WriteLine($"Count lines for solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
+        WriteLine($"Counting lines for solution '{solution.FilePath}'...", ConsoleColors.Cyan, Verbosity.Minimal);
 
         IEnumerable<Project> projects = FilterProjects(solution);
 
         Stopwatch stopwatch = Stopwatch.StartNew();
 
-        ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetrics = LinesOfCodeHelpers.CountLinesInParallel(projects, LinesOfCodeKind.Physical, options, cancellationToken);
+        ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetrics = await CountLinesAsync(projects, LinesOfCodeKind.Physical, options, cancellationToken);
 
         stopwatch.Stop();
 
@@ -101,7 +106,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
             WriteLine(Verbosity.Normal);
             WriteLine("Lines of code by project:", Verbosity.Normal);
 
-            LinesOfCodeHelpers.WriteLinesOfCode(solution, codeMetrics);
+            WriteLinesOfCode(solution, codeMetrics);
         }
 
         WriteMetrics(
@@ -113,7 +118,7 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
             codeMetrics.Sum(f => f.Value.TotalLineCount));
 
         WriteLine(Verbosity.Minimal);
-        WriteLine($"Done counting lines for solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Counted lines for solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
         return codeMetrics;
     }
@@ -178,10 +183,5 @@ internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCo
             totalCommentLineCount: results.Sum(f => f.Metrics.CommentLineCount),
             totalPreprocessorDirectiveLineCount: results.Sum(f => f.Metrics.PreprocessorDirectiveLineCount),
             totalLineCount: results.Sum(f => f.Metrics.TotalLineCount));
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Lines counting was canceled.", Verbosity.Quiet);
     }
 }

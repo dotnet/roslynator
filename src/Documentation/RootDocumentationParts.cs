@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
@@ -13,5 +13,5 @@ public enum RootDocumentationParts
     ClassHierarchy = 1 << 2,
     Types = 1 << 3,
     Other = 1 << 4,
-    All = int.MaxValue
+    All = int.MaxValue,
 }

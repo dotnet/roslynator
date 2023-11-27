@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,8 @@ internal class GenerateDocRootCommand : MSBuildWorkspaceCommand<CommandResult>
         DocumentationHost documentationHost,
         FilesLayout filesLayout,
         bool groupByCommonNamespace,
-        in ProjectFilter projectFilter) : base(projectFilter)
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         Depth = depth;
@@ -59,8 +60,6 @@ internal class GenerateDocRootCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var documentationOptions = new DocumentationOptions()
         {
             RootFileHeading = Options.Heading,
@@ -73,6 +72,7 @@ internal class GenerateDocRootCommand : MSBuildWorkspaceCommand<CommandResult>
             IncludeContainingNamespaceFilter = IncludeContainingNamespaceFilter,
             ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent,
             FilesLayout = FilesLayout,
+            FileSystemFilter = FileSystemFilter,
         };
 
         if (Options.IgnoredNames is not null)

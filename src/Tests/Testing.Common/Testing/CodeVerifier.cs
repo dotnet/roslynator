@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -57,7 +57,7 @@ public abstract class CodeVerifier
         Fail(userMessage + $"{NewLine}{NewLine}Diagnostics:{NewLine}{s}{NewLine}");
     }
 
-    internal void Fail(string userMessage, IEnumerable<CodeAction> codeActions)
+    internal void Fail(string userMessage, IEnumerable<CodeAction>? codeActions)
     {
         var s = "";
 
@@ -128,11 +128,15 @@ public abstract class CodeVerifier
     {
         foreach (ExpectedDocument expectedDocument in expectedDocuments)
         {
-            Document document = project.GetDocument(expectedDocument.Id);
+            Document? document = project.GetDocument(expectedDocument.Id);
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(simplify: true, format: true, cancellationToken);
+            Assert.NotNull(document);
 
-            string actual = root.ToFullString();
+            SyntaxNode? root = await document!.GetSyntaxRootAsync(simplify: true, format: true, cancellationToken);
+
+            Assert.NotNull(root);
+
+            string actual = root!.ToFullString();
 
             Assert.Equal(expectedDocument.Text, actual);
         }
@@ -141,18 +145,22 @@ public abstract class CodeVerifier
     internal async Task<Document> VerifyAndApplyCodeActionAsync(
         Document document,
         CodeAction codeAction,
-        string title)
+        string? title)
     {
         if (title is not null)
             Assert.Equal(title, codeAction.Title);
 
         ImmutableArray<CodeActionOperation> operations = await codeAction.GetOperationsAsync(CancellationToken.None);
 
-        return operations
+        Document? newDocument = operations
             .OfType<ApplyChangesOperation>()
             .Single()
             .ChangedSolution
             .GetDocument(document.Id);
+
+        Assert.NotNull(newDocument);
+
+        return newDocument!;
     }
 
     internal void VerifySupportedDiagnostics(
@@ -182,9 +190,11 @@ public abstract class CodeVerifier
         Document document,
         CancellationToken cancellationToken)
     {
-        SyntaxNode root = await document.GetSyntaxRootAsync(simplify: true, format: true, cancellationToken);
+        SyntaxNode? root = await document.GetSyntaxRootAsync(simplify: true, format: true, cancellationToken);
 
-        string actual = root.ToFullString();
+        Assert.NotNull(root);
+
+        string actual = root!.ToFullString();
 
         Assert.Equal(expected.Source, actual);
 
@@ -248,7 +258,7 @@ public abstract class CodeVerifier
 
             if (expectedSpan != actualSpan)
             {
-                string message = VerifyLinePositionSpan(
+                string? message = VerifyLinePositionSpan(
                     expectedSpan.ToLinePositionSpan(source),
                     actualSpan.ToLinePositionSpan(source));
 
@@ -258,13 +268,13 @@ public abstract class CodeVerifier
         }
     }
 
-    internal static string VerifyLinePositionSpan(LinePositionSpan expected, LinePositionSpan actual)
+    internal static string? VerifyLinePositionSpan(LinePositionSpan expected, LinePositionSpan actual)
     {
         return VerifyLinePosition(expected.Start, actual.Start, "start")
             ?? VerifyLinePosition(expected.End, actual.End, "end");
     }
 
-    private static string VerifyLinePosition(
+    private static string? VerifyLinePosition(
         LinePosition expected,
         LinePosition actual,
         string startOrEnd)
@@ -285,7 +295,7 @@ public abstract class CodeVerifier
     }
 
     internal static (Document document, ImmutableArray<ExpectedDocument> expectedDocuments)
-        CreateDocument(Solution solution, string source, ImmutableArray<AdditionalFile> additionalFiles, TestOptions options, DiagnosticDescriptor descriptor = null)
+        CreateDocument(Solution solution, string source, ImmutableArray<AdditionalFile> additionalFiles, TestOptions options, DiagnosticDescriptor? descriptor = null)
     {
         const string DefaultProjectName = "TestProject";
 
@@ -303,7 +313,7 @@ public abstract class CodeVerifier
 
         Project project = solution
             .AddProject(projectInfo)
-            .GetProject(projectId);
+            .GetProject(projectId)!;
 
         string directoryPath = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             ? "z:"
@@ -333,7 +343,7 @@ public abstract class CodeVerifier
 
         if (descriptor is not null)
         {
-            CompilationOptions newCompilationOptions = project.CompilationOptions.EnsureDiagnosticEnabled(descriptor);
+            CompilationOptions newCompilationOptions = project.CompilationOptions!.EnsureDiagnosticEnabled(descriptor);
 
             project = project.WithCompilationOptions(newCompilationOptions);
         }
@@ -343,7 +353,7 @@ public abstract class CodeVerifier
             SourceText.From(source),
             filePath: Path.Combine(directoryPath, options.DocumentName));
 
-        ImmutableArray<ExpectedDocument>.Builder expectedDocuments = null;
+        ImmutableArray<ExpectedDocument>.Builder? expectedDocuments = null;
 
         if (!additionalFiles.IsEmpty)
         {
@@ -359,7 +369,7 @@ public abstract class CodeVerifier
                     SourceText.From(additionalFiles[i].Source),
                     filePath: Path.Combine(directoryPath, documentName));
 
-                string expectedSource = additionalFiles[i].ExpectedSource;
+                string? expectedSource = additionalFiles[i].ExpectedSource;
 
                 if (expectedSource is not null)
                     expectedDocuments.Add(new ExpectedDocument(additionalDocument.Id, expectedSource));
@@ -367,7 +377,7 @@ public abstract class CodeVerifier
                 project = additionalDocument.Project;
             }
 
-            document = project.GetDocument(document.Id);
+            document = project.GetDocument(document.Id)!;
         }
 
         return (document, expectedDocuments?.ToImmutableArray() ?? ImmutableArray<ExpectedDocument>.Empty);

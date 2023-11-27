@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -52,7 +52,9 @@ public sealed class AnalyzerOptionIsObsoleteAnalyzer : AbstractAnalyzerOptionIsO
                 Validate(ref context, compilationOptions, options, Flags.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, ref flags, DiagnosticRules.RemoveUnnecessaryBlankLine, ConfigOptions.BlankLineBetweenClosingBraceAndSwitchSection, LegacyConfigOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, "false");
                 Validate(ref context, compilationOptions, options, Flags.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, ref flags, DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator, ConfigOptions.ConditionalOperatorConditionParenthesesStyle, LegacyConfigOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken);
                 Validate(ref context, compilationOptions, options, Flags.RemoveParenthesesWhenCreatingNewObject, ref flags, DiagnosticRules.UseImplicitOrExplicitObjectCreation, ConfigOptions.ObjectCreationParenthesesStyle, LegacyConfigOptions.RemoveParenthesesWhenCreatingNewObject, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit);
+#pragma warning disable CS0618 // Type or member is obsolete
                 Validate(ref context, compilationOptions, options, Flags.SuppressUnityScriptMethods, ref flags, DiagnosticRules.RemoveUnusedMemberDeclaration, ConfigOptions.SuppressUnityScriptMethods, LegacyConfigOptions.SuppressUnityScriptMethods, "true");
+#pragma warning restore CS0618 // Type or member is obsolete
                 Validate(ref context, compilationOptions, options, Flags.UseComparisonInsteadPatternMatchingToCheckForNull, ref flags, DiagnosticRules.NormalizeNullCheck, ConfigOptions.NullCheckStyle, LegacyConfigOptions.UseComparisonInsteadPatternMatchingToCheckForNull, ConfigOptionValues.NullCheckStyle_EqualityOperator);
                 Validate(ref context, compilationOptions, options, Flags.UseImplicitlyTypedArray, ref flags, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle, LegacyConfigOptions.UseImplicitlyTypedArray, ConfigOptionValues.ArrayCreationTypeStyle_Implicit);
                 Validate(ref context, compilationOptions, options, Flags.UseImplicitlyTypedArrayWhenTypeIsObvious, ref flags, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle, LegacyConfigOptions.UseImplicitlyTypedArrayWhenTypeIsObvious, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious);

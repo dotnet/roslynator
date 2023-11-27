@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -66,7 +66,7 @@ internal abstract class InlineAnalyzer<TNode, TDeclaration, TSymbol>
                 declarationSemanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
             }
 
-            InlineRefactoring<TNode, TDeclaration, TSymbol> refactoring = CreateRefactoring(context.Document, nodeIncludingConditionalAccess, enclosingType, symbol, declaration, parameterInfos, semanticModel, declarationSemanticModel, context.CancellationToken);
+            InlineRefactoring<TNode, TDeclaration, TSymbol> refactoring = CreateRefactoring(context.Document, nodeIncludingConditionalAccess, enclosingType, symbol, declaration, parameterInfos, semanticModel, declarationSemanticModel);
 
             string title = CSharpFacts.GetTitle(declaration);
 
@@ -107,6 +107,5 @@ internal abstract class InlineAnalyzer<TNode, TDeclaration, TSymbol>
         TDeclaration declaration,
         ImmutableArray<ParameterInfo> parameterInfos,
         SemanticModel nodeSemanticModel,
-        SemanticModel declarationSemanticModel,
-        CancellationToken cancellationToken);
+        SemanticModel declarationSemanticModel);
 }

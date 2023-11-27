@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 namespace Roslynator;
 
@@ -19,5 +19,5 @@ internal enum MemberDeclarationKind
     ExplicitlyImplementedIndexer = 12,
     ExplicitlyImplementedMethod = 13,
     ConversionOperator = 14,
-    Operator = 15
+    Operator = 15,
 }

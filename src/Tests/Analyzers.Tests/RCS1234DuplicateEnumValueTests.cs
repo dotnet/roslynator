@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -115,6 +115,34 @@ enum E
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    public async Task Test6()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+enum E
+{
+    [Obsolete]
+    A = 1,
+
+    B = 1,
+    C = [|1|]
+}
+", @"
+using System;
+
+enum E
+{
+    [Obsolete]
+    A = 1,
+
+    B = 1,
+    C = B
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -123,5 +151,21 @@ enum E
     A,
     B = A
 }");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+    public async Task TestNoDiagnostic2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+enum E
+{
+    [Obsolete]
+    A = 1,
+
+    B = 1,
+}
+");
     }
 }

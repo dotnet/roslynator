@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -257,6 +257,30 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
+    public async Task TestDiagnostic_StringConcatInsideTopLevelAttribute()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+[Obsolete([|""a""
++ ""b""
++ ""c""|])]
+class C
+{
+}
+        ", @"
+using System;
+
+[Obsolete(""a""
+    + ""b""
+    + ""c"")]
+class C
+{
+}
+        ");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -288,21 +312,6 @@ class C
                 && y
                 && z;
     }
-}
-        ");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
-    public async Task TestNoDiagnostic_IndentationSizeCannotBeDetermined()
-    {
-        await VerifyNoDiagnosticAsync(@"
-using System;
-
-[Obsolete(""a""
-+ ""b""
-+ ""c"")]
-class C
-{
 }
         ");
     }

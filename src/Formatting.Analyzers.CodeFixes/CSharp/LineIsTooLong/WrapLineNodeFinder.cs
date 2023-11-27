@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -225,7 +225,11 @@ internal class WrapLineNodeFinder
                             forStatement.SecondSemicolonToken.Span.End - forStatement.Condition.SpanStart,
                             forStatement.CloseParenToken.Span.End - forStatement.Incrementors.Span.Start));
 
-                    int indentationLength = SyntaxTriviaAnalysis.GetIncreasedIndentationLength(node);
+                    IndentationAnalysis indentationAnalysis = IndentationAnalysis.Create(node, Document.GetConfigOptions(node.SyntaxTree));
+                    int indentationLength = indentationAnalysis.IncreasedIndentationLength;
+
+                    if (indentationAnalysis.IndentStyle == IndentStyle.Tab)
+                        indentationLength *= indentationAnalysis.IndentSize;
 
                     if (indentationLength + longestLength > MaxLineLength)
                         return null;
@@ -581,7 +585,7 @@ internal class WrapLineNodeFinder
         if (wrapPosition - Span.Start > MaxLineLength)
             return false;
 
-        int indentationLength = SyntaxTriviaAnalysis.GetIncreasedIndentationLength(node);
+        int indentationLength = Document.AnalyzeIndentation(node).IncreasedIndentationLength;
 
         return indentationLength + longestLength <= MaxLineLength;
     }

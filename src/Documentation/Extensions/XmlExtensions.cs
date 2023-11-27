@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -122,7 +122,7 @@ internal static class XmlExtensions
                                     {
                                         ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
 
-                                        //XTODO: repair roslyn documentation
+                                        //TODO: repair roslyn documentation
                                         Debug.Assert(
                                             symbol is not null
                                                 || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"

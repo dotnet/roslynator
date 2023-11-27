@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,8 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
         FilesLayout filesLayout,
         bool groupByCommonNamespace,
         InheritanceStyle inheritanceStyle,
-        in ProjectFilter projectFilter) : base(projectFilter)
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         Depth = depth;
@@ -88,8 +89,6 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
 
     public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var documentationOptions = new DocumentationOptions()
         {
             RootFileHeading = Options.Heading,
@@ -118,7 +117,8 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
             IgnoredTitleParts = IgnoredTitleParts,
             IncludeContainingNamespaceFilter = IncludeContainingNamespaceFilter,
             FilesLayout = FilesLayout,
-            ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent
+            ScrollToContent = (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent,
+            FileSystemFilter = FileSystemFilter,
         };
 
         if (Options.IgnoredNames is not null)
@@ -193,17 +193,11 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
             }
         }
 
-        SourceReferenceProvider sourceReferenceProvider = null;
-#if DEBUG
-        if (Options.SourceReferences.Any())
-            sourceReferenceProvider = SourceReferenceProvider.Load(Options.SourceReferences);
-#endif
         var context = new DocumentationContext(
             documentationModel,
             GetUrlProvider(),
             documentationOptions,
             c => CreateDocumentationWriter(c),
-            sourceReferenceProvider: sourceReferenceProvider,
             commonNamespaces: commonNamespaces);
 
         var generator = new DocumentationGenerator(context);
@@ -228,7 +222,7 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
 
         WriteLine($"Generate documentation to '{Options.Output}'", Verbosity.Minimal);
 
-        IEnumerable<DocumentationGeneratorResult> results = generator.Generate(heading: Options.Heading, cancellationToken);
+        IEnumerable<DocumentationGeneratorResult> results = generator.Generate(cancellationToken);
 
         if (DocumentationHost == DocumentationHost.Sphinx)
         {
@@ -281,6 +275,8 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
         File.WriteAllText(rootFilePath, result.Content, _defaultEncoding);
 
         WriteLine($"Documentation root successfully generated to '{rootFilePath}'.", Verbosity.Minimal);
+
+        generator.Options.RootDirectoryUrl = null;
     }
 
     private static void AddTableOfContents(IEnumerable<DocumentationGeneratorResult> results)

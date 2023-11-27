@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ internal static class SyntaxFinder
     public static async Task<ImmutableArray<SyntaxNode>> FindReferencesAsync(
         ISymbol symbol,
         Solution solution,
-        IImmutableSet<Document> documents,
+        IImmutableSet<Document>? documents,
         bool allowCandidate = false,
         CancellationToken cancellationToken = default)
     {
@@ -36,7 +36,7 @@ internal static class SyntaxFinder
         if (solution is null)
             throw new ArgumentNullException(nameof(solution));
 
-        List<SyntaxNode> nodes = null;
+        List<SyntaxNode>? nodes = null;
 
         foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
             symbol,
@@ -49,9 +49,10 @@ internal static class SyntaxFinder
             {
                 Document document = grouping.Key;
 
-                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+                SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-                FindReferences(grouping, root, allowCandidate, ref nodes);
+                if (root is not null)
+                    FindReferences(grouping, root, allowCandidate, ref nodes);
             }
         }
 
@@ -70,7 +71,7 @@ internal static class SyntaxFinder
     public static async Task<ImmutableArray<DocumentReferenceInfo>> FindReferencesByDocumentAsync(
         ISymbol symbol,
         Solution solution,
-        IImmutableSet<Document> documents,
+        IImmutableSet<Document>? documents,
         bool allowCandidate = false,
         CancellationToken cancellationToken = default)
     {
@@ -80,7 +81,7 @@ internal static class SyntaxFinder
         if (solution is null)
             throw new ArgumentNullException(nameof(solution));
 
-        List<DocumentReferenceInfo> infos = null;
+        List<DocumentReferenceInfo>? infos = null;
 
         foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
             symbol,
@@ -93,17 +94,20 @@ internal static class SyntaxFinder
             {
                 Document document = grouping.Key;
 
-                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+                SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-                List<SyntaxNode> nodes = null;
-
-                FindReferences(grouping, root, allowCandidate, ref nodes);
-
-                if (nodes is not null)
+                if (root is not null)
                 {
-                    var info = new DocumentReferenceInfo(document, root, nodes.ToImmutableArray());
+                    List<SyntaxNode>? nodes = null;
 
-                    (infos ??= new List<DocumentReferenceInfo>()).Add(info);
+                    FindReferences(grouping, root, allowCandidate, ref nodes);
+
+                    if (nodes is not null)
+                    {
+                        var info = new DocumentReferenceInfo(document, root, nodes.ToImmutableArray());
+
+                        (infos ??= new List<DocumentReferenceInfo>()).Add(info);
+                    }
                 }
             }
         }
@@ -123,9 +127,12 @@ internal static class SyntaxFinder
         if (document is null)
             throw new ArgumentNullException(nameof(document));
 
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        if (!document.SupportsSyntaxTree)
+            throw new ArgumentException("Document does not support syntax tree.", nameof(document));
 
-        List<SyntaxNode> nodes = null;
+        SyntaxNode root = (await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false))!;
+
+        List<SyntaxNode>? nodes = null;
 
         foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
             symbol,
@@ -144,7 +151,7 @@ internal static class SyntaxFinder
         IEnumerable<ReferenceLocation> referenceLocations,
         SyntaxNode root,
         bool allowCandidate,
-        ref List<SyntaxNode> nodes)
+        ref List<SyntaxNode>? nodes)
     {
         foreach (ReferenceLocation referenceLocation in referenceLocations)
         {
@@ -155,9 +162,10 @@ internal static class SyntaxFinder
 
                 if (location.IsInSource)
                 {
-                    SyntaxNode node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+                    SyntaxNode? node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
 
-                    Debug.Assert(node is not null);
+                    if (node is null)
+                        throw new InvalidOperationException("Syntax node was not found.");
 
                     (nodes ??= new List<SyntaxNode>()).Add(node);
                 }
@@ -165,7 +173,7 @@ internal static class SyntaxFinder
         }
     }
 
-    private static ImmutableArray<T> ToImmutableArray<T>(IEnumerable<T> nodes)
+    private static ImmutableArray<T> ToImmutableArray<T>(IEnumerable<T>? nodes)
     {
         if (nodes is not null)
         {

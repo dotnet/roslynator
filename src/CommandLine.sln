@@ -4,12 +4,9 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B17331B-D942-4A0C-82AA-23515F4B46C4}"
 	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build.yml = ..\.github\workflows\build.yml
 		..\ChangeLog.md = ..\ChangeLog.md
-		CommandLine\CommandLine.nuspec = CommandLine\CommandLine.nuspec
 		Directory.Build.props = Directory.Build.props
-		global.ruleset = global.ruleset
-		..\docs\HowToFixAllDiagnostics.md = ..\docs\HowToFixAllDiagnostics.md
-		..\docs\HowToGenerateDocumentation.md = ..\docs\HowToGenerateDocumentation.md
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -26,21 +23,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documentation", "Documentation\Documentation.csproj", "{43B9DEFC-E6A9-4CA2-B19E-0C486A418831}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Core", "Workspaces.Core\Workspaces.Core.csproj", "{F8922FB4-67DB-4EA6-932F-AAF9C7503EE7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{E5C47A70-19EB-4B95-9B05-DD5CEE67C060}"
-	ProjectSection(SolutionItems) = preProject
-		CommandLine\docs\analyze-assembly-command.md = CommandLine\docs\analyze-assembly-command.md
-		..\docs\cli\analyze-command.md = ..\docs\cli\analyze-command.md
-		..\docs\cli\fix-command.md = ..\docs\cli\fix-command.md
-		..\docs\cli\format-command.md = ..\docs\cli\format-command.md
-		..\docs\cli\generate-doc-command.md = ..\docs\cli\generate-doc-command.md
-		..\docs\cli\generate-doc-root-command.md = ..\docs\cli\generate-doc-root-command.md
-		..\docs\cli\list-symbols-command.md = ..\docs\cli\list-symbols-command.md
-		CommandLine\docs\list-vs-command.md = CommandLine\docs\list-vs-command.md
-		..\docs\cli\lloc-command.md = ..\docs\cli\lloc-command.md
-		..\docs\cli\loc-command.md = ..\docs\cli\loc-command.md
-		CommandLine\docs\sln-list-command.md = CommandLine\docs\sln-list-command.md
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualBasic", "VisualBasic\VisualBasic.csproj", "{05DF2CB8-95FB-4BD9-A9E7-D346470E979A}"
 EndProject
@@ -113,7 +95,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E5C47A70-19EB-4B95-9B05-DD5CEE67C060} = {8B17331B-D942-4A0C-82AA-23515F4B46C4}
 		{669F7A92-C596-4C52-A659-C9A6C66E966B} = {A098889D-10A8-4604-BA34-168E400A1FA6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

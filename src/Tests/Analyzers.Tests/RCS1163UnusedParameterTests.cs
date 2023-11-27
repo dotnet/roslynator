@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -232,6 +232,41 @@ public class Foo
 namespace System.Windows
 {
     public class DependencyPropertyChangedEventArgs
+    {
+    }
+}
+ ");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_StreamingContextAttributes()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Runtime.Serialization;
+
+class C
+{
+    [Obsolete]
+    [OnSerialized]
+    void M1(string p, StreamingContext context)
+    {
+        var x = p;
+    }
+
+    [OnDeserialized]
+    void M2(StreamingContext context, string p)
+    {
+        var x = p;
+    }
+
+    [OnSerializing]
+    void M3(StreamingContext context)
+    {
+    }
+
+    [OnDeserializing]
+    void M4(StreamingContext context)
     {
     }
 }

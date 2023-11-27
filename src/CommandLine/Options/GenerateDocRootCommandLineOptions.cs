@@ -1,11 +1,12 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using CommandLine;
 
 namespace Roslynator.CommandLine;
 
-[Verb("generate-doc-root", HelpText = "[deprecated] Generates root documentation file from specified project/solution. This command is obsolete. Use parameter '--root-file-path' of a command 'generate-doc' instead.")]
+[Verb("generate-doc-root", HelpText = "[deprecated] Generates root documentation file from specified project/solution.")]
+[ObsoleteMessage("This command is obsolete. Use parameter `--root-file-path` of a command [generate-doc](generate-doc) instead.")]
 public class GenerateDocRootCommandLineOptions : AbstractGenerateDocCommandLineOptions
 {
     [Option(

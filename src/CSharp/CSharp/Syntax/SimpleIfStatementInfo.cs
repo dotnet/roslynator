@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -62,14 +62,14 @@ public readonly struct SimpleIfStatementInfo
     }
 
     internal static SimpleIfStatementInfo Create(
-        IfStatementSyntax ifStatement,
+        IfStatementSyntax? ifStatement,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (ifStatement?.IsSimpleIf() != true)
             return default;
 
-        ExpressionSyntax condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
+        ExpressionSyntax? condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
 
         if (condition is null)
             return default;

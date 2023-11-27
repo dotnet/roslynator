@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ internal static class Hash
         return (value) ? 1 : 0;
     }
 
-    public static int Create<T>(T value) where T : class
+    public static int Create<T>(T? value) where T : class
     {
         return Combine(value, OffsetBasis);
     }
@@ -39,14 +39,14 @@ internal static class Hash
         return Combine(hash, (value) ? 1 : 0);
     }
 
-    public static int Combine<T>(T value, int hash) where T : class
+    public static int Combine<T>(T? value, int hash) where T : class
     {
         hash = unchecked(hash * Prime);
 
         return (value is not null) ? unchecked(hash + value.GetHashCode()) : hash;
     }
 
-    public static int CombineValues<T>(IEnumerable<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
+    public static int CombineValues<T>(IEnumerable<T> values, IEqualityComparer<T>? comparer = null, int maxItemsToHash = int.MaxValue)
     {
         if (values is null)
             return 0;
@@ -62,7 +62,7 @@ internal static class Hash
             if (count >= maxItemsToHash)
                 break;
 
-            if (!comparer.Equals(value, default(T)))
+            if (!comparer.Equals(value, default(T)!))
                 hash = Combine(comparer.GetHashCode(value), hash);
 
             count++;
@@ -71,7 +71,7 @@ internal static class Hash
         return hash;
     }
 
-    public static int CombineValues<T>(T[] values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
+    public static int CombineValues<T>(T[] values, IEqualityComparer<T>? comparer = null, int maxItemsToHash = int.MaxValue)
     {
         if (values is null)
             return 0;
@@ -87,14 +87,14 @@ internal static class Hash
         {
             T value = values[i];
 
-            if (!comparer.Equals(value, default(T)))
+            if (!comparer.Equals(value, default(T)!))
                 hash = Combine(comparer.GetHashCode(value), hash);
         }
 
         return hash;
     }
 
-    public static int CombineValues<T>(ImmutableArray<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
+    public static int CombineValues<T>(ImmutableArray<T> values, IEqualityComparer<T>? comparer = null, int maxItemsToHash = int.MaxValue)
     {
         if (values.IsDefaultOrEmpty)
             return 0;
@@ -110,7 +110,7 @@ internal static class Hash
         {
             T value = values[i];
 
-            if (!comparer.Equals(value, default(T)))
+            if (!comparer.Equals(value, default(T)!))
                 hash = Combine(comparer.GetHashCode(value), hash);
         }
 

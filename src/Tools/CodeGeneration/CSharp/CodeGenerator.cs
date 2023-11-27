@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,10 +15,10 @@ namespace Roslynator.CodeGeneration.CSharp;
 
 public static class CodeGenerator
 {
-    public static CompilationUnitSyntax GenerateConfigOptions(IEnumerable<ConfigOptionMetadata> options, IEnumerable<AnalyzerMetadata> analyzers)
+    public static CompilationUnitSyntax GenerateConfigOptions(IEnumerable<AnalyzerOptionMetadata> options, IEnumerable<AnalyzerMetadata> analyzers)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(
-            UsingDirectives("System.Collections.Generic"),
+            UsingDirectives("System", "System.Collections.Generic"),
             NamespaceDeclaration(
                 "Roslynator",
                 ClassDeclaration(
@@ -38,7 +38,8 @@ public static class CodeGenerator
                                         Argument(NameColon("defaultValue"), (f.DefaultValue is not null) ? StringLiteralExpression(f.DefaultValue) : NullLiteralExpression()),
                                         Argument(NameColon("defaultValuePlaceholder"), StringLiteralExpression(f.DefaultValuePlaceholder)),
                                         Argument(NameColon("description"), StringLiteralExpression(f.Description))),
-                                    default(InitializerExpressionSyntax)));
+                                    default(InitializerExpressionSyntax)))
+                                .AddObsoleteAttributeIf(f.IsObsolete);
                         })
                         .Concat(new MemberDeclarationSyntax[]
                             {
@@ -54,7 +55,7 @@ public static class CodeGenerator
                                             .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
                                             .Select(f =>
                                             {
-                                                ConfigOptionKeyMetadata mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
+                                                AnalyzerConfigOption mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
 
                                                 Debug.Assert(mismatch.Key is null, mismatch.Key);
 
@@ -64,7 +65,7 @@ public static class CodeGenerator
 
                                                 return YieldReturnStatement(
                                                     ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionKeys)}))"));
-                                            })))
+                                            }))),
                             })
                         .ToSyntaxList())));
 
@@ -85,8 +86,8 @@ public static class CodeGenerator
                     Modifiers.Public_Static_Partial(),
                     "LegacyConfigOptions",
                     analyzers
-                        .SelectMany(f => f.Options)
-                        .Where(f => !f.IsObsolete)
+                        .SelectMany(f => f.LegacyOptions)
+                        .Where(f => f.Status != AnalyzerStatus.Disabled)
                         .OrderBy(f => f.Identifier)
                         .Select(f =>
                         {
@@ -105,7 +106,7 @@ public static class CodeGenerator
                         .ToSyntaxList<MemberDeclarationSyntax>())));
     }
 
-    public static CompilationUnitSyntax GenerateConfigOptionKeys(IEnumerable<ConfigOptionMetadata> options)
+    public static CompilationUnitSyntax GenerateConfigOptionKeys(IEnumerable<AnalyzerOptionMetadata> options)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(
             UsingDirectives(),
@@ -133,7 +134,7 @@ public static class CodeGenerator
         return (CompilationUnitSyntax)rewriter.Visit(compilationUnit);
     }
 
-    public static CompilationUnitSyntax GenerateConfigOptionValues(IEnumerable<ConfigOptionMetadata> options)
+    public static CompilationUnitSyntax GenerateConfigOptionValues(IEnumerable<AnalyzerOptionMetadata> options)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(
             UsingDirectives(),

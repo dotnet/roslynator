@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -30,11 +30,31 @@ internal static class LogHelpers
             | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
             | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
 
+    public static void WriteElapsedTime(string message, TimeSpan elapsedTime, Verbosity verbosity)
+    {
+        if (!ShouldWrite(verbosity))
+            return;
+
+        Write(message, verbosity);
+        Write(" ", verbosity);
+
+        if (elapsedTime.TotalMilliseconds >= 1000)
+        {
+            double seconds = elapsedTime.TotalMilliseconds / 1000;
+
+            WriteLine($"(in {seconds:n1} s)", verbosity);
+        }
+        else
+        {
+            WriteLine($"(in {elapsedTime.TotalMilliseconds:n0} ms)", verbosity);
+        }
+    }
+
     public static void WriteDiagnostic(
         Diagnostic diagnostic,
-        string baseDirectoryPath = null,
-        IFormatProvider formatProvider = null,
-        string indentation = null,
+        string? baseDirectoryPath = null,
+        IFormatProvider? formatProvider = null,
+        string? indentation = null,
         Verbosity verbosity = Verbosity.Diagnostic)
     {
         string text = DiagnosticFormatter.FormatDiagnostic(diagnostic, baseDirectoryPath, formatProvider);
@@ -45,9 +65,9 @@ internal static class LogHelpers
 
     public static void WriteDiagnostics(
         ImmutableArray<Diagnostic> diagnostics,
-        string baseDirectoryPath = null,
-        IFormatProvider formatProvider = null,
-        string indentation = null,
+        string? baseDirectoryPath = null,
+        IFormatProvider? formatProvider = null,
+        string? indentation = null,
         int maxCount = int.MaxValue,
         Verbosity verbosity = Verbosity.None)
     {
@@ -80,7 +100,7 @@ internal static class LogHelpers
 
     public static void WriteSpellingDiagnostic(
         SpellingDiagnostic diagnostic,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         SourceText sourceText,
         string baseDirectoryPath,
         string indentation,
@@ -169,10 +189,10 @@ internal static class LogHelpers
         IEnumerable<Diagnostic> fixedDiagnostics,
         IEnumerable<Diagnostic> unfixedDiagnostics,
         IEnumerable<Diagnostic> unfixableDiagnostics,
-        string baseDirectoryPath = null,
-        string indentation = null,
+        string? baseDirectoryPath = null,
+        string? indentation = null,
         bool addEmptyLine = false,
-        IFormatProvider formatProvider = null,
+        IFormatProvider? formatProvider = null,
         Verbosity verbosity = Verbosity.None)
     {
         WriteDiagnosticRules(unfixableDiagnostics, "Unfixable diagnostics:");
@@ -215,7 +235,7 @@ internal static class LogHelpers
         }
     }
 
-    public static void WriteInfiniteLoopSummary(ImmutableArray<Diagnostic> diagnostics, ImmutableArray<Diagnostic> previousDiagnostics, Project project, IFormatProvider formatProvider = null)
+    public static void WriteInfiniteLoopSummary(ImmutableArray<Diagnostic> diagnostics, ImmutableArray<Diagnostic> previousDiagnostics, Project project, IFormatProvider? formatProvider = null)
     {
         WriteLine("  Infinite loop detected: Reported diagnostics have been previously fixed", ConsoleColors.Yellow, Verbosity.Normal);
 
@@ -234,14 +254,14 @@ internal static class LogHelpers
     {
         foreach (DocumentId documentId in documentIds)
         {
-            Document document = project.GetDocument(documentId);
-            WriteLine($"  Format '{PathUtilities.TrimStart(document.FilePath, solutionDirectory)}'", ConsoleColors.DarkGray, Verbosity.Detailed);
+            Document document = project.GetDocument(documentId)!;
+            WriteLine($"  Format '{PathUtilities.TrimStart(document.FilePath!, solutionDirectory)}'", ConsoleColors.DarkGray, Verbosity.Detailed);
         }
     }
 
     public static void WriteUsedAnalyzers(
         ImmutableArray<DiagnosticAnalyzer> analyzers,
-        Func<DiagnosticDescriptor, bool> predicate,
+        Func<DiagnosticDescriptor, bool>? predicate,
         CodeAnalysisOptions options,
         ConsoleColors colors,
         Verbosity verbosity)
@@ -368,8 +388,8 @@ internal static class LogHelpers
 
     public static void WriteSymbolDefinition(
         ISymbol symbol,
-        string baseDirectoryPath = null,
-        string indentation = null,
+        string? baseDirectoryPath = null,
+        string? indentation = null,
         Verbosity verbosity = Verbosity.Diagnostic)
     {
         StringBuilder sb = StringBuilderCache.GetInstance();
@@ -476,18 +496,18 @@ internal static class LogHelpers
 
     public static int WriteCompilerErrors(
         ImmutableArray<Diagnostic> diagnostics,
-        string baseDirectoryPath = null,
-        ImmutableHashSet<string> ignoredCompilerDiagnosticIds = null,
-        IFormatProvider formatProvider = null,
-        string indentation = null,
+        string? baseDirectoryPath = null,
+        HashSet<string>? ignoredCompilerDiagnosticIds = null,
+        IFormatProvider? formatProvider = null,
+        string? indentation = null,
         int limit = 1000)
     {
-        ignoredCompilerDiagnosticIds ??= ImmutableHashSet<string>.Empty;
+        IEnumerable<Diagnostic> filteredDiagnostics = diagnostics.Where(f => f.Severity == DiagnosticSeverity.Error);
 
-        using (IEnumerator<Diagnostic> en = diagnostics
-            .Where(f => f.Severity == DiagnosticSeverity.Error
-                && !ignoredCompilerDiagnosticIds.Contains(f.Id))
-            .GetEnumerator())
+        if (ignoredCompilerDiagnosticIds is not null)
+            filteredDiagnostics = filteredDiagnostics.Where(f => !ignoredCompilerDiagnosticIds.Contains(f.Id));
+
+        using (IEnumerator<Diagnostic> en = filteredDiagnostics.GetEnumerator())
         {
             if (en.MoveNext())
             {

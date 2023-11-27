@@ -28,24 +28,24 @@ internal sealed class WordCharMap
         get { return Map[new WordChar(ch, index)]; }
     }
 
-    public bool TryGetValue(WordChar wordChar, out ImmutableHashSet<string> value)
+    public bool TryGetValue(WordChar wordChar, out ImmutableHashSet<string>? value)
     {
         return Map.TryGetValue(wordChar, out value);
     }
 
-    public bool TryGetValue(string word, int index, out ImmutableHashSet<string> value)
+    public bool TryGetValue(string word, int index, out ImmutableHashSet<string>? value)
     {
         return Map.TryGetValue(WordChar.Create(word, index), out value);
     }
 
-    public bool TryGetValue(char ch, int index, out ImmutableHashSet<string> value)
+    public bool TryGetValue(char ch, int index, out ImmutableHashSet<string>? value)
     {
         return Map.TryGetValue(new WordChar(ch, index), out value);
     }
 
     public static WordCharMap CreateCharIndexMap(WordList wordList, bool reverse = false)
     {
-        ImmutableDictionary<WordChar, ImmutableHashSet<string>> map = wordList.Values
+        ImmutableDictionary<WordChar, ImmutableHashSet<string>> map = wordList.Words
             .Select(s =>
             {
                 return (

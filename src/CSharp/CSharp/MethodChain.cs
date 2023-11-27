@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections;
@@ -42,7 +42,7 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
     public struct Enumerator
     {
         private readonly MethodChain _chain;
-        private SyntaxNode _current;
+        private SyntaxNode? _current;
 
         internal Enumerator(MethodChain chain)
         {
@@ -59,7 +59,7 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
                 return _current is not null;
             }
 
-            ExpressionSyntax last = GetLastChild(_current);
+            ExpressionSyntax? last = GetLastChild(_current);
 
             if (last is not null)
             {
@@ -70,7 +70,7 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
                 while (_current != _chain.Expression
                     && IsFirstChild(_current))
                 {
-                    _current = _current.Parent;
+                    _current = _current.Parent!;
                 }
 
                 if (_current == _chain.Expression)
@@ -85,7 +85,7 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
             return true;
         }
 
-        private static ExpressionSyntax GetLastChild(SyntaxNode node)
+        private static ExpressionSyntax? GetLastChild(SyntaxNode node)
         {
             switch (node?.Kind())
             {
@@ -104,11 +104,11 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
             return null;
         }
 
-        private static SyntaxNode GetPreviousSibling(SyntaxNode node)
+        private static ExpressionSyntax? GetPreviousSibling(SyntaxNode node)
         {
-            SyntaxNode parent = node.Parent;
+            SyntaxNode? parent = node.Parent;
 
-            switch (parent.Kind())
+            switch (parent?.Kind())
             {
                 case SyntaxKind.ConditionalAccessExpression:
                     {
@@ -135,7 +135,7 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
 
         private static bool IsFirstChild(SyntaxNode node)
         {
-            SyntaxNode parent = node.Parent;
+            SyntaxNode parent = node.Parent!;
 
             switch (parent.Kind())
             {
@@ -148,16 +148,16 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
             return true;
         }
 
-        public SyntaxNode Current => _current ?? throw new InvalidOperationException();
+        public readonly SyntaxNode Current => _current ?? throw new InvalidOperationException();
 
         public void Reset()
         {
             _current = null;
         }
 
-        public override bool Equals(object obj) => throw new NotSupportedException();
+        public override readonly bool Equals(object obj) => throw new NotSupportedException();
 
-        public override int GetHashCode() => throw new NotSupportedException();
+        public override readonly int GetHashCode() => throw new NotSupportedException();
     }
 
     private class EnumeratorImpl : IEnumerator<SyntaxNode>

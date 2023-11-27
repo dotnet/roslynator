@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -20,16 +20,35 @@ public sealed class CompilerDiagnosticFixTestData
     /// <param name="source"></param>
     /// <param name="additionalFiles"></param>
     /// <param name="equivalenceKey"></param>
+    [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     public CompilerDiagnosticFixTestData(
         string diagnosticId,
         string source,
-        IEnumerable<AdditionalFile> additionalFiles = null,
-        string equivalenceKey = null)
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? equivalenceKey = null)
     {
         DiagnosticId = diagnosticId ?? throw new ArgumentNullException(nameof(diagnosticId));
         Source = source ?? throw new ArgumentNullException(nameof(source));
         AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
         EquivalenceKey = equivalenceKey;
+    }
+
+#pragma warning disable CS0618 // Type or member is obsolete
+    /// <summary>
+    /// Initializes a new instance of <see cref="CompilerDiagnosticFixTestData"/>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="equivalenceKey"></param>
+    public CompilerDiagnosticFixTestData(
+        string source,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? equivalenceKey = null)
+    {
+        Source = source ?? throw new ArgumentNullException(nameof(source));
+        AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
+        EquivalenceKey = equivalenceKey;
+        DiagnosticId = null!;
     }
 
     internal CompilerDiagnosticFixTestData(CompilerDiagnosticFixTestData other)
@@ -40,10 +59,12 @@ public sealed class CompilerDiagnosticFixTestData
             equivalenceKey: other.EquivalenceKey)
     {
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 
     /// <summary>
     /// Gets compiler diagnostic ID to be fixed.
     /// </summary>
+    [Obsolete("This property is obsolete and will be removed in future versions.")]
     public string DiagnosticId { get; }
 
     /// <summary>
@@ -59,10 +80,10 @@ public sealed class CompilerDiagnosticFixTestData
     /// <summary>
     /// Gets code action's equivalence key.
     /// </summary>
-    public string EquivalenceKey { get; }
+    public string? EquivalenceKey { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => $"{DiagnosticId}  {Source}";
+    private string DebuggerDisplay => $"{Source}";
 
     /// <summary>
     /// Creates and return new instance of <see cref="CompilerDiagnosticFixTestData"/> updated with specified values.

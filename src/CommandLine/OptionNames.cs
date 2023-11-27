@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 namespace Roslynator.CommandLine;
 
@@ -39,11 +39,9 @@ internal static class OptionNames
     public const string RootDirectoryUrl = "root-directory-url";
     public const string Scope = "scope";
     public const string SeverityLevel = "severity-level";
-    public const string SymbolGroups = "symbol-groups";
+    public const string SymbolKind = "symbol-kind";
     public const string TargetVersion = "target-version";
     public const string Type = "type";
     public const string Visibility = "visibility";
-    public const string WithFlags = "with-flags";
-    public const string WithoutFlags = "without-flags";
     public const string WrapList = "wrap-list";
 }

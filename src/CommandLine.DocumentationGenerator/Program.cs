@@ -1,7 +1,8 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ internal static class Program
             "roslynator",
             "Roslynator Command-line Tool",
             CommandLoader.LoadCommands(typeof(CommandLoader).Assembly)
-                .Select(c => c.WithOptions(c.Options.OrderBy(f => f, CommandOptionComparer.Name)))
+                .Select(c => c with { Options = c.Options.OrderBy(f => f, CommandOptionComparer.Name).ToImmutableArray() })
                 .OrderBy(c => c.Name, StringComparer.InvariantCulture));
 
         if (args.Length < 2)
@@ -89,11 +90,23 @@ internal static class Program
                 writer.WriteCommandHeading(command, application);
                 writer.WriteCommandDescription(command);
 
+                if (!string.IsNullOrEmpty(command.ObsoleteMessage))
+                {
+                    dw.WriteStartDocusaurusAdmonition(AdmonitionKind.Caution, "WARNING");
+                    dw.WriteRaw(command.ObsoleteMessage);
+                    dw.WriteEndDocusaurusAdmonition();
+                }
+
                 string additionalContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_bottom.md");
 
                 string additionalContent = (File.Exists(additionalContentFilePath))
                     ? File.ReadAllText(additionalContentFilePath)
                     : "";
+
+                string summaryContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_summary.md");
+
+                if (File.Exists(summaryContentFilePath))
+                    dw.WriteRaw(File.ReadAllText(summaryContentFilePath));
 
                 writer.WriteCommandSynopsis(command, application);
                 writer.WriteArguments(command.Arguments);

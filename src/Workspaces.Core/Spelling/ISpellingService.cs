@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Threading;
@@ -12,12 +12,12 @@ internal interface ISpellingService : ILanguageService
 {
     ISyntaxFactsService SyntaxFacts { get; }
 
-    DiagnosticAnalyzer CreateAnalyzer(SpellingData spellingData, SpellingFixerOptions options);
+    DiagnosticAnalyzer CreateAnalyzer(SpellingData spellingData, SpellcheckOptions options);
 
     ImmutableArray<Diagnostic> AnalyzeSpelling(
         SyntaxNode node,
         SpellingData spellingData,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         CancellationToken cancellationToken);
 
     SpellingDiagnostic CreateSpellingDiagnostic(Diagnostic diagnostic);

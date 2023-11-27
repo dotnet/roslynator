@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ namespace Roslynator;
 
 internal static class ConsoleUtility
 {
-    public static string ReadUserInput(string defaultValue, string prompt = null)
+    public static string ReadUserInput(string defaultValue, string? prompt = null)
     {
         bool treatControlCAsInput = Console.TreatControlCAsInput;
 

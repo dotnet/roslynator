@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.IO;
@@ -7,7 +7,7 @@ namespace Roslynator;
 
 internal static class PathUtilities
 {
-    internal static string TrimStart(string path, string basePath, bool trimLeadingDirectorySeparator = true)
+    internal static string TrimStart(string path, string? basePath, bool trimLeadingDirectorySeparator = true)
     {
         if (basePath is not null)
         {

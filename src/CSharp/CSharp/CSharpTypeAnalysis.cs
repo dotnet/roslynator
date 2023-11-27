@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -31,15 +31,15 @@ internal static class CSharpTypeAnalysis
         if (!variables.Any())
             return default;
 
-        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration))
+        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.FixedStatement))
             return default;
 
-        ExpressionSyntax expression = variables[0].Initializer?.Value?.WalkDownParentheses();
+        ExpressionSyntax? expression = variables[0].Initializer?.Value?.WalkDownParentheses();
 
         if (expression is null)
             return default;
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
         if (typeSymbol is null)
             return default;
@@ -87,7 +87,7 @@ internal static class CSharpTypeAnalysis
                 }
             case SyntaxKind.SimpleMemberAccessExpression:
                 {
-                    ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+                    ISymbol? symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
                     if (symbol?.Kind == SymbolKind.Field
                         && symbol.ContainingType?.TypeKind == TypeKind.Enum)
@@ -126,12 +126,12 @@ internal static class CSharpTypeAnalysis
         if (!type.IsVar)
             return false;
 
-        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration))
+        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.FixedStatement))
             return false;
 
         Debug.Assert(variableDeclaration.Variables.Any());
 
-        ExpressionSyntax expression = variableDeclaration
+        ExpressionSyntax? expression = variableDeclaration
             .Variables
             .FirstOrDefault()?
             .Initializer?
@@ -141,7 +141,7 @@ internal static class CSharpTypeAnalysis
         if (expression is null)
             return false;
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
         if (typeSymbol is null)
             return false;
@@ -189,10 +189,11 @@ internal static class CSharpTypeAnalysis
         if (type.IsVar)
             return false;
 
-        switch (variableDeclaration.Parent.Kind())
+        switch (variableDeclaration.Parent?.Kind())
         {
             case SyntaxKind.FieldDeclaration:
             case SyntaxKind.EventFieldDeclaration:
+            case SyntaxKind.FixedStatement:
                 {
                     return false;
                 }
@@ -203,11 +204,15 @@ internal static class CSharpTypeAnalysis
 
                     break;
                 }
+            case null:
+                {
+                    return false;
+                }
         }
 
         Debug.Assert(variableDeclaration.Variables.Any());
 
-        ExpressionSyntax expression = variableDeclaration
+        ExpressionSyntax? expression = variableDeclaration
             .Variables
             .SingleOrDefault(shouldThrow: false)?
             .Initializer?
@@ -227,7 +232,7 @@ internal static class CSharpTypeAnalysis
             return false;
         }
 
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
         if (typeSymbol is null)
             return false;
@@ -241,7 +246,7 @@ internal static class CSharpTypeAnalysis
             return false;
         }
 
-        ITypeSymbol expressionType = semanticModel.GetTypeSymbol(expression, cancellationToken);
+        ITypeSymbol? expressionType = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
         if (!SymbolEqualityComparer.Default.Equals(typeSymbol, expressionType)
             || (type.IsKind(SyntaxKind.NullableType)
@@ -269,7 +274,7 @@ internal static class CSharpTypeAnalysis
         return IsTypeObvious(expression, typeSymbol: null, includeNullability: false, semanticModel, cancellationToken);
     }
 
-    public static bool IsTypeObvious(ExpressionSyntax expression, ITypeSymbol typeSymbol, bool includeNullability, SemanticModel semanticModel, CancellationToken cancellationToken)
+    public static bool IsTypeObvious(ExpressionSyntax expression, ITypeSymbol? typeSymbol, bool includeNullability, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         switch (expression.Kind())
         {
@@ -321,7 +326,7 @@ internal static class CSharpTypeAnalysis
                 }
             case SyntaxKind.SimpleMemberAccessExpression:
                 {
-                    ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+                    ISymbol? symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
                     return symbol?.Kind == SymbolKind.Field
                         && symbol.ContainingType?.TypeKind == TypeKind.Enum;
@@ -333,7 +338,7 @@ internal static class CSharpTypeAnalysis
                         var invocationExpression = (InvocationExpressionSyntax)expression;
                         if (invocationExpression.Expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                         {
-                            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+                            ISymbol? symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
                             if (symbol?.IsStatic == true
                                 && string.Equals(symbol.Name, "Parse", StringComparison.Ordinal)
@@ -343,7 +348,7 @@ internal static class CSharpTypeAnalysis
                             {
                                 var simpleMemberAccess = (MemberAccessExpressionSyntax)invocationExpression.Expression;
 
-                                ISymbol symbol2 = semanticModel.GetSymbol(simpleMemberAccess.Expression, cancellationToken);
+                                ISymbol? symbol2 = semanticModel.GetSymbol(simpleMemberAccess.Expression, cancellationToken);
 
                                 if (SymbolEqualityComparer.Default.Equals(symbol2, typeSymbol)
                                     && semanticModel.GetAliasInfo(simpleMemberAccess.Expression, cancellationToken) is null)
@@ -510,7 +515,7 @@ internal static class CSharpTypeAnalysis
 
         static bool AnalyzeArgument(ArgumentSyntax argument, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(argument, cancellationToken: cancellationToken);
+            IParameterSymbol? parameterSymbol = semanticModel.DetermineParameter(argument, cancellationToken: cancellationToken);
 
             if (parameterSymbol is null)
                 return false;
@@ -522,7 +527,7 @@ internal static class CSharpTypeAnalysis
             {
                 ImmutableArray<ITypeSymbol> typeParameterList = methodSymbol.TypeArguments;
 
-                ITypeParameterSymbol typeParameterSymbol = null;
+                ITypeParameterSymbol? typeParameterSymbol = null;
                 for (int i = 0; i < typeParameterList.Length; i++)
                 {
                     if (SymbolEqualityComparer.Default.Equals(typeParameterList[i], parameterSymbol.Type))
@@ -581,7 +586,7 @@ internal static class CSharpTypeAnalysis
         TypeAppearance typeAppearance,
         CancellationToken cancellationToken = default)
     {
-        switch (tupleExpression.Parent.Kind())
+        switch (tupleExpression.Parent?.Kind())
         {
             case SyntaxKind.SimpleAssignmentExpression:
                 {
@@ -615,6 +620,10 @@ internal static class CSharpTypeAnalysis
                     return false;
                 }
 #endif
+            case null:
+                {
+                    return false;
+                }
             default:
                 {
                     SyntaxDebug.Fail(tupleExpression.Parent);
@@ -638,15 +647,15 @@ internal static class CSharpTypeAnalysis
         if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression))
             return false;
 
-        ITypeSymbol tupleTypeSymbol = semanticModel.GetTypeSymbol(tupleExpression, cancellationToken);
+        ITypeSymbol? tupleTypeSymbol = semanticModel.GetTypeSymbol(tupleExpression, cancellationToken);
 
         if (tupleTypeSymbol is null)
             return false;
 
-        ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+        ITypeSymbol? expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
         if (tupleTypeSymbol.IsTupleType
-            && expressionTypeSymbol.IsTupleType)
+            && expressionTypeSymbol?.IsTupleType == true)
         {
             var tupleNamedTypeSymbol = (INamedTypeSymbol)tupleTypeSymbol;
             var expressionNamedTypeSymbol = (INamedTypeSymbol)expressionTypeSymbol;
@@ -714,7 +723,7 @@ internal static class CSharpTypeAnalysis
 
         ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
-        ITypeSymbol typeSymbol = info.ElementType;
+        ITypeSymbol? typeSymbol = info.ElementType;
 
         if (typeSymbol is null)
             return default;
@@ -801,7 +810,7 @@ internal static class CSharpTypeAnalysis
 
         ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
-        ITypeSymbol typeSymbol = info.ElementType;
+        ITypeSymbol? typeSymbol = info.ElementType;
 
         if (typeSymbol is null)
             return default;
@@ -843,7 +852,7 @@ internal static class CSharpTypeAnalysis
 
         ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
-        ITypeSymbol typeSymbol = info.ElementType;
+        ITypeSymbol? typeSymbol = info.ElementType;
 
         if (typeSymbol is null)
             return false;
@@ -870,7 +879,7 @@ internal static class CSharpTypeAnalysis
 
         ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
-        ITypeSymbol typeSymbol = info.ElementType;
+        ITypeSymbol? typeSymbol = info.ElementType;
 
         if (typeSymbol is null)
             return false;
@@ -895,7 +904,7 @@ internal static class CSharpTypeAnalysis
 
         ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
-        ITypeSymbol typeSymbol = info.ElementType;
+        ITypeSymbol? typeSymbol = info.ElementType;
 
         if (typeSymbol is null)
             return false;
@@ -945,7 +954,7 @@ internal static class CSharpTypeAnalysis
 
         ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
-        ITypeSymbol typeSymbol = info.ElementType;
+        ITypeSymbol? typeSymbol = info.ElementType;
 
         if (typeSymbol is null)
             return false;

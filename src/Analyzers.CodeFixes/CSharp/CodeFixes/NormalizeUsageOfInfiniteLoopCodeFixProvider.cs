@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -39,10 +39,8 @@ public sealed class NormalizeUsageOfInfiniteLoopCodeFixProvider : BaseCodeFixPro
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
 
-        if (statement.IsKind(SyntaxKind.ForStatement))
+        if (statement is ForStatementSyntax forStatement)
         {
-            var forStatement = (ForStatementSyntax)statement;
-
             CodeAction codeAction = CodeAction.Create(
                 "Convert to 'while'",
                 ct => ConvertForToWhileAsync(document, forStatement, ct),
@@ -50,10 +48,8 @@ public sealed class NormalizeUsageOfInfiniteLoopCodeFixProvider : BaseCodeFixPro
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
-        else if (statement.IsKind(SyntaxKind.WhileStatement))
+        else if (statement is WhileStatementSyntax whileStatement)
         {
-            var whileStatement = (WhileStatementSyntax)statement;
-
             CodeAction codeAction = CodeAction.Create(
                 "Convert to 'for'",
                 ct =>
@@ -67,10 +63,8 @@ public sealed class NormalizeUsageOfInfiniteLoopCodeFixProvider : BaseCodeFixPro
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
-        else if (statement.IsKind(SyntaxKind.DoStatement))
+        else if (statement is DoStatementSyntax doStatement)
         {
-            var doStatement = (DoStatementSyntax)statement;
-
             if (document.GetConfigOptions(statement.SyntaxTree).GetInfiniteLoopStyle() == InfiniteLoopStyle.ForStatement)
             {
                 CodeAction codeAction = CodeAction.Create(
