@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 namespace Roslynator;
 
@@ -27,5 +27,5 @@ internal enum XmlTag
     Summary = 18,
     TypeParam = 19,
     TypeParamRef = 20,
-    Value = 21
+    Value = 21,
 }

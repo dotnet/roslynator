@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace Roslynator.CommandLine;
 
 internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
 {
-    public AnalyzeCommand(AnalyzeCommandLineOptions options, DiagnosticSeverity severityLevel, in ProjectFilter projectFilter) : base(projectFilter)
+    public AnalyzeCommand(AnalyzeCommandLineOptions options, DiagnosticSeverity severityLevel, in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         SeverityLevel = severityLevel;
@@ -28,9 +28,8 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
 
     public override async Task<AnalyzeCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
     {
-        AssemblyResolver.Register();
-
         var codeAnalyzerOptions = new CodeAnalyzerOptions(
+            fileSystemFilter: FileSystemFilter,
             ignoreAnalyzerReferences: Options.IgnoreAnalyzerReferences,
             ignoreCompilerDiagnostics: Options.IgnoreCompilerDiagnostics,
             reportNotConfigurable: Options.ReportNotConfigurable,
@@ -55,7 +54,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
                 || analyzerAssembly.HasAnalyzers
                 || analyzerAssembly.HasFixers)
             {
-                WriteLine($"Add analyzer assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Detailed);
+                WriteLine($"Loaded analyzer assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Detailed);
             }
         };
 
@@ -78,9 +77,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
         {
             Solution solution = projectOrSolution.AsSolution();
 
-            var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
-
-            results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => projectFilter.IsMatch(f), cancellationToken);
+            results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => IsMatch(f), cancellationToken);
         }
 
         return new AnalyzeCommandResult(
@@ -129,10 +126,5 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
 
         WriteLine(Verbosity.Minimal);
         WriteLine($"{totalCount} {((totalCount == 1) ? "diagnostic" : "diagnostics")} found", ConsoleColors.Green, Verbosity.Minimal);
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Analysis was canceled.", Verbosity.Quiet);
     }
 }

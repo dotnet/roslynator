@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using Microsoft.CodeAnalysis;
@@ -19,7 +19,7 @@ public static class WorkspaceSymbolExtensions
     public static ExpressionSyntax GetDefaultValueSyntax(
         this ITypeSymbol typeSymbol,
         DefaultSyntaxOptions options = DefaultSyntaxOptions.None,
-        SymbolDisplayFormat format = null)
+        SymbolDisplayFormat? format = null)
     {
         return GetDefaultValueSyntax(typeSymbol, options, default(TypeSyntax), format);
     }
@@ -42,8 +42,8 @@ public static class WorkspaceSymbolExtensions
     private static ExpressionSyntax GetDefaultValueSyntax(
         this ITypeSymbol typeSymbol,
         DefaultSyntaxOptions options = DefaultSyntaxOptions.None,
-        TypeSyntax type = null,
-        SymbolDisplayFormat format = null)
+        TypeSyntax? type = null,
+        SymbolDisplayFormat? format = null)
     {
         if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));
@@ -60,7 +60,7 @@ public static class WorkspaceSymbolExtensions
 
         if (typeSymbol.TypeKind == TypeKind.Enum)
         {
-            IFieldSymbol fieldSymbol = CSharpUtility.FindEnumDefaultField((INamedTypeSymbol)typeSymbol);
+            IFieldSymbol? fieldSymbol = CSharpUtility.FindEnumDefaultField((INamedTypeSymbol)typeSymbol);
 
             if (fieldSymbol is not null)
                 return SimpleMemberAccessExpression(GetTypeSyntax(), IdentifierName(fieldSymbol.Name));
@@ -106,7 +106,7 @@ public static class WorkspaceSymbolExtensions
 
     internal static ExpressionSyntax GetDefaultValueSyntax(
         this IParameterSymbol parameterSymbol,
-        SymbolDisplayFormat format = null)
+        SymbolDisplayFormat? format = null)
     {
         if (parameterSymbol is null)
             throw new ArgumentNullException(nameof(parameterSymbol));
@@ -114,7 +114,7 @@ public static class WorkspaceSymbolExtensions
         if (!parameterSymbol.HasExplicitDefaultValue)
             throw new ArgumentException("Parameter does not specify default value.", nameof(parameterSymbol));
 
-        object value = parameterSymbol.ExplicitDefaultValue;
+        object? value = parameterSymbol.ExplicitDefaultValue;
 
         ITypeSymbol typeSymbol = parameterSymbol.Type;
 
@@ -123,7 +123,7 @@ public static class WorkspaceSymbolExtensions
             if (value is null)
                 return NullLiteralExpression();
 
-            IFieldSymbol fieldSymbol = FindFieldWithConstantValue();
+            IFieldSymbol? fieldSymbol = FindFieldWithConstantValue();
 
             TypeSyntax type = typeSymbol.ToTypeSyntax(format);
 
@@ -145,7 +145,7 @@ public static class WorkspaceSymbolExtensions
 
         return LiteralExpression(value);
 
-        IFieldSymbol FindFieldWithConstantValue()
+        IFieldSymbol? FindFieldWithConstantValue()
         {
             foreach (ISymbol symbol in typeSymbol.GetMembers())
             {

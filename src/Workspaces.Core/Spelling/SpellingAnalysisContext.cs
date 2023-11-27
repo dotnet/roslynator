@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -18,14 +18,14 @@ internal class SpellingAnalysisContext
 
     public SpellingData SpellingData { get; }
 
-    public SpellingFixerOptions Options { get; }
+    public SpellcheckOptions Options { get; }
 
     public CancellationToken CancellationToken { get; }
 
     public SpellingAnalysisContext(
         Action<Diagnostic> reportDiagnostic,
         SpellingData spellingData,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         CancellationToken cancellationToken)
     {
         SpellingData = spellingData;
@@ -50,7 +50,7 @@ internal class SpellingAnalysisContext
     {
         ImmutableArray<SpellingMatch> matches = _spellchecker.AnalyzeIdentifier(identifier.ValueText, prefixLength);
 
-        ProcessMatches(matches, identifier.Span, identifier.SyntaxTree);
+        ProcessMatches(matches, identifier.Span, identifier.SyntaxTree!);
     }
 
     private void ProcessMatches(
@@ -62,27 +62,27 @@ internal class SpellingAnalysisContext
         {
             int index = span.Start + match.Index;
 
-            ImmutableDictionary<string, string> properties;
+            ImmutableDictionary<string, string?> properties;
 
             if (match.Parent is not null)
             {
                 properties = ImmutableDictionary.CreateRange(new[]
                     {
-                        new KeyValuePair<string, string>("Value", match.Value),
-                        new KeyValuePair<string, string>("Parent", match.Parent),
-                        new KeyValuePair<string, string>("ParentIndex", (span.Start + match.ParentIndex).ToString(CultureInfo.InvariantCulture)),
+                        new KeyValuePair<string, string?>("Value", match.Value),
+                        new KeyValuePair<string, string?>("Parent", match.Parent),
+                        new KeyValuePair<string, string?>("ParentIndex", (span.Start + match.ParentIndex).ToString(CultureInfo.InvariantCulture)),
                     });
             }
             else
             {
                 properties = ImmutableDictionary.CreateRange(new[]
                     {
-                        new KeyValuePair<string, string>("Value", match.Value),
+                        new KeyValuePair<string, string?>("Value", match.Value)
                     });
             }
 
             Diagnostic diagnostic = Diagnostic.Create(
-                SpellingAnalyzer.DiagnosticDescriptor,
+                SpellcheckAnalyzer.DiagnosticDescriptor,
                 Location.Create(syntaxTree, new TextSpan(index, match.Value.Length)),
                 properties: properties,
                 messageArgs: match.Value);

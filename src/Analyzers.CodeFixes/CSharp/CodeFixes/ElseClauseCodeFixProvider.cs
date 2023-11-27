@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -62,7 +62,7 @@ public sealed class ElseClauseCodeFixProvider : BaseCodeFixProvider
         }
     }
 
-    private static async Task<Document> RemoveEmptyElseClauseAsync(
+    internal static async Task<Document> RemoveEmptyElseClauseAsync(
         Document document,
         ElseClauseSyntax elseClause,
         CancellationToken cancellationToken)

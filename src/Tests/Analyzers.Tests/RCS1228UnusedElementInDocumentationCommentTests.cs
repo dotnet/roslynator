@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -332,5 +332,35 @@ public record Foo(string Bar);
 /// <param name=""Bar"">bar</param>
 public record struct Foo(string Bar);
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_ClassPrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+/// <summary>
+/// x
+/// </summary>
+/// <param name=""value"">x</param>
+public class Foo(string value)
+{
+    public string Value { get; } = value;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_StructPrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+/// <summary>
+/// x
+/// </summary>
+/// <param name=""value"">x</param>
+public struct Foo(string value)
+{
+    public string Value { get; } = value;
+}
+");
     }
 }

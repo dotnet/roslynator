@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ internal static class Program
 
         GenerateAnalyzersMarkdown(metadata, destinationPath);
 
-        GenerateRefactoringsMarkdown(metadata, sourcePath, destinationPath);
+        GenerateRefactoringsMarkdown(metadata, destinationPath);
 
         GenerateCodeFixesMarkdown(metadata, destinationPath);
 
@@ -55,11 +55,11 @@ internal static class Program
             string s = File.ReadAllText(path, _utf8NoBom);
 
             ImmutableDictionary<string, AnalyzerMetadata> dic = metadata.Analyzers
-                .Concat(metadata.Analyzers.SelectMany(f => f.OptionAnalyzers))
+                .Concat(metadata.Analyzers.SelectMany(f => f.LegacyOptionAnalyzers))
                 .Where(f => f.Id is not null)
                 .ToImmutableDictionary(f => f.Id, f => f);
 
-            s = issueRegex.Replace(s, "([issue](https://github.com/JosefPihrt/Roslynator/issues/${issue}))");
+            s = issueRegex.Replace(s, "([issue](https://github.com/dotnet/roslynator/issues/${issue}))");
 
             s = analyzerRegex.Replace(
                 s,
@@ -86,30 +86,23 @@ internal static class Program
 
         WriteAllText(
             $"{destinationPath}/analyzers.md",
-            MarkdownGenerator.CreateAnalyzersMarkdown(metadata.Analyzers.Where(f => !f.IsObsolete), "Analyzers", StringComparer.InvariantCulture),
+            MarkdownGenerator.CreateAnalyzersMarkdown(metadata.Analyzers.Where(f => f.Status == AnalyzerStatus.Enabled), "Analyzers", StringComparer.InvariantCulture),
             sidebarLabel: "Analyzers");
 
-        WriteAnalyzerMarkdown(metadata.CodeAnalysisAnalyzers);
-        WriteAnalyzerMarkdown(metadata.FormattingAnalyzers);
-        WriteAnalyzerMarkdown(metadata.CommonAnalyzers);
+        foreach (AnalyzerMetadata analyzer in metadata.Analyzers.Where(f => f.Status != AnalyzerStatus.Disabled))
+        {
+            string filePath = $"{analyzersDirPath}/{analyzer.Id}.md";
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+            WriteAllText(filePath, MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.ConfigOptions));
+        }
 
         DeleteInvalidAnalyzerMarkdowns();
-
-        void WriteAnalyzerMarkdown(IEnumerable<AnalyzerMetadata> analyzers)
-        {
-            foreach (AnalyzerMetadata analyzer in analyzers)
-            {
-                string filePath = $"{analyzersDirPath}/{analyzer.Id}.md";
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-                WriteAllText(filePath, MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.ConfigOptions));
-            }
-        }
 
         void DeleteInvalidAnalyzerMarkdowns()
         {
             IEnumerable<string> allIds = metadata.Analyzers
-                .Concat(metadata.Analyzers.SelectMany(f => f.OptionAnalyzers))
+                .Concat(metadata.Analyzers.SelectMany(f => f.LegacyOptionAnalyzers))
                 .Select(f => f.Id);
 
             foreach (string id in Directory.GetFiles(analyzersDirPath, "*.*", SearchOption.TopDirectoryOnly)
@@ -128,7 +121,7 @@ internal static class Program
         }
     }
 
-    private static void GenerateRefactoringsMarkdown(RoslynatorMetadata metadata, string sourcePath, string destinationPath)
+    private static void GenerateRefactoringsMarkdown(RoslynatorMetadata metadata, string destinationPath)
     {
         string refactoringsDirPath = Path.Combine(destinationPath, "refactorings");
         Directory.CreateDirectory(refactoringsDirPath);
@@ -166,13 +159,7 @@ internal static class Program
             if (!refactoring.IsObsolete
                 && refactoring.Samples.Count == 0)
             {
-                foreach (ImageMetadata image in refactoring.ImagesOrDefaultImage())
-                {
-                    string imagePath = Path.Combine(Path.Combine(sourcePath, "../images/refactorings"), image.Name + ".png");
-
-                    if (!File.Exists(imagePath))
-                        Console.WriteLine($"MISSING SAMPLE: {imagePath}");
-                }
+                Console.WriteLine($"MISSING SAMPLE: {refactoring.Id}");
             }
         }
     }
@@ -220,17 +207,18 @@ internal static class Program
         int? sidebarPosition = null,
         string sidebarLabel = null)
     {
+        content = DocusaurusMarkdownFactory.FrontMatter(GetLabels()) + content;
+
+        IEnumerable<(string, object)> GetLabels()
+        {
+            if (sidebarPosition is not null)
+                yield return ("sidebar_position", sidebarPosition);
+
+            if (sidebarLabel is not null)
+                yield return ("sidebar_label", sidebarLabel);
+        }
+
         Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
-
-        var labels = new List<(string, object)>();
-
-        if (sidebarPosition is not null)
-            labels.Add(("sidebar_position", sidebarPosition));
-
-        if (sidebarLabel is not null)
-            labels.Add(("sidebar_label", sidebarLabel));
-
-        content = DocusaurusMarkdownFactory.FrontMatter(labels).ToString() + content;
 
         FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
     }

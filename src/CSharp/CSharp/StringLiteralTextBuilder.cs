@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -13,7 +13,7 @@ namespace Roslynator.CSharp;
 
 internal class StringLiteralTextBuilder
 {
-    public StringLiteralTextBuilder(StringBuilder stringBuilder = null, bool isVerbatim = false, bool isInterpolated = false)
+    public StringLiteralTextBuilder(StringBuilder? stringBuilder = null, bool isVerbatim = false, bool isInterpolated = false)
     {
         StringBuilder = stringBuilder ?? new StringBuilder();
         IsVerbatim = isVerbatim;

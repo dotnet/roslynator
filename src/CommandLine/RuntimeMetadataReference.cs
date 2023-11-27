@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -51,7 +51,7 @@ internal static class RuntimeMetadataReference
                     "Roslynator.Core.dll" ,
                     "Roslynator.CSharp.dll" ,
                     "Roslynator.Workspaces.Core.dll" ,
-                    "Roslynator.CSharp.Workspaces.dll"
+                    "Roslynator.CSharp.Workspaces.dll",
                 })
                 {
                     Debug.Assert(references.OfType<PortableExecutableReference>().Any(f => f.FilePath.EndsWith(assemblyName, StringComparison.OrdinalIgnoreCase)), assemblyName);

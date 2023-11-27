@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ public static class ModifierList
     /// <param name="tokens"></param>
     /// <param name="token"></param>
     /// <param name="comparer"></param>
-    public static int GetInsertIndex(SyntaxTokenList tokens, SyntaxToken token, IComparer<SyntaxToken> comparer = null)
+    public static int GetInsertIndex(SyntaxTokenList tokens, SyntaxToken token, IComparer<SyntaxToken>? comparer = null)
     {
         if (comparer is null)
             comparer = ModifierComparer.Default;
@@ -54,7 +54,7 @@ public static class ModifierList
     /// <param name="tokens"></param>
     /// <param name="kind"></param>
     /// <param name="comparer"></param>
-    public static int GetInsertIndex(SyntaxTokenList tokens, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
+    public static int GetInsertIndex(SyntaxTokenList tokens, SyntaxKind kind, IComparer<SyntaxKind>? comparer = null)
     {
         if (comparer is null)
             comparer = ModifierKindComparer.Default;
@@ -82,7 +82,7 @@ public static class ModifierList
         return index;
     }
 
-    internal static SyntaxNode Insert(SyntaxNode node, Accessibility accessibility, IComparer<SyntaxKind> comparer = null)
+    internal static SyntaxNode Insert(SyntaxNode node, Accessibility accessibility, IComparer<SyntaxKind>? comparer = null)
     {
         switch (accessibility)
         {
@@ -126,7 +126,7 @@ public static class ModifierList
     /// <param name="node"></param>
     /// <param name="kind"></param>
     /// <param name="comparer"></param>
-    public static TNode Insert<TNode>(TNode node, SyntaxKind kind, IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
+    public static TNode Insert<TNode>(TNode node, SyntaxKind kind, IComparer<SyntaxKind>? comparer = null) where TNode : SyntaxNode
     {
         switch (node.Kind())
         {
@@ -175,6 +175,11 @@ public static class ModifierList
                 return (TNode)(SyntaxNode)ModifierList<LocalFunctionStatementSyntax>.Instance.Insert((LocalFunctionStatementSyntax)(SyntaxNode)node, kind, comparer);
             case SyntaxKind.Parameter:
                 return (TNode)(SyntaxNode)ModifierList<ParameterSyntax>.Instance.Insert((ParameterSyntax)(SyntaxNode)node, kind, comparer);
+            case SyntaxKind.SimpleLambdaExpression:
+            case SyntaxKind.ParenthesizedLambdaExpression:
+                return (TNode)(SyntaxNode)ModifierList<LambdaExpressionSyntax>.Instance.Insert((LambdaExpressionSyntax)(SyntaxNode)node, kind, comparer);
+            case SyntaxKind.AnonymousMethodExpression:
+                return (TNode)(SyntaxNode)ModifierList<AnonymousMethodExpressionSyntax>.Instance.Insert((AnonymousMethodExpressionSyntax)(SyntaxNode)node, kind, comparer);
             case SyntaxKind.IncompleteMember:
                 return (TNode)(SyntaxNode)ModifierList<IncompleteMemberSyntax>.Instance.Insert((IncompleteMemberSyntax)(SyntaxNode)node, kind, comparer);
         }
@@ -189,7 +194,7 @@ public static class ModifierList
     /// <param name="node"></param>
     /// <param name="modifier"></param>
     /// <param name="comparer"></param>
-    public static TNode Insert<TNode>(TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null) where TNode : SyntaxNode
+    public static TNode Insert<TNode>(TNode node, SyntaxToken modifier, IComparer<SyntaxToken>? comparer = null) where TNode : SyntaxNode
     {
         switch (node.Kind())
         {
@@ -560,7 +565,7 @@ public static class ModifierList
     /// <param name="modifiers"></param>
     /// <param name="kind"></param>
     /// <param name="comparer"></param>
-    public static SyntaxTokenList Insert(SyntaxTokenList modifiers, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
+    public static SyntaxTokenList Insert(SyntaxTokenList modifiers, SyntaxKind kind, IComparer<SyntaxKind>? comparer = null)
     {
         if (!modifiers.Any())
             return modifiers.Add(Token(kind));
@@ -574,7 +579,7 @@ public static class ModifierList
     /// <param name="modifiers"></param>
     /// <param name="modifier"></param>
     /// <param name="comparer"></param>
-    public static SyntaxTokenList Insert(SyntaxTokenList modifiers, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null)
+    public static SyntaxTokenList Insert(SyntaxTokenList modifiers, SyntaxToken modifier, IComparer<SyntaxToken>? comparer = null)
     {
         if (!modifiers.Any())
             return modifiers.Add(modifier);

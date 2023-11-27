@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -19,7 +19,7 @@ namespace Roslynator.CommandLine;
 
 internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
 {
-    public FormatCommand(FormatCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
+    public FormatCommand(FormatCommandLineOptions options, in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
     }
@@ -30,19 +30,17 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
     {
         ImmutableArray<DocumentId> formattedDocuments;
 
+        var options = new CodeFormatterOptions(fileSystemFilter: FileSystemFilter, includeGeneratedCode: Options.IncludeGeneratedCode);
+
         if (projectOrSolution.IsProject)
         {
             Project project = projectOrSolution.AsProject();
-
-            var options = new CodeFormatterOptions(includeGeneratedCode: Options.IncludeGeneratedCode);
 
             formattedDocuments = await FormatProjectAsync(project, options, cancellationToken);
         }
         else
         {
             Solution solution = projectOrSolution.AsSolution();
-
-            var options = new CodeFormatterOptions(includeGeneratedCode: Options.IncludeGeneratedCode);
 
             formattedDocuments = await FormatSolutionAsync(solution, options, cancellationToken);
         }
@@ -59,6 +57,9 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
         Stopwatch stopwatch = Stopwatch.StartNew();
 
         var changedDocuments = new ConcurrentBag<ImmutableArray<DocumentId>>();
+
+#if NETFRAMEWORK
+        await Task.CompletedTask;
 
         Parallel.ForEach(
             FilterProjects(solution),
@@ -78,8 +79,31 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
                     LogHelpers.WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
                 }
 
-                WriteLine($"  Done analyzing '{project.Name}'", Verbosity.Normal);
+                WriteLine($"  Analyzed '{project.Name}'", Verbosity.Normal);
             });
+#else
+        await Parallel.ForEachAsync(
+            FilterProjects(solution),
+            cancellationToken,
+            async (project, cancellationToken) =>
+            {
+                WriteLine($"  Analyze '{project.Name}'", Verbosity.Minimal);
+
+                ISyntaxFactsService syntaxFacts = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(project.Language);
+
+                Project newProject = CodeFormatter.FormatProjectAsync(project, syntaxFacts, options, cancellationToken).Result;
+
+                ImmutableArray<DocumentId> formattedDocuments = await CodeFormatter.GetFormattedDocumentsAsync(project, newProject, syntaxFacts);
+
+                if (formattedDocuments.Any())
+                {
+                    changedDocuments.Add(formattedDocuments);
+                    LogHelpers.WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
+                }
+
+                WriteLine($"  Analyzed '{project.Name}'", Verbosity.Normal);
+            });
+#endif
 
         if (!changedDocuments.IsEmpty)
         {
@@ -92,7 +116,7 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
                 newSolution = newSolution.WithDocumentText(documentId, sourceText);
             }
 
-            WriteLine($"Apply changes to solution '{solution.FilePath}'", Verbosity.Normal);
+            WriteLine($"Applying changes to solution '{solution.FilePath}'...", Verbosity.Normal);
 
             if (!solution.Workspace.TryApplyChanges(newSolution))
             {
@@ -107,7 +131,7 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
         WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted", ConsoleColors.Green, Verbosity.Minimal);
 
         WriteLine(Verbosity.Minimal);
-        WriteLine($"Done formatting solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Analyzed solution '{solution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
         return changedDocuments.SelectMany(f => f).ToImmutableArray();
     }
@@ -132,7 +156,7 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
         {
             Solution newSolution = newProject.Solution;
 
-            WriteLine($"Apply changes to solution '{newSolution.FilePath}'", Verbosity.Normal);
+            WriteLine($"Applying changes to solution '{newSolution.FilePath}'...", Verbosity.Normal);
 
             if (!solution.Workspace.TryApplyChanges(newSolution))
             {
@@ -158,10 +182,5 @@ internal class FormatCommand : MSBuildWorkspaceCommand<FormatCommandResult>
     {
         WriteLine(Verbosity.Minimal);
         WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted", ConsoleColors.Green, Verbosity.Minimal);
-    }
-
-    protected override void OperationCanceled(OperationCanceledException ex)
-    {
-        WriteLine("Formatting was canceled.", Verbosity.Minimal);
     }
 }

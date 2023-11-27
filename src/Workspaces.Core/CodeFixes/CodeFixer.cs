@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -25,8 +25,8 @@ internal class CodeFixer
     public CodeFixer(
         Solution solution,
         AnalyzerLoader analyzerLoader,
-        IFormatProvider formatProvider = null,
-        CodeFixerOptions options = null)
+        IFormatProvider? formatProvider = null,
+        CodeFixerOptions? options = null)
     {
         _analyzerLoader = analyzerLoader;
 
@@ -39,7 +39,7 @@ internal class CodeFixer
 
     public CodeFixerOptions Options { get; }
 
-    public IFormatProvider FormatProvider { get; }
+    public IFormatProvider? FormatProvider { get; }
 
     private Solution CurrentSolution => Workspace.CurrentSolution;
 
@@ -60,11 +60,11 @@ internal class CodeFixer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Project project = CurrentSolution.GetProject(projects[i]);
+            Project project = CurrentSolution.GetProject(projects[i])!;
 
             if (predicate is null || predicate(project))
             {
-                WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
+                WriteLine($"Analyze '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
                 ProjectFixResult result = await FixProjectAsync(project, cancellationToken).ConfigureAwait(false);
 
@@ -75,21 +75,21 @@ internal class CodeFixer
             }
             else
             {
-                WriteLine($"Skip '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
+                WriteLine($"Skipping '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
 
                 results.Add(ProjectFixResult.Skipped);
             }
 
             TimeSpan elapsed = stopwatch.Elapsed;
 
-            WriteLine($"Done fixing '{project.Name}' in {elapsed - lastElapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+            LogHelpers.WriteElapsedTime($"Analyzed '{project.Name}'", elapsed - lastElapsed, Verbosity.Normal);
 
             lastElapsed = elapsed;
         }
 
         stopwatch.Stop();
 
-        WriteLine($"Done fixing solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Analyzed solution '{CurrentSolution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
 
         return results.ToImmutableArray();
     }
@@ -100,9 +100,15 @@ internal class CodeFixer
 
         FixResult fixResult = await FixProjectAsync(project, analyzers, fixers, cancellationToken).ConfigureAwait(false);
 
-        project = CurrentSolution.GetProject(project.Id);
+        project = CurrentSolution.GetProject(project.Id)!;
 
-        Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+        if (!project.SupportsCompilation)
+        {
+            WriteLine($"  Project '{project.Name}' does not support compilation", Verbosity.Normal);
+            return ProjectFixResult.Skipped;
+        }
+
+        Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
         Dictionary<string, ImmutableArray<CodeFixProvider>> fixersById = fixers
             .SelectMany(f => f.FixableDiagnosticIds.Select(id => (id, fixer: f)))
@@ -130,12 +136,12 @@ internal class CodeFixer
         int numberOfAddedFileBanners = 0;
 
         if (Options.FileBannerLines.Any())
-            numberOfAddedFileBanners = await AddFileBannerAsync(CurrentSolution.GetProject(project.Id), Options.FileBannerLines, cancellationToken).ConfigureAwait(false);
+            numberOfAddedFileBanners = await AddFileBannerAsync(CurrentSolution.GetProject(project.Id)!, Options.FileBannerLines, cancellationToken).ConfigureAwait(false);
 
         ImmutableArray<DocumentId> formattedDocuments = ImmutableArray<DocumentId>.Empty;
 
         if (Options.Format)
-            formattedDocuments = await FormatProjectAsync(CurrentSolution.GetProject(project.Id), cancellationToken).ConfigureAwait(false);
+            formattedDocuments = await FormatProjectAsync(CurrentSolution.GetProject(project.Id)!, cancellationToken).ConfigureAwait(false);
 
         var result = new ProjectFixResult(
             kind: fixResult.Kind,
@@ -201,11 +207,11 @@ internal class CodeFixer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            project = CurrentSolution.GetProject(project.Id);
+            project = CurrentSolution.GetProject(project.Id)!;
 
             WriteLine($"  Compile '{project.Name}'{((iterationCount > 1) ? $" iteration {iterationCount}" : "")}", Verbosity.Normal);
 
-            Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+            Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 
@@ -258,7 +264,7 @@ internal class CodeFixer
                         ? default
                         : analyzersById[diagnosticId],
                     fixersById[diagnosticId],
-                    CurrentSolution.GetProject(project.Id),
+                    CurrentSolution.GetProject(project.Id)!,
                     cancellationToken)
                     .ConfigureAwait(false);
 
@@ -329,7 +335,7 @@ internal class CodeFixer
 
         while (true)
         {
-            Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+            Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 
@@ -389,7 +395,7 @@ internal class CodeFixer
 
             if (Options.FixAllScope == FixAllScope.Document)
             {
-                foreach (IGrouping<SyntaxTree, Diagnostic> grouping in diagnostics
+                foreach (IGrouping<SyntaxTree?, Diagnostic> grouping in diagnostics
                     .GroupBy(f => f.Location.SourceTree)
                     .OrderByDescending(f => f.Count()))
                 {
@@ -424,7 +430,7 @@ internal class CodeFixer
 
             previousDiagnosticsToFix = diagnostics;
 
-            project = CurrentSolution.GetProject(project.Id);
+            project = CurrentSolution.GetProject(project.Id)!;
         }
 
         fixedDiagnostics.AddRange(previousDiagnosticsToFix.Except(diagnostics, DiagnosticDeepEqualityComparer.Instance));
@@ -456,7 +462,7 @@ internal class CodeFixer
         if (diagnosticFix.FixProvider2 is not null)
             return DiagnosticFixKind.MultipleFixers;
 
-        CodeAction fix = diagnosticFix.CodeAction;
+        CodeAction? fix = diagnosticFix.CodeAction;
 
         if (fix is not null)
         {
@@ -466,7 +472,7 @@ internal class CodeFixer
             {
                 operations[0].Apply(Workspace, cancellationToken);
 
-                return (diagnostics.Length != 1 && diagnosticFix.FixProvider.GetFixAllProvider() is null)
+                return (diagnostics.Length != 1 && diagnosticFix.FixProvider!.GetFixAllProvider() is null)
                     ? DiagnosticFixKind.PartiallyFixed
                     : DiagnosticFixKind.Success;
             }
@@ -530,8 +536,21 @@ internal class CodeFixer
         ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzers, analyzerOptions, cancellationToken).ConfigureAwait(false);
 
         return diagnostics
-            .Where(f => f.IsEffective(Options, compilation.Options)
-                && analyzersById.ContainsKey(f.Id))
+            .Where(diagnostic =>
+            {
+                if (diagnostic.IsEffective(Options, compilation.Options)
+                    && analyzersById.ContainsKey(diagnostic.Id))
+                {
+                    SyntaxTree? tree = diagnostic.Location.SourceTree;
+                    if (tree is null
+                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            })
             .Except(except, DiagnosticDeepEqualityComparer.Instance)
             .ToImmutableArray();
     }
@@ -547,14 +566,20 @@ internal class CodeFixer
 
         foreach (DocumentId documentId in project.DocumentIds)
         {
-            Document document = project.GetDocument(documentId);
+            Document document = project.GetDocument(documentId)!;
 
             if (GeneratedCodeUtility.IsGeneratedCodeFile(document.FilePath))
                 continue;
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode? root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ISyntaxFactsService syntaxFacts = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(project.Language);
+            if (root is null)
+                continue;
+
+            ISyntaxFactsService? syntaxFacts = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(project.Language);
+
+            if (syntaxFacts is null)
+                continue;
 
             if (syntaxFacts.BeginsWithAutoGeneratedComment(root))
                 continue;
@@ -573,7 +598,7 @@ internal class CodeFixer
 
             Document newDocument = document.WithSyntaxRoot(newRoot);
 
-            WriteLine($"  Add banner to '{PathUtilities.TrimStart(document.FilePath, solutionDirectory)}'", ConsoleColors.DarkGray, Verbosity.Detailed);
+            WriteLine($"  Added banner to '{PathUtilities.TrimStart(document.FilePath!, solutionDirectory)}'", ConsoleColors.DarkGray, Verbosity.Detailed);
 
             project = newDocument.Project;
 
@@ -594,7 +619,10 @@ internal class CodeFixer
     {
         WriteLine($"  Format  '{project.Name}'", Verbosity.Normal);
 
-        ISyntaxFactsService syntaxFacts = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(project.Language);
+        ISyntaxFactsService? syntaxFacts = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(project.Language);
+
+        if (syntaxFacts is null)
+            return ImmutableArray<DocumentId>.Empty;
 
         Project newProject = await CodeFormatter.FormatProjectAsync(project, syntaxFacts, cancellationToken).ConfigureAwait(false);
 
@@ -638,9 +666,9 @@ internal class CodeFixer
 
         internal FixResult(
             ProjectFixKind kind,
-            IEnumerable<Diagnostic> fixedDiagnostics = default,
-            IEnumerable<Diagnostic> unfixedDiagnostics = default,
-            IEnumerable<Diagnostic> unfixableDiagnostics = default,
+            IEnumerable<Diagnostic>? fixedDiagnostics = default,
+            IEnumerable<Diagnostic>? unfixedDiagnostics = default,
+            IEnumerable<Diagnostic>? unfixableDiagnostics = default,
             int numberOfFormattedDocuments = -1,
             int numberOfAddedFileBanners = -1)
         {

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Text;
 using System.Threading;
@@ -36,7 +36,7 @@ internal static class UseMethodChainingRefactoring
 
         int index = statements.IndexOf(expressionStatement);
 
-        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(expressionStatement, cancellationToken);
+        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(expressionStatement, document.GetConfigOptions(expressionStatement.SyntaxTree), cancellationToken);
 
         var sb = new StringBuilder(invocationExpression.ToString());
 

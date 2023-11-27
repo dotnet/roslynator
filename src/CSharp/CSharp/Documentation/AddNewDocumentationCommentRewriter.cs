@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using Microsoft.CodeAnalysis;
@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Documentation;
 
 internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
 {
-    public AddNewDocumentationCommentRewriter(DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true)
+    public AddNewDocumentationCommentRewriter(DocumentationCommentGeneratorSettings? settings = null, bool skipNamespaceDeclaration = true)
     {
         Settings = settings ?? DocumentationCommentGeneratorSettings.Default;
         SkipNamespaceDeclaration = skipNamespaceDeclaration;
@@ -33,7 +33,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
             throw new ArgumentNullException(nameof(node));
         }
 
-        node = (NamespaceDeclarationSyntax)base.VisitNamespaceDeclaration(node);
+        node = (NamespaceDeclarationSyntax)base.VisitNamespaceDeclaration(node)!;
 
         if (!SkipNamespaceDeclaration
             && !node.HasDocumentationComment())
@@ -50,7 +50,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (ClassDeclarationSyntax)base.VisitClassDeclaration(node);
+        node = (ClassDeclarationSyntax)base.VisitClassDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -67,7 +67,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (StructDeclarationSyntax)base.VisitStructDeclaration(node);
+        node = (StructDeclarationSyntax)base.VisitStructDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -84,7 +84,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (InterfaceDeclarationSyntax)base.VisitInterfaceDeclaration(node);
+        node = (InterfaceDeclarationSyntax)base.VisitInterfaceDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -101,7 +101,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (EnumDeclarationSyntax)base.VisitEnumDeclaration(node);
+        node = (EnumDeclarationSyntax)base.VisitEnumDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -118,7 +118,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (DelegateDeclarationSyntax)base.VisitDelegateDeclaration(node);
+        node = (DelegateDeclarationSyntax)base.VisitDelegateDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -135,7 +135,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (EnumMemberDeclarationSyntax)base.VisitEnumMemberDeclaration(node);
+        node = (EnumMemberDeclarationSyntax)base.VisitEnumMemberDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -152,7 +152,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
+        node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -169,7 +169,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (EventFieldDeclarationSyntax)base.VisitEventFieldDeclaration(node);
+        node = (EventFieldDeclarationSyntax)base.VisitEventFieldDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -186,7 +186,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
+        node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -203,7 +203,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (OperatorDeclarationSyntax)base.VisitOperatorDeclaration(node);
+        node = (OperatorDeclarationSyntax)base.VisitOperatorDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -220,7 +220,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (ConversionOperatorDeclarationSyntax)base.VisitConversionOperatorDeclaration(node);
+        node = (ConversionOperatorDeclarationSyntax)base.VisitConversionOperatorDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -237,7 +237,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (ConstructorDeclarationSyntax)base.VisitConstructorDeclaration(node);
+        node = (ConstructorDeclarationSyntax)base.VisitConstructorDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -254,7 +254,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (DestructorDeclarationSyntax)base.VisitDestructorDeclaration(node);
+        node = (DestructorDeclarationSyntax)base.VisitDestructorDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -271,7 +271,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);
+        node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -288,7 +288,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (EventDeclarationSyntax)base.VisitEventDeclaration(node);
+        node = (EventDeclarationSyntax)base.VisitEventDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())
@@ -305,7 +305,7 @@ internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
         bool isPubliclyVisible = IsPubliclyVisible(node);
 
-        node = (IndexerDeclarationSyntax)base.VisitIndexerDeclaration(node);
+        node = (IndexerDeclarationSyntax)base.VisitIndexerDeclaration(node)!;
 
         if (isPubliclyVisible
             && !node.HasDocumentationComment())

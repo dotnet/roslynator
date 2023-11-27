@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -114,7 +114,7 @@ public static class SymbolExtensions
     /// </summary>
     /// <param name="namespaceOrTypeSymbol"></param>
     /// <param name="format"></param>
-    public static TypeSyntax ToTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SymbolDisplayFormat format = null)
+    public static TypeSyntax ToTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SymbolDisplayFormat? format = null)
     {
         if (namespaceOrTypeSymbol is null)
             throw new ArgumentNullException(nameof(namespaceOrTypeSymbol));
@@ -136,7 +136,7 @@ public static class SymbolExtensions
     /// <param name="semanticModel"></param>
     /// <param name="position"></param>
     /// <param name="format"></param>
-    public static TypeSyntax ToMinimalTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+    public static TypeSyntax ToMinimalTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat? format = null)
     {
         if (namespaceOrTypeSymbol is null)
             throw new ArgumentNullException(nameof(namespaceOrTypeSymbol));
@@ -161,7 +161,7 @@ public static class SymbolExtensions
     /// </summary>
     /// <param name="namespaceSymbol"></param>
     /// <param name="format"></param>
-    public static TypeSyntax ToTypeSyntax(this INamespaceSymbol namespaceSymbol, SymbolDisplayFormat format = null)
+    public static TypeSyntax ToTypeSyntax(this INamespaceSymbol namespaceSymbol, SymbolDisplayFormat? format = null)
     {
         if (namespaceSymbol is null)
             throw new ArgumentNullException(nameof(namespaceSymbol));
@@ -178,7 +178,7 @@ public static class SymbolExtensions
     /// <param name="semanticModel"></param>
     /// <param name="position"></param>
     /// <param name="format"></param>
-    public static TypeSyntax ToMinimalTypeSyntax(this INamespaceSymbol namespaceSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+    public static TypeSyntax ToMinimalTypeSyntax(this INamespaceSymbol namespaceSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat? format = null)
     {
         if (namespaceSymbol is null)
             throw new ArgumentNullException(nameof(namespaceSymbol));
@@ -199,7 +199,7 @@ public static class SymbolExtensions
     #endregion INamespaceSymbol
 
     #region IParameterSymbol
-    internal static ExpressionSyntax GetDefaultValueMinimalSyntax(this IParameterSymbol parameterSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+    internal static ExpressionSyntax GetDefaultValueMinimalSyntax(this IParameterSymbol parameterSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat? format = null)
     {
         if (parameterSymbol is null)
             throw new ArgumentNullException(nameof(parameterSymbol));
@@ -207,7 +207,7 @@ public static class SymbolExtensions
         if (!parameterSymbol.HasExplicitDefaultValue)
             throw new ArgumentException("Parameter does not specify default value.", nameof(parameterSymbol));
 
-        object value = parameterSymbol.ExplicitDefaultValue;
+        object? value = parameterSymbol.ExplicitDefaultValue;
 
         ITypeSymbol typeSymbol = parameterSymbol.Type;
 
@@ -216,7 +216,7 @@ public static class SymbolExtensions
             if (value is null)
                 return NullLiteralExpression();
 
-            IFieldSymbol fieldSymbol = FindFieldWithConstantValue();
+            IFieldSymbol? fieldSymbol = FindFieldWithConstantValue();
 
             TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format);
 
@@ -238,7 +238,7 @@ public static class SymbolExtensions
 
         return LiteralExpression(value);
 
-        IFieldSymbol FindFieldWithConstantValue()
+        IFieldSymbol? FindFieldWithConstantValue()
         {
             foreach (ISymbol symbol in typeSymbol.GetMembers())
             {
@@ -265,7 +265,7 @@ public static class SymbolExtensions
     /// </summary>
     /// <param name="typeSymbol"></param>
     /// <param name="format"></param>
-    public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat format = null)
+    public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat? format = null)
     {
         if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));
@@ -282,7 +282,7 @@ public static class SymbolExtensions
     /// <param name="semanticModel"></param>
     /// <param name="position"></param>
     /// <param name="format"></param>
-    public static TypeSyntax ToMinimalTypeSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+    public static TypeSyntax ToMinimalTypeSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat? format = null)
     {
         if (typeSymbol is null)
             throw new ArgumentNullException(nameof(typeSymbol));

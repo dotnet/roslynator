@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -59,6 +59,9 @@ internal static class OptimizeLinqMethodCallAnalysis
             return;
 
         SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo((InvocationExpressionSyntax)firstExpression);
+
+        if (!invocationInfo2.Success)
+            return;
 
         if (invocationInfo2.NameText != "First")
             return;
@@ -908,13 +911,13 @@ internal static class OptimizeLinqMethodCallAnalysis
         public static ImmutableDictionary<string, string> Sum_Count { get; } = ImmutableDictionary.CreateRange(new[]
             {
                 new KeyValuePair<string, string>("PropertyName", "Count"),
-                new KeyValuePair<string, string>("MethodName", "Sum")
+                new KeyValuePair<string, string>("MethodName", "Sum"),
             });
 
         public static ImmutableDictionary<string, string> Sum_Length { get; } = ImmutableDictionary.CreateRange(new[]
             {
                 new KeyValuePair<string, string>("PropertyName", "Length"),
-                new KeyValuePair<string, string>("MethodName", "Sum")
+                new KeyValuePair<string, string>("MethodName", "Sum"),
             });
     }
 }

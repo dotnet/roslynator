@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
@@ -12,5 +12,5 @@ internal enum SymbolDisplayTypeDeclarationOptions
     IncludeAccessibility = 1 << 1,
     BaseType = 1 << 2,
     Interfaces = 1 << 3,
-    BaseList = BaseType | Interfaces
+    BaseList = BaseType | Interfaces,
 }

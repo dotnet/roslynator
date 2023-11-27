@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -122,7 +122,7 @@ internal static class XmlExtensions
                                     {
                                         ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
 
-                                        //XTODO: repair roslyn documentation
+                                        //TODO: repair roslyn documentation
                                         Debug.Assert(
                                             symbol is not null
                                                 || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"
@@ -135,7 +135,17 @@ internal static class XmlExtensions
 
                                         if (symbol is not null)
                                         {
-                                            writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                            if (symbol.IsKind(SymbolKind.Field)
+                                                && symbol.ContainingType?.TypeKind == TypeKind.Enum)
+                                            {
+                                                writer.WriteLink(symbol.ContainingType, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                                writer.WriteString(".");
+                                                writer.WriteSymbol(symbol, DocumentationDisplayFormats.SimpleDeclaration, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                            }
+                                            else
+                                            {
+                                                writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                            }
                                         }
                                         else
                                         {

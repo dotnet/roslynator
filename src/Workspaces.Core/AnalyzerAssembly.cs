@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -63,14 +63,14 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
         Assembly analyzerAssembly,
         bool loadAnalyzers = true,
         bool loadFixers = true,
-        string language = null)
+        string? language = null)
     {
         Debug.Assert(loadAnalyzers || loadFixers);
 
-        Dictionary<string, ImmutableArray<DiagnosticAnalyzer>.Builder> analyzers = null;
-        Dictionary<string, ImmutableArray<CodeFixProvider>.Builder> fixers = null;
+        Dictionary<string, ImmutableArray<DiagnosticAnalyzer>.Builder>? analyzers = null;
+        Dictionary<string, ImmutableArray<CodeFixProvider>.Builder>? fixers = null;
 
-        TypeInfo[] types = null;
+        TypeInfo[]? types = null;
         try
         {
             types = analyzerAssembly.DefinedTypes.ToArray();
@@ -101,7 +101,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
 
                 if (attribute is not null)
                 {
-                    DiagnosticAnalyzer analyzer = CreateInstanceAndCatchIfThrows<DiagnosticAnalyzer>(typeInfo);
+                    DiagnosticAnalyzer? analyzer = CreateInstanceAndCatchIfThrows<DiagnosticAnalyzer>(typeInfo);
 
                     if (analyzer is not null)
                     {
@@ -130,7 +130,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
 
                 if (attribute is not null)
                 {
-                    CodeFixProvider fixer = CreateInstanceAndCatchIfThrows<CodeFixProvider>(typeInfo);
+                    CodeFixProvider? fixer = CreateInstanceAndCatchIfThrows<CodeFixProvider>(typeInfo);
 
                     if (fixer is not null)
                     {
@@ -159,7 +159,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
             fixers?.ToImmutableDictionary(f => f.Key, f => f.Value.ToImmutableArray()) ?? ImmutableDictionary<string, ImmutableArray<CodeFixProvider>>.Empty);
     }
 
-    private static T CreateInstanceAndCatchIfThrows<T>(TypeInfo typeInfo)
+    private static T? CreateInstanceAndCatchIfThrows<T>(TypeInfo typeInfo)
     {
         try
         {
@@ -184,7 +184,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
         return Equals(obj as AnalyzerAssembly);
     }
 
-    public bool Equals(AnalyzerAssembly other)
+    public bool Equals(AnalyzerAssembly? other)
     {
         return other is not null
             && StringComparer.Ordinal.Equals(FullName, other.FullName);

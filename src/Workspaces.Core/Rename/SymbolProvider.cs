@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -10,17 +10,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.Rename;
 
+#pragma warning disable RS1001, RS1022
+
 internal class SymbolProvider
 {
-    public SymbolProvider(bool includeGeneratedCode = false)
-    {
-        IncludeGeneratedCode = includeGeneratedCode;
-    }
+    public bool IncludeGeneratedCode { get; init; }
 
-    public bool IncludeGeneratedCode { get; }
+    public Matcher? FileSystemMatcher { get; init; }
+
+    public string? RootDirectoryPath { get; init; }
 
     public async Task<IEnumerable<ISymbol>> GetSymbolsAsync(
         Project project,
@@ -30,13 +32,13 @@ internal class SymbolProvider
         cancellationToken.ThrowIfCancellationRequested();
 
         var compilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
-            options: default(AnalyzerOptions),
+            options: default(AnalyzerOptions)!,
             onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
             concurrentAnalysis: true,
             logAnalyzerExecutionTime: false,
             reportSuppressedDiagnostics: false);
 
-        Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+        Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
         ImmutableArray<SymbolKind> symbolKinds = scope switch
         {
@@ -46,9 +48,14 @@ internal class SymbolProvider
             _ => throw new InvalidOperationException(),
         };
 
-        var analyzer = new Analyzer(
-            symbolKinds,
-            IncludeGeneratedCode);
+        var analyzer = new Analyzer()
+        {
+            IncludeGeneratedCode = IncludeGeneratedCode,
+            FileSystemMatcher = FileSystemMatcher,
+            RootDirectoryPath = RootDirectoryPath,
+        };
+
+        analyzer.SymbolKinds.AddRange(symbolKinds);
 
         var compilationWithAnalyzers = new CompilationWithAnalyzers(
             compilation,
@@ -60,7 +67,6 @@ internal class SymbolProvider
         return analyzer.Symbols;
     }
 
-    [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1001:Missing diagnostic analyzer attribute.")]
     private class Analyzer : DiagnosticAnalyzer
     {
         [SuppressMessage("MicrosoftCodeAnalysisReleaseTracking", "RS2008:Enable analyzer release tracking")]
@@ -77,19 +83,17 @@ internal class SymbolProvider
 
         private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics = ImmutableArray.Create(DiagnosticDescriptor);
 
-        public Analyzer(ImmutableArray<SymbolKind> symbolKinds, bool includeGeneratedCode = false)
-        {
-            SymbolKinds = symbolKinds;
-            IncludeGeneratedCode = includeGeneratedCode;
-        }
-
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => _supportedDiagnostics;
 
         public ConcurrentBag<ISymbol> Symbols { get; } = new();
 
-        public ImmutableArray<SymbolKind> SymbolKinds { get; }
+        public List<SymbolKind> SymbolKinds { get; } = new();
 
-        public bool IncludeGeneratedCode { get; }
+        public bool IncludeGeneratedCode { get; init; }
+
+        public Matcher? FileSystemMatcher { get; init; }
+
+        public string? RootDirectoryPath { get; init; }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -99,7 +103,7 @@ internal class SymbolProvider
                 ? GeneratedCodeAnalysisFlags.Analyze
                 : GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(f => AnalyzeSymbol(f), SymbolKinds);
+            context.RegisterSymbolAction(f => AnalyzeSymbol(f), SymbolKinds.ToArray());
         }
 
         private void AnalyzeSymbol(SymbolAnalysisContext context)
@@ -116,7 +120,7 @@ internal class SymbolProvider
                 case SymbolKind.NamedType:
                 case SymbolKind.Property:
                     {
-                        Symbols.Add(symbol);
+                        AddSymbol(symbol);
                         break;
                     }
                 case SymbolKind.Method:
@@ -130,7 +134,7 @@ internal class SymbolProvider
                             case MethodKind.UserDefinedOperator:
                             case MethodKind.Conversion:
                                 {
-                                    Symbols.Add(methodSymbol);
+                                    AddSymbol(methodSymbol);
                                     break;
                                 }
                         }
@@ -143,6 +147,12 @@ internal class SymbolProvider
                         break;
                     }
             }
+        }
+
+        private void AddSymbol(ISymbol symbol)
+        {
+            if (FileSystemMatcher?.IsMatch(symbol, RootDirectoryPath) != false)
+                Symbols.Add(symbol);
         }
     }
 }

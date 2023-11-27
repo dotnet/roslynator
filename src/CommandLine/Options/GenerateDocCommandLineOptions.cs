@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using CommandLine;
@@ -40,7 +40,7 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
 
     [Option(
         longName: OptionNames.IgnoredRootParts,
-        HelpText = "Defines parts of a root documentation that should be excluded. Allowed values are content, namespaces, class-hierarchy, types and other.",
+        HelpText = "Defines parts of a root documentation that should be excluded. Allowed values are content, namespaces, class-hierarchy, types, other and all.",
         MetaValue = "<IGNORED_ROOT_PARTS>")]
     public IEnumerable<string> IgnoredRootParts { get; set; }
 
@@ -124,7 +124,7 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
     public bool OmitAttributeArguments { get; set; }
 
     [Option(
-        longName: "omit-inherited-atttributes",
+        longName: "omit-inherited-attributes",
         HelpText = "Indicates whether inherited attributes should be omitted.")]
     public bool OmitInheritedAttributes { get; set; }
 
@@ -134,12 +134,14 @@ public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptio
     public IEnumerable<string> OmitMemberParts { get; set; }
 
     [Option(
+        longName: "root-file-path",
+        HelpText = "Defines path to a documentation root file. If not specified, output directory will be used.",
+        MetaValue = "<FILE_PATH>")]
+    public string RootFilePath { get; set; }
+
+    [Option(
         longName: "preferred-culture",
         HelpText = "Defines culture that should be used when searching for xml documentation files.",
         MetaValue = "<CULTURE_ID>")]
     public string PreferredCulture { get; set; }
-#if DEBUG
-    [Option(longName: "source-references")]
-    public IEnumerable<string> SourceReferences { get; set; }
-#endif
 }

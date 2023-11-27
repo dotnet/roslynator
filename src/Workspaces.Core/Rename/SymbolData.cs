@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -8,7 +8,7 @@ namespace Roslynator.Rename;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal readonly struct SymbolData
 {
-    public SymbolData(ISymbol symbol, string id, DocumentId documentId)
+    public SymbolData(ISymbol symbol, string? id, DocumentId documentId)
     {
         Symbol = symbol;
         Id = id;
@@ -17,7 +17,7 @@ internal readonly struct SymbolData
 
     public ISymbol Symbol { get; }
 
-    public string Id { get; }
+    public string? Id { get; }
 
     public DocumentId DocumentId { get; }
 

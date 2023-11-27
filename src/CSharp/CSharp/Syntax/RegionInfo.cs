@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -88,7 +88,7 @@ public readonly struct RegionInfo
         get { return SyntaxInfoHelpers.ToDebugString(Success, this, Directive); }
     }
 
-    private static EndRegionDirectiveTriviaSyntax FindEndRegionDirective(SyntaxTriviaList list, int index)
+    private static EndRegionDirectiveTriviaSyntax? FindEndRegionDirective(SyntaxTriviaList list, int index)
     {
         for (int i = index + 1; i < list.Count; i++)
         {
@@ -104,7 +104,7 @@ public readonly struct RegionInfo
                 case SyntaxKind.EndRegionDirectiveTrivia:
                     {
                         if (trivia.HasStructure)
-                            return (EndRegionDirectiveTriviaSyntax)trivia.GetStructure();
+                            return (EndRegionDirectiveTriviaSyntax)trivia.GetStructure()!;
 
                         return null;
                     }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -75,6 +75,32 @@ class C
     void M()
     {
         string s = $"""";
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    public async Task Test_PlusString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(object o)
+    {
+        string s = """" + o[|.ToString()|];
+        string s2 = o[|.ToString()|] + """";
+        string s3 = o.ToString() + o[|.ToString()|];
+    }
+}
+", @"
+class C
+{
+    void M(object o)
+    {
+        string s = """" + o;
+        string s2 = o + """";
+        string s3 = o.ToString() + o;
     }
 }
 ");

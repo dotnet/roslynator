@@ -7,13 +7,13 @@
   "version": "1.0.0",
   "author": "Josef Pihrt",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/josefpihrt/roslynator",
+  "homepage": "https://github.com/dotnet/roslynator",
   "repository": {
     "type": "git",
-    "url": "https://github.com/josefpihrt/roslynator.git"
+    "url": "https://github.com/dotnet/roslynator.git"
   },
   "bugs": {
-    "url": "https://github.com/josefpihrt/roslynator/issues"
+    "url": "https://github.com/dotnet/roslynator/issues"
   },
   "categories": [
     "Other"

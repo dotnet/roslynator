@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -122,7 +122,7 @@ internal static class DiagnosticXmlSerializer
                     summary,
                     new XElement("Projects", projects))));
 
-        WriteLine($"Save code analysis to '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+        WriteLine($"Saving code analysis to '{filePath}'...", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
         using (var fileStream = new FileStream(filePath, FileMode.Create))
         using (XmlWriter xmlWriter = XmlWriter.Create(fileStream, new XmlWriterSettings() { Indent = true, CloseOutput = false }))

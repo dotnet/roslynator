@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -21,7 +21,7 @@ public class RoslynatorMetadata
     private ImmutableArray<RefactoringMetadata> _refactorings;
     private ImmutableArray<CodeFixMetadata> _codeFixes;
     private ImmutableArray<CompilerDiagnosticMetadata> _compilerDiagnostics;
-    private ImmutableArray<ConfigOptionMetadata> _configOptions;
+    private ImmutableArray<AnalyzerOptionMetadata> _configOptions;
 
     public ImmutableArray<AnalyzerMetadata> Analyzers
     {
@@ -73,7 +73,7 @@ public class RoslynatorMetadata
         }
     }
 
-    public ImmutableArray<ConfigOptionMetadata> ConfigOptions
+    public ImmutableArray<AnalyzerOptionMetadata> ConfigOptions
     {
         get
         {

@@ -1,9 +1,11 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DotMarkdown;
 using DotMarkdown.Docusaurus;
 using DotMarkdown.Linq;
@@ -48,7 +50,7 @@ public static class MarkdownGenerator
     public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring, int position)
     {
         MDocument document = Document(
-            CreateFrontMatter(position: position, label: refactoring.Title),
+            CreateFrontMatter(title: $"Refactoring: {refactoring.Title}", position: position, label: refactoring.Title),
             Heading1(refactoring.Title),
             Table(
                 TableRow("Property", "Value"),
@@ -72,7 +74,7 @@ public static class MarkdownGenerator
             {
                 yield return Heading2("Usage");
 
-                foreach (MElement element in MarkdownGenerator.CreateSamples(refactoring.Samples, Heading4("Before"), Heading4("After")))
+                foreach (MElement element in MarkdownGenerator.CreateSamples(refactoring.Samples, "before", "after"))
                     yield return element;
             }
         }
@@ -123,18 +125,21 @@ public static class MarkdownGenerator
         return document.ToString();
     }
 
-    public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
+    public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<AnalyzerOptionMetadata> options)
     {
         MInlineCode[] requiredOptions = analyzer.ConfigOptions
             .Where(f => f.IsRequired)
             .Select(f => InlineCode(f.Key))
             .ToArray();
 
-        string title = analyzer.Title.TrimEnd('.');
+        string title = $"{analyzer.Id}: {analyzer.Title.TrimEnd('.')}";
 
         MDocument document = Document(
-            CreateFrontMatter(label: analyzer.Id),
-            Heading1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {title}"),
+            CreateFrontMatter(
+                title: title,
+                label: (string.IsNullOrEmpty(analyzer.ObsoleteMessage)) ? analyzer.Id : $"[deprecated] {analyzer.Id}"),
+            Heading1(title),
+            CreateObsoleteWarning(analyzer),
             Heading2("Properties"),
             Table(
                 TableRow("Property", "Value"),
@@ -154,28 +159,28 @@ public static class MarkdownGenerator
         static IEnumerable<MElement> CreateSamples(AnalyzerMetadata analyzer)
         {
             IReadOnlyList<SampleMetadata> samples = analyzer.Samples;
-            AnalyzerOptionKind kind = analyzer.Kind;
+            LegacyAnalyzerOptionKind kind = analyzer.Kind;
 
             if (samples.Count > 0)
             {
-                yield return Heading2((samples.Count == 1) ? "Example" : "Examples");
+                yield return Heading2("Examples");
 
-                string beforeHeading = (kind == AnalyzerOptionKind.Disable)
-                    ? "Code"
-                    : "Code with Diagnostic";
+                string beforeHeading = (kind == LegacyAnalyzerOptionKind.Disable)
+                    ? "code"
+                    : "diagnostic";
 
-                foreach (MElement item in MarkdownGenerator.CreateSamples(samples, Heading3(beforeHeading), Heading3("Code with Fix")))
+                foreach (MElement item in MarkdownGenerator.CreateSamples(samples, beforeHeading, "fix"))
                     yield return item;
             }
         }
 
-        static IEnumerable<object> CreateConfiguration(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
+        static IEnumerable<object> CreateConfiguration(AnalyzerMetadata analyzer, ImmutableArray<AnalyzerOptionMetadata> options)
         {
-            IEnumerable<ConfigOptionMetadata> analyzerOptions = analyzer.ConfigOptions
+            IEnumerable<AnalyzerOptionMetadata> analyzerOptions = analyzer.ConfigOptions
                 .Join(options, f => f.Key, f => f.Key, (_, g) => g)
                 .OrderBy(f => f.Key);
 
-            using (IEnumerator<ConfigOptionMetadata> en = analyzerOptions
+            using (IEnumerator<AnalyzerOptionMetadata> en = analyzerOptions
                 .GetEnumerator())
             {
                 if (en.MoveNext())
@@ -187,7 +192,8 @@ public static class MarkdownGenerator
                         .Select(f => InlineCode(f.Key))
                         .ToArray();
 
-                    yield return CreateRequiredOptionsInfoBlock(requiredOptions);
+                    if (requiredOptions.Any())
+                        yield return CreateRequiredOptionsInfoBlock(requiredOptions);
 
                     var sb = new StringBuilder();
                     var isFirst = true;
@@ -202,8 +208,19 @@ public static class MarkdownGenerator
 
                         isFirst = false;
 
-                        sb.Append('#');
-                        sb.AppendLine(en.Current.Description);
+                        sb.Append("# ");
+
+                        if (!string.IsNullOrEmpty(en.Current.Description))
+                            sb.AppendLine(en.Current.Description);
+
+                        string defaultValue = en.Current.DefaultValue;
+
+                        if (!string.IsNullOrEmpty(defaultValue))
+                        {
+                            sb.Append("# Default value is ");
+                            sb.AppendLine(defaultValue);
+                        }
+
                         sb.Append(en.Current.Key);
                         sb.Append(" = ");
                         sb.Append(en.Current.DefaultValuePlaceholder ?? "true");
@@ -224,9 +241,6 @@ public static class MarkdownGenerator
 
             static IEnumerable<MObject> CreateContent(MInlineCode[] requiredOptions)
             {
-                if (!requiredOptions.Any())
-                    yield break;
-
                 if (requiredOptions.Length == 1)
                 {
                     yield return Inline("Option ", requiredOptions[0], " is required to be set for this analyzer to work.");
@@ -253,13 +267,38 @@ public static class MarkdownGenerator
             }
 
             if (analyzer.Id.StartsWith("RCS0"))
-                yield return BulletItem(Link("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.Formatting.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
 
             if (analyzer.Id.StartsWith("RCS1"))
-                yield return BulletItem(Link("Roslynator.Analyzers", "https://www.nuget.org/packages/Roslynator.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Analyzers"));
 
             if (analyzer.Id.StartsWith("RCS9"))
-                yield return BulletItem(Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.CodeAnalysis.Analyzers" }, "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"));
+        }
+    }
+
+    private static DocusaurusCautionBlock CreateObsoleteWarning(AnalyzerMetadata analyzer)
+    {
+        string message = analyzer.ObsoleteMessage;
+
+        if (message is null)
+            return null;
+
+        return new DocusaurusCautionBlock("This analyzer is obsolete. ", GetTextParts(), ".") { Title = "WARNING" };
+
+        IEnumerable<object> GetTextParts()
+        {
+            int index = 0;
+            Match match = Regex.Match(message, @"\bRCS\d\d\d\d\b");
+            while (match.Success)
+            {
+                yield return message.Substring(index, match.Index);
+                yield return Link(match.Value, match.Value);
+                index = match.Index + match.Length;
+                match = match.NextMatch();
+            }
+
+            yield return message.Substring(index);
         }
     }
 
@@ -294,7 +333,7 @@ public static class MarkdownGenerator
         IComparer<string> comparer)
     {
         MDocument document = Document(
-            CreateFrontMatter(label: diagnostic.Id),
+            CreateFrontMatter(title: $"Code fix for {diagnostic.Id}", label: diagnostic.Id),
             Heading1(diagnostic.Id),
             Table(
                 TableRow("Property", "Value"),
@@ -343,33 +382,51 @@ public static class MarkdownGenerator
 
     private static IEnumerable<MElement> CreateSamples(
         IEnumerable<SampleMetadata> samples,
-        MHeading beforeHeading,
-        MHeading afterHeading)
+        string beforeTitle,
+        string afterTitle)
     {
-        using (IEnumerator<SampleMetadata> en = samples.GetEnumerator())
+        foreach (SampleMetadata sample in samples)
         {
+            yield return Heading3("Example");
+
+            yield return DocusaurusMarkdownFactory.CodeBlock(sample.Before, LanguageIdentifiers.CSharp, beforeTitle + ".cs");
+
+            if (!string.IsNullOrEmpty(sample.After))
+            {
+                yield return DocusaurusMarkdownFactory.CodeBlock(sample.After, LanguageIdentifiers.CSharp, afterTitle + ".cs");
+            }
+
+            ImmutableArray<(string Key, string Value)>.Enumerator en = sample.ConfigOptions.GetEnumerator();
             if (en.MoveNext())
             {
-                while (true)
+                var sb = new StringBuilder();
+                var isFirst = true;
+
+                do
                 {
-                    yield return beforeHeading;
-                    yield return FencedCodeBlock(en.Current.Before, LanguageIdentifiers.CSharp);
-
-                    if (!string.IsNullOrEmpty(en.Current.After))
+                    if (!isFirst)
                     {
-                        yield return afterHeading;
-                        yield return FencedCodeBlock(en.Current.After, LanguageIdentifiers.CSharp);
+                        sb.AppendLine();
+                        sb.AppendLine();
                     }
 
-                    if (en.MoveNext())
-                    {
-                        yield return HorizontalRule();
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    isFirst = false;
+
+                    string key = en.Current.Key;
+
+                    if (!key.StartsWith("roslynator_", StringComparison.Ordinal))
+                        key = "roslynator_" + key;
+
+                    sb.Append(key);
+                    sb.Append(" = ");
+                    sb.Append(en.Current.Value);
                 }
+                while (en.MoveNext());
+
+                yield return DocusaurusMarkdownFactory.CodeBlock(
+                    sb.ToString(),
+                    "editorconfig",
+                    ".editorconfig");
             }
         }
     }
@@ -416,16 +473,20 @@ public static class MarkdownGenerator
         }
     }
 
-    private static MObject CreateFrontMatter(int? position = null, string label = null)
+    private static MObject CreateFrontMatter(string title = null, int? position = null, string label = null)
     {
-        var labels = new List<(string, object)>();
+        return DocusaurusMarkdownFactory.FrontMatter(GetLabels());
 
-        if (position is not null)
-            labels.Add(("sidebar_position", position));
+        IEnumerable<(string, object)> GetLabels()
+        {
+            if (title is not null)
+                yield return ("title", title);
 
-        if (label is not null)
-            labels.Add(("sidebar_label", label));
+            if (position is not null)
+                yield return ("sidebar_position", position);
 
-        return DocusaurusMarkdownFactory.FrontMatter(labels);
+            if (label is not null)
+                yield return ("sidebar_label", label);
+        }
     }
 }

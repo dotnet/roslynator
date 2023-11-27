@@ -1,13 +1,26 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using CommandLine;
 
 namespace Roslynator.CommandLine;
 
-[Verb("generate-doc-root", HelpText = "Generates root documentation file from specified project/solution.")]
+[Verb("generate-doc-root", HelpText = "[deprecated] Generates root documentation file from specified project/solution.")]
+[ObsoleteMessage("This command is obsolete. Use parameter `--root-file-path` of a command [generate-doc](generate-doc) instead.")]
 public class GenerateDocRootCommandLineOptions : AbstractGenerateDocCommandLineOptions
 {
+    [Option(
+        longName: "files-layout",
+        Default = "hierarchical",
+        HelpText = "Defines layout of documentation files. Allowed values are hierarchical (default) or flat-namespaces.",
+        MetaValue = "<LAYOUT>")]
+    public string FilesLayout { get; set; }
+
+    [Option(
+        longName: "group-by-common-namespace",
+        HelpText = "Indicates whether to group namespaces by greatest common namespace.")]
+    public bool GroupByCommonNamespace { get; set; }
+
     [Option(
         longName: OptionNames.IncludeContainingNamespace,
         HelpText = "Defines parts of a documentation that should include containing namespace. Allowed value is class-hierarchy.",

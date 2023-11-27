@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -61,6 +61,9 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
         SingleLocalDeclarationStatementInfo localDeclarationInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(localDeclarationStatement);
 
         if (!localDeclarationInfo.Success)
+            return;
+
+        if (localDeclarationInfo.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
             return;
 
         ExpressionSyntax value = localDeclarationInfo.Value;

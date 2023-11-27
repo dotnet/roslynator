@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
@@ -92,7 +92,7 @@ namespace A.B.C
     {
     }
 }
-" }, equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", }, equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingDirective)]

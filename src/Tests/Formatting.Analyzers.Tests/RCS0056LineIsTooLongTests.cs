@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -692,6 +692,34 @@ class C
     {
         string x
             = Mxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx();
+
+        return null;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task Test_Assignment2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    static string foo()
+    {
+[|                                                                                                              string x = foo();|]
+
+        return null;
+    }
+}
+",
+@"
+class C
+{
+    static string foo()
+    {
+                                                                                                              string x
+                                                                                                                  = foo();
 
         return null;
     }

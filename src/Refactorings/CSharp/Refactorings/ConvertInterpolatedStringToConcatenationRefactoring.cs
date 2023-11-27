@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -146,7 +146,7 @@ internal static class ConvertInterpolatedStringToConcatenationRefactoring
         }
     }
 
-    private static ExpressionSyntax GetExpression(InterpolatedStringTextSyntax interpolatedStringText, bool isVerbatim)
+    private static LiteralExpressionSyntax GetExpression(InterpolatedStringTextSyntax interpolatedStringText, bool isVerbatim)
     {
         SyntaxToken token = interpolatedStringText.TextToken;
 

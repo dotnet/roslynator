@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Roslynator.Testing;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public sealed class ExpectedTestState
 {
-    private ImmutableDictionary<string, ImmutableArray<TextSpan>> _annotationsByKind;
+    private ImmutableDictionary<string, ImmutableArray<TextSpan>>? _annotationsByKind;
 
     /// <summary>
     /// Initializes a new instance of <see cref="ExpectedTestState"/>.
@@ -28,9 +28,9 @@ public sealed class ExpectedTestState
     /// <param name="alwaysVerifyAnnotations"></param>
     public ExpectedTestState(
         string source,
-        string codeActionTitle = null,
-        IEnumerable<(string, TextSpan)> annotations = null,
-        IEnumerable<string> alwaysVerifyAnnotations = null)
+        string? codeActionTitle = null,
+        IEnumerable<(string, TextSpan)>? annotations = null,
+        IEnumerable<string>? alwaysVerifyAnnotations = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
         CodeActionTitle = codeActionTitle;
@@ -46,7 +46,7 @@ public sealed class ExpectedTestState
     /// <summary>
     /// Gets expected code action's title.
     /// </summary>
-    public string CodeActionTitle { get; }
+    public string? CodeActionTitle { get; }
 
     /// <summary>
     /// Gets expected annotations.

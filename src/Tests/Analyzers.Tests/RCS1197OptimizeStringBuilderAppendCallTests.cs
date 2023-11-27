@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -368,6 +368,69 @@ class C
     }
 }
 ");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedRawString_ContainingQuotes()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Text;
+class C
+{
+    void M()
+    {
+        string s = null;
+        var sb = new StringBuilder();
+        sb.Append([|$""""""""<a href=""somelink"">{s}</a>""""""""|]);
+    }
+}
+", @"
+using System.Text;
+class C
+{
+    void M()
+    {
+        string s = null;
+        var sb = new StringBuilder();
+        sb.Append(""""""""<a href=""somelink"">"""""""").Append(s).Append(""""""""</a>"""""""");
+    }
+}
+", options: WellKnownCSharpTestOptions.Default_CSharp11);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedMultilineRawString_ContainingQuotes()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Text;
+class C
+{
+    void M()
+    {
+        string s = null;
+        var sb = new StringBuilder();
+        sb.Append([|$""""""
+                    <a href=""somelink"">{s}</a>
+""""""|]
+        );
+    }
+}
+", @"
+using System.Text;
+class C
+{
+    void M()
+    {
+        string s = null;
+        var sb = new StringBuilder();
+        sb.Append(""""""
+                    <a href=""somelink"">
+"""""").Append(s).Append(""""""
+</a>
+"""""");
+    }
+}
+", options: WellKnownCSharpTestOptions.Default_CSharp11);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
@@ -950,6 +1013,25 @@ class C
     {
         const string Foo = ""Foo"";
         var sb = new StringBuilder().Append($""{Foo}Bar"");
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task TestNoDiagnostic_NoAppendMethodChain()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Text;
+
+class C
+{
+    string M()
+    {
+        var sb = new StringBuilder();
+        _ = sb.AppendLine();
+
+        return sb.ToString();
     }
 }
 ");

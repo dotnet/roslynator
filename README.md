@@ -1,4 +1,4 @@
-# Roslynator <img align="left" width="48px" height="48px" src="http://pihrt.net/images/Roslynator.ico" />
+# Roslynator <img align="left" width="48px" height="48px" src="images/roslynator-logo-small.png" />
 
 Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
@@ -12,24 +12,32 @@ Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://g
   - [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers)
   - [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers)
   - [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers)
-- [Testing framework](testing-framework) that allows unit testing of analyzers, refactoring and code fixes
-- [.NET client libraries](ref) that extend Roslyn API
+- [Testing framework](#testing-framework) that allows unit testing of analyzers, refactoring and code fixes
+- [.NET client libraries](#client-libraries) that extend Roslyn API
 - [Command line tool](#command-line-tool)
 
 ## Documentation
 
 - [Configuration](https://josefpihrt.github.io/docs/roslynator/configuration)
-- [Guides](https://josefpihrt.github.io/docs/roslynator/guides)
+- [Guides](https://josefpihrt.github.io/docs/roslynator/category/guides)
 - [Roslynator CLI](https://josefpihrt.github.io/docs/roslynator/cli)
+- [Roslynator Testing Framework](https://josefpihrt.github.io/docs/roslynator/testing)
 - [Roslynator Client Libraries](https://josefpihrt.github.io/docs/roslynator/ref)
 
 ## Contributions
 
 Contributions are welcome! If you are interested please see:
 - documentation for [developers](https://josefpihrt.github.io/docs/roslynator/developers)
-- available [issues](https://github.com/JosefPihrt/Roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs)
+- available [issues](https://github.com/dotnet/roslynator/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aup-for-grabs)
 
 TIP: Bugfixes or small improvements can be implemented right away. Larger task like adding new analyzer or refactoring should be discussed first.
+
+## .NET Foundation
+
+This project is supported by the [.NET Foundation](https://www.dotnetfoundation.org/projects).
+
+This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
+For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct). 
 
 ## Command Line Tool
 
@@ -43,11 +51,7 @@ See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for furthe
 ## Testing Framework
 
 - Roslynator Testing Framework can be used for unit testing of analyzers, refactorings and code fixes.
-- Framework is distributed as NuGet [package](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.Testing.CSharp.Xunit.svg)](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit)
-- Learn how to use the framework from actual usages in Roslynator repo:
-  - Tests of analyzers are [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/Analyzers.Tests), [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/CodeAnalysis.Analyzers.Tests) and [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/Formatting.Analyzers.Tests)
-  - Tests of refactorings are [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/Refactorings.Tests)
-  - Tests of fixes of compiler diagnostics are [here](https://github.com/JosefPihrt/Roslynator/tree/main/src/Tests/CodeFixes.Tests)
+- See [documentation](https://josefpihrt.github.io/docs/roslynator/testing) for further information.
 
 ## Client Libraries
 

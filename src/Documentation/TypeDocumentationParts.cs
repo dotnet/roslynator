@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
@@ -41,5 +41,5 @@ public enum TypeDocumentationParts
     SeeAlso = 1 << 29,
     AppliesTo = 1 << 30,
     AllExceptNestedTypes = All & ~NestedTypes,
-    All = int.MaxValue
+    All = int.MaxValue,
 }

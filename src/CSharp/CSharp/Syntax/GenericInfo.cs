@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -36,7 +36,7 @@ public readonly struct GenericInfo
 
     private GenericInfo(
         SyntaxNode declaration,
-        TypeParameterListSyntax typeParameterList,
+        TypeParameterListSyntax? typeParameterList,
         SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses)
     {
         Node = declaration;
@@ -60,7 +60,7 @@ public readonly struct GenericInfo
     /// <summary>
     /// The type parameter list.
     /// </summary>
-    public TypeParameterListSyntax TypeParameterList { get; }
+    public TypeParameterListSyntax? TypeParameterList { get; }
 
     /// <summary>
     /// A list of type parameters.
@@ -79,7 +79,7 @@ public readonly struct GenericInfo
     /// Searches for a type parameter with the specified name and returns the first occurrence within the type parameters.
     /// </summary>
     /// <param name="name"></param>
-    public TypeParameterSyntax FindTypeParameter(string name)
+    public TypeParameterSyntax? FindTypeParameter(string name)
     {
         foreach (TypeParameterSyntax typeParameter in TypeParameters)
         {
@@ -94,7 +94,7 @@ public readonly struct GenericInfo
     /// Searches for a constraint clause with the specified type parameter name and returns the first occurrence within the constraint clauses.
     /// </summary>
     /// <param name="typeParameterName"></param>
-    public TypeParameterConstraintClauseSyntax FindConstraintClause(string typeParameterName)
+    public TypeParameterConstraintClauseSyntax? FindConstraintClause(string typeParameterName)
     {
         foreach (TypeParameterConstraintClauseSyntax constraintClause in ConstraintClauses)
         {
@@ -124,7 +124,7 @@ public readonly struct GenericInfo
         }
     }
 
-    internal static GenericInfo Create(SyntaxNode node)
+    internal static GenericInfo Create(SyntaxNode? node)
     {
         if (node is null)
             return default;
@@ -176,7 +176,7 @@ public readonly struct GenericInfo
         return Create(typeParameterConstraint?.Parent as TypeParameterConstraintClauseSyntax);
     }
 
-    internal static GenericInfo Create(TypeParameterConstraintClauseSyntax constraintClause)
+    internal static GenericInfo Create(TypeParameterConstraintClauseSyntax? constraintClause)
     {
         return Create(constraintClause?.Parent);
     }
@@ -186,7 +186,7 @@ public readonly struct GenericInfo
         return Create(typeParameter?.Parent as TypeParameterListSyntax);
     }
 
-    internal static GenericInfo Create(TypeParameterListSyntax typeParameterList)
+    internal static GenericInfo Create(TypeParameterListSyntax? typeParameterList)
     {
         return Create(typeParameterList?.Parent);
     }
@@ -286,13 +286,21 @@ public readonly struct GenericInfo
         SyntaxDebug.Fail(self.Node);
         return this;
 
-        TypeParameterListSyntax RemoveTypeParameter()
+        TypeParameterListSyntax? RemoveTypeParameter()
         {
-            SeparatedSyntaxList<TypeParameterSyntax> parameters = self.TypeParameters;
+            TypeParameterListSyntax? typeParameterList = self.TypeParameterList;
 
-            return (parameters.Count == 1)
-                ? default
-                : self.TypeParameterList.WithParameters(parameters.Remove(typeParameter));
+            if (typeParameterList is null)
+                throw new InvalidOperationException("Cannot remove type parameter. Declaration does not have type parameter list.");
+
+            SeparatedSyntaxList<TypeParameterSyntax> parameters = typeParameterList.Parameters;
+
+            int index = parameters.IndexOf(typeParameter);
+
+            if (index == -1)
+                throw new InvalidOperationException("Cannot remove type parameter. Type parameter is not contained in the type parameter list.");
+
+            return typeParameterList.WithParameters(parameters.RemoveAt(index));
         }
     }
 

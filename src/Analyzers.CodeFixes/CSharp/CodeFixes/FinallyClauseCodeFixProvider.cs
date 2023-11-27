@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -38,7 +38,7 @@ public sealed class FinallyClauseCodeFixProvider : BaseCodeFixProvider
         context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
     }
 
-    private static async Task<Document> RemoveEmptyFinallyClauseAsync(
+    internal static async Task<Document> RemoveEmptyFinallyClauseAsync(
         Document document,
         FinallyClauseSyntax finallyClause,
         CancellationToken cancellationToken)

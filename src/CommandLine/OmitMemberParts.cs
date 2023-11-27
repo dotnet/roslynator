@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
@@ -11,5 +11,5 @@ internal enum OmitMemberParts
     ConstantValue = 1,
     Implements = 1 << 1,
     InheritedFrom = 1 << 2,
-    Overrides = 1 << 3
+    Overrides = 1 << 3,
 }

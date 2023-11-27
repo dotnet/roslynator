@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ internal static class SymbolListHelpers
 #if DEBUG
         baseTypeSymbols.Sort((x, y) => StringComparer.Ordinal.Compare(x.ToDisplayString(SymbolDisplayFormats.Test), y.ToDisplayString(SymbolDisplayFormats.Test)));
 #endif
-        INamedTypeSymbol baseType = null;
+        INamedTypeSymbol? baseType = null;
 
         for (int i = 0; i < baseTypeSymbols.Count; i++)
         {
@@ -42,7 +42,7 @@ internal static class SymbolListHelpers
 
             results.Add(baseType);
 
-            IMethodSymbol delegateMethodSymbol = baseType.DelegateInvokeMethod;
+            IMethodSymbol? delegateMethodSymbol = baseType.DelegateInvokeMethod;
 
             if (delegateMethodSymbol is not null)
                 results.AddRange(delegateMethodSymbol.Parameters);

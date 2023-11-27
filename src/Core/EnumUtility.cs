@@ -1,5 +1,6 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -27,7 +28,7 @@ internal static class EnumUtility
     {
         ImmutableArray<EnumFieldSymbolInfo> fields = enumInfo.Fields;
 
-        ImmutableArray<EnumFieldSymbolInfo>.Builder builder = null;
+        ImmutableArray<EnumFieldSymbolInfo>.Builder? builder = null;
 
         ulong result = value;
 
@@ -71,7 +72,10 @@ internal static class EnumUtility
         if (!fieldSymbol.HasConstantValue)
             return ImmutableArray<EnumFieldSymbolInfo>.Empty;
 
-        ulong value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumInfo.Symbol);
+        if (enumInfo.IsDefault)
+            throw new ArgumentException($"'{nameof(enumInfo)}' is not initialized.", nameof(enumInfo));
+
+        ulong value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumInfo.Symbol!);
 
         return GetMinimalConstituentFields(value, enumInfo);
     }
@@ -83,7 +87,7 @@ internal static class EnumUtility
 
         ImmutableArray<EnumFieldSymbolInfo> fields = enumInfo.Fields;
 
-        ImmutableArray<EnumFieldSymbolInfo>.Builder builder = null;
+        ImmutableArray<EnumFieldSymbolInfo>.Builder? builder = null;
 
         ulong result = value;
 

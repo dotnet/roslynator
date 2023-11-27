@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -1107,7 +1107,7 @@ class C
     [InlineData("items.FirstOrDefault(_ => true) is null")]
     [InlineData("items.FirstOrDefault() == null")]
     [InlineData("items.FirstOrDefault() is null")]
-    public async Task TestNoDiagnostc_FirstOrDefault_IEnumerableOfNullableType(string source)
+    public async Task TestNoDiagnostic_FirstOrDefault_IEnumerableOfNullableType(string source)
     {
         await VerifyNoDiagnosticAsync(@"
 using System.Linq;

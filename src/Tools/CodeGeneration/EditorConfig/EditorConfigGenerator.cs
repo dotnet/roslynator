@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ public static class EditorConfigGenerator
 
         foreach (AnalyzerMetadata analyzer in metadata.Analyzers)
         {
-            foreach (ConfigOptionKeyMetadata option in analyzer.ConfigOptions)
+            foreach (AnalyzerConfigOption option in analyzer.ConfigOptions)
             {
                 if (!optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> optionAnalyzers))
                     optionAnalyzers = new HashSet<AnalyzerMetadata>();
@@ -36,7 +36,9 @@ public static class EditorConfigGenerator
 
             var isSeparatedWithNewLine = true;
 
-            foreach (ConfigOptionMetadata option in metadata.ConfigOptions.OrderBy(f => f.Key))
+            foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions
+                .Where(f => !f.IsObsolete)
+                .OrderBy(f => f.Key))
             {
                 if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
                     && !isSeparatedWithNewLine)
@@ -69,7 +71,7 @@ public static class EditorConfigGenerator
             w.WriteLine();
 
             foreach (AnalyzerMetadata analyzer in metadata.Analyzers
-                .Where(f => !f.IsObsolete && !f.Tags.Contains("HideFromConfiguration"))
+                .Where(f => f.Status == AnalyzerStatus.Enabled && !f.Tags.Contains("HideFromConfiguration"))
                 .OrderBy(f => f.Id))
             {
                 w.WriteLine($"# {analyzer.Title.TrimEnd('.')}");
@@ -86,6 +88,7 @@ public static class EditorConfigGenerator
                         + string.Join(
                             ", ",
                             analyzer.ConfigOptions
+                                .Where(f => metadata.ConfigOptions.FirstOrDefault(ff => ff.Key == f.Key)?.IsObsolete != true)
                                 .OrderBy(f => f.Key)
                                 .Select(f2 => metadata.ConfigOptions.First(f => f.Key == f2.Key).Key)));
                 }

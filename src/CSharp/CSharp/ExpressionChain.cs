@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections;
@@ -162,8 +162,8 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
     public struct Enumerator
     {
         private readonly ExpressionChain _chain;
-        private ExpressionSyntax _last;
-        private ExpressionSyntax _current;
+        private ExpressionSyntax? _last;
+        private ExpressionSyntax? _current;
         private State _state;
 
         internal Enumerator(in ExpressionChain chain)
@@ -290,7 +290,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
                             return false;
                         }
 
-                        _current = ((BinaryExpressionSyntax)_current.Parent.Parent).Right;
+                        _current = ((BinaryExpressionSyntax)_current!.Parent!.Parent!).Right;
                         return true;
                     }
                 case State.Left:
@@ -303,7 +303,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
                             return false;
                         }
 
-                        _current = ((BinaryExpressionSyntax)_current.Parent).Right;
+                        _current = ((BinaryExpressionSyntax)_current!.Parent!).Right;
                         _state = State.Right;
                         return true;
                     }
@@ -318,7 +318,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
             }
         }
 
-        public ExpressionSyntax Current
+        public readonly ExpressionSyntax Current
         {
             get { return _current ?? throw new InvalidOperationException(); }
         }
@@ -330,9 +330,9 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
             _state = State.Start;
         }
 
-        public override bool Equals(object obj) => throw new NotSupportedException();
+        public override readonly bool Equals(object obj) => throw new NotSupportedException();
 
-        public override int GetHashCode() => throw new NotSupportedException();
+        public override readonly int GetHashCode() => throw new NotSupportedException();
 
         private enum State
         {

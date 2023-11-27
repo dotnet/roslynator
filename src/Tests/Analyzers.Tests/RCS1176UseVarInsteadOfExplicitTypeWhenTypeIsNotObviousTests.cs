@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -325,5 +325,26 @@ static class C
     }
 }
 ");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    public async Task TestNoDiagnostic_FixedStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Runtime.InteropServices;
+
+public class Foo
+{
+    public unsafe Foo(string p)
+    {
+        var span = p.AsSpan();
+
+        fixed (char* ptr = &MemoryMarshal.GetReference(span))
+        {
+        }
+    }
+}
+", options: Options.WithAllowUnsafe(true));
     }
 }

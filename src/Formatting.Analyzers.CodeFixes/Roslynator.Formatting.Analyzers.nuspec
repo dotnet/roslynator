@@ -6,7 +6,7 @@
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
-    <projectUrl>https://github.com/josefpihrt/roslynator</projectUrl>
+    <projectUrl>https://github.com/dotnet/roslynator</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of formatting analyzers, powered by Roslyn.
@@ -17,13 +17,13 @@
     <copyright>Copyright (c) 2016-2023 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Formatting Productivity CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>
-    <repository type="git" url="https://github.com/josefpihrt/roslynator.git" />
+    <repository type="git" url="https://github.com/dotnet/roslynator.git" />
     <readme>docs\README.md</readme>
   </metadata>
   <files>
     <file src="bin\$Configuration$\netstandard2.0\Roslynator*.dll" target="analyzers\dotnet\cs" />
     <file src="tools\*.ps1" target="tools\" />
-    <file src="..\..\images\icon.png" target="" />
+    <file src="..\..\images\roslynator-logo-small.png" target="icon.png" />
     <file src="docs\NuGetReadme.md" target="docs\README.md" />
   </files>
 </package>

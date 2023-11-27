@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -56,9 +56,9 @@ internal static class InvocationExpressionRefactoring
                                 CallExtensionMethodAsInstanceMethodRefactoring.Title,
                                 ct =>
                                 {
-                                    return context.Document.ReplaceNodeAsync(
+                                    return CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(
+                                        context.Document,
                                         analysis.InvocationExpression,
-                                        analysis.NewInvocationExpression,
                                         ct);
                                 },
                                 RefactoringDescriptors.CallExtensionMethodAsInstanceMethod);

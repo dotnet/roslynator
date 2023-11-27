@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -34,21 +34,21 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
         if (!TryFindFirstAncestorOrSelf(root, context.Span, out LocalDeclarationStatementSyntax localDeclaration))
             return;
 
-        foreach (Diagnostic diagnostic in context.Diagnostics)
-        {
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.InlineLocalVariable:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Inline local variable",
-                            ct => RefactorAsync(context.Document, localDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+        Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-            }
+        switch (diagnostic.Id)
+        {
+            case DiagnosticIdentifiers.InlineLocalVariable:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Inline local variable",
+                        ct => RefactorAsync(document, localDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
     }
 

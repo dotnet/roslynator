@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -22,21 +22,21 @@ public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
     private static readonly Accessibility[] _publicOrInternal = new[]
     {
         Accessibility.Public,
-        Accessibility.Internal
+        Accessibility.Internal,
     };
 
     private static readonly Accessibility[] _publicOrInternalOrProtected = new[]
     {
         Accessibility.Public,
         Accessibility.Internal,
-        Accessibility.Protected
+        Accessibility.Protected,
     };
 
     private static readonly Accessibility[] _publicOrInternalOrPrivate = new[]
     {
         Accessibility.Public,
         Accessibility.Internal,
-        Accessibility.Private
+        Accessibility.Private,
     };
 
     public override ImmutableArray<string> FixableDiagnosticIds

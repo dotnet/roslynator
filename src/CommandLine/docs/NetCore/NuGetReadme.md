@@ -4,7 +4,7 @@
 
 ## Requirements
 
-.NET Core SDK 5.0 or 6.0.
+.NET Core SDK 6.0, 7.0 or 8.0.
 
 ## Installation
 
@@ -14,6 +14,9 @@ dotnet tool install -g roslynator.dotnet.cli
 ```
 
 ## Usage
+
+Roslynator command-line tool does not contain any analyzers (such as [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
+Analyzers are either referenced as NuGet packages or it is possible to add analyzer assemblies with parameter `--analyzer-assemblies`.
 
 Analyze project/solution:
 ```shell
@@ -29,7 +32,7 @@ See [documentation](https://josefpihrt.github.io/docs/roslynator/cli) for a full
 
 ## Feedback
 
-* File an issue on [GitHub](https://github.com/josefpihrt/roslynator/issues/new)
+* File an issue on [GitHub](https://github.com/dotnet/roslynator/issues/new)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
 ## Related Products

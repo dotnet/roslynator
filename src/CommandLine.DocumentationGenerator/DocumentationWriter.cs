@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,7 +25,7 @@ Allowed\ value(\ is|s\ are)\
 
     public override void WriteOptionDescription(CommandOption option)
     {
-        string description = option.FullDescription;
+        string description = option.Description;
 
         if (!string.IsNullOrEmpty(description))
         {
@@ -49,5 +49,8 @@ Allowed\ value(\ is|s\ are)\
             _writer.WriteString(description);
             }
         }
+
+        if (!string.IsNullOrEmpty(option.AdditionalDescription))
+            _writer.WriteRaw(option.AdditionalDescription);
     }
 }

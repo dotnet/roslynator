@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -155,7 +156,9 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
 
         if (bodyOrExpressionBody is ArrowExpressionClauseSyntax expressionBody)
         {
-            newNode = ConvertExpressionBodyToBlockBodyRefactoring.Refactor(expressionBody, semanticModel, cancellationToken);
+            AnalyzerConfigOptions configOptions = document.GetConfigOptions(node.SyntaxTree);
+
+            newNode = ConvertExpressionBodyToBlockBodyRefactoring.Refactor(expressionBody, configOptions, semanticModel, cancellationToken);
 
             newNode = InsertStatements(newNode, expressionStatements);
         }
@@ -200,7 +203,7 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
         return ((LocalFunctionStatementSyntax)node).WithBody(newBody);
     }
 
-    private static SyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
+    private static CSharpSyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
     {
         if (node is MethodDeclarationSyntax methodDeclaration)
             return methodDeclaration.BodyOrExpressionBody();

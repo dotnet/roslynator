@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ internal class AnalyzerLoader
 
     public CodeAnalysisOptions Options { get; }
 
-    public event EventHandler<AnalyzerAssemblyEventArgs> AnalyzerAssemblyAdded;
+    public event EventHandler<AnalyzerAssemblyEventArgs>? AnalyzerAssemblyAdded;
 
     protected virtual void OnAnalyzerAssemblyAdded(AnalyzerAssemblyEventArgs e)
     {

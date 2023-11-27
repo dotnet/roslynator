@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
@@ -35,10 +36,12 @@ public sealed class TypeParameterConstraintClauseSyntaxCodeFixProvider : BaseCod
             CodeFixTitles.AddNewLine,
             ct =>
             {
+                AnalyzerConfigOptions configOptions = document.GetConfigOptions(constraintClause.SyntaxTree);
+
                 return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
                     document,
                     constraintClause.WhereKeyword,
-                    SyntaxTriviaAnalysis.AnalyzeIndentation(constraintClause.Parent, ct),
+                    SyntaxTriviaAnalysis.AnalyzeIndentation(constraintClause.Parent, configOptions, ct),
                     ct);
             },
             GetEquivalenceKey(diagnostic));

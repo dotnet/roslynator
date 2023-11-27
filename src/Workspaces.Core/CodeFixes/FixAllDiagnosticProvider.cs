@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ internal class FixAllDiagnosticProvider : FixAllContext.DiagnosticProvider
 
     public override async Task<IEnumerable<Diagnostic>> GetDocumentDiagnosticsAsync(Document document, CancellationToken cancellationToken)
     {
-        SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
+        SyntaxTree tree = (await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false))!;
 
         return GetDocumentDiagnostics();
 

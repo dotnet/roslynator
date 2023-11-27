@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -202,10 +202,9 @@ internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax,
         MethodDeclarationSyntax declaration,
         ImmutableArray<ParameterInfo> parameterInfos,
         SemanticModel nodeSemanticModel,
-        SemanticModel declarationSemanticModel,
-        CancellationToken cancellationToken)
+        SemanticModel declarationSemanticModel)
     {
-        return new InlineMethodRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
+        return new InlineMethodRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel);
     }
 
     protected override RefactoringDescriptor GetDescriptor()

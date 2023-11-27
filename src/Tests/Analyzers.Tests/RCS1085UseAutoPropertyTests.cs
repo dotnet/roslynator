@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -461,7 +461,7 @@ partial class C
         _f = null;
     }
 }
-" });
+", });
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
@@ -903,7 +903,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
-    public async Task TestNoDiagnostic_BackingFieldHasAttibute()
+    public async Task TestNoDiagnostic_BackingFieldHasAttribute()
     {
         await VerifyNoDiagnosticAsync(@"
 using System;

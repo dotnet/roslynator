@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -37,12 +37,12 @@ internal static class FileSystemHelpers
             || ch == Path.AltDirectorySeparatorChar;
     }
 
-    public static bool TryGetNormalizedFullPath(string path, out string result)
+    public static bool TryGetNormalizedFullPath(string path, out string? result)
     {
         return TryGetNormalizedFullPath(path, basePath: null, out result);
     }
 
-    public static bool TryGetNormalizedFullPath(string path, string basePath, out string result)
+    public static bool TryGetNormalizedFullPath(string path, string? basePath, out string? result)
     {
         try
         {
@@ -62,5 +62,22 @@ internal static class FileSystemHelpers
             result = null;
             return false;
         }
+    }
+
+    public static string DetermineRelativePath(string baseDirectoryPath, string filePath)
+    {
+        baseDirectoryPath = Path.GetFullPath(baseDirectoryPath);
+        baseDirectoryPath = baseDirectoryPath.Replace(@"\", "/").TrimEnd('/');
+
+        filePath = Path.GetFullPath(filePath);
+        string directoryPath = Path.GetDirectoryName(filePath).Replace(@"\", "/").TrimEnd('/');
+
+        if (string.Equals(baseDirectoryPath, directoryPath, Comparison))
+            return "";
+
+        var baseDirectoryUri = new Uri(baseDirectoryPath);
+        var directoryUri = new Uri(directoryPath + "/");
+
+        return directoryUri.MakeRelativeUri(baseDirectoryUri).ToString().TrimEnd('/');
     }
 }

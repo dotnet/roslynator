@@ -1,13 +1,15 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DotMarkdown;
+using DotMarkdown.Docusaurus;
 using static DotMarkdown.Linq.MFactory;
 
 namespace Roslynator.CommandLine.Documentation;
@@ -20,7 +22,7 @@ internal static class Program
             "roslynator",
             "Roslynator Command-line Tool",
             CommandLoader.LoadCommands(typeof(CommandLoader).Assembly)
-                .Select(c => c.WithOptions(c.Options.OrderBy(f => f, CommandOptionComparer.Name)))
+                .Select(c => c with { Options = c.Options.OrderBy(f => f, CommandOptionComparer.Name).ToImmutableArray() })
                 .OrderBy(c => c.Name, StringComparer.InvariantCulture));
 
         if (args.Length < 2)
@@ -55,8 +57,9 @@ internal static class Program
 
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-        using (var sw = new StreamWriter(filePath, append: false, Encoding.UTF8))
-        using (MarkdownWriter mw = MarkdownWriter.Create(sw, settings))
+        using (var streamWriter = new StreamWriter(filePath, append: false, Encoding.UTF8))
+        using (MarkdownWriter markdownWriter = MarkdownWriter.Create(streamWriter, settings))
+        using (var mw = new DocusaurusMarkdownWriter(markdownWriter))
         {
             WriteFrontMatter(mw, position: 0, label: "Commands");
 
@@ -66,8 +69,6 @@ internal static class Program
                 TableRow("Command", "Description"),
                 commands.Select(f => TableRow(Link(f.Name, $"commands/{f.Name}.md"), f.Description)))
                 .WriteTo(mw);
-
-            WriteFootNote(mw);
 
             Console.WriteLine(filePath);
         }
@@ -80,14 +81,21 @@ internal static class Program
 
             using (var sw = new StreamWriter(commandFilePath, append: false, Encoding.UTF8))
             using (MarkdownWriter mw = MarkdownWriter.Create(sw, settings))
+            using (var dw = new DocusaurusMarkdownWriter(mw))
             {
-                var writer = new DocumentationWriter(mw);
+                var writer = new DocumentationWriter(dw);
 
-                WriteFrontMatter(mw, label: command.Name);
+                WriteFrontMatter(dw, label: command.Name);
 
-                mw.WriteLine();
                 writer.WriteCommandHeading(command, application);
                 writer.WriteCommandDescription(command);
+
+                if (!string.IsNullOrEmpty(command.ObsoleteMessage))
+                {
+                    dw.WriteStartDocusaurusAdmonition(AdmonitionKind.Caution, "WARNING");
+                    dw.WriteRaw(command.ObsoleteMessage);
+                    dw.WriteEndDocusaurusAdmonition();
+                }
 
                 string additionalContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_bottom.md");
 
@@ -95,18 +103,21 @@ internal static class Program
                     ? File.ReadAllText(additionalContentFilePath)
                     : "";
 
+                string summaryContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_summary.md");
+
+                if (File.Exists(summaryContentFilePath))
+                    dw.WriteRaw(File.ReadAllText(summaryContentFilePath));
+
                 writer.WriteCommandSynopsis(command, application);
                 writer.WriteArguments(command.Arguments);
                 writer.WriteOptions(command.Options);
 
                 if (!string.IsNullOrEmpty(additionalContent))
                 {
-                    mw.WriteLine();
-                    mw.WriteLine();
-                    mw.WriteRaw(additionalContent);
+                    dw.WriteLine();
+                    dw.WriteLine();
+                    dw.WriteRaw(additionalContent);
                 }
-
-                WriteFootNote(mw);
 
                 Console.WriteLine(commandFilePath);
             }
@@ -118,38 +129,17 @@ internal static class Program
             Console.ReadKey();
     }
 
-    private static void WriteFootNote(MarkdownWriter mw)
+    private static void WriteFrontMatter(DocusaurusMarkdownWriter mw, int? position = null, string label = null)
     {
-        mw.WriteLine();
-        mw.WriteLine();
-        mw.WriteStartItalic();
-        mw.WriteString("(Generated with ");
-        mw.WriteLink("DotMarkdown", "https://github.com/JosefPihrt/DotMarkdown");
-        mw.WriteString(")");
-        mw.WriteEndItalic();
-    }
+        mw.WriteDocusaurusFrontMatter(GetLabels());
 
-    private static void WriteFrontMatter(MarkdownWriter mw, int? position = null, string label = null)
-    {
-        if (position is not null
-            || label is not null)
+        IEnumerable<(string, object)> GetLabels()
         {
-            mw.WriteRaw("---");
-            mw.WriteLine();
             if (position is not null)
-            {
-                mw.WriteRaw($"sidebar_position: {position}");
-                mw.WriteLine();
-            }
+                yield return ("sidebar_position", position);
 
             if (label is not null)
-            {
-                mw.WriteRaw($"sidebar_label: {label}");
-                mw.WriteLine();
-            }
-
-            mw.WriteRaw("---");
-            mw.WriteLine();
+                yield return ("sidebar_label", label);
         }
     }
 }

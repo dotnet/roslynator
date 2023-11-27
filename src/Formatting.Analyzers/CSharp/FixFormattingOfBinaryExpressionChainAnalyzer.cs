@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -154,7 +154,7 @@ public sealed class FixFormattingOfBinaryExpressionChainAnalyzer : BaseDiagnosti
 
         int GetIndentationLength()
         {
-            IndentationAnalysis indentationAnalysis = AnalyzeIndentation(topBinaryExpression);
+            IndentationAnalysis indentationAnalysis = AnalyzeIndentation(topBinaryExpression, context.GetConfigOptions());
 
             if (indentationAnalysis.IndentSize == 0)
                 return -1;
