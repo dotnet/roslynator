@@ -80,7 +80,7 @@ internal static class LogHelpers
 
     public static void WriteSpellingDiagnostic(
         SpellingDiagnostic diagnostic,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         SourceText sourceText,
         string baseDirectoryPath,
         string indentation,
@@ -477,17 +477,17 @@ internal static class LogHelpers
     public static int WriteCompilerErrors(
         ImmutableArray<Diagnostic> diagnostics,
         string baseDirectoryPath = null,
-        ImmutableHashSet<string> ignoredCompilerDiagnosticIds = null,
+        HashSet<string> ignoredCompilerDiagnosticIds = null,
         IFormatProvider formatProvider = null,
         string indentation = null,
         int limit = 1000)
     {
-        ignoredCompilerDiagnosticIds ??= ImmutableHashSet<string>.Empty;
+        IEnumerable<Diagnostic> filteredDiagnostics = diagnostics.Where(f => f.Severity == DiagnosticSeverity.Error);
 
-        using (IEnumerator<Diagnostic> en = diagnostics
-            .Where(f => f.Severity == DiagnosticSeverity.Error
-                && !ignoredCompilerDiagnosticIds.Contains(f.Id))
-            .GetEnumerator())
+        if (ignoredCompilerDiagnosticIds is not null)
+            filteredDiagnostics = filteredDiagnostics.Where(f => !ignoredCompilerDiagnosticIds.Contains(f.Id));
+
+        using (IEnumerator<Diagnostic> en = filteredDiagnostics.GetEnumerator())
         {
             if (en.MoveNext())
             {

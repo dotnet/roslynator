@@ -23,7 +23,8 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
         IEnumerable<KeyValuePair<string, string>> diagnosticFixMap,
         IEnumerable<KeyValuePair<string, string>> diagnosticFixerMap,
         FixAllScope fixAllScope,
-        in ProjectFilter projectFilter) : base(projectFilter)
+        in ProjectFilter projectFilter,
+        FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         SeverityLevel = severityLevel;
@@ -47,6 +48,7 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
         AssemblyResolver.Register();
 
         var codeFixerOptions = new CodeFixerOptions(
+            fileSystemFilter: FileSystemFilter,
             severityLevel: SeverityLevel,
             ignoreCompilerErrors: Options.IgnoreCompilerErrors,
             ignoreAnalyzerReferences: Options.IgnoreAnalyzerReferences,
@@ -67,16 +69,13 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
 
         CultureInfo culture = (Options.Culture is not null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
-        var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
-
-        return await FixAsync(projectOrSolution, analyzerAssemblies, codeFixerOptions, projectFilter, culture, cancellationToken);
+        return await FixAsync(projectOrSolution, analyzerAssemblies, codeFixerOptions, culture, cancellationToken);
     }
 
-    private static async Task<FixCommandResult> FixAsync(
+    private async Task<FixCommandResult> FixAsync(
         ProjectOrSolution projectOrSolution,
         IEnumerable<AnalyzerAssembly> analyzerAssemblies,
         CodeFixerOptions codeFixerOptions,
-        ProjectFilter projectFilter,
         IFormatProvider formatProvider = null,
         CancellationToken cancellationToken = default)
     {
@@ -114,7 +113,7 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
 
             CodeFixer codeFixer = GetCodeFixer(solution);
 
-            results = await codeFixer.FixSolutionAsync(f => projectFilter.IsMatch(f), cancellationToken);
+            results = await codeFixer.FixSolutionAsync(f => IsMatch(f), cancellationToken);
         }
 
         WriteProjectFixResults(results, codeFixerOptions, formatProvider);

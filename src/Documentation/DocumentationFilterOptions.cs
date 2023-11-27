@@ -18,7 +18,7 @@ internal class DocumentationFilterOptions : SymbolFilterOptions
         VisibilityFilter visibility = VisibilityFilter.All,
         SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
         IEnumerable<SymbolFilterRule> rules = null,
-        IEnumerable<AttributeFilterRule> attributeRules = null) : base(visibility, symbolGroups, rules, attributeRules)
+        IEnumerable<AttributeFilterRule> attributeRules = null) : base(null, visibility, symbolGroups, rules, attributeRules)
     {
     }
 }

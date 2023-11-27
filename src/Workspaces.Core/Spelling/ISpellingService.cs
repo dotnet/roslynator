@@ -12,12 +12,12 @@ internal interface ISpellingService : ILanguageService
 {
     ISyntaxFactsService SyntaxFacts { get; }
 
-    DiagnosticAnalyzer CreateAnalyzer(SpellingData spellingData, SpellingFixerOptions options);
+    DiagnosticAnalyzer CreateAnalyzer(SpellingData spellingData, SpellcheckOptions options);
 
     ImmutableArray<Diagnostic> AnalyzeSpelling(
         SyntaxNode node,
         SpellingData spellingData,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         CancellationToken cancellationToken);
 
     SpellingDiagnostic CreateSpellingDiagnostic(Diagnostic diagnostic);

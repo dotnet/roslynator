@@ -3,6 +3,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -29,7 +30,7 @@ internal static class WrapConstraintClausesRefactoring
                     "Wrap constraints",
                     ct =>
                     {
-                        GenericInfo newInfo = WrapConstraints(genericInfo);
+                        GenericInfo newInfo = WrapConstraints(genericInfo, context.Document.GetConfigOptions(constraintClause.SyntaxTree));
 
                         return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, ct);
                     },
@@ -82,7 +83,7 @@ internal static class WrapConstraintClausesRefactoring
         return SyntaxInfo.GenericInfo(declaration).WithConstraintClauses(constraintClauses);
     }
 
-    private static GenericInfo WrapConstraints(in GenericInfo info)
+    private static GenericInfo WrapConstraints(GenericInfo info, AnalyzerConfigOptions configOptions)
     {
         SyntaxNode declaration = info.Node;
         SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;
@@ -93,7 +94,7 @@ internal static class WrapConstraintClausesRefactoring
 
         declaration = declaration.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(TriviaList(NewLine())));
 
-        SyntaxTrivia trivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTrivia(declaration);
+        SyntaxTrivia trivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTrivia(declaration, configOptions);
 
         int count = constraintClauses.Count;
 

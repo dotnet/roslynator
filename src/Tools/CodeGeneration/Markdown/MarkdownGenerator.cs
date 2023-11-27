@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DotMarkdown;
 using DotMarkdown.Docusaurus;
 using DotMarkdown.Linq;
@@ -72,7 +74,7 @@ public static class MarkdownGenerator
             {
                 yield return Heading2("Usage");
 
-                foreach (MElement element in MarkdownGenerator.CreateSamples(refactoring.Samples, Heading4("Before"), Heading4("After")))
+                foreach (MElement element in MarkdownGenerator.CreateSamples(refactoring.Samples, "before", "after"))
                     yield return element;
             }
         }
@@ -123,7 +125,7 @@ public static class MarkdownGenerator
         return document.ToString();
     }
 
-    public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
+    public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<AnalyzerOptionMetadata> options)
     {
         MInlineCode[] requiredOptions = analyzer.ConfigOptions
             .Where(f => f.IsRequired)
@@ -134,7 +136,8 @@ public static class MarkdownGenerator
 
         MDocument document = Document(
             CreateFrontMatter(label: analyzer.Id),
-            Heading1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {title}"),
+            Heading1($"{analyzer.Id}: {title}"),
+            CreateObsoleteWarning(analyzer),
             Heading2("Properties"),
             Table(
                 TableRow("Property", "Value"),
@@ -154,28 +157,28 @@ public static class MarkdownGenerator
         static IEnumerable<MElement> CreateSamples(AnalyzerMetadata analyzer)
         {
             IReadOnlyList<SampleMetadata> samples = analyzer.Samples;
-            AnalyzerOptionKind kind = analyzer.Kind;
+            LegacyAnalyzerOptionKind kind = analyzer.Kind;
 
             if (samples.Count > 0)
             {
-                yield return Heading2((samples.Count == 1) ? "Example" : "Examples");
+                yield return Heading2("Examples");
 
-                string beforeHeading = (kind == AnalyzerOptionKind.Disable)
-                    ? "Code"
-                    : "Code with Diagnostic";
+                string beforeHeading = (kind == LegacyAnalyzerOptionKind.Disable)
+                    ? "code"
+                    : "diagnostic";
 
-                foreach (MElement item in MarkdownGenerator.CreateSamples(samples, Heading3(beforeHeading), Heading3("Code with Fix")))
+                foreach (MElement item in MarkdownGenerator.CreateSamples(samples, beforeHeading, "fix"))
                     yield return item;
             }
         }
 
-        static IEnumerable<object> CreateConfiguration(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
+        static IEnumerable<object> CreateConfiguration(AnalyzerMetadata analyzer, ImmutableArray<AnalyzerOptionMetadata> options)
         {
-            IEnumerable<ConfigOptionMetadata> analyzerOptions = analyzer.ConfigOptions
+            IEnumerable<AnalyzerOptionMetadata> analyzerOptions = analyzer.ConfigOptions
                 .Join(options, f => f.Key, f => f.Key, (_, g) => g)
                 .OrderBy(f => f.Key);
 
-            using (IEnumerator<ConfigOptionMetadata> en = analyzerOptions
+            using (IEnumerator<AnalyzerOptionMetadata> en = analyzerOptions
                 .GetEnumerator())
             {
                 if (en.MoveNext())
@@ -263,6 +266,31 @@ public static class MarkdownGenerator
         }
     }
 
+    private static DocusaurusCautionBlock CreateObsoleteWarning(AnalyzerMetadata analyzer)
+    {
+        string message = analyzer.ObsoleteMessage;
+
+        if (message is null)
+            return null;
+
+        return new DocusaurusCautionBlock("This analyzer is obsolete. ", GetTextParts(), ".") { Title = "WARNING" };
+
+        IEnumerable<object> GetTextParts()
+        {
+            int index = 0;
+            Match match = Regex.Match(message, @"\bRCS\d\d\d\d\b");
+            while (match.Success)
+            {
+                yield return message.Substring(index, match.Index);
+                yield return Link(match.Value, match.Value);
+                index = match.Index + match.Length;
+                match = match.NextMatch();
+            }
+
+            yield return message.Substring(index);
+        }
+    }
+
     public static string CreateCodeFixesMarkdown(IEnumerable<CompilerDiagnosticMetadata> diagnostics, IComparer<string> comparer)
     {
         MDocument document = Document(
@@ -343,33 +371,51 @@ public static class MarkdownGenerator
 
     private static IEnumerable<MElement> CreateSamples(
         IEnumerable<SampleMetadata> samples,
-        MHeading beforeHeading,
-        MHeading afterHeading)
+        string beforeTitle,
+        string afterTitle)
     {
-        using (IEnumerator<SampleMetadata> en = samples.GetEnumerator())
+        foreach (SampleMetadata sample in samples)
         {
+            yield return Heading3("Example");
+
+            yield return DocusaurusMarkdownFactory.CodeBlock(sample.Before, LanguageIdentifiers.CSharp, beforeTitle + ".cs");
+
+            if (!string.IsNullOrEmpty(sample.After))
+            {
+                yield return DocusaurusMarkdownFactory.CodeBlock(sample.After, LanguageIdentifiers.CSharp, afterTitle + ".cs");
+            }
+
+            ImmutableArray<(string Key, string Value)>.Enumerator en = sample.ConfigOptions.GetEnumerator();
             if (en.MoveNext())
             {
-                while (true)
+                var sb = new StringBuilder();
+                var isFirst = true;
+
+                do
                 {
-                    yield return beforeHeading;
-                    yield return FencedCodeBlock(en.Current.Before, LanguageIdentifiers.CSharp);
-
-                    if (!string.IsNullOrEmpty(en.Current.After))
+                    if (!isFirst)
                     {
-                        yield return afterHeading;
-                        yield return FencedCodeBlock(en.Current.After, LanguageIdentifiers.CSharp);
+                        sb.AppendLine();
+                        sb.AppendLine();
                     }
 
-                    if (en.MoveNext())
-                    {
-                        yield return HorizontalRule();
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    isFirst = false;
+
+                    string key = en.Current.Key;
+
+                    if (!key.StartsWith("roslynator_", StringComparison.Ordinal))
+                        key = "roslynator_" + key;
+
+                    sb.Append(key);
+                    sb.Append(" = ");
+                    sb.Append(en.Current.Value);
                 }
+                while (en.MoveNext());
+
+                yield return DocusaurusMarkdownFactory.CodeBlock(
+                    sb.ToString(),
+                    "editorconfig",
+                    ".editorconfig");
             }
         }
     }

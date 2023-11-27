@@ -217,7 +217,7 @@ namespace Roslynator.Formatting.CSharp
         public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfEmptyBlock = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock, 
             title:              "Add new line after opening brace of empty block.", 
-            messageFormat:      "([deprecated] Use RCS0021 instead) Format braces on a single line.", 
+            messageFormat:      "([deprecated] Use RCS0021 instead) Format braces on multiple lines.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -468,8 +468,8 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0047</summary>
         public static readonly DiagnosticDescriptor WrapAndIndentEachNodeInList = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.WrapAndIndentEachNodeInList, 
-            title:              "[deprecated] Wrap and indent each node in list.", 
-            messageFormat:      "[deprecated] Use analyzer RCS0053 instead.", 
+            title:              "Wrap and indent each node in list.", 
+            messageFormat:      "([deprecated] Use RCS0053 instead) Wrap and indent each node in list.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 

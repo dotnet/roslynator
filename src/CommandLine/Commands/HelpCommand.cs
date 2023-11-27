@@ -3,8 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Roslynator.CommandLine.Help;
 using static Roslynator.Logger;
 
@@ -12,26 +14,34 @@ namespace Roslynator.CommandLine;
 
 internal class HelpCommand
 {
-    public HelpCommand(HelpCommandLineOptions options, Filter filter)
+    public HelpCommand(HelpCommandLineOptions options)
     {
         Options = options;
-        Filter = filter;
     }
 
     public HelpCommandLineOptions Options { get; }
-
-    public Filter Filter { get; }
 
     public CommandStatus Execute()
     {
         try
         {
-            WriteHelp(
-                commandName: Options.Command,
-                online: false,
-                manual: Options.Manual,
-                includeValues: ConsoleOut.Verbosity > Verbosity.Normal,
-                filter: Filter);
+            if (Options.Manual)
+            {
+                WriteManual();
+            }
+            else if (Options.Command is not null)
+            {
+                Command command = CommandLoader.LoadCommand(typeof(HelpCommand).Assembly, Options.Command);
+
+                if (command is null)
+                    throw new InvalidOperationException($"Command '{Options.Command}' does not exist.");
+
+                OpenHelpInBrowser(Options.Command);
+            }
+            else
+            {
+                WriteCommandsHelp();
+            }
 
             return CommandStatus.Success;
         }
@@ -42,135 +52,102 @@ internal class HelpCommand
         }
     }
 
-    private static void WriteHelp(
-        string commandName,
-        bool online,
-        bool manual,
-        bool includeValues,
-        Filter filter = null)
-    {
-        if (online)
-        {
-            OpenHelpInBrowser(commandName);
-        }
-        else if (commandName is not null)
-        {
-            Command command = CommandLoader.LoadCommand(typeof(HelpCommand).Assembly, commandName);
-
-            if (command is null)
-                throw new InvalidOperationException($"Command '{commandName}' does not exist.");
-
-            WriteCommandHelp(command, includeValues: includeValues, filter: filter);
-        }
-        else if (manual)
-        {
-            WriteManual(includeValues: includeValues, filter: filter);
-        }
-        else
-        {
-            WriteCommandsHelp(includeValues: includeValues, filter: filter);
-        }
-    }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
     private static void OpenHelpInBrowser(string commandName)
     {
-        throw new NotSupportedException();
+        var url = "https://josefpihrt.github.io/docs/roslynator/cli";
+
+        if (commandName is not null)
+            url += $"/commands/{commandName}";
+
+        try
+        {
+            Process.Start(url);
+        }
+        catch
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var psi = new ProcessStartInfo()
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+
+                Process.Start(psi);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process.Start("xdg-open", url);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", url);
+            }
+            else
+            {
+                throw;
+            }
+        }
     }
 
-    public static void WriteCommandHelp(Command command, bool includeValues = false, Filter filter = null)
+    public static void WriteCommandHelp(Command command)
     {
-        var writer = new ConsoleHelpWriter(new HelpWriterOptions(filter: filter));
+        var writer = new ConsoleHelpWriter();
 
-        command = command.WithOptions(command.Options.Sort(CommandOptionComparer.Name));
+        command = command with { Options = command.Options.Sort(CommandOptionComparer.Name) };
 
-        CommandHelp commandHelp = CommandHelp.Create(command, providers: null, filter: filter);
+        CommandHelp commandHelp = CommandHelp.Create(command);
 
         writer.WriteCommand(commandHelp);
-
-        if (includeValues)
-            writer.WriteValues(commandHelp.Values);
     }
 
-    public static void WriteCommandsHelp(bool includeValues = false, Filter filter = null)
+    public static void WriteCommandsHelp()
     {
         IEnumerable<Command> commands = LoadCommands().Where(f => f.Name != "help");
 
-        CommandsHelp commandsHelp = CommandsHelp.Create(commands, providers: null, filter: filter);
+        CommandsHelp commandsHelp = CommandsHelp.Create(commands);
 
-        var writer = new ConsoleHelpWriter(new HelpWriterOptions(filter: filter));
+        var writer = new ConsoleHelpWriter(new HelpWriterOptions());
 
         writer.WriteCommands(commandsHelp);
-
-        if (includeValues)
-            writer.WriteValues(commandsHelp.Values);
 
         WriteLine();
         WriteLine(GetFooterText());
     }
 
-    private static void WriteManual(bool includeValues = false, Filter filter = null)
+    private static void WriteManual()
     {
         IEnumerable<Command> commands = LoadCommands();
 
-        var writer = new ConsoleHelpWriter(new HelpWriterOptions(filter: filter));
+        var writer = new ConsoleHelpWriter();
 
-        IEnumerable<CommandHelp> commandHelps = commands.Select(f => CommandHelp.Create(f, filter: filter))
+        IEnumerable<CommandHelp> commandHelps = commands.Select(f => CommandHelp.Create(f))
             .Where(f => f.Arguments.Any() || f.Options.Any())
             .ToImmutableArray();
 
         ImmutableArray<CommandItem> commandItems = HelpProvider.GetCommandItems(commandHelps.Select(f => f.Command));
 
-        ImmutableArray<OptionValueList> values = ImmutableArray<OptionValueList>.Empty;
+        var commandsHelp = new CommandsHelp(commandItems, ImmutableArray<OptionValueList>.Empty);
 
-        if (commandItems.Any())
+        writer.WriteCommands(commandsHelp);
+
+        foreach (CommandHelp commandHelp in commandHelps)
         {
-            values = HelpProvider.GetOptionValues(
-                commandHelps.SelectMany(f => f.Command.Options),
-                providers: ImmutableArray<OptionValueProvider>.Empty,
-                filter);
-
-            var commandsHelp = new CommandsHelp(commandItems, values);
-
-            writer.WriteCommands(commandsHelp);
-
-            foreach (CommandHelp commandHelp in commandHelps)
-            {
-                WriteSeparator();
-                WriteLine();
-                WriteLine($"Command: {commandHelp.Name}");
-                WriteLine();
-
-                string description = commandHelp.Description;
-
-                if (!string.IsNullOrEmpty(description))
-                {
-                    WriteLine(description);
-                    WriteLine();
-                }
-
-                writer.WriteCommand(commandHelp);
-            }
-
-            if (includeValues)
-                WriteSeparator();
-        }
-        else
-        {
+            WriteSeparator();
             WriteLine();
-            WriteLine("No command found");
+            WriteLine($"Command: {commandHelp.Name}");
+            WriteLine();
 
-            if (includeValues)
+            string description = commandHelp.Description;
+
+            if (!string.IsNullOrEmpty(description))
             {
-                values = HelpProvider.GetOptionValues(
-                    commands.Select(f => CommandHelp.Create(f)).SelectMany(f => f.Command.Options),
-                    providers: ImmutableArray<OptionValueProvider>.Empty,
-                    filter);
+                WriteLine(description);
+                WriteLine();
             }
-        }
 
-        if (includeValues)
-            writer.WriteValues(values);
+            writer.WriteCommand(commandHelp);
+        }
 
         static void WriteSeparator()
         {

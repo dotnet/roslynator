@@ -35,6 +35,8 @@ namespace Roslynator
         public const string ObjectCreationTypeStyle                           = "roslynator_object_creation_type_style";
         public const string PrefixFieldIdentifierWithUnderscore               = "roslynator_prefix_field_identifier_with_underscore";
         public const string SuppressUnityScriptMethods                        = "roslynator_suppress_unity_script_methods";
+        public const string TabLength                                         = "roslynator_tab_length";
+        public const string TrailingCommaStyle                                = "roslynator_trailing_comma_style";
         public const string UseAnonymousFunctionOrMethodGroup                 = "roslynator_use_anonymous_function_or_method_group";
         public const string UseBlockBodyWhenDeclarationSpansOverMultipleLines = "roslynator_use_block_body_when_declaration_spans_over_multiple_lines";
         public const string UseBlockBodyWhenExpressionSpansOverMultipleLines  = "roslynator_use_block_body_when_expression_spans_over_multiple_lines";

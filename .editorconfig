@@ -6,6 +6,9 @@ root = true
 # Code files
 [*.{cs,csx}]
 
+indent_style = space
+indent_size = 4
+
 dotnet_sort_system_directives_first = true
 
 csharp_style_namespace_declarations = file_scoped:suggestion
@@ -42,6 +45,7 @@ roslynator_doc_comment_summary_style = multi_line
 roslynator_enum_flag_value_style = shift_operator
 roslynator_blank_line_after_file_scoped_namespace_declaration = true
 roslynator_null_check_style = pattern_matching
+roslynator_trailing_comma_style = omit_when_single_line
 
 dotnet_diagnostic.RCS0001.severity = suggestion
 dotnet_diagnostic.RCS0003.severity = suggestion
@@ -78,6 +82,7 @@ dotnet_diagnostic.RCS0051.severity = suggestion
 dotnet_diagnostic.RCS0053.severity = suggestion
 dotnet_diagnostic.RCS0054.severity = suggestion
 dotnet_diagnostic.RCS0055.severity = suggestion
+dotnet_diagnostic.RCS0056.severity = none
 dotnet_diagnostic.RCS0057.severity = suggestion
 dotnet_diagnostic.RCS0058.severity = suggestion
 dotnet_diagnostic.RCS0059.severity = suggestion
@@ -142,6 +147,7 @@ dotnet_diagnostic.RCS1252.severity = suggestion
 dotnet_diagnostic.RCS1253.severity = suggestion
 dotnet_diagnostic.RCS1254.severity = suggestion
 dotnet_diagnostic.RCS1255.severity = none
+dotnet_diagnostic.RCS1260.severity = suggestion
 
 dotnet_diagnostic.IDE0007.severity = none
 dotnet_diagnostic.IDE0007WithoutSuggestion.severity = none
@@ -189,6 +195,7 @@ dotnet_diagnostic.IDE0074WithoutSuggestion.severity = none
 dotnet_diagnostic.IDE0079.severity = none
 dotnet_diagnostic.IDE0090.severity = none
 dotnet_diagnostic.IDE0220.severity = none
+dotnet_diagnostic.IDE0270.severity = silent
 dotnet_diagnostic.IDE1005.severity = suggestion
 dotnet_diagnostic.IDE1006.severity = suggestion
 

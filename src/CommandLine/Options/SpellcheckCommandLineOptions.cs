@@ -82,7 +82,7 @@ public sealed class SpellcheckCommandLineOptions : MSBuildCommandLineOptions
     [Option(
         longName: "words",
         Required = true,
-        HelpText = "Specified path to file and/or directory that contains list of allowed words.",
+        HelpText = "Specified path to file and/or directory that contains list of known words.",
         MetaValue = "<PATH>")]
     public IEnumerable<string> Words { get; set; } = null!;
 }

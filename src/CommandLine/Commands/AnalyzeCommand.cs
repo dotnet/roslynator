@@ -16,7 +16,7 @@ namespace Roslynator.CommandLine;
 
 internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
 {
-    public AnalyzeCommand(AnalyzeCommandLineOptions options, DiagnosticSeverity severityLevel, in ProjectFilter projectFilter) : base(projectFilter)
+    public AnalyzeCommand(AnalyzeCommandLineOptions options, DiagnosticSeverity severityLevel, in ProjectFilter projectFilter, FileSystemFilter fileSystemFilter) : base(projectFilter, fileSystemFilter)
     {
         Options = options;
         SeverityLevel = severityLevel;
@@ -31,6 +31,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
         AssemblyResolver.Register();
 
         var codeAnalyzerOptions = new CodeAnalyzerOptions(
+            fileSystemFilter: FileSystemFilter,
             ignoreAnalyzerReferences: Options.IgnoreAnalyzerReferences,
             ignoreCompilerDiagnostics: Options.IgnoreCompilerDiagnostics,
             reportNotConfigurable: Options.ReportNotConfigurable,
@@ -78,9 +79,7 @@ internal class AnalyzeCommand : MSBuildWorkspaceCommand<AnalyzeCommandResult>
         {
             Solution solution = projectOrSolution.AsSolution();
 
-            var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
-
-            results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => projectFilter.IsMatch(f), cancellationToken);
+            results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => IsMatch(f), cancellationToken);
         }
 
         return new AnalyzeCommandResult(

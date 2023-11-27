@@ -201,9 +201,13 @@ internal class CodeAnalyzer
                     SyntaxTree tree = diagnostic.Location.SourceTree;
 
                     if (tree is null
-                        || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language).IsComment(f), cancellationToken))
+                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
                     {
-                        yield return diagnostic;
+                        if (tree is null
+                            || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language).IsComment(f), cancellationToken))
+                        {
+                            yield return diagnostic;
+                        }
                     }
                 }
                 else

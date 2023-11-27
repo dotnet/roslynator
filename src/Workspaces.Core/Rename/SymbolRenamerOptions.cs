@@ -1,51 +1,69 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using Microsoft.Extensions.FileSystemGlobbing;
 
 namespace Roslynator.Rename;
 
-internal class SymbolRenamerOptions
+#pragma warning disable RCS1223 // Mark publicly visible type with DebuggerDisplay attribute.
+
+/// <summary>
+/// Represents options for <see cref="SymbolRenamer"/>.
+/// </summary>
+public class SymbolRenamerOptions
 {
-    internal SymbolRenamerOptions(
-        RenameScopeFilter scopeFilter = RenameScopeFilter.All,
-        VisibilityFilter visibilityFilter = VisibilityFilter.All,
-        RenameErrorResolution errorResolution = RenameErrorResolution.None,
-        IEnumerable<string> ignoredCompilerDiagnosticIds = null,
-        int codeContext = -1,
-        bool includeGeneratedCode = false,
-        bool ask = false,
-        bool dryRun = false,
-        bool interactive = false)
-    {
-        ScopeFilter = scopeFilter;
-        VisibilityFilter = visibilityFilter;
-        ErrorResolution = errorResolution;
-        IgnoredCompilerDiagnosticIds = ignoredCompilerDiagnosticIds?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
-        CodeContext = codeContext;
-        IncludeGeneratedCode = includeGeneratedCode;
-        Ask = ask;
-        DryRun = dryRun;
-        Interactive = interactive;
-    }
+    /// <summary>
+    /// Do not rename type symbols (classes, structs, interfaces etc.).
+    /// </summary>
+    public bool SkipTypes { get; set; }
 
-    public static SymbolRenamerOptions Default { get; } = new();
+    /// <summary>
+    /// Do not rename member symbols (methods, properties, fields etc.).
+    /// </summary>
+    public bool SkipMembers { get; set; }
 
-    public RenameScopeFilter ScopeFilter { get; }
+    /// <summary>
+    /// Do not rename local symbols (like local variables).
+    /// </summary>
+    public bool SkipLocals { get; set; }
 
-    public VisibilityFilter VisibilityFilter { get; }
+    public CompilationErrorResolution CompilationErrorResolution { get; set; } = CompilationErrorResolution.Throw;
 
-    public RenameErrorResolution ErrorResolution { get; }
+    /// <summary>
+    /// A list of compiler diagnostic IDs that should be ignored.
+    /// </summary>
+    public HashSet<string> IgnoredCompilerDiagnosticIds { get; } = new();
 
-    public ImmutableHashSet<string> IgnoredCompilerDiagnosticIds { get; }
+    /// <summary>
+    /// Include symbols that are part of generated code.
+    /// </summary>
+    public bool IncludeGeneratedCode { get; set; }
 
-    public int CodeContext { get; }
+    /// <summary>
+    /// Do not save changes to disk.
+    /// </summary>
+    public bool DryRun { get; set; }
 
-    public bool IncludeGeneratedCode { get; }
+    /// <summary>
+    /// If the symbol is a method rename its overloads as well.
+    /// </summary>
+    public bool RenameOverloads { get; set; }
 
-    public bool Ask { get; }
+    /// <summary>
+    /// Rename identifiers in string literals that match the name of the symbol.
+    /// </summary>
+    public bool RenameInStrings { get; set; }
 
-    public bool DryRun { get; }
+    /// <summary>
+    /// Rename identifiers in comments that match the name of the symbol.
+    /// </summary>
+    public bool RenameInComments { get; set; }
 
-    public bool Interactive { get; }
+    /// <summary>
+    /// If the symbol is a type renames the file containing the type declaration as well.
+    /// </summary>
+    public bool RenameFile { get; set; }
+
+    //TODO: SymbolRenameOptions.FileSystemMatcher
+    internal Matcher FileSystemMatcher { get; set; }
 }

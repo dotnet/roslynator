@@ -97,6 +97,8 @@ public class DocumentationOptions
 
     public bool ScrollToContent { get; set; } = DefaultValues.ScrollToContent;
 
+    internal FileSystemFilter FileSystemFilter { get; set; }
+
     internal bool IncludeContainingNamespace(IncludeContainingNamespaceFilter filter)
     {
         return (IncludeContainingNamespaceFilter & filter) == filter;
@@ -121,9 +123,17 @@ public class DocumentationOptions
                     n = n.ContainingNamespace;
                 }
             }
+
+            if (ShouldBeIgnoredByLocation(typeSymbol))
+                return true;
         }
 
         return false;
+    }
+
+    internal bool ShouldBeIgnoredByLocation(ISymbol symbol)
+    {
+        return FileSystemFilter?.IsMatch(symbol) == false;
     }
 
     internal static class DefaultValues

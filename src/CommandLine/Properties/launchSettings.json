@@ -2,7 +2,7 @@
   "profiles": {
     "CommandLine": {
       "commandName": "Project",
-      "commandLineArgs": "migrate \"E:\\Projects\\Roslynator\\src\\Migration.Test\" --target-version 3.0 --identifier roslynator.analyzers -d"
+      "commandLineArgs": "-h"
     }
   }
 }

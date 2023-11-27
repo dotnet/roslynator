@@ -17,6 +17,7 @@ internal class CodeFixerOptions : CodeAnalysisOptions
     public static CodeFixerOptions Default { get; } = new();
 
     public CodeFixerOptions(
+        FileSystemFilter fileSystemFilter = null,
         DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
         bool ignoreCompilerErrors = false,
         bool ignoreAnalyzerReferences = false,
@@ -32,6 +33,7 @@ internal class CodeFixerOptions : CodeAnalysisOptions
         int maxIterations = -1,
         int batchSize = -1,
         bool format = false) : base(
+            fileSystemFilter: fileSystemFilter,
             severityLevel: severityLevel,
             ignoreAnalyzerReferences: ignoreAnalyzerReferences,
             concurrentAnalysis: concurrentAnalysis,
@@ -39,8 +41,13 @@ internal class CodeFixerOptions : CodeAnalysisOptions
             ignoredDiagnosticIds: ignoredDiagnosticIds)
     {
         IgnoreCompilerErrors = ignoreCompilerErrors;
-        IgnoredCompilerDiagnosticIds = ignoredCompilerDiagnosticIds?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
         DiagnosticIdsFixableOneByOne = diagnosticIdsFixableOneByOne?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
+
+        if (ignoredCompilerDiagnosticIds is not null)
+        {
+            foreach (string id in ignoredCompilerDiagnosticIds)
+                IgnoredCompilerDiagnosticIds.Add(id);
+        }
 
         if (diagnosticFixMap is not null)
         {
@@ -70,7 +77,7 @@ internal class CodeFixerOptions : CodeAnalysisOptions
 
     public bool IgnoreCompilerErrors { get; }
 
-    public ImmutableHashSet<string> IgnoredCompilerDiagnosticIds { get; }
+    public HashSet<string> IgnoredCompilerDiagnosticIds { get; } = new();
 
     public string FileBanner { get; }
 

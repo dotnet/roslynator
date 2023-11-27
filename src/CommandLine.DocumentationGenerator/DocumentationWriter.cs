@@ -25,7 +25,7 @@ Allowed\ value(\ is|s\ are)\
 
     public override void WriteOptionDescription(CommandOption option)
     {
-        string description = option.FullDescription;
+        string description = option.Description;
 
         if (!string.IsNullOrEmpty(description))
         {
@@ -49,5 +49,8 @@ Allowed\ value(\ is|s\ are)\
             _writer.WriteString(description);
             }
         }
+
+        if (!string.IsNullOrEmpty(option.AdditionalDescription))
+            _writer.WriteRaw(option.AdditionalDescription);
     }
 }

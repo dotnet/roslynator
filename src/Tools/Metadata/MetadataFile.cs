@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -29,45 +30,75 @@ public static class MetadataFile
         {
             string id = element.Element("Id").Value;
             string title = element.Element("Title").Value;
-            string identifier = element.Attribute("Identifier").Value;
+            string identifier = element.Attribute("Identifier")?.Value ?? element.Element("Identifier").Value;
             string messageFormat = element.Element("MessageFormat")?.Value ?? title;
             string category = element.Element("Category")?.Value ?? "Roslynator";
             string defaultSeverity = element.Element("DefaultSeverity").Value;
             var isEnabledByDefault = bool.Parse(element.Element("IsEnabledByDefault").Value);
-            bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
             bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
             bool supportsFadeOutAnalyzer = element.ElementValueAsBooleanOrDefault("SupportsFadeOutAnalyzer");
             string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
             string summary = element.Element("Summary")?.Value.NormalizeNewLine();
             string remarks = element.Element("Remarks")?.Value.NormalizeNewLine();
-            IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", id)));
+            IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f with { Before = f.Before.Replace("[|Id|]", id) });
             IEnumerable<LinkMetadata> links = LoadLinks(element);
-            IEnumerable<AnalyzerOptionMetadata> options = LoadOptions(element, id);
-            IEnumerable<ConfigOptionKeyMetadata> configOptions = LoadConfigOptions(element);
+            IEnumerable<LegacyAnalyzerOptionMetadata> options = LoadOptions(element, id);
+            IEnumerable<AnalyzerConfigOption> configOptions = LoadConfigOptions(element);
             string[] tags = (element.Element("Tags")?.Value ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            AnalyzerStatus status = ParseStatus(element);
+            string obsoleteMessage = element.Element("ObsoleteMessage")?.Value;
 
-            yield return new AnalyzerMetadata(
-                id: id,
-                identifier: identifier,
-                title: title,
-                messageFormat: messageFormat,
-                category: category,
-                defaultSeverity: defaultSeverity,
-                isEnabledByDefault: isEnabledByDefault,
-                isObsolete: isObsolete,
-                supportsFadeOut: supportsFadeOut,
-                supportsFadeOutAnalyzer: supportsFadeOutAnalyzer,
-                minLanguageVersion: minLanguageVersion,
-                summary: summary,
-                remarks: remarks,
-                samples: samples,
-                links: links,
-                configOptions: configOptions,
-                options: options,
-                tags: tags,
-                kind: AnalyzerOptionKind.None,
-                parent: null);
+            if (obsoleteMessage is not null)
+                messageFormat = $"([deprecated] {obsoleteMessage}) {messageFormat}";
+
+            var analyzer = new AnalyzerMetadata()
+            {
+                Id = id,
+                Identifier = identifier,
+                Title = title,
+                MessageFormat = messageFormat,
+                Category = category,
+                DefaultSeverity = defaultSeverity,
+                IsEnabledByDefault = isEnabledByDefault,
+                SupportsFadeOut = supportsFadeOut,
+                SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer,
+                MinLanguageVersion = minLanguageVersion,
+                Summary = summary,
+                Remarks = remarks,
+                Status = status,
+                ObsoleteMessage = obsoleteMessage,
+            };
+
+            analyzer.Tags.AddRange(tags);
+            analyzer.ConfigOptions.AddRange(configOptions ?? Enumerable.Empty<AnalyzerConfigOption>());
+            analyzer.Samples.AddRange(samples ?? Enumerable.Empty<SampleMetadata>());
+            analyzer.Links.AddRange(links ?? Enumerable.Empty<LinkMetadata>());
+            analyzer.LegacyOptions.AddRange(options ?? Enumerable.Empty<LegacyAnalyzerOptionMetadata>());
+            analyzer.LegacyOptionAnalyzers.AddRange(analyzer.LegacyOptions.Select(f => f.CreateAnalyzerMetadata(analyzer)));
+
+            yield return analyzer;
         }
+    }
+
+    private static AnalyzerStatus ParseStatus(XElement element)
+    {
+        var status = AnalyzerStatus.Enabled;
+
+        XAttribute isObsoleteAttribute = element.Attribute("IsObsolete");
+        if (isObsoleteAttribute is not null)
+        {
+            status = (bool.Parse(isObsoleteAttribute.Value)) ? AnalyzerStatus.Disabled : AnalyzerStatus.Enabled;
+        }
+
+        if (status == AnalyzerStatus.Enabled)
+        {
+            XElement statusElement = element.Element("Status");
+
+            if (statusElement is not null)
+                status = Enum.Parse<AnalyzerStatus>(statusElement.Value);
+        }
+
+        return status;
     }
 
     public static IEnumerable<RefactoringMetadata> ReadRefactorings(string filePath)
@@ -76,31 +107,25 @@ public static class MetadataFile
 
         foreach (XElement element in doc.Root.Elements())
         {
-            yield return new RefactoringMetadata(
-                element.Attribute("Id")?.Value,
-                element.Attribute("Identifier").Value,
-                element.Element("OptionKey")?.Value,
-                element.Attribute("Title").Value,
-                element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
-                element.AttributeValueAsBooleanOrDefault("IsObsolete", false),
-                element.Element("Span")?.Value,
-                element.Element("Summary")?.Value.NormalizeNewLine(),
-                element.Element("Remarks")?.Value.NormalizeNewLine(),
-                element.Element("Syntaxes")
-                    .Elements("Syntax")
-                    .Select(f => new SyntaxMetadata(f.Value)),
-                LoadImages(element),
-                LoadSamples(element),
-                LoadLinks(element));
-        }
-    }
+            var refactoring = new RefactoringMetadata()
+            {
+                Id = element.Attribute("Id")?.Value,
+                Identifier = element.Attribute("Identifier").Value,
+                OptionKey = element.Element("OptionKey")?.Value,
+                Title = element.Attribute("Title").Value,
+                Span = element.Element("Span")?.Value,
+                Summary = element.Element("Summary")?.Value.NormalizeNewLine(),
+                Remarks = element.Element("Remarks")?.Value.NormalizeNewLine(),
+                IsEnabledByDefault = element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
+                IsObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete", false),
+            };
 
-    private static IEnumerable<ImageMetadata> LoadImages(XElement element)
-    {
-        return element
-            .Element("Images")?
-            .Elements("Image")
-            .Select(f => new ImageMetadata(f.Value));
+            refactoring.Syntaxes.AddRange(element.Element("Syntaxes").Elements("Syntax").Select(f => new SyntaxMetadata(f.Value)));
+            refactoring.Samples.AddRange(LoadSamples(element) ?? Enumerable.Empty<SampleMetadata>());
+            refactoring.Links.AddRange(LoadLinks(element) ?? Enumerable.Empty<LinkMetadata>());
+
+            yield return refactoring;
+        }
     }
 
     private static IEnumerable<SampleMetadata> LoadSamples(XElement element)
@@ -113,9 +138,18 @@ public static class MetadataFile
                 XElement before = f.Element("Before");
                 XElement after = f.Element("After");
 
-                return new SampleMetadata(
-                    before.Value.NormalizeNewLine(),
-                    after?.Value.NormalizeNewLine());
+                ImmutableArray<(string, string)> options = f.Element("ConfigOptions")?
+                    .Elements("Option")
+                    .Select(f => (f.Attribute("Key").Value, f.Attribute("Value").Value))
+                    .ToImmutableArray()
+                    ?? ImmutableArray<(string, string)>.Empty;
+
+                return new SampleMetadata()
+                {
+                    Before = before.Value.NormalizeNewLine(),
+                    After = after?.Value.NormalizeNewLine(),
+                    ConfigOptions = options,
+                };
             });
     }
 
@@ -124,10 +158,10 @@ public static class MetadataFile
         return element
             .Element("Links")?
             .Elements("Link")
-            .Select(f => new LinkMetadata(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
+            .Select(f => new LinkMetadata() { Url = f.Element("Url").Value, Text = f.Element("Text")?.Value, Title = f.Element("Title")?.Value });
     }
 
-    private static IEnumerable<AnalyzerOptionMetadata> LoadOptions(XElement element, string parentId)
+    private static IEnumerable<LegacyAnalyzerOptionMetadata> LoadOptions(XElement element, string parentId)
     {
         return element
             .Element("Options")?
@@ -135,15 +169,15 @@ public static class MetadataFile
             .Select(f => LoadOption(f, parentId));
     }
 
-    private static IEnumerable<ConfigOptionKeyMetadata> LoadConfigOptions(XElement element)
+    private static IEnumerable<AnalyzerConfigOption> LoadConfigOptions(XElement element)
     {
         return element
             .Element("ConfigOptions")?
             .Elements("Option")
-            .Select(f => new ConfigOptionKeyMetadata("roslynator_" + f.Attribute("Key").Value, bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)));
+            .Select(f => new AnalyzerConfigOption("roslynator_" + f.Attribute("Key").Value, bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)));
     }
 
-    private static AnalyzerOptionMetadata LoadOption(XElement element, string parentId)
+    private static LegacyAnalyzerOptionMetadata LoadOption(XElement element, string parentId)
     {
         string title = element.Element("Title").Value;
 
@@ -151,36 +185,44 @@ public static class MetadataFile
         string id = element.Element("Id")?.Value;
         string optionKey = element.Element("OptionKey").Value;
         string optionValue = element.Element("OptionValue")?.Value;
-        var kind = (AnalyzerOptionKind)Enum.Parse(typeof(AnalyzerOptionKind), element.Element("Kind").Value);
+        var kind = (LegacyAnalyzerOptionKind)Enum.Parse(typeof(LegacyAnalyzerOptionKind), element.Element("Kind").Value);
         bool isEnabledByDefault = element.ElementValueAsBooleanOrDefault("IsEnabledByDefault");
         bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
         string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
         string summary = element.Element("Summary")?.Value.NormalizeNewLine();
-        IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", parentId)));
+        IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f with { Before = f.Before.Replace("[|Id|]", parentId) });
         bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
         string[] tags = (element.Element("Tags")?.Value ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        AnalyzerStatus status = ParseStatus(element);
 
         string newOptionKey = element.Element("NewOptionKey")?.Value;
 
         if (newOptionKey?.StartsWith("roslynator_") == false)
             newOptionKey = "roslynator_" + newOptionKey;
 
-        return new AnalyzerOptionMetadata(
-            identifier: identifier,
-            id: id,
-            parentId: parentId,
-            optionKey: optionKey,
-            optionValue: optionValue,
-            newOptionKey: newOptionKey,
-            kind: kind,
-            title: title,
-            isEnabledByDefault: isEnabledByDefault,
-            supportsFadeOut: supportsFadeOut,
-            minLanguageVersion: minLanguageVersion,
-            summary: summary,
-            samples: samples,
-            isObsolete: isObsolete,
-            tags: tags);
+        var analyzerOption = new LegacyAnalyzerOptionMetadata()
+        {
+            Identifier = identifier,
+            Id = id,
+            ParentId = parentId,
+            OptionKey = optionKey,
+            OptionValue = optionValue,
+            NewOptionKey = newOptionKey,
+            Kind = kind,
+            Title = title,
+            IsEnabledByDefault = isEnabledByDefault,
+            SupportsFadeOut = supportsFadeOut,
+            MinLanguageVersion = minLanguageVersion,
+            Summary = summary,
+            Status = status,
+        };
+
+        if (samples is not null)
+            analyzerOption.Samples.AddRange(samples);
+
+        analyzerOption.Tags.AddRange(tags);
+
+        return analyzerOption;
     }
 
     public static IEnumerable<CodeFixMetadata> ReadCodeFixes(string filePath)
@@ -189,15 +231,18 @@ public static class MetadataFile
 
         foreach (XElement element in doc.Root.Elements())
         {
-            yield return new CodeFixMetadata(
+            var fix = new CodeFixMetadata(
                 element.Attribute("Id").Value,
                 element.Attribute("Identifier").Value,
                 element.Attribute("Title").Value,
                 element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
-                element.AttributeValueAsBooleanOrDefault("IsObsolete", false),
-                element.Element("FixableDiagnosticIds")
-                    .Elements("Id")
-                    .Select(f => f.Value));
+                element.AttributeValueAsBooleanOrDefault("IsObsolete", false));
+
+            fix.FixableDiagnosticIds.AddRange(element.Element("FixableDiagnosticIds")
+                .Elements("Id")
+                .Select(f => f.Value));
+
+            yield return fix;
         }
     }
 
@@ -217,7 +262,7 @@ public static class MetadataFile
         }
     }
 
-    public static IEnumerable<ConfigOptionMetadata> ReadOptions(string filePath)
+    public static IEnumerable<AnalyzerOptionMetadata> ReadOptions(string filePath)
     {
         XDocument doc = XDocument.Load(filePath);
 
@@ -228,21 +273,29 @@ public static class MetadataFile
             string key = (element.Element("Key")?.Value)
                 ?? string.Join("_", Regex.Split(id, @"(?<=\p{Ll})(?=\p{Lu})").Select(f => f.ToLowerInvariant()));
 
-            IEnumerable<ConfigOptionValueMetadata> values = element.Element("Values")?
+            IEnumerable<AnalyzerOptionValueMetadata> values = element.Element("Values")?
                 .Elements("Value")
                 .Select(e =>
                 {
                     bool.TryParse(e.Attribute("IsDefault")?.Value, out bool isDefault);
-                    return new ConfigOptionValueMetadata(e.Value, isDefault);
-                });
+                    return new AnalyzerOptionValueMetadata(e.Value, isDefault);
+                })
+                ?? Enumerable.Empty<AnalyzerOptionValueMetadata>();
 
-            yield return new ConfigOptionMetadata(
-                id,
-                "roslynator_" + key,
-                element.Element("DefaultValue")?.Value,
-                element.Element("ValuePlaceholder")?.Value,
-                element.Element("Description").Value,
-                values);
+            string defaultValue = element.Element("DefaultValue")?.Value ?? values.FirstOrDefault(f => f.IsDefault).Value;
+            string defaultValuePlaceholder = element.Element("ValuePlaceholder")?.Value ?? string.Join("|", values.Select(f => f.Value).OrderBy(f => f));
+
+            var analyzerOption = new AnalyzerOptionMetadata(
+                Id: id,
+                Key: "roslynator_" + key,
+                DefaultValue: defaultValue,
+                DefaultValuePlaceholder: defaultValuePlaceholder,
+                Description: element.Element("Description").Value
+            );
+
+            analyzerOption.Values.AddRange(values ?? Enumerable.Empty<AnalyzerOptionValueMetadata>());
+
+            yield return analyzerOption;
         }
     }
 
@@ -266,42 +319,6 @@ public static class MetadataFile
 
         using (var fs = new FileStream(path, FileMode.Create))
         using (XmlWriter xw = XmlWriter.Create(fs, new XmlWriterSettings() { Indent = true, NewLineOnAttributes = true }))
-            doc.Save(xw);
-    }
-
-    public static IEnumerable<SourceFile> ReadSourceFiles(string filePath)
-    {
-        XDocument doc = XDocument.Load(filePath);
-
-        foreach (XElement element in doc.Root.Elements())
-        {
-            string id = element.Attribute("Id").Value;
-
-            yield return new SourceFile(
-                id,
-                element
-                    .Element("Paths")
-                    .Elements("Path")
-                    .Select(f => f.Value));
-        }
-    }
-
-    public static void SaveSourceFiles(IEnumerable<SourceFile> sourceFiles, string path)
-    {
-        var doc = new XDocument(
-            new XElement(
-                "SourceFiles",
-                sourceFiles.Select(sourceFile =>
-                {
-                    return new XElement(
-                        "SourceFile",
-                        new XAttribute("Id", sourceFile.Id),
-                        new XElement("Paths", sourceFile.Paths.Select(p => new XElement("Path", p.Replace("\\", "/"))))
-                    );
-                })));
-
-        using (var fs = new FileStream(path, FileMode.Create))
-        using (XmlWriter xw = XmlWriter.Create(fs, new XmlWriterSettings() { Indent = true }))
             doc.Save(xw);
     }
 

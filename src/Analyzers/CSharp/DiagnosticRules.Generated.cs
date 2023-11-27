@@ -305,7 +305,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantCommaInInitializer = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantCommaInInitializer, 
             title:              "Remove redundant comma in initializer.", 
-            messageFormat:      "Remove redundant comma in initializer.", 
+            messageFormat:      "([deprecated] Use RCS1260 instead) Remove redundant comma in initializer.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -341,10 +341,10 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyStatement = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyStatement, 
             title:              "Remove empty statement.", 
-            messageFormat:      "Remove empty statement.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty statement.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyStatement, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -365,10 +365,10 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyElseClause = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyElseClause, 
             title:              "Remove empty 'else' clause.", 
-            messageFormat:      "Remove empty 'else' clause.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty 'else' clause.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyElseClause, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -377,10 +377,10 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyInitializer = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyInitializer, 
             title:              "Remove empty initializer.", 
-            messageFormat:      "Remove empty initializer.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty initializer.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyInitializer, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -590,8 +590,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1063</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop, 
-            title:              "([deprecated] use RCS1252 instead) Avoid usage of do statement to create an infinite loop.", 
-            messageFormat:      "([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.", 
+            title:              "Avoid usage of do statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] Use RCS1252 instead) Use while statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -602,8 +602,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1064</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfForStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop, 
-            title:              "([deprecated] use RCS1252 instead) Avoid usage of for statement to create an infinite loop.", 
-            messageFormat:      "([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.", 
+            title:              "Avoid usage of for statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] Use RCS1252 instead) Use while statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -614,8 +614,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1065</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfWhileStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop, 
-            title:              "([deprecated] use RCS1252 instead) Avoid usage of while statement to create an infinite loop.", 
-            messageFormat:      "([deprecated] use RCS1252 instead) Use for statement to create an infinite loop.", 
+            title:              "Avoid usage of while statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] Use RCS1252 instead) Use for statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -627,10 +627,10 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyFinallyClause = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyFinallyClause, 
             title:              "Remove empty 'finally' clause.", 
-            messageFormat:      "Remove empty 'finally' clause.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty 'finally' clause.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyFinallyClause, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -689,10 +689,10 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyNamespaceDeclaration = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration, 
             title:              "Remove empty namespace declaration.", 
-            messageFormat:      "Remove empty namespace declaration.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty namespace declaration.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -851,10 +851,10 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyRegion = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyRegion, 
             title:              "Remove empty region.", 
-            messageFormat:      "Remove empty region.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty region.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyRegion, 
             customTags:         Array.Empty<string>());
@@ -936,8 +936,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1100</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnSingleLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine, 
-            title:              "([deprecated] use RCS1253 instead) Format documentation summary on a single line.", 
-            messageFormat:      "([deprecated] use RCS1253 instead) Format documentation summary on a single line.", 
+            title:              "Format documentation summary on a single line.", 
+            messageFormat:      "([deprecated] Use RCS1253 instead) Format documentation summary on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -948,8 +948,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1101</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnMultipleLines = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines, 
-            title:              "([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.", 
-            messageFormat:      "([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.", 
+            title:              "Format documentation summary on multiple lines.", 
+            messageFormat:      "([deprecated] Use RCS1253 instead) Format documentation summary on multiple lines.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -1009,10 +1009,10 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyDestructor = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyDestructor, 
             title:              "Remove empty destructor.", 
-            messageFormat:      "Remove empty destructor.", 
+            messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty destructor.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyDestructor, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -2296,8 +2296,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1237</summary>
         public static readonly DiagnosticDescriptor UseBitShiftOperator = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseBitShiftOperator, 
-            title:              "([deprecated] use RCS1254 instead) Use bit shift operator.", 
-            messageFormat:      "([deprecated] use RCS1254 instead) Use bit shift operator.", 
+            title:              "Use bit shift operator.", 
+            messageFormat:      "([deprecated] Use RCS1254 instead) Use bit shift operator.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
@@ -2519,6 +2519,54 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.InvalidArgumentNullCheck, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1257</summary>
+        public static readonly DiagnosticDescriptor UseEnumFieldExplicitly = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseEnumFieldExplicitly, 
+            title:              "Use enum field explicitly.", 
+            messageFormat:      "Use enum field explicitly.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UseEnumFieldExplicitly, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1258</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryEnumFlag = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UnnecessaryEnumFlag, 
+            title:              "Unnecessary enum flag.", 
+            messageFormat:      "Enum flag '{0}' is already contained in flag '{1}'.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryEnumFlag, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1259</summary>
+        public static readonly DiagnosticDescriptor RemoveEmptySyntax = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveEmptySyntax, 
+            title:              "Remove empty syntax.", 
+            messageFormat:      "Remove empty {0}.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptySyntax, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1260</summary>
+        public static readonly DiagnosticDescriptor AddOrRemoveTrailingComma = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
+            title:              "Add/remove trailing comma.", 
+            messageFormat:      "{0} trailing comma.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
             customTags:         Array.Empty<string>());
 
     }

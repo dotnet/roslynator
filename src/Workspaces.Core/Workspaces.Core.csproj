@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(RoslynatorRoslynVersion)" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

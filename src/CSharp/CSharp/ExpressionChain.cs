@@ -318,7 +318,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
             }
         }
 
-        public ExpressionSyntax Current
+        public readonly ExpressionSyntax Current
         {
             get { return _current ?? throw new InvalidOperationException(); }
         }
@@ -330,9 +330,9 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
             _state = State.Start;
         }
 
-        public override bool Equals(object obj) => throw new NotSupportedException();
+        public override readonly bool Equals(object obj) => throw new NotSupportedException();
 
-        public override int GetHashCode() => throw new NotSupportedException();
+        public override readonly int GetHashCode() => throw new NotSupportedException();
 
         private enum State
         {

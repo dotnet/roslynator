@@ -11,12 +11,29 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics.Telemetry;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.Extensions.FileSystemGlobbing;
 using Roslynator.CodeMetrics;
 
 namespace Roslynator;
 
 internal static class Extensions
 {
+    public static bool IsMatch(this Matcher matcher, ISymbol symbol)
+    {
+        foreach (Location location in symbol.Locations)
+        {
+            SyntaxTree tree = location.SourceTree;
+
+            if (tree is not null
+                && !matcher.Match(tree.FilePath).HasMatches)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static SymbolGroupFilter ToSymbolGroupFilter(this TypeKind typeKind)
     {
         switch (typeKind)
@@ -296,6 +313,7 @@ internal static class Extensions
         this ICodeMetricsService service,
         Project project,
         LinesOfCodeKind kind,
+        FileSystemFilter fileSystemFilter,
         CodeMetricsOptions options = null,
         CancellationToken cancellationToken = default)
     {
@@ -305,6 +323,14 @@ internal static class Extensions
         {
             if (!document.SupportsSyntaxTree)
                 continue;
+
+            string filePath = document.FilePath;
+
+            if (filePath is not null
+                && fileSystemFilter?.IsMatch(filePath) == false)
+            {
+                continue;
+            }
 
             CodeMetricsInfo documentMetrics = await service.CountLinesAsync(document, kind, options, cancellationToken).ConfigureAwait(false);
 

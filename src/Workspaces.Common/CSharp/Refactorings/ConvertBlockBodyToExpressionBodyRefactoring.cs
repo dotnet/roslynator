@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -163,7 +164,9 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 {
                     if (CanRefactor(member))
                     {
-                        var newMember = (MemberDeclarationSyntax)Refactor(member);
+                        AnalyzerConfigOptions configOptions = document.GetConfigOptions(selectedMembers.Parent.SyntaxTree);
+
+                        var newMember = (MemberDeclarationSyntax)Refactor(member, configOptions);
 
                         return newMember
                             .WithTrailingTrivia(member.GetTrailingTrivia())
@@ -181,12 +184,14 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
         SyntaxNode node,
         CancellationToken cancellationToken = default)
     {
-        SyntaxNode newNode = Refactor(node).WithFormatterAnnotation();
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(node.SyntaxTree);
+
+        SyntaxNode newNode = Refactor(node, configOptions).WithFormatterAnnotation();
 
         return document.ReplaceNodeAsync(node, newNode, cancellationToken);
     }
 
-    private static SyntaxNode Refactor(SyntaxNode node)
+    private static SyntaxNode Refactor(SyntaxNode node, AnalyzerConfigOptions configOptions)
     {
         switch (node.Kind())
         {
@@ -196,7 +201,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(methodDeclaration.Body);
 
                     return methodDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, methodDeclaration))
+                        .WithExpressionBody(CreateExpressionBody(analysis, methodDeclaration, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(methodDeclaration.Body, analysis))
                         .WithBody(null);
                 }
@@ -206,7 +211,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(constructorDeclaration.Body);
 
                     return constructorDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, constructorDeclaration))
+                        .WithExpressionBody(CreateExpressionBody(analysis, constructorDeclaration, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(constructorDeclaration.Body, analysis))
                         .WithBody(null);
                 }
@@ -216,7 +221,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(destructorDeclaration.Body);
 
                     return destructorDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, destructorDeclaration))
+                        .WithExpressionBody(CreateExpressionBody(analysis, destructorDeclaration, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(destructorDeclaration.Body, analysis))
                         .WithBody(null);
                 }
@@ -226,7 +231,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(localFunction.Body);
 
                     return localFunction
-                        .WithExpressionBody(CreateExpressionBody(analysis, localFunction))
+                        .WithExpressionBody(CreateExpressionBody(analysis, localFunction, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(localFunction.Body, analysis))
                         .WithBody(null);
                 }
@@ -236,7 +241,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
 
                     return operatorDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration))
+                        .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
                         .WithBody(null);
                 }
@@ -246,7 +251,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
 
                     return operatorDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration))
+                        .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
                         .WithBody(null);
                 }
@@ -256,7 +261,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(propertyDeclaration.AccessorList);
 
                     return propertyDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, propertyDeclaration))
+                        .WithExpressionBody(CreateExpressionBody(analysis, propertyDeclaration, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
                         .WithAccessorList(null);
                 }
@@ -266,7 +271,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(indexerDeclaration.AccessorList);
 
                     return indexerDeclaration
-                        .WithExpressionBody(CreateExpressionBody(analysis, indexerDeclaration))
+                        .WithExpressionBody(CreateExpressionBody(analysis, indexerDeclaration, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
                         .WithAccessorList(null);
                 }
@@ -280,7 +285,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                     BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(accessor);
 
                     return accessor
-                        .WithExpressionBody(CreateExpressionBody(analysis, accessor))
+                        .WithExpressionBody(CreateExpressionBody(analysis, accessor, configOptions))
                         .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
                         .WithBody(null);
                 }
@@ -292,7 +297,10 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
         }
     }
 
-    private static ArrowExpressionClauseSyntax CreateExpressionBody(BlockExpressionAnalysis analysis, SyntaxNode declaration)
+    private static ArrowExpressionClauseSyntax CreateExpressionBody(
+        BlockExpressionAnalysis analysis,
+        SyntaxNode declaration,
+        AnalyzerConfigOptions configOptions)
     {
         SyntaxToken arrowToken = Token(SyntaxKind.EqualsGreaterThanToken);
 
@@ -323,7 +331,7 @@ internal static class ConvertBlockBodyToExpressionBodyRefactoring
                 }
         }
 
-        expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration);
+        expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration, configOptions);
 
         return ArrowExpressionClause(arrowToken, expression);
     }

@@ -6,7 +6,6 @@ internal static class OptionShortNames
 {
     public const char AnalyzerAssemblies = 'a';
     public const char DryRun = 'd';
-    public const char Filter = 'f';
     public const char IncludeGeneratedCode = 'g';
     public const char Help = 'h';
     public const char Manual = 'm';

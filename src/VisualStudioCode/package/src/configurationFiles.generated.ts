@@ -120,6 +120,13 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_suppress_unity_script_methods = true|false
 # Applicable to: rcs1213
 
+#roslynator_tab_length = <NUM>
+# Default: 4
+# Applicable to: rcs0056
+
+#roslynator_trailing_comma_style = include|omit|omit_when_single_line
+# Applicable to: rcs1260
+
 #roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: rcs1207
 
@@ -191,9 +198,6 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs0021.severity = none
 # Options: roslynator_block_braces_style
 
-# Add new line after opening brace of empty block
-#dotnet_diagnostic.rcs0022.severity = none
-
 # Format type declaration's braces
 #dotnet_diagnostic.rcs0023.severity = none
 
@@ -233,9 +237,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Remove blank line between single-line declarations of same kind
 #dotnet_diagnostic.rcs0036.severity = none
 
-# Remove blank line between using directives with same root namespace
-#dotnet_diagnostic.rcs0038.severity = none
-
 # Remove new line before base list
 #dotnet_diagnostic.rcs0039.severity = none
 
@@ -245,9 +246,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Put auto-accessors on a single line
 #dotnet_diagnostic.rcs0042.severity = none
 
-# Format accessor's braces on a single line when expression is on single line
-#dotnet_diagnostic.rcs0043.severity = none
-
 # Use carriage return + linefeed as new line
 #dotnet_diagnostic.rcs0044.severity = none
 
@@ -256,9 +254,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Use spaces instead of tab
 #dotnet_diagnostic.rcs0046.severity = none
-
-# [deprecated] Wrap and indent each node in list
-#dotnet_diagnostic.rcs0047.severity = none
 
 # Put initializer on a single line
 #dotnet_diagnostic.rcs0048.severity = none
@@ -288,7 +283,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # A line is too long
 #dotnet_diagnostic.rcs0056.severity = none
-# Options: roslynator_max_line_length
+# Options: roslynator_max_line_length, roslynator_tab_length
 
 # Normalize whitespace at the beginning of a file
 #dotnet_diagnostic.rcs0057.severity = none
@@ -377,9 +372,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Remove redundant 'sealed' modifier
 #dotnet_diagnostic.rcs1034.severity = silent
 
-# Remove redundant comma in initializer
-#dotnet_diagnostic.rcs1035.severity = none
-
 # Remove unnecessary blank line
 #dotnet_diagnostic.rcs1036.severity = suggestion
 # Options: roslynator_blank_line_between_closing_brace_and_switch_section
@@ -387,17 +379,8 @@ roslynator_analyzers.enabled_by_default = true|false
 # Remove trailing white-space
 #dotnet_diagnostic.rcs1037.severity = suggestion
 
-# Remove empty statement
-#dotnet_diagnostic.rcs1038.severity = suggestion
-
 # Remove argument list from attribute
 #dotnet_diagnostic.rcs1039.severity = silent
-
-# Remove empty 'else' clause
-#dotnet_diagnostic.rcs1040.severity = silent
-
-# Remove empty initializer
-#dotnet_diagnostic.rcs1041.severity = suggestion
 
 # Remove enum default underlying type
 #dotnet_diagnostic.rcs1042.severity = silent
@@ -449,9 +432,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Merge 'if' with nested 'if'
 #dotnet_diagnostic.rcs1061.severity = silent
 
-# Remove empty 'finally' clause
-#dotnet_diagnostic.rcs1066.severity = silent
-
 # Simplify logical negation
 #dotnet_diagnostic.rcs1068.severity = suggestion
 
@@ -463,9 +443,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Remove redundant base constructor call
 #dotnet_diagnostic.rcs1071.severity = silent
-
-# Remove empty namespace declaration
-#dotnet_diagnostic.rcs1072.severity = suggestion
 
 # Convert 'if' to 'return' statement
 #dotnet_diagnostic.rcs1073.severity = suggestion
@@ -505,9 +482,6 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs1090.severity = none
 # Options: roslynator_configure_await
 
-# Remove empty region
-#dotnet_diagnostic.rcs1091.severity = silent
-
 # Remove file with no code
 #dotnet_diagnostic.rcs1093.severity = suggestion
 
@@ -538,9 +512,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Unnecessary interpolation
 #dotnet_diagnostic.rcs1105.severity = suggestion
-
-# Remove empty destructor
-#dotnet_diagnostic.rcs1106.severity = suggestion
 
 # Remove redundant 'ToCharArray' call
 #dotnet_diagnostic.rcs1107.severity = suggestion
@@ -917,6 +888,19 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Invalid argument null check
 #dotnet_diagnostic.rcs1256.severity = suggestion
+
+# Use enum field explicitly
+#dotnet_diagnostic.rcs1257.severity = suggestion
+
+# Unnecessary enum flag
+#dotnet_diagnostic.rcs1258.severity = suggestion
+
+# Remove empty syntax
+#dotnet_diagnostic.rcs1259.severity = suggestion
+
+# Add/remove trailing comma
+#dotnet_diagnostic.rcs1260.severity = none
+# Options: roslynator_trailing_comma_style
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

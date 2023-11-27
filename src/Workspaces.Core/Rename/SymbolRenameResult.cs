@@ -1,25 +1,24 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Diagnostics;
-
 namespace Roslynator.Rename;
 
-[DebuggerDisplay("{DebuggerDisplay,nq}")]
-internal readonly struct SymbolRenameResult
+/// <summary>
+/// Specifies the result of renaming a symbol.
+/// </summary>
+public enum SymbolRenameResult
 {
-    public SymbolRenameResult(string oldName, string newName, string symbolId)
-    {
-        OldName = oldName;
-        NewName = newName;
-        SymbolId = symbolId;
-    }
+    /// <summary>
+    /// Symbol was renamed successfully.
+    /// </summary>
+    Success,
 
-    public string OldName { get; }
+    /// <summary>
+    /// <see cref="Microsoft.CodeAnalysis.Rename.Renamer"/> throws an exception.
+    /// </summary>
+    Error,
 
-    public string NewName { get; }
-
-    public string SymbolId { get; }
-
-    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => (OldName is not null) ? $"{OldName}  {NewName}  {SymbolId}" : "Uninitialized";
+    /// <summary>
+    /// Renaming of a symbol caused compilation errors.
+    /// </summary>
+    CompilationError,
 }

@@ -12,13 +12,7 @@ internal sealed class HelpCommandLineOptions : AbstractCommandLineOptions
         HelpText = "Command name.",
         MetaName = "<COMMAND>")]
     public string Command { get; set; } = null!;
-#if DEBUG
-    [Option(
-        shortName: OptionShortNames.Filter,
-        longName: "filter",
-        HelpText = "Search phrase to filter the results.")]
-    public string Filter { get; set; }
-#endif
+
     [Option(
         shortName: OptionShortNames.Manual,
         longName: "manual",

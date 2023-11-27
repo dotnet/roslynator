@@ -24,7 +24,7 @@ internal partial class CSharpSpellingService : SpellingService
 
     public override DiagnosticAnalyzer CreateAnalyzer(
         SpellingData spellingData,
-        SpellingFixerOptions options)
+        SpellcheckOptions options)
     {
         return new CSharpSpellingAnalyzer(spellingData, options);
     }
@@ -32,7 +32,7 @@ internal partial class CSharpSpellingService : SpellingService
     public override ImmutableArray<Diagnostic> AnalyzeSpelling(
         SyntaxNode node,
         SpellingData spellingData,
-        SpellingFixerOptions options,
+        SpellcheckOptions options,
         CancellationToken cancellationToken = default)
     {
         var diagnostics = new List<Diagnostic>();

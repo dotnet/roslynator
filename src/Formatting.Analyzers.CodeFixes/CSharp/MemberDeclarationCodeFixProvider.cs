@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
@@ -56,10 +57,12 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                         "Put constructor initializer on its own line",
                         ct =>
                         {
+                            AnalyzerConfigOptions configOptions = document.GetConfigOptions(memberDeclaration.SyntaxTree);
+
                             return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
                                 document,
                                 ((ConstructorDeclarationSyntax)memberDeclaration).Initializer.ColonToken,
-                                SyntaxTriviaAnalysis.AnalyzeIndentation(memberDeclaration, ct),
+                                SyntaxTriviaAnalysis.AnalyzeIndentation(memberDeclaration, configOptions, ct),
                                 ct);
                         },
                         GetEquivalenceKey(diagnostic));

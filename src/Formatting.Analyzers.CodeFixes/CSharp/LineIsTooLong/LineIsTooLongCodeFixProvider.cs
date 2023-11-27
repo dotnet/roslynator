@@ -205,7 +205,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
         ConditionalExpressionSyntax conditionalExpression,
         CancellationToken cancellationToken = default)
     {
-        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(conditionalExpression, cancellationToken);
+        string indentation = document.AnalyzeIndentation(conditionalExpression, cancellationToken).GetIncreasedIndentation();
 
         if (document.GetConfigOptions(conditionalExpression.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After)
         {
@@ -235,7 +235,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
         bool addNewLineAfter,
         CancellationToken cancellationToken = default)
     {
-        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(token.Parent, cancellationToken);
+        string indentation = document.AnalyzeIndentation(token.Parent, cancellationToken).GetIncreasedIndentation();
 
         return (addNewLineAfter)
             ? AddNewLineAfterAsync(document, token, indentation, cancellationToken)
@@ -247,7 +247,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
         ForStatementSyntax forStatement,
         CancellationToken cancellationToken = default)
     {
-        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(forStatement, cancellationToken);
+        string indentation = document.AnalyzeIndentation(forStatement, cancellationToken).GetIncreasedIndentation();
 
         return document.WithTextChangesAsync(
             new TextChange[]
@@ -265,6 +265,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
         CancellationToken cancellationToken = default)
     {
         List<TextChange> textChanges = GetFixListChanges(
+            document,
             baseList,
             baseList.ColonToken,
             baseList.Types,
@@ -280,6 +281,7 @@ public sealed class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
             if (constraintClauses.Any())
             {
                 List<TextChange> textChanges2 = GetFixListChanges(
+                    document,
                     genericInfo.Node,
                     constraintClauses[0].WhereKeyword.GetPreviousToken(),
                     constraintClauses,

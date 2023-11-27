@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,7 +13,13 @@ namespace Roslynator.CSharp.Analysis;
 public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDiagnosticAnalyzer
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-    private static readonly MetadataName _componentBaseName = MetadataName.Parse("Microsoft.AspNetCore.Components.ComponentBase");
+
+    private static readonly MetadataName[] _metadataNames = new[] {
+        // ASP.NET Core
+        MetadataName.Parse("Microsoft.AspNetCore.Components.ComponentBase"),
+        // WPF
+        MetadataName.Parse("System.Windows.FrameworkElement")
+    };
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
@@ -49,7 +56,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
         if (symbol?.DeclaringSyntaxReferences.SingleOrDefault(shouldThrow: false) is null)
             return;
 
-        if (symbol.InheritsFrom(_componentBaseName))
+        if (_metadataNames.Any(c => symbol.InheritsFrom(c)))
             return;
 
         foreach (MemberDeclarationSyntax member in typeDeclaration.Members)

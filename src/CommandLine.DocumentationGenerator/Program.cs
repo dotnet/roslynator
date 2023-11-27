@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ internal static class Program
             "roslynator",
             "Roslynator Command-line Tool",
             CommandLoader.LoadCommands(typeof(CommandLoader).Assembly)
-                .Select(c => c.WithOptions(c.Options.OrderBy(f => f, CommandOptionComparer.Name)))
+                .Select(c => c with { Options = c.Options.OrderBy(f => f, CommandOptionComparer.Name).ToImmutableArray() })
                 .OrderBy(c => c.Name, StringComparer.InvariantCulture));
 
         if (args.Length < 2)
@@ -88,6 +89,13 @@ internal static class Program
 
                 writer.WriteCommandHeading(command, application);
                 writer.WriteCommandDescription(command);
+
+                if (!string.IsNullOrEmpty(command.ObsoleteMessage))
+                {
+                    dw.WriteStartDocusaurusAdmonition(AdmonitionKind.Caution, "WARNING");
+                    dw.WriteRaw(command.ObsoleteMessage);
+                    dw.WriteEndDocusaurusAdmonition();
+                }
 
                 string additionalContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_bottom.md");
 

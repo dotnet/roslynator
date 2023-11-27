@@ -36,7 +36,7 @@ internal static class UseMethodChainingRefactoring
 
         int index = statements.IndexOf(expressionStatement);
 
-        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(expressionStatement, cancellationToken);
+        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(expressionStatement, document.GetConfigOptions(expressionStatement.SyntaxTree), cancellationToken);
 
         var sb = new StringBuilder(invocationExpression.ToString());
 

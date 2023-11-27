@@ -13,14 +13,14 @@ internal partial class CSharpSpellingService
     [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1001:Missing diagnostic analyzer attribute.")]
     private class CSharpSpellingAnalyzer : DiagnosticAnalyzer
     {
-        private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics = ImmutableArray.Create(SpellingAnalyzer.DiagnosticDescriptor);
+        private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics = ImmutableArray.Create(SpellcheckAnalyzer.DiagnosticDescriptor);
 
         private readonly SpellingData _spellingData;
-        private readonly SpellingFixerOptions _options;
+        private readonly SpellcheckOptions _options;
 
         public CSharpSpellingAnalyzer(
             SpellingData spellingData,
-            SpellingFixerOptions options)
+            SpellcheckOptions options)
         {
             _spellingData = spellingData;
             _options = options;
@@ -42,6 +42,9 @@ internal partial class CSharpSpellingService
         private void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             SyntaxTree tree = context.Tree;
+
+            if (_options.FileSystemFilter?.IsMatch(tree.FilePath) == false)
+                return;
 
             SyntaxNode root = tree.GetRoot(context.CancellationToken);
 
