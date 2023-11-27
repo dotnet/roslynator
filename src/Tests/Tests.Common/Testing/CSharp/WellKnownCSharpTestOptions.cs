@@ -14,6 +14,7 @@ public static class WellKnownCSharpTestOptions
     private static CSharpTestOptions _default_CSharp7_3;
     private static CSharpTestOptions _default_CSharp8;
     private static CSharpTestOptions _default_CSharp9;
+    private static CSharpTestOptions _default_CSharp11;
     private static CSharpTestOptions _default_NullableReferenceTypes;
 
     public static CSharpTestOptions Default_CSharp5
@@ -91,6 +92,19 @@ public static class WellKnownCSharpTestOptions
             return _default_CSharp9;
 
             static CSharpTestOptions Create() => DefaultCSharpTestOptions.Value.WithParseOptions(DefaultCSharpTestOptions.Value.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp9));
+        }
+    }
+
+    public static CSharpTestOptions Default_CSharp11
+    {
+        get
+        {
+            if (_default_CSharp11 is null)
+                Interlocked.CompareExchange(ref _default_CSharp11, Create(), null);
+
+            return _default_CSharp11;
+
+            static CSharpTestOptions Create() => DefaultCSharpTestOptions.Value.WithParseOptions(DefaultCSharpTestOptions.Value.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp11));
         }
     }
 

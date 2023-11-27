@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Text;
@@ -70,12 +71,30 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                     string text = interpolatedStringText.TextToken.Text;
 
                     text = StringUtility.ReplaceDoubleBracesWithSingleBrace(text);
+                    if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression
+                        && interpolatedStringExpression.StringStartToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken))
+                    {
+                        text = interpolatedStringExpression.StringStartToken.ValueText.Substring(1)
+                            + text
+                            + interpolatedStringExpression.StringEndToken.ValueText;
+                    }
+                    else if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression2
+                        && interpolatedStringExpression2.StringStartToken.IsKind(SyntaxKind.InterpolatedMultiLineRawStringStartToken))
+                    {
+                        text = interpolatedStringExpression2.StringStartToken.ValueText.Substring(1)
+                            + text
+                            + interpolatedStringExpression2.StringEndToken.ValueText;
+                    }
+                    else if (isVerbatim)
+                    {
+                        text = "@\"" + text + "\"";
+                    }
+                    else
+                    {
+                        text = "\"" + text + "\"";
+                    }
 
-                    text = (isVerbatim)
-                        ? "@\"" + text + "\""
-                        : "\"" + text + "\"";
-
-                    ExpressionSyntax stringLiteral = ParseExpression(text);
+                    ExpressionSyntax stringLiteral = ParseExpression(text).WithTriviaFrom(interpolatedStringText);
 
                     return (kind, "Append", ImmutableArray.Create(Argument(stringLiteral)));
                 }
