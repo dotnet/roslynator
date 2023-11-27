@@ -31,7 +31,7 @@ internal class FixList
 
     public bool ContainsKey(string key) => Items.ContainsKey(key);
 
-    public bool TryGetValue(string key, out ImmutableHashSet<SpellingFix> value)
+    public bool TryGetValue(string key, out ImmutableHashSet<SpellingFix>? value)
     {
         return Items.TryGetValue(key, out value);
     }
@@ -43,7 +43,7 @@ internal class FixList
 
     public FixList Add(string key, SpellingFix fix)
     {
-        if (Items.TryGetValue(key, out ImmutableHashSet<SpellingFix> fixes))
+        if (Items.TryGetValue(key, out ImmutableHashSet<SpellingFix>? fixes))
         {
             if (fixes.Contains(fix))
                 return this;

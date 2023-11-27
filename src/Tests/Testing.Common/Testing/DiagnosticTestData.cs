@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -28,15 +28,16 @@ public sealed class DiagnosticTestData
     /// <param name="formatProvider"></param>
     /// <param name="equivalenceKey"></param>
     /// <param name="alwaysVerifyAdditionalLocations"></param>
+    [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     public DiagnosticTestData(
         DiagnosticDescriptor descriptor,
         string source,
-        IEnumerable<TextSpan> spans,
-        IEnumerable<TextSpan> additionalSpans = null,
-        IEnumerable<AdditionalFile> additionalFiles = null,
-        string diagnosticMessage = null,
-        IFormatProvider formatProvider = null,
-        string equivalenceKey = null,
+        IEnumerable<TextSpan>? spans,
+        IEnumerable<TextSpan>? additionalSpans = null,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? diagnosticMessage = null,
+        IFormatProvider? formatProvider = null,
+        string? equivalenceKey = null,
         bool alwaysVerifyAdditionalLocations = false)
     {
         Descriptor = descriptor ?? throw new ArgumentNullException(nameof(descriptor));
@@ -48,6 +49,45 @@ public sealed class DiagnosticTestData
         FormatProvider = formatProvider;
         EquivalenceKey = equivalenceKey;
         AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+
+        if (Spans.Length > 1
+            && !AdditionalSpans.IsEmpty)
+        {
+            throw new ArgumentException("", nameof(additionalSpans));
+        }
+    }
+
+#pragma warning disable CS0618 // Type or member is obsolete
+    /// <summary>
+    /// Initializes a new instance of <see cref="DiagnosticTestData"/>.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="spans"></param>
+    /// <param name="additionalSpans"></param>
+    /// <param name="additionalFiles"></param>
+    /// <param name="diagnosticMessage"></param>
+    /// <param name="formatProvider"></param>
+    /// <param name="equivalenceKey"></param>
+    /// <param name="alwaysVerifyAdditionalLocations"></param>
+    public DiagnosticTestData(
+        string source,
+        IEnumerable<TextSpan>? spans,
+        IEnumerable<TextSpan>? additionalSpans = null,
+        IEnumerable<AdditionalFile>? additionalFiles = null,
+        string? diagnosticMessage = null,
+        IFormatProvider? formatProvider = null,
+        string? equivalenceKey = null,
+        bool alwaysVerifyAdditionalLocations = false)
+    {
+        Source = source ?? throw new ArgumentNullException(nameof(source));
+        Spans = spans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
+        AdditionalSpans = additionalSpans?.ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty;
+        AdditionalFiles = additionalFiles?.ToImmutableArray() ?? ImmutableArray<AdditionalFile>.Empty;
+        DiagnosticMessage = diagnosticMessage;
+        FormatProvider = formatProvider;
+        EquivalenceKey = equivalenceKey;
+        AlwaysVerifyAdditionalLocations = alwaysVerifyAdditionalLocations;
+        Descriptor = null!;
 
         if (Spans.Length > 1
             && !AdditionalSpans.IsEmpty)
@@ -69,10 +109,12 @@ public sealed class DiagnosticTestData
             alwaysVerifyAdditionalLocations: other.AlwaysVerifyAdditionalLocations)
     {
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 
     /// <summary>
     /// Gets diagnostic's descriptor.
     /// </summary>
+    [Obsolete("This property is obsolete and will be removed in future versions.")]
     public DiagnosticDescriptor Descriptor { get; }
 
     /// <summary>
@@ -98,38 +140,38 @@ public sealed class DiagnosticTestData
     /// <summary>
     /// Gets diagnostic's message
     /// </summary>
-    public string DiagnosticMessage { get; }
+    public string? DiagnosticMessage { get; }
 
     /// <summary>
     /// Gets format provider to be used to format diagnostic's message.
     /// </summary>
-    public IFormatProvider FormatProvider { get; }
+    public IFormatProvider? FormatProvider { get; }
 
     /// <summary>
     /// Gets code action's equivalence key.
     /// </summary>
-    public string EquivalenceKey { get; }
+    public string? EquivalenceKey { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => $"{Descriptor.Id}  {Source}";
+    private string DebuggerDisplay => $"{Source}";
 
     /// <summary>
     /// True if additional locations should be always verified.
     /// </summary>
     public bool AlwaysVerifyAdditionalLocations { get; }
 
-    internal ImmutableArray<Diagnostic> GetDiagnostics(SyntaxTree tree)
+    internal ImmutableArray<Diagnostic> GetDiagnostics(DiagnosticDescriptor descriptor, SyntaxTree tree)
     {
         if (Spans.IsEmpty)
         {
-            return ImmutableArray.Create(Diagnostic.Create(Descriptor, Location.None));
+            return ImmutableArray.Create(Diagnostic.Create(descriptor, Location.None));
         }
         else
         {
             return ImmutableArray.CreateRange(
                 Spans,
                 span => Diagnostic.Create(
-                    Descriptor,
+                    descriptor,
                     Location.Create(tree, span),
                     additionalLocations: AdditionalSpans.Select(span => Location.Create(tree, span)).ToImmutableArray()));
         }

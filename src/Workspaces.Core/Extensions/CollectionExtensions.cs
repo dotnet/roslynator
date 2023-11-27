@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ namespace Roslynator;
 
 internal static class CollectionExtensions
 {
-    public static T SingleOrDefault<T>(this IReadOnlyCollection<T> values, bool shouldThrow)
+    public static T? SingleOrDefault<T>(this IReadOnlyCollection<T> values, bool shouldThrow)
     {
         if (values is null)
             throw new ArgumentNullException(nameof(values));
@@ -23,7 +23,7 @@ internal static class CollectionExtensions
         }
     }
 
-    public static T SingleOrDefault<T>(
+    public static T? SingleOrDefault<T>(
         this IReadOnlyCollection<T> list,
         Func<T, bool> predicate,
         bool shouldThrow)

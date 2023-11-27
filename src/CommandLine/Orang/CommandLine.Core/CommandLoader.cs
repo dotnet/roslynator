@@ -42,7 +42,7 @@ internal static class CommandLoader
         return null;
     }
 
-    private static Command CreateCommand(Type type, VerbAttribute verbAttribute)
+    private static Command CreateCommand(System.Reflection.TypeInfo type, VerbAttribute verbAttribute)
     {
         ImmutableArray<CommandArgument>.Builder arguments = ImmutableArray.CreateBuilder<CommandArgument>();
         ImmutableArray<CommandOption>.Builder options = ImmutableArray.CreateBuilder<CommandOption>();

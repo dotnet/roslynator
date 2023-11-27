@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Concurrent;
@@ -20,7 +20,9 @@ internal class SymbolProvider
 {
     public bool IncludeGeneratedCode { get; init; }
 
-    public Matcher FileSystemMatcher { get; init; }
+    public Matcher? FileSystemMatcher { get; init; }
+
+    public string? RootDirectoryPath { get; init; }
 
     public async Task<IEnumerable<ISymbol>> GetSymbolsAsync(
         Project project,
@@ -30,13 +32,13 @@ internal class SymbolProvider
         cancellationToken.ThrowIfCancellationRequested();
 
         var compilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
-            options: default(AnalyzerOptions),
+            options: default(AnalyzerOptions)!,
             onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
             concurrentAnalysis: true,
             logAnalyzerExecutionTime: false,
             reportSuppressedDiagnostics: false);
 
-        Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+        Compilation compilation = (await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false))!;
 
         ImmutableArray<SymbolKind> symbolKinds = scope switch
         {
@@ -50,6 +52,7 @@ internal class SymbolProvider
         {
             IncludeGeneratedCode = IncludeGeneratedCode,
             FileSystemMatcher = FileSystemMatcher,
+            RootDirectoryPath = RootDirectoryPath,
         };
 
         analyzer.SymbolKinds.AddRange(symbolKinds);
@@ -88,7 +91,9 @@ internal class SymbolProvider
 
         public bool IncludeGeneratedCode { get; init; }
 
-        public Matcher FileSystemMatcher { get; init; }
+        public Matcher? FileSystemMatcher { get; init; }
+
+        public string? RootDirectoryPath { get; init; }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -146,7 +151,7 @@ internal class SymbolProvider
 
         private void AddSymbol(ISymbol symbol)
         {
-            if (FileSystemMatcher?.IsMatch(symbol) != false)
+            if (FileSystemMatcher?.IsMatch(symbol, RootDirectoryPath) != false)
                 Symbols.Add(symbol);
         }
     }

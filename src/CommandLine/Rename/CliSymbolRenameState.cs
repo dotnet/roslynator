@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -47,7 +47,10 @@ internal class CliSymbolRenameState : SymbolRenameState
 
     public ConsoleDialog UserDialog { get; set; }
 
-    protected override async Task RenameSymbolsAsync(ImmutableArray<ProjectId> projects, CancellationToken cancellationToken = default)
+    protected override async Task RenameSymbolsAsync(
+        ImmutableArray<ProjectId> projects,
+        bool isSolution,
+        CancellationToken cancellationToken = default)
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
         TimeSpan lastElapsed = TimeSpan.Zero;
@@ -65,15 +68,18 @@ internal class CliSymbolRenameState : SymbolRenameState
 
                 WriteLine($"  Rename {GetScopePluralName(renameScopes[i])} in '{project.Name}' {$"{j + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
+                if (!isSolution)
+                    CurrentDirectoryPath = Path.GetDirectoryName(project.FilePath);
+
                 await AnalyzeProjectAsync(project, renameScopes[i], cancellationToken);
 
-                WriteLine($"  Done renaming {GetScopePluralName(renameScopes[i])} in '{project.Name}' in {stopwatch.Elapsed - lastElapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+                LogHelpers.WriteElapsedTime($"  Renamed {GetScopePluralName(renameScopes[i])} in '{project.Name}'", stopwatch.Elapsed - lastElapsed, Verbosity.Normal);
             }
         }
 
         stopwatch.Stop();
 
-        WriteLine($"Done renaming symbols in solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+        LogHelpers.WriteElapsedTime($"Renamed symbols in solution '{CurrentSolution.FilePath}'", stopwatch.Elapsed, Verbosity.Minimal);
     }
 
     public override async Task RenameSymbolsAsync(Project project, CancellationToken cancellationToken = default)

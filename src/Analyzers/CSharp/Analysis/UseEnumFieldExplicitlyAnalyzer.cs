@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -64,13 +64,15 @@ public sealed class UseEnumFieldExplicitlyAnalyzer : BaseDiagnosticAnalyzer
         if (enumSymbol?.EnumUnderlyingType is null)
             return;
 
-        ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValueOpt.Value, enumSymbol);
+        if (!ConvertHelpers.TryConvertToUInt64(constantValueOpt.Value, out ulong value))
+            return;
 
         foreach (ISymbol member in enumSymbol.GetMembers())
         {
             if (member is IFieldSymbol fieldSymbol
                 && fieldSymbol.HasConstantValue
-                && value == SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumSymbol))
+                && ConvertHelpers.TryConvertToUInt64(fieldSymbol.ConstantValue, out ulong fieldValue)
+                && value == fieldValue)
             {
                 context.ReportDiagnostic(DiagnosticRules.UseEnumFieldExplicitly, castExpression);
                 return;

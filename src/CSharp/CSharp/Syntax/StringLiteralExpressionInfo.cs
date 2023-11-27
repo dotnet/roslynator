@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -141,7 +141,7 @@ public readonly struct StringLiteralExpressionInfo
         return Create(Walk(node, walkDownParentheses) as LiteralExpressionSyntax);
     }
 
-    internal static StringLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
+    internal static StringLiteralExpressionInfo Create(LiteralExpressionSyntax? literalExpression)
     {
         if (literalExpression?.Kind() != SyntaxKind.StringLiteralExpression)
             return default;

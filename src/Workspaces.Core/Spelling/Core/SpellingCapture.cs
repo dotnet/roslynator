@@ -7,7 +7,7 @@ namespace Roslynator.Spelling;
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal class SpellingCapture
 {
-    public SpellingCapture(string value, int index, string containingValue = null, int containingValueIndex = -1)
+    public SpellingCapture(string value, int index, string? containingValue = null, int containingValueIndex = -1)
     {
         Value = value;
         Index = index;
@@ -21,7 +21,7 @@ internal class SpellingCapture
 
     public int Length => Value.Length;
 
-    public string ContainingValue { get; }
+    public string? ContainingValue { get; }
 
     public int ContainingValueIndex { get; }
 

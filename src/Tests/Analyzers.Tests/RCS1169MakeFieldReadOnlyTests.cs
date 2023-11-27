@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -376,5 +376,27 @@ class C
     ref int M2() {return ref Unsafe.Add(ref _a, 3);} 
 }
 ");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
+    public async Task TestNoDiagnostic_UnitySerializeAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using UnityEngine;
+
+class C
+{
+    [SerializeField]
+    private string f;
+}
+
+namespace UnityEngine
+{
+    class SerializeFieldAttribute : Attribute
+    {
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
     }
 }

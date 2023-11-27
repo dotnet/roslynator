@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Globalization;
@@ -565,12 +565,15 @@ internal static class CodeStyleExtensions
         return BlankLineStyle.None;
     }
 
-    public static bool? GetSuppressUnityScriptMethods(this SyntaxNodeAnalysisContext context)
+    public static bool? IsUnityCodeAnalysisEnabled(this SyntaxNodeAnalysisContext context)
     {
-        if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.SuppressUnityScriptMethods, out bool value))
-        {
+        if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.UnityCodeAnalysisEnabled, out bool value))
             return value;
-        }
+
+#pragma warning disable CS0618 // Type or member is obsolete
+        if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.SuppressUnityScriptMethods, out value))
+            return value;
+#pragma warning restore CS0618 // Type or member is obsolete
 
         if (context.TryGetOptionAsBool(LegacyConfigOptions.SuppressUnityScriptMethods, out value))
             return value;

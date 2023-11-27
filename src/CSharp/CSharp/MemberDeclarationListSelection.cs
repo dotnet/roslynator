@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using Microsoft.CodeAnalysis;
@@ -81,19 +81,19 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
     /// <param name="span"></param>
     /// <param name="selectedMembers"></param>
     /// <returns>True if the specified span contains at least one member; otherwise, false.</returns>
-    public static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, out MemberDeclarationListSelection selectedMembers)
+    public static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, out MemberDeclarationListSelection? selectedMembers)
     {
         selectedMembers = Create(namespaceDeclaration, span, 1, int.MaxValue);
         return selectedMembers is not null;
     }
 
-    internal static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, int minCount, out MemberDeclarationListSelection selectedMembers)
+    internal static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, int minCount, out MemberDeclarationListSelection? selectedMembers)
     {
         selectedMembers = Create(namespaceDeclaration, span, minCount, int.MaxValue);
         return selectedMembers is not null;
     }
 
-    internal static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, int minCount, int maxCount, out MemberDeclarationListSelection selectedMembers)
+    internal static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, int minCount, int maxCount, out MemberDeclarationListSelection? selectedMembers)
     {
         selectedMembers = Create(namespaceDeclaration, span, minCount, maxCount);
         return selectedMembers is not null;
@@ -106,25 +106,25 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
     /// <param name="span"></param>
     /// <param name="selectedMembers"></param>
     /// <returns>True if the specified span contains at least one member; otherwise, false.</returns>
-    public static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, out MemberDeclarationListSelection selectedMembers)
+    public static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, out MemberDeclarationListSelection? selectedMembers)
     {
         selectedMembers = Create(typeDeclaration, span, 1, int.MaxValue);
         return selectedMembers is not null;
     }
 
-    internal static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, int minCount, out MemberDeclarationListSelection selectedMembers)
+    internal static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, int minCount, out MemberDeclarationListSelection? selectedMembers)
     {
         selectedMembers = Create(typeDeclaration, span, minCount, int.MaxValue);
         return selectedMembers is not null;
     }
 
-    internal static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, int minCount, int maxCount, out MemberDeclarationListSelection selectedMembers)
+    internal static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, int minCount, int maxCount, out MemberDeclarationListSelection? selectedMembers)
     {
         selectedMembers = Create(typeDeclaration, span, minCount, maxCount);
         return selectedMembers is not null;
     }
 
-    private static MemberDeclarationListSelection Create(NamespaceDeclarationSyntax declaration, TextSpan span, int minCount, int maxCount)
+    private static MemberDeclarationListSelection? Create(NamespaceDeclarationSyntax declaration, TextSpan span, int minCount, int maxCount)
     {
         if (declaration is null)
             return null;
@@ -132,7 +132,7 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
         return Create(declaration, declaration.Members, span, minCount, maxCount);
     }
 
-    private static MemberDeclarationListSelection Create(TypeDeclarationSyntax declaration, TextSpan span, int minCount, int maxCount)
+    private static MemberDeclarationListSelection? Create(TypeDeclarationSyntax declaration, TextSpan span, int minCount, int maxCount)
     {
         if (declaration is null)
             return null;
@@ -140,7 +140,7 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
         return Create(declaration, declaration.Members, span, minCount, maxCount);
     }
 
-    private static MemberDeclarationListSelection Create(MemberDeclarationSyntax declaration, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, int minCount, int maxCount)
+    private static MemberDeclarationListSelection? Create(MemberDeclarationSyntax declaration, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, int minCount, int maxCount)
     {
         SelectionResult result = SelectionResult.Create(members, span, minCount, maxCount);
 

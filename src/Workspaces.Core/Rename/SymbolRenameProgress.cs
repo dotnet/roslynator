@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -23,7 +23,7 @@ public readonly struct SymbolRenameProgress
         ISymbol symbol,
         string newName,
         SymbolRenameResult result,
-        Exception exception = null)
+        Exception? exception = null)
     {
         Symbol = symbol;
         NewName = newName;
@@ -49,7 +49,7 @@ public readonly struct SymbolRenameProgress
     /// <summary>
     /// Exception that occurred during renaming. May be <c>null</c>.
     /// </summary>
-    public Exception Exception { get; }
+    public Exception? Exception { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay => Symbol.ToDisplayString(SymbolDisplayFormats.FullName);

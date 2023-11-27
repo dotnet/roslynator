@@ -1,9 +1,11 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 namespace Roslynator.CodeMetrics;
 
 internal class CodeMetricsOptions
 {
+    public static CodeMetricsOptions Default { get; } = new();
+
     public CodeMetricsOptions(
         bool includeGenerated = false,
         bool includeWhitespace = false,

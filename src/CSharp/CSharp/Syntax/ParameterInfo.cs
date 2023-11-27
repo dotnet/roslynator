@@ -1,5 +1,6 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -14,9 +15,9 @@ internal readonly struct ParameterInfo
     public ParameterInfo(ParameterSyntax parameter, CSharpSyntaxNode body)
     {
         Parameter = parameter;
-        ParameterList = default;
+        ParameterList = null;
         Body = body;
-        TypeParameterList = default;
+        TypeParameterList = null;
     }
 
     public ParameterInfo(BaseParameterListSyntax parameterList, CSharpSyntaxNode body)
@@ -24,36 +25,36 @@ internal readonly struct ParameterInfo
     {
     }
 
-    public ParameterInfo(BaseParameterListSyntax parameterList, TypeParameterListSyntax typeParameterList, CSharpSyntaxNode body)
+    public ParameterInfo(BaseParameterListSyntax parameterList, TypeParameterListSyntax? typeParameterList, CSharpSyntaxNode? body)
     {
         ParameterList = parameterList;
-        Parameter = default;
+        Parameter = null;
         Body = body;
         TypeParameterList = typeParameterList;
     }
 
     public SyntaxNode Node
     {
-        get { return ParameterList?.Parent ?? Parameter?.Parent; }
+        get { return ParameterList?.Parent ?? Parameter?.Parent ?? throw new InvalidOperationException("Object is not initialized."); }
     }
 
-    public TypeParameterListSyntax TypeParameterList { get; }
+    public TypeParameterListSyntax? TypeParameterList { get; }
 
     public SeparatedSyntaxList<TypeParameterSyntax> TypeParameters
     {
         get { return TypeParameterList?.Parameters ?? default; }
     }
 
-    public ParameterSyntax Parameter { get; }
+    public ParameterSyntax? Parameter { get; }
 
-    public BaseParameterListSyntax ParameterList { get; }
+    public BaseParameterListSyntax? ParameterList { get; }
 
     public SeparatedSyntaxList<ParameterSyntax> Parameters
     {
         get { return ParameterList?.Parameters ?? default; }
     }
 
-    public CSharpSyntaxNode Body { get; }
+    public CSharpSyntaxNode? Body { get; }
 
     public bool Success
     {
@@ -63,7 +64,7 @@ internal readonly struct ParameterInfo
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     private string DebuggerDisplay
     {
-        get { return SyntaxInfoHelpers.ToDebugString(Success, this, ParameterList ?? (SyntaxNode)Parameter); }
+        get { return SyntaxInfoHelpers.ToDebugString(Success, this, ParameterList ?? (SyntaxNode?)Parameter); }
     }
 
     internal static ParameterInfo Create(ConstructorDeclarationSyntax constructorDeclaration, bool allowMissing = false)
@@ -73,12 +74,12 @@ internal readonly struct ParameterInfo
         if (!CheckParameterList(parameterList, allowMissing))
             return default;
 
-        CSharpSyntaxNode body = constructorDeclaration.BodyOrExpressionBody();
+        CSharpSyntaxNode? body = constructorDeclaration.BodyOrExpressionBody();
 
         if (!Check(body, allowMissing))
             return default;
 
-        return new ParameterInfo(parameterList, body);
+        return new ParameterInfo(parameterList, body!);
     }
 
     internal static ParameterInfo Create(MethodDeclarationSyntax methodDeclaration, bool allowMissing = false)
@@ -93,7 +94,7 @@ internal readonly struct ParameterInfo
         if (!CheckParameters(parameters, allowMissing))
             return default;
 
-        TypeParameterListSyntax typeParameterList = methodDeclaration.TypeParameterList;
+        TypeParameterListSyntax? typeParameterList = methodDeclaration.TypeParameterList;
         SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default;
 
         if (!CheckTypeParameters(typeParameters, allowMissing))
@@ -105,7 +106,7 @@ internal readonly struct ParameterInfo
             return default;
         }
 
-        CSharpSyntaxNode body = methodDeclaration.BodyOrExpressionBody();
+        CSharpSyntaxNode? body = methodDeclaration.BodyOrExpressionBody();
 
         if (!Check(body, allowMissing))
             return default;
@@ -120,12 +121,12 @@ internal readonly struct ParameterInfo
         if (!CheckParameterList(parameterList, allowMissing))
             return default;
 
-        CSharpSyntaxNode body = operatorDeclaration.BodyOrExpressionBody();
+        CSharpSyntaxNode? body = operatorDeclaration.BodyOrExpressionBody();
 
         if (!Check(body, allowMissing))
             return default;
 
-        return new ParameterInfo(parameterList, body);
+        return new ParameterInfo(parameterList, body!);
     }
 
     internal static ParameterInfo Create(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, bool allowMissing = false)
@@ -135,12 +136,12 @@ internal readonly struct ParameterInfo
         if (!CheckParameterList(parameterList, allowMissing))
             return default;
 
-        CSharpSyntaxNode body = conversionOperatorDeclaration.BodyOrExpressionBody();
+        CSharpSyntaxNode? body = conversionOperatorDeclaration.BodyOrExpressionBody();
 
         if (!Check(body, allowMissing))
             return default;
 
-        return new ParameterInfo(parameterList, body);
+        return new ParameterInfo(parameterList, body!);
     }
 
     internal static ParameterInfo Create(DelegateDeclarationSyntax delegateDeclaration, bool allowMissing = false)
@@ -155,7 +156,7 @@ internal readonly struct ParameterInfo
         if (!CheckParameters(parameters, allowMissing))
             return default;
 
-        TypeParameterListSyntax typeParameterList = delegateDeclaration.TypeParameterList;
+        TypeParameterListSyntax? typeParameterList = delegateDeclaration.TypeParameterList;
         SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default;
 
         if (!CheckTypeParameters(typeParameters, allowMissing))
@@ -182,7 +183,7 @@ internal readonly struct ParameterInfo
         if (!CheckParameters(parameters, allowMissing))
             return default;
 
-        TypeParameterListSyntax typeParameterList = localFunction.TypeParameterList;
+        TypeParameterListSyntax? typeParameterList = localFunction.TypeParameterList;
         SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default;
 
         if (!CheckTypeParameters(typeParameters, allowMissing))
@@ -194,7 +195,7 @@ internal readonly struct ParameterInfo
             return default;
         }
 
-        CSharpSyntaxNode body = localFunction.BodyOrExpressionBody();
+        CSharpSyntaxNode? body = localFunction.BodyOrExpressionBody();
 
         if (!Check(body, allowMissing))
             return default;
@@ -209,12 +210,12 @@ internal readonly struct ParameterInfo
         if (!CheckParameterList(parameterList, allowMissing))
             return default;
 
-        CSharpSyntaxNode body = indexerDeclaration.AccessorList ?? (CSharpSyntaxNode)indexerDeclaration.ExpressionBody;
+        CSharpSyntaxNode? body = indexerDeclaration.AccessorList ?? (CSharpSyntaxNode?)indexerDeclaration.ExpressionBody;
 
         if (!Check(body, allowMissing))
             return default;
 
-        return new ParameterInfo(parameterList, body);
+        return new ParameterInfo(parameterList, body!);
     }
 
     internal static ParameterInfo Create(SimpleLambdaExpressionSyntax simpleLambda, bool allowMissing = false)
@@ -249,7 +250,7 @@ internal readonly struct ParameterInfo
 
     internal static ParameterInfo Create(AnonymousMethodExpressionSyntax anonymousMethod, bool allowMissing = false)
     {
-        ParameterListSyntax parameterList = anonymousMethod.ParameterList;
+        ParameterListSyntax? parameterList = anonymousMethod.ParameterList;
 
         if (!CheckParameterList(parameterList, allowMissing))
             return default;
@@ -259,15 +260,15 @@ internal readonly struct ParameterInfo
         if (!Check(body, allowMissing))
             return default;
 
-        return new ParameterInfo(parameterList, body);
+        return new ParameterInfo(parameterList!, body);
     }
 
-    private static bool CheckParameterList(BaseParameterListSyntax parameterList, bool allowMissing)
+    private static bool CheckParameterList(BaseParameterListSyntax? parameterList, bool allowMissing)
     {
         if (!Check(parameterList, allowMissing))
             return false;
 
-        SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
+        SeparatedSyntaxList<ParameterSyntax> parameters = parameterList!.Parameters;
 
         if (!parameters.Any())
             return false;

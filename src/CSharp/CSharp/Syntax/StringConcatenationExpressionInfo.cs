@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -72,10 +72,13 @@ public readonly struct StringConcatenationExpressionInfo
     }
 
     internal static StringConcatenationExpressionInfo Create(
-        BinaryExpressionSyntax binaryExpression,
+        BinaryExpressionSyntax? binaryExpression,
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
+        if (binaryExpression is null)
+            return default;
+
         ExpressionChain chain = binaryExpression.AsChain();
 
         if (!chain.Reverse().IsStringConcatenation(semanticModel, cancellationToken))

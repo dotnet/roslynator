@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
@@ -26,5 +26,5 @@ public enum MemberDocumentationParts
     SeeAlso = 1 << 14,
     AppliesTo = 1 << 15,
     Content = 1 << 16,
-    All = int.MaxValue
+    All = int.MaxValue,
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Text;
@@ -8,7 +8,7 @@ namespace Roslynator;
 
 internal static class StringUtility
 {
-    internal static bool IsNullOrEquals(string s, string value)
+    internal static bool IsNullOrEquals(string? s, string value)
     {
         return s is null
             || Equals(s, value);

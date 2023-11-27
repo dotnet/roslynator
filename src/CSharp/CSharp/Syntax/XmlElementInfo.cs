@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -115,7 +115,7 @@ public readonly struct XmlElementInfo
         {
             case XmlElementSyntax element:
                 {
-                    string localName = element.StartTag?.Name?.LocalName.ValueText;
+                    string? localName = element.StartTag?.Name?.LocalName.ValueText;
 
                     if (localName is null)
                         return default;
@@ -124,7 +124,7 @@ public readonly struct XmlElementInfo
                 }
             case XmlEmptyElementSyntax element:
                 {
-                    string localName = element.Name?.LocalName.ValueText;
+                    string? localName = element.Name?.LocalName.ValueText;
 
                     if (localName is null)
                         return default;

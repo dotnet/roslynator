@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -56,7 +56,7 @@ public class SyntaxLogicalInverter
     /// <param name="cancellationToken"></param>
     public ExpressionSyntax LogicallyInvert(
         ExpressionSyntax expression,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         CancellationToken cancellationToken = default)
     {
         if (expression is null)
@@ -69,11 +69,11 @@ public class SyntaxLogicalInverter
 
     private ExpressionSyntax LogicallyInvertAndParenthesize(
         ExpressionSyntax expression,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         CancellationToken cancellationToken)
     {
         if (expression is null)
-            return null;
+            throw new ArgumentNullException(nameof(expression));
 
         ExpressionSyntax inverted = LogicallyInvertImpl(expression, semanticModel, cancellationToken);
         return (inverted.IsKind(SyntaxKind.LogicalNotExpression, SyntaxKind.ParenthesizedExpression)) ? inverted : inverted.Parenthesize();
@@ -81,11 +81,11 @@ public class SyntaxLogicalInverter
 
     private ExpressionSyntax LogicallyInvertImpl(
         ExpressionSyntax expression,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         CancellationToken cancellationToken)
     {
         if (expression is null)
-            return expression;
+            throw new ArgumentNullException(nameof(expression));
 
         switch (expression.Kind())
         {
@@ -127,6 +127,9 @@ public class SyntaxLogicalInverter
                 }
             case SyntaxKind.IsExpression:
                 {
+                    if (semanticModel is null)
+                        return DefaultInvert(expression);
+
                     var isExpression = (BinaryExpressionSyntax)expression;
                     var rightTypeSymbol = (ITypeSymbol)semanticModel.GetSymbol(isExpression.Right, cancellationToken)!;
 
@@ -312,7 +315,7 @@ public class SyntaxLogicalInverter
         if (conditionalAccess.Expression.Kind() != SyntaxKind.IdentifierName)
             return DefaultInvert(binaryExpression);
 
-        ExpressionSyntax newExpression = TryCreateExpressionWithoutConditionalAccess(conditionalAccess);
+        ExpressionSyntax? newExpression = TryCreateExpressionWithoutConditionalAccess(conditionalAccess);
 
         if (newExpression is null)
             return DefaultInvert(binaryExpression);
@@ -325,7 +328,7 @@ public class SyntaxLogicalInverter
                 (isLeft) ? otherExpression : newExpression));
     }
 
-    private static ExpressionSyntax TryCreateExpressionWithoutConditionalAccess(ConditionalAccessExpressionSyntax conditionalAccess)
+    private static ExpressionSyntax? TryCreateExpressionWithoutConditionalAccess(ConditionalAccessExpressionSyntax conditionalAccess)
     {
         switch (conditionalAccess.WhenNotNull)
         {
@@ -397,7 +400,7 @@ public class SyntaxLogicalInverter
 
     private BinaryExpressionSyntax InvertBinaryExpression(
         BinaryExpressionSyntax binaryExpression,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         CancellationToken cancellationToken)
     {
         ExpressionSyntax left = binaryExpression.Left;
@@ -451,21 +454,17 @@ public class SyntaxLogicalInverter
 
     private ConditionalExpressionSyntax InvertConditionalExpression(
         ConditionalExpressionSyntax conditionalExpression,
-        SemanticModel semanticModel,
+        SemanticModel? semanticModel,
         CancellationToken cancellationToken)
     {
         ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
         ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
 
-        if (whenTrue?.IsKind(SyntaxKind.ThrowExpression) == false)
-        {
+        if (!whenTrue.IsKind(SyntaxKind.ThrowExpression))
             whenTrue = LogicallyInvertAndParenthesize(whenTrue, semanticModel, cancellationToken);
-        }
 
-        if (whenFalse?.IsKind(SyntaxKind.ThrowExpression) == false)
-        {
+        if (!whenFalse.IsKind(SyntaxKind.ThrowExpression))
             whenFalse = LogicallyInvertAndParenthesize(whenFalse, semanticModel, cancellationToken);
-        }
 
         ConditionalExpressionSyntax newConditionalExpression = conditionalExpression.Update(
             conditionalExpression.Condition,

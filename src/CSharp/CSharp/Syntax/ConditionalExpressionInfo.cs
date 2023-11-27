@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -28,7 +28,7 @@ public readonly struct ConditionalExpressionInfo
     /// </summary>
     public ConditionalExpressionSyntax ConditionalExpression
     {
-        get { return (ConditionalExpressionSyntax)Condition?.WalkUpParentheses().Parent; }
+        get { return (ConditionalExpressionSyntax)Condition?.WalkUpParentheses().Parent!; }
     }
 
     /// <summary>
@@ -77,24 +77,24 @@ public readonly struct ConditionalExpressionInfo
     }
 
     internal static ConditionalExpressionInfo Create(
-        ConditionalExpressionSyntax conditionalExpression,
+        ConditionalExpressionSyntax? conditionalExpression,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (conditionalExpression is null)
             return default;
 
-        ExpressionSyntax condition = WalkAndCheck(conditionalExpression.Condition, walkDownParentheses, allowMissing);
+        ExpressionSyntax? condition = WalkAndCheck(conditionalExpression.Condition, walkDownParentheses, allowMissing);
 
         if (condition is null)
             return default;
 
-        ExpressionSyntax whenTrue = WalkAndCheck(conditionalExpression.WhenTrue, walkDownParentheses, allowMissing);
+        ExpressionSyntax? whenTrue = WalkAndCheck(conditionalExpression.WhenTrue, walkDownParentheses, allowMissing);
 
         if (whenTrue is null)
             return default;
 
-        ExpressionSyntax whenFalse = WalkAndCheck(conditionalExpression.WhenFalse, walkDownParentheses, allowMissing);
+        ExpressionSyntax? whenFalse = WalkAndCheck(conditionalExpression.WhenFalse, walkDownParentheses, allowMissing);
 
         if (whenFalse is null)
             return default;

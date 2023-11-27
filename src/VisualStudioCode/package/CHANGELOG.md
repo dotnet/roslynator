@@ -7,6 +7,155 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.6.4] - 2023-11-24
+
+## [4.6.3] - 2023-11-23
+
+### Added
+
+- [CLI] Add command `find-symbol` ([PR](https://github.com/dotnet/roslynator/pull/1255))
+  - This command can be used not only to find symbols but also to find unused symbols and optionally remove them.
+  - Example: `roslynator find-symbol --symbol-kind type --visibility internal private --unused --remove`
+
+### Changed
+
+- Bump Roslyn to 4.6.0 ([PR](https://github.com/dotnet/roslynator/pull/1248)).
+- [CLI] Add support for .NET 8 ([PR](https://github.com/josefpihrt/roslynator/pull/1251)).
+
+### Fixed
+
+- Fix analyzer [RCS1228](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1228) ([PR](https://github.com/dotnet/roslynator/pull/1249))
+- Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1254))
+- Fix analyzer [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1253))
+- Fix analyzer [RCS1196](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1196) ([PR](https://github.com/dotnet/roslynator/pull/1235))
+- Fix analyzer [RCS1257](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1257) ([PR](https://github.com/dotnet/roslynator/pull/1264))
+- Fix analyzer [RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259) ([PR](https://github.com/dotnet/roslynator/pull/1268))
+- [CLI] Fix reading of non-existent redirected input on git bash ([PR](https://github.com/dotnet/roslynator/pull/1265), [PR](https://github.com/dotnet/roslynator/pull/1274), [PR](https://github.com/dotnet/roslynator/pull/1275))
+- [CLI] Fix exit code for `roslynator --version` ([PR](https://github.com/dotnet/roslynator/pull/1273))
+
+## [4.6.2] - 2023-11-10
+
+### Added
+
+- [CLI] Add note to docs that Roslynator CLI does not contain any analyzers itself ([PR](https://github.com/dotnet/roslynator/pull/1241))
+
+### Fixed
+
+- Fix [RCS1234](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1234) ([PR](https://github.com/dotnet/roslynator/pull/1233))
+- Fix refactoring [Inline method](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0062) ([PR](https://github.com/dotnet/roslynator/pull/1234))
+- [CLI] Fix globbing ([PR](https://github.com/dotnet/roslynator/pull/1238))
+- [CLI] Remove assembly resolving ([PR](https://github.com/dotnet/roslynator/pull/1237))
+
+## [4.6.1] - 2023-10-23
+
+### Fixed
+
+- Fix [RCS1197](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1197) ([PR](https://github.com/dotnet/roslynator/pull/1226)).
+
+## [4.6.0] - 2023-10-18
+
+### Added
+
+- Add social card ([PR](https://github.com/dotnet/roslynator/pull/1212)).
+- Add nullable annotation to public API ([PR](https://github.com/dotnet/roslynator/pull/1198)).
+- Add refactoring "Remove directive (including content)" ([PR](https://github.com/dotnet/roslynator/pull/1224)).
+
+### Changed
+
+- Update logo ([PR](https://github.com/dotnet/roslynator/pull/1208), [PR](https://github.com/dotnet/roslynator/pull/1210)).
+- Migrate to .NET Foundation ([PR](https://github.com/dotnet/roslynator/pull/1206), [PR](https://github.com/dotnet/roslynator/pull/1207), [PR](https://github.com/dotnet/roslynator/pull/1219)).
+- Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1218)).
+  - Applies to CLI and testing library. 
+- Bump Microsoft.Build.Locator to 1.6.1 ([PR](https://github.com/dotnet/roslynator/pull/1194))
+- Improve testing framework ([PR](https://github.com/dotnet/roslynator/pull/1214))
+  - Add methods to `DiagnosticVerifier`, `RefactoringVerifier` and `CompilerDiagnosticFixVerifier`.
+  - Add property `DiagnosticVerifier.Descriptor` (BREAKING CHANGE).
+  - Add property `CompilerDiagnosticFixVerifier.DiagnosticId` (BREAKING CHANGE).
+  - Make property `DiagnosticTestData.Descriptor` obsolete.
+  - Make property `CompilerDiagnosticFixTestData.DiagnosticId` obsolete.
+
+### Fixed
+
+- Fix [RCS1164](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1164) ([PR](https://github.com/dotnet/roslynator/pull/1196)).
+- Fix [RCS1241](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1241) ([PR](https://github.com/dotnet/roslynator/pull/1197)).
+- Fix [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) ([PR](https://github.com/dotnet/roslynator/pull/1205)).
+- [CLI] Fix globbing ([PR](https://github.com/dotnet/roslynator/pull/1215)).
+- [CLI] Fix generation of root file ([PR](https://github.com/dotnet/roslynator/pull/1221)).
+
+## [4.5.0] - 2023-08-27
+
+### Added
+
+- Add SECURITY.md ([PR](https://github.com/dotnet/roslynator/pull/1147))
+- Add custom FixAllProvider for [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) ([PR](https://github.com/dotnet/roslynator/pull/1070)).
+- Add more cases to [RCS1097](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1097) ([PR](https://github.com/dotnet/roslynator/pull/1160)).
+- Add analyzer "Use enum field explicitly" ([RCS1257](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1257)) ([PR](https://github.com/dotnet/roslynator/pull/889)).
+  - Enabled by default.
+- Add analyzer "Unnecessary enum flag" [RCS1258](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1258) ([PR](https://github.com/dotnet/roslynator/pull/886)).
+  - Enabled by default.
+- Make `Roslynator.Rename.SymbolRenamer` public ([PR](https://github.com/dotnet/roslynator/pull/1161))
+- Analyzer 'Remove empty syntax' ([RCS1259](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1259)) ([PR](https://github.com/dotnet/roslynator/pull/913)).
+  - This analyzer replaces following analyzers:
+    - Remove empty empty statement ([RCS1038](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1038))
+    - Remove empty 'else' clause ([RCS1040](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1040))
+    - Remove empty object initializer ([RCS1041](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1041))
+    - Remove empty 'finally' clause ([RCS1066](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1066))
+    - Remove empty namespace declaration ([RCS1072](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1072))
+    - Remove empty region directive ([RCS1091](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1091))
+    - Remove empty destructor ([RCS1106](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1106))
+- [CLI] Add glob pattern matching (`--include` or/and `--exclude`) ([PR](https://github.com/dotnet/roslynator/pull/1178), [PR](https://github.com/dotnet/roslynator/pull/1183)).
+- Add analyzer "Include/omit trailing comma" ([RCS1256](https://github.com/dotnet/roslynator/blob/main/docs/analyzers/RCS1256.md)) ([PR](https://github.com/dotnet/roslynator/pull/931)).
+  - Required option: `roslynator_trailing_comma_style = include|omit|omit_when_single_line`
+  - Not enabled by default
+
+### Changed
+
+- [CLI] Open help in web browser when running command `roslynator help <COMMAND>` ([PR](https://github.com/dotnet/roslynator/pull/1179))
+
+### Fixed
+
+- Fix [RCS1187](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1187) ([PR](https://github.com/dotnet/roslynator/pull/1150)).
+- Fix [RCS1056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1056) ([PR](https://github.com/dotnet/roslynator/pull/1154)).
+- Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208) ([PR](https://github.com/dotnet/roslynator/pull/1153)).
+- Fix [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([PR](https://github.com/dotnet/roslynator/pull/1176)).
+- [CLI] Fix exit code of `spellcheck` command ([PR](https://github.com/dotnet/roslynator/pull/1177)).
+- Improve indentation analysis ([PR](https://github.com/dotnet/roslynator/pull/1188)).
+
+## [4.4.0] - 2023-08-01
+
+### Added
+
+- Add GitHub workflow ([#1112](https://github.com/josefpihrt/roslynator/pull/1112))
+
+### Changed
+
+- [CLI] Bump Roslyn to 4.6.0 ([#1106](https://github.com/josefpihrt/roslynator/pull/1106)).
+- Bump Roslyn to 4.4.0 ([#1116](https://github.com/josefpihrt/roslynator/pull/1116)).
+- Migrate documentation to [Docusaurus](https://josefpihrt.github.io/docs/roslynator) ([#922](https://github.com/josefpihrt/roslynator/pull/922)).
+- [Testing Framework] Bump Roslyn to 4.6.0 ([#1144](https://github.com/josefpihrt/roslynator/pull/1144)).
+
+### Fixed
+
+- Fix [RCS1016](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1016) ([#1090](https://github.com/josefpihrt/roslynator/pull/1090)).
+- Improve inversion of logical expressions to handling additional cases ([#1086](https://github.com/josefpihrt/roslynator/pull/1086)).
+- Fix [RCS1084](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1084) ([#1085](https://github.com/josefpihrt/roslynator/pull/1085)).
+- Fix [RCS1169](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1169) ([#1092](https://github.com/JosefPihrt/Roslynator/pull/1092)).
+- Recognize more shapes of IAsyncEnumerable as being Async ([RCS1047](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1047)) ([#1084](https://github.com/josefpihrt/roslynator/pull/1084)).
+- Fix [RCS1197](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1197) ([#1093](https://github.com/JosefPihrt/Roslynator/pull/1093)).
+- Fix [RCS1056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1056) ([#1096](https://github.com/JosefPihrt/Roslynator/pull/1096)).
+- Fix [RCS1216](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1216) ([#1094](https://github.com/JosefPihrt/Roslynator/pull/1094)).
+- Fix [RCS1146](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1146) ([#1098](https://github.com/JosefPihrt/Roslynator/pull/1098)).
+- Fix [RCS1154](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1154) ([#1105](https://github.com/JosefPihrt/Roslynator/pull/1105)).
+- Fix [RCS1211](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1211) ([#1095](https://github.com/JosefPihrt/Roslynator/pull/1095)).
+- Fix [RCS0005](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0005) ([#1114](https://github.com/JosefPihrt/Roslynator/pull/1114)).
+- Fix [RCS1176](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1176) ([#1122](https://github.com/JosefPihrt/Roslynator/pull/1122), [#1140](https://github.com/JosefPihrt/Roslynator/pull/1140)).
+- Fix [RCS1085](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1085) ([#1120](https://github.com/josefpihrt/roslynator/pull/1120)).
+- Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208) ([#1119](https://github.com/JosefPihrt/Roslynator/pull/1119)).
+- [CLI] Fix member full declaration in generated documentation (command `generate-doc`) ([#1130](https://github.com/josefpihrt/roslynator/pull/1130)).
+  - Append `?` to nullable reference types.
+- Fix [RCS1179](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1179) ([#1129](https://github.com/JosefPihrt/Roslynator/pull/1129)).
+- Fix [RCS0060](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0060) ([#1139](https://github.com/JosefPihrt/Roslynator/pull/1139)).
+
 ## [4.3.0] - 2023-04-24
 
 ### Changed

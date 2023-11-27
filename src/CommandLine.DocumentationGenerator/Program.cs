@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -102,6 +102,11 @@ internal static class Program
                 string additionalContent = (File.Exists(additionalContentFilePath))
                     ? File.ReadAllText(additionalContentFilePath)
                     : "";
+
+                string summaryContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_summary.md");
+
+                if (File.Exists(summaryContentFilePath))
+                    dw.WriteRaw(File.ReadAllText(summaryContentFilePath));
 
                 writer.WriteCommandSynopsis(command, application);
                 writer.WriteArguments(command.Arguments);

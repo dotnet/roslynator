@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -14,12 +14,12 @@ internal static class StringLiteralParser
     private const string MissingEscapeSequenceMessage = "Missing escape sequence.";
     private const string UnrecognizedEscapeSequenceMessage = "Unrecognized escape sequence.";
 
-    public static bool TryParse(string text, bool isVerbatim, bool isInterpolatedText, out string result)
+    public static bool TryParse(string text, bool isVerbatim, bool isInterpolatedText, out string? result)
     {
         return TryParse(text, 0, text.Length, isVerbatim, isInterpolatedText, out result);
     }
 
-    public static bool TryParse(string text, int start, int length, bool isVerbatim, bool isInterpolatedText, out string result)
+    public static bool TryParse(string text, int start, int length, bool isVerbatim, bool isInterpolatedText, out string? result)
     {
         StringLiteralParserResult parseResult = (isVerbatim)
             ? ParseVerbatim(text, start, length, isInterpolatedText)
@@ -54,7 +54,7 @@ internal static class StringLiteralParser
         bool throwOnError = false,
         bool isInterpolatedText = false)
     {
-        StringBuilder sb = null;
+        StringBuilder? sb = null;
         for (int pos = start; pos < start + length; pos++)
         {
             char ch = text[pos];
@@ -248,7 +248,7 @@ internal static class StringLiteralParser
         bool throwOnError = false,
         bool isInterpolatedText = false)
     {
-        StringBuilder sb = null;
+        StringBuilder? sb = null;
 
         for (int pos = start; pos < start + length; pos++)
         {

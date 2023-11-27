@@ -1,11 +1,7 @@
-Remove-Item -Path "../src/CommandLine/bin/Debug/net7.0" -Recurse
-Remove-Item -Path "../src/CommandLine/bin/Debug/Roslynator.DotNet.Cli.*.nupkg"
+Remove-Item -Path "$PSScriptRoot/../src/CommandLine/bin/Debug/net8.0" -Recurse
+Remove-Item -Path "$PSScriptRoot/../src/CommandLine/bin/Debug/Roslynator.DotNet.Cli.*.nupkg"
 
-dotnet pack "../src/CommandLine/CommandLine.csproj" -c Debug -v minimal `
- /p:RoslynatorDotNetCli=true,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors="1591"
+dotnet pack "$PSScriptRoot/../src/CommandLine/CommandLine.csproj" -c Debug -v minimal /p:RoslynatorDotNetCli=true,Deterministic=true
 
 dotnet tool uninstall roslynator.dotnet.cli -g
-
-dotnet tool install roslynator.dotnet.cli -g --add-source "../src/CommandLine/bin/Debug" --version 1.0.0
-
-Write-Host DONE
+dotnet tool install roslynator.dotnet.cli -g --add-source "$PSScriptRoot/../src/CommandLine/bin/Debug" --version 1.0.0

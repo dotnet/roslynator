@@ -122,12 +122,12 @@
   <Option Id="MaxLineLength">
     <DefaultValue>140</DefaultValue>
     <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>
-    <Description>Max line length</Description>
+    <Description>Maximum line length</Description>
   </Option>
   <Option Id="TabLength">
     <DefaultValue>4</DefaultValue>
     <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>
-    <Description>A number of spaces that are equivalent to a tab character.</Description>
+    <Description>A number of spaces that are equivalent to a tab character</Description>
   </Option>
   <Option Id="NewLineAtEndOfFile">
     <ValuePlaceholder>true|false</ValuePlaceholder>
@@ -170,9 +170,14 @@
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Prefix field identifier with underscore</Description>
   </Option>
-  <Option Id="SuppressUnityScriptMethods">
+  <Option Id="SuppressUnityScriptMethods" IsObsolete="true">
     <ValuePlaceholder>true|false</ValuePlaceholder>
-    <Description>Suppress Unity script methods</Description>
+    <Description>[deprecated] This option is obsolete, use option 'roslynator_unity_code_analysis.enabled' instead.</Description>
+  </Option>
+  <Option Id="UnityCodeAnalysisEnabled">
+    <Key>unity_code_analysis.enabled</Key>
+    <ValuePlaceholder>true|false</ValuePlaceholder> 
+    <Description>Enable code analysis to detect Unity-specific code</Description>
   </Option>
   <Option Id="UseAnonymousFunctionOrMethodGroup">
     <Description>Use anonymous function or method group</Description>
@@ -205,7 +210,7 @@
     <Description>Add/remove blank line after file scoped namespace declaration</Description>
   </Option>
   <Option Id="TrailingCommaStyle">
-    <Description>Include/omit trailing comma in initializer or enum.</Description>
+    <Description>Include/omit trailing comma in initializer or enum</Description>
     <Values>
       <Value>include</Value>
       <Value>omit</Value>

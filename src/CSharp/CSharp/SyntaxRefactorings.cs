@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -122,7 +122,7 @@ internal static class SyntaxRefactorings
         return addAttributeLists(node, attributeLists);
     }
 
-    public static TRoot RemoveNode<TRoot>(TRoot root, SyntaxNode node) where TRoot : SyntaxNode
+    public static TRoot? RemoveNode<TRoot>(TRoot root, SyntaxNode node) where TRoot : SyntaxNode
     {
         return root.RemoveNode(node, GetRemoveOptions(node));
     }
@@ -153,7 +153,7 @@ internal static class SyntaxRefactorings
         return removeOptions;
     }
 
-    internal static MemberDeclarationSyntax RemoveSingleLineDocumentationComment(MemberDeclarationSyntax declaration)
+    internal static TMemberDeclaration RemoveSingleLineDocumentationComment<TMemberDeclaration>(TMemberDeclaration declaration) where TMemberDeclaration : MemberDeclarationSyntax
     {
         if (declaration is null)
             throw new ArgumentNullException(nameof(declaration));
@@ -212,7 +212,7 @@ internal static class SyntaxRefactorings
             return node.ReplaceToken(token, newToken);
         }
 
-        return node.RemoveNode(documentationComment, SyntaxRemoveOptions.KeepNoTrivia);
+        return node.RemoveNode(documentationComment, SyntaxRemoveOptions.KeepNoTrivia)!;
     }
 
     public static TNode RemoveComments<TNode>(TNode node, CommentFilter comments) where TNode : SyntaxNode
@@ -228,7 +228,7 @@ internal static class SyntaxRefactorings
         if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        List<SyntaxTrivia> commentsToRemove = null;
+        List<SyntaxTrivia>? commentsToRemove = null;
 
         foreach (SyntaxTrivia trivia in node.DescendantTrivia(span, descendIntoTrivia: true))
         {
@@ -397,7 +397,7 @@ internal static class SyntaxRefactorings
 
         compilationUnit = compilationUnit.WithMembers(compilationUnit.Members.ReplaceAt(index, newMember));
 
-        return compilationUnit.RemoveNode(compilationUnit.Members[index], GetRemoveOptions(newMember));
+        return compilationUnit.RemoveNode(compilationUnit.Members[index], GetRemoveOptions(newMember))!;
     }
 
     public static InterfaceDeclarationSyntax RemoveMember(InterfaceDeclarationSyntax interfaceDeclaration, MemberDeclarationSyntax member)
@@ -433,7 +433,7 @@ internal static class SyntaxRefactorings
 
         if (namespaceDeclaration.IsKind(SyntaxKind.FileScopedNamespaceDeclaration))
         {
-            return namespaceDeclaration.RemoveNode(namespaceDeclaration.Members[index], GetRemoveOptions(newMember));
+            return namespaceDeclaration.RemoveNode(namespaceDeclaration.Members[index], GetRemoveOptions(newMember))!;
         }
         else
         {
@@ -492,6 +492,23 @@ internal static class SyntaxRefactorings
         return RemoveNode(typeDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
     }
 
+    public static EnumDeclarationSyntax RemoveMember(EnumDeclarationSyntax typeDeclaration, EnumMemberDeclarationSyntax member)
+    {
+        if (typeDeclaration is null)
+            throw new ArgumentNullException(nameof(typeDeclaration));
+
+        if (member is null)
+            throw new ArgumentNullException(nameof(member));
+
+        int index = typeDeclaration.Members.IndexOf(member);
+
+        EnumMemberDeclarationSyntax newMember = RemoveSingleLineDocumentationComment(member);
+
+        typeDeclaration = typeDeclaration.WithMembers(typeDeclaration.Members.ReplaceAt(index, newMember));
+
+        return RemoveNode(typeDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
+    }
+
     private static T RemoveNode<T>(
         T declaration,
         Func<T, SyntaxList<MemberDeclarationSyntax>> getMembers,
@@ -500,7 +517,7 @@ internal static class SyntaxRefactorings
     {
         SyntaxList<MemberDeclarationSyntax> members = getMembers(declaration);
 
-        T newDeclaration = declaration.RemoveNode(members[index], removeOptions);
+        T newDeclaration = declaration.RemoveNode(members[index], removeOptions)!;
 
         if (index == 0
             && index < members.Count - 1)
@@ -516,6 +533,38 @@ internal static class SyntaxRefactorings
             if (trivia.IsEndOfLineTrivia())
             {
                 MemberDeclarationSyntax newNextMember = nextMember.WithLeadingTrivia(leadingTrivia.RemoveAt(0));
+
+                newDeclaration = newDeclaration.ReplaceNode(nextMember, newNextMember);
+            }
+        }
+
+        return newDeclaration;
+    }
+
+    private static T RemoveNode<T>(
+        T declaration,
+        Func<T, SeparatedSyntaxList<EnumMemberDeclarationSyntax>> getMembers,
+        int index,
+        SyntaxRemoveOptions removeOptions) where T : SyntaxNode
+    {
+        SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = getMembers(declaration);
+
+        T newDeclaration = declaration.RemoveNode(members[index], removeOptions)!;
+
+        if (index == 0
+            && index < members.Count - 1)
+        {
+            members = getMembers(newDeclaration);
+
+            EnumMemberDeclarationSyntax nextMember = members[index];
+
+            SyntaxTriviaList leadingTrivia = nextMember.GetLeadingTrivia();
+
+            SyntaxTrivia trivia = leadingTrivia.FirstOrDefault();
+
+            if (trivia.IsEndOfLineTrivia())
+            {
+                EnumMemberDeclarationSyntax newNextMember = nextMember.WithLeadingTrivia(leadingTrivia.RemoveAt(0));
 
                 newDeclaration = newDeclaration.ReplaceNode(nextMember, newNextMember);
             }
@@ -665,7 +714,7 @@ internal static class SyntaxRefactorings
 
     public static ForStatementSyntax ConvertWhileStatementToForStatement(
         WhileStatementSyntax whileStatement,
-        VariableDeclarationSyntax declaration = default,
+        VariableDeclarationSyntax? declaration = default,
         SeparatedSyntaxList<ExpressionSyntax> initializers = default)
     {
         var incrementors = default(SeparatedSyntaxList<ExpressionSyntax>);
@@ -726,7 +775,7 @@ internal static class SyntaxRefactorings
             }
         }
 
-        ExpressionSyntax condition = whileStatement.Condition;
+        ExpressionSyntax? condition = whileStatement.Condition;
 
         if (condition.IsKind(SyntaxKind.TrueLiteralExpression))
             condition = null;

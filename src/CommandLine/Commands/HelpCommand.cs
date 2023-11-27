@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -70,7 +70,7 @@ internal class HelpCommand
                 var psi = new ProcessStartInfo()
                 {
                     FileName = url,
-                    UseShellExecute = true
+                    UseShellExecute = true,
                 };
 
                 Process.Start(psi);

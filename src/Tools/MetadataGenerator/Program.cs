@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -59,7 +59,7 @@ internal static class Program
                 .Where(f => f.Id is not null)
                 .ToImmutableDictionary(f => f.Id, f => f);
 
-            s = issueRegex.Replace(s, "([issue](https://github.com/JosefPihrt/Roslynator/issues/${issue}))");
+            s = issueRegex.Replace(s, "([issue](https://github.com/dotnet/roslynator/issues/${issue}))");
 
             s = analyzerRegex.Replace(
                 s,
@@ -207,7 +207,7 @@ internal static class Program
         int? sidebarPosition = null,
         string sidebarLabel = null)
     {
-        content = DocusaurusMarkdownFactory.FrontMatter(GetLabels()).ToString() + content;
+        content = DocusaurusMarkdownFactory.FrontMatter(GetLabels()) + content;
 
         IEnumerable<(string, object)> GetLabels()
         {

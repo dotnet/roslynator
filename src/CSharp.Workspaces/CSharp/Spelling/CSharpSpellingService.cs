@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -53,15 +53,15 @@ internal partial class CSharpSpellingService : SpellingService
     public override SpellingDiagnostic CreateSpellingDiagnostic(Diagnostic diagnostic)
     {
         Location location = diagnostic.Location;
-        SyntaxTree syntaxTree = location.SourceTree;
+        SyntaxTree syntaxTree = location.SourceTree!;
         SyntaxNode root = syntaxTree.GetRoot();
         TextSpan span = location.SourceSpan;
 
-        string value = diagnostic.Properties["Value"];
+        string value = diagnostic.Properties["Value"]!;
         int index = location.SourceSpan.Start;
-        string parent = diagnostic.Properties.GetValueOrDefault("Parent");
+        string? parent = diagnostic.Properties.GetValueOrDefault("Parent");
 
-        int parentIndex = (diagnostic.Properties.TryGetValue("ParentIndex", out string parentIndexText))
+        int parentIndex = (diagnostic.Properties.TryGetValue("ParentIndex", out string? parentIndexText))
             ? int.Parse(parentIndexText)
             : 0;
 

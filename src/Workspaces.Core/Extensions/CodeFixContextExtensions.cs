@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -8,12 +8,12 @@ namespace Roslynator;
 
 internal static class CodeFixContextExtensions
 {
-    public static Task<SyntaxNode> GetSyntaxRootAsync(this CodeFixContext context)
+    public static Task<SyntaxNode?> GetSyntaxRootAsync(this CodeFixContext context)
     {
         return context.Document.GetSyntaxRootAsync(context.CancellationToken);
     }
 
-    public static Task<SemanticModel> GetSemanticModelAsync(this CodeFixContext context)
+    public static Task<SemanticModel?> GetSemanticModelAsync(this CodeFixContext context)
     {
         return context.Document.GetSemanticModelAsync(context.CancellationToken);
     }

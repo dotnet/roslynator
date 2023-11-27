@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -290,7 +290,8 @@ public static class MetadataFile
                 Key: "roslynator_" + key,
                 DefaultValue: defaultValue,
                 DefaultValuePlaceholder: defaultValuePlaceholder,
-                Description: element.Element("Description").Value
+                Description: element.Element("Description").Value,
+                IsObsolete: element.AttributeValueAsBooleanOrDefault("IsObsolete")
             );
 
             analyzerOption.Values.AddRange(values ?? Enumerable.Empty<AnalyzerOptionValueMetadata>());
@@ -439,6 +440,8 @@ public static class MetadataFile
                 }
             }
         }
+
+        doc.Root.ReplaceAll(doc.Root.Elements().OrderBy(f => f.Element("Id").Value));
 
         using (var sw = new StreamWriter(filePath))
         using (XmlWriter xw = XmlWriter.Create(sw, new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8 }))

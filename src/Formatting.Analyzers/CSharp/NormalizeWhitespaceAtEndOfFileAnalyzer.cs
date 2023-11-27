@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -83,10 +83,16 @@ public sealed class NormalizeWhitespaceAtEndOfFileAnalyzer : BaseDiagnosticAnaly
         }
         else if (en.MoveNext())
         {
-            if (CSharpFacts.IsCommentTrivia(en.Current.Kind())
-                || SyntaxFacts.IsPreprocessorDirective(en.Current.Kind()))
+            if (CSharpFacts.IsCommentTrivia(en.Current.Kind()))
             {
                 ReportDiagnostic(context, endOfFile);
+            }
+            else if (SyntaxFacts.IsPreprocessorDirective(en.Current.Kind()))
+            {
+                var directive = (DirectiveTriviaSyntax)en.Current.GetStructure();
+
+                if (!directive.GetTrailingTrivia().LastOrDefault().IsKind(SyntaxKind.EndOfLineTrivia))
+                    ReportDiagnostic(context, endOfFile);
             }
             else if (en.Current.IsWhitespaceOrEndOfLineTrivia()
                 && endOfFile.LeadingTrivia.Span.Start == 0)

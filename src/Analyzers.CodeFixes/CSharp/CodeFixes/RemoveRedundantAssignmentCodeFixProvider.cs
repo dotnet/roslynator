@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -45,10 +45,8 @@ public sealed class RemoveRedundantAssignmentCodeFixProvider : BaseCodeFixProvid
                             "Remove redundant assignment",
                             ct =>
                             {
-                                if (node.IsKind(SyntaxKind.VariableDeclarator))
+                                if (node is VariableDeclaratorSyntax variableDeclarator)
                                 {
-                                    var variableDeclarator = (VariableDeclaratorSyntax)node;
-
                                     return RemoveRedundantAssignmentAfterLocalDeclarationAsync(document, variableDeclarator, ct);
                                 }
                                 else

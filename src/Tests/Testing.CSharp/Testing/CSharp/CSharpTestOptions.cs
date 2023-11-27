@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -26,12 +26,12 @@ public sealed class CSharpTestOptions : TestOptions
     /// <param name="allowedCompilerDiagnosticSeverity"></param>
     /// <param name="configOptions"></param>
     public CSharpTestOptions(
-        CSharpCompilationOptions compilationOptions = null,
-        CSharpParseOptions parseOptions = null,
-        IEnumerable<MetadataReference> metadataReferences = null,
-        IEnumerable<string> allowedCompilerDiagnosticIds = null,
+        CSharpCompilationOptions? compilationOptions = null,
+        CSharpParseOptions? parseOptions = null,
+        IEnumerable<MetadataReference>? metadataReferences = null,
+        IEnumerable<string>? allowedCompilerDiagnosticIds = null,
         DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
-        IEnumerable<KeyValuePair<string, string>> configOptions = null)
+        IEnumerable<KeyValuePair<string, string>>? configOptions = null)
         : base(metadataReferences, allowedCompilerDiagnosticIds, allowedCompilerDiagnosticSeverity, configOptions)
     {
         CompilationOptions = compilationOptions ?? new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
@@ -160,6 +160,86 @@ public sealed class CSharpTestOptions : TestOptions
                 ParseOptions.PreprocessorSymbolNames.Concat(new[] { "DEBUG" })));
     }
 
+    /// <summary>
+    /// Sets config option.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public CSharpTestOptions SetConfigOption(string key, bool value)
+    {
+        return SetConfigOption(key, (value) ? "true" : "false");
+    }
+
+    /// <summary>
+    /// Sets config option.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public CSharpTestOptions SetConfigOption(string key, string value)
+    {
+        return WithConfigOptions(ConfigOptions.SetItem(key, value));
+    }
+
+    /// <summary>
+    /// Sets config options.
+    /// </summary>
+    /// <param name="options"></param>
+    public CSharpTestOptions SetConfigOptions(params (string Key, string Value)[] options)
+    {
+        return SetConfigOptions(options.Select(f => new KeyValuePair<string, string>(f.Key, f.Value)));
+    }
+
+    /// <summary>
+    /// Sets config options.
+    /// </summary>
+    /// <param name="options"></param>
+    internal CSharpTestOptions SetConfigOptions(IEnumerable<KeyValuePair<string, string>> options)
+    {
+        return WithConfigOptions(ConfigOptions.SetItems(options));
+    }
+
+    /// <summary>
+    /// Adds config option.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public CSharpTestOptions AddConfigOption(string key, bool value)
+    {
+        return AddConfigOption(key, (value) ? "true" : "false");
+    }
+
+    /// <summary>
+    /// Adds config option.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public CSharpTestOptions AddConfigOption(string key, string value)
+    {
+        return WithConfigOptions(ConfigOptions.Add(key, value));
+    }
+
+    /// <summary>
+    /// Adds config options.
+    /// </summary>
+    /// <param name="options"></param>
+    public CSharpTestOptions AddConfigOptions(params (string Key, string Value)[] options)
+    {
+        return AddConfigOptions(options.Select(f => new KeyValuePair<string, string>(f.Key, f.Value)));
+    }
+
+    /// <summary>
+    /// Adds config options.
+    /// </summary>
+    /// <param name="options"></param>
+    internal CSharpTestOptions AddConfigOptions(IEnumerable<KeyValuePair<string, string>> options)
+    {
+        return WithConfigOptions(ConfigOptions.AddRange(options));
+    }
+
+    internal CSharpTestOptions EnableConfigOption(string key)
+    {
+        return AddConfigOption(key, true);
+    }
 #pragma warning disable CS1591
     protected override TestOptions CommonWithMetadataReferences(IEnumerable<MetadataReference> values)
     {

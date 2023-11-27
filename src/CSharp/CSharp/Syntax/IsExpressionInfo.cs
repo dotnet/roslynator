@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -81,14 +81,14 @@ public readonly struct IsExpressionInfo
     }
 
     private static IsExpressionInfo CreateImpl(
-        BinaryExpressionSyntax binaryExpression,
+        BinaryExpressionSyntax? binaryExpression,
         bool walkDownParentheses = true,
         bool allowMissing = false)
     {
         if (binaryExpression?.Kind() != SyntaxKind.IsExpression)
             return default;
 
-        ExpressionSyntax expression = Walk(binaryExpression.Left, walkDownParentheses);
+        ExpressionSyntax? expression = Walk(binaryExpression.Left, walkDownParentheses);
 
         if (!Check(expression, allowMissing))
             return default;
@@ -98,6 +98,6 @@ public readonly struct IsExpressionInfo
         if (!Check(type, allowMissing))
             return default;
 
-        return new IsExpressionInfo(binaryExpression, expression, type);
+        return new IsExpressionInfo(binaryExpression, expression!, type!);
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -60,6 +60,38 @@ class C
     {
         var x = RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.ExplicitCapture;
     }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
+    public async Task Test_Flags_SByte()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var enumValue = [|(TestEnum)2|];
+    }
+}
+
+enum TestEnum : sbyte
+{
+    Foo, Bar, Baz
+}
+", @"
+class C
+{
+    void M()
+    {
+        var enumValue = TestEnum.Baz;
+    }
+}
+
+enum TestEnum : sbyte
+{
+    Foo, Bar, Baz
 }
 ");
     }

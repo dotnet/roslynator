@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections;
@@ -19,16 +19,12 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
 {
     internal StatementListInfo(BlockSyntax block)
     {
-        Debug.Assert(block is not null);
-
         Parent = block;
         Statements = block.Statements;
     }
 
     internal StatementListInfo(SwitchSectionSyntax switchSection)
     {
-        Debug.Assert(switchSection is not null);
-
         Parent = switchSection;
         Statements = switchSection.Statements;
     }
@@ -62,7 +58,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Gets a block that contains the statements. Returns null if the statements are not contained in a block.
     /// </summary>
-    public BlockSyntax ParentAsBlock
+    public BlockSyntax? ParentAsBlock
     {
         get
         {
@@ -74,7 +70,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Gets a switch section that contains the statements. Returns null if the statements are not contained in a switch section.
     /// </summary>
-    public SwitchSectionSyntax ParentAsSwitchSection
+    public SwitchSectionSyntax? ParentAsSwitchSection
     {
         get
         {
@@ -133,12 +129,12 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
         return Statements.GetEnumerator();
     }
 
-    internal static StatementListInfo Create(StatementSyntax statementInList)
+    internal static StatementListInfo Create(StatementSyntax? statementInList)
     {
         if (statementInList is null)
             return default;
 
-        SyntaxNode parent = statementInList.Parent;
+        SyntaxNode? parent = statementInList.Parent;
 
         switch (parent?.Kind())
         {
@@ -193,9 +189,9 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
         SyntaxNode parent = Parent;
 
         if (parent.IsKind(SyntaxKind.Block))
-            return new StatementListInfo(((BlockSyntax)parent).RemoveNode(node, options));
+            return new StatementListInfo(((BlockSyntax)parent).RemoveNode(node, options)!);
 
-        return new StatementListInfo(((SwitchSectionSyntax)parent).RemoveNode(node, options));
+        return new StatementListInfo(((SwitchSectionSyntax)parent).RemoveNode(node, options)!);
     }
 
     /// <summary>
@@ -252,7 +248,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// The first statement in the list or null if the list is empty.
     /// </summary>
-    public StatementSyntax FirstOrDefault()
+    public StatementSyntax? FirstOrDefault()
     {
         return Statements.FirstOrDefault();
     }
@@ -306,7 +302,7 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// The last statement in the list or null if the list is empty.
     /// </summary>
-    public StatementSyntax LastOrDefault()
+    public StatementSyntax? LastOrDefault()
     {
         return Statements.LastOrDefault();
     }

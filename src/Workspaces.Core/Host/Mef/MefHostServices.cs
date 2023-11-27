@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Roslynator.Host.Mef;
 
 internal class MefHostServices
 {
-    private static MefHostServices _default;
+    private static MefHostServices? _default;
     private static ImmutableArray<Assembly> _defaultAssemblies;
 
     private readonly CompositionContext _compositionContext;
@@ -75,6 +75,7 @@ internal class MefHostServices
         return GetAssemblyNames()
             .Select(f => TryLoadAssembly(f))
             .Where(f => f is not null)
+            .Cast<Assembly>()
             .ToImmutableArray();
 
         static IEnumerable<string> GetAssemblyNames()
@@ -90,7 +91,7 @@ internal class MefHostServices
         }
     }
 
-    private static Assembly TryLoadAssembly(string assemblyName)
+    private static Assembly? TryLoadAssembly(string assemblyName)
     {
         try
         {
@@ -107,7 +108,7 @@ internal class MefHostServices
         return _compositionContext.GetExports<TExtension>().Select(e => new Lazy<TExtension>(() => e));
     }
 
-    public IEnumerable<Lazy<TExtension, TMetadata>> GetExports<TExtension, TMetadata>()
+    public IEnumerable<Lazy<TExtension, TMetadata>>? GetExports<TExtension, TMetadata>()
     {
         var importer = new WithMetadataImporter<TExtension, TMetadata>();
         _compositionContext.SatisfyImports(importer);
@@ -117,6 +118,6 @@ internal class MefHostServices
     private class WithMetadataImporter<TExtension, TMetadata>
     {
         [ImportMany]
-        public IEnumerable<Lazy<TExtension, TMetadata>> Exports { get; set; }
+        public IEnumerable<Lazy<TExtension, TMetadata>>? Exports { get; set; }
     }
 }

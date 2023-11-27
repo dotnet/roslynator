@@ -1441,13 +1441,17 @@ void M(
     <MessageFormat>A line is too long ({0} characters).</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Summary>This analyzer reports any line that is longer than maximal length.
+    <Summary>This analyzer reports any line that is longer than maximum length.
     
-Default maximal length is 140.</Summary>
+Default maximum length is 140.</Summary>
     <ConfigOptions>
       <Option Key="max_line_length" />
       <Option Key="tab_length" />
     </ConfigOptions>
+    <Remarks>Code fixer is available for this analyzer but it cannot handle all cases as it's not possible to wrap a line in all cases (e.g. long string literals).
+
+If a particular line seems that it could be reasonably wrapped but it's not, please file an [issue](https://github.com/dotnet/roslynator/issues/new).
+    </Remarks>
   </Analyzer>
   <Analyzer>
     <Id>RCS0057</Id>
@@ -2807,9 +2811,8 @@ public void Foo()
   </Analyzer>
   <Analyzer>
     <Id>RCS1055</Id>
-    <Identifier>AvoidSemicolonAtEndOfDeclaration</Identifier>
-    <Title>Avoid semicolon at the end of declaration.</Title>
-    <MessageFormat>Remove semicolon from the end of declaration.</MessageFormat>
+    <Identifier>UnnecessarySemicolonAtEndOfDeclaration</Identifier>
+    <Title>Unnecessary semicolon at the end of declaration.</Title>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
@@ -3732,8 +3735,8 @@ public string Foo
   </Analyzer>
   <Analyzer>
     <Id>RCS1093</Id>
-    <Identifier>RemoveFileWithNoCode</Identifier>
-    <Title>Remove file with no code.</Title>
+    <Identifier>FileContainsNoCode</Identifier>
+    <Title>File contains no code.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
@@ -5174,6 +5177,9 @@ abstract class Foo : IFoo
     <Title>Make field read-only.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="unity_code_analysis.enabled" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[public class Foo
@@ -6113,6 +6119,7 @@ x = "";]]></Before>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <ConfigOptions>
+      <Option Key="unity_code_analysis.enabled" />
       <Option Key="suppress_unity_script_methods" />
     </ConfigOptions>
     <Options>
@@ -7407,8 +7414,9 @@ void M()
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptySyntax">
+  <Analyzer>
     <Id>RCS1259</Id>
+    <Identifier>RemoveEmptySyntax</Identifier>
     <Title>Remove empty syntax.</Title>
     <MessageFormat>Remove empty {0}.</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
@@ -7416,19 +7424,19 @@ void M()
     <SupportsFadeOut>true</SupportsFadeOut>
     <Summary>This analyzer reports unnecessary syntax that can be safely removed such as:
   * empty destructor
-  * empty 'else' clause
-  * empty empty statement
-  * empty 'finally' clause
-  * empty namespace declaration
+  * empty `else` clause
+  * empty `finally` clause
+  * empty `namespace` declaration
   * empty object initializer
-  * empty region directive
+  * empty `#region`
+  * empty statement
 </Summary>
   </Analyzer>
-  <Analyzer Identifier="AddOrRemoveTrailingComma">
+  <Analyzer>
     <Id>RCS1260</Id>
+    <Identifier>AddOrRemoveTrailingComma</Identifier>
     <Title>Add/remove trailing comma.</Title>
     <MessageFormat>{0} trailing comma.</MessageFormat>
-    <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
@@ -7458,6 +7466,27 @@ void M()
         </ConfigOptions>
         <Before><![CDATA[public enum Foo { A, B, C, }]]></Before>
         <After><![CDATA[public enum Foo { A, B, C }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
+    <Id>RCS1261</Id>
+    <Identifier>DisposeResourceAsynchronously</Identifier>
+    <Title>Resource can be disposed asynchronously.</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[async Task FooAsync()
+{
+    using var disposable = await GetDisposableAsync();
+}
+]]></Before>
+        <After><![CDATA[async Task FooAsync()
+{
+    await using var disposable = await GetDisposableAsync();
+}
+]]></After>
       </Sample>
     </Samples>
   </Analyzer>

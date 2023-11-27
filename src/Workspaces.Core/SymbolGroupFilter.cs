@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
@@ -23,5 +23,5 @@ internal enum SymbolGroupFilter
     Property = 1 << 11,
     Indexer = 1 << 12,
     Member = Event | Field | EnumField | Const | Method | Property | Indexer,
-    TypeOrMember = Type | Member
+    TypeOrMember = Type | Member,
 }

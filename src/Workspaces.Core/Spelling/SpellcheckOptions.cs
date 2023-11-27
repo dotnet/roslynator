@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 namespace Roslynator.Spelling;
 
@@ -6,7 +6,7 @@ internal class SpellcheckOptions
 {
     public static SpellcheckOptions Default { get; } = new();
 
-    public FileSystemFilter FileSystemFilter { get; init; }
+    public FileSystemFilter? FileSystemFilter { get; init; }
 
     public SpellingScopeFilter ScopeFilter { get; init; } = SpellingScopeFilter.All;
 

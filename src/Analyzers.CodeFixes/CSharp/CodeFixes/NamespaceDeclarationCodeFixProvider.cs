@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -41,7 +41,7 @@ public sealed class NamespaceDeclarationCodeFixProvider : BaseCodeFixProvider
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Remove empty namespace declaration",
-                            ct => RemoveEmptyNamespaceDeclarationRefactoring.RefactorAsync(context.Document, namespaceDeclaration, ct),
+                            ct => context.Document.RemoveNodeAsync(namespaceDeclaration, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);

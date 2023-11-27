@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -424,6 +424,14 @@ namespace N1
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task Test_FileScopedNamespace()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+[|namespace N1;|]
+", "");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
     public async Task Test_RegionDirective()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -491,5 +499,17 @@ namespace N1
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0642"));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptySyntax)]
+    public async Task TestNoDiagnostic_FileScopedNamespaceDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
+namespace N1;
+
+class C
+{
+}
+");
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +53,7 @@ public static class CodeFixDescriptorsGenerator
 
                 Argument(
                     NameColon("isEnabledByDefault"),
-                    BooleanLiteralExpression(true))
+                    BooleanLiteralExpression(true)),
             };
 
             foreach (string diagnosticId in codeFix.FixableDiagnosticIds.OrderBy(f => f))

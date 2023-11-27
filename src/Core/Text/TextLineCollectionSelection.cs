@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections;
@@ -131,25 +131,25 @@ public class TextLineCollectionSelection : ISelection<TextLine>
     /// <param name="span"></param>
     /// <param name="selectedLines"></param>
     /// <returns>True if the specified span contains at least one line; otherwise, false.</returns>
-    public static bool TryCreate(TextLineCollection lines, TextSpan span, out TextLineCollectionSelection selectedLines)
+    public static bool TryCreate(TextLineCollection lines, TextSpan span, out TextLineCollectionSelection? selectedLines)
     {
         selectedLines = Create(lines, span, 1, int.MaxValue);
         return selectedLines is not null;
     }
 
-    internal static bool TryCreate(TextLineCollection lines, TextSpan span, int minCount, out TextLineCollectionSelection selectedLines)
+    internal static bool TryCreate(TextLineCollection lines, TextSpan span, int minCount, out TextLineCollectionSelection? selectedLines)
     {
         selectedLines = Create(lines, span, minCount, int.MaxValue);
         return selectedLines is not null;
     }
 
-    internal static bool TryCreate(TextLineCollection lines, TextSpan span, int minCount, int maxCount, out TextLineCollectionSelection selectedLines)
+    internal static bool TryCreate(TextLineCollection lines, TextSpan span, int minCount, int maxCount, out TextLineCollectionSelection? selectedLines)
     {
         selectedLines = Create(lines, span, minCount, maxCount);
         return selectedLines is not null;
     }
 
-    private static TextLineCollectionSelection Create(TextLineCollection lines, TextSpan span, int minCount, int maxCount)
+    private static TextLineCollectionSelection? Create(TextLineCollection lines, TextSpan span, int minCount, int maxCount)
     {
         if (lines is null)
             return null;

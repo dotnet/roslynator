@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -345,7 +345,7 @@ public static class SyntaxAccessibility
                 return false;
             }
 
-            SyntaxNode parent = declaration.Parent;
+            SyntaxNode? parent = declaration.Parent;
 
             if (parent is null)
                 return true;
@@ -355,7 +355,7 @@ public static class SyntaxAccessibility
 
             SyntaxDebug.Assert(parent is MemberDeclarationSyntax, parent);
 
-            declaration = parent as MemberDeclarationSyntax;
+            declaration = (parent as MemberDeclarationSyntax)!;
         }
         while (declaration is not null);
 
@@ -382,7 +382,7 @@ public static class SyntaxAccessibility
     public static TNode WithExplicitAccessibility<TNode>(
         TNode node,
         Accessibility newAccessibility,
-        IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
+        IComparer<SyntaxKind>? comparer = null) where TNode : SyntaxNode
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
@@ -541,7 +541,7 @@ public static class SyntaxAccessibility
                     .ContainsAny(SyntaxKind.StaticKeyword, SyntaxKind.SealedKeyword) != true;
         }
 
-        bool CheckAccessorAccessibility(AccessorListSyntax accessorList)
+        bool CheckAccessorAccessibility(AccessorListSyntax? accessorList)
         {
             if (accessorList is not null)
             {

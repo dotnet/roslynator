@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -203,7 +203,7 @@ public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDi
         return ((LocalFunctionStatementSyntax)node).WithBody(newBody);
     }
 
-    private static SyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
+    private static CSharpSyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
     {
         if (node is MethodDeclarationSyntax methodDeclaration)
             return methodDeclaration.BodyOrExpressionBody();

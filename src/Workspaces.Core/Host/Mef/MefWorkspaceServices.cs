@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ namespace Roslynator.Host.Mef;
 
 internal class MefWorkspaceServices
 {
-    private static MefWorkspaceServices _default;
+    private static MefWorkspaceServices? _default;
     private readonly MefHostServices _mefServices;
-    private IEnumerable<string> _languages;
+    private IEnumerable<string>? _languages;
 
     private ImmutableDictionary<string, MefLanguageServices> _languageServicesMap
         = ImmutableDictionary<string, MefLanguageServices>.Empty;
@@ -45,6 +45,8 @@ internal class MefWorkspaceServices
         {
             ImmutableArray<string> languages = _mefServices.GetExports<ILanguageService, LanguageServiceMetadata>()
                 .Select(lazy => lazy.Metadata.Language)
+                .Where(f => f is not null)
+                .Cast<string>()
                 .Distinct()
                 .ToImmutableArray();
 
@@ -60,7 +62,7 @@ internal class MefWorkspaceServices
     {
         ImmutableDictionary<string, MefLanguageServices> languageServicesMap = _languageServicesMap;
 
-        if (!languageServicesMap.TryGetValue(languageName, out MefLanguageServices languageServices))
+        if (!languageServicesMap.TryGetValue(languageName, out MefLanguageServices? languageServices))
         {
             languageServices = ImmutableInterlocked.GetOrAdd(
                 ref _languageServicesMap,
@@ -74,12 +76,12 @@ internal class MefWorkspaceServices
         return languageServices;
     }
 
-    internal bool TryGetLanguageServices(string languageName, out MefLanguageServices languageServices)
+    internal bool TryGetLanguageServices(string languageName, out MefLanguageServices? languageServices)
     {
         return _languageServicesMap.TryGetValue(languageName, out languageServices);
     }
 
-    internal TLanguageService GetService<TLanguageService>(string languageName)
+    internal TLanguageService? GetService<TLanguageService>(string languageName)
     {
         return GetLanguageServices(languageName).GetService<TLanguageService>();
     }
@@ -89,7 +91,7 @@ internal class MefWorkspaceServices
         return _mefServices.GetExports<TExtension>();
     }
 
-    internal IEnumerable<Lazy<TExtension, TMetadata>> GetExports<TExtension, TMetadata>()
+    internal IEnumerable<Lazy<TExtension, TMetadata>>? GetExports<TExtension, TMetadata>()
     {
         return _mefServices.GetExports<TExtension, TMetadata>();
     }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ public static class CodeGenerator
     public static CompilationUnitSyntax GenerateConfigOptions(IEnumerable<AnalyzerOptionMetadata> options, IEnumerable<AnalyzerMetadata> analyzers)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(
-            UsingDirectives("System.Collections.Generic"),
+            UsingDirectives("System", "System.Collections.Generic"),
             NamespaceDeclaration(
                 "Roslynator",
                 ClassDeclaration(
@@ -38,7 +38,8 @@ public static class CodeGenerator
                                         Argument(NameColon("defaultValue"), (f.DefaultValue is not null) ? StringLiteralExpression(f.DefaultValue) : NullLiteralExpression()),
                                         Argument(NameColon("defaultValuePlaceholder"), StringLiteralExpression(f.DefaultValuePlaceholder)),
                                         Argument(NameColon("description"), StringLiteralExpression(f.Description))),
-                                    default(InitializerExpressionSyntax)));
+                                    default(InitializerExpressionSyntax)))
+                                .AddObsoleteAttributeIf(f.IsObsolete);
                         })
                         .Concat(new MemberDeclarationSyntax[]
                             {
@@ -64,7 +65,7 @@ public static class CodeGenerator
 
                                                 return YieldReturnStatement(
                                                     ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionKeys)}))"));
-                                            })))
+                                            }))),
                             })
                         .ToSyntaxList())));
 

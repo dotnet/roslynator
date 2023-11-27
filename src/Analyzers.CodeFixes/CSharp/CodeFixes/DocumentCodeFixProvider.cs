@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -16,7 +16,7 @@ public sealed class DocumentCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveFileWithNoCode); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.FileContainsNoCode); }
     }
 
     public override FixAllProvider GetFixAllProvider()
@@ -30,7 +30,7 @@ public sealed class DocumentCodeFixProvider : BaseCodeFixProvider
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveFileWithNoCode:
+                case DiagnosticIdentifiers.FileContainsNoCode:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Remove file with no code",

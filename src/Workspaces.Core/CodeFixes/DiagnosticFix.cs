@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -8,7 +8,7 @@ namespace Roslynator.CodeFixes;
 
 internal readonly struct DiagnosticFix
 {
-    public DiagnosticFix(CodeAction codeAction, Document document, CodeFixProvider fixProvider, CodeFixProvider fixProvider2)
+    public DiagnosticFix(CodeAction? codeAction, Document? document, CodeFixProvider? fixProvider, CodeFixProvider? fixProvider2)
     {
         CodeAction = codeAction;
         Document = document;
@@ -16,11 +16,11 @@ internal readonly struct DiagnosticFix
         FixProvider2 = fixProvider2;
     }
 
-    public CodeAction CodeAction { get; }
+    public CodeAction? CodeAction { get; }
 
-    public Document Document { get; }
+    public Document? Document { get; }
 
-    public CodeFixProvider FixProvider { get; }
+    public CodeFixProvider? FixProvider { get; }
 
-    public CodeFixProvider FixProvider2 { get; }
+    public CodeFixProvider? FixProvider2 { get; }
 }

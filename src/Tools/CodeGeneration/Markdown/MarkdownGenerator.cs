@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ public static class MarkdownGenerator
     public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring, int position)
     {
         MDocument document = Document(
-            CreateFrontMatter(position: position, label: refactoring.Title),
+            CreateFrontMatter(title: $"Refactoring: {refactoring.Title}", position: position, label: refactoring.Title),
             Heading1(refactoring.Title),
             Table(
                 TableRow("Property", "Value"),
@@ -132,11 +132,13 @@ public static class MarkdownGenerator
             .Select(f => InlineCode(f.Key))
             .ToArray();
 
-        string title = analyzer.Title.TrimEnd('.');
+        string title = $"{analyzer.Id}: {analyzer.Title.TrimEnd('.')}";
 
         MDocument document = Document(
-            CreateFrontMatter(label: analyzer.Id),
-            Heading1($"{analyzer.Id}: {title}"),
+            CreateFrontMatter(
+                title: title,
+                label: (string.IsNullOrEmpty(analyzer.ObsoleteMessage)) ? analyzer.Id : $"[deprecated] {analyzer.Id}"),
+            Heading1(title),
             CreateObsoleteWarning(analyzer),
             Heading2("Properties"),
             Table(
@@ -190,7 +192,8 @@ public static class MarkdownGenerator
                         .Select(f => InlineCode(f.Key))
                         .ToArray();
 
-                    yield return CreateRequiredOptionsInfoBlock(requiredOptions);
+                    if (requiredOptions.Any())
+                        yield return CreateRequiredOptionsInfoBlock(requiredOptions);
 
                     var sb = new StringBuilder();
                     var isFirst = true;
@@ -205,8 +208,19 @@ public static class MarkdownGenerator
 
                         isFirst = false;
 
-                        sb.Append('#');
-                        sb.AppendLine(en.Current.Description);
+                        sb.Append("# ");
+
+                        if (!string.IsNullOrEmpty(en.Current.Description))
+                            sb.AppendLine(en.Current.Description);
+
+                        string defaultValue = en.Current.DefaultValue;
+
+                        if (!string.IsNullOrEmpty(defaultValue))
+                        {
+                            sb.Append("# Default value is ");
+                            sb.AppendLine(defaultValue);
+                        }
+
                         sb.Append(en.Current.Key);
                         sb.Append(" = ");
                         sb.Append(en.Current.DefaultValuePlaceholder ?? "true");
@@ -227,9 +241,6 @@ public static class MarkdownGenerator
 
             static IEnumerable<MObject> CreateContent(MInlineCode[] requiredOptions)
             {
-                if (!requiredOptions.Any())
-                    yield break;
-
                 if (requiredOptions.Length == 1)
                 {
                     yield return Inline("Option ", requiredOptions[0], " is required to be set for this analyzer to work.");
@@ -256,13 +267,13 @@ public static class MarkdownGenerator
             }
 
             if (analyzer.Id.StartsWith("RCS0"))
-                yield return BulletItem(Link("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.Formatting.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
 
             if (analyzer.Id.StartsWith("RCS1"))
-                yield return BulletItem(Link("Roslynator.Analyzers", "https://www.nuget.org/packages/Roslynator.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Analyzers"));
 
             if (analyzer.Id.StartsWith("RCS9"))
-                yield return BulletItem(Link("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"));
+                yield return BulletItem(Link(new[] { "Package ", "Roslynator.CodeAnalysis.Analyzers" }, "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers"));
         }
     }
 
@@ -322,7 +333,7 @@ public static class MarkdownGenerator
         IComparer<string> comparer)
     {
         MDocument document = Document(
-            CreateFrontMatter(label: diagnostic.Id),
+            CreateFrontMatter(title: $"Code fix for {diagnostic.Id}", label: diagnostic.Id),
             Heading1(diagnostic.Id),
             Table(
                 TableRow("Property", "Value"),
@@ -462,12 +473,15 @@ public static class MarkdownGenerator
         }
     }
 
-    private static MObject CreateFrontMatter(int? position = null, string label = null)
+    private static MObject CreateFrontMatter(string title = null, int? position = null, string label = null)
     {
         return DocusaurusMarkdownFactory.FrontMatter(GetLabels());
 
         IEnumerable<(string, object)> GetLabels()
         {
+            if (title is not null)
+                yield return ("title", title);
+
             if (position is not null)
                 yield return ("sidebar_position", position);
 

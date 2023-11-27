@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -87,7 +87,7 @@ internal static class CSharpNameGenerator
         return _generator.EnsureUniqueParameterName(baseName, containingSymbol, semanticModel, isCaseSensitive: true, cancellationToken);
     }
 
-    internal static string CreateUniqueLocalName(
+    internal static string? CreateUniqueLocalName(
         ITypeSymbol typeSymbol,
         SemanticModel semanticModel,
         int position,
@@ -96,7 +96,7 @@ internal static class CSharpNameGenerator
         return _generator.CreateUniqueLocalName(typeSymbol, semanticModel, position, isCaseSensitive: true, cancellationToken);
     }
 
-    internal static string CreateUniqueLocalName(
+    internal static string? CreateUniqueLocalName(
         ITypeSymbol typeSymbol,
         string oldName,
         SemanticModel semanticModel,
@@ -106,7 +106,7 @@ internal static class CSharpNameGenerator
         return _generator.CreateUniqueLocalName(typeSymbol, oldName, semanticModel, position, isCaseSensitive: true, cancellationToken);
     }
 
-    internal static string CreateUniqueParameterName(
+    internal static string? CreateUniqueParameterName(
         string oldName,
         IParameterSymbol parameterSymbol,
         SemanticModel semanticModel,

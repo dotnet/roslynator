@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -365,5 +365,47 @@ namespace UnityEngine
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.SuppressUnityScriptMethods, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+    public async Task TestNoDiagnostic_UnityScriptMethods2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using UnityEngine;
+
+class C : MonoBehaviour
+{
+    private void Awake()
+    {
+    }
+}
+
+namespace UnityEngine
+{
+    class MonoBehaviour
+    {
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+    public async Task TestNoDiagnostic_PrimaryConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class Class([My(Class.Const)] int i)
+{
+    private const string Const = ""const"";
+}
+
+class MyAttribute : Attribute
+{
+    public MyAttribute(string s)
+    {
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS9113"));
     }
 }

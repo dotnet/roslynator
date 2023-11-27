@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Linq;
@@ -18,7 +18,7 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
         // ASP.NET Core
         MetadataName.Parse("Microsoft.AspNetCore.Components.ComponentBase"),
         // WPF
-        MetadataName.Parse("System.Windows.FrameworkElement")
+        MetadataName.Parse("System.Windows.FrameworkElement"),
     };
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -61,16 +61,12 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
 
         foreach (MemberDeclarationSyntax member in typeDeclaration.Members)
         {
-            if (member.IsKind(SyntaxKind.MethodDeclaration))
+            if (member is MethodDeclarationSyntax methodDeclaration
+                && methodDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword)
+                && methodDeclaration.BodyOrExpressionBody() is null
+                && methodDeclaration.ContainsUnbalancedIfElseDirectives(methodDeclaration.Span))
             {
-                var method = (MethodDeclarationSyntax)member;
-
-                if (method.Modifiers.Contains(SyntaxKind.PartialKeyword)
-                    && method.BodyOrExpressionBody() is null
-                    && method.ContainsUnbalancedIfElseDirectives(method.Span))
-                {
-                    return;
-                }
+                return;
             }
         }
 

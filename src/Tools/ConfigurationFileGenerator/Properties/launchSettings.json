@@ -2,7 +2,7 @@
   "profiles": {
     "CodeGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "\"../../../../..\""
+      "commandLineArgs": "\"../../../../..\" \"../../../../../Tools/ConfigurationFileGenerator/configuration.md\" \"../../../../../../tools/build/configuration.md\""
     }
   }
 }

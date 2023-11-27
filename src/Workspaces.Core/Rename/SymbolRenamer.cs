@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -27,8 +27,8 @@ public static class SymbolRenamer
         Solution solution,
         Func<ISymbol, bool> predicate,
         Func<ISymbol, string> getNewName,
-        SymbolRenamerOptions options = null,
-        IProgress<SymbolRenameProgress> progress = null,
+        SymbolRenamerOptions? options = null,
+        IProgress<SymbolRenameProgress>? progress = null,
         CancellationToken cancellationToken = default)
     {
         var renamer = new SymbolRenameState(solution, predicate, getNewName, options, progress);
@@ -52,8 +52,8 @@ public static class SymbolRenamer
         IEnumerable<Project> projects,
         Func<ISymbol, bool> predicate,
         Func<ISymbol, string> getNewName,
-        SymbolRenamerOptions options = null,
-        IProgress<SymbolRenameProgress> progress = null,
+        SymbolRenamerOptions? options = null,
+        IProgress<SymbolRenameProgress>? progress = null,
         CancellationToken cancellationToken = default)
     {
         if (projects is null)
@@ -107,8 +107,8 @@ public static class SymbolRenamer
         Project project,
         Func<ISymbol, bool> predicate,
         Func<ISymbol, string> getNewName,
-        SymbolRenamerOptions options = null,
-        IProgress<SymbolRenameProgress> progress = null,
+        SymbolRenamerOptions? options = null,
+        IProgress<SymbolRenameProgress>? progress = null,
         CancellationToken cancellationToken = default)
     {
         var renamer = new SymbolRenameState(project.Solution, predicate, getNewName, options, progress);

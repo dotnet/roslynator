@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -229,18 +229,21 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     public override void VisitClassDeclaration(ClassDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+        VisitParameterList(node.ParameterList);
         VisitMembers(node.Members);
     }
 
     public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+        VisitParameterList(node.ParameterList);
         VisitMembers(node.Members);
     }
 
     public override void VisitStructDeclaration(StructDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+        VisitParameterList(node.ParameterList);
         VisitMembers(node.Members);
     }
 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -219,5 +219,14 @@ class C
 class C
 {
 }", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
+    public async Task TestNoDiagnostic_IfDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
+#if DEBUG
+#endif
+", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
@@ -8,7 +8,7 @@ internal static class Logger
 {
     public static ConsoleWriter ConsoleOut { get; } = ConsoleWriter.Instance;
 
-    public static TextWriterWithVerbosity Out { get; set; }
+    public static TextWriterWithVerbosity? Out { get; set; }
 
     public static void Write(char value)
     {
@@ -94,13 +94,13 @@ internal static class Logger
         Out?.Write(value);
     }
 
-    public static void Write(string value)
+    public static void Write(string? value)
     {
         ConsoleOut.Write(value);
         Out?.Write(value);
     }
 
-    public static void Write(string value, Verbosity verbosity)
+    public static void Write(string? value, Verbosity verbosity)
     {
         ConsoleOut.Write(value, verbosity: verbosity);
         Out?.Write(value, verbosity: verbosity);

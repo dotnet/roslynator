@@ -65,10 +65,10 @@
 	<Content Include="roslynator.config">
 	  <IncludeInVSIX>true</IncludeInVSIX>
 	</Content>
-	<Content Include="Roslynator.ico">
+	<Content Include="../../images/roslynator-logo-small.png" Link="roslynator-logo-small.png">
 	  <IncludeInVSIX>true</IncludeInVSIX>
 	</Content>
-	<Content Include="RoslynatorPreview.png">
+	<Content Include="../../images/roslynator-logo-large.png" Link="roslynator-logo-large.png">
 	  <IncludeInVSIX>true</IncludeInVSIX>
 	</Content>
 	<Content Include=".roslynatorconfig">

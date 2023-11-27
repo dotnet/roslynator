@@ -148,6 +148,7 @@ dotnet_diagnostic.RCS1253.severity = suggestion
 dotnet_diagnostic.RCS1254.severity = suggestion
 dotnet_diagnostic.RCS1255.severity = none
 dotnet_diagnostic.RCS1260.severity = suggestion
+dotnet_diagnostic.RCS9001.severity = suggestion
 
 dotnet_diagnostic.IDE0007.severity = none
 dotnet_diagnostic.IDE0007WithoutSuggestion.severity = none
@@ -205,4 +206,6 @@ dotnet_diagnostic.RS1026.severity = none
 
 dotnet_diagnostic.CA1806.severity = none
 dotnet_diagnostic.CA1826.severity = none
+dotnet_diagnostic.CA1860.severity = none
+dotnet_diagnostic.CA1861.severity = none
 dotnet_diagnostic.CA2231.severity = none

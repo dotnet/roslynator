@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Immutable;
@@ -23,7 +23,7 @@ public static class CSharpFacts
             SyntaxKind.ExclusiveOrAssignmentExpression,
             SyntaxKind.OrAssignmentExpression,
             SyntaxKind.LeftShiftAssignmentExpression,
-            SyntaxKind.RightShiftAssignmentExpression
+            SyntaxKind.RightShiftAssignmentExpression,
         });
 
     internal static string GetTitle(SyntaxNode node)

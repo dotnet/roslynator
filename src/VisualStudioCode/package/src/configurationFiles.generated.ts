@@ -117,15 +117,15 @@ roslynator_analyzers.enabled_by_default = true|false
 
 #roslynator_prefix_field_identifier_with_underscore = true|false
 
-#roslynator_suppress_unity_script_methods = true|false
-# Applicable to: rcs1213
-
 #roslynator_tab_length = <NUM>
 # Default: 4
 # Applicable to: rcs0056
 
 #roslynator_trailing_comma_style = include|omit|omit_when_single_line
 # Applicable to: rcs1260
+
+#roslynator_unity_code_analysis.enabled = true|false
+# Applicable to: rcs1169, rcs1213
 
 #roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: rcs1207
@@ -414,7 +414,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Declare each attribute separately
 #dotnet_diagnostic.rcs1052.severity = none
 
-# Avoid semicolon at the end of declaration
+# Unnecessary semicolon at the end of declaration
 #dotnet_diagnostic.rcs1055.severity = silent
 
 # Avoid usage of using alias directive
@@ -482,7 +482,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs1090.severity = none
 # Options: roslynator_configure_await
 
-# Remove file with no code
+# File contains no code
 #dotnet_diagnostic.rcs1093.severity = suggestion
 
 # Declare using directive on top level
@@ -641,6 +641,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Make field read-only
 #dotnet_diagnostic.rcs1169.severity = suggestion
+# Options: roslynator_unity_code_analysis.enabled
 
 # Use read-only auto-implemented property
 #dotnet_diagnostic.rcs1170.severity = suggestion
@@ -762,7 +763,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Remove unused member declaration
 #dotnet_diagnostic.rcs1213.severity = suggestion
-# Options: roslynator_suppress_unity_script_methods
+# Options: roslynator_unity_code_analysis.enabled
 
 # Unnecessary interpolated string
 #dotnet_diagnostic.rcs1214.severity = suggestion
@@ -901,6 +902,9 @@ roslynator_analyzers.enabled_by_default = true|false
 # Add/remove trailing comma
 #dotnet_diagnostic.rcs1260.severity = none
 # Options: roslynator_trailing_comma_style
+
+# Resource can be disposed asynchronously
+#dotnet_diagnostic.rcs1261.severity = suggestion
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

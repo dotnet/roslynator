@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -14,11 +14,11 @@ internal class SymbolFilterOptions
     public static SymbolFilterOptions Default { get; } = new();
 
     internal SymbolFilterOptions(
-        FileSystemFilter fileSystemFilter = null,
+        FileSystemFilter? fileSystemFilter = null,
         VisibilityFilter visibility = VisibilityFilter.All,
         SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
-        IEnumerable<SymbolFilterRule> rules = null,
-        IEnumerable<AttributeFilterRule> attributeRules = null)
+        IEnumerable<SymbolFilterRule>? rules = null,
+        IEnumerable<AttributeFilterRule>? attributeRules = null)
     {
         FileSystemFilter = fileSystemFilter;
         Visibility = visibility;
@@ -28,7 +28,7 @@ internal class SymbolFilterOptions
         AttributeRules = attributeRules?.ToImmutableArray() ?? ImmutableArray<AttributeFilterRule>.Empty;
     }
 
-    public FileSystemFilter FileSystemFilter { get; }
+    public FileSystemFilter? FileSystemFilter { get; }
 
     public VisibilityFilter Visibility { get; }
 
@@ -106,7 +106,16 @@ internal class SymbolFilterOptions
 
     public virtual SymbolFilterReason GetReason(INamespaceSymbol namespaceSymbol)
     {
-        return GetRulesReason(namespaceSymbol);
+        foreach (SymbolFilterRule rule in Rules)
+        {
+            if (rule.IsApplicable(namespaceSymbol)
+                && !rule.IsMatch(namespaceSymbol))
+            {
+                return rule.Reason;
+            }
+        }
+
+        return SymbolFilterReason.None;
     }
 
     public virtual SymbolFilterReason GetReason(INamedTypeSymbol typeSymbol)

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
 using Microsoft.Extensions.FileSystemGlobbing;
@@ -65,5 +65,5 @@ public class SymbolRenamerOptions
     public bool RenameFile { get; set; }
 
     //TODO: SymbolRenameOptions.FileSystemMatcher
-    internal Matcher FileSystemMatcher { get; set; }
+    internal Matcher? FileSystemMatcher { get; set; }
 }

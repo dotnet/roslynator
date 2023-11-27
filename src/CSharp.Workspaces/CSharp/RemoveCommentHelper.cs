@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -44,10 +44,7 @@ internal static class RemoveCommentHelper
         int first = FindFirstTriviaToRemove(triviaList, index);
         int last = FindLastTriviaToRemove(triviaList, index);
 
-        for (int i = last; i >= first; i--)
-            triviaList = triviaList.RemoveAt(i);
-
-        return triviaList;
+        return triviaList.RemoveRange(first, last - first + 1);
     }
 
     private static int FindFirstTriviaToRemove(SyntaxTriviaList triviaList, int index)
@@ -73,6 +70,9 @@ internal static class RemoveCommentHelper
             else if (kind == SyntaxKind.EndOfLineTrivia)
             {
                 index--;
+
+                if (index == 0)
+                    return index;
             }
             else
             {
@@ -87,24 +87,32 @@ internal static class RemoveCommentHelper
     {
         int lastIndex = index;
 
-        while (index < triviaList.Count - 1)
-        {
-            if (triviaList[index + 1].Kind().Is(
+        while (index < triviaList.Count - 1
+            && triviaList[index + 1].Kind().Is(
                 SyntaxKind.WhitespaceTrivia,
                 SyntaxKind.EndOfLineTrivia,
                 SyntaxKind.SingleLineCommentTrivia))
-            {
-                index++;
+        {
+            index++;
+        }
 
-                if (triviaList[index].IsKind(SyntaxKind.SingleLineCommentTrivia))
-                    lastIndex = index;
-            }
-            else
+        if (index > lastIndex)
+        {
+            if (triviaList[index].IsKind(SyntaxKind.WhitespaceTrivia))
             {
-                break;
+                if (index > lastIndex - 1
+                    && triviaList[index - 1].IsKind(SyntaxKind.EndOfLineTrivia))
+                {
+                    index -= 2;
+                }
+            }
+            else if (index > lastIndex
+                && triviaList[index].IsKind(SyntaxKind.EndOfLineTrivia))
+            {
+                index--;
             }
         }
 
-        return lastIndex;
+        return index;
     }
 }

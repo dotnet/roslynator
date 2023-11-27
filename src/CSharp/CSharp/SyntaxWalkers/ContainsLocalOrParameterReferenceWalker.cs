@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.SyntaxWalkers;
 internal sealed class ContainsLocalOrParameterReferenceWalker : LocalOrParameterReferenceWalker
 {
     [ThreadStatic]
-    private static ContainsLocalOrParameterReferenceWalker _cachedInstance;
+    private static ContainsLocalOrParameterReferenceWalker? _cachedInstance;
 
     public ContainsLocalOrParameterReferenceWalker(
         ISymbol symbol,
@@ -25,9 +25,9 @@ internal sealed class ContainsLocalOrParameterReferenceWalker : LocalOrParameter
 
     public bool Result { get; set; }
 
-    public ISymbol Symbol { get; private set; }
+    public ISymbol? Symbol { get; private set; }
 
-    public SemanticModel SemanticModel { get; private set; }
+    public SemanticModel? SemanticModel { get; private set; }
 
     public CancellationToken CancellationToken { get; private set; }
 
@@ -40,8 +40,8 @@ internal sealed class ContainsLocalOrParameterReferenceWalker : LocalOrParameter
     {
         CancellationToken.ThrowIfCancellationRequested();
 
-        if (string.Equals(node.Identifier.ValueText, Symbol.Name, StringComparison.Ordinal)
-            && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(node, CancellationToken), Symbol))
+        if (string.Equals(node.Identifier.ValueText, Symbol!.Name, StringComparison.Ordinal)
+            && SymbolEqualityComparer.Default.Equals(SemanticModel!.GetSymbol(node, CancellationToken), Symbol))
         {
             Result = true;
         }
@@ -124,7 +124,7 @@ internal sealed class ContainsLocalOrParameterReferenceWalker : LocalOrParameter
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        ContainsLocalOrParameterReferenceWalker walker = _cachedInstance;
+        ContainsLocalOrParameterReferenceWalker? walker = _cachedInstance;
 
         if (walker is not null)
         {
