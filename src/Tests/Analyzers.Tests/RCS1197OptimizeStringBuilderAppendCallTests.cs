@@ -381,7 +381,7 @@ class C
     {
         string s = null;
         var sb = new StringBuilder();
-        sb.Append([|$""""""<a href=""somelink"">{s}</a>""""""|]);
+        sb.Append([|$""""""""<a href=""somelink"">{s}</a>""""""""|]);
     }
 }
 ", @"
@@ -392,7 +392,7 @@ class C
     {
         string s = null;
         var sb = new StringBuilder();
-        sb.Append(""""""<a href=""somelink"">"""""").Append(s).Append(""""""</a>"""""");
+        sb.Append(""""""""<a href=""somelink"">"""""""").Append(s).Append(""""""""</a>"""""""");
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp11);
