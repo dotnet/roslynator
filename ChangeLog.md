@@ -137,13 +137,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix [RCS1187](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1187) ([#1150](https://github.com/JosefPihrt/Roslynator/pull/1150)).
-- Fix [RCS1056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1056) ([#1154](https://github.com/JosefPihrt/Roslynator/pull/1154)).
-- Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208) ([#1153](https://github.com/JosefPihrt/Roslynator/pull/1153)).
-- Fix [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([#1176](https://github.com/JosefPihrt/Roslynator/pull/1176)).
-- Fix [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1197.md) ([#1166](https://github.com/JosefPihrt/Roslynator/pull/1166))
-- [CLI] Fix exit code of `spellcheck` command ([#1177](https://github.com/JosefPihrt/Roslynator/pull/1177)).
-- Improve indentation analysis ([#1188](https://github.com/JosefPihrt/Roslynator/pull/1188)).
+- Fix [RCS1187](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1187) ([PR](https://github.com/dotnet/roslynator/pull/1150)).
+- Fix [RCS1056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1056) ([PR](https://github.com/dotnet/roslynator/pull/1154)).
+- Fix [RCS1208](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1208) ([PR](https://github.com/dotnet/roslynator/pull/1153)).
+- Fix [RCS1043](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1043) ([PR](https://github.com/dotnet/roslynator/pull/1176)).
+- [CLI] Fix exit code of `spellcheck` command ([PR](https://github.com/dotnet/roslynator/pull/1177)).
+- Improve indentation analysis ([PR](https://github.com/dotnet/roslynator/pull/1188)).
 
 ## [4.4.0] - 2023-08-01
 
