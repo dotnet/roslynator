@@ -12,8 +12,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9001</summary>
         public static readonly DiagnosticDescriptor UsePatternMatching = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UsePatternMatching, 
-            title:              "Use pattern matching.", 
-            messageFormat:      "Use pattern matching.", 
+            title:              "Use pattern matching", 
+            messageFormat:      "Use pattern matching", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
@@ -24,8 +24,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9002</summary>
         public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
-            title:              "Use property SyntaxNode.SpanStart.", 
-            messageFormat:      "Use property SyntaxNode.SpanStart.", 
+            title:              "Use property SyntaxNode.SpanStart", 
+            messageFormat:      "Use property SyntaxNode.SpanStart", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -36,8 +36,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9003</summary>
         public static readonly DiagnosticDescriptor UnnecessaryConditionalAccess = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryConditionalAccess, 
-            title:              "Unnecessary conditional access.", 
-            messageFormat:      "Unnecessary conditional access.", 
+            title:              "Unnecessary conditional access", 
+            messageFormat:      "Unnecessary conditional access", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -50,8 +50,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9004</summary>
         public static readonly DiagnosticDescriptor CallAnyInsteadOfAccessingCount = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
-            title:              "Call 'Any' instead of accessing 'Count'.", 
-            messageFormat:      "Call 'Any' instead of accessing 'Count'.", 
+            title:              "Call 'Any' instead of accessing 'Count'", 
+            messageFormat:      "Call 'Any' instead of accessing 'Count'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -62,8 +62,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9005</summary>
         public static readonly DiagnosticDescriptor UnnecessaryNullCheck = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryNullCheck, 
-            title:              "Unnecessary null check.", 
-            messageFormat:      "Unnecessary null check.", 
+            title:              "Unnecessary null check", 
+            messageFormat:      "Unnecessary null check", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -74,8 +74,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9006</summary>
         public static readonly DiagnosticDescriptor UseElementAccess = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseElementAccess, 
-            title:              "Use element access.", 
-            messageFormat:      "Use element access.", 
+            title:              "Use element access", 
+            messageFormat:      "Use element access", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -86,8 +86,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9007</summary>
         public static readonly DiagnosticDescriptor UseReturnValue = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseReturnValue, 
-            title:              "Use return value.", 
-            messageFormat:      "Use return value.", 
+            title:              "Use return value", 
+            messageFormat:      "Use return value", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
@@ -98,8 +98,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9008</summary>
         public static readonly DiagnosticDescriptor CallLastInsteadOfUsingElementAccess = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
-            title:              "Call 'Last' instead of using [].", 
-            messageFormat:      "Call 'Last' instead of using [].", 
+            title:              "Call 'Last' instead of using []", 
+            messageFormat:      "Call 'Last' instead of using []", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -110,8 +110,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9009</summary>
         public static readonly DiagnosticDescriptor UnknownLanguageName = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnknownLanguageName, 
-            title:              "Unknown language name.", 
-            messageFormat:      "Unknown language name.", 
+            title:              "Unknown language name", 
+            messageFormat:      "Unknown language name", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
@@ -122,8 +122,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9010</summary>
         public static readonly DiagnosticDescriptor SpecifyExportCodeRefactoringProviderAttributeName = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
-            title:              "Specify ExportCodeRefactoringProviderAttribute.Name.", 
-            messageFormat:      "Specify ExportCodeRefactoringProviderAttribute.Name.", 
+            title:              "Specify ExportCodeRefactoringProviderAttribute.Name", 
+            messageFormat:      "Specify ExportCodeRefactoringProviderAttribute.Name", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
@@ -134,8 +134,8 @@ namespace Roslynator.CodeAnalysis.CSharp
         /// <summary>RCS9011</summary>
         public static readonly DiagnosticDescriptor SpecifyExportCodeFixProviderAttributeName = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
-            title:              "Specify ExportCodeFixProviderAttribute.Name.", 
-            messageFormat:      "Specify ExportCodeFixProviderAttribute.Name.", 
+            title:              "Specify ExportCodeFixProviderAttribute.Name", 
+            messageFormat:      "Specify ExportCodeFixProviderAttribute.Name", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
