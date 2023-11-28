@@ -6535,11 +6535,11 @@ class Foo
   <Analyzer>
     <Id>RCS1228</Id>
     <Identifier>UnusedElementInDocumentationComment</Identifier>
-    <Title>Unused element in documentation comment.</Title>
+    <Title>Unused element in a documentation comment.</Title>
+    <MessageFormat>Unused '{0}' element in a documentation comment.</MessageFormat>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
         <Before><![CDATA[/// <summary>
@@ -7487,6 +7487,27 @@ void M()
     await using var disposable = await GetDisposableAsync();
 }
 ]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
+    <Id>RCS1263</Id>
+    <Identifier>InvalidReferenceInDocumentationComment</Identifier>
+    <Title>Invalid reference in a documentation comment.</Title>
+    <MessageFormat>{0} '{0}' does not exist.</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[/// <summary>
+/// 
+/// </summary>
+/// <param name="barr"></param>
+public string Foo(string bar)
+{
+   /// ...
+}
+]]></Before>
       </Sample>
     </Samples>
   </Analyzer>

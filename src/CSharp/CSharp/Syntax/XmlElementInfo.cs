@@ -46,6 +46,19 @@ public readonly struct XmlElementInfo
         get { return Kind == SyntaxKind.XmlEmptyElement; }
     }
 
+    internal bool HasAttributes
+    {
+        get
+        {
+            return Element switch
+            {
+                XmlEmptyElementSyntax xmlEmptyElement => xmlEmptyElement.Attributes.Any(),
+                XmlElementSyntax xmlElement => xmlElement.StartTag.Attributes.Any(),
+                _ => false
+            };
+        }
+    }
+
     internal bool IsContentEmptyOrWhitespace
     {
         get

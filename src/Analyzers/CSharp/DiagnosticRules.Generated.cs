@@ -2186,16 +2186,14 @@ namespace Roslynator.CSharp
         /// <summary>RCS1228</summary>
         public static readonly DiagnosticDescriptor UnusedElementInDocumentationComment = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnusedElementInDocumentationComment, 
-            title:              "Unused element in documentation comment.", 
-            messageFormat:      "Unused element in documentation comment.", 
+            title:              "Unused element in a documentation comment.", 
+            messageFormat:      "Unused '{0}' element in a documentation comment.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UnusedElementInDocumentationComment, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
-
-        public static readonly DiagnosticDescriptor UnusedElementInDocumentationCommentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UnusedElementInDocumentationComment);
 
         /// <summary>RCS1229</summary>
         public static readonly DiagnosticDescriptor UseAsyncAwait = DiagnosticDescriptorFactory.Create(
@@ -2579,6 +2577,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.DisposeResourceAsynchronously, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1263</summary>
+        public static readonly DiagnosticDescriptor InvalidReferenceInDocumentationComment = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.InvalidReferenceInDocumentationComment, 
+            title:              "Invalid reference in a documentation comment.", 
+            messageFormat:      "{0} '{0}' does not exist.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.InvalidReferenceInDocumentationComment, 
             customTags:         Array.Empty<string>());
 
     }

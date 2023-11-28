@@ -804,7 +804,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Validate arguments correctly
 #dotnet_diagnostic.rcs1227.severity = suggestion
 
-# Unused element in documentation comment
+# Unused element in a documentation comment
 #dotnet_diagnostic.rcs1228.severity = silent
 
 # Use async/await when necessary
@@ -905,6 +905,9 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Resource can be disposed asynchronously
 #dotnet_diagnostic.rcs1261.severity = suggestion
+
+# Invalid reference in a documentation comment
+#dotnet_diagnostic.rcs1263.severity = suggestion
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
