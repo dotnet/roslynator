@@ -909,6 +909,9 @@ roslynator_analyzers.enabled_by_default = true|false
 # Invalid reference in a documentation comment
 #dotnet_diagnostic.rcs1263.severity = suggestion
 
+# Unnecessary raw string literal
+#dotnet_diagnostic.rcs1262.severity = suggestion
+
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
 
