@@ -7506,7 +7506,7 @@ void M()
     </Samples>
     <Links>
       <Link>
-        <Url>https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/raw-string</Url>
+        <Url>https://learn.microsoft.com/dotnet/csharp/language-reference/tokens/raw-string</Url>
         <Text>Raw string literal text - """ in string literals</Text>
       </Link>
     </Links>
