@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using System;
 
 namespace Roslynator.CSharp.Analysis;
 
@@ -40,12 +41,43 @@ public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
 
         if (compilationUnit.Span == token.Span
             && !token.HasTrailingTrivia
-            && !token.LeadingTrivia.Any(f => f.IsKind(
-                SyntaxKind.IfDirectiveTrivia,
-                SyntaxKind.ElseDirectiveTrivia,
-                SyntaxKind.ElifDirectiveTrivia,
-                SyntaxKind.EndIfDirectiveTrivia)))
+            && !token.LeadingTrivia.Any(trivia =>
+            {
+                switch (trivia.Kind())
+                {
+                    case SyntaxKind.IfDirectiveTrivia:
+                    case SyntaxKind.ElseDirectiveTrivia:
+                    case SyntaxKind.ElifDirectiveTrivia:
+                    case SyntaxKind.EndIfDirectiveTrivia:
+                        {
+                            return false;
+                        }
+                    case SyntaxKind.PragmaWarningDirectiveTrivia:
+                        {
+                            var pragma = (PragmaWarningDirectiveTriviaSyntax)trivia.GetStructure();
+
+                            foreach (ExpressionSyntax errorCode in pragma.ErrorCodes)
+                            {
+                                if (errorCode is IdentifierNameSyntax identifierName
+                                && string.Equals(identifierName.Identifier.ValueText, "RCS1093", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    return false;
+                                }
+                            }
+
+                            return true;
+                        }
+                    default:
+                        {
+                            return true;
+                        }
+                }
+            }))
         {
+            foreach (var trivia in token.LeadingTrivia)
+            {
+            }
+
             SyntaxTree syntaxTree = compilationUnit.SyntaxTree;
 
             if (!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath))
