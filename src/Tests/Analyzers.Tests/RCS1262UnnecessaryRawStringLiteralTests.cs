@@ -20,7 +20,7 @@ class C
 {
     void M()
     {
-        string s = [|""""""|]foo"""""";
+        string s = ""[|""""|]foo"""""";
     }
 }
 ", @"
@@ -43,7 +43,7 @@ class C
     void M()
     {
         string s = """";
-        string s1 = [|$""""""|] {s} foo """""";
+        string s1 = $""[|""""|] {s} foo """""";
     }
 }
 ", @"

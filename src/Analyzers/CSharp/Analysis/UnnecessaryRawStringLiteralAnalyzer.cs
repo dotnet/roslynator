@@ -54,14 +54,16 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UnnecessaryRawStringLiteral,
-            Location.Create(literalExpression.SyntaxTree, new TextSpan(literalExpression.SpanStart, info.QuoteCount)));
+            Location.Create(literalExpression.SyntaxTree, new TextSpan(literalExpression.SpanStart + 1, info.QuoteCount - 1)));
     }
 
     private static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
     {
         var interpolatedString = (InterpolatedStringExpressionSyntax)context.Node;
 
-        if (!interpolatedString.StringStartToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken))
+        SyntaxToken startToken = interpolatedString.StringStartToken;
+
+        if (!startToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken))
             return;
 
         foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
@@ -78,7 +80,7 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UnnecessaryRawStringLiteral,
-            interpolatedString.StringStartToken);
+            Location.Create(interpolatedString.SyntaxTree, new TextSpan(startToken.SpanStart + 2, startToken.Span.Length - 2)));
     }
 
     private static bool ContainsBackSlashQuote(string text, int start, int length)

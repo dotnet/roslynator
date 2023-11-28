@@ -2591,7 +2591,7 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UnnecessaryRawStringLiteral, 
-            customTags:         Array.Empty<string>());
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
 
     }
 }

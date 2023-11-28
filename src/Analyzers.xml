@@ -7496,6 +7496,7 @@ void M()
     <Title>Unnecessary raw string literal.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
     <MinLanguageVersion>11.0</MinLanguageVersion>
     <Samples>
       <Sample>
