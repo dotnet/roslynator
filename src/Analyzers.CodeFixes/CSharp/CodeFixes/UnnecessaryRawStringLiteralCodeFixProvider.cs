@@ -61,7 +61,7 @@ public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProv
     {
         RawStringLiteralInfo info = RawStringLiteralInfo.Create(literalExpression);
 
-        string newText = info.Text.Substring(info.QuoteCount - 1, info.Text.Length - (info.QuoteCount * 2 - 2));
+        string newText = info.Text.Substring(info.QuoteCount - 1, info.Text.Length - ((info.QuoteCount * 2) - 2));
 
         return document.WithTextChangeAsync(literalExpression.Span, newText, cancellationToken);
     }
