@@ -906,11 +906,11 @@ roslynator_analyzers.enabled_by_default = true|false
 # Resource can be disposed asynchronously
 #dotnet_diagnostic.rcs1261.severity = suggestion
 
-# Invalid reference in a documentation comment
-#dotnet_diagnostic.rcs1263.severity = suggestion
-
 # Unnecessary raw string literal
 #dotnet_diagnostic.rcs1262.severity = suggestion
+
+# Invalid reference in a documentation comment
+#dotnet_diagnostic.rcs1263.severity = warning
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

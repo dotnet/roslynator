@@ -7491,27 +7491,6 @@ void M()
     </Samples>
   </Analyzer>
   <Analyzer>
-    <Id>RCS1263</Id>
-    <Identifier>InvalidReferenceInDocumentationComment</Identifier>
-    <Title>Invalid reference in a documentation comment.</Title>
-    <MessageFormat>{0} '{0}' does not exist.</MessageFormat>
-    <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <Samples>
-      <Sample>
-        <Before><![CDATA[/// <summary>
-/// 
-/// </summary>
-/// <param name="barr"></param>
-public string Foo(string bar)
-{
-   /// ...
-}
-]]></Before>
-      </Sample>
-    </Samples>
-  </Analyzer>
-  <Analyzer>
     <Id>RCS1262</Id>
     <Identifier>UnnecessaryRawStringLiteral</Identifier>
     <Title>Unnecessary raw string literal.</Title>
@@ -7531,6 +7510,27 @@ public string Foo(string bar)
         <Text>Raw string literal text - """ in string literals</Text>
       </Link>
     </Links>
+  </Analyzer>
+  <Analyzer>
+    <Id>RCS1263</Id>
+    <Identifier>InvalidReferenceInDocumentationComment</Identifier>
+    <Title>Invalid reference in a documentation comment.</Title>
+    <MessageFormat>{0} '{1}' could not be found.</MessageFormat>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[/// <summary>
+/// 
+/// </summary>
+/// <param name="barr"></param>
+public string Foo(string bar)
+{
+   /// ...
+}
+]]></Before>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS9001</Id>

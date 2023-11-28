@@ -2579,18 +2579,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.DisposeResourceAsynchronously, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1263</summary>
-        public static readonly DiagnosticDescriptor InvalidReferenceInDocumentationComment = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.InvalidReferenceInDocumentationComment, 
-            title:              "Invalid reference in a documentation comment.", 
-            messageFormat:      "{0} '{0}' does not exist.", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.InvalidReferenceInDocumentationComment, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1262</summary>
         public static readonly DiagnosticDescriptor UnnecessaryRawStringLiteral = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryRawStringLiteral, 
@@ -2602,6 +2590,18 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UnnecessaryRawStringLiteral, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1263</summary>
+        public static readonly DiagnosticDescriptor InvalidReferenceInDocumentationComment = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.InvalidReferenceInDocumentationComment, 
+            title:              "Invalid reference in a documentation comment.", 
+            messageFormat:      "{0} '{1}' could not be found.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.InvalidReferenceInDocumentationComment, 
+            customTags:         Array.Empty<string>());
 
     }
 }

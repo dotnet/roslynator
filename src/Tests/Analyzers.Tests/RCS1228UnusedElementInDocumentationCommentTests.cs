@@ -63,7 +63,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-    public async Task Test_EmptyElement()
+    public async Task Test_SelfClosingTag()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -173,13 +173,13 @@ class C
 {
     /// <summary></summary>
     /// [|<param name=""p""></param>|]
-    void M(object p1, object p2) => M(p1, p2);
+    void M(object p) => M(p);
 }
 ", @"
 class C
 {
     /// <summary></summary>
-    void M(object p1, object p2) => M(p1, p2);
+    void M(object p) => M(p);
 }
 ");
     }
@@ -204,20 +204,20 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-    public async Task Test_ParamElement_Empty()
+    public async Task Test_ParamElement_SelfClosingTag()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
     /// [|<param name=""p"" />|]
-    void M(object p1, object p2) => M(p1, p2);
+    void M(object p) => M(p);
 }
 ", @"
 class C
 {
     /// <summary></summary>
-    void M(object p1, object p2) => M(p1, p2);
+    void M(object p) => M(p);
 }
 ");
     }
@@ -230,13 +230,13 @@ class C
 {
     /// <summary></summary>
     /// [|<typeparam name=""T""></param>|]
-    void M<T1, T2>() => M<T1, T2>();
+    void M<T>() => M<T>();
 }
 ", @"
 class C
 {
     /// <summary></summary>
-    void M<T1, T2>() => M<T1, T2>();
+    void M<T>() => M<T>();
 }
 ");
     }
@@ -261,51 +261,43 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-    public async Task Test_TypeParamElement_Empty()
+    public async Task Test_TypeParamElement_SelfClosingTag()
     {
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
     /// [|<typeparam name=""T"" />|]
-    void M<T1, T2>() => M<T1, T2>();
+    void M<T>() => M<T>();
 }
 ", @"
 class C
 {
     /// <summary></summary>
-    void M<T1, T2>() => M<T1, T2>();
+    void M<T>() => M<T>();
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-    public async Task TestNoDiagnostic_NoReturnsElement()
+    public async Task Test_Class_PrimaryConstructor()
     {
-        await VerifyNoDiagnosticAsync(@"
-class C
+        await VerifyDiagnosticAndFixAsync(@"
+/// <summary>
+/// x
+/// </summary>
+/// [|[|<param name=""value2""></param>|]|]
+public class Foo(string value)
 {
-    /// <summary>
-    /// </summary>
-    void M()
-    {
-    }
+    public string Value { get; } = value;
 }
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-    public async Task TestNoDiagnostic_NonEmpty()
-    {
-        await VerifyNoDiagnosticAsync(@"
-class C
+", @"
+/// <summary>
+/// x
+/// </summary>
+public class Foo(string value)
 {
-    /// <summary>
-    /// </summary>
-    /// <returns>x</returns>
-    void M()
-    {
-    }
+    public string Value { get; } = value;
 }
 ");
     }
@@ -360,6 +352,34 @@ public class Foo(string value)
 public struct Foo(string value)
 {
     public string Value { get; } = value;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_NonEmpty()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    /// <summary></summary>
+    /// <typeparam name=""T"">x</typeparam>
+    /// <param name=""p"">x</param>
+    /// <remarks>x</remarks>
+    /// <value>x</value>
+    /// <returns>x</returns>
+    /// <example>x</example>
+    /// <exception cref=""Exception""></exception>
+    /// <exception cref=""Exception"" />
+    /// <permission cref=""foo.com""></permission>
+    /// <permission cref=""foo.com"" />
+    /// <seealso cref=""foo.com""/>
+    /// <seealso cref=""foo.com"" />
+    void M()
+    {
+    }
 }
 ");
     }

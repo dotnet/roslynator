@@ -127,32 +127,29 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
-    public async Task TestNoDiagnostic_NoReturnsElement()
+    public async Task TestNoDiagnostic_ParamElement()
     {
         await VerifyNoDiagnosticAsync(@"
 class C
 {
-    /// <summary>
-    /// </summary>
-    void M()
-    {
-    }
+    /// <summary></summary>
+    /// <param name=""p1""></param>
+    /// <param name=""p2""></param>
+    void M(object p1, object p2) => M(p1, p2);
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
-    public async Task TestNoDiagnostic_NonEmpty()
+    public async Task TestNoDiagnostic_TypeParamElement()
     {
         await VerifyNoDiagnosticAsync(@"
 class C
 {
-    /// <summary>
-    /// </summary>
-    /// <returns>x</returns>
-    void M()
-    {
-    }
+    /// <summary></summary>
+    /// <typeparam name=""T1"" />
+    /// <typeparam name=""T2"" />
+    void M<T1, T2>() => M<T1, T2>();
 }
 ");
     }
