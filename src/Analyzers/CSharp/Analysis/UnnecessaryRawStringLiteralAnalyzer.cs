@@ -91,9 +91,7 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
             {
                 case '\\':
                 case '"':
-                    {
-                        return true;
-                    }
+                    return true;
             }
         }
 
