@@ -41,4 +41,18 @@ class C
 
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FileContainsNoCode)]
+    public async Task TestNoDiagnostic_PragmaWarningDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"#pragma warning disable RCS1093 // Remove file with no code.
+//using System;
+//using System.Collections.Generic;
+//using System.Data;
+//using System.IO;
+
+//public class TestClass
+//{
+//}");
+    }
 }
