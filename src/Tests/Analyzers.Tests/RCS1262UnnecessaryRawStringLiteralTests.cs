@@ -85,4 +85,32 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    public async Task TestNoDiagnostic_InterpolatedString_ContainsQuote()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string s = $"""""" {""""} "" """""";
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    public async Task TestNoDiagnostic_InterpolatedString_ContainsEscape()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string s = $"""""" {""""} \t """""";
+    }
+}
+");
+    }
 }
