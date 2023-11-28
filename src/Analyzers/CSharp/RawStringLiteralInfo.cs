@@ -67,7 +67,7 @@ internal readonly struct RawStringLiteralInfo
 
     public static RawStringLiteralInfo Create(LiteralExpressionSyntax literalExpression)
     {
-        if (TryCreate(literalExpression, out var info))
+        if (TryCreate(literalExpression, out RawStringLiteralInfo info))
             return info;
 
         throw new InvalidOperationException();
