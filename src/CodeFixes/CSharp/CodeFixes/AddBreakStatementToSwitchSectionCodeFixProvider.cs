@@ -41,7 +41,7 @@ public sealed class AddBreakStatementToSwitchSectionCodeFixProvider : CompilerDi
             return;
 
         CodeAction codeAction = CodeAction.Create(
-            "Add 'break' statement", 
+            "Add 'break' statement",
             ct => RefactorAsync(context.Document, switchSection, ct),
             GetEquivalenceKey(diagnostic));
 
