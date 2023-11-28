@@ -61,11 +61,9 @@ public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProv
     {
         RawStringLiteralInfo info = RawStringLiteralInfo.Create(literalExpression);
 
-        ExpressionSyntax newExpression = SyntaxFactory.ParseExpression("\"" + info.Text.Substring(info.QuoteCount, info.Text.Length - (info.QuoteCount * 2)) + "\"");
+        string newText = info.Text.Substring(info.QuoteCount - 1, info.Text.Length - (info.QuoteCount * 2 - 2));
 
-        newExpression = newExpression.WithTriviaFrom(literalExpression);
-
-        return document.ReplaceNodeAsync(literalExpression, newExpression, cancellationToken);
+        return document.WithTextChangeAsync(literalExpression.Span, newText, cancellationToken);
     }
 
     private static Task<Document> RefactorAsync(

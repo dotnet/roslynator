@@ -7500,7 +7500,7 @@ void M()
     <Samples>
       <Sample>
         <Before><![CDATA[string s = """foo"""]]></Before>
-        <After><![CDATA[]]>string s = """foo"""</After>
+        <After><![CDATA[string s = "foo"]]></After>
       </Sample>
     </Samples>
     <Links>
