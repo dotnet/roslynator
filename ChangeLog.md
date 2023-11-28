@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add analyzer "Dispose resource asynchronously" ([RCS1261](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1261)) ([PR](https://github.com/dotnet/roslynator/pull/1285)).
+- Add analyzer "Unnecessary raw string literal" ([RCS1262](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1262)) ([PR](https://github.com/dotnet/roslynator/pull/1293)).
 
 ### Changed
 

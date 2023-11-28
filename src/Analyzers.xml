@@ -7491,6 +7491,27 @@ void M()
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1262</Id>
+    <Identifier>UnnecessaryRawStringLiteral</Identifier>
+    <Title>Unnecessary raw string literal.</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <MinLanguageVersion>11.0</MinLanguageVersion>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string s = """foo""";]]></Before>
+        <After><![CDATA[string s = "foo";]]></After>
+      </Sample>
+    </Samples>
+    <Links>
+      <Link>
+        <Url>https://learn.microsoft.com/dotnet/csharp/language-reference/tokens/raw-string</Url>
+        <Text>Raw string literal text - """ in string literals</Text>
+      </Link>
+    </Links>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching.</Title>
