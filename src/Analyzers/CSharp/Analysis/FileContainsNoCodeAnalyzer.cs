@@ -50,7 +50,7 @@ public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
                     case SyntaxKind.ElifDirectiveTrivia:
                     case SyntaxKind.EndIfDirectiveTrivia:
                         {
-                            return false;
+                            return true;
                         }
                     case SyntaxKind.PragmaWarningDirectiveTrivia:
                         {
@@ -59,25 +59,19 @@ public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
                             foreach (ExpressionSyntax errorCode in pragma.ErrorCodes)
                             {
                                 if (errorCode is IdentifierNameSyntax identifierName
-                                && string.Equals(identifierName.Identifier.ValueText, "RCS1093", StringComparison.OrdinalIgnoreCase))
+                                    && string.Equals(identifierName.Identifier.ValueText, DiagnosticRules.FileContainsNoCode.Id, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    return false;
+                                    return true;
                                 }
                             }
 
-                            return true;
-                        }
-                    default:
-                        {
-                            return true;
+                            break;
                         }
                 }
+
+                return false;
             }))
         {
-            foreach (var trivia in token.LeadingTrivia)
-            {
-            }
-
             SyntaxTree syntaxTree = compilationUnit.SyntaxTree;
 
             if (!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath))
