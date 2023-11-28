@@ -2581,5 +2581,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.DisposeResourceAsynchronously, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1262</summary>
+        public static readonly DiagnosticDescriptor SimplifyRawStringLiteral = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.SimplifyRawStringLiteral, 
+            title:              "Simplify raw string literal.", 
+            messageFormat:      "Simplify raw string literal.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.SimplifyRawStringLiteral, 
+            customTags:         Array.Empty<string>());
+
     }
 }
