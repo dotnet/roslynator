@@ -13,13 +13,15 @@ using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyRawStringLiteralCodeFixProvider))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryRawStringLiteralCodeFixProvider))]
 [Shared]
-public sealed class SimplifyRawStringLiteralCodeFixProvider : BaseCodeFixProvider
+public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProvider
 {
+    private const string Title = "Unnecessary raw string literal";
+
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyRawStringLiteral); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryRawStringLiteral); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -35,7 +37,7 @@ public sealed class SimplifyRawStringLiteralCodeFixProvider : BaseCodeFixProvide
         if (node is LiteralExpressionSyntax literalExpression)
         {
             CodeAction codeAction = CodeAction.Create(
-                "Simplify raw string literal",
+                Title,
                 ct => RefactorAsync(document, literalExpression, ct),
                 GetEquivalenceKey(diagnostic));
 
@@ -44,7 +46,7 @@ public sealed class SimplifyRawStringLiteralCodeFixProvider : BaseCodeFixProvide
         else if (node is InterpolatedStringExpressionSyntax interpolatedString)
         {
             CodeAction codeAction = CodeAction.Create(
-                "Simplify raw string literal",
+                Title,
                 ct => RefactorAsync(document, interpolatedString, ct),
                 GetEquivalenceKey(diagnostic));
 

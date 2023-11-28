@@ -906,7 +906,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Resource can be disposed asynchronously
 #dotnet_diagnostic.rcs1261.severity = suggestion
 
-# Simplify raw string literal
+# Unnecessary raw string literal
 #dotnet_diagnostic.rcs1262.severity = suggestion
 
 # Use pattern matching

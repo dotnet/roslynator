@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1262SimplifyRawStringLiteralTests : AbstractCSharpDiagnosticVerifier<SimplifyRawStringLiteralAnalyzer, SimplifyRawStringLiteralCodeFixProvider>
+public class RCS1262UnnecessaryRawStringLiteralTests : AbstractCSharpDiagnosticVerifier<UnnecessaryRawStringLiteralAnalyzer, UnnecessaryRawStringLiteralCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyRawStringLiteral;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryRawStringLiteral;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task Test_SingleLineRawStringLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -20,7 +20,7 @@ class C
 {
     void M()
     {
-        string s = [|""""""foo""""""|];
+        string s = [|""""""|]foo"""""";
     }
 }
 ", @"
@@ -34,7 +34,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task Test_InterpolatedSingleLineRawString()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -43,7 +43,7 @@ class C
     void M()
     {
         string s = """";
-        string s1 = [|$"""""" {s} foo """"""|];
+        string s1 = [|$""""""|] {s} foo """""";
     }
 }
 ", @"
@@ -58,7 +58,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_ContainsQuote()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -72,7 +72,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyRawStringLiteral)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_ContainsEscape()
     {
         await VerifyNoDiagnosticAsync(@"

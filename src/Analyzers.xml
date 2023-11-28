@@ -7492,8 +7492,8 @@ void M()
   </Analyzer>
   <Analyzer>
     <Id>RCS1262</Id>
-    <Identifier>SimplifyRawStringLiteral</Identifier>
-    <Title>Simplify raw string literal.</Title>
+    <Identifier>UnnecessaryRawStringLiteral</Identifier>
+    <Title>Unnecessary raw string literal.</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <MinLanguageVersion>11.0</MinLanguageVersion>

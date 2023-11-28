@@ -5,11 +5,12 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Analysis;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class SimplifyRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
+public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -18,7 +19,7 @@ public sealed class SimplifyRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.SimplifyRawStringLiteral);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UnnecessaryRawStringLiteral);
 
             return _supportedDiagnostics;
         }
@@ -28,8 +29,14 @@ public sealed class SimplifyRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(f => AnalyzeStringLiteralExpression(f), SyntaxKind.StringLiteralExpression);
-        context.RegisterSyntaxNodeAction(f => AnalyzeInterpolatedStringExpression(f), SyntaxKind.InterpolatedStringExpression);
+        context.RegisterCompilationStartAction(startContext =>
+        {
+            if (((CSharpCompilation)startContext.Compilation).LanguageVersion >= LanguageVersion.CSharp11)
+            {
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeStringLiteralExpression(f), SyntaxKind.StringLiteralExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeInterpolatedStringExpression(f), SyntaxKind.InterpolatedStringExpression);
+            }
+        });
     }
 
     private static void AnalyzeStringLiteralExpression(SyntaxNodeAnalysisContext context)
@@ -48,8 +55,8 @@ public sealed class SimplifyRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
-            DiagnosticRules.SimplifyRawStringLiteral,
-            info.Token);
+            DiagnosticRules.UnnecessaryRawStringLiteral,
+            Location.Create(literalExpression.SyntaxTree, new TextSpan(literalExpression.SpanStart, info.QuoteCount)));
     }
 
     private static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
@@ -72,8 +79,8 @@ public sealed class SimplifyRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
-            DiagnosticRules.SimplifyRawStringLiteral,
-            interpolatedString);
+            DiagnosticRules.UnnecessaryRawStringLiteral,
+            interpolatedString.StringStartToken);
     }
 
     private static bool ContainsBackSlashQuote(
