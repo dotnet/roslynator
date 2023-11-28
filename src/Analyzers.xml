@@ -7499,8 +7499,8 @@ void M()
     <MinLanguageVersion>11.0</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = """foo"""]]></Before>
-        <After><![CDATA[string s = "foo"]]></After>
+        <Before><![CDATA[string s = """foo""";]]></Before>
+        <After><![CDATA[string s = "foo";]]></After>
       </Sample>
     </Samples>
     <Links>
