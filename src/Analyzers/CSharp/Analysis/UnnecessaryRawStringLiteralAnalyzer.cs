@@ -43,9 +43,7 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
     {
         var literalExpression = (LiteralExpressionSyntax)context.Node;
 
-        RawStringLiteralInfo info = RawStringLiteralInfo.Create(literalExpression);
-
-        if (info.QuoteCount == 0)
+        if (!RawStringLiteralInfo.TryCreate(literalExpression, out RawStringLiteralInfo info))
             return;
 
         string text = info.Text;
@@ -83,10 +81,7 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
             interpolatedString.StringStartToken);
     }
 
-    private static bool ContainsBackSlashQuote(
-        string text,
-        int start,
-        int length)
+    private static bool ContainsBackSlashQuote(string text, int start, int length)
     {
         for (int pos = start; pos < start + length; pos++)
         {

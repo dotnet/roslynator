@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,21 +17,23 @@ internal readonly struct RawStringLiteralInfo
 
     public LiteralExpressionSyntax Expression { get; }
 
-    public SyntaxToken Token => Expression.Token;
-
-    public string Text => Token.Text;
+    public string Text => Expression.Token.Text;
 
     public int QuoteCount { get; }
 
-    public static RawStringLiteralInfo Create(LiteralExpressionSyntax literalExpression)
+    public bool IsDefault => Expression is null;
+
+    public static bool TryCreate(LiteralExpressionSyntax literalExpression, out RawStringLiteralInfo info)
     {
+        info = default;
+
         if (!literalExpression.IsKind(SyntaxKind.StringLiteralExpression))
-            return default;
+            return false;
 
         SyntaxToken token = literalExpression.Token;
 
         if (!token.IsKind(SyntaxKind.SingleLineRawStringLiteralToken))
-            return default;
+            return false;
 
         string text = token.Text;
         int startCount = 0;
@@ -55,9 +58,18 @@ internal readonly struct RawStringLiteralInfo
         if (startCount < 3
             || startCount != endCount)
         {
-            return default;
+            return false;
         }
 
-        return new RawStringLiteralInfo(literalExpression, startCount);
+        info = new RawStringLiteralInfo(literalExpression, startCount);
+        return true;
+    }
+
+    public static RawStringLiteralInfo Create(LiteralExpressionSyntax literalExpression)
+    {
+        if (TryCreate(literalExpression, out var info))
+            return info;
+
+        throw new InvalidOperationException();
     }
 }
