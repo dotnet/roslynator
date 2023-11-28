@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -40,11 +41,36 @@ public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
 
         if (compilationUnit.Span == token.Span
             && !token.HasTrailingTrivia
-            && !token.LeadingTrivia.Any(f => f.IsKind(
-                SyntaxKind.IfDirectiveTrivia,
-                SyntaxKind.ElseDirectiveTrivia,
-                SyntaxKind.ElifDirectiveTrivia,
-                SyntaxKind.EndIfDirectiveTrivia)))
+            && !token.LeadingTrivia.Any(trivia =>
+            {
+                switch (trivia.Kind())
+                {
+                    case SyntaxKind.IfDirectiveTrivia:
+                    case SyntaxKind.ElseDirectiveTrivia:
+                    case SyntaxKind.ElifDirectiveTrivia:
+                    case SyntaxKind.EndIfDirectiveTrivia:
+                        {
+                            return true;
+                        }
+                    case SyntaxKind.PragmaWarningDirectiveTrivia:
+                        {
+                            var pragma = (PragmaWarningDirectiveTriviaSyntax)trivia.GetStructure();
+
+                            foreach (ExpressionSyntax errorCode in pragma.ErrorCodes)
+                            {
+                                if (errorCode is IdentifierNameSyntax identifierName
+                                    && string.Equals(identifierName.Identifier.ValueText, DiagnosticRules.FileContainsNoCode.Id, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    return true;
+                                }
+                            }
+
+                            break;
+                        }
+                }
+
+                return false;
+            }))
         {
             SyntaxTree syntaxTree = compilationUnit.SyntaxTree;
 
