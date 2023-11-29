@@ -7514,8 +7514,8 @@ void M()
   <Analyzer>
     <Id>RCS1263</Id>
     <Identifier>InvalidReferenceInDocumentationComment</Identifier>
-    <Title>Invalid reference in a documentation comment.</Title>
-    <MessageFormat>{0} '{1}' could not be found.</MessageFormat>
+    <Title>Invalid reference in a documentation comment</Title>
+    <MessageFormat>{0} '{1}' could not be found</MessageFormat>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
