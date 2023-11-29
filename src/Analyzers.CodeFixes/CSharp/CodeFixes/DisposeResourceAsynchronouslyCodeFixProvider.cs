@@ -79,7 +79,9 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
         UsingStatementSyntax usingStatement,
         CancellationToken cancellationToken)
     {
-        UsingStatementSyntax newUsingStatement = usingStatement.WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword));
+        UsingStatementSyntax newUsingStatement = usingStatement
+            .WithoutLeadingTrivia()
+            .WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword).WithLeadingTrivia(usingStatement.GetLeadingTrivia()));
 
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
@@ -91,7 +93,9 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
         LocalDeclarationStatementSyntax localDeclaration,
         CancellationToken cancellationToken)
     {
-        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword));
+        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration
+            .WithoutLeadingTrivia()
+            .WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword).WithLeadingTrivia(localDeclaration.GetLeadingTrivia()));
 
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
