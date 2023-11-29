@@ -95,7 +95,7 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
     {
         LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration
             .WithoutLeadingTrivia()
-            .WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword).WithLeadingTrivia(localDeclaration.GetLeadingTrivia()));
+            .WithAwaitKeyword(SyntaxFactory.Token(SyntaxKind.AwaitKeyword).WithLeadingTrivia(localDeclaration.GetLeadingTrivia())); 
 
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
