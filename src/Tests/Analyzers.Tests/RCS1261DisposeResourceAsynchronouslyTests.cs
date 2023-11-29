@@ -23,6 +23,8 @@ class C
 {
     async Task FooAsync()
     {
+        string s = null;
+
         [|using|] var disposable = await GetDisposableAsync();
     }
 
@@ -42,6 +44,8 @@ class C
 {
     async Task FooAsync()
     {
+        string s = null;
+
         await using var disposable = await GetDisposableAsync();
     }
 
@@ -321,6 +325,8 @@ class C
 {
     async Task FooAsync()
     {
+        string s = null;
+
         [|using|] (var disposable = await GetDisposableAsync()) { }
     }
 
@@ -340,6 +346,8 @@ class C
 {
     async Task FooAsync()
     {
+        string s = null;
+
         await using (var disposable = await GetDisposableAsync()) { }
     }
 
