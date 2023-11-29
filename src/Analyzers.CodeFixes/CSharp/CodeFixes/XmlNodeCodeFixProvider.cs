@@ -25,6 +25,7 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
         {
             return ImmutableArray.Create(
                 DiagnosticIdentifiers.UnusedElementInDocumentationComment,
+                DiagnosticIdentifiers.InvalidReferenceInDocumentationComment,
                 DiagnosticIdentifiers.FixDocumentationCommentTag);
         }
     }
@@ -43,13 +44,14 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.UnusedElementInDocumentationComment:
+                case DiagnosticIdentifiers.InvalidReferenceInDocumentationComment:
                     {
                         XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNode);
 
                         string name = elementInfo.LocalName;
 
                         CodeAction codeAction = CodeAction.Create(
-                            $"Remove element '{name}'",
+                            $"Remove '{name}' element",
                             ct => RemoveUnusedElementInDocumentationCommentAsync(document, elementInfo, ct),
                             GetEquivalenceKey(diagnostic, name));
 

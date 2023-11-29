@@ -109,8 +109,8 @@ public sealed class OrderElementsInDocumentationCommentCodeFixProvider : BaseCod
                     XmlNodeSyntax element = elementInfo.Element;
 
                     string value = (element.IsKind(SyntaxKind.XmlElement))
-                        ? ((XmlElementSyntax)element).GetAttributeValue("name")
-                        : ((XmlEmptyElementSyntax)element).GetAttributeValue("name");
+                        ? ((XmlElementSyntax)element).GetAttributeValueText("name")
+                        : ((XmlEmptyElementSyntax)element).GetAttributeValueText("name");
 
                     if (value is not null)
                     {

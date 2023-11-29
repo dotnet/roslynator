@@ -190,7 +190,7 @@ internal abstract class DocumentationCommentRefactoring<TNode> where TNode : Syn
 
         foreach (XmlElementSyntax element in comment.Elements(Tag))
         {
-            string name = element.GetAttributeValue("name");
+            string name = element.GetAttributeValueText("name");
 
             if (!dic.ContainsKey(name))
                 dic.Add(name, element);

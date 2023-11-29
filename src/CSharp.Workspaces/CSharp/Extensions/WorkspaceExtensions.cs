@@ -536,7 +536,6 @@ public static class WorkspaceExtensions
     /// <param name="info"></param>
     /// <param name="newMembers"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     public static Task<Document> ReplaceMembersAsync(
         this Document document,
         MemberDeclarationListInfo info,
@@ -559,7 +558,6 @@ public static class WorkspaceExtensions
     /// <param name="modifiersInfo"></param>
     /// <param name="newModifiers"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     public static Task<Document> ReplaceModifiersAsync(
         this Document document,
         ModifierListInfo modifiersInfo,
@@ -576,7 +574,6 @@ public static class WorkspaceExtensions
     /// <param name="modifiersInfo"></param>
     /// <param name="newModifiers"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     public static Task<Document> ReplaceModifiersAsync(
         this Document document,
         ModifierListInfo modifiersInfo,

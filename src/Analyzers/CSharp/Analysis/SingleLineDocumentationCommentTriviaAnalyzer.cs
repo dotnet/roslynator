@@ -17,21 +17,23 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-    private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnosticsWithoutFadeOut = ImmutableArray.Create(
-        DiagnosticRules.AddSummaryToDocumentationComment,
-        DiagnosticRules.AddSummaryElementToDocumentationComment,
-        DiagnosticRules.AddParamElementToDocumentationComment,
-        DiagnosticRules.AddTypeParamElementToDocumentationComment,
-        DiagnosticRules.UnusedElementInDocumentationComment,
-        DiagnosticRules.OrderElementsInDocumentationComment,
-        DiagnosticRules.FixDocumentationCommentTag);
-
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                ImmutableInterlocked.InterlockedInitialize(ref _supportedDiagnostics, _supportedDiagnosticsWithoutFadeOut.Add(DiagnosticRules.UnusedElementInDocumentationCommentFadeOut));
+            {
+                Immutable.InterlockedInitialize(
+                    ref _supportedDiagnostics,
+                    DiagnosticRules.AddSummaryToDocumentationComment,
+                    DiagnosticRules.AddSummaryElementToDocumentationComment,
+                    DiagnosticRules.AddParamElementToDocumentationComment,
+                    DiagnosticRules.AddTypeParamElementToDocumentationComment,
+                    DiagnosticRules.UnusedElementInDocumentationComment,
+                    DiagnosticRules.OrderElementsInDocumentationComment,
+                    DiagnosticRules.FixDocumentationCommentTag,
+                    DiagnosticRules.InvalidReferenceInDocumentationComment);
+            }
 
             return _supportedDiagnostics;
         }
@@ -44,7 +46,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
         context.RegisterSyntaxNodeAction(
             c =>
             {
-                if (IsAnyEffective(c, _supportedDiagnosticsWithoutFadeOut))
+                if (IsAnyEffective(c, _supportedDiagnostics))
                     AnalyzeSingleLineDocumentationCommentTrivia(c);
             },
             SyntaxKind.SingleLineDocumentationCommentTrivia);
@@ -57,7 +59,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
         if (!documentationComment.IsPartOfMemberDeclaration())
             return;
 
-        bool? useCorrectDocumentationTagEnabled = null;
+        bool? fixDocumentationCommentTagEnabled = null;
         var containsInheritDoc = false;
         var containsIncludeOrExclude = false;
         var containsSummaryElement = false;
@@ -76,7 +78,8 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
             if (info.Success)
             {
-                switch (info.GetTag())
+                XmlTag tag = info.GetTag();
+                switch (tag)
                 {
                     case XmlTag.Include:
                     case XmlTag.Exclude:
@@ -103,7 +106,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
                             containsSummaryElement = true;
 
-                            if (useCorrectDocumentationTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
                                 FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
                             break;
@@ -113,23 +116,40 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
                     case XmlTag.Returns:
                     case XmlTag.Value:
                         {
-                            if (info.IsContentEmptyOrWhitespace)
-                                ReportUnusedElement(context, info.Element, i, content);
+                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                                FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
-                            if (useCorrectDocumentationTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                            AnalyzeUnusedElement(context, info, tag);
+                            break;
+                        }
+                    case XmlTag.List:
+                        {
+                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
                                 FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
                             break;
                         }
                     case XmlTag.Exception:
-                    case XmlTag.List:
-                    case XmlTag.Param:
                     case XmlTag.Permission:
-                    case XmlTag.TypeParam:
                         {
-                            if (useCorrectDocumentationTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
                                 FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
+                            AnalyzeUnusedElement(context, info, tag, checkAttributes: true);
+                            break;
+                        }
+                    case XmlTag.Param:
+                    case XmlTag.TypeParam:
+                        {
+                            if (fixDocumentationCommentTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
+                                FixDocumentationCommentTagAnalysis.Analyze(context, info);
+
+                            AnalyzeUnusedElement(context, info, tag);
+                            break;
+                        }
+                    case XmlTag.SeeAlso:
+                        {
+                            AnalyzeUnusedElement(context, info, tag, checkAttributes: true);
                             break;
                         }
                     case XmlTag.C:
@@ -137,7 +157,6 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
                     case XmlTag.Para:
                     case XmlTag.ParamRef:
                     case XmlTag.See:
-                    case XmlTag.SeeAlso:
                     case XmlTag.TypeParamRef:
                         {
                             break;
@@ -174,14 +193,14 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
         SyntaxNode parent = documentationComment.ParentTrivia.Token.Parent;
 
-        bool unusedElement = DiagnosticRules.UnusedElementInDocumentationComment.IsEffective(context);
+        bool invalidReference = DiagnosticRules.InvalidReferenceInDocumentationComment.IsEffective(context);
         bool orderParams = DiagnosticRules.OrderElementsInDocumentationComment.IsEffective(context);
         bool addParam = DiagnosticRules.AddParamElementToDocumentationComment.IsEffective(context);
         bool addTypeParam = DiagnosticRules.AddTypeParamElementToDocumentationComment.IsEffective(context);
 
         if (addParam
             || orderParams
-            || unusedElement)
+            || invalidReference)
         {
             SeparatedSyntaxList<ParameterSyntax> parameters = CSharpUtility.GetParameters(
                 (parent is MemberDeclarationSyntax) ? parent : parent.Parent);
@@ -199,7 +218,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
                 }
             }
 
-            if (orderParams || unusedElement)
+            if (orderParams || invalidReference)
             {
                 Analyze(context, documentationComment.Content, parameters, XmlTag.Param, (nodes, name) => nodes.IndexOf(name));
             }
@@ -207,7 +226,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
         if (addTypeParam
             || orderParams
-            || unusedElement)
+            || invalidReference)
         {
             SeparatedSyntaxList<TypeParameterSyntax> typeParameters = CSharpUtility.GetTypeParameters(
                 (parent is MemberDeclarationSyntax) ? parent : parent.Parent);
@@ -225,10 +244,20 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
                 }
             }
 
-            if (orderParams || unusedElement)
+            if (orderParams || invalidReference)
             {
                 Analyze(context, documentationComment.Content, typeParameters, XmlTag.TypeParam, (nodes, name) => nodes.IndexOf(name));
             }
+        }
+    }
+
+    private static void AnalyzeUnusedElement(SyntaxNodeAnalysisContext context, XmlElementInfo info, XmlTag tag, bool checkAttributes = false)
+    {
+        if (DiagnosticRules.UnusedElementInDocumentationComment.IsEffective(context)
+            && info.IsContentEmptyOrWhitespace
+            && (!checkAttributes || !info.HasAttributes))
+        {
+            ReportDiagnostic(context, DiagnosticRules.UnusedElementInDocumentationComment, info.Element, XmlTagMapper.GetName(tag));
         }
     }
 
@@ -244,7 +273,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
             {
                 var element = (XmlElementSyntax)elementInfo.Element;
 
-                string value = element.GetAttributeValue("name");
+                string value = element.GetAttributeValueText("name");
 
                 if (value is not null
                     && string.Equals(parameter.Identifier.ValueText, value, StringComparison.Ordinal))
@@ -269,7 +298,7 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
             {
                 var element = (XmlElementSyntax)elementInfo.Element;
 
-                string value = element.GetAttributeValue("name");
+                string value = element.GetAttributeValueText("name");
 
                 if (value is not null
                     && string.Equals(typeParameter.Identifier.ValueText, value, StringComparison.Ordinal))
@@ -308,21 +337,21 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
             XmlNodeSyntax element = elementInfo.Element;
 
-            string name = (element.IsKind(SyntaxKind.XmlElement))
+            IdentifierNameSyntax identifierName = (element.IsKind(SyntaxKind.XmlElement))
                 ? ((XmlElementSyntax)element).GetAttributeValue("name")
                 : ((XmlEmptyElementSyntax)element).GetAttributeValue("name");
 
-            if (name is null)
+            if (identifierName is null)
             {
                 firstIndex = -1;
                 continue;
             }
 
-            int index = indexOf(nodes, name);
+            int index = indexOf(nodes, identifierName.Identifier.ValueText);
 
             if (index == -1)
             {
-                ReportUnusedElement(context, element, i, xmlNodes);
+                ReportDiagnosticIfEffective(context, DiagnosticRules.InvalidReferenceInDocumentationComment, identifierName, GetElementName(tag), identifierName.Identifier.ValueText);
             }
             else if (index < firstIndex)
             {
@@ -336,45 +365,15 @@ public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosti
 
             firstIndex = index;
         }
-    }
 
-    private static void ReportUnusedElement(
-        SyntaxNodeAnalysisContext context,
-        XmlNodeSyntax xmlNode,
-        int index,
-        SyntaxList<XmlNodeSyntax> xmlNodes)
-    {
-        if (!DiagnosticRules.UnusedElementInDocumentationComment.IsEffective(context))
-            return;
-
-        ReportDiagnostic(context, DiagnosticRules.UnusedElementInDocumentationComment, xmlNode);
-
-        if (index > 0
-            && xmlNodes[index - 1] is XmlTextSyntax xmlText)
+        static string GetElementName(XmlTag tag)
         {
-            SyntaxTokenList tokens = xmlText.TextTokens;
-
-            if (tokens.Count == 1)
+            return tag switch
             {
-                if (tokens[0].IsKind(SyntaxKind.XmlTextLiteralToken))
-                {
-                    SyntaxTrivia trivia = tokens[0].LeadingTrivia.SingleOrDefault(shouldThrow: false);
-
-                    if (trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
-                        ReportDiagnostic(context, DiagnosticRules.UnusedElementInDocumentationCommentFadeOut, trivia);
-                }
-            }
-            else if (tokens.Count == 2)
-            {
-                if (tokens[0].IsKind(SyntaxKind.XmlTextLiteralNewLineToken)
-                    && tokens[1].IsKind(SyntaxKind.XmlTextLiteralToken))
-                {
-                    SyntaxTrivia trivia = tokens[1].LeadingTrivia.SingleOrDefault(shouldThrow: false);
-
-                    if (trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
-                        ReportDiagnostic(context, DiagnosticRules.UnusedElementInDocumentationCommentFadeOut, trivia);
-                }
-            }
+                XmlTag.Param => "Parameter",
+                XmlTag.TypeParam => "Type parameter",
+                _ => throw new InvalidOperationException(),
+            };
         }
     }
 }

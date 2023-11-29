@@ -4307,7 +4307,12 @@ public static class SyntaxExtensions
         return xmlElement.StartTag?.Name?.IsLocalName(localName, comparison) == true;
     }
 
-    internal static string? GetAttributeValue(this XmlElementSyntax element, string attributeName)
+    internal static string? GetAttributeValueText(this XmlElementSyntax element, string attributeName)
+    {
+        return GetAttributeValue(element, attributeName)?.Identifier.ValueText;
+    }
+
+    internal static IdentifierNameSyntax? GetAttributeValue(this XmlElementSyntax element, string attributeName)
     {
         XmlElementStartTagSyntax startTag = element.StartTag;
 
@@ -4318,10 +4323,7 @@ public static class SyntaxExtensions
                 if (attribute is XmlNameAttributeSyntax nameAttribute
                     && nameAttribute.Name?.LocalName.ValueText == attributeName)
                 {
-                    IdentifierNameSyntax identifierName = nameAttribute.Identifier;
-
-                    if (identifierName is not null)
-                        return identifierName.Identifier.ValueText;
+                    return nameAttribute.Identifier;
                 }
             }
         }
@@ -4343,17 +4345,19 @@ public static class SyntaxExtensions
     #endregion XmlElementSyntax
 
     #region XmlEmptyElementSyntax
-    internal static string? GetAttributeValue(this XmlEmptyElementSyntax element, string attributeName)
+    internal static string? GetAttributeValueText(this XmlEmptyElementSyntax element, string attributeName)
+    {
+        return GetAttributeValue(element, attributeName)?.Identifier.ValueText;
+    }
+
+    internal static IdentifierNameSyntax? GetAttributeValue(this XmlEmptyElementSyntax element, string attributeName)
     {
         foreach (XmlAttributeSyntax attribute in element.Attributes)
         {
             if (attribute is XmlNameAttributeSyntax nameAttribute
                 && nameAttribute.Name?.LocalName.ValueText == attributeName)
             {
-                IdentifierNameSyntax identifierName = nameAttribute.Identifier;
-
-                if (identifierName is not null)
-                    return identifierName.Identifier.ValueText;
+                return nameAttribute.Identifier;
             }
         }
 
