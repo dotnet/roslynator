@@ -46,7 +46,10 @@ public readonly struct XmlElementInfo
         get { return Kind == SyntaxKind.XmlEmptyElement; }
     }
 
-    internal bool HasAttributes
+    /// <summary>
+    /// Determines whether the element has any attributes.
+    /// </summary>
+    public bool HasAttributes
     {
         get
         {
