@@ -581,6 +581,23 @@ internal static class CodeStyleExtensions
         return null;
     }
 
+    public static BlankLineBetweenSwitchSections GetBlankLineBetweenSwitchSections(this SyntaxNodeAnalysisContext context)
+    {
+        if (ConfigOptions.TryGetValue(context.GetConfigOptions(), ConfigOptions.BlankLineBetweenSwitchSections, out string rawValue))
+        {
+            if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenSwitchSections_Include, StringComparison.OrdinalIgnoreCase))
+                return BlankLineBetweenSwitchSections.Include;
+
+            if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenSwitchSections_Omit, StringComparison.OrdinalIgnoreCase))
+                return BlankLineBetweenSwitchSections.Omit;
+
+            if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenSwitchSections_OmitAfterBlock, StringComparison.OrdinalIgnoreCase))
+                return BlankLineBetweenSwitchSections.Omit_After_Block;
+        }
+
+        return BlankLineBetweenSwitchSections.None;
+    }
+
     public static NewLinePosition GetEqualsSignNewLinePosition(this SyntaxNodeAnalysisContext context)
     {
         return context.GetConfigOptions().GetEqualsTokenNewLinePosition();

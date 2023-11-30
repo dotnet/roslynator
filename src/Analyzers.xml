@@ -388,6 +388,8 @@ object this[int index] { get; }]]></After>
   <Analyzer>
     <Id>RCS0014</Id>
     <Identifier>AddBlankLineBetweenSwitchSections</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS0061 instead</ObsoleteMessage>
     <Title>Add blank line between switch sections</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1529,6 +1531,17 @@ public class C
         <Text>File Scoped Namespaces</Text>
       </Link>
     </Links>
+  </Analyzer>
+  <Analyzer>
+    <Id>RCS0061</Id>
+    <Identifier>BlankLineBetweenSwitchSections</Identifier>
+    <Title>Add or remove blank line betwwen switch sections</Title>
+    <MessageFormat>{0} blank line between switch sections</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="blank_line_between_switch_sections" IsRequired="true" />
+    </ConfigOptions>
   </Analyzer>
   <Analyzer>
     <Id>RCS1001</Id>
