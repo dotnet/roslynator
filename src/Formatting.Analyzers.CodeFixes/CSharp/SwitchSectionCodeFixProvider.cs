@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
-using Microsoft.CodeAnalysis.CSharp;
-using System.Xml.Linq;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp;
 

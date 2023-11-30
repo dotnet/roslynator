@@ -6,8 +6,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.CodeStyle;
 using Roslynator.CSharp;
+using Roslynator.CSharp.CodeStyle;
 
 namespace Roslynator.Formatting.CSharp;
 
