@@ -636,7 +636,7 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0061</summary>
         public static readonly DiagnosticDescriptor BlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.BlankLineBetweenSwitchSections, 
-            title:              "Add or remove blank line betwwen switch sections", 
+            title:              "Add/remove blank line betwwen switch sections", 
             messageFormat:      "{0} blank line between switch sections", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 

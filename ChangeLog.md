@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add analyzer "Dispose resource asynchronously" ([RCS1261](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1261)) ([PR](https://github.com/dotnet/roslynator/pull/1285))
 - Add analyzer "Unnecessary raw string literal" ([RCS1262](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1262)) ([PR](https://github.com/dotnet/roslynator/pull/1293))
 - Add analyzer "Invalid reference in a documentation comment" ([RCS1263](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1263)) ([PR](https://github.com/dotnet/roslynator/pull/1295))
+- Add analyzer "Add/remove blank line between switch sections" ([RCS0061](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0061)) ([PR](https://github.com/dotnet/roslynator/pull/1302))
 
 ### Changed
 

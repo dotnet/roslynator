@@ -1535,7 +1535,7 @@ public class C
   <Analyzer>
     <Id>RCS0061</Id>
     <Identifier>BlankLineBetweenSwitchSections</Identifier>
-    <Title>Add or remove blank line betwwen switch sections</Title>
+    <Title>Add/remove blank line betwwen switch sections</Title>
     <MessageFormat>{0} blank line between switch sections</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
