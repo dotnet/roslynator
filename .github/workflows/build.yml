@@ -169,10 +169,6 @@ jobs:
           cp bin/Release/netstandard2.0/Roslynator.Workspaces.Core.dll package/roslyn/common
           cp bin/Release/netstandard2.0/Roslynator.Workspaces.Common.dll package/roslyn/common
           cp bin/Release/netstandard2.0/Roslynator.CSharp.Workspaces.dll package/roslyn/common
-          cp bin/Release/netstandard2.0/Roslynator.CSharp.Analyzers.dll package/roslyn/analyzers
-          cp bin/Release/netstandard2.0/Roslynator.CSharp.Analyzers.CodeFixes.dll package/roslyn/analyzers
-          cp bin/Release/netstandard2.0/Roslynator.Formatting.Analyzers.dll package/roslyn/analyzers
-          cp bin/Release/netstandard2.0/Roslynator.Formatting.Analyzers.CodeFixes.dll package/roslyn/analyzers
           cp bin/Release/netstandard2.0/Roslynator.CSharp.Refactorings.dll package/roslyn/refactorings
           cp bin/Release/netstandard2.0/Roslynator.CSharp.CodeFixes.dll package/roslyn/fixes
         name: Copy DLLs to package

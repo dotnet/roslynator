@@ -3,32 +3,32 @@
   <Metadata>
     <Identity Id="f326ee1b-81a6-4577-b251-1f29d391cef3" Version="1.0.0" Language="en-US" Publisher="Josef Pihrt" />
     <DisplayName>Roslynator 2022</DisplayName>
-    <Description xml:space="preserve">A collection of 500+ analyzers, refactorings and fixes for C#, powered by Roslyn.</Description>
+    <Description xml:space="preserve">A collection of refactorings and fixes for C#, powered by Roslyn.</Description>
     <MoreInfo>https://github.com/dotnet/roslynator</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>https://github.com/dotnet/roslynator/blob/main/ChangeLog.md</ReleaseNotes>
     <Icon>roslynator-logo-small.png</Icon>
     <PreviewImage>roslynator-logo-large.png</PreviewImage>
-    <Tags>Roslyn;Refactoring;Analyzer;CodeAnalysis;C#;CSharp;Productivity;Diagnostic</Tags>
+    <Tags>Roslyn;Refactoring;CodeAnalysis;C#;CSharp;Productivity;Diagnostic</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
       <ProductArchitecture>amd64</ProductArchitecture>
     </InstallationTarget>
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
-        <ProductArchitecture>arm64</ProductArchitecture>
+      <ProductArchitecture>arm64</ProductArchitecture>
     </InstallationTarget>
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Pro">
       <ProductArchitecture>amd64</ProductArchitecture>
     </InstallationTarget>
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Pro">
-        <ProductArchitecture>arm64</ProductArchitecture>
+      <ProductArchitecture>arm64</ProductArchitecture>
     </InstallationTarget>
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Enterprise">
       <ProductArchitecture>amd64</ProductArchitecture>
     </InstallationTarget>
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Enterprise">
-        <ProductArchitecture>arm64</ProductArchitecture>
+      <ProductArchitecture>arm64</ProductArchitecture>
     </InstallationTarget>
   </Installation>
   <Dependencies>
@@ -36,24 +36,12 @@
   </Dependencies>
   <Assets>
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Refactorings" Path="|Refactorings|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Common" Path="|Common|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Common" Path="|Common|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Core" Path="|Core|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Core" Path="|Core|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="CSharp" Path="|CSharp|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="CSharp" Path="|CSharp|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="CSharp.Workspaces" Path="|CSharp.Workspaces|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="CSharp.Workspaces" Path="|CSharp.Workspaces|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Workspaces.Common" Path="|Workspaces.Common|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Workspaces.Common" Path="|Workspaces.Common|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Workspaces.Core" Path="|Workspaces.Core|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Workspaces.Core" Path="|Workspaces.Core|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Analyzers" Path="|Analyzers|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Analyzers" Path="|Analyzers|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Analyzers.CodeFixes" Path="|Analyzers.CodeFixes|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Formatting.Analyzers" Path="|Formatting.Analyzers|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Formatting.Analyzers" Path="|Formatting.Analyzers|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Formatting.Analyzers.CodeFixes" Path="|Formatting.Analyzers.CodeFixes|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="CodeFixes" Path="|CodeFixes|" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
   </Assets>
