@@ -70,6 +70,7 @@ class C
 [||]
             case ""b"":
                 return ""b"";
+
 [||]
             default:
                 return null;
@@ -294,5 +295,31 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSwitchSections, ConfigOptionValues.BlankLineBetweenSwitchSections_OmitAfterBlock));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenSwitchSections)]
+    public async Task TestNoDiagnostic_IfDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
+#define FOO
+class C
+{
+    string M()
+    {
+        string s = string.Empty;
+        switch (s)
+        {
+            case ""a"":
+            {
+                return ""a"";
+            }
+#if FOO
+            default:
+                return null;
+#endif
+        }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenSwitchSections, ConfigOptionValues.BlankLineBetweenSwitchSections_Include));
     }
 }

@@ -57,9 +57,9 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
         {
             SyntaxTriviaList leadingTrivia = en.Current.GetLeadingTrivia();
 
-            SyntaxTrivia blankLine = GetBlankLine(leadingTrivia);
+            SyntaxTrivia? blankLine = GetBlankLine(leadingTrivia);
 
-            static SyntaxTrivia GetBlankLine(SyntaxTriviaList leadingTrivia)
+            static SyntaxTrivia? GetBlankLine(SyntaxTriviaList leadingTrivia)
             {
                 SyntaxTriviaList.Reversed.Enumerator triviaEnumerator = leadingTrivia.Reverse().GetEnumerator();
 
@@ -68,36 +68,42 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
                     if (triviaEnumerator.Current.IsWhitespaceTrivia()
                         && !triviaEnumerator.MoveNext())
                     {
-                        return default;
+                        return default(SyntaxTrivia);
                     }
 
                     if (triviaEnumerator.Current.IsEndOfLineTrivia())
                         return triviaEnumerator.Current;
+
+                    if (triviaEnumerator.Current.IsDirective)
+                        return null;
                 }
 
-                return default;
+                return default(SyntaxTrivia);
             }
 
-            if (blankLine.IsKind(SyntaxKind.EndOfLineTrivia))
+            if (blankLine is not null)
             {
-                if (option == BlankLineBetweenSwitchSections.Omit)
+                if (blankLine.Value.IsKind(SyntaxKind.EndOfLineTrivia))
                 {
-                    ReportDiagnostic(context, blankLine);
+                    if (option == BlankLineBetweenSwitchSections.Omit)
+                    {
+                        ReportDiagnostic(context, blankLine.Value);
+                    }
+                    else if (option == BlankLineBetweenSwitchSections.Omit_After_Block
+                        && previousLastStatement.IsKind(SyntaxKind.Block))
+                    {
+                        ReportDiagnostic(context, blankLine.Value);
+                    }
+                }
+                else if (option == BlankLineBetweenSwitchSections.Include)
+                {
+                    ReportDiagnostic(context, previousSection);
                 }
                 else if (option == BlankLineBetweenSwitchSections.Omit_After_Block
-                    && previousLastStatement.IsKind(SyntaxKind.Block))
+                    && !previousLastStatement.IsKind(SyntaxKind.Block))
                 {
-                    ReportDiagnostic(context, blankLine);
+                    ReportDiagnostic(context, previousSection);
                 }
-            }
-            else if (option == BlankLineBetweenSwitchSections.Include)
-            {
-                ReportDiagnostic(context, previousSection);
-            }
-            else if (option == BlankLineBetweenSwitchSections.Omit_After_Block
-                && !previousLastStatement.IsKind(SyntaxKind.Block))
-            {
-                ReportDiagnostic(context, previousSection);
             }
 
             previousSection = en.Current;
@@ -109,13 +115,15 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
     {
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineBetweenSwitchSections,
-            Location.Create(context.Node.SyntaxTree, new TextSpan(previousSection.Span.End, 0)), "Add");
+            Location.Create(context.Node.SyntaxTree, new TextSpan(previousSection.Span.End, 0)),
+            "Add");
     }
 
     private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxTrivia blankLine)
     {
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineBetweenSwitchSections,
-            Location.Create(context.Node.SyntaxTree, new TextSpan(blankLine.SpanStart, 0)), "Remove");
+            Location.Create(context.Node.SyntaxTree, new TextSpan(blankLine.SpanStart, 0)),
+            "Remove");
     }
 }
