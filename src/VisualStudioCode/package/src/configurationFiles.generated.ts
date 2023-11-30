@@ -299,7 +299,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs0060.severity = none
 # Options: roslynator_blank_line_after_file_scoped_namespace_declaration
 
-# Add/remove blank line betwwen switch sections
+# Add/remove blank line between switch sections
 #dotnet_diagnostic.rcs0061.severity = none
 # Options: roslynator_blank_line_between_switch_sections
 
