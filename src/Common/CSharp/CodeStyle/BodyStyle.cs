@@ -43,23 +43,17 @@ internal readonly struct BodyStyle
                 option = BodyStyleOption.Expression;
             }
         }
-        else if (configOptions.TryGetValueAsBool(LegacyConfigOptions.ConvertExpressionBodyToBlockBody, out bool useBlockBody))
-        {
-            option = (useBlockBody) ? BodyStyleOption.Block : BodyStyleOption.Expression;
-        }
 
         bool? useBlockBodyWhenDeclarationIsMultiLine = null;
 
-        if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseBlockBodyWhenDeclarationSpansOverMultipleLines) == true
-            || configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine))
+        if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseBlockBodyWhenDeclarationSpansOverMultipleLines) == true)
         {
             useBlockBodyWhenDeclarationIsMultiLine = true;
         }
 
         bool? useBlockBodyWhenExpressionIsMultiline = null;
 
-        if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseBlockBodyWhenExpressionSpansOverMultipleLines) == true
-            || configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine))
+        if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseBlockBodyWhenExpressionSpansOverMultipleLines) == true)
         {
             useBlockBodyWhenExpressionIsMultiline = true;
         }
