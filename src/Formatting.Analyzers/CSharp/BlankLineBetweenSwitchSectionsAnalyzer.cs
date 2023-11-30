@@ -109,13 +109,13 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
     {
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineBetweenSwitchSections,
-            Location.Create(context.Node.SyntaxTree, new TextSpan(previousSection.Span.End, 0)));
+            Location.Create(context.Node.SyntaxTree, new TextSpan(previousSection.Span.End, 0)), "Add");
     }
 
     private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxTrivia blankLine)
     {
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineBetweenSwitchSections,
-            Location.Create(context.Node.SyntaxTree, new TextSpan(blankLine.SpanStart, 0)));
+            Location.Create(context.Node.SyntaxTree, new TextSpan(blankLine.SpanStart, 0)), "Remove");
     }
 }
