@@ -481,4 +481,35 @@ class C
 #endif
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyLineBetweenClosingBraceAndSwitchSection()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string x = null;
+        switch (x)
+        {
+            case ""a"":
+                {
+                    M();
+                    break;
+                }
+
+            case ""b"":
+                {
+                    M();
+                    break;
+                }
+
+            case ""c"":
+                break;
+        }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
+    }
 }
