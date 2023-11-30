@@ -61,7 +61,7 @@ internal readonly struct BodyStyle
         return new BodyStyle(option, useBlockBodyWhenDeclarationIsMultiLine, useBlockBodyWhenExpressionIsMultiline);
     }
 
-    internal enum BodyStyleOption
+    private enum BodyStyleOption
     {
         None,
         Block,
