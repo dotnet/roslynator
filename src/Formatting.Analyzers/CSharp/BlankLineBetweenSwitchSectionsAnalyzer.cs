@@ -45,7 +45,6 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
             return;
 
         SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
-
         SyntaxList<SwitchSectionSyntax>.Enumerator en = sections.GetEnumerator();
 
         if (!en.MoveNext())
@@ -65,12 +64,12 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
                     {
                         if (option == BlankLineBetweenSwitchSections.Include)
                         {
-                            ReportAddBlankLine(context, analysis.Position);
+                            ReportAdd(context, analysis.Position);
                         }
                         else if (option == BlankLineBetweenSwitchSections.Omit_After_Block
                             && !previousLastStatement.IsKind(SyntaxKind.Block))
                         {
-                            ReportAddBlankLine(context, analysis.Position);
+                            ReportAdd(context, analysis.Position);
                         }
 
                         break;
@@ -80,18 +79,17 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
                     {
                         if (option == BlankLineBetweenSwitchSections.Omit)
                         {
-                            ReportRemoveBlankLine(context, analysis.Position);
+                            ReportRemove(context, analysis.Position);
                         }
                         else if (option == BlankLineBetweenSwitchSections.Omit_After_Block
                             && previousLastStatement.IsKind(SyntaxKind.Block))
                         {
-                            ReportRemoveBlankLine(context, analysis.Position);
+                            ReportRemove(context, analysis.Position);
                         }
 
                         break;
                     }
                 case TriviaBetweenKind.Unknown:
-                case TriviaBetweenKind.PreprocessorDirective:
                     {
                         break;
                     }
@@ -107,7 +105,7 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
         }
     }
 
-    private static void ReportAddBlankLine(SyntaxNodeAnalysisContext context, int position)
+    private static void ReportAdd(SyntaxNodeAnalysisContext context, int position)
     {
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineBetweenSwitchSections,
@@ -115,7 +113,7 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
             "Add");
     }
 
-    private static void ReportRemoveBlankLine(SyntaxNodeAnalysisContext context, int position)
+    private static void ReportRemove(SyntaxNodeAnalysisContext context, int position)
     {
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineBetweenSwitchSections,

@@ -9,5 +9,4 @@ internal enum TriviaBetweenKind
     NewLine,
     BlankLine,
     BlankLines,
-    PreprocessorDirective,
 }

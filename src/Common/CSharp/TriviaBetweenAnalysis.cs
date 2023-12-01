@@ -1,9 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
@@ -12,8 +10,10 @@ namespace Roslynator.CSharp;
 
 internal readonly struct TriviaBetweenAnalysis
 {
-    private TriviaBetweenAnalysis(TriviaBetweenKind kind, int position)
+    private TriviaBetweenAnalysis(SyntaxNodeOrToken first, SyntaxNodeOrToken second, TriviaBetweenKind kind, int position)
     {
+        First = first;
+        Second = second;
         Kind = kind;
         Position = position;
     }
@@ -22,82 +22,78 @@ internal readonly struct TriviaBetweenAnalysis
 
     public int Position { get; }
 
+    public SyntaxNodeOrToken First { get; }
+
+    public SyntaxNodeOrToken Second { get; }
+
     public static TriviaBetweenAnalysis Create(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
     {
-        Debug.Assert(first.FullSpan.End == second.FullSpan.Start, $"{first.FullSpan.End} {first.FullSpan.Start}");
+        Debug.Assert(first.FullSpan.End == second.FullSpan.Start, $"{first.FullSpan.End} {second.FullSpan.Start}");
 
         var en = new Enumerator(first, second);
 
         if (!en.MoveNext())
             return en.GetResult(TriviaBetweenKind.NoNewLine);
 
-        if (en.Current.IsWhitespaceTrivia()
-            && !en.MoveNext())
-        {
+        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
             return en.GetResult(TriviaBetweenKind.NoNewLine);
-        }
 
-        if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia)
-            && !en.MoveNext())
-        {
-            return en.GetResult(TriviaBetweenKind.Unknown);
-        }
+        if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia) && !en.MoveNext())
+            return default;
 
         if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
             return en.GetResult(TriviaBetweenKind.NoNewLine);
 
         if (!en.Current.IsEndOfLineTrivia())
-            return en.GetResult(TriviaBetweenKind.Unknown);
+            return default;
 
         if (!en.MoveNext())
             return en.GetResult(TriviaBetweenKind.NewLine);
 
-        if (en.Current.IsWhitespaceTrivia()
-            && !en.MoveNext())
-        {
+        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
             return en.GetResult(TriviaBetweenKind.NewLine);
-        }
 
         if (en.Current.IsDirective)
-            return en.GetResult(TriviaBetweenKind.PreprocessorDirective);
+            return default;
 
         if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-            return en.GetResult(TriviaBetweenKind.Unknown);
+            return default;
 
         if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
             return en.GetResult(TriviaBetweenKind.NewLine);
 
         if (!en.Current.IsEndOfLineTrivia())
-            return en.GetResult(TriviaBetweenKind.Unknown);
+            return default;
 
         if (!en.MoveNext())
             return en.GetResult(TriviaBetweenKind.BlankLine);
 
-        if (en.Current.IsWhitespaceTrivia()
-            && !en.MoveNext())
-        {
+        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
             return en.GetResult(TriviaBetweenKind.BlankLine);
-        }
 
         if (en.Current.IsDirective)
-            return en.GetResult(TriviaBetweenKind.PreprocessorDirective);
+            return default;
 
         if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-            return en.GetResult(TriviaBetweenKind.Unknown);
+            return default;
 
         if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
             return en.GetResult(TriviaBetweenKind.BlankLine);
 
         if (!en.Current.IsEndOfLineTrivia())
-            return en.GetResult(TriviaBetweenKind.Unknown);
+            return default;
 
         return en.GetResult(TriviaBetweenKind.BlankLines);
+    }
+
+    public Enumerator GetEnumerator()
+    {
+        return new Enumerator(First, Second);
     }
 
     public static TextChange GetTextChangeForBlankLine(SyntaxNode root, int position)
     {
         SyntaxToken token = root.FindToken(position);
-
         SyntaxToken first;
         SyntaxToken second;
 
@@ -112,7 +108,7 @@ internal readonly struct TriviaBetweenAnalysis
             first = token.GetPreviousToken();
         }
 
-        string endofLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
+        string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
         TriviaBetweenAnalysis analysis = Create(first, second);
 
         Debug.Assert(position == analysis.Position);
@@ -120,75 +116,56 @@ internal readonly struct TriviaBetweenAnalysis
         switch (analysis.Kind)
         {
             case TriviaBetweenKind.NoNewLine:
-            case TriviaBetweenKind.NewLine:
                 {
-                    SyntaxTrivia trivia = root.FindTrivia(position);
+                    Enumerator en = analysis.GetEnumerator();
+                    string newText = endOfLine;
 
-                    if (trivia.IsEndOfLineTrivia())
-                        return new TextChange(new TextSpan(trivia.Span.End, 0), endofLine);
-
-                    if (!trivia.IsKind(SyntaxKind.None))
+                    if (!en.MoveNext())
                     {
-                        SyntaxTriviaList trailing = first.TrailingTrivia;
-                        int count = trailing.Count;
-                        int index = trailing.IndexOf(trivia);
-
-                        if (index >= 0)
-                        {
-                            if (index < count - 1
-                                && trailing[index + 1].IsWhitespaceTrivia())
-                            {
-                                index++;
-                                position = trailing[index].Span.End;
-                            }
-
-                            if (index < count - 1
-                                && trailing[index + 1].IsKind(SyntaxKind.SingleLineCommentTrivia))
-                            {
-                                index++;
-                                position = trailing[index].Span.End;
-                            }
-
-                            if (index < count - 1
-                                && trailing[index + 1].IsEndOfLineTrivia())
-                            {
-                                return new TextChange(new TextSpan(trailing[index + 1].Span.End, 0), endofLine);
-                            }
-                        }
+                        newText += endOfLine;
+                    }
+                    else if (en.Current.IsWhitespaceTrivia())
+                    {
+                        position = en.Current.Span.End;
                     }
 
-                    return new TextChange(new TextSpan(position, 0), endofLine + endofLine);
+                    return new TextChange(new TextSpan(position, 0), newText);
+                }
+            case TriviaBetweenKind.NewLine:
+                {
+                    Enumerator en = analysis.GetEnumerator();
+
+                    while (en.MoveNext()
+                        && !en.Current.IsEndOfLineTrivia())
+                    {
+                    }
+
+                    return new TextChange(new TextSpan(en.Current.Span.End, 0), endOfLine);
                 }
             case TriviaBetweenKind.BlankLine:
             case TriviaBetweenKind.BlankLines:
                 {
-                    SyntaxTrivia trivia = root.FindTrivia(position);
-                    int start = trivia.SpanStart;
-                    int end = trivia.Span.End;
-                    SyntaxTriviaList list = trivia.GetContainingList();
-                    int index = list.IndexOf(trivia);
+                    Enumerator en = analysis.GetEnumerator();
 
-                    IEnumerator<SyntaxTrivia> en = list.Skip(index + 1).GetEnumerator();
+                    while (en.MoveNext()
+                        && en.Current.SpanStart != position)
+                    {
+                    }
+
+                    int end = en.Current.Span.End;
 
                     while (en.MoveNext())
                     {
-                        if (en.Current.IsWhitespaceTrivia()
-                            && !en.MoveNext())
-                        {
+                        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
                             break;
-                        }
 
-                        if (en.Current.IsEndOfLineTrivia())
-                        {
-                            end = en.Current.Span.End;
-                        }
-                        else
-                        {
+                        if (!en.Current.IsEndOfLineTrivia())
                             break;
-                        }
+
+                        end = en.Current.Span.End;
                     }
 
-                    return new TextChange(TextSpan.FromBounds(start, end), "");
+                    return new TextChange(TextSpan.FromBounds(position, end), "");
                 }
             default:
                 {
@@ -205,12 +182,18 @@ internal readonly struct TriviaBetweenAnalysis
 
         public Enumerator(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
         {
+            First = first;
+            Second = second;
             Trailing = first.GetTrailingTrivia();
             Leading = second.GetLeadingTrivia();
             Position = first.Span.End;
 
             _enumerator = Trailing.GetEnumerator();
         }
+
+        public SyntaxNodeOrToken First { get; }
+
+        public SyntaxNodeOrToken Second { get; }
 
         public SyntaxTriviaList Trailing { get; set; }
 
@@ -252,7 +235,7 @@ internal readonly struct TriviaBetweenAnalysis
 
         public readonly TriviaBetweenAnalysis GetResult(TriviaBetweenKind kind)
         {
-            return new TriviaBetweenAnalysis(kind, Position);
+            return new TriviaBetweenAnalysis(First, Second, kind, Position);
         }
     }
 }
