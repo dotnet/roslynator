@@ -459,7 +459,28 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
                     diagnostic,
                     (a, d) =>
                     {
-                        if ((data.EquivalenceKey is null
+                        ImmutableArray<CodeAction> nestedActions = a.GetNestedActions();
+
+                        if (nestedActions.Any())
+                        {
+                            foreach (CodeAction nestedAction in nestedActions)
+                            {
+                                if ((data.EquivalenceKey is null
+                                    || string.Equals(data.EquivalenceKey, nestedAction.EquivalenceKey, StringComparison.Ordinal))
+                                    && d.Contains(diagnostic))
+                                {
+                                    if (action is not null)
+                                        Fail($"Multiple fixes registered by '{fixProvider.GetType().Name}'.", new CodeAction[] { action, nestedAction });
+
+                                    action = nestedAction;
+                                }
+                                else
+                                {
+                                    (candidateActions ??= new List<CodeAction>()).Add(nestedAction);
+                                }
+                            }
+                        }
+                        else if ((data.EquivalenceKey is null
                             || string.Equals(data.EquivalenceKey, a.EquivalenceKey, StringComparison.Ordinal))
                             && d.Contains(diagnostic))
                         {
@@ -549,7 +570,21 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
                         diagnostic,
                         (a, d) =>
                         {
-                            if ((data.EquivalenceKey is null
+                            ImmutableArray<CodeAction> nestedActions = a.GetNestedActions();
+
+                            if (nestedActions.Any())
+                            {
+                                foreach (CodeAction nestedAction in nestedActions)
+                                {
+                                    if ((data.EquivalenceKey is null
+                                        || string.Equals(nestedAction.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
+                                        && d.Contains(diagnostic))
+                                    {
+                                        Fail("No code fix expected.");
+                                    }
+                                }
+                            }
+                            else if ((data.EquivalenceKey is null
                                 || string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
                                 && d.Contains(diagnostic))
                             {
