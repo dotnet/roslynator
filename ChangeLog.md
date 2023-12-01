@@ -15,8 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Improve refactoring 'Remove comment' [RR0098](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0098) ([PR](https://github.com/dotnet/roslynator/pull/1284))
+- Improve refactoring "Remove comment" [RR0098](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0098) ([PR](https://github.com/dotnet/roslynator/pull/1284))
 - Remove trailing dot from analyzer's title ([PR](https://github.com/dotnet/roslynator/pull/1298))
+- Group code fix "Change accessibility to ..." ([PR](https://github.com/dotnet/roslynator/pull/1305))
 
 ### Fixed
 
