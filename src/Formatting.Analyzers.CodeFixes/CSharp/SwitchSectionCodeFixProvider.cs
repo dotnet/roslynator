@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
@@ -51,50 +51,11 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
                 }
             case DiagnosticIdentifiers.BlankLineBetweenSwitchSections:
                 {
+                    TextChange textChange = TriviaBetweenAnalysis.GetTextChangeForBlankLine(root, context.Span.Start);
+
                     CodeAction codeAction = CodeAction.Create(
-                        CodeFixTitles.AddBlankLine,
-                        ct =>
-                        {
-                            SyntaxTriviaList leading = switchSection.GetLeadingTrivia();
-
-                            if (leading.Span.Contains(context.Span))
-                            {
-                                SyntaxTriviaList newLeading = leading.TrimStart();
-
-                                if (!newLeading.Any()
-                                    && leading.Last().IsKind(SyntaxKind.WhitespaceTrivia))
-                                {
-                                    newLeading = SyntaxFactory.TriviaList(leading.Last());
-                                }
-
-                                SwitchSectionSyntax newSwitchSection = switchSection.WithLeadingTrivia(newLeading);
-
-                                return document.ReplaceNodeAsync(switchSection, newSwitchSection, ct);
-                            }
-                            else
-                            {
-                                var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
-                                int index = switchStatement.Sections.IndexOf(switchSection);
-                                SwitchSectionSyntax nextSection = switchStatement.Sections[index + 1];
-                                SyntaxTriviaList trailing = switchSection.GetTrailingTrivia();
-                                leading = nextSection.GetLeadingTrivia();
-
-                                SyntaxTrivia endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(switchSection);
-                                SyntaxTriviaList newLeading = leading.Insert(0, endOfLine);
-
-                                SwitchStatementSyntax newSwitchStatement = switchStatement.ReplaceNode(nextSection, nextSection.WithLeadingTrivia(newLeading));
-
-                                if (!trailing.Last().IsKind(SyntaxKind.EndOfLineTrivia))
-                                {
-                                    SyntaxTriviaList newTrailing = trailing.Add(endOfLine);
-
-                                    switchSection = newSwitchStatement.Sections[index];
-                                    newSwitchStatement = newSwitchStatement.ReplaceNode(switchSection, switchSection.WithTrailingTrivia(newTrailing));
-                                }
-
-                                return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, ct);
-                            }
-                        },
+                        (textChange.NewText.Length == 0) ? CodeFixTitles.RemoveBlankLine : CodeFixTitles.AddBlankLine,
+                        ct => document.WithTextChangeAsync(textChange, ct),
                         GetEquivalenceKey(diagnostic));
 
                     context.RegisterCodeFix(codeAction, diagnostic);

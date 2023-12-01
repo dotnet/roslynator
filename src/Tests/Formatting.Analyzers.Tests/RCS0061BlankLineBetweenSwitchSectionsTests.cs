@@ -70,8 +70,8 @@ class C
 [||]
             case ""b"":
                 return ""b"";
-
 [||]
+
             default:
                 return null;
         }
