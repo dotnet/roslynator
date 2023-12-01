@@ -164,7 +164,28 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                     diagnostic,
                     (a, d) =>
                     {
-                        if ((data.EquivalenceKey is null
+                        ImmutableArray<CodeAction> nestedActions = a.GetNestedActions();
+
+                        if (nestedActions.Any())
+                        {
+                            foreach (CodeAction nestedAction in nestedActions)
+                            {
+                                if ((data.EquivalenceKey is null
+                                    || string.Equals(data.EquivalenceKey, nestedAction.EquivalenceKey, StringComparison.Ordinal))
+                                    && d.Contains(diagnostic))
+                                {
+                                    if (action is not null)
+                                        Fail($"Multiple fixes registered by '{fixProvider.GetType().Name}'.", new CodeAction[] { action, nestedAction });
+
+                                    action = nestedAction;
+                                }
+                                else
+                                {
+                                    (candidateActions ??= new List<CodeAction>()).Add(nestedAction);
+                                }
+                            }
+                        }
+                        else if ((data.EquivalenceKey is null
                             || string.Equals(data.EquivalenceKey, a.EquivalenceKey, StringComparison.Ordinal))
                             && d.Contains(diagnostic))
                         {
@@ -283,16 +304,37 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
                     diagnostic,
                     (a, d) =>
                     {
-                        if (data.EquivalenceKey is not null
-                            && !string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
+                        ImmutableArray<CodeAction> nestedActions = a.GetNestedActions();
+
+                        if (nestedActions.Any())
                         {
-                            return;
+                            foreach (CodeAction nestedAction in nestedActions)
+                            {
+                                if (data.EquivalenceKey is not null
+                                    && !string.Equals(nestedAction.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
+                                {
+                                    continue;
+                                }
+
+                                if (!d.Contains(diagnostic))
+                                    continue;
+
+                                Fail("No code fix expected.");
+                            }
                         }
+                        else
+                        {
+                            if (data.EquivalenceKey is not null
+                                && !string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
+                            {
+                                return;
+                            }
 
-                        if (!d.Contains(diagnostic))
-                            return;
+                            if (!d.Contains(diagnostic))
+                                return;
 
-                        Fail("No code fix expected.");
+                            Fail("No code fix expected.");
+                        }
                     },
                     cancellationToken);
 

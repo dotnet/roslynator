@@ -1,5 +1,8 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
@@ -22,6 +25,32 @@ internal static class CodeActionFactory
             EquivalenceKey.Create(diagnostic));
 
         context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    public static CodeAction Create(
+        string title,
+        Func<CancellationToken, Task<Solution>> createChangedSolution,
+        RefactoringDescriptor descriptor,
+        string additionalEquivalenceKey1 = null,
+        string additionalEquivalenceKey2 = null)
+    {
+        return CodeAction.Create(
+            title,
+            createChangedSolution,
+            EquivalenceKey.Create(descriptor, additionalEquivalenceKey1, additionalEquivalenceKey2));
+    }
+
+    public static CodeAction Create(
+        string title,
+        Func<CancellationToken, Task<Document>> createChangedDocument,
+        RefactoringDescriptor descriptor,
+        string additionalEquivalenceKey1 = null,
+        string additionalEquivalenceKey2 = null)
+    {
+        return CodeAction.Create(
+            title,
+            createChangedDocument,
+            EquivalenceKey.Create(descriptor, additionalEquivalenceKey1, additionalEquivalenceKey2));
     }
 
     public static CodeAction ChangeTypeToVar(
