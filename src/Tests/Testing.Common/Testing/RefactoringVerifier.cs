@@ -131,7 +131,27 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
                     span,
                     a =>
                     {
-                        if (data.EquivalenceKey is null
+                        ImmutableArray<CodeAction> nestedActions = a.GetNestedActions();
+
+                        if (nestedActions.Any())
+                        {
+                            foreach (CodeAction nestedAction in nestedActions)
+                            {
+                                if (data.EquivalenceKey is null
+                                    || string.Equals(nestedAction.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
+                                {
+                                    if (action is not null)
+                                        Fail($"Multiple refactorings registered by '{refactoringProvider.GetType().Name}'.", new CodeAction[] { action, a });
+
+                                    action = nestedAction;
+                                }
+                                else
+                                {
+                                    (candidateActions ??= new List<CodeAction>()).Add(nestedAction);
+                                }
+                            }
+                        }
+                        else if (data.EquivalenceKey is null
                             || string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
                         {
                             if (action is not null)
@@ -235,7 +255,20 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
                     span,
                     a =>
                     {
-                        if (data.EquivalenceKey is null
+                        ImmutableArray<CodeAction> nestedActions = a.GetNestedActions();
+
+                        if (nestedActions.Any())
+                        {
+                            foreach (CodeAction nestedAction in nestedActions)
+                            {
+                                if (data.EquivalenceKey is null
+                                    || string.Equals(nestedAction.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
+                                {
+                                    Fail("No code refactoring expected.");
+                                }
+                            }
+                        }
+                        else if (data.EquivalenceKey is null
                             || string.Equals(a.EquivalenceKey, data.EquivalenceKey, StringComparison.Ordinal))
                         {
                             Fail("No code refactoring expected.");
