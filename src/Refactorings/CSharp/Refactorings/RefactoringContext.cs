@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -128,6 +130,15 @@ internal class RefactoringContext
     public Task<SemanticModel> GetSemanticModelAsync()
     {
         return Document.GetSemanticModelAsync(CancellationToken);
+    }
+
+    public void RegisterRefactoring(
+        string title,
+        ImmutableArray<CodeAction> nestedActions,
+        bool isInlinable = false)
+    {
+        if (nestedActions.Any())
+            RegisterRefactoring(CodeAction.Create(title, nestedActions, isInlinable));
     }
 
     public void RegisterRefactoring(

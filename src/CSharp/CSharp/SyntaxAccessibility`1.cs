@@ -61,6 +61,9 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
         if (typeof(TNode) == typeof(NamespaceDeclarationSyntax))
             return new NamespaceAccessibility();
 
+        if (typeof(TNode) == typeof(FileScopedNamespaceDeclarationSyntax))
+            return new FileScopedNamespaceAccessibility();
+
         if (typeof(TNode) == typeof(OperatorDeclarationSyntax))
             return new OperatorAccessibility();
 
@@ -767,6 +770,38 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
         }
 
         public override Accessibility GetExplicitAccessibility(NamespaceDeclarationSyntax declaration)
+        {
+            return Accessibility.NotApplicable;
+        }
+    }
+
+    private class FileScopedNamespaceAccessibility : SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>
+    {
+        public override Accessibility GetDefaultAccessibility(FileScopedNamespaceDeclarationSyntax declaration)
+        {
+            if (declaration is null)
+                throw new ArgumentNullException(nameof(declaration));
+
+            return Accessibility.Public;
+        }
+
+        public override Accessibility GetDefaultExplicitAccessibility(FileScopedNamespaceDeclarationSyntax declaration)
+        {
+            if (declaration is null)
+                throw new ArgumentNullException(nameof(declaration));
+
+            return Accessibility.NotApplicable;
+        }
+
+        public override Accessibility GetAccessibility(FileScopedNamespaceDeclarationSyntax declaration)
+        {
+            if (declaration is null)
+                throw new ArgumentNullException(nameof(declaration));
+
+            return Accessibility.Public;
+        }
+
+        public override Accessibility GetExplicitAccessibility(FileScopedNamespaceDeclarationSyntax declaration)
         {
             return Accessibility.NotApplicable;
         }

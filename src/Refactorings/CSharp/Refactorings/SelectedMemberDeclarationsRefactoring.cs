@@ -1,9 +1,9 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
@@ -12,14 +12,6 @@ namespace Roslynator.CSharp.Refactorings;
 
 internal static class SelectedMemberDeclarationsRefactoring
 {
-    public static ImmutableDictionary<Accessibility, string> _accessibilityIdentifierMap = ImmutableDictionary.CreateRange(new[]
-        {
-            new KeyValuePair<Accessibility, string>(Accessibility.Public, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Public))),
-            new KeyValuePair<Accessibility, string>(Accessibility.Internal, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Internal))),
-            new KeyValuePair<Accessibility, string>(Accessibility.Protected, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Protected))),
-            new KeyValuePair<Accessibility, string>(Accessibility.Private, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Private))),
-        });
-
     public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
     {
         if (context.IsRefactoringEnabled(RefactoringDescriptors.ChangeAccessibility)
@@ -33,10 +25,16 @@ internal static class SelectedMemberDeclarationsRefactoring
             {
                 bool canHaveMultipleDeclarations = CanHaveMultipleDeclarations();
 
-                TryRegisterRefactoring(validAccessibilities, Accessibility.Public, canHaveMultipleDeclarations);
-                TryRegisterRefactoring(validAccessibilities, Accessibility.Internal, canHaveMultipleDeclarations);
-                TryRegisterRefactoring(validAccessibilities, Accessibility.Protected, canHaveMultipleDeclarations);
-                TryRegisterRefactoring(validAccessibilities, Accessibility.Private, canHaveMultipleDeclarations);
+                ImmutableArray<CodeAction>.Builder codeActions = ImmutableArray.CreateBuilder<CodeAction>();
+
+                TryAddCodeAction(validAccessibilities, Accessibility.Public, canHaveMultipleDeclarations, codeActions);
+                TryAddCodeAction(validAccessibilities, Accessibility.Internal, canHaveMultipleDeclarations, codeActions);
+                TryAddCodeAction(validAccessibilities, Accessibility.Protected, canHaveMultipleDeclarations, codeActions);
+                TryAddCodeAction(validAccessibilities, Accessibility.Private, canHaveMultipleDeclarations, codeActions);
+
+                context.RegisterRefactoring(
+                    "Change accessibility to",
+                    codeActions.ToImmutable());
             }
         }
 
@@ -58,30 +56,41 @@ internal static class SelectedMemberDeclarationsRefactoring
             AddEmptyLineBetweenDeclarationsRefactoring.ComputeRefactoring(context, selectedMembers);
         }
 
-        void TryRegisterRefactoring(AccessibilityFilter accessibilities, Accessibility accessibility, bool canHaveMultipleDeclarations)
+        void TryAddCodeAction(AccessibilityFilter accessibilities, Accessibility accessibility, bool canHaveMultipleDeclarations, ImmutableArray<CodeAction>.Builder codeActions)
+        {
+            CodeAction codeAction = TryCreateCodeAction(accessibilities, accessibility, canHaveMultipleDeclarations);
+
+            if (codeAction is not null)
+                codeActions.Add(codeAction);
+        }
+
+        CodeAction TryCreateCodeAction(AccessibilityFilter accessibilities, Accessibility accessibility, bool canHaveMultipleDeclarations)
         {
             if ((accessibilities & accessibility.GetAccessibilityFilter()) != 0)
             {
                 if (canHaveMultipleDeclarations)
                 {
-                    context.RegisterRefactoring(
-                        ChangeAccessibilityRefactoring.GetTitle(accessibility),
+                    return CodeActionFactory.Create(
+                        SyntaxFacts.GetText(accessibility),
                         async ct =>
                         {
                             SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
                             return await ChangeAccessibilityRefactoring.RefactorAsync(context.Document.Solution(), selectedMembers, accessibility, semanticModel, ct).ConfigureAwait(false);
                         },
-                        _accessibilityIdentifierMap[accessibility]);
+                        RefactoringDescriptors.ChangeAccessibility,
+                        accessibility.ToString());
                 }
                 else
                 {
-                    context.RegisterRefactoring(
-                        ChangeAccessibilityRefactoring.GetTitle(accessibility),
+                    return CodeActionFactory.Create(
+                        SyntaxFacts.GetText(accessibility),
                         ct => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, selectedMembers, accessibility, ct),
                         RefactoringDescriptors.ChangeAccessibility,
                         accessibility.ToString());
                 }
             }
+
+            return null;
         }
 
         bool CanHaveMultipleDeclarations()

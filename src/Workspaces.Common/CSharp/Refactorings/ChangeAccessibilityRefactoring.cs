@@ -22,11 +22,6 @@ internal static class ChangeAccessibilityRefactoring
         Accessibility.Protected,
         Accessibility.Private);
 
-    public static string GetTitle(Accessibility accessibility)
-    {
-        return $"Change accessibility to '{SyntaxFacts.GetText(accessibility)}'";
-    }
-
     public static ISymbol GetBaseSymbolOrDefault(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         ISymbol symbol = GetDeclaredSymbol();
