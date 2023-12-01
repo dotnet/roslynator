@@ -115,6 +115,8 @@ internal readonly struct TriviaBetweenAnalysis
         string endofLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
         TriviaBetweenAnalysis analysis = Create(first, second);
 
+        Debug.Assert(position == analysis.Position);
+
         switch (analysis.Kind)
         {
             case TriviaBetweenKind.NoNewLine:
