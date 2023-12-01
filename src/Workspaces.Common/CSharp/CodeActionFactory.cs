@@ -2,14 +2,28 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp;
 
 internal static class CodeActionFactory
 {
+    public static void CreateAndRegisterCodeActionForBlankLine(CodeFixContext context, SyntaxNode root, Diagnostic diagnostic)
+    {
+        TextChange textChange = TriviaBetweenAnalysis.GetTextChangeForBlankLine(root, context.Span.Start);
+
+        CodeAction codeAction = CodeAction.Create(
+            (textChange.NewText.Length == 0) ? "Remove blank line" : "Add blank line",
+            ct => context.Document.WithTextChangeAsync(textChange, ct),
+            EquivalenceKey.Create(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
     public static CodeAction ChangeTypeToVar(
         Document document,
         TypeSyntax type,
