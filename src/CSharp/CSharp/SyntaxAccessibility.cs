@@ -62,6 +62,8 @@ public static class SyntaxAccessibility
                 return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetDefaultAccessibility((EnumMemberDeclarationSyntax)declaration);
             case SyntaxKind.NamespaceDeclaration:
                 return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetDefaultAccessibility((NamespaceDeclarationSyntax)declaration);
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                return SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>.Instance.GetDefaultAccessibility((FileScopedNamespaceDeclarationSyntax)declaration);
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
@@ -125,6 +127,8 @@ public static class SyntaxAccessibility
                 return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((EnumMemberDeclarationSyntax)declaration);
             case SyntaxKind.NamespaceDeclaration:
                 return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((NamespaceDeclarationSyntax)declaration);
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                return SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((FileScopedNamespaceDeclarationSyntax)declaration);
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
@@ -188,6 +192,8 @@ public static class SyntaxAccessibility
                 return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetAccessibility((EnumMemberDeclarationSyntax)declaration);
             case SyntaxKind.NamespaceDeclaration:
                 return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetAccessibility((NamespaceDeclarationSyntax)declaration);
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                return SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>.Instance.GetAccessibility((FileScopedNamespaceDeclarationSyntax)declaration);
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
@@ -251,6 +257,8 @@ public static class SyntaxAccessibility
                 return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetExplicitAccessibility((EnumMemberDeclarationSyntax)declaration);
             case SyntaxKind.NamespaceDeclaration:
                 return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetExplicitAccessibility((NamespaceDeclarationSyntax)declaration);
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                return SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>.Instance.GetExplicitAccessibility((FileScopedNamespaceDeclarationSyntax)declaration);
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
@@ -334,7 +342,7 @@ public static class SyntaxAccessibility
 
         do
         {
-            if (declaration.IsKind(SyntaxKind.NamespaceDeclaration))
+            if (declaration.IsKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration))
                 return true;
 
             if (!GetAccessibility(declaration).Is(
@@ -411,6 +419,7 @@ public static class SyntaxAccessibility
         switch (node.Parent?.Kind())
         {
             case SyntaxKind.NamespaceDeclaration:
+            case SyntaxKind.FileScopedNamespaceDeclaration:
             case SyntaxKind.CompilationUnit:
                 {
                     return accessibility.Is(Accessibility.Public, Accessibility.Internal);
