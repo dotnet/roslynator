@@ -335,7 +335,6 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
 
                             Fail("No code fix expected.");
                         }
-
                     },
                     cancellationToken);
 
