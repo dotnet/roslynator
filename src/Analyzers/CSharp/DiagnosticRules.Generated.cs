@@ -2594,8 +2594,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1263</summary>
         public static readonly DiagnosticDescriptor InvalidReferenceInDocumentationComment = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.InvalidReferenceInDocumentationComment, 
-            title:              "Invalid reference in a documentation comment.", 
-            messageFormat:      "{0} '{1}' could not be found.", 
+            title:              "Invalid reference in a documentation comment", 
+            messageFormat:      "{0} '{1}' could not be found", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
