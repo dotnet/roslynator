@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -384,25 +385,24 @@ internal static class ModifiersCodeFixRegistrator
         SyntaxNode node,
         IEnumerable<Accessibility> accessibilities)
     {
+        ImmutableArray<CodeAction>.Builder codeActions = ImmutableArray.CreateBuilder<CodeAction>();
+
         foreach (Accessibility accessibility in accessibilities)
-            ChangeAccessibility(context, diagnostic, node, accessibility);
-    }
+        {
+            if (!SyntaxAccessibility.IsValidAccessibility(node, accessibility))
+                return;
 
-    public static void ChangeAccessibility(
-        CodeFixContext context,
-        Diagnostic diagnostic,
-        SyntaxNode node,
-        Accessibility accessibility)
-    {
-        if (!SyntaxAccessibility.IsValidAccessibility(node, accessibility))
-            return;
+            CodeAction codeAction = CodeAction.Create(
+                GetText(accessibility),
+                ct => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, node, accessibility, ct),
+                GetEquivalenceKey(diagnostic, accessibility.ToString()));
 
-        CodeAction codeAction = CodeAction.Create(
-            $"Change accessibility to '{GetText(accessibility)}'",
-            ct => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, node, accessibility, ct),
-            GetEquivalenceKey(diagnostic, accessibility.ToString()));
+            codeActions.Add(codeAction);
+        }
 
-        context.RegisterCodeFix(codeAction, diagnostic);
+        context.RegisterCodeFix(
+            CodeAction.Create("Change accessibility to", codeActions.ToImmutable(), isInlinable: false),
+            diagnostic);
     }
 
     private static string GetEquivalenceKey(Diagnostic diagnostic, string additionalKey)
