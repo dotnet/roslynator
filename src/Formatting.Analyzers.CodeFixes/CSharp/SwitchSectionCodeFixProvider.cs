@@ -51,14 +51,7 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
                 }
             case DiagnosticIdentifiers.BlankLineBetweenSwitchSections:
                 {
-                    TextChange textChange = TriviaBetweenAnalysis.GetTextChangeForBlankLine(root, context.Span.Start);
-
-                    CodeAction codeAction = CodeAction.Create(
-                        (textChange.NewText.Length == 0) ? CodeFixTitles.RemoveBlankLine : CodeFixTitles.AddBlankLine,
-                        ct => document.WithTextChangeAsync(textChange, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
+                    CodeActionFactory.CreateAndRegisterCodeActionForBlankLine(context, root, diagnostic);
                     break;
                 }
         }

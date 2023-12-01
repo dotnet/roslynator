@@ -55,37 +55,10 @@ public sealed class SyntaxTriviaCodeFixProvider : BaseCodeFixProvider
                 }
             case DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration:
             case DiagnosticIdentifiers.AddBlankLineBetweenAccessors:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        CodeFixTitles.AddBlankLine,
-                        ct => CodeFixHelpers.AppendEndOfLineAsync(document, trivia.Token, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
             case DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors:
             case DiagnosticIdentifiers.BlankLineBetweenUsingDirectives:
                 {
-                    if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.RemoveBlankLine,
-                            ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, trivia.Token, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddBlankLine,
-                            ct => CodeFixHelpers.AppendEndOfLineAsync(document, trivia.Token, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-
+                    CodeActionFactory.CreateAndRegisterCodeActionForBlankLine(context, root, diagnostic);
                     break;
                 }
             case DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace:

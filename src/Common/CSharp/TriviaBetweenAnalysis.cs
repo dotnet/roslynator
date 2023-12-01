@@ -10,10 +10,10 @@ namespace Roslynator.CSharp;
 
 internal readonly struct TriviaBetweenAnalysis
 {
-    private TriviaBetweenAnalysis(SyntaxNodeOrToken first, SyntaxNodeOrToken second, TriviaBetweenKind kind, int position)
+    private TriviaBetweenAnalysis(SyntaxNodeOrToken before, SyntaxNodeOrToken after, TriviaBetweenKind kind, int position)
     {
-        First = first;
-        Second = second;
+        Before = before;
+        After = after;
         Kind = kind;
         Position = position;
     }
@@ -22,9 +22,18 @@ internal readonly struct TriviaBetweenAnalysis
 
     public int Position { get; }
 
-    public SyntaxNodeOrToken First { get; }
+    public SyntaxNodeOrToken Before { get; }
 
-    public SyntaxNodeOrToken Second { get; }
+    public SyntaxNodeOrToken After { get; }
+
+    public bool HasBlankLine => Kind == TriviaBetweenKind.BlankLine || Kind == TriviaBetweenKind.BlankLines;
+
+    public bool Success => Kind != TriviaBetweenKind.Unknown;
+
+    public Location GetLocation()
+    {
+        return Location.Create(Before.SyntaxTree, new TextSpan(Position, 0));
+    }
 
     public static TriviaBetweenAnalysis Create(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
     {
@@ -88,7 +97,7 @@ internal readonly struct TriviaBetweenAnalysis
 
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(First, Second);
+        return new Enumerator(Before, After);
     }
 
     public static TextChange GetTextChangeForBlankLine(SyntaxNode root, int position)
@@ -177,7 +186,7 @@ internal readonly struct TriviaBetweenAnalysis
     public struct Enumerator
     {
         private bool _isSecondTrivia = false;
-        private int _eolState = 0;
+        private int _firstEolEnd = -1;
         private SyntaxTriviaList.Enumerator _enumerator;
 
         public Enumerator(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
@@ -219,14 +228,14 @@ internal readonly struct TriviaBetweenAnalysis
 
             if (Current.IsEndOfLineTrivia())
             {
-                if (_eolState == 0)
+                if (_firstEolEnd == -1)
                 {
-                    _eolState = 1;
+                    _firstEolEnd = Current.Span.End;
                 }
-                else if (_eolState == 1)
+                else if (_firstEolEnd >= 0)
                 {
-                    Position = Current.SpanStart;
-                    _eolState = 2;
+                    Position = _firstEolEnd;
+                    _firstEolEnd = -2;
                 }
             }
 
