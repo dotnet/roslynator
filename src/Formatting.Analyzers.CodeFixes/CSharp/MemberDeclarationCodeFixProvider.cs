@@ -35,9 +35,10 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
         if (diagnostic.Id == DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)
         {
             await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(
-                        context,
-                        title: "Put constructor initializer on its own line",
-                        options: CodeActionNewLineOptions.IncreaseIndentation).ConfigureAwait(false);
+                context,
+                title: "Put constructor initializer on its own line",
+                options: CodeActionNewLineOptions.IncreaseIndentation)
+                .ConfigureAwait(false);
         }
 
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -50,9 +51,9 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
         if (diagnostic.Id == DiagnosticIdentifiers.FormatTypeDeclarationBraces)
         {
             CodeAction codeAction = CodeAction.Create(
-                        "Format braces on multiple lines",
-                        ct => FormatTypeDeclarationBracesOnMultipleLinesAsync(document, memberDeclaration, ct),
-                        GetEquivalenceKey(diagnostic));
+                "Format braces on multiple lines",
+                ct => FormatTypeDeclarationBracesOnMultipleLinesAsync(document, memberDeclaration, ct),
+                GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
