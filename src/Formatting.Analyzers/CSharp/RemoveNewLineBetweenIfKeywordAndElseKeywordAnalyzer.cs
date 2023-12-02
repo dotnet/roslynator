@@ -48,7 +48,7 @@ public sealed class RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer : BaseDi
             return;
 
         if (analysis.Kind != TriviaBetweenKind.NoNewLine
-            && analysis.CanRemoveNewLine)
+            && !analysis.ContainsComment)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,

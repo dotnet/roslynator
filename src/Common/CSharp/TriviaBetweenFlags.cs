@@ -9,5 +9,5 @@ internal enum TriviaBetweenFlags
 {
     None = 0,
     DocumentationComment = 1,
-    SingleLineCommentOnFirstLine = 1 << 1,
+    SingleLineComment = 1 << 1,
 }

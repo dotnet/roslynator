@@ -30,9 +30,11 @@ internal readonly struct TriviaBetweenAnalysis
 
     public bool Success => Kind != TriviaBetweenKind.Unknown;
 
-    public bool CanRemoveNewLine => (_flags & TriviaBetweenFlags.SingleLineCommentOnFirstLine) == 0;
+    public bool ContainsComment => (_flags & (TriviaBetweenFlags.SingleLineComment | TriviaBetweenFlags.DocumentationComment)) != 0;
 
-    public bool EndsWithDocumentationComment => (_flags & TriviaBetweenFlags.DocumentationComment) != 0;
+    public bool ContainsSingleLineComment => (_flags & TriviaBetweenFlags.SingleLineComment) == 0;
+
+    public bool ContainsDocumentationComment => (_flags & TriviaBetweenFlags.DocumentationComment) != 0;
 
     public Location GetLocation()
     {
@@ -54,7 +56,7 @@ internal readonly struct TriviaBetweenAnalysis
 
         if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
         {
-            flags |= TriviaBetweenFlags.SingleLineCommentOnFirstLine;
+            flags |= TriviaBetweenFlags.SingleLineComment;
 
             if (!en.MoveNext())
                 return default;
@@ -79,6 +81,7 @@ internal readonly struct TriviaBetweenAnalysis
 
         if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
         {
+            flags |= TriviaBetweenFlags.SingleLineComment;
             singleLineComment = true;
 
             if (!en.MoveNext())
@@ -113,6 +116,7 @@ internal readonly struct TriviaBetweenAnalysis
 
             if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
             {
+                flags |= TriviaBetweenFlags.SingleLineComment;
                 singleLineComment = true;
 
                 if (!en.MoveNext())

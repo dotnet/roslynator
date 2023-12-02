@@ -105,7 +105,7 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
                 return;
 
             if (analysis.Kind != TriviaBetweenKind.BlankLine
-                && analysis.EndsWithDocumentationComment)
+                && analysis.ContainsDocumentationComment)
             {
                 ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment, analysis);
                 continue;
@@ -190,7 +190,7 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
                 return;
 
             if (analysis.Kind != TriviaBetweenKind.BlankLine
-                && analysis.EndsWithDocumentationComment)
+                && analysis.ContainsDocumentationComment)
             {
                 ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment, analysis);
                 continue;
