@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve refactoring "Remove comment" [RR0098](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0098) ([PR](https://github.com/dotnet/roslynator/pull/1284))
 - Remove trailing dot from analyzer's title ([PR](https://github.com/dotnet/roslynator/pull/1298))
 - Group code fix "Change accessibility to ..." ([PR](https://github.com/dotnet/roslynator/pull/1305))
+- [CLI] Bump Roslyn to 4.8.0 ([PR](https://github.com/dotnet/roslynator/pull/1307)).
+- Group refactoring "Remove members above/below'" ([PR](https://github.com/dotnet/roslynator/pull/1308))
 
 ### Fixed
 
