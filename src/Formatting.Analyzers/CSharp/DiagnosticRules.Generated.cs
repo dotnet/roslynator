@@ -298,15 +298,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0030</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeEmbeddedStatement = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement, 
-            title:              "Add new line before embedded statement", 
-            messageFormat:      "Add new line before embedded statement", 
+        public static readonly DiagnosticDescriptor PutEmbeddedStatementOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine, 
+            title:              "Put embedded statement on its own line", 
+            messageFormat:      "Put embedded statement on its own line", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement, 
+            helpLinkUri:        DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0031</summary>
@@ -334,15 +334,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0033</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeStatement = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeStatement, 
-            title:              "Add new line before statement", 
-            messageFormat:      "Add new line before statement", 
+        public static readonly DiagnosticDescriptor PutStatementOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutStatementOnItsOwnLine, 
+            title:              "Put statement on its own line", 
+            messageFormat:      "Put statement on its own line", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeStatement, 
+            helpLinkUri:        DiagnosticIdentifiers.PutStatementOnItsOwnLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0034</summary>

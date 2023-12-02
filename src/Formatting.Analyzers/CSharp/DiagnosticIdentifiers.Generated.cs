@@ -32,10 +32,10 @@ namespace Roslynator.Formatting.CSharp
         public const string PlaceNewLineAfterOrBeforeBinaryOperator = "RCS0027";
         public const string PlaceNewLineAfterOrBeforeConditionalOperator = "RCS0028";
         public const string PutConstructorInitializerOnItsOwnLine = "RCS0029";
-        public const string AddNewLineBeforeEmbeddedStatement = "RCS0030";
+        public const string PutEmbeddedStatementOnItsOwnLine = "RCS0030";
         public const string PutEnumMemberOnItsOwnLine = "RCS0031";
         public const string PlaceNewLineAfterOrBeforeArrowToken = "RCS0032";
-        public const string AddNewLineBeforeStatement = "RCS0033";
+        public const string PutStatementOnItsOwnLine = "RCS0033";
         public const string PutTypeParameterConstraintOnItsOwnLine = "RCS0034";
         public const string RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind = "RCS0036";
         public const string RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace = "RCS0038";

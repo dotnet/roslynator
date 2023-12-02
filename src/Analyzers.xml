@@ -784,8 +784,8 @@ namespace N
   </Analyzer>
   <Analyzer>
     <Id>RCS0030</Id>
-    <Identifier>AddNewLineBeforeEmbeddedStatement</Identifier>
-    <Title>Add new line before embedded statement</Title>
+    <Identifier>PutEmbeddedStatementOnItsOwnLine</Identifier>
+    <Title>Put embedded statement on its own line</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -852,8 +852,8 @@ namespace N
   </Analyzer>
   <Analyzer>
     <Id>RCS0033</Id>
-    <Identifier>AddNewLineBeforeStatement</Identifier>
-    <Title>Add new line before statement</Title>
+    <Identifier>PutStatementOnItsOwnLine</Identifier>
+    <Title>Put statement on its own line</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
