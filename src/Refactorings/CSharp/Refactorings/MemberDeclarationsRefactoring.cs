@@ -1,10 +1,12 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
@@ -45,17 +47,21 @@ internal static class MemberDeclarationsRefactoring
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclarations))
         {
-            context.RegisterRefactoring(
-                "Remove members above",
-                ct => ReplaceMembersAsync(context.Document, info, members.Skip(index + 1), ct),
-                RefactoringDescriptors.RemoveMemberDeclarations,
-                "Above");
+            ImmutableArray<CodeAction> codeActions = ImmutableArray.Create(
+                CodeActionFactory.Create(
+                    "above",
+                    ct => ReplaceMembersAsync(context.Document, info, members.Skip(index + 1), ct),
+                    RefactoringDescriptors.RemoveMemberDeclarations,
+                    "Above"),
+                CodeActionFactory.Create(
+                    "below",
+                    ct => ReplaceMembersAsync(context.Document, info, members.Take(index + 1), ct),
+                    RefactoringDescriptors.RemoveMemberDeclarations,
+                    "Below"));
 
             context.RegisterRefactoring(
-                "Remove members below",
-                ct => ReplaceMembersAsync(context.Document, info, members.Take(index + 1), ct),
-                RefactoringDescriptors.RemoveMemberDeclarations,
-                "Below");
+                "Remove members",
+                codeActions);
         }
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.SwapMemberDeclarations))

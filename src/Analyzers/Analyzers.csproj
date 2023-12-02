@@ -8,6 +8,7 @@
     <Version>$(RoslynatorVersion)</Version>
     <AssemblyName>Roslynator.CSharp.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.CSharp</RootNamespace>
+    <PackageId>Analyzers</PackageId>
     <IsPackable>false</IsPackable>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
