@@ -30,35 +30,31 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        if (diagnostic.Id == DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)
+        {
+            await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(
+                        context,
+                        title: "Put constructor initializer on its own line",
+                        options: CodeActionNewLineOptions.IncreaseIndentation).ConfigureAwait(false);
+        }
+
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
         if (!TryFindFirstAncestorOrSelf(root, context.Span, out MemberDeclarationSyntax memberDeclaration))
             return;
 
         Document document = context.Document;
-        Diagnostic diagnostic = context.Diagnostics[0];
 
-        switch (diagnostic.Id)
+        if (diagnostic.Id == DiagnosticIdentifiers.FormatTypeDeclarationBraces)
         {
-            case DiagnosticIdentifiers.FormatTypeDeclarationBraces:
-                {
-                    CodeAction codeAction = CodeAction.Create(
+            CodeAction codeAction = CodeAction.Create(
                         "Format braces on multiple lines",
                         ct => FormatTypeDeclarationBracesOnMultipleLinesAsync(document, memberDeclaration, ct),
                         GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
-            case DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine:
-                {
-                    await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(
-                        context,
-                        title: "Put constructor initializer on its own line",
-                        options: CodeActionNewLineOptions.IncreaseIndentation).ConfigureAwait(false);
-
-                    break;
-                }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 
