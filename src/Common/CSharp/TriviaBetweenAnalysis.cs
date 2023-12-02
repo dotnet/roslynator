@@ -9,32 +9,34 @@ namespace Roslynator.CSharp;
 
 internal readonly struct TriviaBetweenAnalysis
 {
-    private TriviaBetweenAnalysis(SyntaxNodeOrToken before, SyntaxNodeOrToken after, TriviaBetweenKind kind, int position, TriviaBetweenFlags flags)
+    private readonly TriviaBetweenFlags _flags;
+
+    private TriviaBetweenAnalysis(SyntaxNodeOrToken first, SyntaxNodeOrToken second, TriviaBetweenKind kind, int position, TriviaBetweenFlags flags)
     {
-        Before = before;
-        After = after;
+        First = first;
+        Second = second;
         Kind = kind;
         Position = position;
-        Flags = flags;
+        _flags = flags;
     }
 
     public TriviaBetweenKind Kind { get; }
 
     public int Position { get; }
 
-    public TriviaBetweenFlags Flags { get; }
+    public SyntaxNodeOrToken First { get; }
 
-    public SyntaxNodeOrToken Before { get; }
-
-    public SyntaxNodeOrToken After { get; }
+    public SyntaxNodeOrToken Second { get; }
 
     public bool Success => Kind != TriviaBetweenKind.Unknown;
 
-    public bool HasFlag(TriviaBetweenFlags flag) => Flags.HasFlag(flag);
+    public bool CanRemoveNewLine => (_flags & TriviaBetweenFlags.SingleLineCommentOnFirstLine) == 0;
+
+    public bool EndsWithDocumentationComment => (_flags & TriviaBetweenFlags.DocumentationComment) != 0;
 
     public Location GetLocation()
     {
-        return Location.Create(Before.SyntaxTree, new TextSpan(Position, 0));
+        return Location.Create(First.SyntaxTree, new TextSpan(Position, 0));
     }
 
     public static TriviaBetweenAnalysis Create(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
@@ -73,62 +75,71 @@ internal readonly struct TriviaBetweenAnalysis
         if (en.Current.IsDirective)
             return default;
 
+        bool singleLineComment = false;
+
         if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
         {
-            flags |= TriviaBetweenFlags.SingleLineCommentOnFirstLine;
+            singleLineComment = true;
 
-            if (en.MoveNext()
-                && en.Current.IsEndOfLineTrivia()
-                && (!en.MoveNext() || (en.Current.IsWhitespaceTrivia() && !en.MoveNext())))
-            {
-                return en.GetResult(TriviaBetweenKind.NewLine, flags);
-            }
+            if (!en.MoveNext())
+                return default;
 
+            if (!en.Current.IsEndOfLineTrivia())
+                return default;
+        }
+        else if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
+        {
+            return en.GetResult(TriviaBetweenKind.NewLine, flags | TriviaBetweenFlags.DocumentationComment);
+        }
+        else if (!en.Current.IsEndOfLineTrivia())
+        {
             return default;
         }
 
-        if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-            return en.GetResult(TriviaBetweenKind.NewLine, flags | TriviaBetweenFlags.DocumentationComment);
-
-        if (!en.Current.IsEndOfLineTrivia())
-            return default;
+        TriviaBetweenKind kind = (singleLineComment)
+            ? TriviaBetweenKind.NewLine
+            : TriviaBetweenKind.BlankLine;
 
         while (true)
         {
             if (!en.MoveNext())
-                return en.GetResult(TriviaBetweenKind.BlankLine, flags);
+                return en.GetResult(kind, flags);
 
             if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-                return en.GetResult(TriviaBetweenKind.BlankLine, flags);
+                return en.GetResult(kind, flags);
 
             if (en.Current.IsDirective)
                 return default;
 
             if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
             {
-                flags |= TriviaBetweenFlags.SingleLineCommentOnFirstLine;
+                singleLineComment = true;
 
-                if (en.MoveNext()
-                    && en.Current.IsEndOfLineTrivia()
-                    && (!en.MoveNext() || (en.Current.IsWhitespaceTrivia() && !en.MoveNext())))
-                {
-                    return en.GetResult(TriviaBetweenKind.BlankLine, flags);
-                }
+                if (!en.MoveNext())
+                    return default;
 
+                if (!en.Current.IsEndOfLineTrivia())
+                    return default;
+            }
+            else if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
+            {
+                return en.GetResult(kind, flags | TriviaBetweenFlags.DocumentationComment);
+            }
+            else if (en.Current.IsEndOfLineTrivia())
+            {
+                if (singleLineComment)
+                    return default;
+            }
+            else
+            {
                 return default;
             }
-
-            if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-                return en.GetResult(TriviaBetweenKind.BlankLine, flags | TriviaBetweenFlags.DocumentationComment);
-
-            if (!en.Current.IsEndOfLineTrivia())
-                return default;
         }
     }
 
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(Before, After);
+        return new Enumerator(First, Second);
     }
 
     public struct Enumerator

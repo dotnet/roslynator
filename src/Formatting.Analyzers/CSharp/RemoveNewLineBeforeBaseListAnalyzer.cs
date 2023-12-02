@@ -79,7 +79,7 @@ public sealed class RemoveNewLineBeforeBaseListAnalyzer : BaseDiagnosticAnalyzer
             return;
 
         if (analysis.Kind != TriviaBetweenKind.NoNewLine
-            && !analysis.HasFlag(TriviaBetweenFlags.SingleLineCommentOnFirstLine))
+            && analysis.CanRemoveNewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
