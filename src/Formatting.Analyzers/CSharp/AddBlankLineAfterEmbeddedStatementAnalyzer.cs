@@ -128,12 +128,10 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (!statementsInfo.Success)
             return;
 
-        SyntaxTree syntaxTree = containingStatement.SyntaxTree;
-
-        if (!syntaxTree.IsMultiLineSpan(TextSpan.FromBounds(token.SpanStart, statement.SpanStart)))
-            return;
-
         StatementSyntax nextStatement = containingStatement.NextStatement();
+
+        if (nextStatement is null)
+            return;
 
         TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(statement, nextStatement);
 

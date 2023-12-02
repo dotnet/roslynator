@@ -128,6 +128,9 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
             ? ifStatement.GetTopmostIf().NextStatement()
             : blockOrStatement.NextStatement();
 
+        if (nextStatement is null)
+            return;
+
         TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(closeBrace, nextStatement);
 
         if (!analysis.Success)

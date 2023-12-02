@@ -49,6 +49,9 @@ public sealed class AddNewLineBeforeStatementAnalyzer : BaseDiagnosticAnalyzer
 
     private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxList<StatementSyntax> statements)
     {
+        if (statements.Count <= 1)
+            return;
+
         StatementSyntax first = statements.FirstOrDefault();
 
         if (first is null)
