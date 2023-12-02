@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Group code fix "Change accessibility to ..." ([PR](https://github.com/dotnet/roslynator/pull/1305))
 - [CLI] Bump Roslyn to 4.8.0 ([PR](https://github.com/dotnet/roslynator/pull/1307)).
 - Group refactoring "Remove members above/below'" ([PR](https://github.com/dotnet/roslynator/pull/1308))
+- Rename analyzers ([PR](https://github.com/dotnet/roslynator/pull/1314))
+  - "Add new line before embedded statement" -> "Put embedded statement on its own line" ([RCS0030](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0030))
+  - "Add new line before statement" -> "Put statement on its own line" ([RCS0033](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0033))
 
 ### Fixed
 
