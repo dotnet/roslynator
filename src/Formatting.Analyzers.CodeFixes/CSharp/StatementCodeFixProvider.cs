@@ -23,8 +23,8 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
         get
         {
             return ImmutableArray.Create(
-                DiagnosticIdentifiers.AddNewLineBeforeStatement,
-                DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement,
+                DiagnosticIdentifiers.PutStatementOnItsOwnLine,
+                DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine,
                 DiagnosticIdentifiers.AddNewLineAfterSwitchLabel,
                 DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement);
         }
@@ -42,8 +42,8 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
 
         switch (diagnostic.Id)
         {
-            case DiagnosticIdentifiers.AddNewLineBeforeStatement:
-            case DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement:
+            case DiagnosticIdentifiers.PutStatementOnItsOwnLine:
+            case DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine:
             case DiagnosticIdentifiers.AddNewLineAfterSwitchLabel:
                 {
                     CodeAction codeAction = CodeAction.Create(
