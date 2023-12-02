@@ -123,7 +123,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) != false)
             return;
 
-        var analysis = TriviaBetweenAnalysis.Create(token, statement);
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(token, statement);
 
         if (analysis.Kind == TriviaBetweenKind.NoNewLine)
             return;
