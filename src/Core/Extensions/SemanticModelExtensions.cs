@@ -37,9 +37,6 @@ public static class SemanticModelExtensions
     /// <summary>
     /// Returns the innermost named type symbol that the specified position is considered inside of.
     /// </summary>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="cancellationToken"></param>
     public static INamedTypeSymbol? GetEnclosingNamedType(
         this SemanticModel semanticModel,
         int position,
@@ -51,10 +48,6 @@ public static class SemanticModelExtensions
     /// <summary>
     /// Returns the innermost symbol of type <typeparamref name="TSymbol"/> that the specified position is considered inside of.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="cancellationToken"></param>
     public static TSymbol? GetEnclosingSymbol<TSymbol>(
         this SemanticModel semanticModel,
         int position,
@@ -79,9 +72,6 @@ public static class SemanticModelExtensions
     /// <summary>
     /// Returns what symbol, if any, the specified node bound to.
     /// </summary>
-    /// <param name="semanticModel"></param>
-    /// <param name="node"></param>
-    /// <param name="cancellationToken"></param>
     public static ISymbol? GetSymbol(
         this SemanticModel semanticModel,
         SyntaxNode node,
@@ -93,9 +83,6 @@ public static class SemanticModelExtensions
     /// <summary>
     /// Returns type information about the specified node.
     /// </summary>
-    /// <param name="semanticModel"></param>
-    /// <param name="node"></param>
-    /// <param name="cancellationToken"></param>
     public static ITypeSymbol? GetTypeSymbol(
         this SemanticModel semanticModel,
         SyntaxNode node,
@@ -107,8 +94,6 @@ public static class SemanticModelExtensions
     /// <summary>
     /// Returns the type within the compilation's assembly using its canonical CLR metadata name.
     /// </summary>
-    /// <param name="semanticModel"></param>
-    /// <param name="fullyQualifiedMetadataName"></param>
     public static INamedTypeSymbol? GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
     {
         if (semanticModel is null)

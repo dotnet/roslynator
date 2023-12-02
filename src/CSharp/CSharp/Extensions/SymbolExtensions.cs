@@ -112,8 +112,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Creates a new <see cref="TypeSyntax"/> based on the specified namespace or type symbol.
     /// </summary>
-    /// <param name="namespaceOrTypeSymbol"></param>
-    /// <param name="format"></param>
     public static TypeSyntax ToTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SymbolDisplayFormat? format = null)
     {
         if (namespaceOrTypeSymbol is null)
@@ -132,10 +130,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Creates a new <see cref="TypeSyntax"/> based on the specified namespace or type symbol
     /// </summary>
-    /// <param name="namespaceOrTypeSymbol"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="format"></param>
     public static TypeSyntax ToMinimalTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat? format = null)
     {
         if (namespaceOrTypeSymbol is null)
@@ -159,8 +153,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Creates a new <see cref="TypeSyntax"/> based on the specified namespace symbol.
     /// </summary>
-    /// <param name="namespaceSymbol"></param>
-    /// <param name="format"></param>
     public static TypeSyntax ToTypeSyntax(this INamespaceSymbol namespaceSymbol, SymbolDisplayFormat? format = null)
     {
         if (namespaceSymbol is null)
@@ -174,10 +166,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Creates a new <see cref="TypeSyntax"/> based on the specified namespace symbol.
     /// </summary>
-    /// <param name="namespaceSymbol"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="format"></param>
     public static TypeSyntax ToMinimalTypeSyntax(this INamespaceSymbol namespaceSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat? format = null)
     {
         if (namespaceSymbol is null)
@@ -263,8 +251,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Creates a new <see cref="TypeSyntax"/> based on the specified type symbol.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="format"></param>
     public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat? format = null)
     {
         if (typeSymbol is null)
@@ -278,10 +264,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Creates a new <see cref="TypeSyntax"/> based on the specified type symbol.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="format"></param>
     public static TypeSyntax ToMinimalTypeSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat? format = null)
     {
         if (typeSymbol is null)
@@ -304,7 +286,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the specified type can be used to declare constant value.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool SupportsConstantValue(this ITypeSymbol typeSymbol)
     {
         if (typeSymbol is null)

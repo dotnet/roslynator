@@ -31,26 +31,16 @@ public abstract class NameGenerator
     /// <summary>
     /// Returns an unique name using the specified list of reserved names.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="reservedNames"></param>
-    /// <param name="isCaseSensitive"></param>
     public abstract string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, bool isCaseSensitive = true);
 
     /// <summary>
     /// Returns an unique name using the specified list of symbols.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="symbols"></param>
-    /// <param name="isCaseSensitive"></param>
     public abstract string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true);
 
     /// <summary>
     /// Returns a name that will be unique at the specified position.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="isCaseSensitive"></param>
     public string EnsureUniqueName(
         string baseName,
         SemanticModel semanticModel,
@@ -66,9 +56,6 @@ public abstract class NameGenerator
     /// <summary>
     /// Returns unique enum member name for a specified enum type.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="enumType"></param>
-    /// <param name="isCaseSensitive"></param>
     public string EnsureUniqueEnumMemberName(
         string baseName,
         INamedTypeSymbol enumType,
@@ -86,11 +73,6 @@ public abstract class NameGenerator
     /// <summary>
     /// Return a local name that will be unique at the specified position.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="isCaseSensitive"></param>
-    /// <param name="cancellationToken"></param>
     public string EnsureUniqueLocalName(
         string baseName,
         SemanticModel semanticModel,
@@ -109,12 +91,6 @@ public abstract class NameGenerator
     /// <summary>
     /// Return a local names that will be unique at the specified position.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="count"></param>
-    /// <param name="isCaseSensitive"></param>
-    /// <param name="cancellationToken"></param>
     public ImmutableArray<string> EnsureUniqueLocalNames(
         string baseName,
         SemanticModel semanticModel,
@@ -167,11 +143,6 @@ public abstract class NameGenerator
     /// <summary>
     /// Return a parameter name that will be unique at the specified position.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="containingSymbol"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="isCaseSensitive"></param>
-    /// <param name="cancellationToken"></param>
     public string EnsureUniqueParameterName(
         string baseName,
         ISymbol containingSymbol,
@@ -204,9 +175,6 @@ public abstract class NameGenerator
     /// <summary>
     /// Returns true if the name is not contained in the specified list. <see cref="ISymbol.Name"/> is used to compare names.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="symbols"></param>
-    /// <param name="isCaseSensitive"></param>
     public static bool IsUniqueName(string name, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
     {
         StringComparison comparison = GetStringComparison(isCaseSensitive);
@@ -223,9 +191,6 @@ public abstract class NameGenerator
     /// <summary>
     /// Returns true if the name is not contained in the specified list.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="reservedNames"></param>
-    /// <param name="isCaseSensitive"></param>
     public static bool IsUniqueName(string name, IEnumerable<string> reservedNames, bool isCaseSensitive = true)
     {
         StringComparison comparison = GetStringComparison(isCaseSensitive);
@@ -242,8 +207,6 @@ public abstract class NameGenerator
     /// <summary>
     /// Creates a syntax identifier from the specified type symbol.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="firstCharToLower"></param>
     public static string? CreateName(ITypeSymbol typeSymbol, bool firstCharToLower = false)
     {
         string? name = CreateNameFromTypeSymbolHelper.CreateName(typeSymbol);

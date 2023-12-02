@@ -155,7 +155,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the statements updated.
     /// </summary>
-    /// <param name="statements"></param>
     public StatementListInfo WithStatements(IEnumerable<StatementSyntax> statements)
     {
         return WithStatements(List(statements));
@@ -164,7 +163,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the statements updated.
     /// </summary>
-    /// <param name="statements"></param>
     public StatementListInfo WithStatements(SyntaxList<StatementSyntax> statements)
     {
         ThrowInvalidOperationIfNotInitialized();
@@ -180,8 +178,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified node removed.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="options"></param>
     public StatementListInfo RemoveNode(SyntaxNode node, SyntaxRemoveOptions options)
     {
         ThrowInvalidOperationIfNotInitialized();
@@ -197,8 +193,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified old node replaced with a new node.
     /// </summary>
-    /// <param name="oldNode"></param>
-    /// <param name="newNode"></param>
     public StatementListInfo ReplaceNode(SyntaxNode oldNode, SyntaxNode newNode)
     {
         ThrowInvalidOperationIfNotInitialized();
@@ -214,7 +208,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified statement added at the end.
     /// </summary>
-    /// <param name="statement"></param>
     public StatementListInfo Add(StatementSyntax statement)
     {
         return WithStatements(Statements.Add(statement));
@@ -223,7 +216,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified statements added at the end.
     /// </summary>
-    /// <param name="statements"></param>
     public StatementListInfo AddRange(IEnumerable<StatementSyntax> statements)
     {
         return WithStatements(Statements.AddRange(statements));
@@ -256,7 +248,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Searches for a statement that matches the predicate and returns zero-based index of the first occurrence in the list.
     /// </summary>
-    /// <param name="predicate"></param>
     public int IndexOf(Func<StatementSyntax, bool> predicate)
     {
         return Statements.IndexOf(predicate);
@@ -265,7 +256,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// The index of the statement in the list.
     /// </summary>
-    /// <param name="statement"></param>
     public int IndexOf(StatementSyntax statement)
     {
         return Statements.IndexOf(statement);
@@ -274,8 +264,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified statement inserted at the index.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="statement"></param>
     public StatementListInfo Insert(int index, StatementSyntax statement)
     {
         return WithStatements(Statements.Insert(index, statement));
@@ -284,8 +272,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified statements inserted at the index.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="statements"></param>
     public StatementListInfo InsertRange(int index, IEnumerable<StatementSyntax> statements)
     {
         return WithStatements(Statements.InsertRange(index, statements));
@@ -310,7 +296,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Searches for a statement that matches the predicate and returns zero-based index of the last occurrence in the list.
     /// </summary>
-    /// <param name="predicate"></param>
     public int LastIndexOf(Func<StatementSyntax, bool> predicate)
     {
         return Statements.LastIndexOf(predicate);
@@ -319,7 +304,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Searches for a statement and returns zero-based index of the last occurrence in the list.
     /// </summary>
-    /// <param name="statement"></param>
     public int LastIndexOf(StatementSyntax statement)
     {
         return Statements.LastIndexOf(statement);
@@ -328,7 +312,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified statement removed.
     /// </summary>
-    /// <param name="statement"></param>
     public StatementListInfo Remove(StatementSyntax statement)
     {
         return WithStatements(Statements.Remove(statement));
@@ -337,7 +320,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the statement at the specified index removed.
     /// </summary>
-    /// <param name="index"></param>
     public StatementListInfo RemoveAt(int index)
     {
         return WithStatements(Statements.RemoveAt(index));
@@ -346,8 +328,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified statement replaced with the new statement.
     /// </summary>
-    /// <param name="statementInList"></param>
-    /// <param name="newStatement"></param>
     public StatementListInfo Replace(StatementSyntax statementInList, StatementSyntax newStatement)
     {
         return WithStatements(Statements.Replace(statementInList, newStatement));
@@ -356,8 +336,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the statement at the specified index replaced with a new statement.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="newStatement"></param>
     public StatementListInfo ReplaceAt(int index, StatementSyntax newStatement)
     {
         return WithStatements(Statements.ReplaceAt(index, newStatement));
@@ -366,8 +344,6 @@ public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     /// <summary>
     /// Creates a new <see cref="StatementListInfo"/> with the specified statement replaced with new statements.
     /// </summary>
-    /// <param name="statementInList"></param>
-    /// <param name="newStatements"></param>
     public StatementListInfo ReplaceRange(StatementSyntax statementInList, IEnumerable<StatementSyntax> newStatements)
     {
         return WithStatements(Statements.ReplaceRange(statementInList, newStatements));

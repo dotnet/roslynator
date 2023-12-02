@@ -19,15 +19,6 @@ public sealed class DiagnosticTestData
     /// <summary>
     /// Initializes a new instance of <see cref="DiagnosticTestData"/>.
     /// </summary>
-    /// <param name="descriptor"></param>
-    /// <param name="source"></param>
-    /// <param name="spans"></param>
-    /// <param name="additionalSpans"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="diagnosticMessage"></param>
-    /// <param name="formatProvider"></param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="alwaysVerifyAdditionalLocations"></param>
     [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     public DiagnosticTestData(
         DiagnosticDescriptor descriptor,
@@ -61,14 +52,6 @@ public sealed class DiagnosticTestData
     /// <summary>
     /// Initializes a new instance of <see cref="DiagnosticTestData"/>.
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="spans"></param>
-    /// <param name="additionalSpans"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="diagnosticMessage"></param>
-    /// <param name="formatProvider"></param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="alwaysVerifyAdditionalLocations"></param>
     public DiagnosticTestData(
         string source,
         IEnumerable<TextSpan>? spans,

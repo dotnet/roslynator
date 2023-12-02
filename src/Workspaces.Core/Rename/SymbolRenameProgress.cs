@@ -15,10 +15,6 @@ public readonly struct SymbolRenameProgress
     /// <summary>
     /// Initializes a new instance of <see cref="SymbolRenameProgress"/>.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="newName"></param>
-    /// <param name="result"></param>
-    /// <param name="exception"></param>
     internal SymbolRenameProgress(
         ISymbol symbol,
         string newName,

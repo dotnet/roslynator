@@ -12,7 +12,6 @@ namespace Roslynator;
 /// Provides equality comparison for <typeparamref name="TSymbol"/> by comparing <see cref="ISymbol.MetadataName"/>,
 /// metadata name of <see cref="ISymbol.ContainingType"/>(s) and metadata name of <see cref="ISymbol.ContainingNamespace"/>(s).
 /// </summary>
-/// <typeparam name="TSymbol"></typeparam>
 public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSymbol> where TSymbol : ISymbol
 {
     private MetadataNameEqualityComparer()
