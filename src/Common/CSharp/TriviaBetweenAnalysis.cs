@@ -75,7 +75,7 @@ internal readonly struct TriviaBetweenAnalysis
         if (en.Current.IsDirective)
             return default;
 
-        bool singleLineComment = false;
+        var singleLineComment = false;
 
         if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
         {
