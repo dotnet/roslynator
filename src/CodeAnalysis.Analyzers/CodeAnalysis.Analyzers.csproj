@@ -8,6 +8,7 @@
     <Version>$(RoslynatorAnalyzersVersion)</Version>
     <AssemblyName>Roslynator.CodeAnalysis.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.CodeAnalysis</RootNamespace>
+    <PackageId>CodeAnalysis.Analyzers</PackageId>
     <IsPackable>false</IsPackable>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>

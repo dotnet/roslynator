@@ -47,15 +47,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="roslynator.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)" Condition="'$(MSBuildProjectName)'!='Analyzers'">
+    <PackageReference Include="roslynator.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="roslynator.formatting.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)" Condition="'$(MSBuildProjectName)'!='Formatting.Analyzers'">
+    <PackageReference Include="roslynator.formatting.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="roslynator.codeanalysis.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)" Condition="'$(MSBuildProjectName)'!='CodeAnalysis.Analyzers'">
+    <PackageReference Include="roslynator.codeanalysis.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
