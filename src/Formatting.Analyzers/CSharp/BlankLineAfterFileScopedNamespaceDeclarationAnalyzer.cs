@@ -57,7 +57,7 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
         if (!analysis.Success)
             return;
 
-        if (analysis.ContainsBlankLine)
+        if (analysis.Kind == TriviaBetweenKind.BlankLine)
         {
             if (style == BlankLineStyle.Remove)
             {

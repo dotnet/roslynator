@@ -133,7 +133,7 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
         if (!analysis.Success)
             return;
 
-        if (analysis.ContainsBlankLine)
+        if (analysis.Kind == TriviaBetweenKind.BlankLine)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(

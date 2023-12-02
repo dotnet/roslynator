@@ -96,7 +96,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
 
             if (string.Equals(rootNamespace1.Identifier.ValueText, rootNamespace2.Identifier.ValueText, StringComparison.Ordinal))
             {
-                if (analysis.ContainsBlankLine)
+                if (analysis.Kind == TriviaBetweenKind.BlankLine)
                 {
                     if (DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace.IsEffective(context))
                     {
@@ -121,7 +121,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             {
                 UsingDirectiveBlankLineStyle style = context.GetBlankLineBetweenUsingDirectives();
 
-                if (analysis.ContainsBlankLine)
+                if (analysis.Kind == TriviaBetweenKind.BlankLine)
                 {
                     if (style == UsingDirectiveBlankLineStyle.Never)
                     {

@@ -79,7 +79,7 @@ public sealed class AddBlankLineAfterUsingDirectiveListAnalyzer : BaseDiagnostic
         if (!analysis.Success)
             return;
 
-        if (analysis.ContainsBlankLine)
+        if (analysis.Kind == TriviaBetweenKind.BlankLine)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(

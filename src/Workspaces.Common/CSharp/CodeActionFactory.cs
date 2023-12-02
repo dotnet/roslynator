@@ -84,7 +84,6 @@ internal static class CodeActionFactory
                     return new TextChange(new TextSpan(en.Current.Span.End, 0), endOfLine);
                 }
             case TriviaBetweenKind.BlankLine:
-            case TriviaBetweenKind.BlankLines:
                 {
                     TriviaBetweenAnalysis.Enumerator en = analysis.GetEnumerator();
 
@@ -211,7 +210,6 @@ internal static class CodeActionFactory
                     return new TextChange(TextSpan.FromBounds(start, end), " ");
                 }
             case TriviaBetweenKind.BlankLine:
-            case TriviaBetweenKind.BlankLines:
                 {
                     TriviaBetweenAnalysis.Enumerator en = analysis.GetEnumerator();
 

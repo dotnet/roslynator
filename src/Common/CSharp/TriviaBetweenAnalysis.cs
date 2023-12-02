@@ -28,8 +28,6 @@ internal readonly struct TriviaBetweenAnalysis
 
     public SyntaxNodeOrToken After { get; }
 
-    public bool ContainsBlankLine => Kind == TriviaBetweenKind.BlankLine || Kind == TriviaBetweenKind.BlankLines;
-
     public bool Success => Kind != TriviaBetweenKind.Unknown;
 
     public bool HasFlag(TriviaBetweenFlags flag) => Flags.HasFlag(flag);
@@ -95,36 +93,37 @@ internal readonly struct TriviaBetweenAnalysis
         if (!en.Current.IsEndOfLineTrivia())
             return default;
 
-        if (!en.MoveNext())
-            return en.GetResult(TriviaBetweenKind.BlankLine, flags);
-
-        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-            return en.GetResult(TriviaBetweenKind.BlankLine, flags);
-
-        if (en.Current.IsDirective)
-            return default;
-
-        if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
+        while (true)
         {
-            flags |= TriviaBetweenFlags.SingleLineCommentOnFirstLine;
-
-            if (en.MoveNext()
-                && en.Current.IsEndOfLineTrivia()
-                && (!en.MoveNext() || (en.Current.IsWhitespaceTrivia() && !en.MoveNext())))
-            {
+            if (!en.MoveNext())
                 return en.GetResult(TriviaBetweenKind.BlankLine, flags);
+
+            if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
+                return en.GetResult(TriviaBetweenKind.BlankLine, flags);
+
+            if (en.Current.IsDirective)
+                return default;
+
+            if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
+            {
+                flags |= TriviaBetweenFlags.SingleLineCommentOnFirstLine;
+
+                if (en.MoveNext()
+                    && en.Current.IsEndOfLineTrivia()
+                    && (!en.MoveNext() || (en.Current.IsWhitespaceTrivia() && !en.MoveNext())))
+                {
+                    return en.GetResult(TriviaBetweenKind.BlankLine, flags);
+                }
+
+                return default;
             }
 
-            return default;
+            if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
+                return en.GetResult(TriviaBetweenKind.BlankLine, flags | TriviaBetweenFlags.DocumentationComment);
+
+            if (!en.Current.IsEndOfLineTrivia())
+                return default;
         }
-
-        if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-            return en.GetResult(TriviaBetweenKind.BlankLine, flags | TriviaBetweenFlags.DocumentationComment);
-
-        if (!en.Current.IsEndOfLineTrivia())
-            return default;
-
-        return en.GetResult(TriviaBetweenKind.BlankLines);
     }
 
     public Enumerator GetEnumerator()

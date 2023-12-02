@@ -8,5 +8,4 @@ internal enum TriviaBetweenKind
     NoNewLine,
     NewLine,
     BlankLine,
-    BlankLines,
 }

@@ -140,7 +140,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (!analysis.Success)
             return;
 
-        if (analysis.ContainsBlankLine)
+        if (analysis.Kind == TriviaBetweenKind.BlankLine)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(

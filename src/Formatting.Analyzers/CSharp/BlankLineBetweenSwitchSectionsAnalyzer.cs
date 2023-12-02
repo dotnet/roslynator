@@ -75,7 +75,6 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
                         break;
                     }
                 case TriviaBetweenKind.BlankLine:
-                case TriviaBetweenKind.BlankLines:
                     {
                         if (option == BlankLineBetweenSwitchSections.Omit)
                         {

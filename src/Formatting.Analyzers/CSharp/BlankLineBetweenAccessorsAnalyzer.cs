@@ -73,7 +73,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
             {
                 BlankLineStyle style = context.GetBlankLineBetweenSingleLineAccessors();
 
-                if (analysis.ContainsBlankLine)
+                if (analysis.Kind == TriviaBetweenKind.BlankLine)
                 {
                     if (style == BlankLineStyle.Remove)
                     {
@@ -95,7 +95,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
                 }
             }
         }
-        else if (!analysis.ContainsBlankLine)
+        else if (analysis.Kind != TriviaBetweenKind.BlankLine)
         {
             DiagnosticHelpers.ReportDiagnosticIfEffective(
                 context,
