@@ -1,12 +1,10 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
@@ -86,7 +84,7 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
 
     private static void Analyze(
         SyntaxNodeAnalysisContext context,
-        SyntaxToken previousToken,
+        SyntaxNodeOrToken previous,
         SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses)
     {
         if (constraintClauses.Count <= 1)
@@ -94,16 +92,17 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
 
         foreach (TypeParameterConstraintClauseSyntax constraintClause in constraintClauses)
         {
-            if (!constraintClause.GetLeadingTrivia().Any()
-                && previousToken.TrailingTrivia.SingleOrDefault().IsWhitespaceTrivia())
+            TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(previous, constraintClause);
+
+            if (analysis.Kind == TriviaBetweenKind.NoNewLine)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.PutTypeParameterConstraintOnItsOwnLine,
-                    Location.Create(constraintClause.SyntaxTree, new TextSpan(constraintClause.SpanStart, 0)));
+                    analysis.GetLocation());
             }
 
-            previousToken = constraintClause.GetLastToken();
+            previous = constraintClause;
         }
     }
 }

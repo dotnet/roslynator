@@ -25,7 +25,7 @@ class C
         do
         {
             M();
-        } [||]while (x);
+        }[||] while (x);
     }
 }
 ", @"
@@ -91,8 +91,8 @@ class C
         do
         {
             M();
-        }[||]
-        while (x);
+        }
+[||]        while (x);
     }
 }
 ", @"
@@ -124,8 +124,8 @@ class C
         do
         {
             M();
-        }[||]
-
+        }
+[||]
         while (x);
     }
 }

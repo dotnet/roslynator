@@ -49,25 +49,30 @@ public sealed class AddNewLineBeforeStatementAnalyzer : BaseDiagnosticAnalyzer
 
     private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxList<StatementSyntax> statements)
     {
-        if (statements.Count <= 1)
+        StatementSyntax first = statements.FirstOrDefault();
+
+        if (first is null)
             return;
 
-        int previousEndLine = statements[0].GetSpanEndLine();
+        SyntaxNodeOrToken previous = first.GetFirstToken().GetPreviousToken();
 
-        for (int i = 1; i < statements.Count; i++)
+        for (int i = 0; i < statements.Count; i++)
         {
             StatementSyntax statement = statements[i];
-
-            if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement)
-                && statement.GetSpanStartLine() == previousEndLine)
+            if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement))
             {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.AddNewLineBeforeStatement,
-                    Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
+                TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(previous, statement);
+
+                if (analysis.Kind == TriviaBetweenKind.NoNewLine)
+                {
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.AddNewLineBeforeStatement,
+                        analysis.GetLocation());
+                }
             }
 
-            previousEndLine = statement.GetSpanEndLine();
+            previous = statement;
         }
     }
 }

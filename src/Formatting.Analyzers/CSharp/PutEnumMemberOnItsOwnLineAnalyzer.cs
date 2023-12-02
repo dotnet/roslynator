@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
 
@@ -36,25 +37,24 @@ public sealed class PutEnumMemberOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
         var enumDeclaration = (EnumDeclarationSyntax)context.Node;
 
         SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
+        SyntaxNodeOrToken previous = enumDeclaration.OpenBraceToken;
 
-        if (members.Count <= 1)
-            return;
-
-        int previousIndex = members[0].GetSpanStartLine();
-
-        for (int i = 1; i < members.Count; i++)
+        for (int i = 0; i < members.Count; i++)
         {
-            if (members[i].GetSpanStartLine() == previousIndex)
+            TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(previous, members[i]);
+
+            if (analysis.Kind == TriviaBetweenKind.NoNewLine)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.PutEnumMemberOnItsOwnLine,
-                    Location.Create(enumDeclaration.SyntaxTree, members[i].Span.WithLength(0)));
-
-                return;
+                    analysis.GetLocation());
             }
 
-            previousIndex = members[i].GetSpanEndLine();
+            if (i == members.SeparatorCount)
+                break;
+
+            previous = members.GetSeparator(i);
         }
     }
 }

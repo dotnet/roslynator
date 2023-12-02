@@ -47,12 +47,7 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
         {
             case DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement:
                 {
-                    CodeAction codeAction = CodeAction.Create(
-                        CodeFixTitles.AddBlankLine,
-                        ct => CodeFixHelpers.AppendEndOfLineAsync(document, token, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
+                    await CodeActionFactory.CreateAndRegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator:
@@ -113,36 +108,9 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
                     break;
                 }
             case DiagnosticIdentifiers.PutAttributeListOnItsOwnLine:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Put attribute on its own line",
-                        ct => CodeFixHelpers.AddNewLineBeforeAsync(document, token, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
             case DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement:
                 {
-                    if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.RemoveNewLine,
-                            ct => CodeFixHelpers.ReplaceTriviaBetweenAsync(document, token, token.GetNextToken(), cancellationToken: ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
-                            ct => CodeFixHelpers.AddNewLineBeforeAsync(document, token, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-
+                    await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
                     break;
                 }
         }

@@ -4,10 +4,9 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
@@ -26,26 +25,12 @@ public sealed class TypeParameterConstraintClauseSyntaxCodeFixProvider : BaseCod
     {
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-        if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeParameterConstraintClauseSyntax constraintClause))
-            return;
+        SyntaxNode member = root
+            .FindNode(context.Span)?
+            .FirstAncestorOrSelf(node => node is MemberDeclarationSyntax || node.IsKind(SyntaxKind.LocalFunctionStatement));
 
-        Document document = context.Document;
-        Diagnostic diagnostic = context.Diagnostics[0];
+        string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(member, context.Document.GetConfigOptions(member.SyntaxTree), context.CancellationToken);
 
-        CodeAction codeAction = CodeAction.Create(
-            CodeFixTitles.AddNewLine,
-            ct =>
-            {
-                AnalyzerConfigOptions configOptions = document.GetConfigOptions(constraintClause.SyntaxTree);
-
-                return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
-                    document,
-                    constraintClause.WhereKeyword,
-                    SyntaxTriviaAnalysis.AnalyzeIndentation(constraintClause.Parent, configOptions, ct),
-                    ct);
-            },
-            GetEquivalenceKey(diagnostic));
-
-        context.RegisterCodeFix(codeAction, diagnostic);
+        await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(context, indentation: indentation).ConfigureAwait(false);
     }
 }

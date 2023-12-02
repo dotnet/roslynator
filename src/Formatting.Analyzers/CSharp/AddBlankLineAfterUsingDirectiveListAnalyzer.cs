@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
@@ -75,45 +74,17 @@ public sealed class AddBlankLineAfterUsingDirectiveListAnalyzer : BaseDiagnostic
         UsingDirectiveSyntax usingDirective,
         SyntaxToken nextToken)
     {
-        SyntaxTriviaList trailingTrivia = usingDirective.GetTrailingTrivia();
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(usingDirective, nextToken);
 
-        if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(triviaList: trailingTrivia))
+        if (!analysis.Success)
             return;
 
-        SyntaxTriviaList.Enumerator en = nextToken.LeadingTrivia.GetEnumerator();
+        if (analysis.ContainsBlankLine)
+            return;
 
-        if (en.MoveNext())
-        {
-            if (en.Current.IsWhitespaceTrivia()
-                && !en.MoveNext())
-            {
-                ReportDiagnostic(trailingTrivia.Last().SpanStart);
-            }
-            else
-            {
-                switch (en.Current.Kind())
-                {
-                    case SyntaxKind.SingleLineCommentTrivia:
-                    case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                    case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                        {
-                            ReportDiagnostic(trailingTrivia.Last().SpanStart);
-                            break;
-                        }
-                }
-            }
-        }
-        else
-        {
-            ReportDiagnostic(trailingTrivia.Last().SpanStart);
-        }
-
-        void ReportDiagnostic(int position)
-        {
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.AddBlankLineAfterUsingDirectiveList,
-                Location.Create(usingDirective.SyntaxTree, new TextSpan(position, 0)));
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AddBlankLineAfterUsingDirectiveList,
+            analysis.GetLocation());
     }
 }

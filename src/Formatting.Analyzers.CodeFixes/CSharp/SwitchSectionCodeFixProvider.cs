@@ -4,10 +4,7 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
@@ -27,33 +24,8 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
         }
     }
 
-    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SwitchSectionSyntax switchSection))
-            return;
-
-        Document document = context.Document;
-        Diagnostic diagnostic = context.Diagnostics[0];
-
-        switch (diagnostic.Id)
-        {
-            case DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        CodeFixTitles.AddNewLine,
-                        ct => CodeFixHelpers.AppendEndOfLineAsync(document, switchSection, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
-            case DiagnosticIdentifiers.BlankLineBetweenSwitchSections:
-                {
-                    CodeActionFactory.CreateAndRegisterCodeActionForBlankLine(context, root, diagnostic);
-                    break;
-                }
-        }
+        return CodeActionFactory.CreateAndRegisterCodeActionForBlankLineAsync(context);
     }
 }

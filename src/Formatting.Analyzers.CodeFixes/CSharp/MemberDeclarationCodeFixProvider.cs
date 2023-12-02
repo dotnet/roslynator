@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
@@ -53,21 +52,11 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
                 }
             case DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine:
                 {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Put constructor initializer on its own line",
-                        ct =>
-                        {
-                            AnalyzerConfigOptions configOptions = document.GetConfigOptions(memberDeclaration.SyntaxTree);
+                    await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(
+                        context,
+                        title: "Put constructor initializer on its own line",
+                        options: CodeActionNewLineOptions.IncreaseIndentation).ConfigureAwait(false);
 
-                            return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
-                                document,
-                                ((ConstructorDeclarationSyntax)memberDeclaration).Initializer.ColonToken,
-                                SyntaxTriviaAnalysis.AnalyzeIndentation(memberDeclaration, configOptions, ct),
-                                ct);
-                        },
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
         }

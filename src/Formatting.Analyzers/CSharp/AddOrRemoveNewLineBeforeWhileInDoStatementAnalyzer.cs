@@ -50,31 +50,27 @@ public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDia
         if (newLineStyle == NewLineStyle.None)
             return;
 
-        SyntaxTriviaList trailingTrivia = statement.GetTrailingTrivia();
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(doStatement.Statement, doStatement.WhileKeyword);
 
-        if (!trailingTrivia.Any()
-            || trailingTrivia.SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
+        if (!analysis.Success)
+            return;
+
+        if (analysis.Kind == TriviaBetweenKind.NoNewLine)
         {
-            if (!doStatement.WhileKeyword.LeadingTrivia.Any()
-                && newLineStyle == NewLineStyle.Add)
+            if (newLineStyle == NewLineStyle.Add)
             {
                 context.ReportDiagnostic(
                     DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
-                    Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)),
+                    analysis.GetLocation(),
                     "Add");
             }
         }
-        else if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(trailingTrivia))
+        else if (newLineStyle == NewLineStyle.Remove)
         {
-            if (doStatement.WhileKeyword.LeadingTrivia.IsEmptyOrWhitespace()
-                && newLineStyle == NewLineStyle.Remove)
-            {
-                context.ReportDiagnostic(
-                    DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
-                    Location.Create(doStatement.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)),
-                    properties: DiagnosticProperties.AnalyzerOption_Invert,
-                    "Remove");
-            }
+            context.ReportDiagnostic(
+                DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
+                analysis.GetLocation(),
+                "Remove");
         }
     }
 }

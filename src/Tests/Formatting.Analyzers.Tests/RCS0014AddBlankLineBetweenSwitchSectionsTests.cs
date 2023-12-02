@@ -25,10 +25,10 @@ class C
         switch (s)
         {
             case ""a"":
-                return A();[||]
-            case ""b"":
-                return B();[||]
-            default:
+                return A();
+[||]            case ""b"":
+                return B();
+[||]            default:
                 return null;
         }
     }
@@ -77,10 +77,10 @@ class C
             case ""a"":
                 {
                     return """";
-                }[||]
-            case ""b"":
-                return """";[||]
-            default:
+                }
+[||]            case ""b"":
+                return """";
+[||]            default:
                 return null;
         }
     }
@@ -131,8 +131,8 @@ class C
             case ""a"":
                 {
                     return """";
-                }[||]
-            case ""b"":
+                }
+[||]            case ""b"":
                 return """";
         }
 
@@ -176,8 +176,8 @@ class C
         switch (s)
         {
             case ""a"":
-                return """";[||]
-            case ""b"":
+                return """";
+[||]            case ""b"":
                 return """";
         }
 
@@ -297,8 +297,8 @@ class C
         switch (s)
         {
             case ""a"":
-                return A(); //x[||]
-            default:
+                return A(); //x
+[||]            default:
                 return null;
         }
     }

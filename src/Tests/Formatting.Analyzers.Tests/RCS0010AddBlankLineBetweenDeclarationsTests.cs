@@ -20,8 +20,8 @@ class C
 {
     void M()
     {
-    }[||]
-    string P { get; set; }
+    }
+[||]    string P { get; set; }
 }
 ", @"
 class C
@@ -41,8 +41,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string P { get; set; }[||]
-    void M()
+    string P { get; set; }
+[||]    void M()
     {
     }
 }
@@ -66,8 +66,8 @@ class C
 {
     void M1()
     {
-    }[||]
-    void M2()
+    }
+[||]    void M2()
     {
     }
 }
@@ -94,8 +94,8 @@ using System;
 enum E
 {
     [Obsolete]
-    A = 0,[||]
-    B = 1
+    A = 0,
+[||]    B = 1
 }
 ", @"
 using System;
@@ -118,8 +118,8 @@ using System;
 
 enum E
 {
-    A = 0,[||]
-    [Obsolete]
+    A = 0,
+[||]    [Obsolete]
     B = 1
 }
 ", @"
@@ -144,8 +144,8 @@ using System;
 enum E
 {
     [Obsolete]
-    A = 0,[||]
-    [Obsolete]
+    A = 0,
+[||]    [Obsolete]
     B = 1
 }
 ", @"

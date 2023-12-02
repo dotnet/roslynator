@@ -22,9 +22,8 @@ public class RCS0003AddBlankLineAfterUsingDirectiveListTests : AbstractCSharpDia
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-using System.Linq;[||]
-// x
-
+using System.Linq;
+[||]// x
 namespace N
 {
 }
@@ -33,7 +32,6 @@ using System;
 using System.Linq;
 
 // x
-
 namespace N
 {
 }
@@ -45,8 +43,8 @@ namespace N
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-using System.Linq;[||]
-/// <summary></summary>
+using System.Linq;
+[||]/// <summary></summary>
 namespace N
 {
 }
@@ -66,8 +64,8 @@ namespace N
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-using System.Linq;[||]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(null, null)]
+using System.Linq;
+[||][assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(null, null)]
 
 namespace N
 {
@@ -89,8 +87,8 @@ namespace N
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-using System.Linq; // x[||]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(null, null)]
+using System.Linq; // x
+[||][assembly: System.Diagnostics.CodeAnalysis.SuppressMessage(null, null)]
 
 namespace N
 {
@@ -112,8 +110,8 @@ namespace N
     {
         await VerifyDiagnosticAndFixAsync(@"
 using System;
-using System.Linq;[||]
-namespace N
+using System.Linq;
+[||]namespace N
 {
 }
 ", @"
@@ -133,9 +131,8 @@ namespace N
 namespace N
 {
     using System;
-    using System.Linq;[||]
-    // x
-
+    using System.Linq;
+[||]    // x
     class C
     {
     }
@@ -147,7 +144,6 @@ namespace N
     using System.Linq;
 
     // x
-
     class C
     {
     }
@@ -162,8 +158,8 @@ namespace N
 namespace N
 {
     using System;
-    using System.Linq;[||]
-    /// <summary></summary>
+    using System.Linq;
+[||]    /// <summary></summary>
     class C
     {
     }
@@ -189,8 +185,8 @@ namespace N
 namespace N
 {
     using System;
-    using System.Linq;[||]
-    class C
+    using System.Linq;
+[||]    class C
     {
     }
 }
