@@ -18,8 +18,8 @@ public class RCS0013AddBlankLineBetweenSingleLineDeclarationsOfDifferentKindTest
         await VerifyDiagnosticAndFixAsync(@"
 abstract class C
 {
-    public abstract string P { get; set; }[||]
-    public abstract string this[int index] { get; }
+    public abstract string P { get; set; }
+[||]    public abstract string this[int index] { get; }
 }
 ", @"
 abstract class C
@@ -37,8 +37,8 @@ abstract class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    const string K = null;[||]
-    string F = null;
+    const string K = null;
+[||]    string F = null;
 }
 ", @"
 class C

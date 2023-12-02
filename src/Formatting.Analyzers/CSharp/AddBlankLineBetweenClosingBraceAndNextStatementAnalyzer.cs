@@ -128,20 +128,20 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
             ? ifStatement.GetTopmostIf().NextStatement()
             : blockOrStatement.NextStatement();
 
-        if (nextStatement is not null
-            && closeBrace.SyntaxTree.GetLineCount(TextSpan.FromBounds(closeBrace.Span.End, nextStatement.SpanStart)) == 2)
-        {
-            SyntaxTrivia endOfLine = closeBrace
-                .TrailingTrivia
-                .FirstOrDefault(f => f.IsEndOfLineTrivia());
+        if (nextStatement is null)
+            return;
 
-            if (endOfLine.IsEndOfLineTrivia())
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement,
-                    Location.Create(endOfLine.SyntaxTree, endOfLine.Span.WithLength(0)));
-            }
-        }
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(closeBrace, nextStatement);
+
+        if (!analysis.Success)
+            return;
+
+        if (analysis.Kind == TriviaBetweenKind.BlankLine)
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement,
+            analysis.GetLocation());
     }
 }

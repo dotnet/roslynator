@@ -42,9 +42,6 @@ public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAna
         if (declaration is null)
             return;
 
-        if (!SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(declaration.GetLeadingTrivia()))
-            return;
-
         SyntaxNode node = compilationUnit.AttributeLists.LastOrDefault()
             ?? (SyntaxNode)compilationUnit.Usings.LastOrDefault()
             ?? compilationUnit.Externs.LastOrDefault();
@@ -52,12 +49,15 @@ public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAna
         if (node is null)
             return;
 
-        if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(node.GetTrailingTrivia()))
-            return;
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(node, declaration);
 
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.AddBlankLineBeforeTopDeclaration,
-            Location.Create(compilationUnit.SyntaxTree, new TextSpan(node.GetTrailingTrivia().Last().SpanStart, 0)));
+        if (analysis.Kind == TriviaBetweenKind.NoNewLine
+            || analysis.Kind == TriviaBetweenKind.NewLine)
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.AddBlankLineBeforeTopDeclaration,
+                analysis.GetLocation());
+        }
     }
 }

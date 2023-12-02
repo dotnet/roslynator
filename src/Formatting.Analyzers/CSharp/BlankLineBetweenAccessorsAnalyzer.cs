@@ -61,14 +61,10 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
         if (accessor2.BodyOrExpressionBody() is null)
             return;
 
-        SyntaxTriviaList trailingTrivia = accessor1.GetTrailingTrivia();
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(accessor1, accessor2);
 
-        if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia))
+        if (!analysis.Success)
             return;
-
-        SyntaxTriviaList leadingTrivia = accessor2.GetLeadingTrivia();
-
-        bool isEmptyLine = SyntaxTriviaAnalysis.StartsWithOptionalWhitespaceThenEndOfLineTrivia(leadingTrivia);
 
         if (accessorList.SyntaxTree.IsSingleLineSpan(accessor1.Span, context.CancellationToken)
             && accessorList.SyntaxTree.IsSingleLineSpan(accessor2.Span, context.CancellationToken))
@@ -77,14 +73,14 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
             {
                 BlankLineStyle style = context.GetBlankLineBetweenSingleLineAccessors();
 
-                if (isEmptyLine)
+                if (analysis.Kind == TriviaBetweenKind.BlankLine)
                 {
                     if (style == BlankLineStyle.Remove)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.BlankLineBetweenSingleLineAccessors,
-                            Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
+                            analysis.GetLocation(),
                             properties: DiagnosticProperties.AnalyzerOption_Invert,
                             "Remove");
                     }
@@ -94,17 +90,17 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.BlankLineBetweenSingleLineAccessors,
-                        Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
+                        analysis.GetLocation(),
                         "Add");
                 }
             }
         }
-        else if (!isEmptyLine)
+        else if (analysis.Kind != TriviaBetweenKind.BlankLine)
         {
             DiagnosticHelpers.ReportDiagnosticIfEffective(
                 context,
                 DiagnosticRules.AddBlankLineBetweenAccessors,
-                Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
+                analysis.GetLocation());
         }
     }
 }

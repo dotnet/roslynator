@@ -20,11 +20,11 @@ using System;
 
 namespace N
 {
-    [Obsolete] [||]class C
+    [Obsolete][||] class C
     {
     }
 
-    [Obsolete] [||]static class SC
+    [Obsolete][||] static class SC
     {
     }
 }
@@ -54,7 +54,7 @@ using System;
 
 namespace N
 {
-    [Serializable][||][Obsolete] [||]class C
+    [Serializable][||][Obsolete][||] class C
     {
     }
 }
@@ -80,11 +80,11 @@ using System;
 
 class C
 {
-    [Obsolete] [||]C()
+    [Obsolete][||] C()
     {
     }
 
-    [Obsolete] [||]public C(object p)
+    [Obsolete][||] public C(object p)
     {
     }
 }
@@ -114,7 +114,7 @@ using System;
 
 class C
 {
-    [Obsolete] [||]public static explicit operator C(string value) => null;
+    [Obsolete][||] public static explicit operator C(string value) => null;
 }
 ", @"
 using System;
@@ -135,7 +135,7 @@ using System;
 
 class C
 {
-    [Obsolete] [||]delegate void D();
+    [Obsolete][||] delegate void D();
 }
 ", @"
 using System;
@@ -156,7 +156,7 @@ using System;
 
 class C
 {
-    [Obsolete] [||]~C()
+    [Obsolete][||] ~C()
     {
     }
 }
@@ -181,11 +181,11 @@ using System;
 
 namespace N
 {
-    [Obsolete] [||]enum E
+    [Obsolete][||] enum E
     {
     }
 
-    [Obsolete] [||]public enum E2
+    [Obsolete][||] public enum E2
     {
     }
 }
@@ -215,7 +215,7 @@ using System;
 
 enum E
 {
-    [Obsolete] [||]A
+    [Obsolete][||] A
 }
 ", @"
 using System;
@@ -236,13 +236,13 @@ using System;
 
 class C
 {
-    [Obsolete] [||]event EventHandler E
+    [Obsolete][||] event EventHandler E
     {
         add { }
         remove { }
     }
 
-    [Obsolete] [||]public event EventHandler E2
+    [Obsolete][||] public event EventHandler E2
     {
         add { }
         remove { }
@@ -278,9 +278,9 @@ using System;
 
 class C
 {
-    [Obsolete] [||]event EventHandler E;
+    [Obsolete][||] event EventHandler E;
 
-    [Obsolete] [||]public event EventHandler E2;
+    [Obsolete][||] public event EventHandler E2;
 }
 ", @"
 using System;
@@ -304,9 +304,9 @@ using System;
 
 class C
 {
-    [Obsolete] [||]string F;
+    [Obsolete][||] string F;
 
-    [Obsolete] [||]public string F2;
+    [Obsolete][||] public string F2;
 }
 ", @"
 using System;
@@ -330,13 +330,13 @@ using System;
 
 class C
 {
-    [Obsolete] [||]string this[int index]
+    [Obsolete][||] string this[int index]
     {
         get { return null; }
         set { }
     }
 
-    [Obsolete] [||]public string this[int index, int index2]
+    [Obsolete][||] public string this[int index, int index2]
     {
         get { return null; }
         set { }
@@ -372,11 +372,11 @@ using System;
 
 namespace N
 {
-    [Obsolete] [||]interface I
+    [Obsolete][||] interface I
     {
     }
 
-    [Obsolete] [||]public interface I2
+    [Obsolete][||] public interface I2
     {
     }
 }
@@ -406,11 +406,11 @@ using System;
 
 class C
 {
-    [Obsolete] [||]void M()
+    [Obsolete][||] void M()
     {
     }
 
-    [Obsolete] [||]static void SM()
+    [Obsolete][||] static void SM()
     {
     }
 }
@@ -440,7 +440,7 @@ using System;
 
 class C
 {
-    [Obsolete] [||]public static C operator !(C value) => null;
+    [Obsolete][||] public static C operator !(C value) => null;
 }
 ", @"
 using System;
@@ -461,13 +461,13 @@ using System;
 
 class C
 {
-    [Obsolete] [||]string P
+    [Obsolete][||] string P
     {
         get { return null; }
         set { }
     }
 
-    [Obsolete] [||]public string P2
+    [Obsolete][||] public string P2
     {
         get { return null; }
         set { }
@@ -503,11 +503,11 @@ using System;
 
 namespace N
 {
-    [Obsolete] [||]struct S
+    [Obsolete][||] struct S
     {
     }
 
-    [Obsolete] [||]public struct S2
+    [Obsolete][||] public struct S2
     {
     }
 }
@@ -539,8 +539,8 @@ class C
 {
     string P
     {
-        [Foo] [||]get { return null; }
-        [Foo] [||]set { }
+        [Foo][||] get { return null; }
+        [Foo][||] set { }
     }
 
     public string P2
@@ -610,7 +610,7 @@ class C
     string P
     {
         get { return _f; }
-        [Foo] [||]init { _f = value; }
+        [Foo][||] init { _f = value; }
     }
 }
 
@@ -650,8 +650,8 @@ class C
 {
     event EventHandler E
     {
-        [Foo] [||]add { }
-        [Foo] [||]remove { }
+        [Foo][||] add { }
+        [Foo][||] remove { }
     }
 }
 

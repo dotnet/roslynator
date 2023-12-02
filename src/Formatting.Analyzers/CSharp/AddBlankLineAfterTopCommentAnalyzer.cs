@@ -45,7 +45,8 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
         if (node is null)
             return;
 
-        SyntaxTriviaList.Enumerator en = node.GetLeadingTrivia().GetEnumerator();
+        SyntaxTriviaList leading = node.GetLeadingTrivia();
+        SyntaxTriviaList.Enumerator en = leading.GetEnumerator();
 
         if (!en.MoveNext())
             return;
@@ -72,6 +73,6 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.AddBlankLineAfterTopComment,
-            Location.Create(compilationUnit.SyntaxTree, new TextSpan(node.GetLeadingTrivia().Last().SpanStart, 0)));
+            Location.Create(compilationUnit.SyntaxTree, new TextSpan(leading.Last().Span.End, 0)));
     }
 }

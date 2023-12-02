@@ -20,7 +20,7 @@ class C
 {
     void M()
     {
-        M(); [||]M();
+        M();[||] M();
     }
 }
 ", @"
@@ -41,16 +41,14 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    void M() { M(); [||]M(); }
+    void M() {[||] M();[||] M(); }
 }
 ", @"
 class C
 {
-    void M()
-    {
-        M();
-        M();
-    }
+    void M() {
+    M();
+    M(); }
 }
 ");
     }
@@ -67,7 +65,7 @@ class C
         switch (s)
         {
             case """":
-                M(); [||]M();
+                M();[||] M();
                 break;
         }
     }

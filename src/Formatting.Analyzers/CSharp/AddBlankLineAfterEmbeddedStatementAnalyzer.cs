@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -124,14 +123,14 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) != false)
             return;
 
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(token, statement);
+
+        if (analysis.Kind == TriviaBetweenKind.NoNewLine)
+            return;
+
         StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(containingStatement);
 
         if (!statementsInfo.Success)
-            return;
-
-        SyntaxTree syntaxTree = containingStatement.SyntaxTree;
-
-        if (!syntaxTree.IsMultiLineSpan(TextSpan.FromBounds(token.SpanStart, statement.SpanStart)))
             return;
 
         StatementSyntax nextStatement = containingStatement.NextStatement();
@@ -139,19 +138,17 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (nextStatement is null)
             return;
 
-        if (syntaxTree.GetLineCount(TextSpan.FromBounds(statement.Span.End, nextStatement.SpanStart)) > 2)
+        analysis = TriviaBetweenAnalysis.Create(statement, nextStatement);
+
+        if (!analysis.Success)
             return;
 
-        SyntaxTrivia trivia = statement
-            .GetTrailingTrivia()
-            .FirstOrDefault(f => f.IsEndOfLineTrivia());
-
-        if (!trivia.IsEndOfLineTrivia())
+        if (analysis.Kind == TriviaBetweenKind.BlankLine)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.AddBlankLineAfterEmbeddedStatement,
-            Location.Create(syntaxTree, trivia.Span.WithLength(0)));
+            analysis.GetLocation());
     }
 }
