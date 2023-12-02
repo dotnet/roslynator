@@ -8,6 +8,7 @@
     <Version>$(RoslynatorAnalyzersVersion)</Version>
     <AssemblyName>Roslynator.Formatting.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.Formatting</RootNamespace>
+    <PackageId>Formatting.Analyzers</PackageId>
     <IsPackable>false</IsPackable>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
