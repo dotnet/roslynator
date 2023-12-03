@@ -671,17 +671,8 @@ public static class SyntaxExtensions
 
         if (node.ContainsDirectives)
         {
-            foreach (SyntaxTrivia trivia in node.GetLeadingTrivia())
-            {
-                if (trivia.IsDirective)
-                    return true;
-            }
-
-            foreach (SyntaxTrivia trivia in node.GetTrailingTrivia())
-            {
-                if (trivia.IsDirective)
-                    return true;
-            }
+            return !node.GetLeadingTrivia().ContainsDirective()
+                && !node.GetTrailingTrivia().ContainsDirective();
         }
 
         return false;
@@ -693,13 +684,7 @@ public static class SyntaxExtensions
             throw new ArgumentNullException(nameof(node));
 
         if (node.ContainsDirectives)
-        {
-            foreach (SyntaxTrivia trivia in node.GetTrailingTrivia())
-            {
-                if (trivia.IsDirective)
-                    return true;
-            }
-        }
+            return !node.GetTrailingTrivia().ContainsDirective();
 
         return false;
     }
@@ -710,13 +695,7 @@ public static class SyntaxExtensions
             throw new ArgumentNullException(nameof(node));
 
         if (node.ContainsDirectives)
-        {
-            foreach (SyntaxTrivia trivia in node.GetLeadingTrivia())
-            {
-                if (trivia.IsDirective)
-                    return true;
-            }
-        }
+            return !node.GetLeadingTrivia().ContainsDirective();
 
         return false;
     }
@@ -1470,6 +1449,17 @@ public static class SyntaxExtensions
         }
 
         return -1;
+    }
+
+    internal static bool ContainsDirective(this SyntaxTriviaList triviaList)
+    {
+        foreach (SyntaxTrivia trivia in triviaList)
+        {
+            if (trivia.IsDirective)
+                return true;
+        }
+
+        return false;
     }
     #endregion SyntaxTriviaList
 }
