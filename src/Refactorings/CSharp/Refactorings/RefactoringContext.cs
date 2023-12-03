@@ -38,6 +38,8 @@ internal class RefactoringContext
 
     public SyntaxNode Root { get; }
 
+    public ImmutableArray<CodeAction>.Builder NestedCodeActions { get; private set; }
+
     public CancellationToken CancellationToken
     {
         get { return UnderlyingContext.CancellationToken; }
@@ -77,50 +79,33 @@ internal class RefactoringContext
     {
         get
         {
-            if (Project.Language == LanguageNames.CSharp)
-            {
-                switch (((CSharpParseOptions)Project.ParseOptions).LanguageVersion)
-                {
-                    case LanguageVersion.CSharp1:
-                    case LanguageVersion.CSharp2:
-                    case LanguageVersion.CSharp3:
-                    case LanguageVersion.CSharp4:
-                    case LanguageVersion.CSharp5:
-                        return false;
-                    default:
-                        return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
-    public bool SupportsCSharp7
-    {
-        get
-        {
-            if (Project.Language == LanguageNames.CSharp)
-            {
-                switch (((CSharpParseOptions)Project.ParseOptions).LanguageVersion)
-                {
-                    case LanguageVersion.CSharp1:
-                    case LanguageVersion.CSharp2:
-                    case LanguageVersion.CSharp3:
-                    case LanguageVersion.CSharp4:
-                    case LanguageVersion.CSharp5:
-                    case LanguageVersion.CSharp6:
-                        return false;
-                    default:
-                        return true;
-                }
-            }
-
-            return false;
+            return Project.Language == LanguageNames.CSharp
+                && ((CSharpParseOptions)Project.ParseOptions).LanguageVersion >= LanguageVersion.CSharp6;
         }
     }
 
     public bool PrefixFieldIdentifierWithUnderscore => (_configOptions ??= Document.GetConfigOptions(Root.SyntaxTree)).GetPrefixFieldIdentifierWithUnderscore();
+
+    public void AddNestedCodeAction(
+        string title,
+        Func<CancellationToken, Task<Document>> createChangedDocument,
+        RefactoringDescriptor descriptor,
+        string additionalEquivalenceKey1 = null,
+        string additionalEquivalenceKey2 = null)
+    {
+        NestedCodeActions ??= ImmutableArray.CreateBuilder<CodeAction>();
+
+        NestedCodeActions.Add(CodeAction.Create(
+            title,
+            createChangedDocument,
+            EquivalenceKey.Create(descriptor, additionalEquivalenceKey1, additionalEquivalenceKey2)));
+    }
+
+    public void RegisterNestedCodeActions(string title)
+    {
+        if (NestedCodeActions is not null)
+            UnderlyingContext.RegisterRefactoring(CodeAction.Create(title, NestedCodeActions.ToImmutable(), isInlinable: false));
+    }
 
     public void ThrowIfCancellationRequested()
     {
