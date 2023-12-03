@@ -1,6 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning IDE0005
+#pragma warning disable IDE0005
 
 #region usings
 using System;
