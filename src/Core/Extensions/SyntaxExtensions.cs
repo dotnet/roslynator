@@ -669,13 +669,9 @@ public static class SyntaxExtensions
         if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        if (node.ContainsDirectives)
-        {
-            return !node.GetLeadingTrivia().ContainsDirective()
-                && !node.GetTrailingTrivia().ContainsDirective();
-        }
-
-        return false;
+        return node.ContainsDirectives
+            && !node.GetLeadingTrivia().ContainsDirective()
+            && !node.GetTrailingTrivia().ContainsDirective();
     }
 
     internal static bool SpanOrLeadingTriviaContainsDirectives(this SyntaxNode node)
@@ -683,10 +679,8 @@ public static class SyntaxExtensions
         if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        if (node.ContainsDirectives)
-            return !node.GetTrailingTrivia().ContainsDirective();
-
-        return false;
+        return node.ContainsDirectives
+            && !node.GetTrailingTrivia().ContainsDirective();
     }
 
     internal static bool SpanOrTrailingTriviaContainsDirectives(this SyntaxNode node)
@@ -694,10 +688,8 @@ public static class SyntaxExtensions
         if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        if (node.ContainsDirectives)
-            return !node.GetLeadingTrivia().ContainsDirective();
-
-        return false;
+        return node.ContainsDirectives
+            && !node.GetLeadingTrivia().ContainsDirective();
     }
 
     /// <summary>
