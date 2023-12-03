@@ -43,15 +43,11 @@
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="Exists('$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets')" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj" />
-    <ProjectReference Include="..\Analyzers\Analyzers.csproj" />
     <ProjectReference Include="..\CodeFixes\CodeFixes.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
-    <ProjectReference Include="..\Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj" />
-    <ProjectReference Include="..\Formatting.Analyzers\Formatting.Analyzers.csproj" />
     <ProjectReference Include="..\Refactorings\Refactorings.csproj" />
     <ProjectReference Include="..\Workspaces.Common\Workspaces.Common.csproj" />
     <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
