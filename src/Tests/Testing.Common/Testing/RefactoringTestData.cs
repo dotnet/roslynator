@@ -17,10 +17,6 @@ public sealed class RefactoringTestData
     /// <summary>
     /// Initializes a new instance of <see cref="RefactoringTestData"/>.
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="spans"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
     public RefactoringTestData(
         string source,
         IEnumerable<TextSpan> spans,

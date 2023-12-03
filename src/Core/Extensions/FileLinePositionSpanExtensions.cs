@@ -12,7 +12,6 @@ public static class FileLinePositionSpanExtensions
     /// <summary>
     /// Returns zero-based index of the start line of the specified span.
     /// </summary>
-    /// <param name="fileLinePositionSpan"></param>
     public static int StartLine(this FileLinePositionSpan fileLinePositionSpan)
     {
         return fileLinePositionSpan.StartLinePosition.Line;
@@ -21,7 +20,6 @@ public static class FileLinePositionSpanExtensions
     /// <summary>
     /// Returns zero-based index of the end line of the specified span.
     /// </summary>
-    /// <param name="fileLinePositionSpan"></param>
     public static int EndLine(this FileLinePositionSpan fileLinePositionSpan)
     {
         return fileLinePositionSpan.EndLinePosition.Line;
@@ -30,7 +28,6 @@ public static class FileLinePositionSpanExtensions
     /// <summary>
     /// Returns true if the specified <see cref="FileLinePositionSpan"/> spans over multiple lines.
     /// </summary>
-    /// <param name="fileLinePositionSpan"></param>
     public static bool IsMultiLine(this FileLinePositionSpan fileLinePositionSpan)
     {
         return fileLinePositionSpan.StartLine() != fileLinePositionSpan.EndLine();
@@ -39,7 +36,6 @@ public static class FileLinePositionSpanExtensions
     /// <summary>
     /// Returns true if the specified <see cref="FileLinePositionSpan"/> does not span over multiple lines.
     /// </summary>
-    /// <param name="fileLinePositionSpan"></param>
     public static bool IsSingleLine(this FileLinePositionSpan fileLinePositionSpan)
     {
         return fileLinePositionSpan.StartLine() == fileLinePositionSpan.EndLine();

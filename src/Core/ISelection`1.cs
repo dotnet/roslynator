@@ -7,7 +7,6 @@ namespace Roslynator;
 /// <summary>
 /// Represents consecutive sequence of selected items in a collection.
 /// </summary>
-/// <typeparam name="T"></typeparam>
 public interface ISelection<T> : IReadOnlyList<T>
 {
     /// <summary>

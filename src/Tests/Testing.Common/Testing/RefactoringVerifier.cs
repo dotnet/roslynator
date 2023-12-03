@@ -27,11 +27,6 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// Verifies that refactoring will be applied correctly using specified <typeparamref name="TRefactoringProvider"/>.
     /// </summary>
     /// <param name="source">Source code where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
-    /// <param name="expectedSource"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyRefactoringAsync(
         string source,
         string expectedSource,
@@ -86,10 +81,6 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// <summary>
     /// Verifies that refactoring will be applied correctly using specified <typeparamref name="TRefactoringProvider"/>.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="expected"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyRefactoringAsync(
         RefactoringTestData data,
         ExpectedTestState expected,
@@ -191,9 +182,6 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// Verifies that refactoring will not be applied using specified <typeparamref name="TRefactoringProvider"/>.
     /// </summary>
     /// <param name="source">Source code where text selection is marked with <c>[|</c> and <c>|]</c> tokens.</param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyNoRefactoringAsync(
         string source,
         string? equivalenceKey = null,
@@ -216,9 +204,6 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : CodeVerifier
     /// <summary>
     /// Verifies that refactoring will not be applied using specified <typeparamref name="TRefactoringProvider"/>.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyNoRefactoringAsync(
         RefactoringTestData data,
         TestOptions? options = null,

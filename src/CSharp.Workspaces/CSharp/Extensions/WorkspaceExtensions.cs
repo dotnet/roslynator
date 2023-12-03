@@ -70,9 +70,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Create a new document with the specified member declaration removed.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="member"></param>
-    /// <param name="cancellationToken"></param>
     internal static Task<Document> RemoveMemberAsync(
         this Document document,
         MemberDeclarationSyntax member,
@@ -158,9 +155,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with comments of the specified kind removed.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="comments"></param>
-    /// <param name="cancellationToken"></param>
     public static async Task<Document> RemoveCommentsAsync(
         this Document document,
         CommentFilter comments,
@@ -183,10 +177,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with comments of the specified kind removed.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="span"></param>
-    /// <param name="comments"></param>
-    /// <param name="cancellationToken"></param>
     public static async Task<Document> RemoveCommentsAsync(
         this Document document,
         TextSpan span,
@@ -210,9 +200,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with trivia inside the specified span removed.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="span"></param>
-    /// <param name="cancellationToken"></param>
     public static async Task<Document> RemoveTriviaAsync(
         this Document document,
         TextSpan span,
@@ -234,9 +221,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with preprocessor directives of the specified kind removed.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="directiveFilter"></param>
-    /// <param name="cancellationToken"></param>
     public static async Task<Document> RemovePreprocessorDirectivesAsync(
         this Document document,
         PreprocessorDirectiveFilter directiveFilter,
@@ -260,10 +244,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with preprocessor directives of the specified kind removed.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="span"></param>
-    /// <param name="directiveFilter"></param>
-    /// <param name="cancellationToken"></param>
     public static async Task<Document> RemovePreprocessorDirectivesAsync(
         this Document document,
         TextSpan span,
@@ -422,9 +402,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with the specified region removed.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="region"></param>
-    /// <param name="cancellationToken"></param>
     public static async Task<Document> RemoveRegionAsync(
         this Document document,
         RegionInfo region,
@@ -466,10 +443,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with the specified statements replaced with new statements.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="statementsInfo"></param>
-    /// <param name="newStatements"></param>
-    /// <param name="cancellationToken"></param>
     public static Task<Document> ReplaceStatementsAsync(
         this Document document,
         StatementListInfo statementsInfo,
@@ -482,10 +455,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with the specified statements replaced with new statements.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="statementsInfo"></param>
-    /// <param name="newStatements"></param>
-    /// <param name="cancellationToken"></param>
     public static Task<Document> ReplaceStatementsAsync(
         this Document document,
         StatementListInfo statementsInfo,
@@ -510,10 +479,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with the specified members replaced with new members.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="info"></param>
-    /// <param name="newMembers"></param>
-    /// <param name="cancellationToken"></param>
     public static Task<Document> ReplaceMembersAsync(
         this Document document,
         MemberDeclarationListInfo info,
@@ -532,10 +497,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with the specified members replaced with new members.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="info"></param>
-    /// <param name="newMembers"></param>
-    /// <param name="cancellationToken"></param>
     public static Task<Document> ReplaceMembersAsync(
         this Document document,
         MemberDeclarationListInfo info,
@@ -554,10 +515,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with the specified modifiers replaced with new modifiers.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="modifiersInfo"></param>
-    /// <param name="newModifiers"></param>
-    /// <param name="cancellationToken"></param>
     public static Task<Document> ReplaceModifiersAsync(
         this Document document,
         ModifierListInfo modifiersInfo,
@@ -570,10 +527,6 @@ public static class WorkspaceExtensions
     /// <summary>
     /// Creates a new document with the specified modifiers replaced with new modifiers.
     /// </summary>
-    /// <param name="document"></param>
-    /// <param name="modifiersInfo"></param>
-    /// <param name="newModifiers"></param>
-    /// <param name="cancellationToken"></param>
     public static Task<Document> ReplaceModifiersAsync(
         this Document document,
         ModifierListInfo modifiersInfo,
