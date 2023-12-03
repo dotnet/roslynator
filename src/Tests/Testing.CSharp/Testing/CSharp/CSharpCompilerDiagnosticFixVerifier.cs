@@ -13,7 +13,6 @@ public abstract class CSharpCompilerDiagnosticFixVerifier<TFixProvider> : Compil
     /// <summary>
     /// Initializes a new instance of <see cref="CSharpCompilerDiagnosticFixVerifier{TFixProvider}"/>.
     /// </summary>
-    /// <param name="assert"></param>
     internal CSharpCompilerDiagnosticFixVerifier(IAssert assert) : base(assert)
     {
     }

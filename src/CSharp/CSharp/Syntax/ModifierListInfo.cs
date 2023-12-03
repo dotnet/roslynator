@@ -373,8 +373,6 @@ public readonly struct ModifierListInfo
     /// <summary>
     /// Creates a new <see cref="ModifierListInfo"/> with accessibility modifiers updated.
     /// </summary>
-    /// <param name="newAccessibility"></param>
-    /// <param name="comparer"></param>
     public ModifierListInfo WithExplicitAccessibility(Accessibility newAccessibility, IComparer<SyntaxKind>? comparer = null)
     {
         ThrowInvalidOperationIfNotInitialized();
@@ -506,7 +504,6 @@ public readonly struct ModifierListInfo
     /// <summary>
     /// Creates a new <see cref="ModifierListInfo"/> with the specified modifiers updated.
     /// </summary>
-    /// <param name="modifiers"></param>
     public ModifierListInfo WithModifiers(SyntaxTokenList modifiers)
     {
         ThrowInvalidOperationIfNotInitialized();

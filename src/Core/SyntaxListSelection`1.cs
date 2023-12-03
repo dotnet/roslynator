@@ -13,7 +13,6 @@ namespace Roslynator;
 /// <summary>
 /// Represents selected nodes in a <see cref="SyntaxList{TNode}"/>.
 /// </summary>
-/// <typeparam name="TNode"></typeparam>
 [DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class SyntaxListSelection<TNode> : ISelection<TNode> where TNode : SyntaxNode
 {
@@ -25,10 +24,6 @@ public class SyntaxListSelection<TNode> : ISelection<TNode> where TNode : Syntax
     /// <summary>
     /// Initializes a new instance of the <see cref="SyntaxListSelection{TNode}"/>.
     /// </summary>
-    /// <param name="list"></param>
-    /// <param name="span"></param>
-    /// <param name="firstIndex"></param>
-    /// <param name="lastIndex"></param>
     protected SyntaxListSelection(SyntaxList<TNode> list, TextSpan span, int firstIndex, int lastIndex)
     {
         if (firstIndex < 0)
@@ -114,8 +109,6 @@ public class SyntaxListSelection<TNode> : ISelection<TNode> where TNode : Syntax
     /// <summary>
     /// Creates a new <see cref="SyntaxListSelection{TNode}"/> based on the specified list and span.
     /// </summary>
-    /// <param name="list"></param>
-    /// <param name="span"></param>
     public static SyntaxListSelection<TNode> Create(SyntaxList<TNode> list, TextSpan span)
     {
         SelectionResult result = SelectionResult.Create(list, span);
@@ -129,9 +122,6 @@ public class SyntaxListSelection<TNode> : ISelection<TNode> where TNode : Syntax
     /// <summary>
     /// Creates a new <see cref="SyntaxListSelection{TNode}"/> based on the specified list and span.
     /// </summary>
-    /// <param name="list"></param>
-    /// <param name="span"></param>
-    /// <param name="selection"></param>
     /// <returns>True if the specified span contains at least one node; otherwise, false.</returns>
     public static bool TryCreate(SyntaxList<TNode> list, TextSpan span, out SyntaxListSelection<TNode>? selection)
     {

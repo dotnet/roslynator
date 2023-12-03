@@ -16,7 +16,6 @@ public readonly struct IfStatementCascadeInfo : IEquatable<IfStatementCascadeInf
     /// <summary>
     /// Initializes a new instance of <see cref="IfStatementCascadeInfo"/>.
     /// </summary>
-    /// <param name="ifStatement"></param>
     public IfStatementCascadeInfo(IfStatementSyntax ifStatement)
     {
         int count = 0;

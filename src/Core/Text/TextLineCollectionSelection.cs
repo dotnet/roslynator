@@ -23,10 +23,6 @@ public class TextLineCollectionSelection : ISelection<TextLine>
     /// <summary>
     /// Initializes a new instance of <see cref="TextLineCollectionSelection"/>.
     /// </summary>
-    /// <param name="lines"></param>
-    /// <param name="span"></param>
-    /// <param name="firstIndex"></param>
-    /// <param name="lastIndex"></param>
     protected TextLineCollectionSelection(TextLineCollection lines, TextSpan span, int firstIndex, int lastIndex)
     {
         if (firstIndex < 0)
@@ -112,8 +108,6 @@ public class TextLineCollectionSelection : ISelection<TextLine>
     /// <summary>
     /// Creates a new <see cref="TextLineCollectionSelection"/> based on the specified list and span.
     /// </summary>
-    /// <param name="lines"></param>
-    /// <param name="span"></param>
     public static TextLineCollectionSelection Create(TextLineCollection lines, TextSpan span)
     {
         if (lines is null)
@@ -127,9 +121,6 @@ public class TextLineCollectionSelection : ISelection<TextLine>
     /// <summary>
     /// Creates a new <see cref="TextLineCollectionSelection"/> based on the specified list and span.
     /// </summary>
-    /// <param name="lines"></param>
-    /// <param name="span"></param>
-    /// <param name="selectedLines"></param>
     /// <returns>True if the specified span contains at least one line; otherwise, false.</returns>
     public static bool TryCreate(TextLineCollection lines, TextSpan span, out TextLineCollectionSelection? selectedLines)
     {

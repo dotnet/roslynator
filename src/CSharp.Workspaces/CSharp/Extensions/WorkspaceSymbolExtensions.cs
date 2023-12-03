@@ -13,9 +13,6 @@ public static class WorkspaceSymbolExtensions
     /// <summary>
     /// Creates a new <see cref="ExpressionSyntax"/> that represents default value of the specified type symbol.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="options"></param>
-    /// <param name="format"></param>
     public static ExpressionSyntax GetDefaultValueSyntax(
         this ITypeSymbol typeSymbol,
         DefaultSyntaxOptions options = DefaultSyntaxOptions.None,
@@ -27,9 +24,6 @@ public static class WorkspaceSymbolExtensions
     /// <summary>
     /// Creates a new <see cref="ExpressionSyntax"/> that represents default value of the specified type symbol.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="type"></param>
-    /// <param name="options"></param>
     public static ExpressionSyntax GetDefaultValueSyntax(
         this ITypeSymbol typeSymbol,
         TypeSyntax type,

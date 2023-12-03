@@ -17,7 +17,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Returns a default accessibility of the specified declaration.
     /// </summary>
-    /// <param name="declaration"></param>
     public static Accessibility GetDefaultAccessibility(SyntaxNode declaration)
     {
         if (declaration is null)
@@ -82,7 +81,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Returns a default explicit accessibility of the specified declaration.
     /// </summary>
-    /// <param name="declaration"></param>
     public static Accessibility GetDefaultExplicitAccessibility(SyntaxNode declaration)
     {
         if (declaration is null)
@@ -147,7 +145,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Returns an accessibility of the specified declaration.
     /// </summary>
-    /// <param name="declaration"></param>
     public static Accessibility GetAccessibility(SyntaxNode declaration)
     {
         if (declaration is null)
@@ -212,7 +209,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Returns an explicit accessibility of the specified declaration.
     /// </summary>
-    /// <param name="declaration"></param>
     public static Accessibility GetExplicitAccessibility(SyntaxNode declaration)
     {
         if (declaration is null)
@@ -277,7 +273,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Returns an explicit accessibility of the specified modifiers.
     /// </summary>
-    /// <param name="modifiers"></param>
     public static Accessibility GetExplicitAccessibility(SyntaxTokenList modifiers)
     {
         int count = modifiers.Count;
@@ -334,7 +329,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Return true if the specified declaration is publicly visible.
     /// </summary>
-    /// <param name="declaration"></param>
     public static bool IsPubliclyVisible(MemberDeclarationSyntax declaration)
     {
         if (declaration is null)
@@ -373,8 +367,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Creates a new node with the explicit accessibility removed.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
     public static TNode WithoutExplicitAccessibility<TNode>(TNode node) where TNode : SyntaxNode
     {
         return WithExplicitAccessibility(node, Accessibility.NotApplicable);
@@ -383,10 +375,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Creates a new node with the specified explicit accessibility updated.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="newAccessibility"></param>
-    /// <param name="comparer"></param>
     public static TNode WithExplicitAccessibility<TNode>(
         TNode node,
         Accessibility newAccessibility,
@@ -408,8 +396,6 @@ public static class SyntaxAccessibility
     /// <summary>
     /// Returns true if the node can have specified accessibility.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="accessibility"></param>
     /// <param name="ignoreOverride">Ignore "override" modifier.</param>
     public static bool IsValidAccessibility(SyntaxNode node, Accessibility accessibility, bool ignoreOverride = false)
     {

@@ -17,8 +17,6 @@ public readonly struct AdditionalFile
     /// <summary>
     /// Initializes a new instance of <see cref="AdditionalFile"/>
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="expectedSource"></param>
     public AdditionalFile(string source, string? expectedSource = null)
     {
         Source = source ?? throw new ArgumentNullException(nameof(source));
