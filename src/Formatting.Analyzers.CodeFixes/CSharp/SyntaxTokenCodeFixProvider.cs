@@ -47,7 +47,7 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
         {
             case DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement:
                 {
-                    await CodeActionFactory.CreateAndRegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator:
@@ -102,39 +102,21 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
                     break;
                 }
             case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken:
+                {
+                    await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, SyntaxKind.EqualsGreaterThanToken).ConfigureAwait(false);
+                    break;
+                }
             case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken:
                 {
-                    AddNewLineBeforeOrAfter();
+                    await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, SyntaxKind.EqualsToken).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.PutAttributeListOnItsOwnLine:
             case DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement:
                 {
-                    await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
                     break;
                 }
-        }
-
-        void AddNewLineBeforeOrAfter()
-        {
-            if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    $"Place new line after '{token}'",
-                    ct => CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, token, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
-            else
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    $"Place new line before '{token}'",
-                    ct => CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, token, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
         }
     }
 

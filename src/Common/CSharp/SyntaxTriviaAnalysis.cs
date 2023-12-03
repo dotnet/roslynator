@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.CodeStyle;
 using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -405,5 +406,43 @@ internal static class SyntaxTriviaAnalysis
         builder.Append(TextSpan.FromBounds(pos, expression.FullSpan.End));
 
         return (TNode)(SyntaxNode)ParseExpression(builder.ToString());
+    }
+
+    public static TriviaBetweenAnalysis AnalyzeNewLineBeforeOrAfter(
+        SyntaxToken token,
+        ExpressionSyntax expression,
+        NewLinePosition newLinePosition)
+    {
+        if (newLinePosition == NewLinePosition.None)
+            return default;
+
+        SyntaxToken previousToken = token.GetPreviousToken();
+
+        TriviaBetweenAnalysis analysisAfter = TriviaBetweenAnalysis.Create(token, expression);
+
+        if (!analysisAfter.Success)
+            return default;
+
+        TriviaBetweenAnalysis analysisBefore = TriviaBetweenAnalysis.Create(previousToken, token);
+
+        if (!analysisBefore.Success)
+            return default;
+
+        if (analysisBefore.Kind == TriviaBetweenKind.NoNewLine)
+        {
+            if (analysisAfter.Kind == TriviaBetweenKind.NoNewLine)
+                return default;
+
+            return (newLinePosition == NewLinePosition.Before)
+                ? analysisAfter
+                : default;
+        }
+
+        if (analysisBefore.ContainsSingleLineComment)
+            return default;
+
+        return (newLinePosition == NewLinePosition.Before)
+            ? default
+            : analysisBefore;
     }
 }

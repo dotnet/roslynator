@@ -20,8 +20,8 @@ class C
 {
     void M()
     {
-        string s [|=|]
-            null;
+        string s =
+[||]            null;
     }
 }
 ", @"
@@ -45,7 +45,7 @@ class C
     void M()
     {
         string s
-            [|=|] null;
+[||]            = null;
     }
 }
 ", @"
@@ -70,8 +70,8 @@ class C
     {
         string s = null;
 
-        s [|=|]
-            null;
+        s =
+[||]            null;
     }
 }
 ", @"
@@ -99,7 +99,7 @@ class C
         string s = null;
 
         s
-            [|=|] null;
+[||]            = null;
     }
 }
 ", @"
@@ -122,8 +122,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string P { get; } [|=|]
-        null;
+    string P { get; } =
+[||]        null;
 }
 ", @"
 class C
@@ -141,7 +141,7 @@ class C
 class C
 {
     string P { get; }
-        [|=|] null;
+[||]        = null;
 }
 ", @"
 class C
@@ -158,8 +158,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string F [|=|]
-        null;
+    string F =
+[||]        null;
 }
 ", @"
 class C
@@ -177,7 +177,7 @@ class C
 class C
 {
     string F
-        [|=|] null;
+[||]        = null;
 }
 ", @"
 class C
@@ -194,8 +194,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    void M(string p [|=|]
-        null)
+    void M(string p =
+[||]        null)
     {
     }
 }
@@ -217,7 +217,7 @@ class C
 class C
 {
     void M(string p
-        [|=|] null)
+[||]        = null)
     {
     }
 }
@@ -244,8 +244,8 @@ class C
     void M()
     {
         List<string> list = null;
-        var x = list.Select(f => new { X [|=|]
-            """" });
+        var x = list.Select(f => new { X =
+[||]            """" });
     }
 }
 ", @"
@@ -277,7 +277,7 @@ class C
     {
         List<string> list = null;
         var x = list.Select(f => new { X
-            [|=|] """" });
+[||]            = """" });
     }
 }
 ", @"
@@ -302,8 +302,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 using System.Diagnostics;
 
-[DebuggerDisplay("""", Name [|=|]
-    ""x"")]
+[DebuggerDisplay("""", Name =
+[||]    ""x"")]
 class C
 {
 }
@@ -325,7 +325,7 @@ class C
 using System.Diagnostics;
 
 [DebuggerDisplay("""", Name
-    [|=|] ""x"")]
+[||]    = ""x"")]
 class C
 {
 }
@@ -344,8 +344,8 @@ class C
     public async Task Test_AttributeArgument_UsingAlias_Before()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using S [|=|]
-    System.String;
+using S =
+[||]    System.String;
 
 class C
 {
@@ -365,7 +365,7 @@ class C
     {
         await VerifyDiagnosticAndFixAsync(@"
 using S
-    [|=|] System.String;
+[||]    = System.String;
 
 class C
 {

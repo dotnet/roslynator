@@ -8,6 +8,7 @@ namespace Roslynator.CSharp;
 internal enum TriviaBetweenFlags
 {
     None = 0,
-    DocumentationComment = 1,
-    SingleLineComment = 1 << 1,
+    SingleLineComment = 1,
+    DocumentationComment = 1 << 1,
+    Comment = SingleLineComment | DocumentationComment,
 }

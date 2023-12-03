@@ -30,9 +30,9 @@ internal readonly struct TriviaBetweenAnalysis
 
     public bool Success => Kind != TriviaBetweenKind.Unknown;
 
-    public bool ContainsComment => (_flags & (TriviaBetweenFlags.SingleLineComment | TriviaBetweenFlags.DocumentationComment)) != 0;
+    public bool ContainsComment => (_flags & (TriviaBetweenFlags.Comment)) != 0;
 
-    public bool ContainsSingleLineComment => (_flags & TriviaBetweenFlags.SingleLineComment) == 0;
+    public bool ContainsSingleLineComment => (_flags & TriviaBetweenFlags.SingleLineComment) != 0;
 
     public bool ContainsDocumentationComment => (_flags & TriviaBetweenFlags.DocumentationComment) != 0;
 

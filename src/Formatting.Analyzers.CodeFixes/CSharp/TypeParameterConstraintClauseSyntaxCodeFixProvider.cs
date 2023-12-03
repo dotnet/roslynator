@@ -31,6 +31,6 @@ public sealed class TypeParameterConstraintClauseSyntaxCodeFixProvider : BaseCod
 
         string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(member, context.Document.GetConfigOptions(member.SyntaxTree), context.CancellationToken);
 
-        await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(context, indentation: indentation).ConfigureAwait(false);
+        await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, indentation: indentation).ConfigureAwait(false);
     }
 }

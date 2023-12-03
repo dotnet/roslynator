@@ -21,6 +21,6 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        return CodeActionFactory.CreateAndRegisterCodeActionForBlankLineAsync(context);
+        return CodeActionFactory.RegisterCodeActionForBlankLineAsync(context);
     }
 }

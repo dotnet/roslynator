@@ -34,7 +34,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
 
         if (diagnostic.Id == DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)
         {
-            await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(
+            await CodeActionFactory.RegisterCodeActionForNewLineAsync(
                 context,
                 title: "Put constructor initializer on its own line",
                 options: CodeActionNewLineOptions.IncreaseIndentation)
