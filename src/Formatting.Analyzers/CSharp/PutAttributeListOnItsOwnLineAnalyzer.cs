@@ -308,9 +308,9 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
 
     private static void Analyze(SyntaxNodeAnalysisContext context, AttributeListSyntax attributeList, SyntaxNodeOrToken nodeOrToken)
     {
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(attributeList, nodeOrToken);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(attributeList, nodeOrToken);
 
-        if (analysis.Kind == TriviaBetweenKind.NoNewLine)
+        if (analysis.Kind == TriviaBlockKind.NoNewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,

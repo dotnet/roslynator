@@ -73,12 +73,12 @@ public sealed class RemoveNewLineBeforeBaseListAnalyzer : BaseDiagnosticAnalyzer
 
     private static void Analyze(SyntaxNodeAnalysisContext context, BaseListSyntax baseList, SyntaxToken previousToken)
     {
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(previousToken, baseList);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(previousToken, baseList);
 
         if (!analysis.Success)
             return;
 
-        if (analysis.Kind != TriviaBetweenKind.NoNewLine
+        if (analysis.Kind != TriviaBlockKind.NoNewLine
             && !analysis.ContainsComment)
         {
             DiagnosticHelpers.ReportDiagnostic(

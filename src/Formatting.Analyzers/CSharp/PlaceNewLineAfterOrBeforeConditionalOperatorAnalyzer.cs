@@ -49,19 +49,19 @@ public sealed class PlaceNewLineAfterOrBeforeConditionalOperatorAnalyzer : BaseD
 
         NewLinePosition newLinePosition = context.GetConditionalExpressionNewLinePosition();
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeAround(conditionalExpression.QuestionToken, whenTrue, newLinePosition);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeAround(conditionalExpression.QuestionToken, whenTrue, newLinePosition);
 
         if (analysis.Success)
             ReportDiagnostic(context, analysis);
 
-        analysis = TriviaBetweenAnalysis.AnalyzeAround(conditionalExpression.ColonToken, conditionalExpression.WhenFalse, newLinePosition);
+        analysis = TriviaBlockAnalysis.AnalyzeAround(conditionalExpression.ColonToken, conditionalExpression.WhenFalse, newLinePosition);
 
         if (analysis.Success)
             ReportDiagnostic(context, analysis);
 
         static void ReportDiagnostic(
             SyntaxNodeAnalysisContext context,
-            TriviaBetweenAnalysis analysis)
+            TriviaBlockAnalysis analysis)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,

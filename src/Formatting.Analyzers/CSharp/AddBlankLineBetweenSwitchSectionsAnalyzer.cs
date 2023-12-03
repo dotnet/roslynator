@@ -49,12 +49,12 @@ public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAn
 
         while (en.MoveNext())
         {
-            TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(previousSection, en.Current);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(previousSection, en.Current);
 
             if (!analysis.Success)
                 continue;
 
-            if (analysis.Kind != TriviaBetweenKind.BlankLine)
+            if (analysis.Kind != TriviaBlockKind.BlankLine)
             {
                 if (context.GetBlankLineBetweenClosingBraceAndSwitchSection() != false
                     || previousBlock is null)

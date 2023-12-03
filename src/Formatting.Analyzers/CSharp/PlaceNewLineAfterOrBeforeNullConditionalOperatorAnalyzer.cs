@@ -51,7 +51,7 @@ public sealed class PlaceNewLineAfterOrBeforeNullConditionalOperatorAnalyzer : B
 
         NewLinePosition newLinePosition = context.GetNullConditionalOperatorNewLinePosition();
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeAround(conditionalAccess.OperatorToken, right, newLinePosition);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeAround(conditionalAccess.OperatorToken, right, newLinePosition);
 
         if (analysis.Success)
         {

@@ -1,14 +1,11 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-
 namespace Roslynator.CSharp;
 
-[Flags]
-internal enum TriviaBetweenFlags
+internal enum TriviaBlockKind
 {
-    None = 0,
-    SingleLineComment = 1,
-    DocumentationComment = 1 << 1,
-    Comment = SingleLineComment | DocumentationComment,
+    Unknown,
+    NoNewLine,
+    NewLine,
+    BlankLine,
 }

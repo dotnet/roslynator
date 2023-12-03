@@ -56,20 +56,20 @@ internal static class CodeActionFactory
         AnalyzerConfigOptions configOptions = context.Document.GetConfigOptions(root.SyntaxTree);
         var textChanges = new List<TextChange>();
 
-        TriviaBetweenAnalysis analysis1 = TriviaBetweenAnalysis.AnalyzeBetween(first, second);
+        TriviaBlockAnalysis analysis1 = TriviaBlockAnalysis.AnalyzeBetween(first, second);
 
         if (!analysis1.ContainsComment)
         {
             string indentation = null;
 
-            if (analysis1.Kind == TriviaBetweenKind.NoNewLine)
+            if (analysis1.Kind == TriviaBlockKind.NoNewLine)
                 indentation = GetIncreasedIndentation(analysis1.First, configOptions, context.CancellationToken);
 
             TextChange textChange = GetTextChangeForNewLine(analysis1, configOptions, indentation, newLineReplacement: newLineReplacement, cancellationToken: context.CancellationToken);
             textChanges.Add(textChange);
         }
 
-        TriviaBetweenAnalysis analysis2 = TriviaBetweenAnalysis.AnalyzeBetween(second, third);
+        TriviaBlockAnalysis analysis2 = TriviaBlockAnalysis.AnalyzeBetween(second, third);
 
         if (!analysis2.ContainsComment)
         {
@@ -122,15 +122,15 @@ internal static class CodeActionFactory
         }
 
         string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(first, second);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(first, second);
 
         Debug.Assert(position == analysis.Position);
 
         switch (analysis.Kind)
         {
-            case TriviaBetweenKind.NoNewLine:
+            case TriviaBlockKind.NoNewLine:
                 {
-                    TriviaBetweenAnalysis.Enumerator en = analysis.GetEnumerator();
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
                     string newText = endOfLine;
 
                     if (!en.MoveNext())
@@ -144,9 +144,9 @@ internal static class CodeActionFactory
 
                     return new TextChange(new TextSpan(position, 0), newText);
                 }
-            case TriviaBetweenKind.NewLine:
+            case TriviaBlockKind.NewLine:
                 {
-                    TriviaBetweenAnalysis.Enumerator en = analysis.GetEnumerator();
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
 
                     while (en.MoveNext()
                         && !en.Current.IsEndOfLineTrivia())
@@ -155,9 +155,9 @@ internal static class CodeActionFactory
 
                     return new TextChange(new TextSpan(en.Current.Span.End, 0), endOfLine);
                 }
-            case TriviaBetweenKind.BlankLine:
+            case TriviaBlockKind.BlankLine:
                 {
-                    TriviaBetweenAnalysis.Enumerator en = analysis.GetEnumerator();
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
 
                     while (en.MoveNext()
                         && en.Current.SpanStart != position)
@@ -234,7 +234,7 @@ internal static class CodeActionFactory
             first = token.GetPreviousToken();
         }
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(first, second);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(first, second);
 
         Debug.Assert(position == analysis.Position);
 
@@ -242,7 +242,7 @@ internal static class CodeActionFactory
     }
 
     private static TextChange GetTextChangeForNewLine(
-        TriviaBetweenAnalysis analysis,
+        TriviaBlockAnalysis analysis,
         AnalyzerConfigOptions configOptions,
         string indentation = null,
         string newLineReplacement = " ",
@@ -251,9 +251,9 @@ internal static class CodeActionFactory
     {
         switch (analysis.Kind)
         {
-            case TriviaBetweenKind.NoNewLine:
+            case TriviaBlockKind.NoNewLine:
                 {
-                    TriviaBetweenAnalysis.Enumerator en = analysis.GetEnumerator();
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
                     int end = analysis.Position;
 
                     if (en.MoveNext()
@@ -270,9 +270,9 @@ internal static class CodeActionFactory
 
                     return new TextChange(TextSpan.FromBounds(analysis.Position, end), endOfLine + indentation);
                 }
-            case TriviaBetweenKind.NewLine:
+            case TriviaBlockKind.NewLine:
                 {
-                    TriviaBetweenAnalysis.Enumerator en = analysis.GetEnumerator();
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
                     int start = analysis.First.Span.End;
                     int end = start;
 
@@ -293,9 +293,9 @@ internal static class CodeActionFactory
 
                     return new TextChange(TextSpan.FromBounds(start, end), newLineReplacement);
                 }
-            case TriviaBetweenKind.BlankLine:
+            case TriviaBlockKind.BlankLine:
                 {
-                    TriviaBetweenAnalysis.Enumerator en = analysis.GetEnumerator();
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
 
                     while (en.MoveNext()
                         && en.Current.SpanStart != analysis.Position)

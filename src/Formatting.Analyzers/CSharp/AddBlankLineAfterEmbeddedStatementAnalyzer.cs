@@ -123,9 +123,9 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) != false)
             return;
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(token, statement);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(token, statement);
 
-        if (analysis.Kind == TriviaBetweenKind.NoNewLine)
+        if (analysis.Kind == TriviaBlockKind.NoNewLine)
             return;
 
         StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(containingStatement);
@@ -138,12 +138,12 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (nextStatement is null)
             return;
 
-        analysis = TriviaBetweenAnalysis.AnalyzeBetween(statement, nextStatement);
+        analysis = TriviaBlockAnalysis.AnalyzeBetween(statement, nextStatement);
 
         if (!analysis.Success)
             return;
 
-        if (analysis.Kind == TriviaBetweenKind.BlankLine)
+        if (analysis.Kind == TriviaBlockKind.BlankLine)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
