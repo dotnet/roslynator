@@ -98,7 +98,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol implements any interface member.
     /// </summary>
-    /// <param name="symbol"></param>
     /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
     public static bool ImplementsInterfaceMember(this ISymbol symbol, bool allInterfaces = false)
     {
@@ -108,8 +107,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol implements any member of the specified interface.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="interfaceSymbol"></param>
     /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
     public static bool ImplementsInterfaceMember(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false)
     {
@@ -168,8 +165,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol implements any interface member.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="symbol"></param>
     /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
     public static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol, bool allInterfaces = false) where TSymbol : ISymbol
     {
@@ -181,9 +176,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol implements any member of the specified interface.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="symbol"></param>
-    /// <param name="interfaceSymbol"></param>
     /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
     public static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false) where TSymbol : ISymbol
     {
@@ -195,8 +187,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol is the specified kind.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="kind"></param>
     public static bool IsKind(this ISymbol? symbol, SymbolKind kind)
     {
         return symbol?.Kind == kind;
@@ -205,9 +195,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol is one of the specified kinds.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="kind1"></param>
-    /// <param name="kind2"></param>
     public static bool IsKind(this ISymbol? symbol, SymbolKind kind1, SymbolKind kind2)
     {
         if (symbol is null)
@@ -222,10 +209,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol is one of the specified kinds.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="kind1"></param>
-    /// <param name="kind2"></param>
-    /// <param name="kind3"></param>
     public static bool IsKind(this ISymbol? symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3)
     {
         if (symbol is null)
@@ -241,11 +224,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol is one of the specified kinds.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="kind1"></param>
-    /// <param name="kind2"></param>
-    /// <param name="kind3"></param>
-    /// <param name="kind4"></param>
     public static bool IsKind(this ISymbol? symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4)
     {
         if (symbol is null)
@@ -262,12 +240,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol is one of the specified kinds.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="kind1"></param>
-    /// <param name="kind2"></param>
-    /// <param name="kind3"></param>
-    /// <param name="kind4"></param>
-    /// <param name="kind5"></param>
     public static bool IsKind(this ISymbol? symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4, SymbolKind kind5)
     {
         if (symbol is null)
@@ -285,7 +257,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol represents an error.
     /// </summary>
-    /// <param name="symbol"></param>
     public static bool IsErrorType(this ISymbol? symbol)
     {
         return symbol?.Kind == SymbolKind.ErrorType;
@@ -294,7 +265,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol is an async method.
     /// </summary>
-    /// <param name="symbol"></param>
     public static bool IsAsyncMethod(this ISymbol? symbol)
     {
         return symbol?.Kind == SymbolKind.Method
@@ -332,8 +302,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns the attribute for the symbol that matches the specified attribute class, or null if the symbol does not have the specified attribute.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="attributeClass"></param>
     public static AttributeData? GetAttribute(this ISymbol symbol, INamedTypeSymbol attributeClass)
     {
         if (symbol is null)
@@ -356,8 +324,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns the attribute for the symbol that matches the specified name, or null if the symbol does not have the specified attribute.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="attributeName"></param>
     public static AttributeData? GetAttribute(this ISymbol symbol, in MetadataName attributeName)
     {
         if (symbol is null)
@@ -375,8 +341,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol has the specified attribute.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="attributeClass"></param>
     public static bool HasAttribute(this ISymbol symbol, INamedTypeSymbol attributeClass)
     {
         return GetAttribute(symbol, attributeClass) is not null;
@@ -385,9 +349,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type symbol has the specified attribute.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="attributeClass"></param>
-    /// <param name="includeBaseTypes"></param>
     public static bool HasAttribute(this ITypeSymbol typeSymbol, INamedTypeSymbol attributeClass, bool includeBaseTypes)
     {
         if (!includeBaseTypes)
@@ -411,8 +372,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the symbol has attribute with the specified name.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="attributeName"></param>
     public static bool HasAttribute(this ISymbol symbol, in MetadataName attributeName)
     {
         return GetAttribute(symbol, attributeName) is not null;
@@ -421,9 +380,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type symbol has attribute with the specified name.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="attributeName"></param>
-    /// <param name="includeBaseTypes"></param>
     public static bool HasAttribute(this ITypeSymbol typeSymbol, in MetadataName attributeName, bool includeBaseTypes)
     {
         if (!includeBaseTypes)
@@ -511,7 +467,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Return true if the specified symbol is publicly visible.
     /// </summary>
-    /// <param name="symbol"></param>
     public static bool IsPubliclyVisible(this ISymbol symbol)
     {
         if (symbol is null)
@@ -659,8 +614,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if a symbol has the specified <see cref="MetadataName"/>.
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="metadataName"></param>
     public static bool HasMetadataName(this ISymbol symbol, in MetadataName metadataName)
     {
         return metadataName.Equals(symbol);
@@ -775,8 +728,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, bool value)
     {
         if (fieldSymbol is null)
@@ -796,8 +747,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, char value)
     {
         if (fieldSymbol is null)
@@ -817,8 +766,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, sbyte value)
     {
         if (fieldSymbol is null)
@@ -838,8 +785,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, byte value)
     {
         if (fieldSymbol is null)
@@ -859,8 +804,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, short value)
     {
         if (fieldSymbol is null)
@@ -880,8 +823,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, ushort value)
     {
         if (fieldSymbol is null)
@@ -901,8 +842,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, int value)
     {
         if (fieldSymbol is null)
@@ -922,8 +861,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, uint value)
     {
         if (fieldSymbol is null)
@@ -943,8 +880,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, long value)
     {
         if (fieldSymbol is null)
@@ -964,8 +899,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, ulong value)
     {
         if (fieldSymbol is null)
@@ -985,8 +918,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, decimal value)
     {
         if (fieldSymbol is null)
@@ -1006,8 +937,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, float value)
     {
         if (fieldSymbol is null)
@@ -1027,8 +956,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, double value)
     {
         if (fieldSymbol is null)
@@ -1048,8 +975,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Get a value indicating whether the field symbol has specified constant value.
     /// </summary>
-    /// <param name="fieldSymbol"></param>
-    /// <param name="value"></param>
     public static bool HasConstantValue(this IFieldSymbol fieldSymbol, string value)
     {
         if (fieldSymbol is null)
@@ -1092,7 +1017,6 @@ public static class SymbolExtensions
     /// <summary>
     /// If this method is a reduced extension method, returns the definition of extension method from which this was reduced. Otherwise, returns this symbol.
     /// </summary>
-    /// <param name="methodSymbol"></param>
     public static IMethodSymbol? ReducedFromOrSelf(this IMethodSymbol? methodSymbol)
     {
         return methodSymbol?.ReducedFrom ?? methodSymbol;
@@ -1101,7 +1025,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if this method is a reduced extension method.
     /// </summary>
-    /// <param name="methodSymbol"></param>
     public static bool IsReducedExtensionMethod(this IMethodSymbol methodSymbol)
     {
         return methodSymbol?.MethodKind == MethodKind.ReducedExtension;
@@ -1110,7 +1033,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if this method is an ordinary extension method (i.e. "this" parameter has not been removed).
     /// </summary>
-    /// <param name="methodSymbol"></param>
     public static bool IsOrdinaryExtensionMethod(this IMethodSymbol methodSymbol)
     {
         return methodSymbol?.IsExtensionMethod == true
@@ -1149,8 +1071,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the parameter was declared as a parameter array that has a specified element type.
     /// </summary>
-    /// <param name="parameterSymbol"></param>
-    /// <param name="elementType"></param>
     public static bool IsParameterArrayOf(this IParameterSymbol parameterSymbol, SpecialType elementType)
     {
         return parameterSymbol?.IsParams == true
@@ -1160,9 +1080,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the parameter was declared as a parameter array that has one of specified element types.
     /// </summary>
-    /// <param name="parameterSymbol"></param>
-    /// <param name="elementType1"></param>
-    /// <param name="elementType2"></param>
     public static bool IsParameterArrayOf(
         this IParameterSymbol parameterSymbol,
         SpecialType elementType1,
@@ -1178,10 +1095,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the parameter was declared as a parameter array that has one of specified element types.
     /// </summary>
-    /// <param name="parameterSymbol"></param>
-    /// <param name="elementType1"></param>
-    /// <param name="elementType2"></param>
-    /// <param name="elementType3"></param>
     public static bool IsParameterArrayOf(
         this IParameterSymbol parameterSymbol,
         SpecialType elementType1,
@@ -1198,7 +1111,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the parameter was declared as "ref" or "out" parameter.
     /// </summary>
-    /// <param name="parameterSymbol"></param>
     public static bool IsRefOrOut(this IParameterSymbol parameterSymbol)
     {
         if (parameterSymbol is null)
@@ -1238,8 +1150,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="Nullable{T}"/> and it has specified type argument.
     /// </summary>
-    /// <param name="namedTypeSymbol"></param>
-    /// <param name="specialType"></param>
     public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, SpecialType specialType)
     {
         return namedTypeSymbol.IsNullableType()
@@ -1249,8 +1159,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="Nullable{T}"/> and it has specified type argument.
     /// </summary>
-    /// <param name="namedTypeSymbol"></param>
-    /// <param name="typeArgument"></param>
     public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, ITypeSymbol typeArgument)
     {
         return namedTypeSymbol.IsNullableType()
@@ -1260,10 +1168,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Searches for a member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="typeSymbol"></param>
-    /// <param name="predicate"></param>
-    /// <param name="includeBaseTypes"></param>
     public static TSymbol? FindMember<TSymbol>(
         this INamedTypeSymbol typeSymbol,
         Func<TSymbol, bool> predicate,
@@ -1281,11 +1185,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="typeSymbol"></param>
-    /// <param name="name"></param>
-    /// <param name="predicate"></param>
-    /// <param name="includeBaseTypes"></param>
     public static TSymbol? FindMember<TSymbol>(
         this INamedTypeSymbol typeSymbol,
         string name,
@@ -1330,9 +1229,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Searches for a type member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="predicate"></param>
-    /// <param name="includeBaseTypes"></param>
     public static INamedTypeSymbol? FindTypeMember(
         this INamedTypeSymbol typeSymbol,
         Func<INamedTypeSymbol, bool> predicate,
@@ -1350,10 +1246,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Searches for a type member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="name"></param>
-    /// <param name="predicate"></param>
-    /// <param name="includeBaseTypes"></param>
     public static INamedTypeSymbol? FindTypeMember(
         this INamedTypeSymbol typeSymbol,
         string name,
@@ -1372,11 +1264,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Searches for a type member that has the specified name, arity and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="name"></param>
-    /// <param name="arity"></param>
-    /// <param name="predicate"></param>
-    /// <param name="includeBaseTypes"></param>
     public static INamedTypeSymbol? FindTypeMember(
         this INamedTypeSymbol typeSymbol,
         string name,
@@ -1440,8 +1327,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="Nullable{T}"/> and it has specified type argument.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="specialType"></param>
     public static bool IsNullableOf(this ITypeSymbol typeSymbol, SpecialType specialType)
     {
         return (typeSymbol as INamedTypeSymbol)?.IsNullableOf(specialType) == true;
@@ -1450,8 +1335,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="Nullable{T}"/> and it has specified type argument.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="typeArgument"></param>
     public static bool IsNullableOf(this ITypeSymbol typeSymbol, ITypeSymbol typeArgument)
     {
         return (typeSymbol as INamedTypeSymbol)?.IsNullableOf(typeArgument) == true;
@@ -1460,7 +1343,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="Void"/>.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool IsVoid(this ITypeSymbol typeSymbol)
     {
         return typeSymbol?.SpecialType == SpecialType.System_Void;
@@ -1469,7 +1351,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="string"/>.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool IsString(this ITypeSymbol typeSymbol)
     {
         return typeSymbol?.SpecialType == SpecialType.System_String;
@@ -1478,7 +1359,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="object"/>.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool IsObject(this ITypeSymbol typeSymbol)
     {
         return typeSymbol?.SpecialType == SpecialType.System_Object;
@@ -1487,7 +1367,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Gets a list of base types of this type.
     /// </summary>
-    /// <param name="type"></param>
     public static IEnumerable<INamedTypeSymbol> BaseTypes(this ITypeSymbol type)
     {
         if (type is null)
@@ -1510,7 +1389,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Gets a list of base types of this type (including this type).
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static IEnumerable<ITypeSymbol> BaseTypesAndSelf(this ITypeSymbol typeSymbol)
     {
         if (typeSymbol is null)
@@ -1533,8 +1411,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type implements specified interface.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="interfaceType"></param>
     /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
     public static bool Implements(this ITypeSymbol typeSymbol, SpecialType interfaceType, bool allInterfaces = false)
     {
@@ -1564,9 +1440,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type implements any of specified interfaces.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="interfaceType1"></param>
-    /// <param name="interfaceType2"></param>
     /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
     public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType interfaceType1, SpecialType interfaceType2, bool allInterfaces = false)
     {
@@ -1587,10 +1460,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type implements any of specified interfaces.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="interfaceType1"></param>
-    /// <param name="interfaceType2"></param>
-    /// <param name="interfaceType3"></param>
     /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
     public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType interfaceType1, SpecialType interfaceType2, SpecialType interfaceType3, bool allInterfaces = false)
     {
@@ -1611,8 +1480,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type implements specified interface.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="interfaceSymbol"></param>
     /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
     public static bool Implements(this ITypeSymbol typeSymbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false)
     {
@@ -1636,9 +1503,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type implements specified interface name.
     /// </summary>
-    /// <param name="typeSymbol"></param>
-    /// <param name="interfaceName"></param>
-    /// <param name="allInterfaces"></param>
     public static bool Implements(this ITypeSymbol typeSymbol, in MetadataName interfaceName, bool allInterfaces = false)
     {
         if (typeSymbol is null)
@@ -1656,7 +1520,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type can be declared explicitly in a source code.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool SupportsExplicitDeclaration(this ITypeSymbol typeSymbol)
     {
         if (typeSymbol is null)
@@ -1729,9 +1592,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type inherits from a specified base type.
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="baseType"></param>
-    /// <param name="includeInterfaces"></param>
     public static bool InheritsFrom(this ITypeSymbol type, ITypeSymbol baseType, bool includeInterfaces = false)
     {
         if (type is null)
@@ -1768,9 +1628,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type inherits from a type with the specified name.
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="baseTypeName"></param>
-    /// <param name="includeInterfaces"></param>
     public static bool InheritsFrom(this ITypeSymbol type, in MetadataName baseTypeName, bool includeInterfaces = false)
     {
         if (type is null)
@@ -1801,9 +1658,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is equal or inherits from a specified base type.
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="baseType"></param>
-    /// <param name="includeInterfaces"></param>
     public static bool EqualsOrInheritsFrom(this ITypeSymbol type, ITypeSymbol baseType, bool includeInterfaces = false)
     {
         if (type is null)
@@ -1816,9 +1670,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is equal or inherits from a type with the specified name.
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="baseTypeName"></param>
-    /// <param name="includeInterfaces"></param>
     public static bool EqualsOrInheritsFrom(this ITypeSymbol type, in MetadataName baseTypeName, bool includeInterfaces = false)
     {
         if (type is null)
@@ -1831,9 +1682,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Searches for a member that matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="typeSymbol"></param>
-    /// <param name="predicate"></param>
     public static TSymbol? FindMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool>? predicate = null) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
@@ -1845,10 +1693,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="typeSymbol"></param>
-    /// <param name="name"></param>
-    /// <param name="predicate"></param>
     public static TSymbol? FindMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool>? predicate = null) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
@@ -1887,9 +1731,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type contains member that matches the conditions defined by the specified predicate, if any.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="typeSymbol"></param>
-    /// <param name="predicate"></param>
     internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool>? predicate = null) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
@@ -1901,10 +1742,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type contains member that has the specified name and matches the conditions defined by the specified predicate, if any.
     /// </summary>
-    /// <typeparam name="TSymbol"></typeparam>
-    /// <param name="typeSymbol"></param>
-    /// <param name="name"></param>
-    /// <param name="predicate"></param>
     internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool>? predicate = null) where TSymbol : ISymbol
     {
         if (typeSymbol is null)
@@ -1921,7 +1758,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="IEnumerable{T}"/>.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool IsIEnumerableOfT(this ITypeSymbol typeSymbol)
     {
         return typeSymbol?.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
@@ -1930,7 +1766,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/>.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool IsIEnumerableOrIEnumerableOfT(this ITypeSymbol typeSymbol)
     {
         return typeSymbol?
@@ -1941,7 +1776,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is a reference type or a nullable type.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool IsReferenceTypeOrNullableType(this ITypeSymbol? typeSymbol)
     {
         return typeSymbol?.IsReferenceType == true
@@ -1951,7 +1785,6 @@ public static class SymbolExtensions
     /// <summary>
     /// Returns true if the type is a nullable type.
     /// </summary>
-    /// <param name="typeSymbol"></param>
     public static bool IsNullableType(this ITypeSymbol? typeSymbol)
     {
         return typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;

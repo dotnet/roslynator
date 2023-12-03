@@ -19,12 +19,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Initializes a new instance of <see cref="CSharpTestOptions"/>.
     /// </summary>
-    /// <param name="compilationOptions"></param>
-    /// <param name="parseOptions"></param>
-    /// <param name="metadataReferences"></param>
-    /// <param name="allowedCompilerDiagnosticIds"></param>
-    /// <param name="allowedCompilerDiagnosticSeverity"></param>
-    /// <param name="configOptions"></param>
     public CSharpTestOptions(
         CSharpCompilationOptions? compilationOptions = null,
         CSharpParseOptions? parseOptions = null,
@@ -90,7 +84,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Adds specified compiler diagnostic ID to the list of allowed compiler diagnostic IDs.
     /// </summary>
-    /// <param name="diagnosticId"></param>
     public CSharpTestOptions AddAllowedCompilerDiagnosticId(string diagnosticId)
     {
         return WithAllowedCompilerDiagnosticIds(AllowedCompilerDiagnosticIds.Add(diagnosticId));
@@ -99,7 +92,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Adds a list of specified compiler diagnostic IDs to the list of allowed compiler diagnostic IDs.
     /// </summary>
-    /// <param name="diagnosticIds"></param>
     public CSharpTestOptions AddAllowedCompilerDiagnosticIds(IEnumerable<string> diagnosticIds)
     {
         return WithAllowedCompilerDiagnosticIds(AllowedCompilerDiagnosticIds.AddRange(diagnosticIds));
@@ -137,7 +129,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Adds specified assembly name to the list of assembly names.
     /// </summary>
-    /// <param name="metadataReference"></param>
     internal CSharpTestOptions AddMetadataReference(MetadataReference metadataReference)
     {
         return WithMetadataReferences(MetadataReferences.Add(metadataReference));
@@ -163,8 +154,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Sets config option.
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
     public CSharpTestOptions SetConfigOption(string key, bool value)
     {
         return SetConfigOption(key, (value) ? "true" : "false");
@@ -173,8 +162,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Sets config option.
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
     public CSharpTestOptions SetConfigOption(string key, string value)
     {
         return WithConfigOptions(ConfigOptions.SetItem(key, value));
@@ -183,7 +170,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Sets config options.
     /// </summary>
-    /// <param name="options"></param>
     public CSharpTestOptions SetConfigOptions(params (string Key, string Value)[] options)
     {
         return SetConfigOptions(options.Select(f => new KeyValuePair<string, string>(f.Key, f.Value)));
@@ -192,7 +178,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Sets config options.
     /// </summary>
-    /// <param name="options"></param>
     internal CSharpTestOptions SetConfigOptions(IEnumerable<KeyValuePair<string, string>> options)
     {
         return WithConfigOptions(ConfigOptions.SetItems(options));
@@ -201,8 +186,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Adds config option.
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
     public CSharpTestOptions AddConfigOption(string key, bool value)
     {
         return AddConfigOption(key, (value) ? "true" : "false");
@@ -211,8 +194,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Adds config option.
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
     public CSharpTestOptions AddConfigOption(string key, string value)
     {
         return WithConfigOptions(ConfigOptions.Add(key, value));
@@ -221,7 +202,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Adds config options.
     /// </summary>
-    /// <param name="options"></param>
     public CSharpTestOptions AddConfigOptions(params (string Key, string Value)[] options)
     {
         return AddConfigOptions(options.Select(f => new KeyValuePair<string, string>(f.Key, f.Value)));
@@ -230,7 +210,6 @@ public sealed class CSharpTestOptions : TestOptions
     /// <summary>
     /// Adds config options.
     /// </summary>
-    /// <param name="options"></param>
     internal CSharpTestOptions AddConfigOptions(IEnumerable<KeyValuePair<string, string>> options)
     {
         return WithConfigOptions(ConfigOptions.AddRange(options));

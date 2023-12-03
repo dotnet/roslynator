@@ -56,11 +56,6 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     /// Verifies that specified source will produce compiler diagnostic.
     /// </summary>
     /// <param name="source">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
-    /// <param name="expectedSource"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyFixAsync(
         string source,
         string expectedSource,
@@ -86,10 +81,6 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will produce compiler diagnostic.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="expected"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyFixAsync(
         CompilerDiagnosticFixTestData data,
         ExpectedTestState expected,
@@ -242,11 +233,6 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will not produce compiler diagnostic.
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyNoFixAsync(
         string source,
         IEnumerable<string>? additionalFiles = null,
@@ -268,9 +254,6 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will not produce compiler diagnostic.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyNoFixAsync(
         CompilerDiagnosticFixTestData data,
         TestOptions? options = null,

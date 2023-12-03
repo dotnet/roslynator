@@ -54,7 +54,6 @@ public readonly struct TestCode
     /// <summary>
     /// Finds and removes spans that are marked with <c>[|</c> and <c>|]</c> tokens.
     /// </summary>
-    /// <param name="value"></param>
     public static TestCode Parse(string value)
     {
         if (value is null)
@@ -70,9 +69,6 @@ public readonly struct TestCode
     /// <summary>
     /// Finds and replace span that is marked with <c>[||]</c> token.
     /// </summary>
-    /// <param name="value"></param>
-    /// <param name="replacement1"></param>
-    /// <param name="replacement2"></param>
     public static TestCode Parse(
         string value,
         string replacement1,

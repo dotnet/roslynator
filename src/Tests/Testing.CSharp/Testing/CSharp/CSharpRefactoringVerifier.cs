@@ -13,7 +13,6 @@ public abstract class CSharpRefactoringVerifier<TRefactoringProvider> : Refactor
     /// <summary>
     /// Initializes a new instance of <see cref="CSharpRefactoringVerifier{TRefactoringProvider}"/>.
     /// </summary>
-    /// <param name="assert"></param>
     internal CSharpRefactoringVerifier(IAssert assert) : base(assert)
     {
     }

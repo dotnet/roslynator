@@ -19,9 +19,6 @@ internal static class CSharpNameGenerator
     /// <summary>
     /// Returns a name that will be unique at the specified position.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
     public static string EnsureUniqueName(string baseName, SemanticModel semanticModel, int position)
     {
         return _generator.EnsureUniqueName(baseName, semanticModel, position);
@@ -30,8 +27,6 @@ internal static class CSharpNameGenerator
     /// <summary>
     /// Returns unique enum member name for a specified enum type.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="enumType"></param>
     public static string EnsureUniqueEnumMemberName(string baseName, INamedTypeSymbol enumType)
     {
         return _generator.EnsureUniqueEnumMemberName(baseName, enumType, isCaseSensitive: true);
@@ -40,10 +35,6 @@ internal static class CSharpNameGenerator
     /// <summary>
     /// Return a local name that will be unique at the specified position.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="cancellationToken"></param>
     public static string EnsureUniqueLocalName(
         string baseName,
         SemanticModel semanticModel,
@@ -56,11 +47,6 @@ internal static class CSharpNameGenerator
     /// <summary>
     /// Return a local names that will be unique at the specified position.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="position"></param>
-    /// <param name="count"></param>
-    /// <param name="cancellationToken"></param>
     public static ImmutableArray<string> EnsureUniqueLocalNames(
         string baseName,
         SemanticModel semanticModel,
@@ -74,10 +60,6 @@ internal static class CSharpNameGenerator
     /// <summary>
     /// Return a parameter name that will be unique at the specified position.
     /// </summary>
-    /// <param name="baseName"></param>
-    /// <param name="containingSymbol"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="cancellationToken"></param>
     public static string EnsureUniqueParameterName(
         string baseName,
         ISymbol containingSymbol,
