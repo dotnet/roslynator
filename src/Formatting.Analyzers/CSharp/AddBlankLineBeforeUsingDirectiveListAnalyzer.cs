@@ -43,10 +43,9 @@ public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosti
 
         SyntaxToken previousToken = usingDirective.GetFirstToken().GetPreviousToken();
 
-        TriviaBlockAnalysis analysis;
-        analysis = (previousToken.IsKind(SyntaxKind.None))
-            ? TriviaBlockAnalysis.AnalyzeBefore(usingDirective)
-            : TriviaBlockAnalysis.AnalyzeBetween(previousToken, usingDirective);
+        TriviaBlockAnalysis analysis = (previousToken.IsKind(SyntaxKind.None))
+            ? SyntaxTriviaAnalysis.AnalyzeBefore(usingDirective)
+            : SyntaxTriviaAnalysis.AnalyzeBetween(previousToken, usingDirective);
 
         if (analysis.Kind == TriviaBlockKind.NoNewLine
             || analysis.Kind == TriviaBlockKind.NewLine)

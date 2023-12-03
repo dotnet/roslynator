@@ -3,9 +3,7 @@
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.CodeStyle;
 
 namespace Roslynator.CSharp;
 
@@ -43,157 +41,6 @@ internal readonly struct TriviaBlockAnalysis
         return Location.Create(
             (!First.IsKind(SyntaxKind.None)) ? First.SyntaxTree : Second.SyntaxTree,
             new TextSpan(Position, 0));
-    }
-
-    public static TriviaBlockAnalysis AnalyzeBefore(SyntaxNodeOrToken nodeOrToken)
-    {
-        var en = new Enumerator(default, nodeOrToken);
-
-        return Analyze(ref en);
-    }
-
-    public static TriviaBlockAnalysis AnalyzeBetween(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
-    {
-        Debug.Assert(first.FullSpan.End == second.FullSpan.Start, $"{first.FullSpan.End} {second.FullSpan.Start}");
-
-        var en = new Enumerator(first, second);
-
-        return Analyze(ref en);
-    }
-
-    private static TriviaBlockAnalysis Analyze(ref Enumerator en)
-    {
-        var flags = TriviaBlockFlags.None;
-
-        if (!en.MoveNext())
-            return en.GetResult(TriviaBlockKind.NoNewLine, flags);
-
-        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-            return en.GetResult(TriviaBlockKind.NoNewLine, flags);
-
-        if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-        {
-            flags |= TriviaBlockFlags.SingleLineComment;
-
-            if (!en.MoveNext())
-                return default;
-        }
-
-        if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-            return en.GetResult(TriviaBlockKind.NoNewLine, flags);
-
-        if (!en.Current.IsEndOfLineTrivia())
-            return default;
-
-        if (!en.MoveNext())
-            return en.GetResult(TriviaBlockKind.NewLine, flags);
-
-        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-            return en.GetResult(TriviaBlockKind.NewLine, flags);
-
-        if (en.Current.IsDirective)
-            return default;
-
-        var singleLineComment = false;
-
-        if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-        {
-            flags |= TriviaBlockFlags.SingleLineComment;
-            singleLineComment = true;
-
-            if (!en.MoveNext())
-                return default;
-
-            if (!en.Current.IsEndOfLineTrivia())
-                return default;
-        }
-        else if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-        {
-            return en.GetResult(TriviaBlockKind.NewLine, flags | TriviaBlockFlags.DocumentationComment);
-        }
-        else if (!en.Current.IsEndOfLineTrivia())
-        {
-            return default;
-        }
-
-        TriviaBlockKind kind = (singleLineComment)
-            ? TriviaBlockKind.NewLine
-            : TriviaBlockKind.BlankLine;
-
-        while (true)
-        {
-            if (!en.MoveNext())
-                return en.GetResult(kind, flags);
-
-            if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-                return en.GetResult(kind, flags);
-
-            if (en.Current.IsDirective)
-                return default;
-
-            if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-            {
-                flags |= TriviaBlockFlags.SingleLineComment;
-                singleLineComment = true;
-
-                if (!en.MoveNext())
-                    return default;
-
-                if (!en.Current.IsEndOfLineTrivia())
-                    return default;
-            }
-            else if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-            {
-                return en.GetResult(kind, flags | TriviaBlockFlags.DocumentationComment);
-            }
-            else if (en.Current.IsEndOfLineTrivia())
-            {
-                if (singleLineComment)
-                    return default;
-            }
-            else
-            {
-                return default;
-            }
-        }
-    }
-
-    public static TriviaBlockAnalysis AnalyzeAround(
-        SyntaxToken token,
-        ExpressionSyntax nextExpression,
-        NewLinePosition newLinePosition)
-    {
-        if (newLinePosition == NewLinePosition.None)
-            return default;
-
-        SyntaxToken previousToken = token.GetPreviousToken();
-
-        TriviaBlockAnalysis analysisAfter = AnalyzeBetween(token, nextExpression);
-
-        if (!analysisAfter.Success)
-            return default;
-
-        TriviaBlockAnalysis analysisBefore = AnalyzeBetween(previousToken, token);
-
-        if (!analysisBefore.Success)
-            return default;
-
-        if (analysisBefore.Kind == TriviaBlockKind.NoNewLine)
-        {
-            if (analysisAfter.Kind == TriviaBlockKind.NoNewLine)
-                return default;
-
-            return (newLinePosition == NewLinePosition.Before)
-                ? analysisAfter
-                : default;
-        }
-
-        if (analysisBefore.ContainsSingleLineComment)
-            return default;
-
-        return (newLinePosition == NewLinePosition.Before)
-            ? default
-            : analysisBefore;
     }
 
     public Enumerator GetEnumerator()
@@ -259,7 +106,7 @@ internal readonly struct TriviaBlockAnalysis
             return true;
         }
 
-        public readonly TriviaBlockAnalysis GetResult(TriviaBlockKind kind, TriviaBlockFlags flags = TriviaBlockFlags.None)
+        internal readonly TriviaBlockAnalysis GetResult(TriviaBlockKind kind, TriviaBlockFlags flags = TriviaBlockFlags.None)
         {
             return new TriviaBlockAnalysis(First, Second, kind, Position, flags);
         }

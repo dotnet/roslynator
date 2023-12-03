@@ -52,7 +52,7 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
         if (semicolon.IsMissing)
             return;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(semicolon, node);
+        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(semicolon, node);
 
         if (!analysis.Success)
             return;

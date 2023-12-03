@@ -64,7 +64,7 @@ public sealed class PutStatementOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
             StatementSyntax statement = statements[i];
             if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement))
             {
-                TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(previous, statement);
+                TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(previous, statement);
 
                 if (analysis.Kind == TriviaBlockKind.NoNewLine)
                 {

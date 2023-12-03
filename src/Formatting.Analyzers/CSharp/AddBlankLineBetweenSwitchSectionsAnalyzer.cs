@@ -49,7 +49,7 @@ public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAn
 
         while (en.MoveNext())
         {
-            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeBetween(previousSection, en.Current);
+            TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(previousSection, en.Current);
 
             if (!analysis.Success)
                 continue;

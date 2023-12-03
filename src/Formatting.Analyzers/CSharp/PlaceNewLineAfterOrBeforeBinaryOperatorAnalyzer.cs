@@ -72,7 +72,7 @@ public sealed class PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer : BaseDiagno
 
         NewLinePosition newLinePosition = context.GetBinaryExpressionNewLinePosition();
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.AnalyzeAround(binaryExpression.OperatorToken, right, newLinePosition);
+        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeAround(binaryExpression.OperatorToken, right, newLinePosition);
 
         if (analysis.Success)
         {
