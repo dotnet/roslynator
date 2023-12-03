@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename analyzers ([PR](https://github.com/dotnet/roslynator/pull/1314))
   - "Add new line before embedded statement" -> "Put embedded statement on its own line" ([RCS0030](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0030))
   - "Add new line before statement" -> "Put statement on its own line" ([RCS0033](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0033))
+- Group refactoring "Wrap in ..." ([PR](https://github.com/dotnet/roslynator/pull/1317))
 
 ### Fixed
 
