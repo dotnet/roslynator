@@ -40,7 +40,9 @@ internal readonly struct TriviaBlockAnalysis
 
     public Location GetLocation()
     {
-        return Location.Create((!First.IsKind(SyntaxKind.None)) ? First.SyntaxTree : Second.SyntaxTree, new TextSpan(Position, 0));
+        return Location.Create(
+            (!First.IsKind(SyntaxKind.None)) ? First.SyntaxTree : Second.SyntaxTree,
+            new TextSpan(Position, 0));
     }
 
     public static TriviaBlockAnalysis AnalyzeBefore(SyntaxNodeOrToken nodeOrToken)
@@ -56,99 +58,7 @@ internal readonly struct TriviaBlockAnalysis
 
         var en = new Enumerator(first, second);
 
-        var flags = TriviaBlockFlags.None;
-
-        if (!en.MoveNext())
-            return en.GetResult(TriviaBlockKind.NoNewLine, flags);
-
-        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-            return en.GetResult(TriviaBlockKind.NoNewLine, flags);
-
-        if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-        {
-            flags |= TriviaBlockFlags.SingleLineComment;
-
-            if (!en.MoveNext())
-                return default;
-        }
-
-        if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-            return en.GetResult(TriviaBlockKind.NoNewLine, flags);
-
-        if (!en.Current.IsEndOfLineTrivia())
-            return default;
-
-        if (!en.MoveNext())
-            return en.GetResult(TriviaBlockKind.NewLine, flags);
-
-        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-            return en.GetResult(TriviaBlockKind.NewLine, flags);
-
-        if (en.Current.IsDirective)
-            return default;
-
-        var singleLineComment = false;
-
-        if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-        {
-            flags |= TriviaBlockFlags.SingleLineComment;
-            singleLineComment = true;
-
-            if (!en.MoveNext())
-                return default;
-
-            if (!en.Current.IsEndOfLineTrivia())
-                return default;
-        }
-        else if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-        {
-            return en.GetResult(TriviaBlockKind.NewLine, flags | TriviaBlockFlags.DocumentationComment);
-        }
-        else if (!en.Current.IsEndOfLineTrivia())
-        {
-            return default;
-        }
-
-        TriviaBlockKind kind = (singleLineComment)
-            ? TriviaBlockKind.NewLine
-            : TriviaBlockKind.BlankLine;
-
-        while (true)
-        {
-            if (!en.MoveNext())
-                return en.GetResult(kind, flags);
-
-            if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-                return en.GetResult(kind, flags);
-
-            if (en.Current.IsDirective)
-                return default;
-
-            if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-            {
-                flags |= TriviaBlockFlags.SingleLineComment;
-                singleLineComment = true;
-
-                if (!en.MoveNext())
-                    return default;
-
-                if (!en.Current.IsEndOfLineTrivia())
-                    return default;
-            }
-            else if (en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
-            {
-                return en.GetResult(kind, flags | TriviaBlockFlags.DocumentationComment);
-            }
-            else if (en.Current.IsEndOfLineTrivia())
-            {
-                if (singleLineComment)
-                    return default;
-            }
-            else
-            {
-                return default;
-            }
-        }
+        return Analyze(ref en);
     }
 
     private static TriviaBlockAnalysis Analyze(ref Enumerator en)
@@ -303,20 +213,16 @@ internal readonly struct TriviaBlockAnalysis
 
             First = first;
             Second = second;
-            Trailing = first.GetTrailingTrivia();
-            Leading = second.GetLeadingTrivia();
             Position = first.Span.End;
 
-            _enumerator = (!first.IsKind(SyntaxKind.None)) ? Trailing.GetEnumerator() : Leading.GetEnumerator();
+            _enumerator = (!first.IsKind(SyntaxKind.None))
+                ? first.GetTrailingTrivia().GetEnumerator()
+                : second.GetLeadingTrivia().GetEnumerator();
         }
 
         public SyntaxNodeOrToken First { get; }
 
         public SyntaxNodeOrToken Second { get; }
-
-        public SyntaxTriviaList Trailing { get; set; }
-
-        public SyntaxTriviaList Leading { get; set; }
 
         public int Position { get; private set; }
 
@@ -337,7 +243,7 @@ internal readonly struct TriviaBlockAnalysis
                     return false;
                 }
 
-                _enumerator = Leading.GetEnumerator();
+                _enumerator = Second.GetLeadingTrivia().GetEnumerator();
 
                 if (!_enumerator.MoveNext())
                     return false;
