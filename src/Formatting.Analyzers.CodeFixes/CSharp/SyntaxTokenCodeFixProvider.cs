@@ -47,12 +47,12 @@ public sealed class SyntaxTokenCodeFixProvider : BaseCodeFixProvider
                 }
             case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken:
                 {
-                    await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, SyntaxKind.EqualsGreaterThanToken).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, token => token.IsKind(SyntaxKind.EqualsGreaterThanToken)).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken:
                 {
-                    await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, SyntaxKind.EqualsToken).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, token => token.IsKind(SyntaxKind.EqualsToken)).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.PutAttributeListOnItsOwnLine:

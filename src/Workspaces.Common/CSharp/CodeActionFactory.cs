@@ -18,14 +18,6 @@ namespace Roslynator.CSharp;
 
 internal static class CodeActionFactory
 {
-    public static Task RegisterCodeActionForNewLineAroundTokenAsync(
-        CodeFixContext context,
-        SyntaxKind tokenKind,
-        string newLineReplacement = " ")
-    {
-        return RegisterCodeActionForNewLineAroundTokenAsync(context, token => token.IsKind(tokenKind), newLineReplacement);
-    }
-
     public static async Task RegisterCodeActionForNewLineAroundTokenAsync(
         CodeFixContext context,
         Func<SyntaxToken, bool> tokenPredicate,
