@@ -15,9 +15,6 @@ public static class SyntaxTreeExtensions
     /// <summary>
     /// Returns zero-based index of the start line of the specified span.
     /// </summary>
-    /// <param name="syntaxTree"></param>
-    /// <param name="span"></param>
-    /// <param name="cancellationToken"></param>
     public static int GetStartLine(
         this SyntaxTree syntaxTree,
         TextSpan span,
@@ -32,9 +29,6 @@ public static class SyntaxTreeExtensions
     /// <summary>
     /// Returns zero-based index of the end line of the specified span.
     /// </summary>
-    /// <param name="syntaxTree"></param>
-    /// <param name="span"></param>
-    /// <param name="cancellationToken"></param>
     public static int GetEndLine(
         this SyntaxTree syntaxTree,
         TextSpan span,
@@ -49,9 +43,6 @@ public static class SyntaxTreeExtensions
     /// <summary>
     /// Returns true if the specified <see cref="TextSpan"/> spans over multiple lines.
     /// </summary>
-    /// <param name="syntaxTree"></param>
-    /// <param name="span"></param>
-    /// <param name="cancellationToken"></param>
     public static bool IsMultiLineSpan(
         this SyntaxTree syntaxTree,
         TextSpan span,
@@ -66,9 +57,6 @@ public static class SyntaxTreeExtensions
     /// <summary>
     /// Returns true if the specified <see cref="TextSpan"/> does not span over multiple lines.
     /// </summary>
-    /// <param name="syntaxTree"></param>
-    /// <param name="span"></param>
-    /// <param name="cancellationToken"></param>
     public static bool IsSingleLineSpan(
         this SyntaxTree syntaxTree,
         TextSpan span,

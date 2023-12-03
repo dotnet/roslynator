@@ -31,9 +31,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// Verifies that specified source will produce specified diagnostic(s).
     /// </summary>
     /// <param name="source">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyDiagnosticAsync(
         string source,
         IEnumerable<string>? additionalFiles = null,
@@ -78,9 +75,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will produce specified diagnostic(s).
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyDiagnosticAsync(
         DiagnosticTestData data,
         TestOptions? options = null,
@@ -174,10 +168,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will not produce specified diagnostic.
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyNoDiagnosticAsync(
         string source,
         IEnumerable<string>? additionalFiles = null,
@@ -198,9 +188,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will not produce specified diagnostic.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyNoDiagnosticAsync(
         DiagnosticTestData data,
         TestOptions? options = null,
@@ -246,11 +233,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// Verifies that specified source will produce specified diagnostic and that the diagnostic will be fixed.
     /// </summary>
     /// <param name="source">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
-    /// <param name="expectedSource"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyDiagnosticAndFixAsync(
         string source,
         string expectedSource,
@@ -299,10 +281,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will produce specified diagnostic and that the diagnostic will be fixed.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="expected"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyDiagnosticAndFixAsync(
         DiagnosticTestData data,
         ExpectedTestState expected,
@@ -317,10 +295,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// Verifies that specified source will produce specified diagnostic and that the diagnostic will not be fixed.
     /// </summary>
     /// <param name="source">Source code where diagnostic's location is marked with <c>[|</c> and <c>|]</c> tokens.</param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyDiagnosticAndNoFixAsync(
         string source,
         IEnumerable<string>? additionalFiles = null,
@@ -343,9 +317,6 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : CodeVerifier
     /// <summary>
     /// Verifies that specified source will produce specified diagnostic and that the diagnostic will not be fixed.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="options"></param>
-    /// <param name="cancellationToken"></param>
     public async Task VerifyDiagnosticAndNoFixAsync(
         DiagnosticTestData data,
         TestOptions? options = null,

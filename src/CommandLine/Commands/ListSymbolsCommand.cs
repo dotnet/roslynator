@@ -110,8 +110,11 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         SymbolDocumentationProvider documentationProvider = (Options.Documentation)
             ? new SymbolDocumentationProvider(compilations)
             : null;
-
+#if NETFRAMEWORK
         using (var stringWriter = new StringWriter())
+#else
+        await using (var stringWriter = new StringWriter())
+#endif
         using (var writer = new SymbolDefinitionTextWriter(
             stringWriter,
             filter: SymbolFilterOptions,
@@ -137,7 +140,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             {
                 var xmlWriterSettings = new XmlWriterSettings() { Indent = true, IndentChars = Options.IndentChars };
 
-                using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
+                await using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
                 using (var writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
                 {
                     writer.WriteDocument(assemblies, cancellationToken);
@@ -147,7 +150,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             {
                 var xmlWriterSettings = new XmlWriterSettings() { OmitXmlDeclaration = true, Indent = true, IndentChars = "" };
 
-                using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
+                await using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
                 using (var writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
                 {
                     writer.WriteDocument(assemblies, cancellationToken);
@@ -157,8 +160,8 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             {
                 var markdownWriterSettings = new MarkdownWriterSettings();
 
-                using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
-                using (var streamWriter = new StreamWriter(fileStream, Encodings.UTF8NoBom))
+                await using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
+                await using (var streamWriter = new StreamWriter(fileStream, Encodings.UTF8NoBom))
                 using (MarkdownWriter markdownWriter = MarkdownWriter.Create(streamWriter, markdownWriterSettings))
                 using (var writer = new SymbolDefinitionMarkdownWriter(
                     markdownWriter,
@@ -172,8 +175,8 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             }
             else if (string.Equals(extension, ".json", StringComparison.OrdinalIgnoreCase))
             {
-                using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
-                using (var streamWriter = new StreamWriter(fileStream, Encodings.UTF8NoBom))
+                await using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
+                await using (var streamWriter = new StreamWriter(fileStream, Encodings.UTF8NoBom))
                 using (var jsonWriter = new JsonTextWriter(streamWriter))
                 {
                     string indentChars = format.IndentChars;

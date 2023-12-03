@@ -13,7 +13,6 @@ namespace Roslynator.CSharp;
 /// <summary>
 /// Represents a list of modifiers.
 /// </summary>
-/// <typeparam name="TNode"></typeparam>
 [SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.")]
 public abstract class ModifierList<TNode> where TNode : SyntaxNode
 {
@@ -109,9 +108,6 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <summary>
     /// Creates a new node with a modifier of the specified kind inserted.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="kind"></param>
-    /// <param name="comparer"></param>
     public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind>? comparer = null)
     {
         if (node is null)
@@ -127,9 +123,6 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <summary>
     /// Creates a new node with the specified modifier inserted.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="modifier"></param>
-    /// <param name="comparer"></param>
     public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken>? comparer = null)
     {
         if (node is null)
@@ -210,8 +203,6 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <summary>
     /// Creates a new node with a modifier of the specified kind removed.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="kind"></param>
     public TNode Remove(TNode node, SyntaxKind kind)
     {
         if (node is null)
@@ -234,8 +225,6 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <summary>
     /// Creates a new node with the specified modifier removed.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="modifier"></param>
     public TNode Remove(TNode node, SyntaxToken modifier)
     {
         if (node is null)
@@ -258,8 +247,6 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <summary>
     /// Creates a new node with a modifier at the specified index removed.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="index"></param>
     public TNode RemoveAt(TNode node, int index)
     {
         if (node is null)
@@ -338,7 +325,6 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <summary>
     /// Creates a new node with all modifiers removed.
     /// </summary>
-    /// <param name="node"></param>
     public TNode RemoveAll(TNode node)
     {
         SyntaxTokenList modifiers = GetModifiers(node);
@@ -387,8 +373,6 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     /// <summary>
     /// Creates a new node with modifiers that matches the predicate removed.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="predicate"></param>
     public TNode RemoveAll(TNode node, Func<SyntaxToken, bool> predicate)
     {
         SyntaxTokenList modifiers = GetModifiers(node);

@@ -16,7 +16,7 @@ internal sealed class WrapInIfStatementRefactoring : WrapStatementsRefactoring<I
 
     public static WrapInIfStatementRefactoring Instance { get; } = new();
 
-    public const string Title = "Wrap in condition";
+    public const string Title = "'if' statement";
 
     public override IfStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
     {

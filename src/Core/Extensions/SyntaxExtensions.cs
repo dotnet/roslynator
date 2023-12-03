@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -19,10 +18,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new list with a node at the specified index replaced with a new node.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="index"></param>
-    /// <param name="newNode"></param>
     public static SeparatedSyntaxList<TNode> ReplaceAt<TNode>(this SeparatedSyntaxList<TNode> list, int index, TNode newNode) where TNode : SyntaxNode
     {
         return list.Replace(list[index], newNode);
@@ -31,9 +26,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the specified node is a first node in the list.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="node"></param>
     public static bool IsFirst<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
     {
         return list.Any()
@@ -43,9 +35,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the specified node is a last node in the list.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="node"></param>
     public static bool IsLast<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
     {
         return list.Any()
@@ -55,9 +44,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if any node in a list matches the predicate.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="predicate"></param>
     public static bool Any<TNode>(this SeparatedSyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
     {
         if (predicate is null)
@@ -75,9 +61,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if all nodes in a list matches the predicate.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="predicate"></param>
     public static bool All<TNode>(this SeparatedSyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
     {
         if (predicate is null)
@@ -95,9 +78,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the specified node is in the <see cref="SeparatedSyntaxList{TNode}"/>.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="node"></param>
     public static bool Contains<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
     {
         return list.IndexOf(node) != -1;
@@ -148,9 +128,6 @@ public static class SyntaxExtensions
     /// Creates a new separated list with both leading and trailing trivia of the specified node.
     /// If the list contains more than one item, first item is updated with leading trivia and last item is updated with trailing trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="node"></param>
     public static SeparatedSyntaxList<TNode> WithTriviaFrom<TNode>(this SeparatedSyntaxList<TNode> list, SyntaxNode node) where TNode : SyntaxNode
     {
         if (node is null)
@@ -198,8 +175,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns the trailing separator, if any.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
     public static SyntaxToken GetTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
     {
         int count = list.Count;
@@ -216,8 +191,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the specified list contains trailing separator.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
     public static bool HasTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
     {
         int count = list.Count;
@@ -269,10 +242,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new list with the node at the specified index replaced with a new node.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="index"></param>
-    /// <param name="newNode"></param>
     public static SyntaxList<TNode> ReplaceAt<TNode>(this SyntaxList<TNode> list, int index, TNode newNode) where TNode : SyntaxNode
     {
         return list.Replace(list[index], newNode);
@@ -281,9 +250,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the specified node is a first node in the list.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="node"></param>
     public static bool IsFirst<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
     {
         return list.Any()
@@ -293,9 +259,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the specified node is a last node in the list.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="node"></param>
     public static bool IsLast<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
     {
         return list.Any()
@@ -305,9 +268,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if any node in a list matches the predicate.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="predicate"></param>
     public static bool Any<TNode>(this SyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
     {
         if (predicate is null)
@@ -325,9 +285,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if all nodes in a list matches the predicate.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="predicate"></param>
     public static bool All<TNode>(this SyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
     {
         if (predicate is null)
@@ -345,9 +302,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the specified node is in the <see cref="SyntaxList{TNode}"/>.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="node"></param>
     public static bool Contains<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
     {
         return list.IndexOf(node) != -1;
@@ -418,9 +372,6 @@ public static class SyntaxExtensions
     /// Creates a new list with both leading and trailing trivia of the specified node.
     /// If the list contains more than one item, first item is updated with leading trivia and last item is updated with trailing trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="node"></param>
     public static SyntaxList<TNode> WithTriviaFrom<TNode>(this SyntaxList<TNode> list, SyntaxNode node) where TNode : SyntaxNode
     {
         if (node is null)
@@ -442,10 +393,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Get a list of all the trivia associated with the nodes in the list.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="descendIntoChildren"></param>
-    /// <param name="descendIntoTrivia"></param>
     public static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
         this SyntaxList<TNode> list,
         Func<SyntaxNode, bool>? descendIntoChildren = null,
@@ -463,11 +410,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Get a list of all the trivia associated with the nodes in the list.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="list"></param>
-    /// <param name="span"></param>
-    /// <param name="descendIntoChildren"></param>
-    /// <param name="descendIntoTrivia"></param>
     public static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
         this SyntaxList<TNode> list,
         TextSpan span,
@@ -513,7 +455,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns leading and trailing trivia of the specified node in a single list.
     /// </summary>
-    /// <param name="node"></param>
     public static SyntaxTriviaList GetLeadingAndTrailingTrivia(this SyntaxNode node)
     {
         if (node is null)
@@ -539,9 +480,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is inserted at the beginning of the leading trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="trivia"></param>
     public static TNode PrependToLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
     {
         if (node is null)
@@ -556,9 +494,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is inserted at the beginning of the leading trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="trivia"></param>
     public static TNode PrependToLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
     {
         if (node is null)
@@ -570,9 +505,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new node from this node with the trailing trivia replaced with a new trivia where the specified trivia is inserted at the beginning of the trailing trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="trivia"></param>
     public static TNode PrependToTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
     {
         if (node is null)
@@ -587,9 +519,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new node from this node with the trailing trivia replaced with a new trivia where the specified trivia is inserted at the beginning of the trailing trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="trivia"></param>
     public static TNode PrependToTrailingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
     {
         if (node is null)
@@ -601,9 +530,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="trivia"></param>
     public static TNode AppendToLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
     {
         if (node is null)
@@ -618,9 +544,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new node from this node with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="trivia"></param>
     public static TNode AppendToLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
     {
         if (node is null)
@@ -632,9 +555,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new node from this node with the trailing trivia replaced with a new trivia where the specified trivia is added at the end of the trailing trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="trivia"></param>
     public static TNode AppendToTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
     {
         if (node is null)
@@ -649,9 +569,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new node from this node with the trailing trivia replaced with a new trivia where the specified trivia is added at the end of the trailing trivia.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="trivia"></param>
     public static TNode AppendToTrailingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
     {
         if (node is null)
@@ -663,15 +580,14 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the node's span contains any preprocessor directives.
     /// </summary>
-    /// <param name="node"></param>
     public static bool SpanContainsDirectives(this SyntaxNode node)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
-            && !node.GetLeadingTrivia().Any(f => f.IsDirective)
-            && !node.GetTrailingTrivia().Any(f => f.IsDirective);
+            && !node.GetLeadingTrivia().ContainsDirective()
+            && !node.GetTrailingTrivia().ContainsDirective();
     }
 
     internal static bool SpanOrLeadingTriviaContainsDirectives(this SyntaxNode node)
@@ -680,7 +596,7 @@ public static class SyntaxExtensions
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
-            && !node.GetTrailingTrivia().Any(f => f.IsDirective);
+            && !node.GetTrailingTrivia().ContainsDirective();
     }
 
     internal static bool SpanOrTrailingTriviaContainsDirectives(this SyntaxNode node)
@@ -689,29 +605,32 @@ public static class SyntaxExtensions
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
-            && !node.GetLeadingTrivia().Any(f => f.IsDirective);
+            && !node.GetLeadingTrivia().ContainsDirective();
     }
 
     /// <summary>
     /// Returns true if the node contains any preprocessor directives inside the specified span.
     /// </summary>
-    /// <param name="node"></param>
-    /// <param name="span"></param>
     public static bool ContainsDirectives(this SyntaxNode node, TextSpan span)
     {
         if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        return node.ContainsDirectives
-            && node.DescendantTrivia(span).Any(f => f.IsDirective);
+        if (node.ContainsDirectives)
+        {
+            foreach (SyntaxTrivia trivia in node.DescendantTrivia(span))
+            {
+                if (trivia.IsDirective)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
     /// Creates a new node from this node with both the leading and trailing trivia of the specified token.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="token"></param>
     public static TNode WithTriviaFrom<TNode>(this TNode node, SyntaxToken token) where TNode : SyntaxNode
     {
         if (node is null)
@@ -745,10 +664,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns the first node of type <typeparamref name="TNode"/> that matches the predicate.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="predicate"></param>
-    /// <param name="ascendOutOfTrivia"></param>
     public static TNode? FirstAncestor<TNode>(
         this SyntaxNode node,
         Func<TNode, bool>? predicate = null,
@@ -807,10 +722,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Searches a list of descendant nodes in prefix document order and returns first descendant of type <typeparamref name="TNode"/>.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="descendIntoChildren"></param>
-    /// <param name="descendIntoTrivia"></param>
     public static TNode? FirstDescendant<TNode>(
         this SyntaxNode node,
         Func<SyntaxNode, bool>? descendIntoChildren = null,
@@ -828,11 +739,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Searches a list of descendant nodes in prefix document order and returns first descendant of type <typeparamref name="TNode"/>.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="span"></param>
-    /// <param name="descendIntoChildren"></param>
-    /// <param name="descendIntoTrivia"></param>
     public static TNode? FirstDescendant<TNode>(
         this SyntaxNode node,
         TextSpan span,
@@ -851,10 +757,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Searches a list of descendant nodes (including this node) in prefix document order and returns first descendant of type <typeparamref name="TNode"/>.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="descendIntoChildren"></param>
-    /// <param name="descendIntoTrivia"></param>
     public static TNode? FirstDescendantOrSelf<TNode>(
         this SyntaxNode node,
         Func<SyntaxNode, bool>? descendIntoChildren = null,
@@ -872,11 +774,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Searches a list of descendant nodes (including this node) in prefix document order and returns first descendant of type <typeparamref name="TNode"/>.
     /// </summary>
-    /// <typeparam name="TNode"></typeparam>
-    /// <param name="node"></param>
-    /// <param name="span"></param>
-    /// <param name="descendIntoChildren"></param>
-    /// <param name="descendIntoTrivia"></param>
     public static TNode? FirstDescendantOrSelf<TNode>(
         this SyntaxNode node,
         TextSpan span,
@@ -931,7 +828,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new <see cref="SyntaxNodeOrToken"/> from this node without leading and trailing trivia.
     /// </summary>
-    /// <param name="nodeOrToken"></param>
     public static SyntaxNodeOrToken WithoutTrivia(this SyntaxNodeOrToken nodeOrToken)
     {
         if (nodeOrToken.IsNode)
@@ -947,7 +843,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new <see cref="SyntaxNodeOrToken"/> with the leading trivia removed.
     /// </summary>
-    /// <param name="nodeOrToken"></param>
     public static SyntaxNodeOrToken WithoutLeadingTrivia(this SyntaxNodeOrToken nodeOrToken)
     {
         if (nodeOrToken.IsNode)
@@ -963,7 +858,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new <see cref="SyntaxNodeOrToken"/> with the trailing trivia removed.
     /// </summary>
-    /// <param name="nodeOrToken"></param>
     public static SyntaxNodeOrToken WithoutTrailingTrivia(this SyntaxNodeOrToken nodeOrToken)
     {
         if (nodeOrToken.IsNode)
@@ -981,8 +875,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is inserted at the beginning of the leading trivia.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="trivia"></param>
     public static SyntaxToken PrependToLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
     {
         if (trivia is null)
@@ -994,8 +886,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is inserted at the beginning of the leading trivia.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="trivia"></param>
     public static SyntaxToken PrependToLeadingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
     {
         return token.WithLeadingTrivia(token.LeadingTrivia.Insert(0, trivia));
@@ -1004,8 +894,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the trailing trivia replaced with a new trivia where the specified trivia is inserted at the beginning of the trailing trivia.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="trivia"></param>
     public static SyntaxToken PrependToTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
     {
         if (trivia is null)
@@ -1017,8 +905,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the trailing trivia replaced with a new trivia where the specified trivia is inserted at the beginning of the trailing trivia.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="trivia"></param>
     public static SyntaxToken PrependToTrailingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
     {
         return token.WithTrailingTrivia(token.TrailingTrivia.Insert(0, trivia));
@@ -1027,8 +913,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the trailing trivia replaced with a new trivia where the specified trivia is added at the end of the trailing trivia.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="trivia"></param>
     public static SyntaxToken AppendToTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
     {
         if (trivia is null)
@@ -1040,8 +924,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the trailing trivia replaced with a new trivia where the specified trivia is added at the end of the trailing trivia.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="trivia"></param>
     public static SyntaxToken AppendToTrailingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
     {
         return token.WithTrailingTrivia(token.TrailingTrivia.Add(trivia));
@@ -1050,8 +932,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="trivia"></param>
     public static SyntaxToken AppendToLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
     {
         if (trivia is null)
@@ -1063,8 +943,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the leading trivia replaced with a new trivia where the specified trivia is added at the end of the leading trivia.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="trivia"></param>
     public static SyntaxToken AppendToLeadingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
     {
         return token.WithLeadingTrivia(token.LeadingTrivia.Add(trivia));
@@ -1073,7 +951,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns leading and trailing trivia of the specified node in a single list.
     /// </summary>
-    /// <param name="token"></param>
     public static SyntaxTriviaList LeadingAndTrailingTrivia(this SyntaxToken token)
     {
         SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
@@ -1120,7 +997,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the leading trivia removed.
     /// </summary>
-    /// <param name="token"></param>
     public static SyntaxToken WithoutLeadingTrivia(this SyntaxToken token)
     {
         return token.WithLeadingTrivia(default(SyntaxTriviaList));
@@ -1129,7 +1005,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with the trailing trivia removed.
     /// </summary>
-    /// <param name="token"></param>
     public static SyntaxToken WithoutTrailingTrivia(this SyntaxToken token)
     {
         return token.WithTrailingTrivia(default(SyntaxTriviaList));
@@ -1138,8 +1013,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new token from this token with both the leading and trailing trivia of the specified node.
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="node"></param>
     public static SyntaxToken WithTriviaFrom(this SyntaxToken token, SyntaxNode node)
     {
         if (node is null)
@@ -1190,9 +1063,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new <see cref="SyntaxTokenList"/> with a token at the specified index replaced with a new token.
     /// </summary>
-    /// <param name="tokenList"></param>
-    /// <param name="index"></param>
-    /// <param name="newToken"></param>
     public static SyntaxTokenList ReplaceAt(this SyntaxTokenList tokenList, int index, SyntaxToken newToken)
     {
         return tokenList.Replace(tokenList[index], newToken);
@@ -1201,8 +1071,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if any token in a <see cref="SyntaxTokenList"/> matches the predicate.
     /// </summary>
-    /// <param name="list"></param>
-    /// <param name="predicate"></param>
     public static bool Any(this SyntaxTokenList list, Func<SyntaxToken, bool> predicate)
     {
         if (predicate is null)
@@ -1220,8 +1088,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if all tokens in a <see cref="SyntaxTokenList"/> matches the predicate.
     /// </summary>
-    /// <param name="list"></param>
-    /// <param name="predicate"></param>
     public static bool All(this SyntaxTokenList list, Func<SyntaxToken, bool> predicate)
     {
         if (predicate is null)
@@ -1239,8 +1105,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if the specified token is in the <see cref="SyntaxTokenList"/>.
     /// </summary>
-    /// <param name="tokens"></param>
-    /// <param name="token"></param>
     public static bool Contains(this SyntaxTokenList tokens, SyntaxToken token)
     {
         return tokens.IndexOf(token) != -1;
@@ -1249,8 +1113,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Searches for a token that matches the predicate and returns the zero-based index of the first occurrence within the entire <see cref="SyntaxTokenList"/>.
     /// </summary>
-    /// <param name="tokens"></param>
-    /// <param name="predicate"></param>
     public static int IndexOf(this SyntaxTokenList tokens, Func<SyntaxToken, bool> predicate)
     {
         if (predicate is null)
@@ -1306,8 +1168,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Gets a <see cref="SyntaxTriviaList"/> the specified trivia is contained in.
     /// </summary>
-    /// <param name="trivia"></param>
-    /// <param name="triviaList"></param>
     /// <param name="allowLeading">If true, trivia can be part of leading trivia.</param>
     /// <param name="allowTrailing">If true, trivia can be part of trailing trivia.</param>
     public static bool TryGetContainingList(this SyntaxTrivia trivia, out SyntaxTriviaList triviaList, bool allowLeading = true, bool allowTrailing = true)
@@ -1367,9 +1227,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Creates a new <see cref="SyntaxTriviaList"/> with a trivia at the specified index replaced with new trivia.
     /// </summary>
-    /// <param name="triviaList"></param>
-    /// <param name="index"></param>
-    /// <param name="newTrivia"></param>
     public static SyntaxTriviaList ReplaceAt(this SyntaxTriviaList triviaList, int index, SyntaxTrivia newTrivia)
     {
         return triviaList.Replace(triviaList[index], newTrivia);
@@ -1378,8 +1235,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if any trivia in a <see cref="SyntaxTriviaList"/> matches the predicate.
     /// </summary>
-    /// <param name="list"></param>
-    /// <param name="predicate"></param>
     public static bool Any(this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
     {
         if (predicate is null)
@@ -1397,8 +1252,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Returns true if all trivia in a <see cref="SyntaxTriviaList"/> matches the predicate.
     /// </summary>
-    /// <param name="list"></param>
-    /// <param name="predicate"></param>
     public static bool All(this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
     {
         if (predicate is null)
@@ -1416,8 +1269,6 @@ public static class SyntaxExtensions
     /// <summary>
     /// Searches for a trivia that matches the predicate and returns the zero-based index of the first occurrence within the entire <see cref="SyntaxTriviaList"/>.
     /// </summary>
-    /// <param name="triviaList"></param>
-    /// <param name="predicate"></param>
     public static int IndexOf(this SyntaxTriviaList triviaList, Func<SyntaxTrivia, bool> predicate)
     {
         if (predicate is null)
@@ -1433,6 +1284,17 @@ public static class SyntaxExtensions
         }
 
         return -1;
+    }
+
+    internal static bool ContainsDirective(this SyntaxTriviaList triviaList)
+    {
+        foreach (SyntaxTrivia trivia in triviaList)
+        {
+            if (trivia.IsDirective)
+                return true;
+        }
+
+        return false;
     }
     #endregion SyntaxTriviaList
 }

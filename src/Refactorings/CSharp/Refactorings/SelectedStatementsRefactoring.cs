@@ -79,7 +79,7 @@ internal static class SelectedStatementsRefactoring
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInCondition))
         {
-            context.RegisterRefactoring(
+            context.AddNestedCodeAction(
                 WrapInIfStatementRefactoring.Title,
                 ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
                 RefactoringDescriptors.WrapStatementsInCondition);
@@ -87,7 +87,7 @@ internal static class SelectedStatementsRefactoring
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInTryCatch))
         {
-            context.RegisterRefactoring(
+            context.AddNestedCodeAction(
                 WrapLinesInTryCatchRefactoring.Title,
                 ct => WrapLinesInTryCatchRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
                 RefactoringDescriptors.WrapLinesInTryCatch);

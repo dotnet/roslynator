@@ -22,10 +22,6 @@ public sealed class ExpectedTestState
     /// <summary>
     /// Initializes a new instance of <see cref="ExpectedTestState"/>.
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="codeActionTitle"></param>
-    /// <param name="annotations"></param>
-    /// <param name="alwaysVerifyAnnotations"></param>
     public ExpectedTestState(
         string source,
         string? codeActionTitle = null,

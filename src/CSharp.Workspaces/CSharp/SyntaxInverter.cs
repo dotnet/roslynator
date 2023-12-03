@@ -22,8 +22,6 @@ public static class SyntaxInverter
     /// <summary>
     /// Returns new expression that represents logical inversion of the specified expression.
     /// </summary>
-    /// <param name="expression"></param>
-    /// <param name="cancellationToken"></param>
     public static ExpressionSyntax LogicallyInvert(
         ExpressionSyntax expression,
         CancellationToken cancellationToken = default)
@@ -34,9 +32,6 @@ public static class SyntaxInverter
     /// <summary>
     /// Returns new expression that represents logical inversion of the specified expression.
     /// </summary>
-    /// <param name="expression"></param>
-    /// <param name="semanticModel"></param>
-    /// <param name="cancellationToken"></param>
     public static ExpressionSyntax LogicallyInvert(
         ExpressionSyntax expression,
         SemanticModel semanticModel,

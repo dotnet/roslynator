@@ -15,7 +15,6 @@ public abstract class CSharpDiagnosticVerifier<TAnalyzer, TFixProvider> : Diagno
     /// <summary>
     /// Initializes a new instance of <see cref="CSharpDiagnosticVerifier{TAnalyzer, TFixProvider}"/>.
     /// </summary>
-    /// <param name="assert"></param>
     internal CSharpDiagnosticVerifier(IAssert assert) : base(assert)
     {
     }
