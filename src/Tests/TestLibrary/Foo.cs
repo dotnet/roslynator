@@ -19,9 +19,6 @@ using Roslynator;
 
 namespace Roslynator;
 
-class C
+ class C
 {
-    void M()
-    {
-    }
 }
