@@ -218,7 +218,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Put constructor initializer on its own line
 #dotnet_diagnostic.rcs0029.severity = none
 
-# Add new line before embedded statement
+# Put embedded statement on its own line
 #dotnet_diagnostic.rcs0030.severity = none
 
 # Put enum member on its own line
@@ -228,7 +228,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs0032.severity = none
 # Options: roslynator_arrow_token_new_line
 
-# Add new line before statement
+# Put statement on its own line
 #dotnet_diagnostic.rcs0033.severity = none
 
 # Put type parameter constraint on its own line

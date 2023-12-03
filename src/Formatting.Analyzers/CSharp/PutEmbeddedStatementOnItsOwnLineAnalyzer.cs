@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class AddNewLineBeforeEmbeddedStatementAnalyzer : BaseDiagnosticAnalyzer
+public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -20,7 +20,7 @@ public sealed class AddNewLineBeforeEmbeddedStatementAnalyzer : BaseDiagnosticAn
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeEmbeddedStatement);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutEmbeddedStatementOnItsOwnLine);
 
             return _supportedDiagnostics;
         }
@@ -125,7 +125,7 @@ public sealed class AddNewLineBeforeEmbeddedStatementAnalyzer : BaseDiagnosticAn
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
-            DiagnosticRules.AddNewLineBeforeEmbeddedStatement,
+            DiagnosticRules.PutEmbeddedStatementOnItsOwnLine,
             Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
     }
 }

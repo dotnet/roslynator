@@ -586,8 +586,8 @@ public static class SyntaxExtensions
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
-            && !node.GetLeadingTrivia().Any(f => f.IsDirective)
-            && !node.GetTrailingTrivia().Any(f => f.IsDirective);
+            && !node.GetLeadingTrivia().ContainsDirective()
+            && !node.GetTrailingTrivia().ContainsDirective();
     }
 
     internal static bool SpanOrLeadingTriviaContainsDirectives(this SyntaxNode node)
@@ -596,7 +596,7 @@ public static class SyntaxExtensions
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
-            && !node.GetTrailingTrivia().Any(f => f.IsDirective);
+            && !node.GetTrailingTrivia().ContainsDirective();
     }
 
     internal static bool SpanOrTrailingTriviaContainsDirectives(this SyntaxNode node)
@@ -605,7 +605,7 @@ public static class SyntaxExtensions
             throw new ArgumentNullException(nameof(node));
 
         return node.ContainsDirectives
-            && !node.GetLeadingTrivia().Any(f => f.IsDirective);
+            && !node.GetLeadingTrivia().ContainsDirective();
     }
 
     /// <summary>
@@ -616,8 +616,16 @@ public static class SyntaxExtensions
         if (node is null)
             throw new ArgumentNullException(nameof(node));
 
-        return node.ContainsDirectives
-            && node.DescendantTrivia(span).Any(f => f.IsDirective);
+        if (node.ContainsDirectives)
+        {
+            foreach (SyntaxTrivia trivia in node.DescendantTrivia(span))
+            {
+                if (trivia.IsDirective)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -1276,6 +1284,17 @@ public static class SyntaxExtensions
         }
 
         return -1;
+    }
+
+    internal static bool ContainsDirective(this SyntaxTriviaList triviaList)
+    {
+        foreach (SyntaxTrivia trivia in triviaList)
+        {
+            if (trivia.IsDirective)
+                return true;
+        }
+
+        return false;
     }
     #endregion SyntaxTriviaList
 }
