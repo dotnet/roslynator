@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements;
 
 internal sealed class WrapLinesInTryCatchRefactoring : WrapStatementsRefactoring<TryStatementSyntax>
 {
-    public const string Title = "Wrap in try-catch";
+    public const string Title = "try-catch";
 
     private WrapLinesInTryCatchRefactoring()
     {
