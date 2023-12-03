@@ -26,8 +26,6 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <summary>
     /// Creates a new <see cref="StatementListSelection"/> based on the specified block and span.
     /// </summary>
-    /// <param name="block"></param>
-    /// <param name="span"></param>
     public static StatementListSelection Create(BlockSyntax block, TextSpan span)
     {
         if (block is null)
@@ -39,8 +37,6 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <summary>
     /// Creates a new <see cref="StatementListSelection"/> based on the specified switch section and span.
     /// </summary>
-    /// <param name="switchSection"></param>
-    /// <param name="span"></param>
     public static StatementListSelection Create(SwitchSectionSyntax switchSection, TextSpan span)
     {
         if (switchSection is null)
@@ -52,8 +48,6 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <summary>
     /// Creates a new <see cref="StatementListSelection"/> based on the specified <see cref="StatementListInfo"/> and span.
     /// </summary>
-    /// <param name="statementsInfo"></param>
-    /// <param name="span"></param>
     public static StatementListSelection Create(in StatementListInfo statementsInfo, TextSpan span)
     {
         return CreateImpl(statementsInfo.Statements, span);
@@ -72,9 +66,6 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <summary>
     /// Creates a new <see cref="StatementListSelection"/> based on the specified block and span.
     /// </summary>
-    /// <param name="block"></param>
-    /// <param name="span"></param>
-    /// <param name="selectedStatements"></param>
     /// <returns>True if the specified span contains at least one statement; otherwise, false.</returns>
     public static bool TryCreate(BlockSyntax block, TextSpan span, out StatementListSelection? selectedStatements)
     {
@@ -105,9 +96,6 @@ public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax
     /// <summary>
     /// Creates a new <see cref="StatementListSelection"/> based on the specified switch section and span.
     /// </summary>
-    /// <param name="switchSection"></param>
-    /// <param name="span"></param>
-    /// <param name="selectedStatements"></param>
     /// <returns>True if the specified span contains at least one statement; otherwise, false.</returns>
     public static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, out StatementListSelection? selectedStatements)
     {

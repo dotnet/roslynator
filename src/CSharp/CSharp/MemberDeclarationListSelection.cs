@@ -31,8 +31,6 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
     /// <summary>
     /// Creates a new <see cref="MemberDeclarationListSelection"/> based on the specified compilation unit and span.
     /// </summary>
-    /// <param name="compilationUnit"></param>
-    /// <param name="span"></param>
     public static MemberDeclarationListSelection Create(CompilationUnitSyntax compilationUnit, TextSpan span)
     {
         if (compilationUnit is null)
@@ -44,8 +42,6 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
     /// <summary>
     /// Creates a new <see cref="MemberDeclarationListSelection"/> based on the specified namespace declaration and span.
     /// </summary>
-    /// <param name="namespaceDeclaration"></param>
-    /// <param name="span"></param>
     public static MemberDeclarationListSelection Create(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span)
     {
         if (namespaceDeclaration is null)
@@ -57,8 +53,6 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
     /// <summary>
     /// Creates a new <see cref="MemberDeclarationListSelection"/> based on the specified type declaration and span.
     /// </summary>
-    /// <param name="typeDeclaration"></param>
-    /// <param name="span"></param>
     public static MemberDeclarationListSelection Create(TypeDeclarationSyntax typeDeclaration, TextSpan span)
     {
         if (typeDeclaration is null)
@@ -77,9 +71,6 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
     /// <summary>
     /// Creates a new <see cref="MemberDeclarationListSelection"/> based on the specified namespace declaration and span.
     /// </summary>
-    /// <param name="namespaceDeclaration"></param>
-    /// <param name="span"></param>
-    /// <param name="selectedMembers"></param>
     /// <returns>True if the specified span contains at least one member; otherwise, false.</returns>
     public static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, out MemberDeclarationListSelection? selectedMembers)
     {
@@ -102,9 +93,6 @@ public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberD
     /// <summary>
     /// Creates a new <see cref="MemberDeclarationListSelection"/> based on the specified type declaration and span.
     /// </summary>
-    /// <param name="typeDeclaration"></param>
-    /// <param name="span"></param>
-    /// <param name="selectedMembers"></param>
     /// <returns>True if the specified span contains at least one member; otherwise, false.</returns>
     public static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, out MemberDeclarationListSelection? selectedMembers)
     {

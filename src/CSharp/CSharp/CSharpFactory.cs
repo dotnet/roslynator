@@ -170,7 +170,6 @@ public static class CSharpFactory
     /// <summary>
     /// Creates a list of modifiers from the specified accessibility.
     /// </summary>
-    /// <param name="accessibility"></param>
     public static SyntaxTokenList TokenList(Accessibility accessibility)
     {
         switch (accessibility)

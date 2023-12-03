@@ -11,7 +11,6 @@ namespace Roslynator;
 /// <summary>
 /// Provides methods to analyze numeric value that acts like a set of flags.
 /// </summary>
-/// <typeparam name="T"></typeparam>
 internal abstract class FlagsUtility<T> where T : struct
 {
     private FlagsUtility()
@@ -67,19 +66,16 @@ internal abstract class FlagsUtility<T> where T : struct
     /// <summary>
     /// Returns true if the specified value is zero or power of two.
     /// </summary>
-    /// <param name="value"></param>
     public abstract bool IsZeroOrPowerOfTwo(T value);
 
     /// <summary>
     /// Returns true if the specified value is power of two.
     /// </summary>
-    /// <param name="value"></param>
     public abstract bool IsPowerOfTwo(T value);
 
     /// <summary>
     /// Returns true if the multiple bits are set in the specified value.
     /// </summary>
-    /// <param name="value"></param>
     public abstract bool IsComposite(T value);
 
     public abstract IEnumerable<T> GetFlags(T value);
@@ -87,7 +83,6 @@ internal abstract class FlagsUtility<T> where T : struct
     /// <summary>
     /// Returns composed value if the specified value can be composed into a single value.
     /// </summary>
-    /// <param name="values"></param>
     public abstract Optional<T> Combine(ImmutableArray<T> values);
 
     private class SByteFlagsUtility : FlagsUtility<sbyte>

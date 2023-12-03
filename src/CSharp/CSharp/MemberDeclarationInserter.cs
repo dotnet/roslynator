@@ -18,8 +18,6 @@ internal abstract class MemberDeclarationInserter
     /// <summary>
     /// Creates a new <see cref="ClassDeclarationSyntax"/> with the specified member inserted.
     /// </summary>
-    /// <param name="classDeclaration"></param>
-    /// <param name="member"></param>
     public ClassDeclarationSyntax Insert(ClassDeclarationSyntax classDeclaration, MemberDeclarationSyntax member)
     {
         if (classDeclaration is null)
@@ -34,8 +32,6 @@ internal abstract class MemberDeclarationInserter
     /// <summary>
     /// Creates a new <see cref="CompilationUnitSyntax"/> with the specified member inserted.
     /// </summary>
-    /// <param name="compilationUnit"></param>
-    /// <param name="member"></param>
     public CompilationUnitSyntax Insert(CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax member)
     {
         if (compilationUnit is null)
@@ -50,8 +46,6 @@ internal abstract class MemberDeclarationInserter
     /// <summary>
     /// Creates a new <see cref="InterfaceDeclarationSyntax"/> with the specified member inserted.
     /// </summary>
-    /// <param name="interfaceDeclaration"></param>
-    /// <param name="member"></param>
     public InterfaceDeclarationSyntax Insert(InterfaceDeclarationSyntax interfaceDeclaration, MemberDeclarationSyntax member)
     {
         if (interfaceDeclaration is null)
@@ -66,8 +60,6 @@ internal abstract class MemberDeclarationInserter
     /// <summary>
     /// Creates a new <see cref="NamespaceDeclarationSyntax"/> with the specified member inserted.
     /// </summary>
-    /// <param name="namespaceDeclaration"></param>
-    /// <param name="member"></param>
     public NamespaceDeclarationSyntax Insert(NamespaceDeclarationSyntax namespaceDeclaration, MemberDeclarationSyntax member)
     {
         if (namespaceDeclaration is null)
@@ -82,8 +74,6 @@ internal abstract class MemberDeclarationInserter
     /// <summary>
     /// Creates a new <see cref="StructDeclarationSyntax"/> with the specified member inserted.
     /// </summary>
-    /// <param name="structDeclaration"></param>
-    /// <param name="member"></param>
     public StructDeclarationSyntax Insert(StructDeclarationSyntax structDeclaration, MemberDeclarationSyntax member)
     {
         if (structDeclaration is null)
@@ -98,8 +88,6 @@ internal abstract class MemberDeclarationInserter
     /// <summary>
     /// Creates a new <see cref="RecordDeclarationSyntax"/> with the specified member inserted.
     /// </summary>
-    /// <param name="recordDeclaration"></param>
-    /// <param name="member"></param>
     public RecordDeclarationSyntax Insert(RecordDeclarationSyntax recordDeclaration, MemberDeclarationSyntax member)
     {
         if (recordDeclaration is null)
@@ -114,8 +102,6 @@ internal abstract class MemberDeclarationInserter
     /// <summary>
     /// Creates a new <see cref="TypeDeclarationSyntax"/> with the specified member removed.
     /// </summary>
-    /// <param name="typeDeclaration"></param>
-    /// <param name="member"></param>
     public TypeDeclarationSyntax Insert(TypeDeclarationSyntax typeDeclaration, MemberDeclarationSyntax member)
     {
         if (typeDeclaration is null)
@@ -130,8 +116,6 @@ internal abstract class MemberDeclarationInserter
     /// <summary>
     /// Creates a new list with the specified node inserted.
     /// </summary>
-    /// <param name="members"></param>
-    /// <param name="member"></param>
     internal SyntaxList<MemberDeclarationSyntax> Insert(SyntaxList<MemberDeclarationSyntax> members, MemberDeclarationSyntax member)
     {
         int index = GetInsertIndex(members, member);

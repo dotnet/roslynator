@@ -16,10 +16,6 @@ public sealed class CompilerDiagnosticFixTestData
     /// <summary>
     /// Initializes a new instance of <see cref="CompilerDiagnosticFixTestData"/>
     /// </summary>
-    /// <param name="diagnosticId"></param>
-    /// <param name="source"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
     [Obsolete("This constructor is obsolete and will be removed in future versions.")]
     public CompilerDiagnosticFixTestData(
         string diagnosticId,
@@ -37,9 +33,6 @@ public sealed class CompilerDiagnosticFixTestData
     /// <summary>
     /// Initializes a new instance of <see cref="CompilerDiagnosticFixTestData"/>
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="additionalFiles"></param>
-    /// <param name="equivalenceKey"></param>
     public CompilerDiagnosticFixTestData(
         string source,
         IEnumerable<AdditionalFile>? additionalFiles = null,

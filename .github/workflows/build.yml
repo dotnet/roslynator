@@ -10,7 +10,7 @@ on:
 env:
   Configuration: Release
   TreatWarningsAsErrors: true
-  WarningsNotAsErrors: 1591,NU5128
+  WarningsNotAsErrors: 1573,1591,NU5128
   Deterministic: true
   RunCodeAnalysis: false
 
