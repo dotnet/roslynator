@@ -110,8 +110,11 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
         SymbolDocumentationProvider documentationProvider = (Options.Documentation)
             ? new SymbolDocumentationProvider(compilations)
             : null;
-
+#if NETFRAMEWORK
+        using (var stringWriter = new StringWriter())
+#else
         await using (var stringWriter = new StringWriter())
+#endif
         using (var writer = new SymbolDefinitionTextWriter(
             stringWriter,
             filter: SymbolFilterOptions,
