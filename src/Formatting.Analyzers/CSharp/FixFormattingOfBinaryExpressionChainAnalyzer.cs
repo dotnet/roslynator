@@ -74,12 +74,12 @@ public sealed class FixFormattingOfBinaryExpressionChainAnalyzer : BaseDiagnosti
             SyntaxTriviaList leftTrailing = left.GetTrailingTrivia();
             SyntaxTriviaList tokenTrailing = token.TrailingTrivia;
 
-            if (IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(leftTrailing))
+            if (AnalyzeAfter(left).IsWrapped)
             {
                 if (Analyze(token))
                     return;
             }
-            else if (IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(tokenTrailing))
+            else if (AnalyzeAfter(token).IsWrapped)
             {
                 if (Analyze(binaryExpression.Right))
                     return;

@@ -26,6 +26,13 @@ internal static class SyntaxTriviaAnalysis
         return Analyze(ref en);
     }
 
+    public static TriviaBlockAnalysis AnalyzeAfter(SyntaxNodeOrToken nodeOrToken)
+    {
+        var en = new TriviaBlockAnalysis.Enumerator(nodeOrToken, default);
+
+        return Analyze(ref en);
+    }
+
     public static TriviaBlockAnalysis AnalyzeBetween(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
     {
         Debug.Assert(first.FullSpan.End == second.FullSpan.Start, $"{first.FullSpan.End} {second.FullSpan.Start}");
@@ -257,56 +264,6 @@ internal static class SyntaxTriviaAnalysis
         }
 
         return default;
-    }
-
-    public static bool IsOptionalWhitespaceThenEndOfLineTrivia(SyntaxTriviaList triviaList)
-    {
-        SyntaxTriviaList.Enumerator en = triviaList.GetEnumerator();
-
-        if (!en.MoveNext())
-            return false;
-
-        SyntaxKind kind = en.Current.Kind();
-
-        if (kind == SyntaxKind.WhitespaceTrivia)
-        {
-            if (!en.MoveNext())
-                return false;
-
-            kind = en.Current.Kind();
-        }
-
-        return kind == SyntaxKind.EndOfLineTrivia
-            && !en.MoveNext();
-    }
-
-    public static bool IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(SyntaxTriviaList triviaList)
-    {
-        SyntaxTriviaList.Enumerator en = triviaList.GetEnumerator();
-
-        if (!en.MoveNext())
-            return false;
-
-        SyntaxKind kind = en.Current.Kind();
-
-        if (kind == SyntaxKind.WhitespaceTrivia)
-        {
-            if (!en.MoveNext())
-                return false;
-
-            kind = en.Current.Kind();
-        }
-
-        if (kind == SyntaxKind.SingleLineCommentTrivia)
-        {
-            if (!en.MoveNext())
-                return false;
-
-            kind = en.Current.Kind();
-        }
-
-        return kind == SyntaxKind.EndOfLineTrivia
-            && !en.MoveNext();
     }
 
     public static IndentationAnalysis AnalyzeIndentation(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)

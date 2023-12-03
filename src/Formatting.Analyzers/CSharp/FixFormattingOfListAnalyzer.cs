@@ -152,9 +152,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
 
         if (span.IsSingleLine(first.SyntaxTree))
         {
-            SyntaxTriviaList trailing = openNodeOrToken.GetTrailingTrivia();
-
-            if (!IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailing))
+            if (!AnalyzeAfter(openNodeOrToken).IsWrapped)
                 return;
 
             int indentationLength = IndentationAnalysis.Create(openNodeOrToken.Parent, context.GetConfigOptions()).IncreasedIndentationLength;
@@ -180,11 +178,11 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                SyntaxTriviaList trailing = (i == 0)
-                    ? openNodeOrToken.GetTrailingTrivia()
-                    : nodes.GetSeparator(i - 1).TrailingTrivia;
+                SyntaxNodeOrToken nodeOrToken = (i == 0)
+                    ? openNodeOrToken
+                    : nodes.GetSeparator(i - 1);
 
-                if (IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailing))
+                if (AnalyzeAfter(nodeOrToken).IsWrapped)
                 {
                     if (ShouldFixIndentation(nodes[i].GetLeadingTrivia(), indentationLength))
                     {

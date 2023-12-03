@@ -36,6 +36,8 @@ internal readonly struct TriviaBlockAnalysis
 
     public bool ContainsDocumentationComment => (_flags & TriviaBlockFlags.DocumentationComment) != 0;
 
+    public bool IsWrapped => Kind == TriviaBlockKind.NewLine || Kind == TriviaBlockKind.BlankLine;
+
     public Location GetLocation()
     {
         return Location.Create(
