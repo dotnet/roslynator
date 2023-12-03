@@ -21,4 +21,7 @@ namespace Roslynator;
 
 class C
 {
+    void M()
+    {
+    }
 }
