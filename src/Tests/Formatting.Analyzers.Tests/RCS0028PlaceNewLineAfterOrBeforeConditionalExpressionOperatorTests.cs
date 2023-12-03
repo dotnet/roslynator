@@ -22,9 +22,9 @@ class C
     {
         bool x = false, y = false, z = false;
 
-        x = (x) [||]?
-            y :
-            z;
+        x = (x) ?
+[||]            y :
+[||]            z;
     }
 }
 ", @"
@@ -52,8 +52,8 @@ class C
     {
         bool x = false, y = false, z = false;
 
-        x = (x) [||]?
-            y
+        x = (x) ?
+[||]            y
             : z;
     }
 }
@@ -83,8 +83,8 @@ class C
         bool x = false, y = false, z = false;
 
         x = (x)
-            ? y [||]:
-            z;
+            ? y :
+[||]            z;
     }
 }
 ", @"
@@ -113,8 +113,8 @@ class C
         bool x = false, y = false, z = false;
 
         x = (x)
-            [||]? y
-            : z;
+[||]            ? y
+[||]            : z;
     }
 }
 ", @"
@@ -143,7 +143,7 @@ class C
         bool x = false, y = false, z = false;
 
         x = (x)
-            [||]? y :
+[||]            ? y :
             z;
     }
 }
@@ -174,7 +174,7 @@ class C
 
         x = (x) ?
             y
-            [||]: z;
+[||]            : z;
     }
 }
 ", @"

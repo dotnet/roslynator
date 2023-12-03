@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
-using Roslynator.CSharp.CodeStyle;
 using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -28,14 +27,6 @@ internal static class SyntaxTriviaAnalysis
     {
         return token.LeadingTrivia.IsEmptyOrWhitespace()
             && token.TrailingTrivia.IsEmptyOrWhitespace();
-    }
-
-    public static bool IsEmptyOrSingleWhitespaceTrivia(SyntaxTriviaList triviaList)
-    {
-        int count = triviaList.Count;
-
-        return count == 0
-            || (count == 1 && triviaList[0].IsWhitespaceTrivia());
     }
 
     public static SyntaxTrivia DetermineEndOfLine(SyntaxNodeOrToken nodeOrToken, SyntaxTrivia? defaultValue = null)
@@ -115,28 +106,6 @@ internal static class SyntaxTriviaAnalysis
         return default;
     }
 
-    public static bool IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(
-        ExpressionSyntax left,
-        SyntaxToken token,
-        ExpressionSyntax right)
-    {
-        return IsOptionalWhitespaceThenEndOfLineTrivia(left.GetTrailingTrivia())
-            && token.LeadingTrivia.IsEmptyOrWhitespace()
-            && token.TrailingTrivia.SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.None, SyntaxKind.WhitespaceTrivia)
-            && !right.GetLeadingTrivia().Any();
-    }
-
-    public static bool IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(
-        ExpressionSyntax left,
-        SyntaxToken token,
-        ExpressionSyntax right)
-    {
-        return left.GetTrailingTrivia().SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.None, SyntaxKind.WhitespaceTrivia)
-            && !token.LeadingTrivia.Any()
-            && IsOptionalWhitespaceThenEndOfLineTrivia(token.TrailingTrivia)
-            && right.GetLeadingTrivia().IsEmptyOrWhitespace();
-    }
-
     public static bool IsOptionalWhitespaceThenEndOfLineTrivia(SyntaxTriviaList triviaList)
     {
         SyntaxTriviaList.Enumerator en = triviaList.GetEnumerator();
@@ -185,22 +154,6 @@ internal static class SyntaxTriviaAnalysis
 
         return kind == SyntaxKind.EndOfLineTrivia
             && !en.MoveNext();
-    }
-
-    public static bool StartsWithOptionalWhitespaceThenEndOfLineTrivia(SyntaxTriviaList trivia)
-    {
-        SyntaxTriviaList.Enumerator en = trivia.GetEnumerator();
-
-        if (!en.MoveNext())
-            return false;
-
-        if (en.Current.IsWhitespaceTrivia()
-            && !en.MoveNext())
-        {
-            return false;
-        }
-
-        return en.Current.IsEndOfLineTrivia();
     }
 
     public static IndentationAnalysis AnalyzeIndentation(SyntaxNode node, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken = default)
@@ -319,11 +272,6 @@ internal static class SyntaxTriviaAnalysis
         return AnalyzeIndentation(node, configOptions, cancellationToken).GetIncreasedIndentationTriviaList();
     }
 
-    public static IEnumerable<IndentationInfo> FindIndentations(SyntaxNode node)
-    {
-        return FindIndentations(node, node.FullSpan);
-    }
-
     public static IEnumerable<IndentationInfo> FindIndentations(SyntaxNode node, TextSpan span)
     {
         foreach (SyntaxTrivia trivia in node.DescendantTrivia(span))
@@ -406,43 +354,5 @@ internal static class SyntaxTriviaAnalysis
         builder.Append(TextSpan.FromBounds(pos, expression.FullSpan.End));
 
         return (TNode)(SyntaxNode)ParseExpression(builder.ToString());
-    }
-
-    public static TriviaBetweenAnalysis AnalyzeNewLineBeforeOrAfter(
-        SyntaxToken token,
-        ExpressionSyntax expression,
-        NewLinePosition newLinePosition)
-    {
-        if (newLinePosition == NewLinePosition.None)
-            return default;
-
-        SyntaxToken previousToken = token.GetPreviousToken();
-
-        TriviaBetweenAnalysis analysisAfter = TriviaBetweenAnalysis.Create(token, expression);
-
-        if (!analysisAfter.Success)
-            return default;
-
-        TriviaBetweenAnalysis analysisBefore = TriviaBetweenAnalysis.Create(previousToken, token);
-
-        if (!analysisBefore.Success)
-            return default;
-
-        if (analysisBefore.Kind == TriviaBetweenKind.NoNewLine)
-        {
-            if (analysisAfter.Kind == TriviaBetweenKind.NoNewLine)
-                return default;
-
-            return (newLinePosition == NewLinePosition.Before)
-                ? analysisAfter
-                : default;
-        }
-
-        if (analysisBefore.ContainsSingleLineComment)
-            return default;
-
-        return (newLinePosition == NewLinePosition.Before)
-            ? default
-            : analysisBefore;
     }
 }

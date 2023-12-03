@@ -50,7 +50,7 @@ public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDia
         if (newLineStyle == NewLineStyle.None)
             return;
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(doStatement.Statement, doStatement.WhileKeyword);
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(doStatement.Statement, doStatement.WhileKeyword);
 
         if (!analysis.Success)
             return;

@@ -18,7 +18,18 @@ namespace Roslynator.CSharp;
 
 internal static class CodeActionFactory
 {
-    public static async Task RegisterCodeActionForNewLineAroundTokenAsync(CodeFixContext context, SyntaxKind tokenKind)
+    public static Task RegisterCodeActionForNewLineAroundTokenAsync(
+        CodeFixContext context,
+        SyntaxKind tokenKind,
+        string newLineReplacement = " ")
+    {
+        return RegisterCodeActionForNewLineAroundTokenAsync(context, token => token.IsKind(tokenKind), newLineReplacement);
+    }
+
+    public static async Task RegisterCodeActionForNewLineAroundTokenAsync(
+        CodeFixContext context,
+        Func<SyntaxToken, bool> tokenPredicate,
+        string newLineReplacement = " ")
     {
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
         Diagnostic diagnostic = context.Diagnostics[0];
@@ -39,7 +50,7 @@ internal static class CodeActionFactory
         }
 
         SyntaxToken third;
-        if (first.IsKind(tokenKind))
+        if (tokenPredicate(first))
         {
             third = second;
             second = first;
@@ -53,28 +64,30 @@ internal static class CodeActionFactory
         AnalyzerConfigOptions configOptions = context.Document.GetConfigOptions(root.SyntaxTree);
         var textChanges = new List<TextChange>();
 
-        TriviaBetweenAnalysis analysis1 = TriviaBetweenAnalysis.Create(first, second);
+        TriviaBetweenAnalysis analysis1 = TriviaBetweenAnalysis.AnalyzeBetween(first, second);
 
         if (!analysis1.ContainsComment)
         {
             string indentation = null;
 
             if (analysis1.Kind == TriviaBetweenKind.NoNewLine)
-                indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(analysis1.First.Parent, configOptions, context.CancellationToken);
+                indentation = GetIncreasedIndentation(analysis1.First, configOptions, context.CancellationToken);
 
-            TextChange textChange = GetTextChangeForNewLine(analysis1, configOptions, indentation, cancellationToken: context.CancellationToken);
+            TextChange textChange = GetTextChangeForNewLine(analysis1, configOptions, indentation, newLineReplacement: newLineReplacement, cancellationToken: context.CancellationToken);
             textChanges.Add(textChange);
         }
 
-        TriviaBetweenAnalysis analysis2 = TriviaBetweenAnalysis.Create(second, third);
+        TriviaBetweenAnalysis analysis2 = TriviaBetweenAnalysis.AnalyzeBetween(second, third);
 
         if (!analysis2.ContainsComment)
         {
-            TextChange textChange = GetTextChangeForNewLine(analysis2, configOptions, cancellationToken: context.CancellationToken);
+            TextChange textChange = GetTextChangeForNewLine(analysis2, configOptions, newLineReplacement: newLineReplacement, cancellationToken: context.CancellationToken);
             textChanges.Add(textChange);
         }
 
-        string title = (position >= second.Span.End) ? $"Place new line before '{second}'" : $"Place new line after '{second}'";
+        string title = (position >= second.Span.End)
+            ? $"Place new line before '{second}'"
+            : $"Place new line after '{second}'";
 
         CodeAction codeAction = CodeAction.Create(
             title,
@@ -117,7 +130,7 @@ internal static class CodeActionFactory
         }
 
         string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(first, second);
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(first, second);
 
         Debug.Assert(position == analysis.Position);
 
@@ -206,7 +219,7 @@ internal static class CodeActionFactory
         context.RegisterCodeFix(codeAction, diagnostic);
     }
 
-    public static TextChange GetTextChangeForNewLine(
+    private static TextChange GetTextChangeForNewLine(
         SyntaxNode root,
         int position,
         AnalyzerConfigOptions configOptions,
@@ -229,22 +242,21 @@ internal static class CodeActionFactory
             first = token.GetPreviousToken();
         }
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(first, second);
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(first, second);
 
         Debug.Assert(position == analysis.Position);
 
-        return GetTextChangeForNewLine(analysis, configOptions, indentation, options, cancellationToken);
+        return GetTextChangeForNewLine(analysis, configOptions, indentation: indentation, options: options, cancellationToken: cancellationToken);
     }
 
     private static TextChange GetTextChangeForNewLine(
         TriviaBetweenAnalysis analysis,
         AnalyzerConfigOptions configOptions,
         string indentation = null,
+        string newLineReplacement = " ",
         CodeActionNewLineOptions options = CodeActionNewLineOptions.None,
         CancellationToken cancellationToken = default)
     {
-        string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(analysis.First).ToString();
-
         switch (analysis.Kind)
         {
             case TriviaBetweenKind.NoNewLine:
@@ -259,8 +271,10 @@ internal static class CodeActionFactory
                     }
 
                     indentation ??= ((options & CodeActionNewLineOptions.IncreaseIndentation) != 0)
-                        ? SyntaxTriviaAnalysis.GetIncreasedIndentation(analysis.First.Parent, configOptions, cancellationToken)
+                        ? GetIncreasedIndentation(analysis.First, configOptions, cancellationToken)
                         : SyntaxTriviaAnalysis.DetermineIndentation(analysis.First, cancellationToken).ToString();
+
+                    string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(analysis.First).ToString();
 
                     return new TextChange(TextSpan.FromBounds(analysis.Position, end), endOfLine + indentation);
                 }
@@ -285,7 +299,7 @@ internal static class CodeActionFactory
                         }
                     }
 
-                    return new TextChange(TextSpan.FromBounds(start, end), " ");
+                    return new TextChange(TextSpan.FromBounds(start, end), newLineReplacement);
                 }
             case TriviaBetweenKind.BlankLine:
                 {
@@ -304,13 +318,24 @@ internal static class CodeActionFactory
                         end = en.Current.Span.End;
                     }
 
-                    return new TextChange(TextSpan.FromBounds(analysis.First.Span.End, end), " ");
+                    return new TextChange(TextSpan.FromBounds(analysis.First.Span.End, end), newLineReplacement);
                 }
             default:
                 {
                     throw new InvalidOperationException();
                 }
         }
+    }
+
+    private static string GetIncreasedIndentation(SyntaxNodeOrToken nodeOrToken, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken)
+    {
+        SyntaxNode node = (nodeOrToken.IsNode) ? nodeOrToken.AsNode() : nodeOrToken.AsToken().Parent;
+
+        SyntaxNode statementOrMember = node.FirstAncestorOrSelf(f => f is StatementSyntax
+            || f is MemberDeclarationSyntax
+            || f is SwitchLabelSyntax);
+
+        return SyntaxTriviaAnalysis.GetIncreasedIndentation(statementOrMember ?? node, configOptions, cancellationToken);
     }
 
     public static CodeAction Create(

@@ -61,7 +61,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
         if (accessor2.BodyOrExpressionBody() is null)
             return;
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(accessor1, accessor2);
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(accessor1, accessor2);
 
         if (!analysis.Success)
             return;

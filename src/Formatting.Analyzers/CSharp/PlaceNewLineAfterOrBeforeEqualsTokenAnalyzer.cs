@@ -101,7 +101,7 @@ public sealed class PlaceNewLineAfterOrBeforeEqualsTokenAnalyzer : BaseDiagnosti
     {
         NewLinePosition newLinePosition = context.GetEqualsSignNewLinePosition();
 
-        TriviaBetweenAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeNewLineBeforeOrAfter(token, expression, newLinePosition);
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeAround(token, expression, newLinePosition);
 
         if (analysis.Success)
         {

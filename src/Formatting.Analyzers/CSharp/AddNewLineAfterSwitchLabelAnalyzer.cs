@@ -46,7 +46,7 @@ public sealed class AddNewLineAfterSwitchLabelAnalyzer : BaseDiagnosticAnalyzer
         if (statement is null)
             return;
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(label, statement);
+        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.AnalyzeBetween(label, statement);
 
         if (!analysis.Success)
             return;

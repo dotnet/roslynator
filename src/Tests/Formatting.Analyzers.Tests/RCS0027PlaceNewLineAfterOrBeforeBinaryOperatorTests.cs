@@ -24,9 +24,9 @@ class C
         bool y = false;
         bool z = false;
 
-        if (x [||]&&
-            y [||]&&
-            z)
+        if (x &&
+[||]            y &&
+[||]            z)
         {
         }
     }
@@ -63,8 +63,8 @@ class C
         bool z = false;
 
         if (x
-            [||]&& y
-            [||]&& z)
+[||]            && y
+[||]            && z)
         {
         }
     }

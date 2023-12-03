@@ -3,7 +3,9 @@
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.CodeStyle;
 
 namespace Roslynator.CSharp;
 
@@ -41,7 +43,7 @@ internal readonly struct TriviaBetweenAnalysis
         return Location.Create(First.SyntaxTree, new TextSpan(Position, 0));
     }
 
-    public static TriviaBetweenAnalysis Create(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
+    public static TriviaBetweenAnalysis AnalyzeBetween(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
     {
         Debug.Assert(first.FullSpan.End == second.FullSpan.Start, $"{first.FullSpan.End} {second.FullSpan.Start}");
 
@@ -139,6 +141,44 @@ internal readonly struct TriviaBetweenAnalysis
                 return default;
             }
         }
+    }
+
+    public static TriviaBetweenAnalysis AnalyzeAround(
+        SyntaxToken token,
+        ExpressionSyntax nextExpression,
+        NewLinePosition newLinePosition)
+    {
+        if (newLinePosition == NewLinePosition.None)
+            return default;
+
+        SyntaxToken previousToken = token.GetPreviousToken();
+
+        TriviaBetweenAnalysis analysisAfter = AnalyzeBetween(token, nextExpression);
+
+        if (!analysisAfter.Success)
+            return default;
+
+        TriviaBetweenAnalysis analysisBefore = AnalyzeBetween(previousToken, token);
+
+        if (!analysisBefore.Success)
+            return default;
+
+        if (analysisBefore.Kind == TriviaBetweenKind.NoNewLine)
+        {
+            if (analysisAfter.Kind == TriviaBetweenKind.NoNewLine)
+                return default;
+
+            return (newLinePosition == NewLinePosition.Before)
+                ? analysisAfter
+                : default;
+        }
+
+        if (analysisBefore.ContainsSingleLineComment)
+            return default;
+
+        return (newLinePosition == NewLinePosition.Before)
+            ? default
+            : analysisBefore;
     }
 
     public Enumerator GetEnumerator()
