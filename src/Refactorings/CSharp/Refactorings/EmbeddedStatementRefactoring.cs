@@ -14,7 +14,7 @@ internal static class EmbeddedStatementRefactoring
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInCondition))
         {
-            context.RegisterRefactoring(
+            context.AddNestedCodeAction(
                 WrapInIfStatementRefactoring.Title,
                 ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
                 RefactoringDescriptors.WrapStatementsInCondition);
@@ -22,7 +22,7 @@ internal static class EmbeddedStatementRefactoring
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInTryCatch))
         {
-            context.RegisterRefactoring(
+            context.AddNestedCodeAction(
                 WrapLinesInTryCatchRefactoring.Title,
                 ct => WrapLinesInTryCatchRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
                 RefactoringDescriptors.WrapLinesInTryCatch);
