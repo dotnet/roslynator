@@ -319,10 +319,7 @@ internal static class ParseHelpers
     {
         try
         {
-            if (!Path.IsPathRooted(path))
-                path = Path.GetFullPath(path);
-
-            result = path;
+            result = Path.GetFullPath(path);
             return true;
         }
         catch (ArgumentException ex)

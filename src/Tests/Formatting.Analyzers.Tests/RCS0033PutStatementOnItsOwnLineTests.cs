@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests;
 
-public class RCS0033AddNewLineBeforeStatementTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeStatementAnalyzer, StatementCodeFixProvider>
+public class RCS0033PutStatementOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutStatementOnItsOwnLineAnalyzer, StatementCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeStatement;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutStatementOnItsOwnLine;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task Test_Block()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -35,7 +35,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task Test_Block_SingleLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -55,7 +55,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task Test_SwitchSection()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -90,7 +90,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task TestNoDiagnostic_EmptyStatement()
     {
         await VerifyNoDiagnosticAsync(@"
