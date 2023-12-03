@@ -54,19 +54,21 @@ internal abstract class SelectedLinesRefactoring
             {
                 if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInRegion))
                 {
-                    context.RegisterRefactoring(
-                        "Wrap in #region",
+                    context.AddNestedCodeAction(
+                        "#region",
                         ct => WrapLinesInRegionRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
                         RefactoringDescriptors.WrapLinesInRegion);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInPreprocessorDirective))
                 {
-                    context.RegisterRefactoring(
-                        "Wrap in #if",
+                    context.AddNestedCodeAction(
+                        "#if",
                         ct => WrapLinesInPreprocessorDirectiveRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
                         RefactoringDescriptors.WrapLinesInPreprocessorDirective);
                 }
+
+                context.RegisterNestedCodeActions("Wrap in");
             }
 
             if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveEmptyLines))
