@@ -18,8 +18,8 @@ public class RCS0032PlaceNewLineAfterOrBeforeArrowTokenTests : AbstractCSharpDia
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string M() =>
-[||]        null;
+    string M() =>[||]
+        null;
 }
 ", @"
 class C
@@ -36,8 +36,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string M()
-[||]        => null;
+    string M()[||]
+        => null;
 }
 ", @"
 class C
@@ -54,8 +54,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string M() => // x
-[||]        null;
+    string M() => // x[||]
+        null;
 }
 ", @"
 class C

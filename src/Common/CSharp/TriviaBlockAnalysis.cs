@@ -52,8 +52,9 @@ internal readonly struct TriviaBlockAnalysis
 
     public struct Enumerator
     {
+        private SyntaxTrivia _previous = default;
         private bool _isSecondTrivia = false;
-        private bool _afterFirstEol = false;
+        private int _firstEolEnd = 0;
         private SyntaxTriviaList.Enumerator _enumerator;
 
         public Enumerator(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
@@ -98,13 +99,23 @@ internal readonly struct TriviaBlockAnalysis
                     return false;
             }
 
-            if (Current.IsEndOfLineTrivia()
-                && !_afterFirstEol)
+            if (Current.IsEndOfLineTrivia())
             {
-                Position = Current.Span.End;
-                _afterFirstEol = true;
+                if (_firstEolEnd == 0)
+                {
+                    Position = Current.Span.Start;
+                    _firstEolEnd = Current.Span.End;
+                }
+                else if (_firstEolEnd > 0)
+                {
+                    if (!_previous.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                        Position = _firstEolEnd;
+
+                    _firstEolEnd = -1;
+                }
             }
 
+            _previous = Current;
             return true;
         }
 

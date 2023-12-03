@@ -15,8 +15,8 @@ public class RCS0049AddBlankLineAfterTopCommentTests : AbstractCSharpDiagnosticV
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
     public async Task Test_Class()
     {
-        await VerifyDiagnosticAndFixAsync(@"// x
-[||]class C
+        await VerifyDiagnosticAndFixAsync(@"// x[||]
+class C
 {
 }
 ", @"// x
@@ -30,8 +30,8 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
     public async Task Test_ExternAlias()
     {
-        await VerifyDiagnosticAndFixAsync(@"// x
-[||]extern alias x;
+        await VerifyDiagnosticAndFixAsync(@"// x[||]
+extern alias x;
 
 class C
 {
@@ -49,8 +49,8 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
     public async Task Test_Using()
     {
-        await VerifyDiagnosticAndFixAsync(@"// x
-[||]using System;
+        await VerifyDiagnosticAndFixAsync(@"// x[||]
+using System;
 
 class C
 {
@@ -68,8 +68,8 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
     public async Task Test_AttributeList()
     {
-        await VerifyDiagnosticAndFixAsync(@"// x
-[||][assembly: AssemblyAttribute]
+        await VerifyDiagnosticAndFixAsync(@"// x[||]
+[assembly: AssemblyAttribute]
 
 class C
 {

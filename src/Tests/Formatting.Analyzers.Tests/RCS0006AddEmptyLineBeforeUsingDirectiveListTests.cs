@@ -20,8 +20,8 @@ public class RCS0006AddEmptyLineBeforeUsingDirectiveListTests : AbstractCSharpDi
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
     public async Task Test_Comment_Before()
     {
-        await VerifyDiagnosticAndFixAsync(@"// x
-[||]using System;
+        await VerifyDiagnosticAndFixAsync(@"// x[||]
+using System;
 using System.Linq;
 
 namespace N
@@ -42,8 +42,8 @@ namespace N
     public async Task Test_CommentAndExternAlias_Before()
     {
         await VerifyDiagnosticAndFixAsync(@"
-extern alias x;
-[||]using System;
+extern alias x;[||]
+using System;
 using System.Linq;
 
 namespace N
@@ -65,8 +65,8 @@ namespace N
     public async Task Test_Comment_ExternAliasAndComment_Before()
     {
         await VerifyDiagnosticAndFixAsync(@"
-extern alias x; // x
-[||]using System;
+extern alias x; // x[||]
+using System;
 using System.Linq;
 
 namespace N
