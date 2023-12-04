@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add option `roslynator_collection_creation_implicit_type_style` ([PR](https://github.com/dotnet/roslynator/pull/1307))
+  - Values: `brackets`, `brackets_when_not_empty`
+
+### Changed
+
+- Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1307))
+
 ## [4.7.0] - 2023-12-03
 
 ### Added
