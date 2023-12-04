@@ -318,6 +318,12 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
         if (typeSymbol is IArrayTypeSymbol arrayType)
             return arrayType.Rank == 1;
 
+        if (typeSymbol.HasMetadataName(MetadataNames.System_Span_T))
+            return true;
+
+        if (typeSymbol.HasMetadataName(MetadataNames.System_ReadOnlySpan_T))
+            return true;
+
         if (typeSymbol is INamedTypeSymbol namedType
             && namedType.ImplementsAny(
                 SpecialType.System_Collections_IEnumerable,
