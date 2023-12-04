@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add option `roslynator_collection_creation_implicit_type_style` ([PR](https://github.com/dotnet/roslynator/pull/1307))
-  - Values: `brackets`, `brackets_when_not_empty`
+- Add option `roslynator_use_collection_expressoin = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1307))
+  - Applicable to [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) and [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250)
 
 ### Changed
 
