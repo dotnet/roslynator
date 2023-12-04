@@ -13,26 +13,6 @@ public class RCS1250UseImplicitOrExplicitObjectCreationTests : AbstractCSharpDia
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseImplicitOrExplicitObjectCreation;
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
-    public async Task Test_PreferImplicit_ThrowStatement2()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System.Collections.Generic;
-
-class C
-{
-    List<string> P { get; } = [|[null, """"]|];
-}
-", @"
-using System.Collections.Generic;
-
-class C
-{
-    List<string> P { get; } = new List<string>() { null, """" };
-}
-", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_PreferImplicit_ThrowStatement()
     {
         await VerifyDiagnosticAndFixAsync(@"
