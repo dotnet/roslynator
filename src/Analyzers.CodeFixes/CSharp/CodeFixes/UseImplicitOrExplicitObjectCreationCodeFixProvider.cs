@@ -155,7 +155,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                             CreateInitializer(collectionExpression, typeSymbol))
                             .WithTriviaFrom(collectionExpression);
 
-                        return await document.ReplaceNodeAsync(collectionExpression, objectCreation, ct);
+                        return await document.ReplaceNodeAsync(collectionExpression, objectCreation, ct).ConfigureAwait(false);
                     },
                     GetEquivalenceKey(diagnostic));
 
