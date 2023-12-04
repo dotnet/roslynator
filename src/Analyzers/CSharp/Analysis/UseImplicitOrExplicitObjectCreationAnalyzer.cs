@@ -48,11 +48,6 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
 
             startContext.RegisterSyntaxNodeAction(c => AnalyzeImplicitObjectCreationExpression(c), SyntaxKind.ImplicitObjectCreationExpression);
             startContext.RegisterSyntaxNodeAction(c => AnalyzeCollectionExpression(c), SyntaxKind.CollectionExpression);
-
-            startContext.RegisterSyntaxNodeAction(
-                c => AnalyzeImplicit(c),
-                SyntaxKind.ImplicitObjectCreationExpression,
-                SyntaxKind.CollectionExpression);
         });
     }
 
@@ -307,7 +302,8 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
     private static void AnalyzeImplicitObjectCreationExpression(SyntaxNodeAnalysisContext context)
     {
         if (!AnalyzeImplicit(context)
-            && context.UseCollectionExpression() == true)
+            && context.UseCollectionExpression() == true
+            && ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true)
         {
             ReportImplicitToImplicit(context, "collection expression");
         }
