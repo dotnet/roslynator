@@ -324,6 +324,9 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
         if (typeSymbol.HasMetadataName(MetadataNames.System_ReadOnlySpan_T))
             return true;
 
+        if (typeSymbol.HasAttribute(MetadataNames.System_Runtime_CompilerServices_CollectionBuilderAttribute))
+            return true;
+
         if (typeSymbol is INamedTypeSymbol namedType
             && namedType.ImplementsAny(
                 SpecialType.System_Collections_IEnumerable,
