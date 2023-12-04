@@ -26,13 +26,13 @@ internal static class CSharpUtility
 
     public static bool CanConvertToCollectionExpression(ArrayCreationExpressionSyntax arrayCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        return !arrayCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument)
+        return !arrayCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument, SyntaxKind.ForEachStatement, SyntaxKind.ForEachVariableStatement)
             && SyntaxUtility.CanConvertToCollectionExpression(arrayCreation, semanticModel, cancellationToken);
     }
 
     public static bool CanConvertToCollectionExpression(ImplicitArrayCreationExpressionSyntax implicitArrayCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        return !implicitArrayCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument)
+        return !implicitArrayCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument, SyntaxKind.ForEachStatement, SyntaxKind.ForEachVariableStatement)
             && SyntaxUtility.CanConvertToCollectionExpression(implicitArrayCreation, semanticModel, cancellationToken);
     }
 

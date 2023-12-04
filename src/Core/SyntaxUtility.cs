@@ -10,7 +10,12 @@ internal static class SyntaxUtility
 {
     public static bool CanConvertToCollectionExpression(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(node, cancellationToken);
+        TypeInfo typeInfo = semanticModel.GetTypeInfo(node, cancellationToken);
+
+        if (typeInfo.ConvertedType?.SpecialType == SpecialType.System_Object)
+            return false;
+
+        ITypeSymbol? typeSymbol = typeInfo.Type;
 
         if (typeSymbol?.IsErrorType() != false)
             return false;

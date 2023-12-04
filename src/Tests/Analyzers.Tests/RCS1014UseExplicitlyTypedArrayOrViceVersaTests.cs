@@ -192,6 +192,38 @@ class C
         var items = new string[0];
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.AccessibilityModifiers_Implicit));
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task TestNoDiagnostic_AssignmentToObject()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        object o = new[] { "", "" };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task TestNoDiagnostic_ForEachExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        foreach (string item in new[] { "", "" })
+        {
+        }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 }
