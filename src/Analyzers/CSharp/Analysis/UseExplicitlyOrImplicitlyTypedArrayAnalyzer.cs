@@ -147,6 +147,9 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
                 return;
         }
 
+        if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.IsKind(SymbolKind.ArrayType) != true)
+            return;
+
         ArrayCreationTypeStyle style = context.GetArrayCreationTypeStyle();
 
         var useExplicit = false;

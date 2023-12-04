@@ -313,6 +313,9 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
 
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
+        if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.IsKind(SymbolKind.ArrayType) != false)
+            return;
+
         if (!AnalyzeImplicit(context)
             && context.UseCollectionExpression() == false)
         {

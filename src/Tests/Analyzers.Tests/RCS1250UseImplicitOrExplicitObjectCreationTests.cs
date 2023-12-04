@@ -1600,4 +1600,18 @@ class C
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task TestNoDiagnostic_ForEachExpression2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string[] M()
+    {
+        return ["""", """"];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
 }
