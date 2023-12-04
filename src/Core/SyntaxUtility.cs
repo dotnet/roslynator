@@ -8,7 +8,7 @@ namespace Roslynator;
 
 internal static class SyntaxUtility
 {
-    public static bool CanConvertFromCollectionExpression(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+    public static bool CanConvertToCollectionExpression(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(node, cancellationToken);
 

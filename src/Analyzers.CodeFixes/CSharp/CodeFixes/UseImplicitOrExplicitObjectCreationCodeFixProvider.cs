@@ -50,7 +50,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             bool useCollectionExpression = document.GetConfigOptions(objectCreation.SyntaxTree).UseCollectionExpression() == true
-                && SyntaxUtility.CanConvertFromCollectionExpression(objectCreation, semanticModel, context.CancellationToken);
+                && CSharpUtility.CanConvertToCollectionExpression(objectCreation, semanticModel, context.CancellationToken);
 
             CodeAction codeAction = CodeAction.Create(
                 (useCollectionExpression)

@@ -1780,7 +1780,7 @@ foreach (var item in items)
     <Id>RCS1014</Id>
     <Identifier>UseExplicitlyOrImplicitlyTypedArray</Identifier>
     <Title>Use explicitly/implicitly typed array</Title>
-    <MessageFormat>Use {0} typed array</MessageFormat>
+    <MessageFormat>Use {0}</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -7290,7 +7290,7 @@ void M()
     <Id>RCS1250</Id>
     <Identifier>UseImplicitOrExplicitObjectCreation</Identifier>
     <Title>Use implicit/explicit object creation</Title>
-    <MessageFormat>Use {0} object creation</MessageFormat>
+    <MessageFormat>Use {0}</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <MinLanguageVersion>9.0</MinLanguageVersion>

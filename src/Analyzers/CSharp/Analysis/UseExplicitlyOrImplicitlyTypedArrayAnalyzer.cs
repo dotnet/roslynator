@@ -43,6 +43,8 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
     private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
     {
+        var implicitArrayCreation = (ImplicitArrayCreationExpressionSyntax)context.Node;
+
         ArrayCreationTypeStyle style = context.GetArrayCreationTypeStyle();
 
         var useExplicit = false;
@@ -50,38 +52,34 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
         if (style == ArrayCreationTypeStyle.Explicit
             || style == ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious)
         {
-            useExplicit = AnalyzeImplicitArrayCreationExpression(context, style);
+            useExplicit = AnalyzeImplicitArrayCreationExpression(context, implicitArrayCreation, style);
         }
 
         if (!useExplicit
-            && context.UseCollectionExpression() == true)
+            && context.UseCollectionExpression() == true
+            && CSharpUtility.CanConvertToCollectionExpression(implicitArrayCreation, context.SemanticModel, context.CancellationToken)
+            && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression())
         {
-            var arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(context.Node, context.CancellationToken) as IArrayTypeSymbol;
-
-            if (arrayTypeSymbol?.Rank == 1)
-            {
-                var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
-
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-                    Location.Create(
-                        expression.SyntaxTree,
-                        TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End)),
-                    _diagnosticProperties,
-                    "implicitly");
-            }
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
+                Location.Create(
+                    implicitArrayCreation.SyntaxTree,
+                    TextSpan.FromBounds(implicitArrayCreation.NewKeyword.SpanStart, implicitArrayCreation.CloseBracketToken.Span.End)),
+                _diagnosticProperties,
+                "collection expression");
         }
     }
 
-    private static bool AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context, ArrayCreationTypeStyle kind)
+    private static bool AnalyzeImplicitArrayCreationExpression(
+        SyntaxNodeAnalysisContext context,
+        ImplicitArrayCreationExpressionSyntax implicitArrayCreation,
+        ArrayCreationTypeStyle kind)
     {
-        var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
-
-        if (expression.ContainsDiagnostics
-            || expression.NewKeyword.ContainsDirectives
-            || expression.OpenBracketToken.ContainsDirectives
-            || expression.CloseBracketToken.ContainsDirectives)
+        if (implicitArrayCreation.ContainsDiagnostics
+            || implicitArrayCreation.NewKeyword.ContainsDirectives
+            || implicitArrayCreation.OpenBracketToken.ContainsDirectives
+            || implicitArrayCreation.CloseBracketToken.ContainsDirectives)
         {
             return false;
         }
@@ -90,7 +88,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
         if (kind == ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious)
         {
-            InitializerExpressionSyntax initializer = expression.Initializer;
+            InitializerExpressionSyntax initializer = implicitArrayCreation.Initializer;
 
             if (initializer is not null)
             {
@@ -100,7 +98,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
                 {
                     if (arrayTypeSymbol is null)
                     {
-                        arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
+                        arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken) as IArrayTypeSymbol;
 
                         if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
                             return false;
@@ -119,7 +117,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
         if (arrayTypeSymbol is null)
         {
-            arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
+            arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken) as IArrayTypeSymbol;
 
             if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
                 return false;
@@ -129,9 +127,9 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
             context,
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
             Location.Create(
-                expression.SyntaxTree,
-                TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End)),
-            "explicitly");
+                implicitArrayCreation.SyntaxTree,
+                TextSpan.FromBounds(implicitArrayCreation.NewKeyword.SpanStart, implicitArrayCreation.CloseBracketToken.Span.End)),
+            "explicitly typed array");
 
         return true;
     }
@@ -175,7 +173,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
                         expression.SyntaxTree,
                         TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End)),
                     _diagnosticProperties,
-                    "implicitly");
+                    "implicitly typed array");
             }
         }
     }
@@ -223,7 +221,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
             context,
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
             collectionExpression,
-            "explicitly");
+            "explicitly typed array");
 
         return true;
     }
@@ -279,12 +277,22 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
             elementType.SpanStart,
             ((rankSpecifiers.Count > 1) ? rankSpecifiers.LastButOne() : (SyntaxNode)elementType).Span.End);
 
-        Location location = Location.Create(arrayCreation.SyntaxTree, textSpan);
+        string messageArg;
+        if (context.UseCollectionExpression() == true
+            && CSharpUtility.CanConvertToCollectionExpression(arrayCreation, context.SemanticModel, context.CancellationToken)
+            && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression())
+        {
+            messageArg = "collection expression";
+        }
+        else
+        {
+            messageArg = "implicitly typed array";
+        }
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-            location,
-            "implicitly");
+            Location.Create(arrayCreation.SyntaxTree, textSpan),
+            messageArg);
     }
 }

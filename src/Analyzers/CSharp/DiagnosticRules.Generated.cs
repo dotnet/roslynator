@@ -165,7 +165,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseExplicitlyOrImplicitlyTypedArray = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray, 
             title:              "Use explicitly/implicitly typed array", 
-            messageFormat:      "Use {0} typed array", 
+            messageFormat:      "Use {0}", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 

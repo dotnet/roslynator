@@ -10,6 +10,32 @@ namespace Roslynator.CSharp;
 
 internal static class CSharpUtility
 {
+    public static bool CanConvertToCollectionExpression(ImplicitObjectCreationExpressionSyntax implicitObjectCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        return !implicitObjectCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument)
+            && implicitObjectCreation.ArgumentList?.Arguments.Any() != true
+            && SyntaxUtility.CanConvertToCollectionExpression(implicitObjectCreation, semanticModel, cancellationToken);
+    }
+
+    public static bool CanConvertToCollectionExpression(ObjectCreationExpressionSyntax objectCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        return !objectCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument)
+            && objectCreation.ArgumentList?.Arguments.Any() != true
+            && SyntaxUtility.CanConvertToCollectionExpression(objectCreation, semanticModel, cancellationToken);
+    }
+
+    public static bool CanConvertToCollectionExpression(ArrayCreationExpressionSyntax arrayCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        return !arrayCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument)
+            && SyntaxUtility.CanConvertToCollectionExpression(arrayCreation, semanticModel, cancellationToken);
+    }
+
+    public static bool CanConvertToCollectionExpression(ImplicitArrayCreationExpressionSyntax implicitArrayCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        return !implicitArrayCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument)
+            && SyntaxUtility.CanConvertToCollectionExpression(implicitArrayCreation, semanticModel, cancellationToken);
+    }
+
     public static bool IsNullableReferenceType(
         TypeSyntax type,
         SemanticModel semanticModel,

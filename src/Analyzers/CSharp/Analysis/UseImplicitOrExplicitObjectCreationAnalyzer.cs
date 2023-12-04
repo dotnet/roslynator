@@ -299,18 +299,22 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
     private static void AnalyzeImplicitObjectCreationExpression(SyntaxNodeAnalysisContext context)
     {
         if (!AnalyzeImplicit(context)
-            && context.UseCollectionExpression() == true
-            && ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
-            && SyntaxUtility.CanConvertFromCollectionExpression(context.Node, context.SemanticModel, context.CancellationToken))
+            && context.UseCollectionExpression() == true)
         {
-            ReportImplicitToImplicit(context, "implicit object creation");
+            var implicitObjectCreation = (ImplicitObjectCreationExpressionSyntax)context.Node;
+
+            if (CSharpUtility.CanConvertToCollectionExpression(implicitObjectCreation, context.SemanticModel, context.CancellationToken)
+                && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression())
+            {
+                ReportImplicitToImplicit(context, "collection expression");
+            }
         }
     }
 
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
         if (!AnalyzeImplicit(context)
-            && context.UseCollectionExpression() != true)
+            && context.UseCollectionExpression() == false)
         {
             ReportImplicitToImplicit(context, "implicit object creation");
         }
@@ -662,11 +666,23 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
 
     private static void ReportExplicit(SyntaxNodeAnalysisContext context, ObjectCreationExpressionSyntax objectCreation)
     {
+        string messageArg;
+        if (context.UseCollectionExpression() == true
+            && CSharpUtility.CanConvertToCollectionExpression(objectCreation, context.SemanticModel, context.CancellationToken)
+            && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression())
+        {
+            messageArg = "collection expression";
+        }
+        else
+        {
+            messageArg = "implicit object creation";
+        }
+
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             objectCreation.Type,
-            "implicit object creation");
+            messageArg);
     }
 
     private static void ReportImplicit(SyntaxNodeAnalysisContext context, SyntaxNode node)
