@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.CodeStyle;
+using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes;
@@ -58,15 +58,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                     if (useCollectionExpression == true)
                     {
-                        newNode = CollectionExpression(
-                            Token(SyntaxKind.OpenBracketToken),
-                            objectCreation
-                                .Initializer?
-                                .Expressions
-                                .Select(f => ExpressionElement(f))
-                                .ToSeparatedSyntaxList<CollectionElementSyntax>()
-                                ?? default,
-                            Token(SyntaxKind.CloseBracketToken));
+                        newNode = CreateCollectionExpression(objectCreation.Initializer);
                     }
                     else
                     {
@@ -98,71 +90,103 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
         }
         else if (node is ImplicitObjectCreationExpressionSyntax implicitObjectCreation)
         {
-            CodeAction codeAction = CodeAction.Create(
-                "Use explicit object creation",
-                async ct =>
-                {
-                    SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
+            if (diagnostic.Properties.ContainsKey(UseImplicitOrExplicitObjectCreationAnalyzer.ConvertImplicitToImplicitPropertyKey))
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Use collection expression",
+                    async ct =>
+                    {
+                        CollectionExpressionSyntax collectionExpression = CreateCollectionExpression(implicitObjectCreation.Initializer)
+                            .PrependToLeadingTrivia(implicitObjectCreation.NewKeyword.LeadingTrivia);
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitObjectCreation, ct);
+                        if (implicitObjectCreation.Initializer is null)
+                            collectionExpression = collectionExpression.WithTrailingTrivia(implicitObjectCreation.ArgumentList.GetTrailingTrivia());
 
-                    TypeSyntax type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
+                        return await document.ReplaceNodeAsync(implicitObjectCreation, collectionExpression, ct).ConfigureAwait(false);
+                    },
+                    GetEquivalenceKey(diagnostic));
 
-                    SyntaxToken newKeyword = implicitObjectCreation.NewKeyword;
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Use explicit object creation",
+                    async ct =>
+                    {
+                        SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
 
-                    if (!newKeyword.TrailingTrivia.Any())
-                        newKeyword = newKeyword.WithTrailingTrivia(ElasticSpace);
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitObjectCreation, ct);
 
-                    ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
-                        newKeyword,
-                        type,
-                        implicitObjectCreation.ArgumentList,
-                        implicitObjectCreation.Initializer);
+                        TypeSyntax type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
 
-                    return await document.ReplaceNodeAsync(implicitObjectCreation, objectCreation, ct).ConfigureAwait(false);
-                },
-                GetEquivalenceKey(diagnostic));
+                        SyntaxToken newKeyword = implicitObjectCreation.NewKeyword;
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+                        if (!newKeyword.TrailingTrivia.Any())
+                            newKeyword = newKeyword.WithTrailingTrivia(ElasticSpace);
+
+                        ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
+                            newKeyword,
+                            type,
+                            implicitObjectCreation.ArgumentList,
+                            implicitObjectCreation.Initializer);
+
+                        return await document.ReplaceNodeAsync(implicitObjectCreation, objectCreation, ct).ConfigureAwait(false);
+                    },
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
         }
         else if (node is CollectionExpressionSyntax collectionExpression)
         {
-            CodeAction codeAction = CodeAction.Create(
-                "Use explicit object creation",
-                async ct =>
-                {
-                    SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(collectionExpression, ct).ConvertedType;
-                    TypeSyntax type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
-
-                    InitializerExpressionSyntax initializer = default;
-                    if (collectionExpression.Elements.Any())
+            if (diagnostic.Properties.ContainsKey(UseImplicitOrExplicitObjectCreationAnalyzer.ConvertImplicitToImplicitPropertyKey))
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Use implicit object creation",
+                    async ct =>
                     {
-                        initializer = InitializerExpression(
-                            (typeSymbol.Kind == SymbolKind.ArrayType)
-                                ? SyntaxKind.ArrayInitializerExpression
-                                : SyntaxKind.CollectionInitializerExpression,
-                            collectionExpression
-                                .Elements
-                                .Select(element => ((ExpressionElementSyntax)element).Expression)
-                                .ToSeparatedSyntaxList());
-                    }
+                        SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(collectionExpression, ct).ConvertedType;
 
-                    ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
-                        Token(SyntaxKind.NewKeyword),
-                        type,
-                        ArgumentList(),
-                        initializer);
+                        ImplicitObjectCreationExpressionSyntax objectCreation = ImplicitObjectCreationExpression(
+                            Token(SyntaxKind.NewKeyword),
+                            ArgumentList(),
+                            CreateInitializer(collectionExpression, typeSymbol))
+                            .WithTriviaFrom(collectionExpression);
 
-                    objectCreation = objectCreation
-                        .WithLeadingTrivia(collectionExpression.GetLeadingTrivia())
-                        .WithTrailingTrivia(collectionExpression.GetTrailingTrivia());
+                        return await document.ReplaceNodeAsync(collectionExpression, objectCreation, ct);
+                    },
+                    GetEquivalenceKey(diagnostic));
 
-                    return await document.ReplaceNodeAsync(collectionExpression, objectCreation, ct).ConfigureAwait(false);
-                },
-                GetEquivalenceKey(diagnostic));
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Use explicit object creation",
+                    async ct =>
+                    {
+                        SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(collectionExpression, ct).ConvertedType;
+                        TypeSyntax type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+                        ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
+                            Token(SyntaxKind.NewKeyword),
+                            type,
+                            ArgumentList(),
+                            CreateInitializer(collectionExpression, typeSymbol));
+
+                        objectCreation = objectCreation
+                            .WithLeadingTrivia(collectionExpression.GetLeadingTrivia())
+                            .WithTrailingTrivia(collectionExpression.GetTrailingTrivia());
+
+                        return await document.ReplaceNodeAsync(collectionExpression, objectCreation, ct).ConfigureAwait(false);
+                    },
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
         }
         else
         {
@@ -194,5 +218,40 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
+    }
+
+    private static CollectionExpressionSyntax CreateCollectionExpression(InitializerExpressionSyntax initializer)
+    {
+        if (initializer is not null)
+        {
+            return CollectionExpression(
+                Token(SyntaxKind.OpenBracketToken).WithTriviaFrom(initializer.OpenBraceToken),
+                initializer
+                    .Expressions
+                    .Select(f => ExpressionElement(f))
+                    .ToSeparatedSyntaxList<CollectionElementSyntax>(),
+                Token(SyntaxKind.CloseBracketToken).WithTriviaFrom(initializer.CloseBraceToken));
+        }
+        else
+        {
+            return CollectionExpression();
+        }
+    }
+
+    private static InitializerExpressionSyntax CreateInitializer(CollectionExpressionSyntax collectionExpression, ITypeSymbol typeSymbol)
+    {
+        if (collectionExpression.Elements.Any())
+        {
+            return InitializerExpression(
+                (typeSymbol.Kind == SymbolKind.ArrayType)
+                    ? SyntaxKind.ArrayInitializerExpression
+                    : SyntaxKind.CollectionInitializerExpression,
+                collectionExpression
+                    .Elements
+                    .Select(element => ((ExpressionElementSyntax)element).Expression)
+                    .ToSeparatedSyntaxList());
+        }
+
+        return default;
     }
 }

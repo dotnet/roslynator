@@ -2439,7 +2439,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseImplicitOrExplicitObjectCreation = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation, 
             title:              "Use implicit/explicit object creation", 
-            messageFormat:      "Use {0} object creation", 
+            messageFormat:      "Use {0}", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 

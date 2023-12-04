@@ -1,5 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -13,6 +15,13 @@ namespace Roslynator.CSharp.Analysis;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnosticAnalyzer
 {
+    internal static readonly string ConvertImplicitToImplicitPropertyKey = "ConvertImplicitToImplicit";
+
+    private static readonly ImmutableDictionary<string, string> _diagnosticProperties = ImmutableDictionary.CreateRange(new[]
+        {
+            new KeyValuePair<string, string>(ConvertImplicitToImplicitPropertyKey, null)
+        });
+
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -36,6 +45,9 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
             {
                 startContext.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
             }
+
+            startContext.RegisterSyntaxNodeAction(c => AnalyzeImplicitObjectCreationExpression(c), SyntaxKind.ImplicitObjectCreationExpression);
+            startContext.RegisterSyntaxNodeAction(c => AnalyzeCollectionExpression(c), SyntaxKind.CollectionExpression);
 
             startContext.RegisterSyntaxNodeAction(
                 c => AnalyzeImplicit(c),
@@ -292,7 +304,25 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
         }
     }
 
-    private static void AnalyzeImplicit(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeImplicitObjectCreationExpression(SyntaxNodeAnalysisContext context)
+    {
+        if (!AnalyzeImplicit(context)
+            && context.UseCollectionExpression() == true)
+        {
+            ReportImplicitToImplicit(context, "collection expression");
+        }
+    }
+
+    private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
+    {
+        if (!AnalyzeImplicit(context)
+            && context.UseCollectionExpression() != true)
+        {
+            ReportImplicitToImplicit(context, "implicit object creation");
+        }
+    }
+
+    private static bool AnalyzeImplicit(SyntaxNodeAnalysisContext context)
     {
         SyntaxNode node = context.Node;
 
@@ -308,6 +338,7 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                             .HasMetadataName(MetadataNames.System_Exception) == true)
                     {
                         ReportImplicit(context, node);
+                        return true;
                     }
 
                     break;
@@ -331,6 +362,7 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                             if (UseExplicitObjectCreation(context))
                             {
                                 ReportImplicit(context, node);
+                                return true;
                             }
                             else if (parent.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement)
                                 && variableDeclaration.Variables.Count == 1
@@ -344,7 +376,10 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                     else if (parent.IsKind(SyntaxKind.PropertyDeclaration))
                     {
                         if (UseExplicitObjectCreation(context))
+                        {
                             ReportImplicit(context, node);
+                            return true;
+                        }
                     }
 
                     break;
@@ -358,10 +393,13 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                         SyntaxDebug.Assert(type is not null, parent);
 
                         if (type is not null)
+                        {
                             ReportImplicit(context, node);
+                            return true;
+                        }
                     }
 
-                    return;
+                    return false;
                 }
             case SyntaxKind.ArrayInitializerExpression:
                 {
@@ -371,6 +409,7 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                         && parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
                     {
                         ReportImplicit(context, node);
+                        return true;
                     }
 
                     break;
@@ -379,12 +418,12 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
             case SyntaxKind.YieldReturnStatement:
                 {
                     if (!UseExplicitObjectCreationWhenTypeIsNotObvious(context))
-                        return;
+                        return false;
 
                     for (SyntaxNode node2 = parent.Parent; node2 is not null; node2 = node2.Parent)
                     {
                         if (CSharpFacts.IsAnonymousFunctionExpression(node2.Kind()))
-                            return;
+                            return false;
 
                         TypeSyntax type = DetermineReturnType(node2);
 
@@ -397,11 +436,13 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                                 if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
                                 {
                                     ReportImplicit(context, node);
+                                    return true;
                                 }
                             }
                             else
                             {
                                 ReportImplicit(context, node);
+                                return true;
                             }
                         }
                     }
@@ -414,7 +455,10 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
             case SyntaxKind.SubtractAssignmentExpression:
                 {
                     if (UseExplicitObjectCreationWhenTypeIsNotObvious(context))
+                    {
                         ReportImplicit(context, node);
+                        return true;
+                    }
 
                     break;
                 }
@@ -429,9 +473,12 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                                     if (variableDeclarator.Parent is VariableDeclarationSyntax)
                                     {
                                         if (UseExplicitObjectCreation(context))
+                                        {
                                             ReportImplicit(context, node);
+                                            return true;
+                                        }
 
-                                        return;
+                                        return false;
                                     }
 
                                     break;
@@ -439,15 +486,21 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                             case PropertyDeclarationSyntax:
                                 {
                                     if (UseExplicitObjectCreation(context))
+                                    {
                                         ReportImplicit(context, node);
+                                        return true;
+                                    }
 
-                                    return;
+                                    return false;
                                 }
                         }
                     }
 
                     if (UseExplicitObjectCreationWhenTypeIsNotObvious(context))
+                    {
                         ReportImplicit(context, node);
+                        return true;
+                    }
 
                     break;
                 }
@@ -456,7 +509,7 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                     SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.ImplicitObjectCreationExpression, SyntaxKind.SimpleAssignmentExpression), parent.Parent);
 
                     if (!UseExplicitObjectCreation(context))
-                        return;
+                        return false;
 
                     parent = parent.Parent;
                     if (parent.IsKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.ImplicitObjectCreationExpression))
@@ -473,13 +526,19 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                                     SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), parent.Parent);
 
                                     if (UseExplicitObjectCreation(context))
+                                    {
                                         ReportImplicit(context, node);
+                                        return true;
+                                    }
                                 }
                             }
                             else if (parent.IsKind(SyntaxKind.PropertyDeclaration))
                             {
                                 if (UseExplicitObjectCreation(context))
+                                {
                                     ReportImplicit(context, node);
+                                    return true;
+                                }
                             }
                         }
                     }
@@ -491,6 +550,8 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
                     break;
                 }
         }
+
+        return false;
     }
 
     private static bool UseExplicitObjectCreation(SyntaxNodeAnalysisContext context)
@@ -607,11 +668,21 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
 
     private static void ReportExplicit(SyntaxNodeAnalysisContext context, ObjectCreationExpressionSyntax objectCreation)
     {
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitOrExplicitObjectCreation, objectCreation.Type, "implicit");
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitOrExplicitObjectCreation, objectCreation.Type, "implicit object creation");
     }
 
     private static void ReportImplicit(SyntaxNodeAnalysisContext context, SyntaxNode node)
     {
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitOrExplicitObjectCreation, node, "explicit");
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitOrExplicitObjectCreation, node, "explicit object creation");
+    }
+
+    private static void ReportImplicitToImplicit(SyntaxNodeAnalysisContext context, params string[] messageArgs)
+    {
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
+            context.Node.GetLocation(),
+            properties: _diagnosticProperties,
+            messageArgs);
     }
 }
