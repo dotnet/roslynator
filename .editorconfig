@@ -198,6 +198,7 @@ dotnet_diagnostic.IDE0079.severity = none
 dotnet_diagnostic.IDE0090.severity = none
 dotnet_diagnostic.IDE0220.severity = none
 dotnet_diagnostic.IDE0270.severity = silent
+dotnet_diagnostic.IDE0290.severity = none # Use primary constructor
 dotnet_diagnostic.IDE1005.severity = suggestion
 dotnet_diagnostic.IDE1006.severity = suggestion
 
@@ -210,3 +211,5 @@ dotnet_diagnostic.CA1826.severity = none
 dotnet_diagnostic.CA1860.severity = none
 dotnet_diagnostic.CA1861.severity = none
 dotnet_diagnostic.CA2231.severity = none
+
+dotnet_diagnostic.SYSLIB1045.severity = silent # Use 'GeneratedRegexAttribute' to generate the regular expression implementation at compile-time.
