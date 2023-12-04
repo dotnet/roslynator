@@ -66,6 +66,9 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_body_style = block|expression
 # Applicable to: rcs1016
 
+#roslynator_collection_creation_implicit_type_style = brackets|brackets_when_not_empty|new
+# Applicable to: rcs1250
+
 #roslynator_conditional_operator_condition_parentheses_style = include|omit|omit_when_condition_is_single_token
 # Applicable to: rcs1051
 
@@ -867,7 +870,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Use implicit/explicit object creation
 #dotnet_diagnostic.rcs1250.severity = none
-# Options: roslynator_object_creation_type_style, roslynator_use_var_instead_of_implicit_object_creation
+# Options: roslynator_collection_creation_implicit_type_style, roslynator_object_creation_type_style, roslynator_use_var_instead_of_implicit_object_creation
 
 # Remove unnecessary braces from record declaration
 #dotnet_diagnostic.rcs1251.severity = suggestion

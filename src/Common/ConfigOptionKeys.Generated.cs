@@ -17,6 +17,7 @@ namespace Roslynator
         public const string BlankLineBetweenUsingDirectives                   = "roslynator_blank_line_between_using_directives";
         public const string BlockBracesStyle                                  = "roslynator_block_braces_style";
         public const string BodyStyle                                         = "roslynator_body_style";
+        public const string CollectionCreationImplicitTypeStyle               = "roslynator_collection_creation_implicit_type_style";
         public const string ConditionalOperatorConditionParenthesesStyle      = "roslynator_conditional_operator_condition_parentheses_style";
         public const string ConditionalOperatorNewLine                        = "roslynator_conditional_operator_new_line";
         public const string ConfigureAwait                                    = "roslynator_configure_await";

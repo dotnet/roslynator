@@ -104,7 +104,7 @@ public static class WellKnownCSharpTestOptions
 
             return _default_CSharp11;
 
-            static CSharpTestOptions Create() => DefaultCSharpTestOptions.Value.WithParseOptions(DefaultCSharpTestOptions.Value.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp11));
+            static CSharpTestOptions Create() => DefaultCSharpTestOptions.Value.WithParseOptions(DefaultCSharpTestOptions.Value.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp1));
         }
     }
 

@@ -7302,6 +7302,7 @@ void M()
     <ConfigOptions>
       <Option Key="object_creation_type_style" IsRequired="true" />
       <Option Key="use_var_instead_of_implicit_object_creation" />
+      <Option Key="collection_creation_implicit_type_style" />
     </ConfigOptions>
     <Links>
       <Link>

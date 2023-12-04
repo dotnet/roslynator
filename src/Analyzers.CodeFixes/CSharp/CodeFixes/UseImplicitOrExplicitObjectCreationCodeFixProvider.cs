@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
+using Roslynator.CSharp.CodeStyle;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes;
@@ -31,7 +32,11 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             root,
             context.Span,
             out SyntaxNode node,
-            predicate: f => f.IsKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.ImplicitObjectCreationExpression, SyntaxKind.VariableDeclaration)))
+            predicate: f => f.IsKind(
+                SyntaxKind.ObjectCreationExpression,
+                SyntaxKind.ImplicitObjectCreationExpression,
+                SyntaxKind.VariableDeclaration,
+                SyntaxKind.CollectionExpression)))
         {
             return;
         }
@@ -41,14 +46,35 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
         if (node is ObjectCreationExpressionSyntax objectCreation)
         {
+            CollectionImplicitTypeStyle collectionImplicitTypeStyle = document.GetConfigOptions(objectCreation.SyntaxTree).GetCollectionImplicitTypeStyle();
+
             CodeAction codeAction = CodeAction.Create(
-                "Use implicit object creation",
+                (collectionImplicitTypeStyle == CollectionImplicitTypeStyle.NewKeyword)
+                    ? "Use implicit object creation"
+                    : "Use collection expression",
                 ct =>
                 {
-                    ImplicitObjectCreationExpressionSyntax implicitObjectCreation = ImplicitObjectCreationExpression(
-                        objectCreation.NewKeyword.WithTrailingTrivia(objectCreation.NewKeyword.TrailingTrivia.EmptyIfWhitespace()),
-                        objectCreation.ArgumentList ?? ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
-                        objectCreation.Initializer);
+                    SyntaxNode newNode;
+
+                    if (collectionImplicitTypeStyle == CollectionImplicitTypeStyle.NewKeyword)
+                    {
+                        newNode = ImplicitObjectCreationExpression(
+                            objectCreation.NewKeyword.WithTrailingTrivia(objectCreation.NewKeyword.TrailingTrivia.EmptyIfWhitespace()),
+                            objectCreation.ArgumentList ?? ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
+                            objectCreation.Initializer);
+                    }
+                    else
+                    {
+                        newNode = CollectionExpression(
+                            Token(SyntaxKind.OpenBracketToken),
+                            objectCreation
+                                .Initializer?
+                                .Expressions
+                                .Select(f => ExpressionElement(f))
+                                .ToSeparatedSyntaxList<CollectionElementSyntax>()
+                                ?? default,
+                            Token(SyntaxKind.CloseBracketToken));
+                    }
 
                     if (objectCreation.IsParentKind(SyntaxKind.EqualsValueClause)
                         && objectCreation.Parent.IsParentKind(SyntaxKind.VariableDeclarator)
@@ -56,14 +82,14 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                         && variableDeclaration.Type.IsVar)
                     {
                         VariableDeclarationSyntax newVariableDeclaration = variableDeclaration
-                            .ReplaceNode(objectCreation, implicitObjectCreation)
+                            .ReplaceNode(objectCreation, newNode)
                             .WithType(objectCreation.Type.WithTriviaFrom(variableDeclaration.Type));
 
                         return document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, ct);
                     }
                     else
                     {
-                        return document.ReplaceNodeAsync(objectCreation, implicitObjectCreation, ct);
+                        return document.ReplaceNodeAsync(objectCreation, newNode, ct);
                     }
                 },
                 GetEquivalenceKey(diagnostic));
@@ -94,6 +120,45 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                         implicitObjectCreation.Initializer);
 
                     return await document.ReplaceNodeAsync(implicitObjectCreation, objectCreation, ct).ConfigureAwait(false);
+                },
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+        else if (node is CollectionExpressionSyntax collectionExpression)
+        {
+            CodeAction codeAction = CodeAction.Create(
+                "Use explicit object creation",
+                async ct =>
+                {
+                    SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(collectionExpression, ct).ConvertedType;
+                    TypeSyntax type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
+
+                    InitializerExpressionSyntax initializer = default;
+                    if (collectionExpression.Elements.Any())
+                    {
+                        initializer = InitializerExpression(
+                            (typeSymbol.Kind == SymbolKind.ArrayType)
+                                ? SyntaxKind.ArrayInitializerExpression
+                                : SyntaxKind.CollectionInitializerExpression,
+                            collectionExpression
+                                .Elements
+                                .Select(element => ((ExpressionElementSyntax)element).Expression)
+                                .ToSeparatedSyntaxList());
+                    }
+
+                    ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
+                        Token(SyntaxKind.NewKeyword),
+                        type,
+                        ArgumentList(),
+                        initializer);
+
+                    objectCreation = objectCreation
+                        .WithLeadingTrivia(collectionExpression.GetLeadingTrivia())
+                        .WithTrailingTrivia(collectionExpression.GetTrailingTrivia());
+
+                    return await document.ReplaceNodeAsync(collectionExpression, objectCreation, ct).ConfigureAwait(false);
                 },
                 GetEquivalenceKey(diagnostic));
 
