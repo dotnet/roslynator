@@ -58,7 +58,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                     if (useCollectionExpression == true)
                     {
-                        newNode = CreateCollectionExpression(objectCreation.Initializer);
+                        newNode = CreateCollectionExpression(objectCreation.Initializer).WithFormatterAnnotation();
                     }
                     else
                     {
@@ -101,6 +101,8 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                         if (implicitObjectCreation.Initializer is null)
                             collectionExpression = collectionExpression.WithTrailingTrivia(implicitObjectCreation.ArgumentList.GetTrailingTrivia());
+
+                        collectionExpression = collectionExpression.WithFormatterAnnotation();
 
                         return await document.ReplaceNodeAsync(implicitObjectCreation, collectionExpression, ct).ConfigureAwait(false);
                     },
