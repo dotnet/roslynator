@@ -23,9 +23,6 @@ namespace Roslynator
         public const string BlockBracesStyle_SingleLineWhenEmpty                                        = "single_line_when_empty";
         public const string BodyStyle_Block                                                             = "block";
         public const string BodyStyle_Expression                                                        = "expression";
-        public const string CollectionCreationImplicitTypeStyle_New                                     = "new";
-        public const string CollectionCreationImplicitTypeStyle_Brackets                                = "brackets";
-        public const string CollectionCreationImplicitTypeStyle_BracketsWhenNotEmpty                    = "brackets_when_not_empty";
         public const string ConditionalOperatorConditionParenthesesStyle_Include                        = "include";
         public const string ConditionalOperatorConditionParenthesesStyle_Omit                           = "omit";
         public const string ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken = "omit_when_condition_is_single_token";

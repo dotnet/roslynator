@@ -46,24 +46,17 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
         if (node is ObjectCreationExpressionSyntax objectCreation)
         {
-            CollectionImplicitTypeStyle collectionImplicitTypeStyle = document.GetConfigOptions(objectCreation.SyntaxTree).GetCollectionImplicitTypeStyle();
+            bool? useCollectionExpression = document.GetConfigOptions(objectCreation.SyntaxTree).UseCollectionExpression();
 
             CodeAction codeAction = CodeAction.Create(
-                (collectionImplicitTypeStyle == CollectionImplicitTypeStyle.NewKeyword)
-                    ? "Use implicit object creation"
-                    : "Use collection expression",
+                (useCollectionExpression == true)
+                    ? "Use collection expression"
+                    : "Use implicit object creation",
                 ct =>
                 {
                     SyntaxNode newNode;
 
-                    if (collectionImplicitTypeStyle == CollectionImplicitTypeStyle.NewKeyword)
-                    {
-                        newNode = ImplicitObjectCreationExpression(
-                            objectCreation.NewKeyword.WithTrailingTrivia(objectCreation.NewKeyword.TrailingTrivia.EmptyIfWhitespace()),
-                            objectCreation.ArgumentList ?? ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
-                            objectCreation.Initializer);
-                    }
-                    else
+                    if (useCollectionExpression == true)
                     {
                         newNode = CollectionExpression(
                             Token(SyntaxKind.OpenBracketToken),
@@ -74,6 +67,13 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                                 .ToSeparatedSyntaxList<CollectionElementSyntax>()
                                 ?? default,
                             Token(SyntaxKind.CloseBracketToken));
+                    }
+                    else
+                    {
+                        newNode = ImplicitObjectCreationExpression(
+                            objectCreation.NewKeyword.WithTrailingTrivia(objectCreation.NewKeyword.TrailingTrivia.EmptyIfWhitespace()),
+                            objectCreation.ArgumentList ?? ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
+                            objectCreation.Initializer);
                     }
 
                     if (objectCreation.IsParentKind(SyntaxKind.EqualsValueClause)

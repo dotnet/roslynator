@@ -75,12 +75,6 @@ namespace Roslynator
             defaultValuePlaceholder: "block|expression", 
             description:             "Prefer block body or expression body");
 
-        public static readonly ConfigOptionDescriptor CollectionCreationImplicitTypeStyle = new(
-            key:                     ConfigOptionKeys.CollectionCreationImplicitTypeStyle, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "brackets|brackets_when_not_empty|new", 
-            description:             "Use collection expression '[]' to declare implicit collection creation");
-
         public static readonly ConfigOptionDescriptor ConditionalOperatorConditionParenthesesStyle = new(
             key:                     ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, 
             defaultValue:            null, 
@@ -225,6 +219,12 @@ namespace Roslynator
             defaultValue:            null, 
             defaultValuePlaceholder: "true|false", 
             description:             "Use block body when expression spans over multiple lines");
+
+        public static readonly ConfigOptionDescriptor UseCollectionExpression = new(
+            key:                     ConfigOptionKeys.UseCollectionExpression, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Use collection expression '[]' to declare implicit collection creation");
 
         public static readonly ConfigOptionDescriptor UseVarInsteadOfImplicitObjectCreation = new(
             key:                     ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, 

@@ -445,23 +445,14 @@ internal static class CodeStyleExtensions
         return ObjectCreationTypeStyle.None;
     }
 
-    public static CollectionImplicitTypeStyle GetCollectionImplicitTypeStyle(this SyntaxNodeAnalysisContext context)
+    public static bool? UseCollectionExpression(this SyntaxNodeAnalysisContext context)
     {
-        return GetCollectionImplicitTypeStyle(context.GetConfigOptions());
+        return UseCollectionExpression(context.GetConfigOptions());
     }
 
-    public static CollectionImplicitTypeStyle GetCollectionImplicitTypeStyle(this AnalyzerConfigOptions configOptions)
+    public static bool? UseCollectionExpression(this AnalyzerConfigOptions configOptions)
     {
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.CollectionCreationImplicitTypeStyle, out string rawValue))
-        {
-            if (string.Equals(rawValue, ConfigOptionValues.CollectionCreationImplicitTypeStyle_Brackets, StringComparison.OrdinalIgnoreCase))
-                return CollectionImplicitTypeStyle.Brackets;
-
-            if (string.Equals(rawValue, ConfigOptionValues.CollectionCreationImplicitTypeStyle_BracketsWhenNotEmpty, StringComparison.OrdinalIgnoreCase))
-                return CollectionImplicitTypeStyle.BracketsWhenNotEmpty;
-        }
-
-        return CollectionImplicitTypeStyle.NewKeyword;
+        return ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseCollectionExpression);
     }
 
     public static ArrayCreationTypeStyle GetArrayCreationTypeStyle(this SyntaxNodeAnalysisContext context)

@@ -217,13 +217,9 @@
       <Value>omit_when_single_line</Value>
     </Values>
   </Option>
-  <Option Id="CollectionCreationImplicitTypeStyle">
+  <Option Id="UseCollectionExpression">
+    <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Use collection expression '[]' to declare implicit collection creation</Description>
-    <Values>
-      <Value>new</Value>
-      <Value>brackets</Value>
-      <Value>brackets_when_not_empty</Value>
-    </Values>
   </Option>
   <!--
   <Option Id="">

@@ -17,7 +17,6 @@ namespace Roslynator
         public const string BlankLineBetweenUsingDirectives                   = "roslynator_blank_line_between_using_directives";
         public const string BlockBracesStyle                                  = "roslynator_block_braces_style";
         public const string BodyStyle                                         = "roslynator_body_style";
-        public const string CollectionCreationImplicitTypeStyle               = "roslynator_collection_creation_implicit_type_style";
         public const string ConditionalOperatorConditionParenthesesStyle      = "roslynator_conditional_operator_condition_parentheses_style";
         public const string ConditionalOperatorNewLine                        = "roslynator_conditional_operator_new_line";
         public const string ConfigureAwait                                    = "roslynator_configure_await";
@@ -42,6 +41,7 @@ namespace Roslynator
         public const string UseAnonymousFunctionOrMethodGroup                 = "roslynator_use_anonymous_function_or_method_group";
         public const string UseBlockBodyWhenDeclarationSpansOverMultipleLines = "roslynator_use_block_body_when_declaration_spans_over_multiple_lines";
         public const string UseBlockBodyWhenExpressionSpansOverMultipleLines  = "roslynator_use_block_body_when_expression_spans_over_multiple_lines";
+        public const string UseCollectionExpression                           = "roslynator_use_collection_expression";
         public const string UseVarInsteadOfImplicitObjectCreation             = "roslynator_use_var_instead_of_implicit_object_creation";
     }
 }
