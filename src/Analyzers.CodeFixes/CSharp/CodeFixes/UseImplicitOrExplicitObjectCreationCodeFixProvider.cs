@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.SyntaxRefactorings;
 
 namespace Roslynator.CSharp.CodeFixes;
 
@@ -46,19 +47,22 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
         if (node is ObjectCreationExpressionSyntax objectCreation)
         {
-            bool? useCollectionExpression = document.GetConfigOptions(objectCreation.SyntaxTree).UseCollectionExpression();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            bool useCollectionExpression = document.GetConfigOptions(objectCreation.SyntaxTree).UseCollectionExpression() == true
+                && SyntaxUtility.CanConvertFromCollectionExpression(objectCreation, semanticModel, context.CancellationToken);
 
             CodeAction codeAction = CodeAction.Create(
-                (useCollectionExpression == true)
+                (useCollectionExpression)
                     ? "Use collection expression"
                     : "Use implicit object creation",
                 ct =>
                 {
                     SyntaxNode newNode;
 
-                    if (useCollectionExpression == true)
+                    if (useCollectionExpression)
                     {
-                        newNode = CreateCollectionExpression(objectCreation.Initializer).WithFormatterAnnotation();
+                        newNode = ConvertInitializerToCollectionExpression(objectCreation.Initializer).WithFormatterAnnotation();
                     }
                     else
                     {
@@ -90,13 +94,13 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
         }
         else if (node is ImplicitObjectCreationExpressionSyntax implicitObjectCreation)
         {
-            if (diagnostic.Properties.ContainsKey(UseImplicitOrExplicitObjectCreationAnalyzer.ConvertImplicitToImplicitPropertyKey))
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ConvertImplicitToImplicit))
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Use collection expression",
                     async ct =>
                     {
-                        CollectionExpressionSyntax collectionExpression = CreateCollectionExpression(implicitObjectCreation.Initializer)
+                        CollectionExpressionSyntax collectionExpression = ConvertInitializerToCollectionExpression(implicitObjectCreation.Initializer)
                             .PrependToLeadingTrivia(implicitObjectCreation.NewKeyword.LeadingTrivia);
 
                         if (implicitObjectCreation.Initializer is null)
@@ -142,7 +146,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
         }
         else if (node is CollectionExpressionSyntax collectionExpression)
         {
-            if (diagnostic.Properties.ContainsKey(UseImplicitOrExplicitObjectCreationAnalyzer.ConvertImplicitToImplicitPropertyKey))
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ConvertImplicitToImplicit))
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Use implicit object creation",
@@ -154,7 +158,9 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                         ImplicitObjectCreationExpressionSyntax objectCreation = ImplicitObjectCreationExpression(
                             Token(SyntaxKind.NewKeyword),
                             ArgumentList(),
-                            CreateInitializer(collectionExpression, typeSymbol))
+                            ConvertCollectionExpressionToInitializer(
+                                collectionExpression,
+                                SyntaxKind.ObjectInitializerExpression))
                             .WithTriviaFrom(collectionExpression);
 
                         return await document.ReplaceNodeAsync(collectionExpression, objectCreation, ct).ConfigureAwait(false);
@@ -177,7 +183,9 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                             Token(SyntaxKind.NewKeyword),
                             type,
                             ArgumentList(),
-                            CreateInitializer(collectionExpression, typeSymbol));
+                            ConvertCollectionExpressionToInitializer(
+                                collectionExpression,
+                                SyntaxKind.ObjectInitializerExpression));
 
                         objectCreation = objectCreation
                             .WithLeadingTrivia(collectionExpression.GetLeadingTrivia())
@@ -220,40 +228,5 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
-    }
-
-    private static CollectionExpressionSyntax CreateCollectionExpression(InitializerExpressionSyntax initializer)
-    {
-        if (initializer is not null)
-        {
-            return CollectionExpression(
-                Token(SyntaxKind.OpenBracketToken).WithTriviaFrom(initializer.OpenBraceToken),
-                initializer
-                    .Expressions
-                    .Select(f => ExpressionElement(f))
-                    .ToSeparatedSyntaxList<CollectionElementSyntax>(),
-                Token(SyntaxKind.CloseBracketToken).WithTriviaFrom(initializer.CloseBraceToken));
-        }
-        else
-        {
-            return CollectionExpression();
-        }
-    }
-
-    private static InitializerExpressionSyntax CreateInitializer(CollectionExpressionSyntax collectionExpression, ITypeSymbol typeSymbol)
-    {
-        if (collectionExpression.Elements.Any())
-        {
-            return InitializerExpression(
-                (typeSymbol.Kind == SymbolKind.ArrayType)
-                    ? SyntaxKind.ArrayInitializerExpression
-                    : SyntaxKind.CollectionInitializerExpression,
-                collectionExpression
-                    .Elements
-                    .Select(element => ((ExpressionElementSyntax)element).Expression)
-                    .ToSeparatedSyntaxList());
-        }
-
-        return default;
     }
 }

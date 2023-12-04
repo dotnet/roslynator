@@ -14,11 +14,9 @@ namespace Roslynator.CSharp.Analysis;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnosticAnalyzer
 {
-    internal static readonly string ConvertImplicitToImplicitPropertyKey = "ConvertImplicitToImplicit";
-
     private static readonly ImmutableDictionary<string, string> _diagnosticProperties = ImmutableDictionary.CreateRange(new[]
         {
-            new KeyValuePair<string, string>(ConvertImplicitToImplicitPropertyKey, null)
+            new KeyValuePair<string, string>(DiagnosticPropertyKeys.ConvertImplicitToImplicit, null)
         });
 
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
@@ -302,46 +300,11 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
     {
         if (!AnalyzeImplicit(context)
             && context.UseCollectionExpression() == true
-            && ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true)
+            && ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
+            && SyntaxUtility.CanConvertFromCollectionExpression(context.Node, context.SemanticModel, context.CancellationToken))
         {
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(context.Node, context.CancellationToken);
-
-            if (CanConvertFromCollectionExpression(context, typeSymbol))
-                ReportImplicitToImplicit(context, "implicit object creation");
+            ReportImplicitToImplicit(context, "implicit object creation");
         }
-    }
-
-    private static bool CanConvertFromCollectionExpression(
-        SyntaxNodeAnalysisContext context,
-        ITypeSymbol typeSymbol)
-    {
-        if (typeSymbol is IArrayTypeSymbol arrayType)
-            return arrayType.Rank == 1;
-
-        if (typeSymbol.HasMetadataName(MetadataNames.System_Span_T))
-            return true;
-
-        if (typeSymbol.HasMetadataName(MetadataNames.System_ReadOnlySpan_T))
-            return true;
-
-        if (typeSymbol.HasAttribute(MetadataNames.System_Runtime_CompilerServices_CollectionBuilderAttribute))
-            return true;
-
-        if (typeSymbol is INamedTypeSymbol namedType
-            && namedType.ImplementsAny(
-                SpecialType.System_Collections_IEnumerable,
-                SpecialType.System_Collections_Generic_IEnumerable_T,
-                allInterfaces: true))
-        {
-            IMethodSymbol constructor = namedType
-                .InstanceConstructors
-                .SingleOrDefault(f => !f.Parameters.Any(), shouldThrow: false);
-
-            return constructor is not null
-                && context.SemanticModel.IsAccessible(context.Node.SpanStart, constructor);
-        }
-
-        return false;
     }
 
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)

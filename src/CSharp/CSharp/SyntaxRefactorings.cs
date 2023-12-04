@@ -815,4 +815,37 @@ internal static class SyntaxRefactorings
             operatorToken: Token(token.LeadingTrivia, newTokenKind, token.TrailingTrivia),
             right: left.WithTriviaFrom(right));
     }
+
+    public static CollectionExpressionSyntax ConvertInitializerToCollectionExpression(InitializerExpressionSyntax? initializer)
+    {
+        if (initializer is not null)
+        {
+            return CollectionExpression(
+                Token(SyntaxKind.OpenBracketToken).WithTriviaFrom(initializer.OpenBraceToken),
+                initializer
+                    .Expressions
+                    .Select(f => ExpressionElement(f))
+                    .ToSeparatedSyntaxList<CollectionElementSyntax>(),
+                Token(SyntaxKind.CloseBracketToken).WithTriviaFrom(initializer.CloseBraceToken));
+        }
+        else
+        {
+            return CollectionExpression();
+        }
+    }
+
+    public static InitializerExpressionSyntax? ConvertCollectionExpressionToInitializer(CollectionExpressionSyntax collectionExpression, SyntaxKind initializerKind)
+    {
+        if (collectionExpression.Elements.Any())
+        {
+            return InitializerExpression(
+                initializerKind,
+                collectionExpression
+                    .Elements
+                    .Select(element => ((ExpressionElementSyntax)element).Expression)
+                    .ToSeparatedSyntaxList());
+        }
+
+        return default;
+    }
 }
