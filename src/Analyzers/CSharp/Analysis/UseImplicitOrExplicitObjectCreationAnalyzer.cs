@@ -304,8 +304,35 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
             && context.UseCollectionExpression() == true
             && ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true)
         {
-            ReportImplicitToImplicit(context, "collection expression");
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(context.Node, context.CancellationToken);
+
+            if (CanConvertFromCollectionExpression(context, typeSymbol))
+                ReportImplicitToImplicit(context, "implicit object creation");
         }
+    }
+
+    private static bool CanConvertFromCollectionExpression(
+        SyntaxNodeAnalysisContext context,
+        ITypeSymbol typeSymbol)
+    {
+        if (typeSymbol is IArrayTypeSymbol arrayType)
+            return arrayType.Rank == 1;
+
+        if (typeSymbol is INamedTypeSymbol namedType
+            && namedType.ImplementsAny(
+                SpecialType.System_Collections_IEnumerable,
+                SpecialType.System_Collections_Generic_IEnumerable_T,
+                allInterfaces: true))
+        {
+            IMethodSymbol constructor = namedType
+                .InstanceConstructors
+                .SingleOrDefault(f => !f.Parameters.Any(), shouldThrow: false);
+
+            return constructor is not null
+                && context.SemanticModel.IsAccessible(context.Node.SpanStart, constructor);
+        }
+
+        return false;
     }
 
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
@@ -663,7 +690,11 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
 
     private static void ReportExplicit(SyntaxNodeAnalysisContext context, ObjectCreationExpressionSyntax objectCreation)
     {
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitOrExplicitObjectCreation, objectCreation.Type, "implicit object creation");
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
+            objectCreation.Type,
+            "implicit object creation");
     }
 
     private static void ReportImplicit(SyntaxNodeAnalysisContext context, SyntaxNode node)
@@ -671,7 +702,7 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitOrExplicitObjectCreation, node, "explicit object creation");
     }
 
-    private static void ReportImplicitToImplicit(SyntaxNodeAnalysisContext context, params string[] messageArgs)
+    private static void ReportImplicitToImplicit(SyntaxNodeAnalysisContext context, params object[] messageArgs)
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
