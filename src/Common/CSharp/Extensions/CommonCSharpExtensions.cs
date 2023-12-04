@@ -8,7 +8,9 @@ namespace Roslynator.CSharp;
 
 internal static class CommonCSharpExtensions
 {
+#pragma warning disable IDE0060, RCS1175
     public static bool SupportsCollectionExpression(this CSharpCompilation compilation)
+#pragma warning restore IDE0060, RCS1175
     {
         Version version = typeof(SyntaxNode).Assembly.GetName().Version;
 
