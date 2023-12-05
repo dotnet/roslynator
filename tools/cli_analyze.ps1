@@ -8,7 +8,7 @@ roslynator analyze "$PSScriptRoot/../src/Roslynator.sln" `
     "$PSScriptRoot/../src/CodeAnalysis.Analyzers.CodeFixes/bin/Debug/netstandard2.0/Roslynator.CodeAnalysis.Analyzers.dll" `
     "$PSScriptRoot/../src/Formatting.Analyzers.CodeFixes/bin/Debug/netstandard2.0/Roslynator.Formatting.Analyzers.dll" `
     --ignore-analyzer-references `
-    --ignored-diagnostics CS1591 `
+    --ignored-diagnostics CS1573 CS1591 `
     --severity-level info `
     --culture en `
     --verbosity n `
