@@ -36,8 +36,8 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             predicate: f => f.IsKind(
                 SyntaxKind.ObjectCreationExpression,
                 SyntaxKind.ImplicitObjectCreationExpression,
-                SyntaxKind.VariableDeclaration,
-                SyntaxKind.CollectionExpression)))
+                SyntaxKind.CollectionExpression,
+                SyntaxKind.VariableDeclaration)))
         {
             return;
         }
@@ -121,9 +121,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                     async ct =>
                     {
                         SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
-
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitObjectCreation, ct);
-
                         TypeSyntax type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
 
                         SyntaxToken newKeyword = implicitObjectCreation.NewKeyword;

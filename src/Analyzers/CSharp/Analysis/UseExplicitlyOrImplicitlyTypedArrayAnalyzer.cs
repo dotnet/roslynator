@@ -167,14 +167,10 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
             if (arrayTypeSymbol?.Rank == 1)
             {
-                var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
-
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-                    Location.Create(
-                        expression.SyntaxTree,
-                        TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End)),
+                    collectionExpression,
                     _diagnosticProperties,
                     "implicitly typed array");
             }

@@ -326,7 +326,6 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
     private static bool AnalyzeImplicit(SyntaxNodeAnalysisContext context)
     {
         SyntaxNode node = context.Node;
-
         SyntaxNode parent = node.Parent;
 
         switch (parent.Kind())
