@@ -70,17 +70,14 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
                     ReportDiagnostic(context, analysis, "Remove");
                 }
             }
-            else 
+            else if (option == BlankLineBetweenSwitchSections.Include)
             {
-                if (option == BlankLineBetweenSwitchSections.Include)
-                {
-                    ReportDiagnostic(context, analysis, "Add");
-                }
-                else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
-                    && !previousLastStatement.IsKind(SyntaxKind.Block))
-                {
-                    ReportDiagnostic(context, analysis, "Add");
-                }
+                ReportDiagnostic(context, analysis, "Add");
+            }
+            else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
+                && !previousLastStatement.IsKind(SyntaxKind.Block))
+            {
+                ReportDiagnostic(context, analysis, "Add");
             }
 
             previousSection = en.Current;

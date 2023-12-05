@@ -75,7 +75,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>$(NoWarn);1573</NoWarn>
+    <NoWarn>1701;1702;1573</NoWarn>
   </PropertyGroup>
 
 </Project>
