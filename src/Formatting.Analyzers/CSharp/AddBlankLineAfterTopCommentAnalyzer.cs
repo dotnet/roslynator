@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
@@ -45,34 +44,14 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
         if (node is null)
             return;
 
-        SyntaxTriviaList leading = node.GetLeadingTrivia();
-        SyntaxTriviaList.Enumerator en = leading.GetEnumerator();
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromLeading(node);
 
-        if (!en.MoveNext())
-            return;
-
-        if (en.Current.SpanStart != 0)
-            return;
-
-        if (en.Current.IsWhitespaceTrivia()
-            && !en.MoveNext())
+        if (analysis.Kind == TriviaBlockKind.NewLine)
         {
-            return;
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.AddBlankLineAfterTopComment,
+                analysis.GetLocation());
         }
-
-        if (!en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia))
-            return;
-
-        if (!en.MoveNext()
-            || !en.Current.IsEndOfLineTrivia()
-            || en.MoveNext())
-        {
-            return;
-        }
-
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.AddBlankLineAfterTopComment,
-            Location.Create(compilationUnit.SyntaxTree, new TextSpan(leading.Last().Span.End, 0)));
     }
 }

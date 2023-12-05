@@ -49,10 +49,10 @@ public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAna
         if (node is null)
             return;
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(node, declaration);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(node, declaration);
 
-        if (analysis.Kind == TriviaBetweenKind.NoNewLine
-            || analysis.Kind == TriviaBetweenKind.NewLine)
+        if (analysis.Kind == TriviaBlockKind.NoNewLine
+            || analysis.Kind == TriviaBlockKind.NewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,

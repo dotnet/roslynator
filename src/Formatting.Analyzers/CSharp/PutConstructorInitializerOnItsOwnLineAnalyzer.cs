@@ -39,9 +39,9 @@ public sealed class PutConstructorInitializerOnItsOwnLineAnalyzer : BaseDiagnost
 
         SyntaxToken colonToken = constructorInitializer.ColonToken;
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(colonToken.GetPreviousToken(), colonToken);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(colonToken.GetPreviousToken(), colonToken);
 
-        if (analysis.Kind == TriviaBetweenKind.NoNewLine)
+        if (analysis.Kind == TriviaBlockKind.NoNewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,

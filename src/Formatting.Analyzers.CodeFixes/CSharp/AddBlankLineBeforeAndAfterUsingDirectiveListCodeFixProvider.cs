@@ -26,6 +26,6 @@ public sealed class AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider 
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        await CodeActionFactory.CreateAndRegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
+        await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
     }
 }

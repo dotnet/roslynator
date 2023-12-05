@@ -99,9 +99,9 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
 
     private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxToken token, StatementSyntax statement)
     {
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(token, statement);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(token, statement);
 
-        if (analysis.Kind == TriviaBetweenKind.NoNewLine)
+        if (analysis.Kind == TriviaBlockKind.NoNewLine)
             ReportDiagnostic(context, analysis);
     }
 
@@ -113,14 +113,14 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
 
         if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false)
         {
-            TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(elseClause.ElseKeyword, statement);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(elseClause.ElseKeyword, statement);
 
-            if (analysis.Kind == TriviaBetweenKind.NoNewLine)
+            if (analysis.Kind == TriviaBlockKind.NoNewLine)
                 ReportDiagnostic(context, analysis);
         }
     }
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBetweenAnalysis analysis)
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBlockAnalysis analysis)
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,

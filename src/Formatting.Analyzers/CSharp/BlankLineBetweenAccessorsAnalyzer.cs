@@ -61,7 +61,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
         if (accessor2.BodyOrExpressionBody() is null)
             return;
 
-        TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(accessor1, accessor2);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(accessor1, accessor2);
 
         if (!analysis.Success)
             return;
@@ -73,7 +73,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
             {
                 BlankLineStyle style = context.GetBlankLineBetweenSingleLineAccessors();
 
-                if (analysis.Kind == TriviaBetweenKind.BlankLine)
+                if (analysis.Kind == TriviaBlockKind.BlankLine)
                 {
                     if (style == BlankLineStyle.Remove)
                     {
@@ -95,7 +95,7 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
                 }
             }
         }
-        else if (analysis.Kind != TriviaBetweenKind.BlankLine)
+        else if (analysis.Kind != TriviaBlockKind.BlankLine)
         {
             DiagnosticHelpers.ReportDiagnosticIfEffective(
                 context,

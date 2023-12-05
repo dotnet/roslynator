@@ -21,6 +21,6 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        return CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(context);
+        return CodeActionFactory.RegisterCodeActionForNewLineAsync(context);
     }
 }

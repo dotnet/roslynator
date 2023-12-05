@@ -89,14 +89,14 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             if (rootNamespace2 is null)
                 continue;
 
-            TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(usingDirective1, usingDirective2);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(usingDirective1, usingDirective2);
 
             if (!analysis.Success)
                 return;
 
             if (string.Equals(rootNamespace1.Identifier.ValueText, rootNamespace2.Identifier.ValueText, StringComparison.Ordinal))
             {
-                if (analysis.Kind == TriviaBetweenKind.BlankLine)
+                if (analysis.Kind == TriviaBlockKind.BlankLine)
                 {
                     if (DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace.IsEffective(context))
                     {
@@ -121,7 +121,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             {
                 UsingDirectiveBlankLineStyle style = context.GetBlankLineBetweenUsingDirectives();
 
-                if (analysis.Kind == TriviaBetweenKind.BlankLine)
+                if (analysis.Kind == TriviaBlockKind.BlankLine)
                 {
                     if (style == UsingDirectiveBlankLineStyle.Never)
                     {

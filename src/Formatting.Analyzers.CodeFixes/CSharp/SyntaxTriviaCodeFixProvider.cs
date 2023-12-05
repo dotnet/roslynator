@@ -43,13 +43,13 @@ public sealed class SyntaxTriviaCodeFixProvider : BaseCodeFixProvider
             case DiagnosticIdentifiers.AddBlankLineAfterTopComment:
             case DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace:
                 {
-                    await CodeActionFactory.CreateAndRegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                     return;
                 }
             case DiagnosticIdentifiers.RemoveNewLineBeforeBaseList:
             case DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword:
                 {
-                    await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
                     break;
                 }
         }

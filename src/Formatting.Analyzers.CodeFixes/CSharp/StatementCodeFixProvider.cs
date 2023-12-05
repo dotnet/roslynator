@@ -38,18 +38,18 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
         {
             case DiagnosticIdentifiers.PutStatementOnItsOwnLine:
                 {
-                    await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine:
             case DiagnosticIdentifiers.AddNewLineAfterSwitchLabel:
                 {
-                    await CodeActionFactory.CreateAndRegisterCodeActionForNewLineAsync(context, options: CodeActionNewLineOptions.IncreaseIndentation).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, options: CodeActionNewLineOptions.IncreaseIndentation).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement:
                 {
-                    await CodeActionFactory.CreateAndRegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                     break;
                 }
         }
