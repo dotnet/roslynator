@@ -24,7 +24,7 @@ class C
     {
         string s = """"
             .Select(f => f.ToString())
-            .FirstOrDefault()[|?|]
+            .FirstOrDefault()?[||]
             .ToString();
     }
 }
@@ -56,8 +56,8 @@ class C
     {
         string s = """"
             .Select(f => f.ToString())
-            .FirstOrDefault()
-            [|?|].ToString();
+            .FirstOrDefault()[||]
+            ?.ToString();
     }
 }
 ", @"
@@ -87,8 +87,8 @@ class C
     void M()
     {
         var x = ToString()
-            .ToString()
-            [|?|].Length;
+            .ToString()[||]
+            ?.Length;
     }
 }
 ", @"

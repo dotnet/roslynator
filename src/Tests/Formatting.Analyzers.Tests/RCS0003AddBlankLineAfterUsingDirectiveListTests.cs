@@ -24,7 +24,6 @@ public class RCS0003AddBlankLineAfterUsingDirectiveListTests : AbstractCSharpDia
 using System;
 using System.Linq;[||]
 // x
-
 namespace N
 {
 }
@@ -33,7 +32,6 @@ using System;
 using System.Linq;
 
 // x
-
 namespace N
 {
 }
@@ -135,7 +133,6 @@ namespace N
     using System;
     using System.Linq;[||]
     // x
-
     class C
     {
     }
@@ -147,7 +144,6 @@ namespace N
     using System.Linq;
 
     // x
-
     class C
     {
     }

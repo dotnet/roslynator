@@ -49,25 +49,24 @@ public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAn
 
         while (en.MoveNext())
         {
-            SyntaxTriviaList leadingTrivia = en.Current.Labels[0].GetLeadingTrivia();
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previousSection, en.Current);
 
-            if (SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(leadingTrivia))
+            if (!analysis.Success)
+                continue;
+
+            if (analysis.Kind != TriviaBlockKind.BlankLine)
             {
-                SyntaxTriviaList trailingTrivia = previousSection.GetTrailingTrivia();
-
-                if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia)
-                    && (context.GetBlankLineBetweenClosingBraceAndSwitchSection() != false
-                        || previousBlock is null))
+                if (context.GetBlankLineBetweenClosingBraceAndSwitchSection() != false
+                    || previousBlock is null)
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.AddBlankLineBetweenSwitchSections,
-                        Location.Create(switchStatement.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
+                        analysis.GetLocation());
                 }
             }
 
             previousSection = en.Current;
-
             previousBlock = en.Current.Statements.SingleOrDefault(shouldThrow: false) as BlockSyntax;
         }
     }

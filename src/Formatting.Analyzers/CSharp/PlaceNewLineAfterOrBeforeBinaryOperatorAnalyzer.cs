@@ -72,29 +72,15 @@ public sealed class PlaceNewLineAfterOrBeforeBinaryOperatorAnalyzer : BaseDiagno
 
         NewLinePosition newLinePosition = context.GetBinaryExpressionNewLinePosition();
 
-        if (newLinePosition == NewLinePosition.None)
-            return;
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromSurrounding(binaryExpression.OperatorToken, right, newLinePosition);
 
-        if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(left, binaryExpression.OperatorToken, right))
-        {
-            if (newLinePosition == NewLinePosition.Before)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
-                    Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
-                    "before");
-            }
-        }
-        else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(left, binaryExpression.OperatorToken, right)
-            && newLinePosition == NewLinePosition.After)
+        if (analysis.Success)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
-                Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
-                properties: DiagnosticProperties.AnalyzerOption_Invert,
-                "after");
+                analysis.GetLocation(),
+                (analysis.First.IsToken) ? "before" : "after");
         }
     }
 }

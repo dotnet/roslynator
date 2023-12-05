@@ -52,22 +52,30 @@ public sealed class PutStatementOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
         if (statements.Count <= 1)
             return;
 
-        int previousEndLine = statements[0].GetSpanEndLine();
+        StatementSyntax first = statements.FirstOrDefault();
 
-        for (int i = 1; i < statements.Count; i++)
+        if (first is null)
+            return;
+
+        SyntaxNodeOrToken previous = first.GetFirstToken().GetPreviousToken();
+
+        for (int i = 0; i < statements.Count; i++)
         {
             StatementSyntax statement = statements[i];
-
-            if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement)
-                && statement.GetSpanStartLine() == previousEndLine)
+            if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement))
             {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.PutStatementOnItsOwnLine,
-                    Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
+                TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previous, statement);
+
+                if (analysis.Kind == TriviaBlockKind.NoNewLine)
+                {
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.PutStatementOnItsOwnLine,
+                        analysis.GetLocation());
+                }
             }
 
-            previousEndLine = statement.GetSpanEndLine();
+            previous = statement;
         }
     }
 }

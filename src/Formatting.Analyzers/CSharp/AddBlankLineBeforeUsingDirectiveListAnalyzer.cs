@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
@@ -42,42 +41,19 @@ public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosti
         if (usingDirective is null)
             return;
 
-        SyntaxTriviaList.Reversed.Enumerator en = usingDirective.GetLeadingTrivia().Reverse().GetEnumerator();
+        SyntaxToken previousToken = usingDirective.GetFirstToken().GetPreviousToken();
 
-        if (en.MoveNext())
-        {
-            if (en.Current.IsWhitespaceTrivia()
-                && !en.MoveNext())
-            {
-                if (IsPrecededWithExternAliasDirective())
-                    ReportDiagnostic(usingDirective.SpanStart);
-            }
-            else if (en.Current.IsEndOfLineTrivia()
-                && en.MoveNext()
-                && en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-            {
-                ReportDiagnostic(usingDirective.SpanStart);
-            }
-        }
-        else if (IsPrecededWithExternAliasDirective())
-        {
-            ReportDiagnostic(usingDirective.SpanStart);
-        }
+        TriviaBlockAnalysis analysis = (previousToken.IsKind(SyntaxKind.None))
+            ? TriviaBlockAnalysis.FromLeading(usingDirective)
+            : TriviaBlockAnalysis.FromBetween(previousToken, usingDirective);
 
-        bool IsPrecededWithExternAliasDirective()
-        {
-            ExternAliasDirectiveSyntax externAliasDirective = compilationUnit.Externs.LastOrDefault();
-
-            return externAliasDirective?.FullSpan.End == usingDirective.FullSpan.Start
-                && SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(externAliasDirective.GetTrailingTrivia());
-        }
-
-        void ReportDiagnostic(int position)
+        if (analysis.Kind == TriviaBlockKind.NoNewLine
+            || analysis.Kind == TriviaBlockKind.NewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.AddBlankLineBeforeUsingDirectiveList,
-                Location.Create(compilationUnit.SyntaxTree, new TextSpan(position, 0)));
+                analysis.GetLocation());
         }
     }
 }
