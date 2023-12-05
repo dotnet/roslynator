@@ -216,62 +216,6 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-    public async Task Test_EmptyLineBetweenClosingBraceAndSwitchSection()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    void M()
-    {
-        string x = null;
-
-        switch (x)
-        {
-            case ""a"":
-                {
-                    M();
-                    break;
-                }
-[|
-|]            case ""b"":
-                {
-                    M();
-                    break;
-                }
-[|
-|]            case ""c"":
-                break;
-        }
-    }
-}
-", @"
-class C
-{
-    void M()
-    {
-        string x = null;
-
-        switch (x)
-        {
-            case ""a"":
-                {
-                    M();
-                    break;
-                }
-            case ""b"":
-                {
-                    M();
-                    break;
-                }
-            case ""c"":
-                break;
-        }
-    }
-}
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
     public async Task Test_EndOfFile()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -536,5 +480,36 @@ class C
 #if DEBUG
 #endif
 ");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyLineBetweenClosingBraceAndSwitchSection()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string x = null;
+        switch (x)
+        {
+            case ""a"":
+                {
+                    M();
+                    break;
+                }
+
+            case ""b"":
+                {
+                    M();
+                    break;
+                }
+
+            case ""c"":
+                break;
+        }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
     }
 }

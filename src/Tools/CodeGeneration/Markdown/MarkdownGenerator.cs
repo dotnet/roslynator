@@ -380,16 +380,10 @@ public static class MarkdownGenerator
         string beforeTitle,
         string afterTitle)
     {
+        int i = 1;
         foreach (SampleMetadata sample in samples)
         {
-            yield return Heading3("Example");
-
-            yield return DocusaurusMarkdownFactory.CodeBlock(sample.Before, LanguageIdentifiers.CSharp, beforeTitle + ".cs");
-
-            if (!string.IsNullOrEmpty(sample.After))
-            {
-                yield return DocusaurusMarkdownFactory.CodeBlock(sample.After, LanguageIdentifiers.CSharp, afterTitle + ".cs");
-            }
+            yield return Heading3($"Example #{i}");
 
             ImmutableArray<(string Key, string Value)>.Enumerator en = sample.ConfigOptions.GetEnumerator();
             if (en.MoveNext())
@@ -423,6 +417,15 @@ public static class MarkdownGenerator
                     "editorconfig",
                     ".editorconfig");
             }
+
+            yield return DocusaurusMarkdownFactory.CodeBlock(sample.Before, LanguageIdentifiers.CSharp, beforeTitle + ".cs");
+
+            if (!string.IsNullOrEmpty(sample.After))
+            {
+                yield return DocusaurusMarkdownFactory.CodeBlock(sample.After, LanguageIdentifiers.CSharp, afterTitle + ".cs");
+            }
+
+            i++;
         }
     }
 

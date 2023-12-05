@@ -56,6 +56,9 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_blank_line_between_single_line_accessors = true|false
 # Applicable to: rcs0011
 
+#roslynator_blank_line_between_switch_sections = include|omit|omit_after_block
+# Applicable to: rcs0061
+
 #roslynator_blank_line_between_using_directives = never|separate_groups
 # Applicable to: rcs0015
 
@@ -179,10 +182,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Add blank line between single-line declarations of different kind
 #dotnet_diagnostic.rcs0013.severity = none
 
-# Add blank line between switch sections
-#dotnet_diagnostic.rcs0014.severity = none
-# Options: roslynator_blank_line_between_closing_brace_and_switch_section
-
 # Add/remove blank line between using directives
 #dotnet_diagnostic.rcs0015.severity = none
 # Options: roslynator_blank_line_between_using_directives
@@ -299,6 +298,10 @@ roslynator_analyzers.enabled_by_default = true|false
 # Add/remove line after file scoped namespace declaration
 #dotnet_diagnostic.rcs0060.severity = none
 # Options: roslynator_blank_line_after_file_scoped_namespace_declaration
+
+# Add/remove blank line between switch sections
+#dotnet_diagnostic.rcs0061.severity = none
+# Options: roslynator_blank_line_between_switch_sections
 
 # Add braces (when expression spans over multiple lines)
 #dotnet_diagnostic.rcs1001.severity = suggestion
