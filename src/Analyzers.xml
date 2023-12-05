@@ -1542,6 +1542,92 @@ public class C
     <ConfigOptions>
       <Option Key="blank_line_between_switch_sections" IsRequired="true" />
     </ConfigOptions>
+    <Samples>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="blank_line_between_switch_sections" Value="include" />
+        </ConfigOptions>
+        <Before><![CDATA[switch (x)
+{
+    case "foo":
+        return true;
+    case "bar":
+        return false;
+    default:
+        throw new InvalidOperationException();
+}
+]]></Before>
+        <After><![CDATA[switch (x)
+{
+    case "foo":
+        return true;
+
+    case "bar":
+        return false;
+
+    default:
+        throw new InvalidOperationException();
+}
+]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="blank_line_between_switch_sections" Value="omit" />
+        </ConfigOptions>
+        <Before><![CDATA[switch (x)
+{
+    case "foo":
+        return true;
+
+    case "bar":
+        return false;
+
+    default:
+        throw new InvalidOperationException();
+}
+]]></Before>
+        <After><![CDATA[switch (x)
+{
+    case "foo":
+        return true;
+    case "bar":
+        return false;
+    default:
+        throw new InvalidOperationException();
+}
+]]></After>
+      </Sample>
+      <Sample>
+        <ConfigOptions>
+          <Option Key="blank_line_between_switch_sections" Value="omit_after_block" />
+        </ConfigOptions>
+        <Before><![CDATA[switch (x)
+{
+    case "foo":
+      {
+        return true;
+      }
+
+    case "bar":
+      {
+        return false;
+      }
+}
+]]></Before>
+        <After><![CDATA[switch (x)
+{
+    case "foo":
+      {
+        return true;
+      }
+    case "bar":
+      {
+        return false;
+      }
+}
+]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer>
     <Id>RCS1001</Id>

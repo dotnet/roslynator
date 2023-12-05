@@ -7,5 +7,5 @@ internal enum BlankLineBetweenSwitchSections
     None,
     Include,
     Omit,
-    Omit_After_Block,
+    OmitAfterBlock,
 }

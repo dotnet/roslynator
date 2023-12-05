@@ -1,12 +1,10 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
@@ -57,46 +55,32 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
         {
             TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previousSection, en.Current);
 
-            switch (analysis.Kind)
+            if (!analysis.Success)
+                continue;
+
+            if (analysis.Kind == TriviaBlockKind.BlankLine)
             {
-                case TriviaBlockKind.NoNewLine:
-                case TriviaBlockKind.NewLine:
-                    {
-                        if (option == BlankLineBetweenSwitchSections.Include)
-                        {
-                            ReportAdd(context, analysis.Position);
-                        }
-                        else if (option == BlankLineBetweenSwitchSections.Omit_After_Block
-                            && !previousLastStatement.IsKind(SyntaxKind.Block))
-                        {
-                            ReportAdd(context, analysis.Position);
-                        }
-
-                        break;
-                    }
-                case TriviaBlockKind.BlankLine:
-                    {
-                        if (option == BlankLineBetweenSwitchSections.Omit)
-                        {
-                            ReportRemove(context, analysis.Position);
-                        }
-                        else if (option == BlankLineBetweenSwitchSections.Omit_After_Block
-                            && previousLastStatement.IsKind(SyntaxKind.Block))
-                        {
-                            ReportRemove(context, analysis.Position);
-                        }
-
-                        break;
-                    }
-                case TriviaBlockKind.Unknown:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        Debug.Fail(analysis.Kind.ToString());
-                        break;
-                    }
+                if (option == BlankLineBetweenSwitchSections.Omit)
+                {
+                    ReportDiagnostic(context, analysis, "Remove");
+                }
+                else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
+                    && previousLastStatement.IsKind(SyntaxKind.Block))
+                {
+                    ReportDiagnostic(context, analysis, "Remove");
+                }
+            }
+            else 
+            {
+                if (option == BlankLineBetweenSwitchSections.Include)
+                {
+                    ReportDiagnostic(context, analysis, "Add");
+                }
+                else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
+                    && !previousLastStatement.IsKind(SyntaxKind.Block))
+                {
+                    ReportDiagnostic(context, analysis, "Add");
+                }
             }
 
             previousSection = en.Current;
@@ -104,19 +88,11 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
         }
     }
 
-    private static void ReportAdd(SyntaxNodeAnalysisContext context, int position)
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBlockAnalysis analysis, string messageArg)
     {
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineBetweenSwitchSections,
-            Location.Create(context.Node.SyntaxTree, new TextSpan(position, 0)),
-            "Add");
-    }
-
-    private static void ReportRemove(SyntaxNodeAnalysisContext context, int position)
-    {
-        context.ReportDiagnostic(
-            DiagnosticRules.BlankLineBetweenSwitchSections,
-            Location.Create(context.Node.SyntaxTree, new TextSpan(position, 0)),
-            "Remove");
+            analysis.GetLocation(),
+            messageArg);
     }
 }

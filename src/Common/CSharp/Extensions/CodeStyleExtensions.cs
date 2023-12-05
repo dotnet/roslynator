@@ -592,7 +592,7 @@ internal static class CodeStyleExtensions
                 return BlankLineBetweenSwitchSections.Omit;
 
             if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenSwitchSections_OmitAfterBlock, StringComparison.OrdinalIgnoreCase))
-                return BlankLineBetweenSwitchSections.Omit_After_Block;
+                return BlankLineBetweenSwitchSections.OmitAfterBlock;
         }
 
         return BlankLineBetweenSwitchSections.None;
