@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 
@@ -8,45 +7,6 @@ namespace Roslynator;
 
 internal static class SyntaxUtility
 {
-    public static bool CanConvertToCollectionExpression(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
-    {
-        TypeInfo typeInfo = semanticModel.GetTypeInfo(node, cancellationToken);
-
-        if (typeInfo.ConvertedType?.SpecialType == SpecialType.System_Object)
-            return false;
-
-        ITypeSymbol? typeSymbol = typeInfo.Type;
-
-        if (typeSymbol?.IsErrorType() != false)
-            return false;
-
-        if (typeSymbol is IArrayTypeSymbol arrayType)
-            return arrayType.Rank == 1;
-
-        if (typeSymbol.HasMetadataName(MetadataNames.System_Span_T)
-            || typeSymbol.HasMetadataName(MetadataNames.System_ReadOnlySpan_T)
-            || typeSymbol.HasAttribute(MetadataNames.System_Runtime_CompilerServices_CollectionBuilderAttribute))
-        {
-            return true;
-        }
-
-        if (typeSymbol is INamedTypeSymbol namedType
-            && namedType.ImplementsAny(
-                SpecialType.System_Collections_IEnumerable,
-                SpecialType.System_Collections_Generic_IEnumerable_T,
-                allInterfaces: true))
-        {
-            IMethodSymbol? constructor = namedType
-                .InstanceConstructors
-                .SingleOrDefault(f => !f.Parameters.Any(), shouldThrow: false);
-
-            return constructor is not null
-                && semanticModel.IsAccessible(node.SpanStart, constructor);
-        }
-
-        return false;
-    }
-
     public static bool IsPropertyOfNullableOfT(
         SyntaxNode node,
         string name,

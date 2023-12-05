@@ -445,16 +445,6 @@ internal static class CodeStyleExtensions
         return ObjectCreationTypeStyle.None;
     }
 
-    public static bool? UseCollectionExpression(this SyntaxNodeAnalysisContext context)
-    {
-        return UseCollectionExpression(context.GetConfigOptions());
-    }
-
-    public static bool? UseCollectionExpression(this AnalyzerConfigOptions configOptions)
-    {
-        return ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseCollectionExpression);
-    }
-
     public static ArrayCreationTypeStyle GetArrayCreationTypeStyle(this SyntaxNodeAnalysisContext context)
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();

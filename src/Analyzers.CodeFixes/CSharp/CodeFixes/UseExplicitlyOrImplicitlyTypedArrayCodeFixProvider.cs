@@ -12,9 +12,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.SyntaxRefactorings;
 
 namespace Roslynator.CSharp.CodeFixes;
 
@@ -22,10 +20,6 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCodeFixProvider
 {
-    private const string ToImplicitTitle = "Use implicitly typed array";
-    private const string ToExplicitTitle = "Use explicitly typed array";
-    private const string ToCollectionExpressionTitle = "Use collection expression";
-
     public override ImmutableArray<string> FixableDiagnosticIds
     {
         get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray); }
@@ -34,110 +28,79 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
     public override FixAllProvider GetFixAllProvider()
     {
         return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
+    }
 
-        static async Task<Document> FixAllAsync(
-            Document document,
-            ImmutableArray<Diagnostic> diagnostics,
-            CancellationToken cancellationToken)
+    private static async Task<Document> FixAllAsync(Document document, ImmutableArray<Diagnostic> diagnostics, CancellationToken cancellationToken)
+    {
+        foreach (Diagnostic diagnostic in diagnostics.OrderByDescending(d => d.Location.SourceSpan.Start))
         {
-            foreach (Diagnostic diagnostic in diagnostics.OrderByDescending(d => d.Location.SourceSpan.Start))
-            {
-                (Func<CancellationToken, Task<Document>> CreateChangedDocument, string) result
-                    = await GetChangedDocumentAsync(document, diagnostic, cancellationToken).ConfigureAwait(false);
-
-                document = await result.CreateChangedDocument(cancellationToken).ConfigureAwait(false);
-            }
-
-            return document;
+            document = await ApplyFixToDocumentAsync(document, diagnostic, cancellationToken).ConfigureAwait(false);
         }
+
+        return document;
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.ArrayCreationExpression)))
+        {
+            return;
+        }
+
         Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
 
-        (Func<CancellationToken, Task<Document>> CreateChangedDocument, string Title)
-            = await GetChangedDocumentAsync(document, diagnostic, context.CancellationToken).ConfigureAwait(false);
+        string title = node switch
+        {
+            ImplicitArrayCreationExpressionSyntax => "Use explicitly typed array",
+            ArrayCreationExpressionSyntax => "Use implicitly typed array",
+            _ => throw new InvalidOperationException(),
+        };
 
         CodeAction codeAction = CodeAction.Create(
-            Title,
-            ct => CreateChangedDocument(ct),
+            title,
+            ct => ApplyFixToDocumentAsync(document, diagnostic, ct),
             GetEquivalenceKey(diagnostic));
 
         context.RegisterCodeFix(codeAction, diagnostic);
     }
 
-    private static async Task<(Func<CancellationToken, Task<Document>>, string)> GetChangedDocumentAsync(
-        Document document,
-        Diagnostic diagnostic,
-        CancellationToken cancellationToken)
+    public static async Task<Document> ApplyFixToDocumentAsync(Document document, Diagnostic diag, CancellationToken cancellationToken)
     {
         SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
         if (!TryFindFirstAncestorOrSelf(
             root,
-            diagnostic.Location.SourceSpan,
+            diag.Location.SourceSpan,
             out SyntaxNode node,
-            predicate: f => f.IsKind(
-                SyntaxKind.ImplicitArrayCreationExpression,
-                SyntaxKind.ArrayCreationExpression,
-                SyntaxKind.CollectionExpression)))
+            predicate: f => f.IsKind(SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.ArrayCreationExpression)))
         {
-            throw new InvalidOperationException();
+            return null;
         }
 
-        if (node is ArrayCreationExpressionSyntax arrayCreation)
+        return node switch
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            bool useCollectionExpression = document.GetConfigOptions(arrayCreation.SyntaxTree).UseCollectionExpression() == true
-                && CSharpUtility.CanConvertToCollectionExpression(arrayCreation, semanticModel, cancellationToken);
-
-            if (useCollectionExpression)
-            {
-                return (ct => ConvertToCollectionExpressionAsync(document, arrayCreation, ct), ToCollectionExpressionTitle);
-            }
-            else
-            {
-                return (ct => ConvertToImplicitAsync(document, arrayCreation, ct), ToImplicitTitle);
-            }
-        }
-        else if (node is ImplicitArrayCreationExpressionSyntax implicitArrayCreation)
-        {
-            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ConvertImplicitToImplicit))
-            {
-                return (ct => ConvertToCollectionExpressionAsync(document, implicitArrayCreation, ct), ToCollectionExpressionTitle);
-            }
-            else
-            {
-                return (ct => ConvertToExplicitAsync(document, implicitArrayCreation, ct), ToExplicitTitle);
-            }
-        }
-        else if (node is CollectionExpressionSyntax collectionExpression)
-        {
-            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ConvertImplicitToImplicit))
-            {
-                return (ct => ConvertToImplicitAsync(document, collectionExpression, ct), ToImplicitTitle);
-            }
-            else
-            {
-                return (ct => ConvertToExplicitAsync(document, collectionExpression, ct), ToExplicitTitle);
-            }
-        }
-        else
-        {
-            throw new InvalidOperationException();
-        }
+            ImplicitArrayCreationExpressionSyntax implicitArrayCreation => await ChangeArrayTypeToExplicitAsync(document, implicitArrayCreation, cancellationToken).ConfigureAwait(false),
+            ArrayCreationExpressionSyntax arrayCreation => await ChangeArrayTypeToImplicitAsync(document, arrayCreation, cancellationToken).ConfigureAwait(false),
+            _ => throw new InvalidOperationException()
+        };
     }
 
-    private static async Task<Document> ConvertToExplicitAsync(
+    private static async Task<Document> ChangeArrayTypeToExplicitAsync(
         Document document,
         ImplicitArrayCreationExpressionSyntax implicitArrayCreation,
         CancellationToken cancellationToken)
     {
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, cancellationToken);
+
         var arrayType = (ArrayTypeSyntax)typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
 
         SyntaxToken newKeyword = implicitArrayCreation.NewKeyword;
@@ -161,24 +124,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         return await document.ReplaceNodeAsync(implicitArrayCreation, newNode, cancellationToken).ConfigureAwait(false);
     }
 
-    private static async Task<Document> ConvertToExplicitAsync(
-        Document document,
-        CollectionExpressionSyntax collectionExpression,
-        CancellationToken cancellationToken)
-    {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(collectionExpression, cancellationToken).ConvertedType;
-
-        ArrayCreationExpressionSyntax arrayCreation = ArrayCreationExpression(
-            Token(SyntaxKind.NewKeyword),
-            (ArrayTypeSyntax)typeSymbol.ToTypeSyntax().WithSimplifierAnnotation(),
-            ConvertCollectionExpressionToInitializer(collectionExpression, SyntaxKind.ArrayInitializerExpression))
-            .WithTriviaFrom(collectionExpression);
-
-        return await document.ReplaceNodeAsync(collectionExpression, arrayCreation, cancellationToken).ConfigureAwait(false);
-    }
-
-    private static async Task<Document> ConvertToImplicitAsync(
+    private static async Task<Document> ChangeArrayTypeToImplicitAsync(
         Document document,
         ArrayCreationExpressionSyntax arrayCreation,
         CancellationToken cancellationToken)
@@ -212,42 +158,5 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             newInitializer);
 
         return await document.ReplaceNodeAsync(arrayCreation, implicitArrayCreation, cancellationToken).ConfigureAwait(false);
-    }
-
-    private static async Task<Document> ConvertToImplicitAsync(
-        Document document,
-        CollectionExpressionSyntax collectionExpression,
-        CancellationToken cancellationToken)
-    {
-        InitializerExpressionSyntax initializer = ConvertCollectionExpressionToInitializer(collectionExpression, SyntaxKind.ArrayInitializerExpression);
-
-        ImplicitArrayCreationExpressionSyntax implicitArrayCreation = ImplicitArrayCreationExpression(initializer)
-            .WithTriviaFrom(collectionExpression);
-
-        return await document.ReplaceNodeAsync(collectionExpression, implicitArrayCreation, cancellationToken).ConfigureAwait(false);
-    }
-
-    private static async Task<Document> ConvertToCollectionExpressionAsync(
-        Document document,
-        ArrayCreationExpressionSyntax arrayCreation,
-        CancellationToken cancellationToken)
-    {
-        CollectionExpressionSyntax collectionExpression = ConvertInitializerToCollectionExpression(arrayCreation.Initializer)
-            .WithTriviaFrom(arrayCreation)
-            .WithFormatterAnnotation();
-
-        return await document.ReplaceNodeAsync(arrayCreation, collectionExpression, cancellationToken).ConfigureAwait(false);
-    }
-
-    private static async Task<Document> ConvertToCollectionExpressionAsync(
-        Document document,
-        ImplicitArrayCreationExpressionSyntax implicitArrayCreation,
-        CancellationToken cancellationToken)
-    {
-        CollectionExpressionSyntax collectionExpression = ConvertInitializerToCollectionExpression(implicitArrayCreation.Initializer)
-            .WithTriviaFrom(implicitArrayCreation)
-            .WithFormatterAnnotation();
-
-        return await document.ReplaceNodeAsync(implicitArrayCreation, collectionExpression, cancellationToken).ConfigureAwait(false);
     }
 }
