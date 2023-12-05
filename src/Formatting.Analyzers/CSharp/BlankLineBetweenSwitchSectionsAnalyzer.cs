@@ -55,12 +55,12 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
 
         while (en.MoveNext())
         {
-            TriviaBetweenAnalysis analysis = TriviaBetweenAnalysis.Create(previousSection, en.Current);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previousSection, en.Current);
 
             switch (analysis.Kind)
             {
-                case TriviaBetweenKind.NoNewLine:
-                case TriviaBetweenKind.NewLine:
+                case TriviaBlockKind.NoNewLine:
+                case TriviaBlockKind.NewLine:
                     {
                         if (option == BlankLineBetweenSwitchSections.Include)
                         {
@@ -74,7 +74,7 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
 
                         break;
                     }
-                case TriviaBetweenKind.BlankLine:
+                case TriviaBlockKind.BlankLine:
                     {
                         if (option == BlankLineBetweenSwitchSections.Omit)
                         {
@@ -88,7 +88,7 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
 
                         break;
                     }
-                case TriviaBetweenKind.Unknown:
+                case TriviaBlockKind.Unknown:
                     {
                         break;
                     }
