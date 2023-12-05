@@ -24,10 +24,10 @@ class C
         switch (s)
         {
             case ""a"":
-                return ""a"";
-[||]            case ""b"":
-                return ""b"";
-[||]            default:
+                return ""a"";[||]
+            case ""b"":
+                return ""b"";[||]
+            default:
                 return null;
         }
     }
@@ -161,12 +161,12 @@ class C
             case ""a"":
             {
                 return ""a"";
-            }
-[||]            case ""b"":
+            }[||]
+            case ""b"":
             {
                 return ""b"";
-            }
-[||]            default:
+            }[||]
+            default:
                 return null;
         }
     }
