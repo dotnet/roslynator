@@ -32,71 +32,26 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-        if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
-            return;
-
-        Document document = context.Document;
         Diagnostic diagnostic = context.Diagnostics[0];
 
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.PutStatementOnItsOwnLine:
+                {
+                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
+                    break;
+                }
             case DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine:
             case DiagnosticIdentifiers.AddNewLineAfterSwitchLabel:
                 {
-                    CodeAction codeAction = CodeAction.Create(
-                        CodeFixTitles.AddNewLine,
-                        ct => AddNewLineBeforeStatementAsync(document, statement, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
+                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, options: CodeActionNewLineOptions.IncreaseIndentation).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement:
                 {
-                    CodeAction codeAction = CodeAction.Create(
-                        CodeFixTitles.AddBlankLine,
-                        ct => CodeFixHelpers.AppendEndOfLineAsync(document, statement, ct),
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
+                    await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
                     break;
                 }
-        }
-    }
-
-    private static async Task<Document> AddNewLineBeforeStatementAsync(
-        Document document,
-        StatementSyntax statement,
-        CancellationToken cancellationToken)
-    {
-        StatementSyntax newStatement = statement
-            .PrependEndOfLineToLeadingTrivia()
-            .WithFormatterAnnotation();
-
-        if (statement.IsParentKind(SyntaxKind.Block))
-        {
-            var block = (BlockSyntax)statement.Parent;
-
-            if (block.IsSingleLine(includeExteriorTrivia: false, cancellationToken: cancellationToken))
-            {
-                BlockSyntax newBlock = block
-                    .WithCloseBraceToken(block.CloseBraceToken.AppendEndOfLineToLeadingTrivia())
-                    .WithStatements(block.Statements.Replace(statement, newStatement))
-                    .WithFormatterAnnotation();
-
-                return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
-            }
-        }
-        else
-        {
-            return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

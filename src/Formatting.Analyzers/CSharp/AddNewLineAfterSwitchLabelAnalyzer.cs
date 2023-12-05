@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
 
@@ -46,12 +46,14 @@ public sealed class AddNewLineAfterSwitchLabelAnalyzer : BaseDiagnosticAnalyzer
         if (statement is null)
             return;
 
-        if (!switchSection.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(label.Span.End, statement.SpanStart)))
-            return;
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(label, statement);
 
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.AddNewLineAfterSwitchLabel,
-            Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
+        if (analysis.Kind == TriviaBlockKind.NoNewLine)
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.AddNewLineAfterSwitchLabel,
+                analysis.GetLocation());
+        }
     }
 }

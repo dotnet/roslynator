@@ -39,8 +39,8 @@ class B
     public async Task Test_Class_EmptyLine()
     {
         await VerifyDiagnosticAndFixAsync(@"
-class C[||]
-
+class C
+[||]
     : B
 {
 }

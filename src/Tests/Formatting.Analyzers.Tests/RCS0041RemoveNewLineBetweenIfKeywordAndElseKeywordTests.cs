@@ -62,8 +62,8 @@ class C
         if (x)
         {
         }
-        else[||]
-
+        else
+[||]
         if (y)
         {
         }

@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
@@ -309,12 +308,14 @@ public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyze
 
     private static void Analyze(SyntaxNodeAnalysisContext context, AttributeListSyntax attributeList, SyntaxNodeOrToken nodeOrToken)
     {
-        if (attributeList.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(attributeList.Span.End, nodeOrToken.SpanStart)))
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(attributeList, nodeOrToken);
+
+        if (analysis.Kind == TriviaBlockKind.NoNewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.PutAttributeListOnItsOwnLine,
-                Location.Create(nodeOrToken.SyntaxTree, nodeOrToken.Span.WithLength(0)));
+                analysis.GetLocation());
         }
     }
 }
