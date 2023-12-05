@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests;
 
-public class RCS0029AddNewLineBeforeConstructorInitializerTests : AbstractCSharpDiagnosticVerifier<PutConstructorInitializerOnItsOwnLineAnalyzer, MemberDeclarationCodeFixProvider>
+public class RCS0029PutConstructorInitializerOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutConstructorInitializerOnItsOwnLineAnalyzer, MemberDeclarationCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutConstructorInitializerOnItsOwnLine;
 
@@ -22,7 +22,7 @@ class C
     {
     }
 
-    C(object p1, object p2) [||]: this(p1)
+    C(object p1, object p2)[||] : this(p1)
     {
     }
 }
@@ -53,7 +53,7 @@ class C
 
     C(
         object p1,
-        object p2) [||]: this(p1)
+        object p2)[||] : this(p1)
     {
     }
 }
@@ -86,7 +86,7 @@ class B
 }
 class C : B
 {
-    C(object p1, object p2) [||]: base(p1)
+    C(object p1, object p2)[||] : base(p1)
     {
     }
 }

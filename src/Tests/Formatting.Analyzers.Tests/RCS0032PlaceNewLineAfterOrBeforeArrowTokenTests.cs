@@ -18,7 +18,7 @@ public class RCS0032PlaceNewLineAfterOrBeforeArrowTokenTests : AbstractCSharpDia
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string M() [|=>|]
+    string M() =>[||]
         null;
 }
 ", @"
@@ -36,8 +36,8 @@ class C
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string M()
-        [|=>|] null;
+    string M()[||]
+        => null;
 }
 ", @"
 class C
@@ -51,10 +51,17 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken)]
     public async Task TestNoDiagnostic_BeforeInsteadOfAfter_Comment()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string M() => // x
+    string M() => // x[||]
+        null;
+}
+", @"
+class C
+{
+    string M()
+        => // x
         null;
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "before"));

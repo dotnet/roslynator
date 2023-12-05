@@ -1,18 +1,335 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp;
 
 internal static class CodeActionFactory
 {
+    public static async Task RegisterCodeActionForNewLineAroundTokenAsync(
+        CodeFixContext context,
+        Func<SyntaxToken, bool> tokenPredicate,
+        string newLineReplacement = " ")
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        Diagnostic diagnostic = context.Diagnostics[0];
+        int position = context.Span.Start;
+        SyntaxToken token = root.FindToken(position);
+        SyntaxToken first;
+        SyntaxToken second;
+
+        if (token.Span.End <= position)
+        {
+            first = token;
+            second = token.GetNextToken();
+        }
+        else
+        {
+            second = token;
+            first = token.GetPreviousToken();
+        }
+
+        SyntaxToken third;
+        if (tokenPredicate(first))
+        {
+            third = second;
+            second = first;
+            first = second.GetPreviousToken();
+        }
+        else
+        {
+            third = second.GetNextToken();
+        }
+
+        AnalyzerConfigOptions configOptions = context.Document.GetConfigOptions(root.SyntaxTree);
+        var textChanges = new List<TextChange>();
+
+        TriviaBlockAnalysis analysis1 = TriviaBlockAnalysis.FromBetween(first, second);
+
+        if (!analysis1.ContainsComment)
+        {
+            string indentation = null;
+
+            if (analysis1.Kind == TriviaBlockKind.NoNewLine)
+                indentation = GetIncreasedIndentation(analysis1.First, configOptions, context.CancellationToken);
+
+            TextChange textChange = GetTextChangeForNewLine(analysis1, configOptions, indentation, newLineReplacement: newLineReplacement, cancellationToken: context.CancellationToken);
+            textChanges.Add(textChange);
+        }
+
+        TriviaBlockAnalysis analysis2 = TriviaBlockAnalysis.FromBetween(second, third);
+
+        if (!analysis2.ContainsComment)
+        {
+            TextChange textChange = GetTextChangeForNewLine(analysis2, configOptions, newLineReplacement: newLineReplacement, cancellationToken: context.CancellationToken);
+            textChanges.Add(textChange);
+        }
+
+        string title = (position >= second.Span.End)
+            ? $"Place new line before '{second}'"
+            : $"Place new line after '{second}'";
+
+        CodeAction codeAction = CodeAction.Create(
+            title,
+            ct => context.Document.WithTextChangesAsync(textChanges, ct),
+            EquivalenceKey.Create(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    public static async Task RegisterCodeActionForBlankLineAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        TextChange textChange = GetTextChangeForBlankLine(root, context.Span.Start);
+
+        CodeAction codeAction = CodeAction.Create(
+            (textChange.NewText.Length == 0) ? "Remove blank line" : "Add blank line",
+            ct => context.Document.WithTextChangeAsync(textChange, ct),
+            EquivalenceKey.Create(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    public static TextChange GetTextChangeForBlankLine(SyntaxNode root, int position)
+    {
+        SyntaxToken token = root.FindToken(position);
+        SyntaxToken first;
+        SyntaxToken second;
+
+        if (token.Span.End <= position)
+        {
+            first = token;
+            second = token.GetNextToken();
+        }
+        else
+        {
+            second = token;
+            first = token.GetPreviousToken();
+        }
+
+        string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(first, second);
+
+        Debug.Assert(position == analysis.Position);
+
+        switch (analysis.Kind)
+        {
+            case TriviaBlockKind.NoNewLine:
+                {
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
+                    string newText = endOfLine;
+
+                    if (!en.MoveNext())
+                    {
+                        newText += endOfLine;
+                    }
+                    else if (en.Current.IsWhitespaceTrivia())
+                    {
+                        position = en.Current.Span.End;
+                    }
+
+                    return new TextChange(new TextSpan(position, 0), newText);
+                }
+            case TriviaBlockKind.NewLine:
+                {
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
+
+                    while (en.MoveNext()
+                        && !en.Current.IsEndOfLineTrivia())
+                    {
+                    }
+
+                    return new TextChange(new TextSpan(en.Current.Span.End, 0), endOfLine);
+                }
+            case TriviaBlockKind.BlankLine:
+                {
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
+
+                    while (en.MoveNext()
+                        && en.Current.SpanStart != position)
+                    {
+                    }
+
+                    int end = en.Current.Span.End;
+
+                    while (en.MoveNext())
+                    {
+                        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
+                            break;
+
+                        if (!en.Current.IsEndOfLineTrivia())
+                            break;
+
+                        end = en.Current.Span.End;
+                    }
+
+                    return new TextChange(TextSpan.FromBounds(position, end), "");
+                }
+            default:
+                {
+                    throw new InvalidOperationException();
+                }
+        }
+    }
+
+    public static async Task RegisterCodeActionForNewLineAsync(
+        CodeFixContext context,
+        string title = null,
+        string indentation = null,
+        CodeActionNewLineOptions options = CodeActionNewLineOptions.None)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        TextChange textChange = GetTextChangeForNewLine(
+            root,
+            context.Span.Start,
+            context.Document.GetConfigOptions(root.SyntaxTree),
+            indentation,
+            options,
+            context.CancellationToken);
+
+        CodeAction codeAction = CodeAction.Create(
+            title ?? ((textChange.NewText.Length == 0) ? "Remove newline" : "Add newline"),
+            ct => context.Document.WithTextChangeAsync(textChange, ct),
+            EquivalenceKey.Create(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    private static TextChange GetTextChangeForNewLine(
+        SyntaxNode root,
+        int position,
+        AnalyzerConfigOptions configOptions,
+        string indentation = null,
+        CodeActionNewLineOptions options = CodeActionNewLineOptions.None,
+        CancellationToken cancellationToken = default)
+    {
+        SyntaxToken token = root.FindToken(position);
+        SyntaxToken first;
+        SyntaxToken second;
+
+        if (token.Span.End <= position)
+        {
+            first = token;
+            second = token.GetNextToken();
+        }
+        else
+        {
+            second = token;
+            first = token.GetPreviousToken();
+        }
+
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(first, second);
+
+        Debug.Assert(position == analysis.Position);
+
+        return GetTextChangeForNewLine(analysis, configOptions, indentation: indentation, options: options, cancellationToken: cancellationToken);
+    }
+
+    private static TextChange GetTextChangeForNewLine(
+        TriviaBlockAnalysis analysis,
+        AnalyzerConfigOptions configOptions,
+        string indentation = null,
+        string newLineReplacement = " ",
+        CodeActionNewLineOptions options = CodeActionNewLineOptions.None,
+        CancellationToken cancellationToken = default)
+    {
+        switch (analysis.Kind)
+        {
+            case TriviaBlockKind.NoNewLine:
+                {
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
+                    int end = analysis.Position;
+
+                    if (en.MoveNext()
+                        && en.Current.IsWhitespaceTrivia())
+                    {
+                        end = en.Current.Span.End;
+                    }
+
+                    indentation ??= ((options & CodeActionNewLineOptions.IncreaseIndentation) != 0)
+                        ? GetIncreasedIndentation(analysis.First, configOptions, cancellationToken)
+                        : SyntaxTriviaAnalysis.DetermineIndentation(analysis.First, cancellationToken).ToString();
+
+                    string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(analysis.First).ToString();
+
+                    return new TextChange(TextSpan.FromBounds(analysis.Position, end), endOfLine + indentation);
+                }
+            case TriviaBlockKind.NewLine:
+                {
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
+                    int start = analysis.First.Span.End;
+                    int end = start;
+
+                    while (en.MoveNext())
+                    {
+                        if (en.Current.IsEndOfLineTrivia())
+                        {
+                            end = en.Current.Span.End;
+                            if (en.MoveNext()
+                                && en.Current.IsWhitespaceTrivia())
+                            {
+                                end = en.Current.Span.End;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    return new TextChange(TextSpan.FromBounds(start, end), newLineReplacement);
+                }
+            case TriviaBlockKind.BlankLine:
+                {
+                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
+
+                    while (en.MoveNext()
+                        && en.Current.SpanStart != analysis.Position)
+                    {
+                    }
+
+                    int end = en.Current.Span.End;
+
+                    while (en.MoveNext()
+                        && en.Current.IsWhitespaceOrEndOfLineTrivia())
+                    {
+                        end = en.Current.Span.End;
+                    }
+
+                    return new TextChange(TextSpan.FromBounds(analysis.First.Span.End, end), newLineReplacement);
+                }
+            default:
+                {
+                    throw new InvalidOperationException();
+                }
+        }
+    }
+
+    private static string GetIncreasedIndentation(SyntaxNodeOrToken nodeOrToken, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken)
+    {
+        SyntaxNode node = (nodeOrToken.IsNode) ? nodeOrToken.AsNode() : nodeOrToken.AsToken().Parent;
+
+        SyntaxNode statementOrMember = node.FirstAncestorOrSelf(f => f is StatementSyntax
+            || f is MemberDeclarationSyntax
+            || f is SwitchLabelSyntax);
+
+        return SyntaxTriviaAnalysis.GetIncreasedIndentation(statementOrMember ?? node, configOptions, cancellationToken);
+    }
+
     public static CodeAction Create(
         string title,
         Func<CancellationToken, Task<Solution>> createChangedSolution,

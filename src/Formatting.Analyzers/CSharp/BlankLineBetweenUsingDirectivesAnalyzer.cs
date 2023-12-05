@@ -79,11 +79,6 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             if (usingDirective2.Alias is not null)
                 return;
 
-            SyntaxTriviaList trailingTrivia = usingDirective1.GetTrailingTrivia();
-
-            if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia))
-                continue;
-
             IdentifierNameSyntax rootNamespace1 = usingDirective1.GetRootNamespace();
 
             if (rootNamespace1 is null)
@@ -94,20 +89,21 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             if (rootNamespace2 is null)
                 continue;
 
-            SyntaxTriviaList leadingTrivia = usingDirective2.GetLeadingTrivia();
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(usingDirective1, usingDirective2);
 
-            bool isEmptyLine = SyntaxTriviaAnalysis.StartsWithOptionalWhitespaceThenEndOfLineTrivia(leadingTrivia);
+            if (!analysis.Success)
+                return;
 
             if (string.Equals(rootNamespace1.Identifier.ValueText, rootNamespace2.Identifier.ValueText, StringComparison.Ordinal))
             {
-                if (isEmptyLine)
+                if (analysis.Kind == TriviaBlockKind.BlankLine)
                 {
                     if (DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace.IsEffective(context))
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
-                            Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)));
+                            analysis.GetLocation());
                     }
 
                     if (DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context)
@@ -116,8 +112,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.BlankLineBetweenUsingDirectives,
-                            Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
-                            properties: DiagnosticProperties.AnalyzerOption_Invert,
+                            analysis.GetLocation(),
                             "Remove");
                     }
                 }
@@ -126,15 +121,14 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             {
                 UsingDirectiveBlankLineStyle style = context.GetBlankLineBetweenUsingDirectives();
 
-                if (isEmptyLine)
+                if (analysis.Kind == TriviaBlockKind.BlankLine)
                 {
                     if (style == UsingDirectiveBlankLineStyle.Never)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.BlankLineBetweenUsingDirectives,
-                            Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
-                            properties: DiagnosticProperties.AnalyzerOption_Invert,
+                            analysis.GetLocation(),
                             "Remove");
                     }
                 }
@@ -143,7 +137,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.BlankLineBetweenUsingDirectives,
-                        Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
+                        analysis.GetLocation(),
                         "Add");
                 }
             }

@@ -4,9 +4,9 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp;
@@ -20,33 +20,8 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
         get { return ImmutableArray.Create(DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator); }
     }
 
-    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-        if (!TryFindFirstAncestorOrSelf(root, context.Span, out BinaryExpressionSyntax binaryExpression))
-            return;
-
-        Document document = context.Document;
-        Diagnostic diagnostic = context.Diagnostics[0];
-
-        if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
-        {
-            CodeAction codeAction = CodeAction.Create(
-                $"Place new line after '{binaryExpression.OperatorToken.ToString()}'",
-                ct => CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, binaryExpression.Left, binaryExpression.OperatorToken, binaryExpression.Right, ct),
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
-        else
-        {
-            CodeAction codeAction = CodeAction.Create(
-                $"Place new line before '{binaryExpression.OperatorToken.ToString()}'",
-                ct => CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, binaryExpression.Left, binaryExpression.OperatorToken, binaryExpression.Right, ct),
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        return CodeActionFactory.RegisterCodeActionForNewLineAroundTokenAsync(context, f => f.Parent is BinaryExpressionSyntax);
     }
 }

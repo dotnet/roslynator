@@ -101,27 +101,15 @@ public sealed class PlaceNewLineAfterOrBeforeEqualsTokenAnalyzer : BaseDiagnosti
     {
         NewLinePosition newLinePosition = context.GetEqualsSignNewLinePosition();
 
-        if (newLinePosition == NewLinePosition.None)
-            return;
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromSurrounding(token, expression, newLinePosition);
 
-        FormattingSuggestion suggestion = FormattingAnalysis.AnalyzeNewLineBeforeOrAfter(token, expression, newLinePosition);
-
-        if (suggestion == FormattingSuggestion.AddNewLineBefore)
+        if (analysis.Success)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken,
-                token.GetLocation(),
-                "before");
-        }
-        else if (suggestion == FormattingSuggestion.AddNewLineAfter)
-        {
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken,
-                token.GetLocation(),
-                properties: DiagnosticProperties.AnalyzerOption_Invert,
-                "after");
+                analysis.GetLocation(),
+                (analysis.First.IsToken) ? "before" : "after");
         }
     }
 }
