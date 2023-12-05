@@ -45,7 +45,7 @@ public class RemoveUnnecessaryBracesCodeFixProvider : BaseCodeFixProvider
                     .WithOpenBraceToken(default)
                     .WithCloseBraceToken(default)
                     .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
-                    .WithTriviaFrom(typeDeclaration);
+                    .WithTrailingTrivia(typeDeclaration.GetTrailingTrivia());
 
                 return document.ReplaceNodeAsync(typeDeclaration, newTypeDeclaration, ct);
             },
