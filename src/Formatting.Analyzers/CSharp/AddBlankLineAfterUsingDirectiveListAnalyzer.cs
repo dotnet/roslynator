@@ -74,7 +74,7 @@ public sealed class AddBlankLineAfterUsingDirectiveListAnalyzer : BaseDiagnostic
         UsingDirectiveSyntax usingDirective,
         SyntaxToken nextToken)
     {
-        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(usingDirective, nextToken);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(usingDirective, nextToken);
 
         if (!analysis.Success)
             return;

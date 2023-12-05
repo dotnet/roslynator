@@ -42,7 +42,7 @@ public sealed class RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer : BaseDi
         if (!statement.IsKind(SyntaxKind.IfStatement))
             return;
 
-        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(elseClause.ElseKeyword, statement);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(elseClause.ElseKeyword, statement);
 
         if (!analysis.Success)
             return;

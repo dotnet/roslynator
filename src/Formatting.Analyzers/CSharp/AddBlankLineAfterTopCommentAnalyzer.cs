@@ -44,7 +44,7 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
         if (node is null)
             return;
 
-        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBefore(node);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromLeading(node);
 
         if (analysis.Kind == TriviaBlockKind.NewLine)
         {

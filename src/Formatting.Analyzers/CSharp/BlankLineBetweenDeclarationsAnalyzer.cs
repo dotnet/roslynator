@@ -99,7 +99,7 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             if (areGlobalStatements)
                 continue;
 
-            TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(previousMember, member);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previousMember, member);
 
             if (!analysis.Success)
                 return;
@@ -184,7 +184,7 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             isSingleLine = null;
             SyntaxToken commaToken = members.GetSeparator(i - 1);
 
-            TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(commaToken, member);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(commaToken, member);
 
             if (!analysis.Success)
                 return;

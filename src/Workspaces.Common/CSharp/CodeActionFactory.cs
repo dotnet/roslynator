@@ -56,7 +56,7 @@ internal static class CodeActionFactory
         AnalyzerConfigOptions configOptions = context.Document.GetConfigOptions(root.SyntaxTree);
         var textChanges = new List<TextChange>();
 
-        TriviaBlockAnalysis analysis1 = SyntaxTriviaAnalysis.AnalyzeBetween(first, second);
+        TriviaBlockAnalysis analysis1 = TriviaBlockAnalysis.FromBetween(first, second);
 
         if (!analysis1.ContainsComment)
         {
@@ -69,7 +69,7 @@ internal static class CodeActionFactory
             textChanges.Add(textChange);
         }
 
-        TriviaBlockAnalysis analysis2 = SyntaxTriviaAnalysis.AnalyzeBetween(second, third);
+        TriviaBlockAnalysis analysis2 = TriviaBlockAnalysis.FromBetween(second, third);
 
         if (!analysis2.ContainsComment)
         {
@@ -122,7 +122,7 @@ internal static class CodeActionFactory
         }
 
         string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
-        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(first, second);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(first, second);
 
         Debug.Assert(position == analysis.Position);
 
@@ -234,7 +234,7 @@ internal static class CodeActionFactory
             first = token.GetPreviousToken();
         }
 
-        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(first, second);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(first, second);
 
         Debug.Assert(position == analysis.Position);
 

@@ -123,7 +123,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) != false)
             return;
 
-        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(token, statement);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(token, statement);
 
         if (analysis.Kind == TriviaBlockKind.NoNewLine)
             return;
@@ -138,7 +138,7 @@ public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticA
         if (nextStatement is null)
             return;
 
-        analysis = SyntaxTriviaAnalysis.AnalyzeBetween(statement, nextStatement);
+        analysis = TriviaBlockAnalysis.FromBetween(statement, nextStatement);
 
         if (!analysis.Success)
             return;

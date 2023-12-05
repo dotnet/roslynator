@@ -41,7 +41,7 @@ public sealed class PutEnumMemberOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
 
         for (int i = 0; i < members.Count; i++)
         {
-            TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(previous, members[i]);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previous, members[i]);
 
             if (analysis.Kind == TriviaBlockKind.NoNewLine)
             {

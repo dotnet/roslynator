@@ -89,7 +89,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             if (rootNamespace2 is null)
                 continue;
 
-            TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(usingDirective1, usingDirective2);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(usingDirective1, usingDirective2);
 
             if (!analysis.Success)
                 return;

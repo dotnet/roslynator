@@ -41,7 +41,7 @@ public sealed class PlaceNewLineAfterOrBeforeArrowTokenAnalyzer : BaseDiagnostic
 
         NewLinePosition newLinePosition = context.GetArrowTokenNewLinePosition();
 
-        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeAround(arrowToken, arrowExpressionClause.Expression, newLinePosition);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromSurrounding(arrowToken, arrowExpressionClause.Expression, newLinePosition);
 
         if (analysis.Success)
         {

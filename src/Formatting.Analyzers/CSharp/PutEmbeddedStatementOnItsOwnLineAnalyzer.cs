@@ -99,7 +99,7 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
 
     private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxToken token, StatementSyntax statement)
     {
-        TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(token, statement);
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(token, statement);
 
         if (analysis.Kind == TriviaBlockKind.NoNewLine)
             ReportDiagnostic(context, analysis);
@@ -113,7 +113,7 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
 
         if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false)
         {
-            TriviaBlockAnalysis analysis = SyntaxTriviaAnalysis.AnalyzeBetween(elseClause.ElseKeyword, statement);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(elseClause.ElseKeyword, statement);
 
             if (analysis.Kind == TriviaBlockKind.NoNewLine)
                 ReportDiagnostic(context, analysis);
