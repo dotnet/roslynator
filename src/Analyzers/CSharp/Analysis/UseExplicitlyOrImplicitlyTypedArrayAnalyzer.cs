@@ -161,19 +161,14 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
         }
 
         if (!useExplicit
-            && context.UseCollectionExpression() == true)
+            && context.UseCollectionExpression() == false)
         {
-            var arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(context.Node, context.CancellationToken) as IArrayTypeSymbol;
-
-            if (arrayTypeSymbol?.Rank == 1)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-                    collectionExpression,
-                    _diagnosticProperties,
-                    "implicitly typed array");
-            }
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
+                collectionExpression.GetLocation(),
+                _diagnosticProperties,
+                "implicitly typed array");
         }
     }
 
@@ -192,7 +187,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
             {
                 if (arrayTypeSymbol is null)
                 {
-                    arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(collectionExpression, context.CancellationToken) as IArrayTypeSymbol;
+                    arrayTypeSymbol = context.SemanticModel.GetTypeInfo(collectionExpression, context.CancellationToken).ConvertedType as IArrayTypeSymbol;
 
                     if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
                         return false;
@@ -210,7 +205,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
         if (arrayTypeSymbol is null)
         {
-            arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(collectionExpression, context.CancellationToken) as IArrayTypeSymbol;
+            arrayTypeSymbol = context.SemanticModel.GetTypeInfo(collectionExpression, context.CancellationToken).ConvertedType as IArrayTypeSymbol;
 
             if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
                 return false;

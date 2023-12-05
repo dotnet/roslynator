@@ -158,7 +158,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                             ArgumentList(),
                             ConvertCollectionExpressionToInitializer(
                                 collectionExpression,
-                                SyntaxKind.ObjectInitializerExpression))
+                                SyntaxKind.CollectionInitializerExpression))
                             .WithTriviaFrom(collectionExpression);
 
                         return await document.ReplaceNodeAsync(collectionExpression, objectCreation, ct).ConfigureAwait(false);
@@ -183,7 +183,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                             ArgumentList(),
                             ConvertCollectionExpressionToInitializer(
                                 collectionExpression,
-                                SyntaxKind.ObjectInitializerExpression));
+                                SyntaxKind.CollectionInitializerExpression));
 
                         objectCreation = objectCreation
                             .WithLeadingTrivia(collectionExpression.GetLeadingTrivia())

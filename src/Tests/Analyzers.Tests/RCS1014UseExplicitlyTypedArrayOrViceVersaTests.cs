@@ -226,4 +226,172 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_ExplicitToCollectionExpression_ImplicitStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = new [|string|][] { """" };
+    }
+}
+", @"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = [""""];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_ExplicitToCollectionExpression_ImplicitWhenObviousStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string[] P { get; } = new [|string|][] { """" };
+}
+", @"
+class C
+{
+    string[] P { get; } = [""""];
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_ImplicitToCollectionExpression_ImplicitStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = [|new[]|] { """" };
+    }
+}
+", @"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = [""""];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_ImplicitToCollectionExpression_ImplicitWhenObviousStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string[] P { get; } = [|new[]|] { """" };
+}
+", @"
+class C
+{
+    string[] P { get; } = [""""];
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToExplicit_ImplicitStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = [|[""""]|];
+    }
+}
+", @"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = new string[] { """" };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToExplicit_ImplicitWhenObviousStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private string _f = """";
+
+    void M(string[] arr)
+    {
+        arr = [|[_f]|];
+    }
+}
+", @"
+class C
+{
+    private string _f = """";
+
+    void M(string[] arr)
+    {
+        arr = new string[] { _f };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToImplicit_ImplicitStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = [|[""""]|];
+    }
+}
+", @"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = new[] { """" };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+    .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToImplicit_ImplicitWhenObviousStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string[] P { get; } = [|[""""]|];
+}
+", @"
+class C
+{
+    string[] P { get; } = new[] { """" };
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
+    .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+    }
 }
