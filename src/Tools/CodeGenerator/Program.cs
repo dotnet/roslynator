@@ -87,10 +87,6 @@ internal static class Program
             normalizeWhitespace: false);
 
         WriteCompilationUnit(
-            @"Common\LegacyConfigOptions.Generated.cs",
-            Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateLegacyConfigOptions(metadata.Analyzers));
-
-        WriteCompilationUnit(
             @"Common\ConfigOptionKeys.Generated.cs",
             Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptionKeys(options),
             normalizeWhitespace: false);
