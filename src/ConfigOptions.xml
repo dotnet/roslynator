@@ -217,6 +217,14 @@
       <Value>omit_when_single_line</Value>
     </Values>
   </Option>
+  <Option Id="BlankLineBetweenSwitchSections">
+    <Description>Include/omit blank line between switch sections</Description>
+    <Values>
+      <Value>include</Value>
+      <Value>omit</Value>
+      <Value>omit_after_block</Value>
+    </Values>
+  </Option>
   <!--
   <Option Id="">
     <Key></Key>

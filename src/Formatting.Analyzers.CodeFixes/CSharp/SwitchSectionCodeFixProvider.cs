@@ -16,7 +16,12 @@ public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections); }
+        get
+        {
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections,
+                DiagnosticIdentifiers.BlankLineBetweenSwitchSections);
+        }
     }
 
     public override Task RegisterCodeFixesAsync(CodeFixContext context)

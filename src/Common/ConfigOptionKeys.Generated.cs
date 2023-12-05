@@ -14,6 +14,7 @@ namespace Roslynator
         public const string BlankLineAfterFileScopedNamespaceDeclaration      = "roslynator_blank_line_after_file_scoped_namespace_declaration";
         public const string BlankLineBetweenClosingBraceAndSwitchSection      = "roslynator_blank_line_between_closing_brace_and_switch_section";
         public const string BlankLineBetweenSingleLineAccessors               = "roslynator_blank_line_between_single_line_accessors";
+        public const string BlankLineBetweenSwitchSections                    = "roslynator_blank_line_between_switch_sections";
         public const string BlankLineBetweenUsingDirectives                   = "roslynator_blank_line_between_using_directives";
         public const string BlockBracesStyle                                  = "roslynator_block_braces_style";
         public const string BodyStyle                                         = "roslynator_body_style";

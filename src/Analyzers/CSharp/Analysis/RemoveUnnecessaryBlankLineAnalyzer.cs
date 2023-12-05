@@ -38,7 +38,6 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
         context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
         context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
-        context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
         context.RegisterSyntaxNodeAction(f => AnalyzeTryStatement(f), SyntaxKind.TryStatement);
         context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
 
@@ -145,35 +144,6 @@ public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
 
         if (members.Any())
             AnalyzeEnd(context, members.Last(), namespaceDeclaration.CloseBraceToken);
-    }
-
-    private static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
-    {
-        var switchStatement = (SwitchStatementSyntax)context.Node;
-
-        SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
-
-        if (sections.Any())
-        {
-            AnalyzeStart(context, sections[0], switchStatement.OpenBraceToken);
-            AnalyzeEnd(context, sections.Last(), switchStatement.CloseBraceToken);
-
-            if (sections.Count > 1
-                && context.GetBlankLineBetweenClosingBraceAndSwitchSection() == false)
-            {
-                SwitchSectionSyntax prevSection = sections[0];
-
-                for (int i = 1; i < sections.Count; i++)
-                {
-                    SwitchSectionSyntax section = sections[i];
-
-                    if (prevSection.Statements.LastOrDefault() is BlockSyntax block)
-                        Analyze(context, block.CloseBraceToken, section);
-
-                    prevSection = section;
-                }
-            }
-        }
     }
 
     private static void AnalyzeTryStatement(SyntaxNodeAnalysisContext context)
