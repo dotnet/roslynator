@@ -13,9 +13,9 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RecordDeclarationCodeFixProvider))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveUnnecessaryBracesCodeFixProvider))]
 [Shared]
-public class RecordDeclarationCodeFixProvider : BaseCodeFixProvider
+public class RemoveUnnecessaryBracesCodeFixProvider : BaseCodeFixProvider
 {
     public sealed override ImmutableArray<string> FixableDiagnosticIds
     {
@@ -29,7 +29,7 @@ public class RecordDeclarationCodeFixProvider : BaseCodeFixProvider
         if (!TryFindFirstAncestorOrSelf(
             root,
             context.Span,
-            out RecordDeclarationSyntax recordDeclaration))
+            out TypeDeclarationSyntax typeDeclaration))
         {
             return;
         }
@@ -41,21 +41,13 @@ public class RecordDeclarationCodeFixProvider : BaseCodeFixProvider
             "Remove unnecessary braces",
             ct =>
             {
-                RecordDeclarationSyntax newRecordDeclaration = recordDeclaration.Update(
-                    recordDeclaration.AttributeLists,
-                    recordDeclaration.Modifiers,
-                    recordDeclaration.Keyword,
-                    recordDeclaration.Identifier,
-                    recordDeclaration.TypeParameterList,
-                    recordDeclaration.ParameterList.WithoutTrailingTrivia(),
-                    recordDeclaration.BaseList,
-                    recordDeclaration.ConstraintClauses,
-                    default,
-                    default,
-                    default,
-                    Token(SyntaxKind.SemicolonToken));
+                TypeDeclarationSyntax newTypeDeclaration = typeDeclaration
+                    .WithOpenBraceToken(default)
+                    .WithCloseBraceToken(default)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+                    .WithTriviaFrom(typeDeclaration);
 
-                return document.ReplaceNodeAsync(recordDeclaration, newRecordDeclaration, ct);
+                return document.ReplaceNodeAsync(typeDeclaration, newTypeDeclaration, ct);
             },
             GetEquivalenceKey(diagnostic));
 
