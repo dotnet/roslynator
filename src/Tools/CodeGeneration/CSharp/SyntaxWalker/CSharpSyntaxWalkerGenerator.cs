@@ -90,6 +90,7 @@ public partial class CSharpSyntaxWalkerGenerator
             AddIfNotNull(CreateVisitAbstractSyntaxMethodDeclaration(Microsoft_CodeAnalysis_CSharp_Syntax_VariableDesignationSyntax));
             AddIfNotNull(CreateVisitAbstractSyntaxMethodDeclaration(Microsoft_CodeAnalysis_CSharp_Syntax_XmlAttributeSyntax));
             AddIfNotNull(CreateVisitAbstractSyntaxMethodDeclaration(Microsoft_CodeAnalysis_CSharp_Syntax_XmlNodeSyntax));
+            AddIfNotNull(CreateVisitAbstractSyntaxMethodDeclaration(Microsoft_CodeAnalysis_CSharp_Syntax_CollectionElementSyntax));
         }
 
         return members;
@@ -410,6 +411,7 @@ public partial class CSharpSyntaxWalkerGenerator
                 case "XmlAttributeSyntax":
                 case "XmlNodeSyntax":
                 case "BaseExpressionColonSyntax":
+                case "CollectionElementSyntax":
                     {
                         if (typeSymbol
                             .ContainingNamespace

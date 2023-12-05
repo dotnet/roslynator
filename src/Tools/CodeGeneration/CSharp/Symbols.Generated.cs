@@ -270,6 +270,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "CollectionExpressionSyntax":
+                {
+                    yield return SyntaxKind.CollectionExpression;
+                    break;
+                }
+
                 case "CompilationUnitSyntax":
                 {
                     yield return SyntaxKind.CompilationUnit;
@@ -515,6 +521,12 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "ExpressionColonSyntax":
                 {
                     yield return SyntaxKind.ExpressionColon;
+                    break;
+                }
+
+                case "ExpressionElementSyntax":
+                {
+                    yield return SyntaxKind.ExpressionElement;
                     break;
                 }
 
@@ -1216,6 +1228,12 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "SlicePatternSyntax":
                 {
                     yield return SyntaxKind.SlicePattern;
+                    break;
+                }
+
+                case "SpreadElementSyntax":
+                {
+                    yield return SyntaxKind.SpreadElement;
                     break;
                 }
 
