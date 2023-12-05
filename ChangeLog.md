@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Replace type declaration's empty braces with semicolon ([RCS1251](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1251) ([PR](https://github.com/dotnet/roslynator/pull/1323))
 - Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1307))
 
 ## [4.7.0] - 2023-12-03
