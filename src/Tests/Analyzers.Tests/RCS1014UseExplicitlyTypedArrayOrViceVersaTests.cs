@@ -375,7 +375,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-    .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -392,6 +392,6 @@ class C
     string[] P { get; } = new[] { """" };
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
-    .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 }
