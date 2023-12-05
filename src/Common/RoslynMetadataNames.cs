@@ -31,7 +31,6 @@ internal static class RoslynMetadataNames
     public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_VariableDesignationSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.VariableDesignationSyntax");
     public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_XmlAttributeSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.XmlAttributeSyntax");
     public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_XmlNodeSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.XmlNodeSyntax");
-    public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_CollectionElementSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.CollectionElementSyntax");
     public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_SyntaxKind = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.SyntaxKind");
     public static readonly MetadataName Microsoft_CodeAnalysis_CSharpExtensions = MetadataName.Parse("Microsoft.CodeAnalysis.CSharpExtensions");
     public static readonly MetadataName Microsoft_CodeAnalysis_Diagnostics = MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics");

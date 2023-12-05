@@ -7,15 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
-- Add option `roslynator_use_collection_expressoin = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1307))
-  - Applicable to [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) and [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250)
-
 ### Changed
 
 - Replace type declaration's empty braces with semicolon ([RCS1251](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1251) ([PR](https://github.com/dotnet/roslynator/pull/1323))
-- Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1307))
 
 ## [4.7.0] - 2023-12-03
 

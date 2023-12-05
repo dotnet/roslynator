@@ -737,19 +737,6 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
         }
 
-        public override void VisitCollectionExpression(CollectionExpressionSyntax node)
-        {
-            foreach (CollectionElementSyntax collectionElement in node.Elements)
-            {
-                if (!ShouldVisit)
-                {
-                    return;
-                }
-
-                VisitCollectionElement(collectionElement);
-            }
-        }
-
         public override void VisitCompilationUnit(CompilationUnitSyntax node)
         {
             foreach (ExternAliasDirectiveSyntax externAliasDirective in node.Externs)
@@ -1548,20 +1535,6 @@ namespace Roslynator.CSharp.SyntaxWalkers
         }
 
         public override void VisitExpressionColon(ExpressionColonSyntax node)
-        {
-            if (!ShouldVisit)
-            {
-                return;
-            }
-
-            ExpressionSyntax expression = node.Expression;
-            if (expression != null)
-            {
-                VisitExpression(expression);
-            }
-        }
-
-        public override void VisitExpressionElement(ExpressionElementSyntax node)
         {
             if (!ShouldVisit)
             {
@@ -3970,20 +3943,6 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
         }
 
-        public override void VisitSpreadElement(SpreadElementSyntax node)
-        {
-            if (!ShouldVisit)
-            {
-                return;
-            }
-
-            ExpressionSyntax expression = node.Expression;
-            if (expression != null)
-            {
-                VisitExpression(expression);
-            }
-        }
-
         public override void VisitStackAllocArrayCreationExpression(StackAllocArrayCreationExpressionSyntax node)
         {
             if (!ShouldVisit)
@@ -5042,9 +5001,6 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.CastExpression:
                     VisitCastExpression((CastExpressionSyntax)node);
                     break;
-                case SyntaxKind.CollectionExpression:
-                    VisitCollectionExpression((CollectionExpressionSyntax)node);
-                    break;
                 case SyntaxKind.ConditionalAccessExpression:
                     VisitConditionalAccessExpression((ConditionalAccessExpressionSyntax)node);
                     break;
@@ -5694,23 +5650,6 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.XmlText:
                     VisitXmlText((XmlTextSyntax)node);
-                    break;
-                default:
-                    Debug.Fail($"Unrecognized kind '{node.Kind()}'.");
-                    base.Visit(node);
-                    break;
-            }
-        }
-
-        protected virtual void VisitCollectionElement(CollectionElementSyntax node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.ExpressionElement:
-                    VisitExpressionElement((ExpressionElementSyntax)node);
-                    break;
-                case SyntaxKind.SpreadElement:
-                    VisitSpreadElement((SpreadElementSyntax)node);
                     break;
                 default:
                     Debug.Fail($"Unrecognized kind '{node.Kind()}'.");

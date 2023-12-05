@@ -3377,42 +3377,6 @@ namespace Roslynator.CodeGeneration.CSharp
                     }
                 }
 
-                case "CollectionExpressionSyntax":
-                {
-                    switch (propertySymbol.Name)
-                    {
-                        case "OpenBracketToken":
-                        case "Elements":
-                        case "CloseBracketToken":
-                            return true;
-                        default:
-                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
-                    }
-                }
-
-                case "ExpressionElementSyntax":
-                {
-                    switch (propertySymbol.Name)
-                    {
-                        case "Expression":
-                            return true;
-                        default:
-                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
-                    }
-                }
-
-                case "SpreadElementSyntax":
-                {
-                    switch (propertySymbol.Name)
-                    {
-                        case "OperatorToken":
-                        case "Expression":
-                            return true;
-                        default:
-                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
-                    }
-                }
-
                 default:
                 {
                     throw new InvalidOperationException($"Unrecognized type '{propertySymbol.ContainingType.Name}'");
