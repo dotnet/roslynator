@@ -122,7 +122,20 @@ internal static class CodeActionFactory
         }
 
         string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(first, second);
+
+        TriviaBlockAnalysis analysis;
+        if (first.IsKind(SyntaxKind.None))
+        {
+            analysis = TriviaBlockAnalysis.FromLeading(second);
+        }
+        else if (second.IsKind(SyntaxKind.None))
+        {
+            analysis = TriviaBlockAnalysis.FromTrailing(first);
+        }
+        else
+        {
+            analysis = TriviaBlockAnalysis.FromBetween(first, second);
+        }
 
         Debug.Assert(position == analysis.Position);
 
@@ -146,14 +159,7 @@ internal static class CodeActionFactory
                 }
             case TriviaBlockKind.NewLine:
                 {
-                    TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
-
-                    while (en.MoveNext()
-                        && !en.Current.IsEndOfLineTrivia())
-                    {
-                    }
-
-                    return new TextChange(new TextSpan(en.Current.Span.End, 0), endOfLine);
+                    return new TextChange(new TextSpan(position, 0), endOfLine);
                 }
             case TriviaBlockKind.BlankLine:
                 {
