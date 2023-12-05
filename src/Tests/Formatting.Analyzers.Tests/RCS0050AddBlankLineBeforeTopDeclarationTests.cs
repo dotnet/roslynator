@@ -16,8 +16,8 @@ public class RCS0050AddBlankLineBeforeTopDeclarationTests : AbstractCSharpDiagno
     public async Task Test_ExternAlias()
     {
         await VerifyDiagnosticAndFixAsync(@"
-extern alias x;
-[||]class C
+extern alias x;[||]
+class C
 {
 }
 ", @"
@@ -33,8 +33,8 @@ class C
     public async Task Test_Using()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using System;
-[||]class C
+using System;[||]
+class C
 {
 }
 ", @"
@@ -50,8 +50,8 @@ class C
     public async Task Test_Attribute()
     {
         await VerifyDiagnosticAndFixAsync(@"
-[assembly: AssemblyAttribute]
-[||]class C
+[assembly: AssemblyAttribute][||]
+class C
 {
 }
 
@@ -75,8 +75,8 @@ class AssemblyAttribute : System.Attribute
     public async Task Test_If()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using System;
-[||]class C
+using System;[||]
+class C
 {
 }
 ", @"
@@ -92,8 +92,8 @@ class C
     public async Task Test_Namespace()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using System;
-[||]namespace N
+using System;[||]
+namespace N
 {
 }
 ", @"
@@ -109,8 +109,8 @@ namespace N
     public async Task Test_Struct()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using System;
-[||]struct C
+using System;[||]
+struct C
 {
 }
 ", @"
@@ -126,8 +126,8 @@ struct C
     public async Task Test_Interface()
     {
         await VerifyDiagnosticAndFixAsync(@"
-using System;
-[||]interface IC
+using System;[||]
+interface IC
 {
 }
 ", @"

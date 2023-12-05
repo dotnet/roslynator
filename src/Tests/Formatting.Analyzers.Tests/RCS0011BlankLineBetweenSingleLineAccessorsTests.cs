@@ -22,8 +22,8 @@ class C
 
     string P
     {
-        get { return _p; }
-[||]        set { _p = value; }
+        get { return _p; }[||]
+        set { _p = value; }
     }
 }
 ", @"

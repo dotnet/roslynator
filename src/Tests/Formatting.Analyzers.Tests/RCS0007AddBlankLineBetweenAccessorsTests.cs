@@ -25,8 +25,8 @@ class C
         get
         {
             return _p;
-        }
-[||]        set { _p = value; }
+        }[||]
+        set { _p = value; }
     }
 }
 ", @"
@@ -57,8 +57,8 @@ class C
 
     string P
     {
-        get { return _p; }
-[||]        set
+        get { return _p; }[||]
+        set
         {
             _p = value;
         }
@@ -95,8 +95,8 @@ class C
         get
         {
             return _p;
-        }
-[||]        set
+        }[||]
+        set
         {
             _p = value;
         }
