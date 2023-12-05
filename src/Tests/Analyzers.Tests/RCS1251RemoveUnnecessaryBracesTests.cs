@@ -8,7 +8,6 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-//TODO: remove double diagnostic (https://github.com/dotnet/roslyn/issues/53136)
 public class RCS1251RemoveUnnecessaryBracesTests : AbstractCSharpDiagnosticVerifier<RemoveUnnecessaryBracesAnalyzer, RemoveUnnecessaryBracesCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnnecessaryBraces;
