@@ -217,6 +217,10 @@
       <Value>omit_when_single_line</Value>
     </Values>
   </Option>
+  <Option Id="UseCollectionExpression">
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Use collection expression '[]' to declare implicit collection creation</Description>
+  </Option>
   <!--
   <Option Id="">
     <Key></Key>

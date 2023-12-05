@@ -13,6 +13,8 @@ dotnet_sort_system_directives_first = true
 
 csharp_style_namespace_declarations = file_scoped:suggestion
 
+roslynator_use_collection_expression = true
+
 roslynator_accessibility_modifiers = explicit
 roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line
 roslynator_array_creation_type_style = implicit_when_type_is_obvious
