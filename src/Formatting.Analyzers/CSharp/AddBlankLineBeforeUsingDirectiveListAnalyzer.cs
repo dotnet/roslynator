@@ -47,8 +47,7 @@ public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosti
             ? TriviaBlockAnalysis.FromLeading(usingDirective)
             : TriviaBlockAnalysis.FromBetween(previousToken, usingDirective);
 
-        if (analysis.Kind == TriviaBlockKind.NoNewLine
-            || analysis.Kind == TriviaBlockKind.NewLine)
+        if (analysis.Kind == TriviaBlockKind.NewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,

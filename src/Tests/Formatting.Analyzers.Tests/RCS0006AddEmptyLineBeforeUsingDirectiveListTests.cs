@@ -128,4 +128,16 @@ namespace N
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task TestNoDiagnostic_FileStartsWithUsing()
+    {
+        await VerifyNoDiagnosticAsync(@"using System;
+using System.Linq;
+
+namespace N
+{
+}
+");
+    }
 }
