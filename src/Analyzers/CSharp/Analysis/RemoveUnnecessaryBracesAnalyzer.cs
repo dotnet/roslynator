@@ -28,7 +28,19 @@ public sealed class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
+        context.RegisterSyntaxNodeAction(c => AnalyzeRecordDeclaration(c), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
+
+        context.RegisterCompilationStartAction(startContext =>
+        {
+            if ((int)((CSharpCompilation)startContext.Compilation).LanguageVersion >= 1200)
+            {
+                startContext.RegisterSyntaxNodeAction(
+                    c => AnalyzeTypeDeclaration(c),
+                    SyntaxKind.ClassDeclaration,
+                    SyntaxKind.StructDeclaration,
+                    SyntaxKind.InterfaceDeclaration);
+            }
+        });
     }
 
     private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
@@ -38,24 +50,40 @@ public sealed class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
         if (!recordDeclaration.Members.Any()
             && recordDeclaration.ParameterList is not null)
         {
-            SyntaxToken openBrace = recordDeclaration.OpenBraceToken;
+            Analyze(context, recordDeclaration);
+        }
+    }
 
-            if (!openBrace.IsKind(SyntaxKind.None))
+    private static void Analyze(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration)
+    {
+        SyntaxToken openBrace = typeDeclaration.OpenBraceToken;
+
+        if (!openBrace.IsKind(SyntaxKind.None))
+        {
+            SyntaxToken closeBrace = typeDeclaration.CloseBraceToken;
+
+            if (!closeBrace.IsKind(SyntaxKind.None)
+                && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
+                && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
+                && typeDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false)
             {
-                SyntaxToken closeBrace = recordDeclaration.CloseBraceToken;
-
-                if (!closeBrace.IsKind(SyntaxKind.None)
-                    && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
-                    && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
-                    && recordDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.RemoveUnnecessaryBraces,
-                        openBrace.GetLocation(),
-                        additionalLocations: new Location[] { closeBrace.GetLocation() });
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.RemoveUnnecessaryBraces,
+                    openBrace.GetLocation(),
+                    additionalLocations: new Location[] { closeBrace.GetLocation() });
             }
+        }
+    }
+
+    private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
+    {
+        var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+
+        if (!typeDeclaration.Members.Any()
+            && typeDeclaration.ParameterList is null)
+        {
+            Analyze(context, typeDeclaration);
         }
     }
 }
