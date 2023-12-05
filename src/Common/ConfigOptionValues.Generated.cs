@@ -17,6 +17,9 @@ namespace Roslynator
         public const string ArrowTokenNewLine_Before                                                    = "before";
         public const string BinaryOperatorNewLine_After                                                 = "after";
         public const string BinaryOperatorNewLine_Before                                                = "before";
+        public const string BlankLineBetweenSwitchSections_Include                                      = "include";
+        public const string BlankLineBetweenSwitchSections_Omit                                         = "omit";
+        public const string BlankLineBetweenSwitchSections_OmitAfterBlock                               = "omit_after_block";
         public const string BlankLineBetweenUsingDirectives_Never                                       = "never";
         public const string BlankLineBetweenUsingDirectives_SeparateGroups                              = "separate_groups";
         public const string BlockBracesStyle_MultiLine                                                  = "multi_line";

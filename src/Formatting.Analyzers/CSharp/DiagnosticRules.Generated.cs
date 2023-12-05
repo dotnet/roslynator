@@ -157,7 +157,7 @@ namespace Roslynator.Formatting.CSharp
         public static readonly DiagnosticDescriptor AddBlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections, 
             title:              "Add blank line between switch sections", 
-            messageFormat:      "Add blank line between switch sections", 
+            messageFormat:      "([deprecated] Use RCS0061 instead) Add blank line between switch sections", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -631,6 +631,18 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS0061</summary>
+        public static readonly DiagnosticDescriptor BlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.BlankLineBetweenSwitchSections, 
+            title:              "Add/remove blank line between switch sections", 
+            messageFormat:      "{0} blank line between switch sections", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenSwitchSections, 
             customTags:         Array.Empty<string>());
 
     }
