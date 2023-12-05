@@ -36,15 +36,15 @@ public sealed class AddBlankLineAfterRegionDirectiveAnalyzer : BaseDiagnosticAna
     {
         var regionDirective = (RegionDirectiveTriviaSyntax)context.Node;
 
-        if (IsFollowedWithEmptyLineOrEndRegionDirective())
-            return;
+        if (!IsFollowedWithEmptyLineOrEndRegionDirective(regionDirective))
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.AddBlankLineAfterRegionDirective,
+                Location.Create(regionDirective.SyntaxTree, regionDirective.EndOfDirectiveToken.Span));
+        }
 
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.AddBlankLineAfterRegionDirective,
-            Location.Create(regionDirective.SyntaxTree, regionDirective.EndOfDirectiveToken.Span));
-
-        bool IsFollowedWithEmptyLineOrEndRegionDirective()
+        static bool IsFollowedWithEmptyLineOrEndRegionDirective(RegionDirectiveTriviaSyntax regionDirective)
         {
             SyntaxTrivia parentTrivia = regionDirective.ParentTrivia;
 

@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp;
@@ -100,12 +99,10 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
 
     private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxToken token, StatementSyntax statement)
     {
-        if (!token.IsMissing
-            && statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) == false
-            && statement.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(token.SpanStart, statement.SpanStart)))
-        {
-            ReportDiagnostic(context, statement);
-        }
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(token, statement);
+
+        if (analysis.Kind == TriviaBlockKind.NoNewLine)
+            ReportDiagnostic(context, analysis);
     }
 
     private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
@@ -114,18 +111,20 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
 
         StatementSyntax statement = elseClause.Statement;
 
-        if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false
-            && elseClause.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(elseClause.ElseKeyword.SpanStart, statement.SpanStart)))
+        if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false)
         {
-            ReportDiagnostic(context, statement);
+            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(elseClause.ElseKeyword, statement);
+
+            if (analysis.Kind == TriviaBlockKind.NoNewLine)
+                ReportDiagnostic(context, analysis);
         }
     }
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, StatementSyntax statement)
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBlockAnalysis analysis)
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.PutEmbeddedStatementOnItsOwnLine,
-            Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
+            analysis.GetLocation());
     }
 }

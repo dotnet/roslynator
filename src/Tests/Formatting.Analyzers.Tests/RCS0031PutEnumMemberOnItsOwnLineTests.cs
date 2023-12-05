@@ -18,7 +18,7 @@ public class RCS0031PutEnumMemberOnItsOwnLineTests : AbstractCSharpDiagnosticVer
         await VerifyDiagnosticAndFixAsync(@"
 enum Foo
 {
-    A, [||]B, C, D,
+    A,[||] B,[||] C,[||] D,
 }
 ", @"
 enum Foo
@@ -37,7 +37,7 @@ enum Foo
         await VerifyDiagnosticAndFixAsync(@"
 enum Foo
 {
-    A = 0, [||]B = 1, C = 2, D = 3,
+    A = 0,[||] B = 1,[||] C = 2,[||] D = 3,
 }
 ", @"
 enum Foo
@@ -56,7 +56,7 @@ enum Foo
         await VerifyDiagnosticAndFixAsync(@"
 enum Foo
 {
-    A, [||]B, C, D
+    A,[||] B,[||] C,[||] D
 }
 ", @"
 enum Foo

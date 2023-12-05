@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 
@@ -48,88 +47,32 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
         if (style == BlankLineStyle.None)
             return;
 
-        BlankLineStyle currentStyle = GetCurrentStyle(namespaceDeclaration, node);
+        SyntaxToken semicolon = namespaceDeclaration.SemicolonToken;
 
-        if (style != currentStyle)
+        if (semicolon.IsMissing)
             return;
 
-        context.ReportDiagnostic(
-            DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
-            Location.Create(namespaceDeclaration.SyntaxTree, new TextSpan(node.FullSpan.Start, 0)),
-            (style == BlankLineStyle.Add) ? "Add" : "Remove");
-    }
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(semicolon, node);
 
-    internal static BlankLineStyle GetCurrentStyle(
-        FileScopedNamespaceDeclarationSyntax namespaceDeclaration,
-        SyntaxNode node)
-    {
-        (bool add, bool remove) = AnalyzeTrailingTrivia();
+        if (!analysis.Success)
+            return;
 
-        if (add || remove)
+        if (analysis.Kind == TriviaBlockKind.BlankLine)
         {
-            BlankLineStyle style = AnalyzeLeadingTrivia();
-
-            if (style == BlankLineStyle.Add)
+            if (style == BlankLineStyle.Remove)
             {
-                if (add)
-                    return style;
-            }
-            else if (style == BlankLineStyle.Remove)
-            {
-                if (remove)
-                    return style;
+                context.ReportDiagnostic(
+                    DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
+                    analysis.GetLocation(),
+                    "Remove");
             }
         }
-
-        return BlankLineStyle.None;
-
-        (bool add, bool remove) AnalyzeTrailingTrivia()
+        else if (style == BlankLineStyle.Add)
         {
-            SyntaxTriviaList.Enumerator en = namespaceDeclaration.SemicolonToken.TrailingTrivia.GetEnumerator();
-
-            if (!en.MoveNext())
-                return (true, false);
-
-            if (en.Current.IsWhitespaceTrivia()
-                && !en.MoveNext())
-            {
-                return (true, false);
-            }
-
-            if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia)
-                && !en.MoveNext())
-            {
-                return (true, false);
-            }
-
-            return (en.Current.IsEndOfLineTrivia())
-                ? (true, true)
-                : (false, false);
-        }
-
-        BlankLineStyle AnalyzeLeadingTrivia()
-        {
-            SyntaxTriviaList.Enumerator en = node.GetLeadingTrivia().GetEnumerator();
-
-            if (!en.MoveNext())
-                return BlankLineStyle.Add;
-
-            if (en.Current.IsWhitespaceTrivia()
-                && !en.MoveNext())
-            {
-                return BlankLineStyle.Add;
-            }
-
-            switch (en.Current.Kind())
-            {
-                case SyntaxKind.SingleLineCommentTrivia:
-                case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                    return BlankLineStyle.Add;
-                case SyntaxKind.EndOfLineTrivia:
-                    return BlankLineStyle.Remove;
-            }
-
-            return BlankLineStyle.None;
+            context.ReportDiagnostic(
+                DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
+                analysis.GetLocation(),
+                "Add");
         }
     }
 

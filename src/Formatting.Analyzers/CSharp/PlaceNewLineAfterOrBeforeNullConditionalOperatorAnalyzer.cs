@@ -51,31 +51,15 @@ public sealed class PlaceNewLineAfterOrBeforeNullConditionalOperatorAnalyzer : B
 
         NewLinePosition newLinePosition = context.GetNullConditionalOperatorNewLinePosition();
 
-        if (newLinePosition == NewLinePosition.None)
-            return;
+        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromSurrounding(conditionalAccess.OperatorToken, right, newLinePosition);
 
-        SyntaxToken operatorToken = conditionalAccess.OperatorToken;
-
-        if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(left, operatorToken, right))
-        {
-            if (newLinePosition == NewLinePosition.Before)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.PlaceNewLineAfterOrBeforeNullConditionalOperator,
-                    operatorToken,
-                    "before");
-            }
-        }
-        else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(left, operatorToken, right)
-            && newLinePosition == NewLinePosition.After)
+        if (analysis.Success)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.PlaceNewLineAfterOrBeforeNullConditionalOperator,
-                Location.Create(conditionalAccess.SyntaxTree, operatorToken.Span),
-                DiagnosticProperties.NewLinePosition_After,
-                "after");
+                analysis.GetLocation(),
+                (analysis.First.IsToken) ? "before" : "after");
         }
     }
 }
