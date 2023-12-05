@@ -75,6 +75,42 @@ namespace N
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    public async Task Test_Class_WithBaseClass()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+namespace N
+{
+    class C : object
+    [|{|]
+    }
+}
+", @"
+namespace N
+{
+    class C : object;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    public async Task Test_Class_WhereConstraint()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+namespace N
+{
+    class C<T> where T : new()
+    [|{|]
+    }
+}
+", @"
+namespace N
+{
+    class C<T> where T : new();
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
     public async Task Test_Struct()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -134,5 +170,18 @@ namespace N
     }
 }
 ");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+    public async Task TestNoDiagnostic_Class_WithParameterList()
+    {
+        await VerifyNoDiagnosticAsync(@"
+namespace N
+{
+    class C(string P)
+    {
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS9113"));
     }
 }
