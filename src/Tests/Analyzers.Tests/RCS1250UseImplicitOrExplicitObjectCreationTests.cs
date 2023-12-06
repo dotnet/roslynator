@@ -680,7 +680,7 @@ class C
 {
     string M()
     {
-        return new string(' ', 1);
+        return new(' ', 1);
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
@@ -1776,7 +1776,8 @@ class C
         items = new() { """" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
+", options: Options
+            .AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 

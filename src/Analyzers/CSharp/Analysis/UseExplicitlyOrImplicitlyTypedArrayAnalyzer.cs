@@ -16,7 +16,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 {
     private static readonly ImmutableDictionary<string, string> _diagnosticProperties = ImmutableDictionary.CreateRange(new[]
         {
-            new KeyValuePair<string, string>(DiagnosticPropertyKeys.ConvertImplicitToImplicit, null)
+            new KeyValuePair<string, string>(DiagnosticPropertyKeys.UseCollectionExpression, null)
         });
 
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
@@ -57,7 +57,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
         if (!useExplicit
             && context.UseCollectionExpression() == true
-            && CSharpUtility.CanConvertToCollectionExpression(implicitArrayCreation, context.SemanticModel, context.CancellationToken)
+            && SyntaxUtility.CanConvertToCollectionExpression(implicitArrayCreation, context.SemanticModel, context.CancellationToken)
             && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression())
         {
             DiagnosticHelpers.ReportDiagnostic(
@@ -273,7 +273,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
         string messageArg;
         if (context.UseCollectionExpression() == true
-            && CSharpUtility.CanConvertToCollectionExpression(arrayCreation, context.SemanticModel, context.CancellationToken)
+            && SyntaxUtility.CanConvertToCollectionExpression(arrayCreation, context.SemanticModel, context.CancellationToken)
             && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression())
         {
             messageArg = "collection expression";

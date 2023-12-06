@@ -4,5 +4,8 @@ namespace Roslynator.CSharp.Analysis;
 
 internal static class DiagnosticPropertyKeys
 {
-    internal static readonly string ConvertImplicitToImplicit = "ConvertImplicitToImplicit";
+    internal static readonly string UseCollectionExpression = nameof(UseCollectionExpression);
+    internal static readonly string ImplicitToCollectionExpression = nameof(ImplicitToCollectionExpression);
+    internal static readonly string CollectionExpressionToImplicit = nameof(CollectionExpressionToImplicit);
+    internal static readonly string ExplicitToCollectionExpression = nameof(ExplicitToCollectionExpression);
 }

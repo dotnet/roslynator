@@ -394,4 +394,19 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToImplicit_ImplicitWhenObviousStyle2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(string p1, object p2)
+    {
+        var nodes = new[] { p1, p2 };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
 }

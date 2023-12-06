@@ -47,10 +47,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
         if (node is ObjectCreationExpressionSyntax objectCreation)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            bool useCollectionExpression = document.GetConfigOptions(objectCreation.SyntaxTree).UseCollectionExpression() == true
-                && CSharpUtility.CanConvertToCollectionExpression(objectCreation, semanticModel, context.CancellationToken);
+            bool useCollectionExpression = diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ExplicitToCollectionExpression);
 
             CodeAction codeAction = CodeAction.Create(
                 (useCollectionExpression)
@@ -94,7 +91,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
         }
         else if (node is ImplicitObjectCreationExpressionSyntax implicitObjectCreation)
         {
-            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ConvertImplicitToImplicit))
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Use collection expression",
@@ -144,7 +141,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
         }
         else if (node is CollectionExpressionSyntax collectionExpression)
         {
-            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ConvertImplicitToImplicit))
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.CollectionExpressionToImplicit))
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Use implicit object creation",

@@ -89,12 +89,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
 
         if (node is ArrayCreationExpressionSyntax arrayCreation)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            bool useCollectionExpression = document.GetConfigOptions(arrayCreation.SyntaxTree).UseCollectionExpression() == true
-                && CSharpUtility.CanConvertToCollectionExpression(arrayCreation, semanticModel, cancellationToken);
-
-            if (useCollectionExpression)
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ExplicitToCollectionExpression))
             {
                 return (ct => ConvertToCollectionExpressionAsync(document, arrayCreation, ct), ToCollectionExpressionTitle);
             }
@@ -105,7 +100,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         }
         else if (node is ImplicitArrayCreationExpressionSyntax implicitArrayCreation)
         {
-            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ConvertImplicitToImplicit))
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
                 return (ct => ConvertToCollectionExpressionAsync(document, implicitArrayCreation, ct), ToCollectionExpressionTitle);
             }
@@ -116,7 +111,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         }
         else if (node is CollectionExpressionSyntax collectionExpression)
         {
-            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ConvertImplicitToImplicit))
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.CollectionExpressionToImplicit))
             {
                 return (ct => ConvertToImplicitAsync(document, collectionExpression, ct), ToImplicitTitle);
             }
