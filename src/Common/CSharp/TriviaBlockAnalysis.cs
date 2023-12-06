@@ -35,6 +35,8 @@ internal readonly struct TriviaBlockAnalysis
 
     public SyntaxNodeOrToken Second { get; }
 
+    public SyntaxNodeOrToken FirstOrSecond => (!First.IsKind(SyntaxKind.None)) ? First : Second;
+
     public bool Success => Kind != TriviaBlockKind.Unknown;
 
     public bool ContainsComment => ContainsSingleLineComment || ContainsDocumentationComment;
@@ -115,7 +117,7 @@ internal readonly struct TriviaBlockAnalysis
     private static TriviaBlockAnalysis Analyze(SyntaxNodeOrToken first, SyntaxNodeOrToken second, int position)
     {
         var en = new Enumerator(first, second);
-        int firstEolEnd = 0;
+        int firstEolEnd = -1;
         var state = State.Start;
         var commentState = CommentState.BeforeComment;
         var stateBeforeComment = State.Start;
@@ -128,15 +130,15 @@ internal readonly struct TriviaBlockAnalysis
             {
                 case TriviaLineKind.EmptyOrWhiteSpace:
                     {
-                        if (firstEolEnd == 0)
+                        if (firstEolEnd == -1)
                         {
                             position = en.Current.Span.Start;
                             firstEolEnd = en.Current.Span.End;
                         }
-                        else if (firstEolEnd > 0)
+                        else if (firstEolEnd >= 0)
                         {
                             position = firstEolEnd;
-                            firstEolEnd = -1;
+                            firstEolEnd = -2;
                         }
 
                         if (state == State.Start)
@@ -162,15 +164,16 @@ internal readonly struct TriviaBlockAnalysis
                         if (first.IsKind(SyntaxKind.None))
                         {
                             position = en.Current.Span.Start;
+                            firstEolEnd = en.Current.Span.End;
                         }
-                        else if (firstEolEnd == 0)
+                        else if (firstEolEnd == -1)
                         {
                             position = en.Current.Span.Start;
                             firstEolEnd = en.Current.Span.End;
                         }
-                        else if (firstEolEnd > 0)
+                        else if (firstEolEnd >= 0)
                         {
-                            firstEolEnd = -1;
+                            firstEolEnd = -2;
                         }
 
                         if (state == State.Start)
@@ -240,7 +243,8 @@ internal readonly struct TriviaBlockAnalysis
     public struct Enumerator
     {
         private bool _isSecondTrivia = false;
-        private SyntaxTriviaList.Enumerator _enumerator;
+        private int _index = -1;
+        private SyntaxTriviaList _list;
 
         public Enumerator(SyntaxNodeOrToken first, SyntaxNodeOrToken second)
         {
@@ -249,16 +253,22 @@ internal readonly struct TriviaBlockAnalysis
             First = first;
             Second = second;
 
-            _enumerator = (!first.IsKind(SyntaxKind.None))
-                ? first.GetTrailingTrivia().GetEnumerator()
-                : second.GetLeadingTrivia().GetEnumerator();
+            if (!first.IsKind(SyntaxKind.None))
+            {
+                _list = first.GetTrailingTrivia();
+            }
+            else
+            {
+                _list = second.GetLeadingTrivia();
+                _isSecondTrivia = true;
+            }
         }
 
         public SyntaxNodeOrToken First { get; }
 
         public SyntaxNodeOrToken Second { get; }
 
-        public SyntaxTrivia Current => _enumerator.Current;
+        public readonly SyntaxTrivia Current => _list[_index];
 
         public TriviaLineKind ReadLine()
         {
@@ -294,28 +304,99 @@ internal readonly struct TriviaBlockAnalysis
             return TriviaLineKind.End;
         }
 
-        public bool MoveNext()
+        public void ReadTo(int position)
         {
-            if (!_enumerator.MoveNext())
+            while (MoveNext()
+                && Current.SpanStart != position)
             {
-                if (_isSecondTrivia)
-                    return false;
+            }
+        }
 
-                _isSecondTrivia = true;
-
-                if (First.IsKind(SyntaxKind.None)
-                    || Second.IsKind(SyntaxKind.None))
-                {
-                    return false;
-                }
-
-                _enumerator = Second.GetLeadingTrivia().GetEnumerator();
-
-                if (!_enumerator.MoveNext())
-                    return false;
+        public bool ReadWhiteSpaceTrivia()
+        {
+            if (Peek().IsWhitespaceTrivia())
+            {
+                MoveNext();
+                return true;
             }
 
-            return true;
+            return false;
+        }
+
+        public void ReadWhiteSpaceOrEndOfLineTrivia()
+        {
+            while (Peek().IsWhitespaceOrEndOfLineTrivia())
+                MoveNext();
+        }
+
+        public void ReadBlankLines()
+        {
+            while (true)
+            {
+                if (Peek().IsWhitespaceTrivia())
+                {
+                    if (Peek(1).IsEndOfLineTrivia())
+                    {
+                        MoveNext();
+                        MoveNext();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else if (Peek().IsEndOfLineTrivia())
+                {
+                    MoveNext();
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        public readonly SyntaxTrivia Peek(int offset = 0)
+        {
+            offset++;
+            if (_index + offset < _list.Count)
+                return _list[_index + offset];
+
+            if (!_isSecondTrivia)
+            {
+                SyntaxTriviaList list = Second.GetLeadingTrivia();
+
+                int index = offset - (_list.Count - _index);
+
+                if (index < list.Count)
+                    return list[index];
+            }
+
+            return default;
+        }
+
+        private bool MoveNext()
+        {
+            if (_index < _list.Count - 1)
+            {
+                _index++;
+                return true;
+            }
+
+            if (!_isSecondTrivia)
+            {
+                _list = Second.GetLeadingTrivia();
+                _index = -1;
+                _isSecondTrivia = true;
+
+                if (_index < _list.Count - 1)
+                {
+                    _index++;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 

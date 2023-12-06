@@ -106,36 +106,9 @@ internal static class CodeActionFactory
 
     public static TextChange GetTextChangeForBlankLine(SyntaxNode root, int position)
     {
-        SyntaxToken token = root.FindToken(position);
-        SyntaxToken first;
-        SyntaxToken second;
+        TriviaBlockAnalysis analysis = Analyze(root, position);
 
-        if (token.Span.End <= position)
-        {
-            first = token;
-            second = token.GetNextToken();
-        }
-        else
-        {
-            second = token;
-            first = token.GetPreviousToken();
-        }
-
-        string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(first).ToString();
-
-        TriviaBlockAnalysis analysis;
-        if (first.IsKind(SyntaxKind.None))
-        {
-            analysis = TriviaBlockAnalysis.FromLeading(second);
-        }
-        else if (second.IsKind(SyntaxKind.None))
-        {
-            analysis = TriviaBlockAnalysis.FromTrailing(first);
-        }
-        else
-        {
-            analysis = TriviaBlockAnalysis.FromBetween(first, second);
-        }
+        string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(analysis.FirstOrSecond).ToString();
 
         Debug.Assert(position == analysis.Position);
 
@@ -144,18 +117,11 @@ internal static class CodeActionFactory
             case TriviaBlockKind.NoNewLine:
                 {
                     TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
-                    string newText = endOfLine;
 
-                    if (!en.MoveNext())
-                    {
-                        newText += endOfLine;
-                    }
-                    else if (en.Current.IsWhitespaceTrivia())
-                    {
+                    if (en.ReadWhiteSpaceTrivia())
                         position = en.Current.Span.End;
-                    }
 
-                    return new TextChange(new TextSpan(position, 0), newText);
+                    return new TextChange(new TextSpan(position, 0), endOfLine + endOfLine);
                 }
             case TriviaBlockKind.NewLine:
                 {
@@ -165,25 +131,10 @@ internal static class CodeActionFactory
                 {
                     TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
 
-                    while (en.MoveNext()
-                        && en.Current.SpanStart != position)
-                    {
-                    }
+                    en.ReadTo(analysis.Position);
+                    en.ReadBlankLines();
 
-                    int end = en.Current.Span.End;
-
-                    while (en.MoveNext())
-                    {
-                        if (en.Current.IsWhitespaceTrivia() && !en.MoveNext())
-                            break;
-
-                        if (!en.Current.IsEndOfLineTrivia())
-                            break;
-
-                        end = en.Current.Span.End;
-                    }
-
-                    return new TextChange(TextSpan.FromBounds(position, end), "");
+                    return new TextChange(TextSpan.FromBounds(position, en.Current.Span.End), "");
                 }
             default:
                 {
@@ -225,22 +176,7 @@ internal static class CodeActionFactory
         CodeActionNewLineOptions options = CodeActionNewLineOptions.None,
         CancellationToken cancellationToken = default)
     {
-        SyntaxToken token = root.FindToken(position);
-        SyntaxToken first;
-        SyntaxToken second;
-
-        if (token.Span.End <= position)
-        {
-            first = token;
-            second = token.GetNextToken();
-        }
-        else
-        {
-            second = token;
-            first = token.GetPreviousToken();
-        }
-
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(first, second);
+        TriviaBlockAnalysis analysis = Analyze(root, position);
 
         Debug.Assert(position == analysis.Position);
 
@@ -260,68 +196,69 @@ internal static class CodeActionFactory
             case TriviaBlockKind.NoNewLine:
                 {
                     TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
-                    int end = analysis.Position;
 
-                    if (en.MoveNext()
-                        && en.Current.IsWhitespaceTrivia())
-                    {
-                        end = en.Current.Span.End;
-                    }
+                    int end = (en.ReadWhiteSpaceTrivia()) ? en.Current.Span.End : analysis.Position;
+
+                    string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(analysis.FirstOrSecond).ToString();
 
                     indentation ??= ((options & CodeActionNewLineOptions.IncreaseIndentation) != 0)
-                        ? GetIncreasedIndentation(analysis.First, configOptions, cancellationToken)
-                        : SyntaxTriviaAnalysis.DetermineIndentation(analysis.First, cancellationToken).ToString();
-
-                    string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(analysis.First).ToString();
+                        ? GetIncreasedIndentation(analysis.FirstOrSecond, configOptions, cancellationToken)
+                        : SyntaxTriviaAnalysis.DetermineIndentation(analysis.FirstOrSecond, cancellationToken).ToString();
 
                     return new TextChange(TextSpan.FromBounds(analysis.Position, end), endOfLine + indentation);
                 }
             case TriviaBlockKind.NewLine:
                 {
                     TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
-                    int start = analysis.First.Span.End;
-                    int end = start;
 
-                    while (en.MoveNext())
-                    {
-                        if (en.Current.IsEndOfLineTrivia())
-                        {
-                            end = en.Current.Span.End;
-                            if (en.MoveNext()
-                                && en.Current.IsWhitespaceTrivia())
-                            {
-                                end = en.Current.Span.End;
-                            }
+                    en.ReadWhiteSpaceOrEndOfLineTrivia();
 
-                            break;
-                        }
-                    }
-
-                    return new TextChange(TextSpan.FromBounds(start, end), newLineReplacement);
+                    return new TextChange(TextSpan.FromBounds(analysis.Position, en.Current.Span.End), newLineReplacement);
                 }
             case TriviaBlockKind.BlankLine:
                 {
                     TriviaBlockAnalysis.Enumerator en = analysis.GetEnumerator();
 
-                    while (en.MoveNext()
-                        && en.Current.SpanStart != analysis.Position)
-                    {
-                    }
+                    en.ReadTo(analysis.Position);
+                    en.ReadWhiteSpaceOrEndOfLineTrivia();
 
-                    int end = en.Current.Span.End;
-
-                    while (en.MoveNext()
-                        && en.Current.IsWhitespaceOrEndOfLineTrivia())
-                    {
-                        end = en.Current.Span.End;
-                    }
-
-                    return new TextChange(TextSpan.FromBounds(analysis.First.Span.End, end), newLineReplacement);
+                    return new TextChange(TextSpan.FromBounds(analysis.FirstOrSecond.Span.End, en.Current.Span.End), newLineReplacement);
                 }
             default:
                 {
                     throw new InvalidOperationException();
                 }
+        }
+    }
+
+    private static TriviaBlockAnalysis Analyze(SyntaxNode root, int position)
+    {
+        SyntaxToken token = root.FindToken(position);
+        SyntaxToken first;
+        SyntaxToken second;
+
+        if (token.Span.End <= position)
+        {
+            first = token;
+            second = token.GetNextToken();
+        }
+        else
+        {
+            second = token;
+            first = token.GetPreviousToken();
+        }
+
+        if (first.IsKind(SyntaxKind.None))
+        {
+            return TriviaBlockAnalysis.FromLeading(second);
+        }
+        else if (second.IsKind(SyntaxKind.None))
+        {
+            return TriviaBlockAnalysis.FromTrailing(first);
+        }
+        else
+        {
+            return TriviaBlockAnalysis.FromBetween(first, second);
         }
     }
 
