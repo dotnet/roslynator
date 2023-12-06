@@ -2,8 +2,11 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.CodeStyle;
 
@@ -238,6 +241,101 @@ internal readonly struct TriviaBlockAnalysis
                     }
             }
         }
+    }
+
+    public TextChange GetTextChangeForBlankLine()
+    {
+        string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(FirstOrSecond).ToString();
+        int position = Position;
+
+        switch (Kind)
+        {
+            case TriviaBlockKind.NoNewLine:
+                {
+                    Enumerator en = GetEnumerator();
+
+                    if (en.ReadWhiteSpaceTrivia())
+                        position = en.Current.Span.End;
+
+                    return new TextChange(new TextSpan(position, 0), endOfLine + endOfLine);
+                }
+            case TriviaBlockKind.NewLine:
+                {
+                    return new TextChange(new TextSpan(position, 0), endOfLine);
+                }
+            case TriviaBlockKind.BlankLine:
+                {
+                    Enumerator en = GetEnumerator();
+
+                    en.ReadTo(Position);
+                    en.ReadBlankLines();
+
+                    return new TextChange(TextSpan.FromBounds(position, en.Current.Span.End), "");
+                }
+            default:
+                {
+                    throw new InvalidOperationException();
+                }
+        }
+    }
+
+    public TextChange GetTextChangeForNewLine(
+        AnalyzerConfigOptions configOptions,
+        string indentation = null,
+        string newLineReplacement = " ",
+        bool increaseIndentation = false,
+        CancellationToken cancellationToken = default)
+    {
+        switch (Kind)
+        {
+            case TriviaBlockKind.NoNewLine:
+                {
+                    Enumerator en = GetEnumerator();
+
+                    int end = (en.ReadWhiteSpaceTrivia()) ? en.Current.Span.End : Position;
+
+                    string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(FirstOrSecond).ToString();
+
+                    indentation ??= (increaseIndentation)
+                        ? GetIncreasedIndentation(FirstOrSecond, configOptions, cancellationToken)
+                        : SyntaxTriviaAnalysis.DetermineIndentation(FirstOrSecond, cancellationToken).ToString();
+
+                    return new TextChange(TextSpan.FromBounds(Position, end), endOfLine + indentation);
+                }
+            case TriviaBlockKind.NewLine:
+                {
+                    Enumerator en = GetEnumerator();
+
+                    en.ReadWhiteSpaceOrEndOfLineTrivia();
+
+                    return new TextChange(TextSpan.FromBounds(Position, en.Current.Span.End), newLineReplacement);
+                }
+            case TriviaBlockKind.BlankLine:
+                {
+                    Enumerator en =     GetEnumerator();
+
+                    en.ReadTo(Position);
+                    en.ReadWhiteSpaceOrEndOfLineTrivia();
+
+                    return new TextChange(TextSpan.FromBounds(FirstOrSecond.Span.End, en.Current.Span.End), newLineReplacement);
+                }
+            default:
+                {
+                    throw new InvalidOperationException();
+                }
+        }
+    }
+
+    private static string GetIncreasedIndentation(SyntaxNodeOrToken nodeOrToken, AnalyzerConfigOptions configOptions, CancellationToken cancellationToken)
+    {
+        SyntaxNode node = (nodeOrToken.IsNode) ? nodeOrToken.AsNode() : nodeOrToken.AsToken().Parent;
+
+        SyntaxNode statementOrMember = node.FirstAncestorOrSelf(f => f is StatementSyntax
+            || f is MemberDeclarationSyntax
+            || f is LocalFunctionStatementSyntax
+            || f is SwitchLabelSyntax);
+
+        return SyntaxTriviaAnalysis.GetIncreasedIndentation(statementOrMember ?? node, configOptions, cancellationToken);
     }
 
     public struct Enumerator

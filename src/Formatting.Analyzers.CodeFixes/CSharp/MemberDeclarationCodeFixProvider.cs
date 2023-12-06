@@ -37,7 +37,7 @@ public sealed class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
             await CodeActionFactory.RegisterCodeActionForNewLineAsync(
                 context,
                 title: "Put constructor initializer on its own line",
-                options: CodeActionNewLineOptions.IncreaseIndentation)
+                increaseIndentation: true)
                 .ConfigureAwait(false);
         }
 
