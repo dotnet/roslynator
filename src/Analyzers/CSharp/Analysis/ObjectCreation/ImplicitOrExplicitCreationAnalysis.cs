@@ -672,12 +672,12 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         }
 
         return false;
+    }
 
-        static bool UseCollectionExpressionFromImplicit(SyntaxNodeAnalysisContext context)
-        {
-            return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
-                && UseCollectionExpression(context);
-        }
+    protected virtual bool UseCollectionExpressionFromImplicit(SyntaxNodeAnalysisContext context)
+    {
+        return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
+            && UseCollectionExpression(context);
     }
 
     protected static bool IsSingleReturnStatement(SyntaxNode parent)

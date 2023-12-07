@@ -269,6 +269,11 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         return false;
     }
 
+    protected override bool UseCollectionExpressionFromImplicit(SyntaxNodeAnalysisContext context)
+    {
+        return UseCollectionExpression(context);
+    }
+
     public override ObjectCreationTypeStyle GetTypeStyle(SyntaxNodeAnalysisContext context)
     {
         return context.GetArrayCreationTypeStyle();
