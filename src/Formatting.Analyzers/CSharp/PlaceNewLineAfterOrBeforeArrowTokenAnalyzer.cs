@@ -41,15 +41,15 @@ public sealed class PlaceNewLineAfterOrBeforeArrowTokenAnalyzer : BaseDiagnostic
 
         NewLinePosition newLinePosition = context.GetArrowTokenNewLinePosition();
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromSurrounding(arrowToken, arrowExpressionClause.Expression, newLinePosition);
+        TriviaBlock block = TriviaBlock.FromSurrounding(arrowToken, arrowExpressionClause.Expression, newLinePosition);
 
-        if (analysis.Success)
+        if (block.Success)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
-                analysis.GetLocation(),
-                (analysis.First.IsToken) ? "before" : "after");
+                block.GetLocation(),
+                (block.First.IsToken) ? "before" : "after");
         }
     }
 }

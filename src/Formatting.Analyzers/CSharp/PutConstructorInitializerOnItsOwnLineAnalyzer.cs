@@ -39,14 +39,14 @@ public sealed class PutConstructorInitializerOnItsOwnLineAnalyzer : BaseDiagnost
 
         SyntaxToken colonToken = constructorInitializer.ColonToken;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(colonToken.GetPreviousToken(), colonToken);
+        TriviaBlock block = TriviaBlock.FromBetween(colonToken.GetPreviousToken(), colonToken);
 
-        if (analysis.Kind == TriviaBlockKind.NoNewLine)
+        if (block.Kind == TriviaBlockKind.NoNewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.PutConstructorInitializerOnItsOwnLine,
-                analysis.GetLocation());
+                block.GetLocation());
         }
     }
 }

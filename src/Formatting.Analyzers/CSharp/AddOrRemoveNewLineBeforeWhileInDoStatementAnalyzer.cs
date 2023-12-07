@@ -50,18 +50,18 @@ public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDia
         if (newLineStyle == NewLineStyle.None)
             return;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(doStatement.Statement, doStatement.WhileKeyword);
+        TriviaBlock block = TriviaBlock.FromBetween(doStatement.Statement, doStatement.WhileKeyword);
 
-        if (!analysis.Success)
+        if (!block.Success)
             return;
 
-        if (analysis.Kind == TriviaBlockKind.NoNewLine)
+        if (block.Kind == TriviaBlockKind.NoNewLine)
         {
             if (newLineStyle == NewLineStyle.Add)
             {
                 context.ReportDiagnostic(
                     DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
-                    analysis.GetLocation(),
+                    block.GetLocation(),
                     "Add");
             }
         }
@@ -69,7 +69,7 @@ public sealed class AddOrRemoveNewLineBeforeWhileInDoStatementAnalyzer : BaseDia
         {
             context.ReportDiagnostic(
                 DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
-                analysis.GetLocation(),
+                block.GetLocation(),
                 "Remove");
         }
     }
