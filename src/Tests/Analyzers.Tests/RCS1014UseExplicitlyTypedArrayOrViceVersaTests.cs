@@ -501,6 +501,6 @@ class C
     }   
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-    .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 }

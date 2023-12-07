@@ -194,6 +194,6 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-    .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
+            .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 }
