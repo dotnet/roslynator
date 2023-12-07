@@ -15,6 +15,12 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
         return context.GetObjectCreationTypeStyle();
     }
 
+    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
+    {
+        return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
+            && UseCollectionExpression(ref context);
+    }
+
     protected override void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context)
     {
         var objectCreation = (ObjectCreationExpressionSyntax)context.Node;

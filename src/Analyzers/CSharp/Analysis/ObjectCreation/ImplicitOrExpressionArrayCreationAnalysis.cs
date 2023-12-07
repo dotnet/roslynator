@@ -204,7 +204,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             return;
         }
 
-        if (UseExplicit(ref context))
+        if (GetTypeStyle(ref context) == ObjectCreationTypeStyle.Explicit)
         {
             var arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken) as IArrayTypeSymbol;
 
@@ -260,6 +260,37 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         return false;
     }
 
+    private static bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context, CollectionExpressionSyntax collectionExpression)
+    {
+        SeparatedSyntaxList<CollectionElementSyntax> elements = collectionExpression.Elements;
+
+        IArrayTypeSymbol arrayTypeSymbol = null;
+        var isObvious = false;
+
+        foreach (CollectionElementSyntax element in elements)
+        {
+            if (element is not ExpressionElementSyntax expressionElement)
+                return false;
+
+            if (arrayTypeSymbol is null)
+            {
+                ITypeSymbol type = context.SemanticModel.GetTypeInfo(collectionExpression, context.CancellationToken).ConvertedType;
+
+                arrayTypeSymbol = type as IArrayTypeSymbol;
+
+                if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
+                    return true;
+            }
+
+            isObvious = CSharpTypeAnalysis.IsTypeObvious(expressionElement.Expression, arrayTypeSymbol.ElementType, includeNullability: true, context.SemanticModel, context.CancellationToken);
+
+            if (!isObvious)
+                return false;
+        }
+
+        return isObvious;
+    }
+
     protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
     {
         return UseCollectionExpression(ref context);
@@ -296,16 +327,10 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
 
     protected override void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context)
     {
-        if (context.Node is CollectionExpressionSyntax collectionExpression)
+        if (context.Node is CollectionExpressionSyntax collectionExpression
+            && !CanConvertCollectionExpression(ref context, collectionExpression))
         {
-            foreach (CollectionElementSyntax element in collectionExpression.Elements)
-            {
-                if (element is SpreadElementSyntax)
-                    return;
-            }
-
-            if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.IsKind(SymbolKind.ArrayType) != true)
-                return;
+            return;
         }
 
         DiagnosticHelpers.ReportDiagnostic(
@@ -341,13 +366,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
     {
         var collectionExpression = (CollectionExpressionSyntax)context.Node;
 
-        foreach (CollectionElementSyntax element in collectionExpression.Elements)
-        {
-            if (element is SpreadElementSyntax)
-                return;
-        }
-
-        if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.IsKind(SymbolKind.ArrayType) != true)
+        if (!CanConvertCollectionExpression(ref context, collectionExpression))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
@@ -356,5 +375,19 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             context.Node.GetLocation(),
             properties: _collectionExpressionToImplicit,
             "implicitly typed array");
+    }
+
+    private static bool CanConvertCollectionExpression(ref SyntaxNodeAnalysisContext context, CollectionExpressionSyntax collectionExpression)
+    {
+        foreach (CollectionElementSyntax element in collectionExpression.Elements)
+        {
+            if (element is SpreadElementSyntax)
+                return false;
+        }
+
+        return context.SemanticModel
+            .GetTypeInfo(context.Node, context.CancellationToken)
+            .ConvertedType?
+            .IsKind(SymbolKind.ArrayType) == true;
     }
 }
