@@ -85,7 +85,7 @@ internal struct TriviaBlockReader
         return false;
     }
 
-    public void ReadWhiteSpaceOrEndOfLineTrivia()
+    public void ReadWhiteSpace()
     {
         while (Peek().IsWhitespaceOrEndOfLineTrivia())
             MoveNext();

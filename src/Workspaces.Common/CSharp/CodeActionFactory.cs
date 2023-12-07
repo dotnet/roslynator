@@ -213,14 +213,14 @@ internal static class CodeActionFactory
                 }
             case TriviaBlockKind.NewLine:
                 {
-                    reader.ReadWhiteSpaceOrEndOfLineTrivia();
+                    reader.ReadWhiteSpace();
 
                     return new TextChange(TextSpan.FromBounds(position, reader.Current.Span.End), newLineReplacement);
                 }
             case TriviaBlockKind.BlankLine:
                 {
                     reader.ReadTo(position);
-                    reader.ReadWhiteSpaceOrEndOfLineTrivia();
+                    reader.ReadWhiteSpace();
 
                     return new TextChange(TextSpan.FromBounds(node.Span.End, reader.Current.Span.End), newLineReplacement);
                 }
