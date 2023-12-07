@@ -822,10 +822,7 @@ internal static class SyntaxRefactorings
         {
             return CollectionExpression(
                 Token(SyntaxKind.OpenBracketToken).WithTriviaFrom(initializer.OpenBraceToken),
-                initializer
-                    .Expressions
-                    .Select(f => ExpressionElement(f))
-                    .ToSeparatedSyntaxList<CollectionElementSyntax>(),
+                initializer.Expressions.ForEach(e => (CollectionElementSyntax)ExpressionElement(e)),
                 Token(SyntaxKind.CloseBracketToken).WithTriviaFrom(initializer.CloseBraceToken));
         }
         else

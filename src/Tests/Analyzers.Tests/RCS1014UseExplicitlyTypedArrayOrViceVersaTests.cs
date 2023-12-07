@@ -35,6 +35,39 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_TypeIsObvious()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private object[] f = new [|string|][] { string.Empty };
+}
+", @"
+class C
+{
+    private object[] f = new[] { string.Empty };
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_TypeIsObvious_ToCollectionExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private object[] f = new [|string|][] { string.Empty };
+}
+", @"
+class C
+{
+    private object[] f = [string.Empty];
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
+    .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test_TypeIsNotObvious()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -244,6 +277,36 @@ class C
     void M(string[] arr)
     {
         arr = [""""];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_ExplicitToCollectionExpression_ImplicitStyle_WithComments()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = new [|string|][]
+        {
+            """", // a
+            string.Empty // b
+        };
+    }
+}
+", @"
+class C
+{
+    void M(string[] arr)
+    {
+        arr = [
+            """", // a
+            string.Empty // b
+        ];
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
