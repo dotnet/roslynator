@@ -116,7 +116,7 @@ internal readonly struct TriviaBlock
 
     private static TriviaBlock Analyze(SyntaxNodeOrToken first, SyntaxNodeOrToken second, int position)
     {
-        var en = new TriviaBlockReader(first, second);
+        var reader = new TriviaBlockReader(first, second);
 
         int firstEolEnd = -1;
         var state = State.Start;
@@ -125,16 +125,23 @@ internal readonly struct TriviaBlock
 
         while (true)
         {
-            TriviaLineKind lineKind = en.ReadLine();
+            SyntaxTrivia trivia = reader.ReadLine();
 
-            switch (lineKind)
+            if (trivia.IsDirective)
+                return default;
+
+            switch (trivia.Kind())
             {
-                case TriviaLineKind.EmptyOrWhiteSpace:
+                case SyntaxKind.MultiLineCommentTrivia:
+                    {
+                        return default;
+                    }
+                case SyntaxKind.EndOfLineTrivia:
                     {
                         if (firstEolEnd == -1)
                         {
-                            position = en.Current.Span.Start;
-                            firstEolEnd = en.Current.Span.End;
+                            position = reader.Current.Span.Start;
+                            firstEolEnd = reader.Current.Span.End;
                         }
                         else if (firstEolEnd >= 0)
                         {
@@ -160,17 +167,20 @@ internal readonly struct TriviaBlock
 
                         break;
                     }
-                case TriviaLineKind.Comment:
+                case SyntaxKind.SingleLineCommentTrivia:
                     {
+                        if (!reader.Read(SyntaxKind.EndOfLineTrivia))
+                            return default;
+
                         if (first.IsKind(SyntaxKind.None))
                         {
-                            position = en.Current.Span.Start;
-                            firstEolEnd = en.Current.Span.End;
+                            position = reader.Current.Span.Start;
+                            firstEolEnd = reader.Current.Span.End;
                         }
                         else if (firstEolEnd == -1)
                         {
-                            position = en.Current.Span.Start;
-                            firstEolEnd = en.Current.Span.End;
+                            position = reader.Current.Span.Start;
+                            firstEolEnd = reader.Current.Span.End;
                         }
                         else if (firstEolEnd >= 0)
                         {
@@ -196,8 +206,9 @@ internal readonly struct TriviaBlock
                         commentState = CommentState.Comment;
                         break;
                     }
-                case TriviaLineKind.End:
-                case TriviaLineKind.DocumentationComment:
+                case SyntaxKind.None:
+                case SyntaxKind.SingleLineDocumentationCommentTrivia:
+                case SyntaxKind.MultiLineDocumentationCommentTrivia:
                     {
                         return new TriviaBlock(
                             first,
@@ -205,7 +216,7 @@ internal readonly struct TriviaBlock
                             GetKind(state, stateBeforeComment),
                             position,
                             singleLineComment: commentState == CommentState.Comment || commentState == CommentState.AfterComment,
-                            documentationComment: lineKind == TriviaLineKind.DocumentationComment);
+                            documentationComment: SyntaxFacts.IsDocumentationCommentTrivia(trivia.Kind()));
 
                         static TriviaBlockKind GetKind(State state, State triviaBeforeComment)
                         {
@@ -233,8 +244,9 @@ internal readonly struct TriviaBlock
                             }
                         }
                     }
-                case TriviaLineKind.Unknown:
+                default:
                     {
+                        Debug.Fail(trivia.Kind().ToString());
                         return default;
                     }
             }

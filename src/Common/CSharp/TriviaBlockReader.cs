@@ -32,38 +32,15 @@ internal struct TriviaBlockReader
 
     public readonly SyntaxTrivia Current => _list[_index];
 
-    public TriviaLineKind ReadLine()
+    public SyntaxTrivia ReadLine()
     {
         while (MoveNext())
         {
-            switch (Current.Kind())
-            {
-                case SyntaxKind.WhitespaceTrivia:
-                    break;
-                case SyntaxKind.EndOfLineTrivia:
-                    return TriviaLineKind.EmptyOrWhiteSpace;
-                case SyntaxKind.MultiLineCommentTrivia:
-                    return TriviaLineKind.Unknown;
-                case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                    return TriviaLineKind.DocumentationComment;
-                case SyntaxKind.SingleLineCommentTrivia:
-                    {
-                        if (MoveNext()
-                            && Current.IsEndOfLineTrivia())
-                        {
-                            return TriviaLineKind.Comment;
-                        }
-
-                        return TriviaLineKind.Unknown;
-                    }
-            }
-
-            if (Current.IsDirective)
-                return TriviaLineKind.Unknown;
+            if (!Current.IsWhitespaceTrivia())
+                return Current;
         }
 
-        return TriviaLineKind.End;
+        return default;
     }
 
     public void ReadTo(int position)
@@ -76,7 +53,12 @@ internal struct TriviaBlockReader
 
     public bool ReadWhiteSpaceTrivia()
     {
-        if (Peek().IsWhitespaceTrivia())
+        return Read(SyntaxKind.WhitespaceTrivia);
+    }
+
+    public bool Read(SyntaxKind kind)
+    {
+        if (Peek().IsKind(kind))
         {
             MoveNext();
             return true;
