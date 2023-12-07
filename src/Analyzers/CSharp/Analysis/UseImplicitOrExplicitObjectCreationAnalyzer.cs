@@ -41,11 +41,11 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
 
     private static void AnalyzeExplicit(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeExplicitCreation(context);
+        ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeExplicitCreation(ref context);
     }
 
     private static void AnalyzeImplicit(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeImplicit(context);
+        ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeImplicit(ref context);
     }
 }

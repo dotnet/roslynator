@@ -10,12 +10,12 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
 {
     public static ImplicitOrExpressionObjectCreationAnalysis Instance { get; } = new();
 
-    public override ObjectCreationTypeStyle GetTypeStyle(SyntaxNodeAnalysisContext context)
+    public override ObjectCreationTypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
     {
         return context.GetObjectCreationTypeStyle();
     }
 
-    protected override void ReportExplicitToImplicit(SyntaxNodeAnalysisContext context)
+    protected override void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context)
     {
         var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
 
@@ -26,7 +26,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             "implicit object creation");
     }
 
-    protected override void ReportExplicitToCollectionExpression(SyntaxNodeAnalysisContext context)
+    protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
 
@@ -38,7 +38,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             "collection expression");
     }
 
-    protected override void ReportImplicitToExplicit(SyntaxNodeAnalysisContext context)
+    protected override void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context)
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
@@ -47,7 +47,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             "explicit object creation");
     }
 
-    protected override void ReportImplicitToCollectionExpression(SyntaxNodeAnalysisContext context)
+    protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
@@ -57,7 +57,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             "collection expression");
     }
 
-    protected override void ReportCollectionExpressionToImplicit(SyntaxNodeAnalysisContext context)
+    protected override void ReportCollectionExpressionToImplicit(ref SyntaxNodeAnalysisContext context)
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,

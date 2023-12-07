@@ -34,16 +34,16 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
     private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeImplicitCreation(context);
+        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeImplicitCreation(ref context);
     }
 
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeCollectionExpression(context);
+        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeCollectionExpression(ref context);
     }
 
     private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeExplicitCreation(context);
+        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeExplicitCreation(ref context);
     }
 }
