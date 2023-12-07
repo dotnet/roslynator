@@ -1799,4 +1799,35 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_ExplicitWithParameters()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C : List<string> 
+{
+    C() { }
+    C(string p) { }
+
+    C M()
+    {
+        return new [|C|](""s"");
+    }   
+}
+", @"
+using System.Collections.Generic;
+class C : List<string> 
+{
+    C() { }
+    C(string p) { }
+
+    C M()
+    {
+        return new(""s"");
+    }   
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
 }

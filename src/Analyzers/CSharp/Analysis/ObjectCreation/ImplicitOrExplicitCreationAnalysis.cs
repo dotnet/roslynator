@@ -567,7 +567,8 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
             if (SymbolEqualityComparer.Default.Equals(typeSymbol1, typeSymbol2))
             {
-                if (UseCollectionExpression(context))
+                if (((ObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
+                    && UseCollectionExpression(context))
                 {
                     ReportExplicitToCollectionExpression(context);
                 }
@@ -639,7 +640,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 }
             }
             else if (canUseCollectionExpression
-                && UseCollectionExpression(context))
+                && UseCollectionExpressionFromImplicit(context))
             {
                 ReportImplicitToCollectionExpression(context);
                 return true;
@@ -663,7 +664,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 }
             }
             else if (canUseCollectionExpression
-                && UseCollectionExpression(context))
+                && UseCollectionExpressionFromImplicit(context))
             {
                 ReportImplicitToCollectionExpression(context);
                 return true;
@@ -671,6 +672,12 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         }
 
         return false;
+
+        static bool UseCollectionExpressionFromImplicit(SyntaxNodeAnalysisContext context)
+        {
+            return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
+                && UseCollectionExpression(context);
+        }
     }
 
     protected static bool IsSingleReturnStatement(SyntaxNode parent)
