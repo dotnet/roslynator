@@ -27,9 +27,14 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(c => AnalyzeImplicitArrayCreationExpression(c), SyntaxKind.ImplicitArrayCreationExpression);
         context.RegisterSyntaxNodeAction(c => AnalyzeArrayCreationExpression(c), SyntaxKind.ArrayCreationExpression);
+        context.RegisterSyntaxNodeAction(c => AnalyzeImplicitArrayCreationExpression(c), SyntaxKind.ImplicitArrayCreationExpression);
         context.RegisterSyntaxNodeAction(c => AnalyzeCollectionExpression(c), SyntaxKind.CollectionExpression);
+    }
+
+    private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
+    {
+        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeExplicitCreation(ref context);
     }
 
     private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
@@ -40,10 +45,5 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
         ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeCollectionExpression(ref context);
-    }
-
-    private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
-    {
-        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeExplicitCreation(ref context);
     }
 }

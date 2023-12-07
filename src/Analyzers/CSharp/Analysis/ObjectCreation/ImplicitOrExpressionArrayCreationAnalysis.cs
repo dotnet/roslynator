@@ -15,6 +15,9 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
 
     public override void AnalyzeExplicitCreation(ref SyntaxNodeAnalysisContext context)
     {
+        if (context.Node.ContainsDiagnostics)
+            return;
+
         ObjectCreationTypeStyle style = GetTypeStyle(ref context);
 
         if (style != ObjectCreationTypeStyle.Implicit
@@ -22,9 +25,6 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         {
             return;
         }
-
-        if (context.Node.ContainsDiagnostics)
-            return;
 
         var arrayCreation = (ArrayCreationExpressionSyntax)context.Node;
 
@@ -231,7 +231,10 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         return false;
     }
 
-    private static bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context, ExpressionSyntax creationExpression, InitializerExpressionSyntax initializer)
+    private static bool IsInitializerObvious(
+        ref SyntaxNodeAnalysisContext context,
+        ExpressionSyntax creationExpression,
+        InitializerExpressionSyntax initializer)
     {
         if (initializer is not null)
         {

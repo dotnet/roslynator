@@ -29,8 +29,6 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             new KeyValuePair<string, string>(DiagnosticPropertyKeys.ExplicitToCollectionExpression, null)
         });
 
-    protected virtual bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context) => false;
-
     public abstract ObjectCreationTypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context);
 
     protected abstract void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context);
@@ -43,8 +41,13 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
     protected abstract void ReportCollectionExpressionToImplicit(ref SyntaxNodeAnalysisContext context);
 
+    protected virtual bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context) => false;
+
     public virtual void AnalyzeExplicitCreation(ref SyntaxNodeAnalysisContext context)
     {
+        if (context.Node.ContainsDiagnostics)
+            return;
+
         ObjectCreationTypeStyle style = GetTypeStyle(ref context);
 
         if (style != ObjectCreationTypeStyle.Implicit
@@ -264,11 +267,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                                 {
                                     if (parentObjectCreation is ExpressionSyntax parentObjectCreationExpression)
                                     {
-                                        AnalyzeExpression(ref context, expression, parentObjectCreationExpression, isGenericType: true);
+                                        AnalyzeExpression(ref context, expression, parentObjectCreationExpression, extractGenericType: true);
                                     }
                                     else
                                     {
-                                        AnalyzeType(ref context, expression, variableDeclaration.Type, isGenericType: true);
+                                        AnalyzeType(ref context, expression, variableDeclaration.Type, extractGenericType: true);
                                     }
                                 }
                             }
@@ -294,8 +297,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         AnalyzeImplicit(ref context);
     }
 
-    public void AnalyzeImplicit(ref SyntaxNodeAnalysisContext context)
+    private void AnalyzeImplicit(ref SyntaxNodeAnalysisContext context)
     {
+        if (context.Node.ContainsDiagnostics)
+            return;
+
         ObjectCreationTypeStyle style = GetTypeStyle(ref context);
 
         SyntaxNode parent = context.Node.Parent;
@@ -473,42 +479,39 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         }
     }
 
-    protected void AnalyzeType(
+    private void AnalyzeType(
         ref SyntaxNodeAnalysisContext context,
         ExpressionSyntax creationExpression,
         TypeSyntax type,
-        bool isGenericType = false)
+        bool extractGenericType = false)
     {
         if (!type.IsVar)
-        {
-            AnalyzeExpression(ref context, creationExpression, type, isGenericType: isGenericType);
-        }
+            AnalyzeExpression(ref context, creationExpression, type, extractGenericType: extractGenericType);
     }
 
-    protected void AnalyzeArrayType(
+    private void AnalyzeArrayType(
         ref SyntaxNodeAnalysisContext context,
         ExpressionSyntax creationExpression,
-        TypeSyntax type,
-        bool isGenericType = false)
+        TypeSyntax type)
     {
         if (type is ArrayTypeSyntax arrayType)
         {
             type = arrayType.ElementType;
 
             if (!type.IsVar)
-                AnalyzeExpression(ref context, creationExpression, type, isGenericType: isGenericType);
+                AnalyzeExpression(ref context, creationExpression, type);
         }
     }
 
-    protected void AnalyzeExpression(
+    private void AnalyzeExpression(
         ref SyntaxNodeAnalysisContext context,
         ExpressionSyntax creationExpression,
         ExpressionSyntax expression,
-        bool isGenericType = false)
+        bool extractGenericType = false)
     {
         ITypeSymbol typeSymbol1 = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-        if (isGenericType)
+        if (extractGenericType)
         {
             typeSymbol1 = (typeSymbol1 as INamedTypeSymbol)?.TypeArguments.SingleOrDefault(shouldThrow: false);
         }
@@ -516,7 +519,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         AnalyzeTypeSymbol(ref context, creationExpression, typeSymbol1);
     }
 
-    protected void AnalyzeTypeSymbol(
+    private void AnalyzeTypeSymbol(
         ref SyntaxNodeAnalysisContext context,
         ExpressionSyntax creationExpression,
         ITypeSymbol typeSymbol1)

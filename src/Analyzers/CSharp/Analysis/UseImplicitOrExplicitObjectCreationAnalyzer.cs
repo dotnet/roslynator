@@ -31,21 +31,26 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
         {
             if (((CSharpCompilation)startContext.Compilation).LanguageVersion >= LanguageVersion.CSharp9)
             {
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeExplicit(f), SyntaxKind.ObjectCreationExpression);
+                startContext.RegisterSyntaxNodeAction(c => AnalyzeObjectCreationExpression(c), SyntaxKind.ObjectCreationExpression);
             }
 
-            startContext.RegisterSyntaxNodeAction(c => AnalyzeImplicit(c), SyntaxKind.ImplicitObjectCreationExpression);
-            startContext.RegisterSyntaxNodeAction(c => AnalyzeImplicit(c), SyntaxKind.CollectionExpression);
+            startContext.RegisterSyntaxNodeAction(c => AnalyzeImplicitObjectCreationExpression(c), SyntaxKind.ImplicitObjectCreationExpression);
+            startContext.RegisterSyntaxNodeAction(c => AnalyzeCollectionExpression(c), SyntaxKind.CollectionExpression);
         });
     }
 
-    private static void AnalyzeExplicit(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
     {
         ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeExplicitCreation(ref context);
     }
 
-    private static void AnalyzeImplicit(SyntaxNodeAnalysisContext context)
+    private static void AnalyzeImplicitObjectCreationExpression(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeImplicit(ref context);
+        ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeImplicitCreation(ref context);
+    }
+
+    private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
+    {
+        ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeCollectionExpression(ref context);
     }
 }
