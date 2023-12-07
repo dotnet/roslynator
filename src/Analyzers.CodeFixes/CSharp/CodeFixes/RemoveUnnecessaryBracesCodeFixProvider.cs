@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -41,13 +42,22 @@ public class RemoveUnnecessaryBracesCodeFixProvider : BaseCodeFixProvider
             "Remove unnecessary braces",
             ct =>
             {
-                TypeDeclarationSyntax newTypeDeclaration = typeDeclaration
+                TypeDeclarationSyntax newNode = typeDeclaration
                     .WithOpenBraceToken(default)
                     .WithCloseBraceToken(default)
-                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
-                    .WithTrailingTrivia(typeDeclaration.GetTrailingTrivia());
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
 
-                return document.ReplaceNodeAsync(typeDeclaration, newTypeDeclaration, ct);
+                SyntaxTriviaList trailing = typeDeclaration
+                    .DescendantTrivia(TextSpan.FromBounds(
+                        typeDeclaration.OpenBraceToken.GetPreviousToken().Span.End,
+                        typeDeclaration.CloseBraceToken.SpanStart))
+                    .ToSyntaxTriviaList()
+                    .EmptyIfWhitespace()
+                    .AddRange(typeDeclaration.CloseBraceToken.TrailingTrivia);
+
+                newNode = newNode.WithTrailingTrivia(trailing);
+
+                return document.ReplaceNodeAsync(typeDeclaration, newNode, ct);
             },
             GetEquivalenceKey(diagnostic));
 

@@ -53,31 +53,31 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
 
         while (en.MoveNext())
         {
-            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previousSection, en.Current);
+            TriviaBlock block = TriviaBlock.FromBetween(previousSection, en.Current);
 
-            if (!analysis.Success)
+            if (!block.Success)
                 continue;
 
-            if (analysis.Kind == TriviaBlockKind.BlankLine)
+            if (block.Kind == TriviaBlockKind.BlankLine)
             {
                 if (option == BlankLineBetweenSwitchSections.Omit)
                 {
-                    ReportDiagnostic(context, analysis, "Remove");
+                    ReportDiagnostic(context, block, "Remove");
                 }
                 else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
                     && previousLastStatement.IsKind(SyntaxKind.Block))
                 {
-                    ReportDiagnostic(context, analysis, "Remove");
+                    ReportDiagnostic(context, block, "Remove");
                 }
             }
             else if (option == BlankLineBetweenSwitchSections.Include)
             {
-                ReportDiagnostic(context, analysis, "Add");
+                ReportDiagnostic(context, block, "Add");
             }
             else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
                 && !previousLastStatement.IsKind(SyntaxKind.Block))
             {
-                ReportDiagnostic(context, analysis, "Add");
+                ReportDiagnostic(context, block, "Add");
             }
 
             previousSection = en.Current;
@@ -85,11 +85,11 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
         }
     }
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBlockAnalysis analysis, string messageArg)
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBlock block, string messageArg)
     {
         context.ReportDiagnostic(
             DiagnosticRules.BlankLineBetweenSwitchSections,
-            analysis.GetLocation(),
+            block.GetLocation(),
             messageArg);
     }
 }

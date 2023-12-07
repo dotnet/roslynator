@@ -318,12 +318,12 @@ internal static class CodeFixHelpers
             SyntaxTriviaList leftTrailing = left.GetTrailingTrivia();
             SyntaxTriviaList tokenTrailing = token.TrailingTrivia;
 
-            if (TriviaBlockAnalysis.FromTrailing(left).IsWrapped)
+            if (TriviaBlock.FromTrailing(left).IsWrapped)
             {
                 if (!SetIndentation(token))
                     break;
             }
-            else if (TriviaBlockAnalysis.FromTrailing(token).IsWrapped)
+            else if (TriviaBlock.FromTrailing(token).IsWrapped)
             {
                 if (!SetIndentation(right))
                     break;
@@ -726,7 +726,7 @@ internal static class CodeFixHelpers
             TNode node = nodes[i];
             var indentationAdded = false;
 
-            if (TriviaBlockAnalysis.FromTrailing(token).IsWrapped)
+            if (TriviaBlock.FromTrailing(token).IsWrapped)
             {
                 SyntaxTrivia last = node.GetLeadingTrivia().LastOrDefault();
 
