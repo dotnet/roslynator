@@ -177,6 +177,12 @@ namespace Roslynator
             defaultValuePlaceholder: "explicit|implicit|implicit_when_type_is_obvious", 
             description:             "Prefer explicit/implicit object creation");
 
+        public static readonly ConfigOptionDescriptor PreferCollectionExpression = new(
+            key:                     ConfigOptionKeys.PreferCollectionExpression, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Prefer collection expression for array/collection creation");
+
         public static readonly ConfigOptionDescriptor PrefixFieldIdentifierWithUnderscore = new(
             key:                     ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, 
             defaultValue:            null, 
@@ -225,12 +231,6 @@ namespace Roslynator
             defaultValue:            null, 
             defaultValuePlaceholder: "true|false", 
             description:             "Use block body when expression spans over multiple lines");
-
-        public static readonly ConfigOptionDescriptor UseCollectionExpression = new(
-            key:                     ConfigOptionKeys.UseCollectionExpression, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "true|false", 
-            description:             "Use collection expression '[]' to declare implicit collection creation");
 
         public static readonly ConfigOptionDescriptor UseVarInsteadOfImplicitObjectCreation = new(
             key:                     ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, 

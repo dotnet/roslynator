@@ -337,7 +337,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                             SyntaxDebug.Assert(!isVar || context.Node.IsKind(SyntaxKind.CollectionExpression, SyntaxKind.ImplicitArrayCreationExpression), variableDeclaration);
                             SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), parent.Parent);
 
-                            if (!AnalyzeImplicit(ref context, isObvious: !isVar, canUseCollectionExpression: !isVar)
+                            if (!AnalyzeImplicit(ref context, isObvious: !isVar, allowCollectionExpression: !isVar)
                                 && parent.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement)
                                 && variableDeclaration.Variables.Count == 1
                                 && !isVar
@@ -531,7 +531,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             if (SymbolEqualityComparer.Default.Equals(typeSymbol1, typeSymbol2))
             {
                 if (((ObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
-                    && UseCollectionExpression(ref context))
+                    && PreferCollectionExpression(ref context))
                 {
                     ReportExplicitToCollectionExpression(ref context);
                 }
@@ -582,7 +582,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         return AnalyzeImplicit(ref context, isObvious: false);
     }
 
-    private bool AnalyzeImplicit(ref SyntaxNodeAnalysisContext context, bool isObvious, bool canUseCollectionExpression = true)
+    private bool AnalyzeImplicit(ref SyntaxNodeAnalysisContext context, bool isObvious, bool allowCollectionExpression = true)
     {
         ObjectCreationTypeStyle style = GetTypeStyle(ref context);
 
@@ -596,14 +596,14 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         {
             if (context.Node.IsKind(SyntaxKind.CollectionExpression))
             {
-                if (context.UseCollectionExpression() == false)
+                if (context.PreferCollectionExpression() == false)
                 {
                     ReportCollectionExpressionToImplicit(ref context);
                     return true;
                 }
             }
-            else if (canUseCollectionExpression
-                && UseCollectionExpressionFromImplicit(ref context))
+            else if (allowCollectionExpression
+                && PreferCollectionExpressionFromImplicit(ref context))
             {
                 ReportImplicitToCollectionExpression(ref context);
                 return true;
@@ -620,14 +620,14 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
             if (context.Node.IsKind(SyntaxKind.CollectionExpression))
             {
-                if (context.UseCollectionExpression() == false)
+                if (context.PreferCollectionExpression() == false)
                 {
                     ReportCollectionExpressionToImplicit(ref context);
                     return true;
                 }
             }
-            else if (canUseCollectionExpression
-                && UseCollectionExpressionFromImplicit(ref context))
+            else if (allowCollectionExpression
+                && PreferCollectionExpressionFromImplicit(ref context))
             {
                 ReportImplicitToCollectionExpression(ref context);
                 return true;
@@ -637,7 +637,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         return false;
     }
 
-    protected abstract bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context);
+    protected abstract bool PreferCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context);
 
     protected static bool IsSingleReturnStatement(SyntaxNode parent)
     {
@@ -647,11 +647,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             && parent.Parent.Parent is MemberDeclarationSyntax;
     }
 
-    protected static bool UseCollectionExpression(ref SyntaxNodeAnalysisContext context)
+    protected static bool PreferCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         Debug.Assert(!context.Node.IsKind(SyntaxKind.CollectionExpression), context.Node.Kind().ToString());
 
-        return context.UseCollectionExpression() == true
+        return context.PreferCollectionExpression() == true
             && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression()
             && SyntaxUtility.CanConvertToCollectionExpression(context.Node, context.SemanticModel, context.CancellationToken);
     }

@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add analyzer "Add/remove blank line between switch sections" ([RCS0061](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0061)) ([PR](https://github.com/dotnet/roslynator/pull/1302))
   - Option (required): `roslynator_blank_line_between_switch_sections = include|omit|omit_after_block` 
   - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
-- Add option `roslynator_use_collection_expressoin = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1307))
+- Add option `roslynator_prefer_collection_expression = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1307))
   - Applicable to [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) and [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250)
 
 ### Changed

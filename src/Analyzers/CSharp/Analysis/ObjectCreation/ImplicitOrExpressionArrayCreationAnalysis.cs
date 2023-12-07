@@ -65,7 +65,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
                                 if (context.UseVarInsteadOfImplicitObjectCreation() != true)
                                 {
                                     bool isVar = variableDeclaration.Type.IsVar;
-                                    AnalyzeExplicit(ref context, isObvious: !isVar, canUseCollectionExpression: !isVar);
+                                    AnalyzeExplicit(ref context, isObvious: !isVar, allowCollectionExpression: !isVar);
                                 }
                             }
                         }
@@ -144,24 +144,24 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         }
     }
 
-    private void AnalyzeExplicitObvious(ref SyntaxNodeAnalysisContext context, bool canUseCollectionExpression = true)
+    private void AnalyzeExplicitObvious(ref SyntaxNodeAnalysisContext context, bool allowCollectionExpression = true)
     {
-        AnalyzeExplicit(ref context, isObvious: true, canUseCollectionExpression: canUseCollectionExpression);
+        AnalyzeExplicit(ref context, isObvious: true, allowCollectionExpression: allowCollectionExpression);
     }
 
-    private void AnalyzeExplicitNotObvious(ref SyntaxNodeAnalysisContext context, bool canUseCollectionExpression = true)
+    private void AnalyzeExplicitNotObvious(ref SyntaxNodeAnalysisContext context, bool allowCollectionExpression = true)
     {
-        AnalyzeExplicit(ref context, isObvious: false, canUseCollectionExpression: canUseCollectionExpression);
+        AnalyzeExplicit(ref context, isObvious: false, allowCollectionExpression: allowCollectionExpression);
     }
 
-    private bool AnalyzeExplicit(ref SyntaxNodeAnalysisContext context, bool isObvious, bool canUseCollectionExpression = true)
+    private bool AnalyzeExplicit(ref SyntaxNodeAnalysisContext context, bool isObvious, bool allowCollectionExpression = true)
     {
         ObjectCreationTypeStyle style = GetTypeStyle(ref context);
 
         if (style == ObjectCreationTypeStyle.Implicit)
         {
-            if (canUseCollectionExpression
-                && UseCollectionExpression(ref context))
+            if (allowCollectionExpression
+                && PreferCollectionExpression(ref context))
             {
                 ReportExplicitToCollectionExpression(ref context);
                 return true;
@@ -175,8 +175,8 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         else if (style == ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious)
         {
             if (isObvious
-                && canUseCollectionExpression
-                && UseCollectionExpression(ref context))
+                && allowCollectionExpression
+                && PreferCollectionExpression(ref context))
             {
                 ReportExplicitToCollectionExpression(ref context);
                 return true;
@@ -294,9 +294,9 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         return isObvious;
     }
 
-    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
+    protected override bool PreferCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
     {
-        return UseCollectionExpression(ref context);
+        return PreferCollectionExpression(ref context);
     }
 
     public override ObjectCreationTypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)

@@ -445,14 +445,14 @@ internal static class CodeStyleExtensions
         return ObjectCreationTypeStyle.None;
     }
 
-    public static bool? UseCollectionExpression(this SyntaxNodeAnalysisContext context)
+    public static bool? PreferCollectionExpression(this SyntaxNodeAnalysisContext context)
     {
-        return UseCollectionExpression(context.GetConfigOptions());
+        return PreferCollectionExpression(context.GetConfigOptions());
     }
 
-    public static bool? UseCollectionExpression(this AnalyzerConfigOptions configOptions)
+    public static bool? PreferCollectionExpression(this AnalyzerConfigOptions configOptions)
     {
-        return ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseCollectionExpression);
+        return ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferCollectionExpression);
     }
 
     public static ObjectCreationTypeStyle GetArrayCreationTypeStyle(this SyntaxNodeAnalysisContext context)
