@@ -312,7 +312,7 @@ internal readonly struct TriviaBlockAnalysis
                 }
             case TriviaBlockKind.BlankLine:
                 {
-                    Enumerator en =     GetEnumerator();
+                    Enumerator en = GetEnumerator();
 
                     en.ReadTo(Position);
                     en.ReadWhiteSpaceOrEndOfLineTrivia();
