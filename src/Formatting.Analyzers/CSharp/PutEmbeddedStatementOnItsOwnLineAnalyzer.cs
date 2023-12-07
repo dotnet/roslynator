@@ -102,10 +102,10 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
         if (statement.IsMissing)
             return;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(token, statement);
+        TriviaBlock block = TriviaBlock.FromBetween(token, statement);
 
-        if (analysis.Kind == TriviaBlockKind.NoNewLine)
-            ReportDiagnostic(context, analysis);
+        if (block.Kind == TriviaBlockKind.NoNewLine)
+            ReportDiagnostic(context, block);
     }
 
     private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
@@ -116,18 +116,18 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
 
         if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false)
         {
-            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(elseClause.ElseKeyword, statement);
+            TriviaBlock block = TriviaBlock.FromBetween(elseClause.ElseKeyword, statement);
 
-            if (analysis.Kind == TriviaBlockKind.NoNewLine)
-                ReportDiagnostic(context, analysis);
+            if (block.Kind == TriviaBlockKind.NoNewLine)
+                ReportDiagnostic(context, block);
         }
     }
 
-    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBlockAnalysis analysis)
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TriviaBlock block)
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.PutEmbeddedStatementOnItsOwnLine,
-            analysis.GetLocation());
+            block.GetLocation());
     }
 }

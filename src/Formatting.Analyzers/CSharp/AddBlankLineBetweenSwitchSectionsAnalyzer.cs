@@ -49,12 +49,12 @@ public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAn
 
         while (en.MoveNext())
         {
-            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previousSection, en.Current);
+            TriviaBlock block = TriviaBlock.FromBetween(previousSection, en.Current);
 
-            if (!analysis.Success)
+            if (!block.Success)
                 continue;
 
-            if (analysis.Kind != TriviaBlockKind.BlankLine)
+            if (block.Kind != TriviaBlockKind.BlankLine)
             {
                 if (context.GetBlankLineBetweenClosingBraceAndSwitchSection() != false
                     || previousBlock is null)
@@ -62,7 +62,7 @@ public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAn
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.AddBlankLineBetweenSwitchSections,
-                        analysis.GetLocation());
+                        block.GetLocation());
                 }
             }
 

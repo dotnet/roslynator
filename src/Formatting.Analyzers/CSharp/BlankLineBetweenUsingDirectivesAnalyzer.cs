@@ -89,21 +89,21 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             if (rootNamespace2 is null)
                 continue;
 
-            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(usingDirective1, usingDirective2);
+            TriviaBlock block = TriviaBlock.FromBetween(usingDirective1, usingDirective2);
 
-            if (!analysis.Success)
+            if (!block.Success)
                 return;
 
             if (string.Equals(rootNamespace1.Identifier.ValueText, rootNamespace2.Identifier.ValueText, StringComparison.Ordinal))
             {
-                if (analysis.Kind == TriviaBlockKind.BlankLine)
+                if (block.Kind == TriviaBlockKind.BlankLine)
                 {
                     if (DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace.IsEffective(context))
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
-                            analysis.GetLocation());
+                            block.GetLocation());
                     }
 
                     if (DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context)
@@ -112,7 +112,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.BlankLineBetweenUsingDirectives,
-                            analysis.GetLocation(),
+                            block.GetLocation(),
                             "Remove");
                     }
                 }
@@ -121,14 +121,14 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
             {
                 UsingDirectiveBlankLineStyle style = context.GetBlankLineBetweenUsingDirectives();
 
-                if (analysis.Kind == TriviaBlockKind.BlankLine)
+                if (block.Kind == TriviaBlockKind.BlankLine)
                 {
                     if (style == UsingDirectiveBlankLineStyle.Never)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.BlankLineBetweenUsingDirectives,
-                            analysis.GetLocation(),
+                            block.GetLocation(),
                             "Remove");
                     }
                 }
@@ -137,7 +137,7 @@ public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnal
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.BlankLineBetweenUsingDirectives,
-                        analysis.GetLocation(),
+                        block.GetLocation(),
                         "Add");
                 }
             }

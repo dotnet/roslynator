@@ -40,7 +40,7 @@ public sealed class StatementCodeFixProvider : BaseCodeFixProvider
             case DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine:
             case DiagnosticIdentifiers.AddNewLineAfterSwitchLabel:
                 {
-                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, options: CodeActionNewLineOptions.IncreaseIndentation).ConfigureAwait(false);
+                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context, increaseIndentation: true).ConfigureAwait(false);
                     break;
                 }
             case DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement:

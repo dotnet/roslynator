@@ -42,18 +42,18 @@ public sealed class RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer : BaseDi
         if (!statement.IsKind(SyntaxKind.IfStatement))
             return;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(elseClause.ElseKeyword, statement);
+        TriviaBlock block = TriviaBlock.FromBetween(elseClause.ElseKeyword, statement);
 
-        if (!analysis.Success)
+        if (!block.Success)
             return;
 
-        if (analysis.Kind != TriviaBlockKind.NoNewLine
-            && !analysis.ContainsComment)
+        if (block.Kind != TriviaBlockKind.NoNewLine
+            && !block.ContainsComment)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword,
-                analysis.GetLocation());
+                block.GetLocation());
         }
     }
 }

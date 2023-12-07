@@ -101,15 +101,15 @@ public sealed class PlaceNewLineAfterOrBeforeEqualsTokenAnalyzer : BaseDiagnosti
     {
         NewLinePosition newLinePosition = context.GetEqualsSignNewLinePosition();
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromSurrounding(token, expression, newLinePosition);
+        TriviaBlock block = TriviaBlock.FromSurrounding(token, expression, newLinePosition);
 
-        if (analysis.Success)
+        if (block.Success)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.PlaceNewLineAfterOrBeforeEqualsToken,
-                analysis.GetLocation(),
-                (analysis.First.IsToken) ? "before" : "after");
+                block.GetLocation(),
+                (block.First.IsToken) ? "before" : "after");
         }
     }
 }
