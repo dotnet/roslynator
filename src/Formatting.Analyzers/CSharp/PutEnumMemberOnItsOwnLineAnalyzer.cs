@@ -41,14 +41,14 @@ public sealed class PutEnumMemberOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
 
         for (int i = 0; i < members.Count; i++)
         {
-            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previous, members[i]);
+            TriviaBlock block = TriviaBlock.FromBetween(previous, members[i]);
 
-            if (analysis.Kind == TriviaBlockKind.NoNewLine)
+            if (block.Kind == TriviaBlockKind.NoNewLine)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.PutEnumMemberOnItsOwnLine,
-                    analysis.GetLocation());
+                    block.GetLocation());
             }
 
             if (i == members.SeparatorCount)

@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
-using static Roslynator.CSharp.TriviaBlockAnalysis;
+using static Roslynator.CSharp.TriviaBlock;
 
 namespace Roslynator.Formatting.CSharp;
 

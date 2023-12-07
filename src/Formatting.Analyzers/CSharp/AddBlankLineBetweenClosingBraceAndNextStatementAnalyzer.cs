@@ -131,17 +131,17 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
         if (nextStatement is null)
             return;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(closeBrace, nextStatement);
+        TriviaBlock block = TriviaBlock.FromBetween(closeBrace, nextStatement);
 
-        if (!analysis.Success)
+        if (!block.Success)
             return;
 
-        if (analysis.Kind == TriviaBlockKind.BlankLine)
+        if (block.Kind == TriviaBlockKind.BlankLine)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement,
-            analysis.GetLocation());
+            block.GetLocation());
     }
 }

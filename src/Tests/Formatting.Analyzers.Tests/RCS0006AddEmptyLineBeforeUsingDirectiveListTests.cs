@@ -39,6 +39,23 @@ namespace N
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task Test_Comments_Before()
+    {
+        await VerifyDiagnosticAndFixAsync(@"// x
+// x[||]
+using System;
+
+class C;
+", @"// x
+// x
+
+using System;
+
+class C;
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
     public async Task Test_CommentAndExternAlias_Before()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -120,6 +137,31 @@ namespace N
     {
         await VerifyNoDiagnosticAsync(@"
 #pragma warning disable x
+using System;
+using System.Linq;
+
+namespace N
+{
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task TestNoDiagnostic_FileStartsWithUsing()
+    {
+        await VerifyNoDiagnosticAsync(@"using System;
+using System.Linq;
+
+namespace N
+{
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task TestNoDiagnostic_FileStartsBlankLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq;
 

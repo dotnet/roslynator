@@ -61,9 +61,9 @@ internal static class ConvertExpressionBodyToBlockBodyRefactoring
 
         SyntaxToken token = expressionBody.ArrowToken.GetPreviousToken();
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromTrailing(token);
-        if (analysis.IsWrapped
-            && !analysis.ContainsComment)
+        TriviaBlock block = TriviaBlock.FromTrailing(token);
+        if (block.IsWrapped
+            && !block.ContainsComment)
         {
             SyntaxToken newToken = token.WithTrailingTrivia(ElasticSpace);
 

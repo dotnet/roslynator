@@ -64,14 +64,14 @@ public sealed class PutStatementOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
             StatementSyntax statement = statements[i];
             if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement))
             {
-                TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previous, statement);
+                TriviaBlock block = TriviaBlock.FromBetween(previous, statement);
 
-                if (analysis.Kind == TriviaBlockKind.NoNewLine)
+                if (block.Kind == TriviaBlockKind.NoNewLine)
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.PutStatementOnItsOwnLine,
-                        analysis.GetLocation());
+                        block.GetLocation());
                 }
             }
 
