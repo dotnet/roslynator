@@ -92,14 +92,14 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
 
         foreach (TypeParameterConstraintClauseSyntax constraintClause in constraintClauses)
         {
-            TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(previous, constraintClause);
+            TriviaBlock block = TriviaBlock.FromBetween(previous, constraintClause);
 
-            if (analysis.Kind == TriviaBlockKind.NoNewLine)
+            if (block.Kind == TriviaBlockKind.NoNewLine)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.PutTypeParameterConstraintOnItsOwnLine,
-                    analysis.GetLocation());
+                    block.GetLocation());
             }
 
             previous = constraintClause;

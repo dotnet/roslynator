@@ -52,18 +52,18 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
         if (semicolon.IsMissing)
             return;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(semicolon, node);
+        TriviaBlock block = TriviaBlock.FromBetween(semicolon, node);
 
-        if (!analysis.Success)
+        if (!block.Success)
             return;
 
-        if (analysis.Kind == TriviaBlockKind.BlankLine)
+        if (block.Kind == TriviaBlockKind.BlankLine)
         {
             if (style == BlankLineStyle.Remove)
             {
                 context.ReportDiagnostic(
                     DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
-                    analysis.GetLocation(),
+                    block.GetLocation(),
                     "Remove");
             }
         }
@@ -71,7 +71,7 @@ public sealed class BlankLineAfterFileScopedNamespaceDeclarationAnalyzer : BaseD
         {
             context.ReportDiagnostic(
                 DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration,
-                analysis.GetLocation(),
+                block.GetLocation(),
                 "Add");
         }
     }

@@ -44,14 +44,14 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
         if (node is null)
             return;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromLeading(node);
+        TriviaBlock block = TriviaBlock.FromLeading(node);
 
-        if (analysis.Kind == TriviaBlockKind.NewLine)
+        if (block.Kind == TriviaBlockKind.NewLine)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.AddBlankLineAfterTopComment,
-                analysis.GetLocation());
+                block.GetLocation());
         }
     }
 }

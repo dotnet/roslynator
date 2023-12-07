@@ -74,17 +74,17 @@ public sealed class AddBlankLineAfterUsingDirectiveListAnalyzer : BaseDiagnostic
         UsingDirectiveSyntax usingDirective,
         SyntaxToken nextToken)
     {
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(usingDirective, nextToken);
+        TriviaBlock block = TriviaBlock.FromBetween(usingDirective, nextToken);
 
-        if (!analysis.Success)
+        if (!block.Success)
             return;
 
-        if (analysis.Kind == TriviaBlockKind.BlankLine)
+        if (block.Kind == TriviaBlockKind.BlankLine)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.AddBlankLineAfterUsingDirectiveList,
-            analysis.GetLocation());
+            block.GetLocation());
     }
 }

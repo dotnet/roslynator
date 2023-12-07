@@ -61,9 +61,9 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
         if (accessor2.BodyOrExpressionBody() is null)
             return;
 
-        TriviaBlockAnalysis analysis = TriviaBlockAnalysis.FromBetween(accessor1, accessor2);
+        TriviaBlock block = TriviaBlock.FromBetween(accessor1, accessor2);
 
-        if (!analysis.Success)
+        if (!block.Success)
             return;
 
         if (accessorList.SyntaxTree.IsSingleLineSpan(accessor1.Span, context.CancellationToken)
@@ -73,14 +73,14 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
             {
                 BlankLineStyle style = context.GetBlankLineBetweenSingleLineAccessors();
 
-                if (analysis.Kind == TriviaBlockKind.BlankLine)
+                if (block.Kind == TriviaBlockKind.BlankLine)
                 {
                     if (style == BlankLineStyle.Remove)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.BlankLineBetweenSingleLineAccessors,
-                            analysis.GetLocation(),
+                            block.GetLocation(),
                             properties: DiagnosticProperties.AnalyzerOption_Invert,
                             "Remove");
                     }
@@ -90,17 +90,17 @@ public sealed class BlankLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.BlankLineBetweenSingleLineAccessors,
-                        analysis.GetLocation(),
+                        block.GetLocation(),
                         "Add");
                 }
             }
         }
-        else if (analysis.Kind != TriviaBlockKind.BlankLine)
+        else if (block.Kind != TriviaBlockKind.BlankLine)
         {
             DiagnosticHelpers.ReportDiagnosticIfEffective(
                 context,
                 DiagnosticRules.AddBlankLineBetweenAccessors,
-                analysis.GetLocation());
+                block.GetLocation());
         }
     }
 }

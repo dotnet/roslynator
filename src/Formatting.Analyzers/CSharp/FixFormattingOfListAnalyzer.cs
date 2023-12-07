@@ -152,7 +152,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
 
         if (span.IsSingleLine(first.SyntaxTree))
         {
-            if (!TriviaBlockAnalysis.FromTrailing(openNodeOrToken).IsWrapped)
+            if (!TriviaBlock.FromTrailing(openNodeOrToken).IsWrapped)
                 return;
 
             int indentationLength = IndentationAnalysis.Create(openNodeOrToken.Parent, context.GetConfigOptions()).IncreasedIndentationLength;
@@ -182,7 +182,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                     ? openNodeOrToken
                     : nodes.GetSeparator(i - 1);
 
-                if (TriviaBlockAnalysis.FromTrailing(nodeOrToken).IsWrapped)
+                if (TriviaBlock.FromTrailing(nodeOrToken).IsWrapped)
                 {
                     if (ShouldFixIndentation(nodes[i].GetLeadingTrivia(), indentationLength))
                     {

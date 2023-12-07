@@ -43,17 +43,17 @@ public sealed class AddBlankLineBeforeUsingDirectiveListAnalyzer : BaseDiagnosti
 
         SyntaxToken previousToken = usingDirective.GetFirstToken().GetPreviousToken();
 
-        TriviaBlockAnalysis analysis = (previousToken.IsKind(SyntaxKind.None))
-            ? TriviaBlockAnalysis.FromLeading(usingDirective)
-            : TriviaBlockAnalysis.FromBetween(previousToken, usingDirective);
+        TriviaBlock block = (previousToken.IsKind(SyntaxKind.None))
+            ? TriviaBlock.FromLeading(usingDirective)
+            : TriviaBlock.FromBetween(previousToken, usingDirective);
 
-        if (analysis.Kind == TriviaBlockKind.NewLine
-            && (!previousToken.IsKind(SyntaxKind.None) || analysis.ContainsSingleLineComment))
+        if (block.Kind == TriviaBlockKind.NewLine
+            && (!previousToken.IsKind(SyntaxKind.None) || block.ContainsSingleLineComment))
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.AddBlankLineBeforeUsingDirectiveList,
-                analysis.GetLocation());
+                block.GetLocation());
         }
     }
 }
