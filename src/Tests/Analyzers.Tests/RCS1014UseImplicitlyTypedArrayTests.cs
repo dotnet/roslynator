@@ -114,7 +114,7 @@ class B : A
         await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    string[][] _f = new [|string[]|][]
+    string[][] _f = new [|string|][][]
     {
         new[] { """" },
     };

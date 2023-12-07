@@ -455,7 +455,7 @@ internal static class CodeStyleExtensions
         return ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseCollectionExpression);
     }
 
-    public static ArrayCreationTypeStyle GetArrayCreationTypeStyle(this SyntaxNodeAnalysisContext context)
+    public static ObjectCreationTypeStyle GetArrayCreationTypeStyle(this SyntaxNodeAnalysisContext context)
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
@@ -463,25 +463,25 @@ internal static class CodeStyleExtensions
         {
             if (string.Equals(rawValue, ConfigOptionValues.ArrayCreationTypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
             {
-                return ArrayCreationTypeStyle.Implicit;
+                return ObjectCreationTypeStyle.Implicit;
             }
             else if (string.Equals(rawValue, ConfigOptionValues.ArrayCreationTypeStyle_Explicit, StringComparison.OrdinalIgnoreCase))
             {
-                return ArrayCreationTypeStyle.Explicit;
+                return ObjectCreationTypeStyle.Explicit;
             }
             else if (string.Equals(rawValue, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious, StringComparison.OrdinalIgnoreCase))
             {
-                return ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious;
+                return ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious;
             }
         }
 
         if (context.IsEnabled(LegacyConfigOptions.UseImplicitlyTypedArrayWhenTypeIsObvious))
-            return ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious;
+            return ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious;
 
         if (context.IsEnabled(LegacyConfigOptions.UseImplicitlyTypedArray))
-            return ArrayCreationTypeStyle.Implicit;
+            return ObjectCreationTypeStyle.Implicit;
 
-        return ArrayCreationTypeStyle.None;
+        return ObjectCreationTypeStyle.None;
     }
 
     public static InfiniteLoopStyle GetInfiniteLoopStyle(this SyntaxNodeAnalysisContext context)
