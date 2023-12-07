@@ -181,4 +181,19 @@ class C
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task TestNoDiagnostic_UseVarInsteadOfObjectCreation()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        var items = new string[] { string.Empty };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+    .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
+    }
 }

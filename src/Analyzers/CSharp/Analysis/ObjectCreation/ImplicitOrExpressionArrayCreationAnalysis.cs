@@ -62,19 +62,10 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
                             }
                             else if (variableDeclaration.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement))
                             {
-                                bool isVar = variableDeclaration.Type.IsVar;
-
-                                if (!AnalyzeExplicit(ref context, isObvious: !isVar, canUseCollectionExpression: !isVar)
-                                    && context.UseVarInsteadOfImplicitObjectCreation() == false)
+                                if (context.UseVarInsteadOfImplicitObjectCreation() != true)
                                 {
-                                    if (isVar)
-                                    {
-                                        ReportExplicitToImplicit(ref context);
-                                    }
-                                    else
-                                    {
-                                        AnalyzeType(ref context, arrayCreation, variableDeclaration.Type);
-                                    }
+                                    bool isVar = variableDeclaration.Type.IsVar;
+                                    AnalyzeExplicit(ref context, isObvious: !isVar, canUseCollectionExpression: !isVar);
                                 }
                             }
                         }
@@ -312,6 +303,9 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
                 if (element is SpreadElementSyntax)
                     return;
             }
+
+            if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.IsKind(SymbolKind.ArrayType) != true)
+                return;
         }
 
         DiagnosticHelpers.ReportDiagnostic(
@@ -352,6 +346,9 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             if (element is SpreadElementSyntax)
                 return;
         }
+
+        if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.IsKind(SymbolKind.ArrayType) != true)
+            return;
 
         DiagnosticHelpers.ReportDiagnostic(
             context,

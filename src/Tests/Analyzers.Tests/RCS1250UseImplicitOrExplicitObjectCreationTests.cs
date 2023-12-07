@@ -1830,4 +1830,28 @@ class C : List<string>
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_CollectionExpressionToExplicit()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> x)
+    {
+        x = [|[]|];
+    }   
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> x)
+    {
+        x = new List<string>();
+    }   
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
+    }
 }

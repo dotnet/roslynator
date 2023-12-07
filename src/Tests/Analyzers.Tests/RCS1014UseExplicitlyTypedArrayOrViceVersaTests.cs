@@ -472,4 +472,35 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToExplicit_NotArray()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> x)
+    {
+        x = [];
+    }   
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToImplicit_NotArray()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> x)
+    {
+        x = [];
+    }   
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+    .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+    }
 }
