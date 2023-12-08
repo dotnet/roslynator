@@ -12,13 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add analyzer "Add/remove blank line between switch sections" ([RCS0061](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0061)) ([PR](https://github.com/dotnet/roslynator/pull/1302))
   - Option (required): `roslynator_blank_line_between_switch_sections = include|omit|omit_after_block` 
   - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
-- Add option `roslynator_prefer_collection_expression = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1307))
+- Add option `roslynator_prefer_collection_expression = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1325))
   - Applicable to [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) and [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250)
 
 ### Changed
 
 - Replace type declaration's empty braces with semicolon ([RCS1251](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1251) ([PR](https://github.com/dotnet/roslynator/pull/1323), [PR](https://github.com/dotnet/roslynator/pull/1327))
-- Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1307))
+- Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1325))
 
 ## [4.7.0] - 2023-12-03
 
