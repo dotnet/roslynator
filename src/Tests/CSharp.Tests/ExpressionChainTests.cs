@@ -21,7 +21,7 @@ public static class ExpressionChainTests
         Assert.True(en.MoveNext() && en.Current == be2.Left);
         Assert.True(en.MoveNext() && en.Current == be2.Right);
         Assert.True(en.MoveNext() && en.Current == be.Right);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -45,7 +45,7 @@ class C
         Assert.True(en.MoveNext() && en.Current == be2.Left);
         Assert.True(en.MoveNext() && en.Current == be2.Right);
         Assert.True(en.MoveNext() && en.Current == be.Right);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -68,7 +68,7 @@ class C
 
         Assert.True(en.MoveNext() && en.Current == be2.Right);
         Assert.True(en.MoveNext() && en.Current == be.Right);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -92,7 +92,7 @@ class C
 
         Assert.True(en.MoveNext() && en.Current == be2.Right);
         Assert.True(en.MoveNext() && en.Current == be.Right);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -113,7 +113,7 @@ class C
         ExpressionChain.Enumerator en = new ExpressionChain(be, code.Spans[0]).GetEnumerator();
 
         Assert.True(en.MoveNext() && en.Current == be.Right);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -134,7 +134,7 @@ class C
         ExpressionChain.Enumerator en = new ExpressionChain(be, code.Spans[0]).GetEnumerator();
 
         Assert.True(en.MoveNext() && en.Current == be.Left);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -148,7 +148,7 @@ class C
         Assert.True(en.MoveNext() && en.Current == be.Right);
         Assert.True(en.MoveNext() && en.Current == be2.Right);
         Assert.True(en.MoveNext() && en.Current == be2.Left);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -172,7 +172,7 @@ class C
         Assert.True(en.MoveNext() && en.Current == be.Right);
         Assert.True(en.MoveNext() && en.Current == be2.Right);
         Assert.True(en.MoveNext() && en.Current == be2.Left);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -195,7 +195,7 @@ class C
 
         Assert.True(en.MoveNext() && en.Current == be.Right);
         Assert.True(en.MoveNext() && en.Current == be2.Right);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -219,7 +219,7 @@ class C
 
         Assert.True(en.MoveNext() && en.Current == be.Right);
         Assert.True(en.MoveNext() && en.Current == be2.Right);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -240,7 +240,7 @@ class C
         ExpressionChain.Reversed.Enumerator en = new ExpressionChain(be, code.Spans[0]).Reverse().GetEnumerator();
 
         Assert.True(en.MoveNext() && en.Current == be.Right);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
@@ -261,7 +261,7 @@ class C
         ExpressionChain.Reversed.Enumerator en = new ExpressionChain(be, code.Spans[0]).Reverse().GetEnumerator();
 
         Assert.True(en.MoveNext() && en.Current == be.Left);
-        Assert.True(!en.MoveNext());
+        Assert.False(en.MoveNext());
     }
 
     [Fact]
