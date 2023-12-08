@@ -310,7 +310,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             context,
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
             GetLocationFromExplicit(ref context),
-            "implicitly typed array");
+            "Simplify array creation");
     }
 
     protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
@@ -320,7 +320,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
             GetLocationFromExplicit(ref context),
             properties: _explicitToCollectionExpression,
-            "collection expression");
+            "Simplify array creation");
     }
 
     private static Location GetLocationFromExplicit(ref SyntaxNodeAnalysisContext context)
@@ -340,7 +340,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             context,
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
             GetLocationFromImplicit(ref context),
-            "explicitly typed array");
+            "Use explicitly typed array");
     }
 
     protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
@@ -350,7 +350,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
             GetLocationFromImplicit(ref context),
             properties: _implicitToCollectionExpression,
-            "collection expression");
+            "Simplify array creation");
     }
 
     private static Location GetLocationFromImplicit(ref SyntaxNodeAnalysisContext context)
@@ -377,7 +377,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
             context.Node.GetLocation(),
             properties: _collectionExpressionToImplicit,
-            "implicitly typed array");
+            "Simplify array creation");
     }
 
     private static bool CanConvertCollectionExpression(ref SyntaxNodeAnalysisContext context, CollectionExpressionSyntax collectionExpression)

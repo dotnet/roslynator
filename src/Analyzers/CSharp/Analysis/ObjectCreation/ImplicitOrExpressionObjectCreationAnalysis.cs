@@ -29,7 +29,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             context,
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             objectCreation.Type.GetLocation(),
-            "implicit object creation");
+            "Simplify array creation");
     }
 
     protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
@@ -41,7 +41,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             objectCreation.Type.GetLocation(),
             properties: _explicitToCollectionExpression,
-            "collection expression");
+            "Simplify array creation");
     }
 
     protected override void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context)
@@ -50,7 +50,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             context,
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             context.Node,
-            "explicit object creation");
+            "Use explicit object creation");
     }
 
     protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
@@ -60,7 +60,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             context.Node.GetLocation(),
             properties: _implicitToCollectionExpression,
-            "collection expression");
+            "Simplify array creation");
     }
 
     protected override void ReportCollectionExpressionToImplicit(ref SyntaxNodeAnalysisContext context)
@@ -70,6 +70,6 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             context.Node.GetLocation(),
             properties: _collectionExpressionToImplicit,
-            "implicit object creation");
+            "Simplify array creation");
     }
 }
