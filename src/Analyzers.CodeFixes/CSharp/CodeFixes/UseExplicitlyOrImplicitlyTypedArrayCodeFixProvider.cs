@@ -22,9 +22,9 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCodeFixProvider
 {
-    private const string ToImplicitTitle = "Use implicitly typed array";
-    private const string ToExplicitTitle = "Use explicitly typed array";
-    private const string ToCollectionExpressionTitle = "Use collection expression";
+    private const string UseExplicitlyTypedArrayTitle = "Use explicitly typed array";
+    private const string UseImplicitlyTypedArrayTitle = "Use implicitly typed array";
+    private const string UseCollectionExpressionTitle = "Use collection expression";
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
@@ -63,7 +63,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         CodeAction codeAction = CodeAction.Create(
             Title,
             ct => CreateChangedDocument(ct),
-            GetEquivalenceKey(diagnostic));
+            GetEquivalenceKey(diagnostic, (Title == UseCollectionExpressionTitle) ? "UseCollectionExpression" : null));
 
         context.RegisterCodeFix(codeAction, diagnostic);
     }
@@ -91,33 +91,33 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         {
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ExplicitToCollectionExpression))
             {
-                return (ct => ConvertToCollectionExpressionAsync(document, arrayCreation, ct), ToCollectionExpressionTitle);
+                return (ct => ConvertToCollectionExpressionAsync(document, arrayCreation, ct), UseCollectionExpressionTitle);
             }
             else
             {
-                return (ct => ConvertToImplicitAsync(document, arrayCreation, ct), ToImplicitTitle);
+                return (ct => ConvertToImplicitAsync(document, arrayCreation, ct), UseImplicitlyTypedArrayTitle);
             }
         }
         else if (node is ImplicitArrayCreationExpressionSyntax implicitArrayCreation)
         {
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
-                return (ct => ConvertToCollectionExpressionAsync(document, implicitArrayCreation, ct), ToCollectionExpressionTitle);
+                return (ct => ConvertToCollectionExpressionAsync(document, implicitArrayCreation, ct), UseCollectionExpressionTitle);
             }
             else
             {
-                return (ct => ConvertToExplicitAsync(document, implicitArrayCreation, ct), ToExplicitTitle);
+                return (ct => ConvertToExplicitAsync(document, implicitArrayCreation, ct), UseExplicitlyTypedArrayTitle);
             }
         }
         else if (node is CollectionExpressionSyntax collectionExpression)
         {
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.CollectionExpressionToImplicit))
             {
-                return (ct => ConvertToImplicitAsync(document, collectionExpression, ct), ToImplicitTitle);
+                return (ct => ConvertToImplicitAsync(document, collectionExpression, ct), UseImplicitlyTypedArrayTitle);
             }
             else
             {
-                return (ct => ConvertToExplicitAsync(document, collectionExpression, ct), ToExplicitTitle);
+                return (ct => ConvertToExplicitAsync(document, collectionExpression, ct), UseExplicitlyTypedArrayTitle);
             }
         }
         else

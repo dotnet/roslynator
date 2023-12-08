@@ -20,6 +20,12 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixProvider
 {
+    private const string UseExplicitObjectCreationTitle = "Use explicit object creation";
+    private const string UseImplicitObjectCreationTitle = "Use implicit object creation";
+    private const string UseCollectionExpressionTitle = "Use collection expression";
+
+    private const string UseCollectionExpressionEquivalenceKey = "UseCollectionExpression";
+
     public sealed override ImmutableArray<string> FixableDiagnosticIds
     {
         get { return ImmutableArray.Create(DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation); }
@@ -51,8 +57,8 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
             CodeAction codeAction = CodeAction.Create(
                 (useCollectionExpression)
-                    ? "Use collection expression"
-                    : "Use implicit object creation",
+                    ? UseCollectionExpressionTitle
+                    : UseImplicitObjectCreationTitle,
                 ct =>
                 {
                     SyntaxNode newNode;
@@ -85,7 +91,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                         return document.ReplaceNodeAsync(objectCreation, newNode, ct);
                     }
                 },
-                GetEquivalenceKey(diagnostic));
+                GetEquivalenceKey(diagnostic, (useCollectionExpression) ? UseCollectionExpressionEquivalenceKey : null));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
@@ -94,7 +100,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Use collection expression",
+                    UseCollectionExpressionTitle,
                     async ct =>
                     {
                         CollectionExpressionSyntax collectionExpression = ConvertInitializerToCollectionExpression(implicitObjectCreation.Initializer)
@@ -107,14 +113,14 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                         return await document.ReplaceNodeAsync(implicitObjectCreation, collectionExpression, ct).ConfigureAwait(false);
                     },
-                    GetEquivalenceKey(diagnostic));
+                    GetEquivalenceKey(diagnostic, UseCollectionExpressionEquivalenceKey));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Use explicit object creation",
+                    UseExplicitObjectCreationTitle,
                     async ct =>
                     {
                         SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
@@ -144,7 +150,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.CollectionExpressionToImplicit))
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Use implicit object creation",
+                    UseImplicitObjectCreationTitle,
                     async ct =>
                     {
                         SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
@@ -167,7 +173,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Use explicit object creation",
+                    UseExplicitObjectCreationTitle,
                     async ct =>
                     {
                         SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
@@ -198,7 +204,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             var variableDeclaration = (VariableDeclarationSyntax)node;
 
             CodeAction codeAction = CodeAction.Create(
-                "Use explicit object creation",
+                UseExplicitObjectCreationTitle,
                 ct =>
                 {
                     var implicitObjectCreation = (ImplicitObjectCreationExpressionSyntax)variableDeclaration.Variables.Single().Initializer.Value;
