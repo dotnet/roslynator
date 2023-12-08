@@ -20,7 +20,7 @@ internal static class SymbolDisplayFormatExtensions
         SymbolDisplayKindOptions? kindOptions = null,
         SymbolDisplayMiscellaneousOptions? miscellaneousOptions = null)
     {
-        return new SymbolDisplayFormat(
+        return new(
             globalNamespaceStyle: globalNamespaceStyle ?? format.GlobalNamespaceStyle,
             typeQualificationStyle: typeQualificationStyle ?? format.TypeQualificationStyle,
             genericsOptions: genericsOptions ?? format.GenericsOptions,

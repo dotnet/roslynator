@@ -15,7 +15,7 @@ internal class AwaitExpressionWalker : CSharpSyntaxNodeWalker
 
     private bool _shouldVisit = true;
 
-    public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = new();
+    public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = [];
 
     private bool StopOnFirstAwaitExpression { get; set; }
 

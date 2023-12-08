@@ -34,7 +34,7 @@ internal sealed class SpellingFixResult
 
     public static SpellingFixResult Create(string? sourceText, SpellingDiagnostic diagnostic, SpellingFix fix)
     {
-        return new SpellingFixResult(
+        return new(
             sourceText,
             new SpellingCapture(diagnostic.Value, diagnostic.Index, diagnostic.Parent, diagnostic.ParentIndex),
             diagnostic.Span,

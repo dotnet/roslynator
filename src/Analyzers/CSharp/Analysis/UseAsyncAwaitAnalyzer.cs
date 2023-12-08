@@ -176,7 +176,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         private int _usingOrTryStatementDepth;
         private bool _shouldVisit = true;
-        private readonly List<int> _usingDeclarations = new();
+        private readonly List<int> _usingDeclarations = [];
 
         public override bool ShouldVisit => _shouldVisit;
 

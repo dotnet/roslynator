@@ -158,7 +158,7 @@ public class TextLineCollectionSelection : ISelection<TextLine>
     /// </summary>
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(this);
+        return new(this);
     }
 
     IEnumerator<TextLine> IEnumerable<TextLine>.GetEnumerator()

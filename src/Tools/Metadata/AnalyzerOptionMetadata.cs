@@ -6,5 +6,5 @@ namespace Roslynator.Metadata;
 
 public record AnalyzerOptionMetadata(string Id, string Key, string DefaultValue, string DefaultValuePlaceholder, string Description, bool IsObsolete)
 {
-    public List<AnalyzerOptionValueMetadata> Values { get; } = new();
+    public List<AnalyzerOptionValueMetadata> Values { get; } = [];
 }

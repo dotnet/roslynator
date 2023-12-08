@@ -36,7 +36,7 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
 
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(this);
+        return new(this);
     }
 
     public struct Enumerator

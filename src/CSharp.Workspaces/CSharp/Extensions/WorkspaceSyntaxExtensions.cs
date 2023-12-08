@@ -18,15 +18,15 @@ namespace Roslynator.CSharp;
 /// </summary>
 public static class WorkspaceSyntaxExtensions
 {
-    private static readonly SyntaxAnnotation[] _formatterAnnotationArray = new SyntaxAnnotation[] { Formatter.Annotation };
+    private static readonly SyntaxAnnotation[] _formatterAnnotationArray = [Formatter.Annotation];
 
-    private static readonly SyntaxAnnotation[] _simplifierAnnotationArray = new SyntaxAnnotation[] { Simplifier.Annotation };
+    private static readonly SyntaxAnnotation[] _simplifierAnnotationArray = [Simplifier.Annotation];
 
-    private static readonly SyntaxAnnotation[] _renameAnnotationArray = new SyntaxAnnotation[] { RenameAnnotation.Create() };
+    private static readonly SyntaxAnnotation[] _renameAnnotationArray = [RenameAnnotation.Create()];
 
-    private static readonly SyntaxAnnotation[] _navigationAnnotationArray = new SyntaxAnnotation[] { NavigationAnnotation.Annotation };
+    private static readonly SyntaxAnnotation[] _navigationAnnotationArray = [NavigationAnnotation.Annotation];
 
-    private static readonly SyntaxAnnotation[] _formatterAndSimplifierAnnotationArray = new SyntaxAnnotation[] { Formatter.Annotation, Simplifier.Annotation };
+    private static readonly SyntaxAnnotation[] _formatterAndSimplifierAnnotationArray = [Formatter.Annotation, Simplifier.Annotation];
 
     #region ExpressionSyntax
     /// <summary>

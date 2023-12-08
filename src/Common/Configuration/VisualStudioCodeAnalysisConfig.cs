@@ -27,7 +27,7 @@ internal class VisualStudioCodeAnalysisConfig
 
     public VisualStudioCodeAnalysisConfig WithPrefixFieldIdentifierWithUnderscore(bool value)
     {
-        return new VisualStudioCodeAnalysisConfig(
+        return new(
             value,
             Refactorings,
             CodeFixes);
@@ -35,7 +35,7 @@ internal class VisualStudioCodeAnalysisConfig
 
     public VisualStudioCodeAnalysisConfig WithRefactorings(IEnumerable<KeyValuePair<string, bool>> refactorings)
     {
-        return new VisualStudioCodeAnalysisConfig(
+        return new(
             PrefixFieldIdentifierWithUnderscore,
             refactorings,
             CodeFixes);
@@ -43,7 +43,7 @@ internal class VisualStudioCodeAnalysisConfig
 
     public VisualStudioCodeAnalysisConfig WithCodeFixes(IEnumerable<KeyValuePair<string, bool>> codeFixes)
     {
-        return new VisualStudioCodeAnalysisConfig(
+        return new(
             PrefixFieldIdentifierWithUnderscore,
             Refactorings,
             codeFixes);

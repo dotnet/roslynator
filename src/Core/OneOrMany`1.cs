@@ -73,7 +73,7 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
 
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(this);
+        return new(this);
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()

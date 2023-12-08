@@ -6,5 +6,5 @@ namespace Roslynator.Metadata;
 
 public record CodeFixMetadata(string Id, string Identifier, string Title, bool IsEnabledByDefault, bool IsObsolete)
 {
-    public List<string> FixableDiagnosticIds { get; } = new();
+    public List<string> FixableDiagnosticIds { get; } = [];
 }

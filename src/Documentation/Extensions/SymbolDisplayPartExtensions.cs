@@ -128,6 +128,6 @@ internal static class SymbolDisplayPartExtensions
 
     public static SymbolDisplayPart WithText(this SymbolDisplayPart part, string text)
     {
-        return new SymbolDisplayPart(part.Kind, part.Symbol, text);
+        return new(part.Kind, part.Symbol, text);
     }
 }

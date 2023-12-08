@@ -9,22 +9,22 @@ internal static class SymbolDisplayPartFactory
 {
     public static SymbolDisplayPart Text(string text)
     {
-        return new SymbolDisplayPart(SymbolDisplayPartKind.Text, null, text);
+        return new(SymbolDisplayPartKind.Text, null, text);
     }
 
     public static SymbolDisplayPart Keyword(string keyword)
     {
-        return new SymbolDisplayPart(SymbolDisplayPartKind.Keyword, null, keyword);
+        return new(SymbolDisplayPartKind.Keyword, null, keyword);
     }
 
     public static SymbolDisplayPart Punctuation(string value)
     {
-        return new SymbolDisplayPart(SymbolDisplayPartKind.Punctuation, null, value);
+        return new(SymbolDisplayPartKind.Punctuation, null, value);
     }
 
     public static SymbolDisplayPart Space(string text = " ")
     {
-        return new SymbolDisplayPart(SymbolDisplayPartKind.Space, null, text);
+        return new(SymbolDisplayPartKind.Space, null, text);
     }
 
     public static SymbolDisplayPart Indentation(string indentChars = "    ")
@@ -34,16 +34,16 @@ internal static class SymbolDisplayPartFactory
 
     public static SymbolDisplayPart LineBreak()
     {
-        return new SymbolDisplayPart(SymbolDisplayPartKind.LineBreak, null, Environment.NewLine);
+        return new(SymbolDisplayPartKind.LineBreak, null, Environment.NewLine);
     }
 
     public static SymbolDisplayPart PropertyName(string name, ISymbol symbol)
     {
-        return new SymbolDisplayPart(SymbolDisplayPartKind.PropertyName, symbol, name);
+        return new(SymbolDisplayPartKind.PropertyName, symbol, name);
     }
 
     public static SymbolDisplayPart MethodName(string name, ISymbol symbol)
     {
-        return new SymbolDisplayPart(SymbolDisplayPartKind.MethodName, symbol, name);
+        return new(SymbolDisplayPartKind.MethodName, symbol, name);
     }
 }

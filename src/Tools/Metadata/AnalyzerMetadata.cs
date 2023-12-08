@@ -34,17 +34,17 @@ public class AnalyzerMetadata
 
     public string Remarks { get; init; }
 
-    public List<string> Tags { get; } = new();
+    public List<string> Tags { get; } = [];
 
-    public List<AnalyzerConfigOption> ConfigOptions { get; } = new();
+    public List<AnalyzerConfigOption> ConfigOptions { get; } = [];
 
-    public List<SampleMetadata> Samples { get; } = new();
+    public List<SampleMetadata> Samples { get; } = [];
 
-    public List<LinkMetadata> Links { get; } = new();
+    public List<LinkMetadata> Links { get; } = [];
 
-    public List<LegacyAnalyzerOptionMetadata> LegacyOptions { get; } = new();
+    public List<LegacyAnalyzerOptionMetadata> LegacyOptions { get; } = [];
 
-    public List<AnalyzerMetadata> LegacyOptionAnalyzers { get; } = new();
+    public List<AnalyzerMetadata> LegacyOptionAnalyzers { get; } = [];
 
     public LegacyAnalyzerOptionKind Kind { get; init; }
 

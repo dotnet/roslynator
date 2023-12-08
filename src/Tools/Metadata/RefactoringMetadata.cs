@@ -25,11 +25,11 @@ public class RefactoringMetadata
 
     public bool IsObsolete { get; init; }
 
-    public List<SyntaxMetadata> Syntaxes { get; } = new();
+    public List<SyntaxMetadata> Syntaxes { get; } = [];
 
-    public List<SampleMetadata> Samples { get; } = new();
+    public List<SampleMetadata> Samples { get; } = [];
 
-    public List<LinkMetadata> Links { get; } = new();
+    public List<LinkMetadata> Links { get; } = [];
 
     public string GetGitHubHref()
     {

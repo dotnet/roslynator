@@ -19,25 +19,22 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    private static readonly Accessibility[] _publicOrInternal = new[]
-    {
+    private static readonly Accessibility[] _publicOrInternal = [
         Accessibility.Public,
         Accessibility.Internal,
-    };
+    ];
 
-    private static readonly Accessibility[] _publicOrInternalOrProtected = new[]
-    {
+    private static readonly Accessibility[] _publicOrInternalOrProtected = [
         Accessibility.Public,
         Accessibility.Internal,
         Accessibility.Protected,
-    };
+    ];
 
-    private static readonly Accessibility[] _publicOrInternalOrPrivate = new[]
-    {
+    private static readonly Accessibility[] _publicOrInternalOrPrivate = [
         Accessibility.Public,
         Accessibility.Internal,
         Accessibility.Private,
-    };
+    ];
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {

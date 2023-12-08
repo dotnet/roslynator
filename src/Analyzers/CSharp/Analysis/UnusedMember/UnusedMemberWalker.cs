@@ -21,7 +21,7 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
 
     private IMethodSymbol _containingMethodSymbol;
 
-    public Collection<NodeSymbolInfo> Nodes { get; } = new();
+    public Collection<NodeSymbolInfo> Nodes { get; } = [];
 
     public SemanticModel SemanticModel { get; set; }
 
