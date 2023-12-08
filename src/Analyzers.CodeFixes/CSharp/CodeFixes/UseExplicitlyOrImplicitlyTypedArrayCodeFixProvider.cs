@@ -22,8 +22,8 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCodeFixProvider
 {
-    private const string UseExplicitlyTypedArrayTitle = "Use explicitly typed array";
-    private const string UseImplicitlyTypedArrayTitle = "Use implicitly typed array";
+    private const string UseExplicitlyTypedArrayTitle = "Use explicit type";
+    private const string UseImplicitlyTypedArrayTitle = "Use implicit type";
     private const string UseCollectionExpressionTitle = "Use collection expression";
 
     public override ImmutableArray<string> FixableDiagnosticIds

@@ -20,8 +20,8 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixProvider
 {
-    private const string UseExplicitObjectCreationTitle = "Use explicit object creation";
-    private const string UseImplicitObjectCreationTitle = "Use implicit object creation";
+    private const string UseExplicitObjectCreationTitle = "Use explicit type";
+    private const string UseImplicitObjectCreationTitle = "Use implicit type";
     private const string UseCollectionExpressionTitle = "Use collection expression";
 
     private const string UseCollectionExpressionEquivalenceKey = "UseCollectionExpression";
