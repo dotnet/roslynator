@@ -460,7 +460,7 @@ internal class SpellcheckAnalyzer
 
                             for (int l = 0; l < diagnostics2.Count; l++)
                             {
-                                if (SpellingData.IgnoredValues.KeyComparer.Equals(diagnostics2[l]?.Value!, diagnostic.Value))
+                                if (SpellingData.IgnoredValues.KeyComparer.Equals(diagnostics2[l]?.Value, diagnostic.Value))
                                     diagnostics2[l] = null;
                             }
                         }

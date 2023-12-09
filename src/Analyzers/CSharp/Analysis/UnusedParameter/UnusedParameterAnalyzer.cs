@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -413,7 +414,7 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
                 return true;
             }
 
-            return uint.TryParse(value.Substring(1), out _);
+            return uint.TryParse(value.AsSpan(1), out _);
         }
 
         return false;

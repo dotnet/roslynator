@@ -50,7 +50,7 @@ public sealed class UnnecessaryInterpolationAnalyzer : BaseDiagnosticAnalyzer
         if (interpolation.Parent is not InterpolatedStringExpressionSyntax interpolatedString)
             return;
 
-        if (interpolatedString.StringStartToken.ValueText.Contains("@") != stringLiteralInfo.IsVerbatim)
+        if (interpolatedString.StringStartToken.ValueText.Contains('@') != stringLiteralInfo.IsVerbatim)
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryInterpolation, interpolation);

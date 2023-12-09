@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading;
@@ -73,7 +74,10 @@ public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProv
     {
         string newText = interpolatedString.ToString();
         int startIndex = interpolatedString.StringStartToken.Text.Length;
-        newText = "$\"" + newText.Substring(startIndex, newText.Length - startIndex - interpolatedString.StringEndToken.Text.Length) + "\"";
+        newText = string.Concat(
+            "$\"",
+            newText.AsSpan(startIndex, newText.Length - startIndex - interpolatedString.StringEndToken.Text.Length),
+            "\"");
 
         return document.WithTextChangeAsync(interpolatedString.Span, newText, cancellationToken);
     }

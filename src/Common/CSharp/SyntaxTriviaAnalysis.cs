@@ -292,7 +292,7 @@ internal static class SyntaxTriviaAnalysis
             else
             {
                 string newIndentation = (indentation.Span.Length > length)
-                    ? replacement + indentation.ToString().Substring(length)
+                    ? string.Concat(replacement, indentation.ToString().AsSpan(length))
                     : replacement;
 
                 builder.Append(newIndentation);

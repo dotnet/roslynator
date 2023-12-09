@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ public sealed class LiteralExpressionCodeFixProvider : CompilerDiagnosticCodeFix
                 "Replace character literal with string literal",
                 ct =>
                 {
-                    ExpressionSyntax newExpression = ParseExpression("\"" + text.Substring(1, text.Length - 2) + "\"")
+                    ExpressionSyntax newExpression = ParseExpression(string.Concat("\"", text.AsSpan(1, text.Length - 2), "\""))
                         .WithTriviaFrom(literalExpression);
 
                     return context.Document.ReplaceNodeAsync(literalExpression, newExpression, ct);

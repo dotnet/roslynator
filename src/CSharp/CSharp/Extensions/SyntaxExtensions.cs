@@ -1060,7 +1060,7 @@ public static class SyntaxExtensions
     /// </summary>
     public static bool IsVerbatim(this InterpolatedStringExpressionSyntax interpolatedString)
     {
-        return interpolatedString?.StringStartToken.ValueText.Contains("@") == true;
+        return interpolatedString?.StringStartToken.ValueText.Contains('@') == true;
     }
     #endregion InterpolatedStringExpressionSyntax
 

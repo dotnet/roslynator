@@ -84,7 +84,7 @@ public sealed class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagno
             {
                 string text = interpolation.FormatClause?.FormatStringToken.Text;
 
-                if (text?.Contains("\\") == true)
+                if (text?.Contains('\\') == true)
                     return;
             }
         }

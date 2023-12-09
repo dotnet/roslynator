@@ -124,7 +124,7 @@ internal static class StringLiteralParser
                             if (pos + 3 >= text.Length)
                                 return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
 
-                            if (uint.TryParse(text.Substring(pos, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
+                            if (uint.TryParse(text.AsSpan(pos, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
                             {
                                 ch = (char)result;
                                 pos += 3;
@@ -143,7 +143,7 @@ internal static class StringLiteralParser
                             if (pos + 7 >= text.Length)
                                 return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
 
-                            if (uint.TryParse(text.Substring(pos, 8), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
+                            if (uint.TryParse(text.AsSpan(pos, 8), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
                             {
                                 if (result > 0xffff)
                                     return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
@@ -357,7 +357,7 @@ internal static class StringLiteralParser
                             if (pos + 4 >= text.Length)
                                 return false;
 
-                            if (!uint.TryParse(text.Substring(pos + 1, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint _))
+                            if (!uint.TryParse(text.AsSpan(pos + 1, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint _))
                                 return false;
 
                             if (IsOverlap(span, startPos, 6))
@@ -372,7 +372,7 @@ internal static class StringLiteralParser
                             if (pos + 8 >= text.Length)
                                 return false;
 
-                            if (!uint.TryParse(text.Substring(pos + 1, 8), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
+                            if (!uint.TryParse(text.AsSpan(pos + 1, 8), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
                                 return false;
 
                             if (result > 0xffff)

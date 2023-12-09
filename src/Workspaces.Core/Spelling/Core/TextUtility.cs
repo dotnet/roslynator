@@ -37,9 +37,10 @@ internal static class TextUtility
     {
         int endIndex = index + length;
 
-        return value.Remove(index)
-            + replacement
-            + value.Substring(endIndex, value.Length - endIndex);
+        return string.Concat(
+            value.Remove(index),
+            replacement,
+            value.AsSpan(endIndex, value.Length - endIndex));
     }
 
     public static string SetTextCasing(string s, TextCasing textCasing)

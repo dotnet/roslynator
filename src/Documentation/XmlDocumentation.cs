@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -82,7 +83,7 @@ public sealed class XmlDocumentation
         {
             rawXml = (string.CompareOrdinal(s, index, DefaultIndentChars, 0, DefaultIndentChars.Length) == 0)
                 ? _indentationRegex.Replace(rawXml, "")
-                : Regex.Replace(rawXml, "(?<=\n)" + s.Substring(index), "");
+                : Regex.Replace(rawXml, string.Concat("(?<=\n)", s.AsSpan(index)), "");
         }
 
         return rawXml;

@@ -239,7 +239,7 @@ internal static class TextProcessor
             throw new InvalidOperationException("Text contains more than one span.");
 
         string? expected = (replacement2 is not null)
-            ? source.Remove(spans[0].Start) + replacement2 + source.Substring(spans[0].End)
+            ? string.Concat(source.Remove(spans[0].Start), replacement2, source.AsSpan(spans[0].End))
             : null;
 
         string source2 = replacement1;
@@ -249,7 +249,7 @@ internal static class TextProcessor
         if (spans2.Length == 0)
             source2 = "[|" + replacement1 + "|]";
 
-        source2 = source.Remove(spans[0].Start) + source2 + source.Substring(spans[0].End);
+        source2 = string.Concat(source.Remove(spans[0].Start), source2, source.AsSpan(spans[0].End));
 
         (string source3, ImmutableArray<TextSpan> spans3) = FindSpansAndRemove(source2);
 

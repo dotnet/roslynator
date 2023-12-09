@@ -94,10 +94,10 @@ public readonly struct StringLiteralExpressionInfo
         get
         {
             if (IsRegular)
-                return ValueText.Contains("\n");
+                return ValueText.Contains('\n');
 
             if (IsVerbatim)
-                return Text.Contains("\n");
+                return Text.Contains('\n');
 
             return false;
         }
@@ -111,7 +111,7 @@ public readonly struct StringLiteralExpressionInfo
         get
         {
             if (IsRegular)
-                return Text.Contains("\\");
+                return Text.Contains('\\');
 
             if (IsVerbatim)
                 return InnerText.Contains("\"\"");
