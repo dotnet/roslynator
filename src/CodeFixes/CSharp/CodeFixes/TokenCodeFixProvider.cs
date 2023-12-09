@@ -1,9 +1,11 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -14,7 +16,6 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
-using System.Collections.Generic;
 
 namespace Roslynator.CSharp.CodeFixes;
 
@@ -630,7 +631,7 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                     if (symbol is null)
                         return;
 
-                    ISymbol baseSymbol = null; ;
+                    ISymbol baseSymbol = null;
                     if (diagnostic.Id == CompilerDiagnosticIdentifiers.CS8767_NullabilityDoesNotMatchImplementedMember)
                     {
                         using IEnumerator<ISymbol> en = symbol.FindImplementedInterfaceMembers().GetEnumerator();
@@ -646,10 +647,10 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                     else
                     {
                         baseSymbol = symbol.OverriddenSymbol();
-                    }
 
-                    if (baseSymbol is null)
-                        return;
+                        if (baseSymbol is null)
+                            return;
+                    }
 
                     SeparatedSyntaxList<ParameterSyntax> parameters = CSharpUtility.GetParameters(memberDeclaration);
 
