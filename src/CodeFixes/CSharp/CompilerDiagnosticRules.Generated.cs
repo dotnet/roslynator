@@ -2036,6 +2036,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        "https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs8403", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
+        /// <summary>CS8600</summary>
+        public static readonly DiagnosticDescriptor ConvertingNullLiteralOrPossibleNullValueToNonNullableType = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8600_ConvertingNullLiteralOrPossibleNullValueToNonNullableType, 
+            title:              "Converting null literal or possible null value to non-nullable type.", 
+            messageFormat:      "Converting null literal or possible null value to non-nullable type", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
         /// <summary>CS8602</summary>
         public static readonly DiagnosticDescriptor DereferenceOfPossiblyNullReference = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference, 
@@ -2058,6 +2070,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
+        /// <summary>CS8610</summary>
+        public static readonly DiagnosticDescriptor NullabilityOfReferenceTypesInTypeOfParameterDoesNotMatchOverriddenMember = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8610_NullabilityOfReferenceTypesInTypeOfParameterDoesNotMatchOverriddenMember, 
+            title:              "Nullability of reference types in type of parameter doesn't match overridden member.", 
+            messageFormat:      "Nullability of reference types in type of parameter '{0}' doesn't match overridden member.", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
         /// <summary>CS8618</summary>
@@ -2094,6 +2118,30 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
+        /// <summary>CS8765</summary>
+        public static readonly DiagnosticDescriptor NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember, 
+            title:              "Nullability of type of parameter doesn't match overridden member.", 
+            messageFormat:      "Nullability of type of parameter 'arg0' doesn't match overridden member.", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
+        /// <summary>CS8767</summary>
+        public static readonly DiagnosticDescriptor NullabilityDoesNotMatchImplementedMember = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8767_NullabilityDoesNotMatchImplementedMember, 
+            title:              "Nullability of reference types in type of parameter doesn't match implicitly implemented member.", 
+            messageFormat:      "Nullability of reference types in type of parameter '{0}' of '{1}' doesn't match implicitly implemented member '{2}'.", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
     }
