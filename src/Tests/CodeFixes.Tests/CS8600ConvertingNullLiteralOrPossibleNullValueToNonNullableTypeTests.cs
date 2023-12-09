@@ -71,4 +71,40 @@ public class C
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
     }
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8600_ConvertingNullLiteralOrPossibleNullValueToNonNullableType)]
+    public async Task Test_AssignmentExpression()
+    {
+        await VerifyFixAsync(@"
+using System.IO;
+#nullable enable
+
+public class C
+{
+    void M()
+    {
+        using var sr = new StreamReader(("""");
+        string s;
+        while ((s = sr.ReadLine()) is not null)
+        {
+        }
+    }
+}
+", @"
+using System.IO;
+#nullable enable
+
+public class C
+{
+    void M()
+    {
+        using var sr = new StreamReader(("""");
+        string? s;
+        while ((s = sr.ReadLine()) is not null)
+        {
+        }
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+    }
 }

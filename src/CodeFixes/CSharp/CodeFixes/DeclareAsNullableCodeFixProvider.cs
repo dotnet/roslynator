@@ -30,7 +30,7 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
         if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddNullableAnnotation, context.Document, root.SyntaxTree))
             return;
 
-        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.EqualsValueClause, SyntaxKind.DeclarationExpression)))
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.EqualsValueClause, SyntaxKind.DeclarationExpression, SyntaxKind.SimpleAssignmentExpression)))
             return;
 
         if (node is EqualsValueClauseSyntax equalsValueClause)
@@ -48,6 +48,24 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
         else if (node is DeclarationExpressionSyntax declarationExpression)
         {
             TryRegisterCodeFix(context, diagnostic, declarationExpression.Type);
+        }
+        else if (node is AssignmentExpressionSyntax assignmentExpression)
+        {
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            var localSymbol = semanticModel.GetSymbol(assignmentExpression.Left, context.CancellationToken) as ILocalSymbol;
+
+            if (localSymbol is not null)
+            {
+                SyntaxNode declarator = await localSymbol.GetSyntaxAsync(context.CancellationToken).ConfigureAwait(false);
+
+                if (declarator.IsKind(SyntaxKind.VariableDeclarator)
+                    && declarator.Parent is VariableDeclarationSyntax variableDeclaration
+                    && variableDeclaration.Variables.Count == 1)
+                {
+                    TryRegisterCodeFix(context, diagnostic, variableDeclaration.Type);
+                }
+            }
         }
     }
 

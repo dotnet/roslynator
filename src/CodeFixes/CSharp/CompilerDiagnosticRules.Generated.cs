@@ -2045,7 +2045,7 @@ namespace Roslynator.CSharp
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        "", 
+            helpLinkUri:        "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
         /// <summary>CS8602</summary>
@@ -2081,7 +2081,7 @@ namespace Roslynator.CSharp
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        "", 
+            helpLinkUri:        "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
         /// <summary>CS8618</summary>
@@ -2129,7 +2129,7 @@ namespace Roslynator.CSharp
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        "", 
+            helpLinkUri:        "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
         /// <summary>CS8767</summary>
@@ -2141,7 +2141,7 @@ namespace Roslynator.CSharp
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        "", 
+            helpLinkUri:        "https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
     }

@@ -1189,7 +1189,7 @@
     Severity="Warning"
     Title="Converting null literal or possible null value to non-nullable type."
     Message="Converting null literal or possible null value to non-nullable type"
-    HelpUrl="" />
+    HelpUrl="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings" />
   <Diagnostic
     Id="CS8602"
     Identifier="DereferenceOfPossiblyNullReference"
@@ -1210,7 +1210,7 @@
     Severity="Warning"
     Title="Nullability of reference types in type of parameter doesn't match overridden member."
     Message="Nullability of reference types in type of parameter '{0}' doesn't match overridden member."
-    HelpUrl="" />
+    HelpUrl="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings" />
   <Diagnostic
     Id="CS8618"
     Identifier="NonNullableMemberIsUninitialized"
@@ -1238,12 +1238,12 @@
     Severity="Warning"
     Title="Nullability of type of parameter doesn't match overridden member."
     Message="Nullability of type of parameter 'arg0' doesn't match overridden member."
-    HelpUrl="" />
+    HelpUrl="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings" />
   <Diagnostic
     Id="CS8767"
     Identifier="NullabilityDoesNotMatchImplementedMember"
     Severity="Warning"
     Title="Nullability of reference types in type of parameter doesn't match implicitly implemented member."
     Message="Nullability of reference types in type of parameter '{0}' of '{1}' doesn't match implicitly implemented member '{2}'."
-    HelpUrl="" />
+    HelpUrl="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings" />
 </Diagnostics>
