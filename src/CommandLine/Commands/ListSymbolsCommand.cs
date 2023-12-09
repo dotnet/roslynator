@@ -177,7 +177,7 @@ internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
             {
                 await using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
                 await using (var streamWriter = new StreamWriter(fileStream, Encodings.UTF8NoBom))
-                using (var jsonWriter = new JsonTextWriter(streamWriter))
+                await using (var jsonWriter = new JsonTextWriter(streamWriter))
                 {
                     string indentChars = format.IndentChars;
 
