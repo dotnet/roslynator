@@ -18,10 +18,10 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         if (context.Node.ContainsDiagnostics)
             return;
 
-        ObjectCreationTypeStyle style = GetTypeStyle(ref context);
+        TypeStyle style = GetTypeStyle(ref context);
 
-        if (style != ObjectCreationTypeStyle.Implicit
-            && style != ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious)
+        if (style != TypeStyle.Implicit
+            && style != TypeStyle.ImplicitWhenTypeIsObvious)
         {
             return;
         }
@@ -88,7 +88,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
                 }
             case SyntaxKind.ReturnStatement:
                 {
-                    if (style == ObjectCreationTypeStyle.Implicit
+                    if (style == TypeStyle.Implicit
                         || IsSingleReturnStatement(parent))
                     {
                         for (SyntaxNode node = parent.Parent; node is not null; node = node.Parent)
@@ -118,11 +118,11 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
                 }
             case SyntaxKind.CoalesceExpression:
                 {
-                    if (style == ObjectCreationTypeStyle.Implicit)
+                    if (style == TypeStyle.Implicit)
                     {
                         AnalyzeExplicitNotObvious(ref context);
                     }
-                    else if (style == ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious
+                    else if (style == TypeStyle.ImplicitWhenTypeIsObvious
                         && parent.IsParentKind(SyntaxKind.EqualsValueClause))
                     {
                         if (parent.Parent.Parent is VariableDeclaratorSyntax variableDeclarator)
@@ -156,9 +156,9 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
 
     private bool AnalyzeExplicit(ref SyntaxNodeAnalysisContext context, bool isObvious, bool allowCollectionExpression = true)
     {
-        ObjectCreationTypeStyle style = GetTypeStyle(ref context);
+        TypeStyle style = GetTypeStyle(ref context);
 
-        if (style == ObjectCreationTypeStyle.Implicit)
+        if (style == TypeStyle.Implicit)
         {
             if (allowCollectionExpression
                 && PreferCollectionExpression(ref context))
@@ -172,7 +172,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
                 return true;
             }
         }
-        else if (style == ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious)
+        else if (style == TypeStyle.ImplicitWhenTypeIsObvious)
         {
             if (isObvious
                 && allowCollectionExpression
@@ -204,7 +204,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             return;
         }
 
-        if (GetTypeStyle(ref context) == ObjectCreationTypeStyle.Explicit)
+        if (GetTypeStyle(ref context) == TypeStyle.Explicit)
         {
             var arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken) as IArrayTypeSymbol;
 
@@ -299,7 +299,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         return PreferCollectionExpression(ref context);
     }
 
-    public override ObjectCreationTypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
+    public override TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
     {
         return context.GetArrayCreationTypeStyle();
     }

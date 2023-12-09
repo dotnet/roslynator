@@ -10,7 +10,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
 {
     public static ImplicitOrExpressionObjectCreationAnalysis Instance { get; } = new();
 
-    public override ObjectCreationTypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
+    public override TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
     {
         return context.GetObjectCreationTypeStyle();
     }

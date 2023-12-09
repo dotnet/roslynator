@@ -29,7 +29,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             new KeyValuePair<string, string>(DiagnosticPropertyKeys.ExplicitToCollectionExpression, null)
         });
 
-    public abstract ObjectCreationTypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context);
+    public abstract TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context);
 
     protected abstract void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context);
 
@@ -48,10 +48,10 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         if (context.Node.ContainsDiagnostics)
             return;
 
-        ObjectCreationTypeStyle style = GetTypeStyle(ref context);
+        TypeStyle style = GetTypeStyle(ref context);
 
-        if (style != ObjectCreationTypeStyle.Implicit
-            && style != ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious)
+        if (style != TypeStyle.Implicit
+            && style != TypeStyle.ImplicitWhenTypeIsObvious)
         {
             return;
         }
@@ -168,7 +168,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             case SyntaxKind.ReturnStatement:
             case SyntaxKind.YieldReturnStatement:
                 {
-                    if (style != ObjectCreationTypeStyle.Implicit
+                    if (style != TypeStyle.Implicit
                         && !IsSingleReturnStatement(parent))
                     {
                         return;
@@ -212,7 +212,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             case SyntaxKind.AddAssignmentExpression:
             case SyntaxKind.SubtractAssignmentExpression:
                 {
-                    if (style == ObjectCreationTypeStyle.Implicit)
+                    if (style == TypeStyle.Implicit)
                     {
                         var assignment = (AssignmentExpressionSyntax)parent;
                         AnalyzeExpression(ref context, expression, assignment.Left);
@@ -222,12 +222,12 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 }
             case SyntaxKind.CoalesceExpression:
                 {
-                    if (style == ObjectCreationTypeStyle.Implicit)
+                    if (style == TypeStyle.Implicit)
                     {
                         var coalesceExpression = (BinaryExpressionSyntax)parent;
                         AnalyzeExpression(ref context, expression, coalesceExpression.Left);
                     }
-                    else if (style == ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious
+                    else if (style == TypeStyle.ImplicitWhenTypeIsObvious
                         && parent.IsParentKind(SyntaxKind.EqualsValueClause))
                     {
                         if (parent.Parent.Parent is VariableDeclaratorSyntax variableDeclarator)
@@ -302,7 +302,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         if (context.Node.ContainsDiagnostics)
             return;
 
-        ObjectCreationTypeStyle style = GetTypeStyle(ref context);
+        TypeStyle style = GetTypeStyle(ref context);
 
         SyntaxNode parent = context.Node.Parent;
 
@@ -311,7 +311,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             case SyntaxKind.ThrowExpression:
             case SyntaxKind.ThrowStatement:
                 {
-                    if (style == ObjectCreationTypeStyle.Explicit
+                    if (style == TypeStyle.Explicit
                         && context.SemanticModel.GetTypeSymbol(context.Node, context.CancellationToken)?
                             .HasMetadataName(MetadataNames.System_Exception) == true)
                     {
@@ -356,7 +356,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 }
             case SyntaxKind.ArrowExpressionClause:
                 {
-                    if (style == ObjectCreationTypeStyle.Explicit)
+                    if (style == TypeStyle.Explicit)
                     {
                         TypeSyntax type = DetermineReturnType(parent.Parent);
 
@@ -380,8 +380,8 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             case SyntaxKind.ReturnStatement:
             case SyntaxKind.YieldReturnStatement:
                 {
-                    if (style != ObjectCreationTypeStyle.Explicit
-                        && (style != ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious || IsSingleReturnStatement(parent)))
+                    if (style != TypeStyle.Explicit
+                        && (style != TypeStyle.ImplicitWhenTypeIsObvious || IsSingleReturnStatement(parent)))
                     {
                         return;
                     }
@@ -447,7 +447,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 {
                     SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.ImplicitObjectCreationExpression, SyntaxKind.SimpleAssignmentExpression), parent.Parent);
 
-                    if (style != ObjectCreationTypeStyle.Explicit)
+                    if (style != TypeStyle.Explicit)
                         return;
 
                     parent = parent.Parent;
@@ -584,15 +584,15 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
     private bool AnalyzeImplicit(ref SyntaxNodeAnalysisContext context, bool isObvious, bool allowCollectionExpression = true)
     {
-        ObjectCreationTypeStyle style = GetTypeStyle(ref context);
+        TypeStyle style = GetTypeStyle(ref context);
 
-        if (style == ObjectCreationTypeStyle.Explicit)
+        if (style == TypeStyle.Explicit)
         {
             ReportImplicitToExplicit(ref context);
             return true;
         }
 
-        if (style == ObjectCreationTypeStyle.Implicit)
+        if (style == TypeStyle.Implicit)
         {
             if (context.Node.IsKind(SyntaxKind.CollectionExpression))
             {
@@ -609,7 +609,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 return true;
             }
         }
-        else if (style == ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious)
+        else if (style == TypeStyle.ImplicitWhenTypeIsObvious)
         {
             if (!isObvious
                 && !IsInitializerObvious(ref context))
