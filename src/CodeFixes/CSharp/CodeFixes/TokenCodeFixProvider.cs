@@ -677,7 +677,9 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                                 .WithTriviaFrom(parameter.Type)
                                 .WithSimplifierAnnotation();
 
-                            offset = newNode.FullSpan.Start;
+                            if (newNode == memberDeclaration)
+                                offset = newNode.FullSpan.Start;
+
                             newNode = newNode.ReplaceNode(parameter, parameter.WithType(newType));
                         }
                     }

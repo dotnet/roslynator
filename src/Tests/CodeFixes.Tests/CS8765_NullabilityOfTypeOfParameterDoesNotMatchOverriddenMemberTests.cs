@@ -11,7 +11,7 @@ public class CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMemberTest
     public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember;
 
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember)]
-    public async Task Test_Method_TwoParameters()
+    public async Task Test_Method_Parameters2()
     {
         await VerifyFixAsync(@"
 using System.IO;
@@ -30,6 +30,32 @@ using System.IO;
 abstract class C : TextWriter
 {
     public override void Write(string format, object? arg0, object? arg1)
+    {
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+    }
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember)]
+    public async Task Test_Method_Parameters3()
+    {
+        await VerifyFixAsync(@"
+using System.IO;
+#nullable enable
+
+abstract class C : TextWriter
+{
+    public override void Write(string format, object arg0, object arg1, object arg2)
+    {
+    }
+}
+", @"
+using System.IO;
+#nullable enable
+
+abstract class C : TextWriter
+{
+    public override void Write(string format, object? arg0, object? arg1, object? arg2)
     {
     }
 }
