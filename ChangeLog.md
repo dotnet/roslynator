@@ -14,12 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
 - Add code fix "Declare as nullable" ([PR](https://github.com/dotnet/roslynator/pull/1333))
   - Applicable to: `CS8600`, `CS8610`, `CS8765` and `CS8767`
+- Add option `roslynator_use_collection_expression = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1325))
+  - Applicable to [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) and [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250)
 
 ### Changed
 
 - Replace type declaration's empty braces with semicolon ([RCS1251](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1251) ([PR](https://github.com/dotnet/roslynator/pull/1323), [PR](https://github.com/dotnet/roslynator/pull/1327))
 - [TestFramework] Bump `MSTest.TestFramerk` to `3.1.1` ([PR](https://github.com/dotnet/roslynator/pull/1332))
 - [TestFramework] Bump `xunit.assert` to `2.6.2` ([PR](https://github.com/dotnet/roslynator/pull/1332))
+- Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1325))
 
 ## [4.7.0] - 2023-12-03
 

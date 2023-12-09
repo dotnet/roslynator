@@ -39,6 +39,9 @@ internal static class CSharpTypeAnalysis
         if (expression is null)
             return default;
 
+        if (expression.IsKind(SyntaxKind.CollectionExpression))
+            return default;
+
         ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
         if (typeSymbol is null)
@@ -222,8 +225,14 @@ internal static class CSharpTypeAnalysis
         if (expression is null)
             return false;
 
-        if (expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.ImplicitObjectCreationExpression))
+        if (expression.IsKind(
+            SyntaxKind.NullLiteralExpression,
+            SyntaxKind.DefaultLiteralExpression,
+            SyntaxKind.ImplicitObjectCreationExpression,
+            SyntaxKind.CollectionExpression))
+        {
             return false;
+        }
 
         if (expression.IsKind(SyntaxKind.SuppressNullableWarningExpression)
             && expression is PostfixUnaryExpressionSyntax postfixUnary

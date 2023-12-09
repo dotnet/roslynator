@@ -422,7 +422,7 @@ internal static class CodeStyleExtensions
         return TrailingCommaStyle.None;
     }
 
-    public static ObjectCreationTypeStyle GetObjectCreationTypeStyle(this SyntaxNodeAnalysisContext context)
+    public static TypeStyle GetObjectCreationTypeStyle(this SyntaxNodeAnalysisContext context)
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
@@ -430,22 +430,32 @@ internal static class CodeStyleExtensions
         {
             if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationTypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
             {
-                return ObjectCreationTypeStyle.Implicit;
+                return TypeStyle.Implicit;
             }
             else if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationTypeStyle_Explicit, StringComparison.OrdinalIgnoreCase))
             {
-                return ObjectCreationTypeStyle.Explicit;
+                return TypeStyle.Explicit;
             }
             else if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious, StringComparison.OrdinalIgnoreCase))
             {
-                return ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious;
+                return TypeStyle.ImplicitWhenTypeIsObvious;
             }
         }
 
-        return ObjectCreationTypeStyle.None;
+        return TypeStyle.None;
     }
 
-    public static ArrayCreationTypeStyle GetArrayCreationTypeStyle(this SyntaxNodeAnalysisContext context)
+    public static bool? UseCollectionExpression(this SyntaxNodeAnalysisContext context)
+    {
+        return UseCollectionExpression(context.GetConfigOptions());
+    }
+
+    public static bool? UseCollectionExpression(this AnalyzerConfigOptions configOptions)
+    {
+        return ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseCollectionExpression);
+    }
+
+    public static TypeStyle GetArrayCreationTypeStyle(this SyntaxNodeAnalysisContext context)
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
@@ -453,25 +463,25 @@ internal static class CodeStyleExtensions
         {
             if (string.Equals(rawValue, ConfigOptionValues.ArrayCreationTypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
             {
-                return ArrayCreationTypeStyle.Implicit;
+                return TypeStyle.Implicit;
             }
             else if (string.Equals(rawValue, ConfigOptionValues.ArrayCreationTypeStyle_Explicit, StringComparison.OrdinalIgnoreCase))
             {
-                return ArrayCreationTypeStyle.Explicit;
+                return TypeStyle.Explicit;
             }
             else if (string.Equals(rawValue, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious, StringComparison.OrdinalIgnoreCase))
             {
-                return ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious;
+                return TypeStyle.ImplicitWhenTypeIsObvious;
             }
         }
 
         if (context.IsEnabled(LegacyConfigOptions.UseImplicitlyTypedArrayWhenTypeIsObvious))
-            return ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious;
+            return TypeStyle.ImplicitWhenTypeIsObvious;
 
         if (context.IsEnabled(LegacyConfigOptions.UseImplicitlyTypedArray))
-            return ArrayCreationTypeStyle.Implicit;
+            return TypeStyle.Implicit;
 
-        return ArrayCreationTypeStyle.None;
+        return TypeStyle.None;
     }
 
     public static InfiniteLoopStyle GetInfiniteLoopStyle(this SyntaxNodeAnalysisContext context)

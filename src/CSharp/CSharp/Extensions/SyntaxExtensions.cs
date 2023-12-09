@@ -1858,6 +1858,38 @@ public static class SyntaxExtensions
 
         return -1;
     }
+
+    //TODO: make public
+    internal static SeparatedSyntaxList<TResult> ForEach<TSource, TResult>(this SeparatedSyntaxList<TSource> list, Func<TSource, TResult> selector)
+        where TSource : SyntaxNode
+        where TResult : SyntaxNode
+    {
+        int count = list.Count + list.SeparatorCount;
+        var items = new List<SyntaxNodeOrToken>(count);
+
+        int i = 0;
+        while (i < count)
+        {
+            items.Add(default);
+            i++;
+        }
+
+        i = 0;
+        while (i < list.Count)
+        {
+            items[i * 2] = selector(list[i]);
+            i++;
+        }
+
+        i = 0;
+        foreach (SyntaxToken separator in list.GetSeparators())
+        {
+            items[(i * 2) + 1] = separator;
+            i++;
+        }
+
+        return SeparatedList<TResult>(items);
+    }
     #endregion SeparatedSyntaxList<T>
 
     #region StatementSyntax

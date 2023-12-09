@@ -99,6 +99,9 @@ public sealed class PutEmbeddedStatementOnItsOwnLineAnalyzer : BaseDiagnosticAna
 
     private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxToken token, StatementSyntax statement)
     {
+        if (statement.IsMissing)
+            return;
+
         TriviaBlock block = TriviaBlock.FromBetween(token, statement);
 
         if (block.Kind == TriviaBlockKind.NoNewLine)

@@ -680,7 +680,7 @@ class C
 {
     string M()
     {
-        return new string(' ', 1);
+        return new(' ', 1);
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
@@ -1599,5 +1599,259 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, false));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task TestNoDiagnostic_ForEachExpression2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string[] M()
+    {
+        return ["""", """"];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_ExplicitToCollectionExpression_ImplicitStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> items)
+    {
+        items = new [|List<string>|]() { """" };
+    }
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> items)
+    {
+        items = [""""];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_ExplicitToCollectionExpression_ImplicitWhenObviousStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    List<string> P { get; } = new [|List<string>|]() { """" };
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    List<string> P { get; } = [""""];
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_ImplicitToCollectionExpression_ImplicitStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> items)
+    {
+        items = [|new() { """" }|];
+    }
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> items)
+    {
+        items = [""""];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_ImplicitToCollectionExpression_ImplicitWhenObviousStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    List<string> P { get; } = [|new() { """" }|];
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    List<string> P { get; } = [""""];
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_CollectionExpressionToExplicit_ImplicitStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> items)
+    {
+        items = [|[""""]|];
+    }
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> items)
+    {
+        items = new List<string>() { """" };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_CollectionExpressionToExplicit_ImplicitWhenObviousStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    private string _f = """";
+
+    void M(List<string> items)
+    {
+        items = [|[_f]|];
+    }
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    private string _f = """";
+
+    void M(List<string> items)
+    {
+        items = new List<string>() { _f };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_CollectionExpressionToImplicit_ImplicitStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> items)
+    {
+        items = [|[""""]|];
+    }
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> items)
+    {
+        items = new() { """" };
+    }
+}
+", options: Options
+            .AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_CollectionExpressionToImplicit_ImplicitWhenObviousStyle()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    List<string> P { get; } = [|[""""]|];
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    List<string> P { get; } = new() { """" };
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_ExplicitWithParameters()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C : List<string> 
+{
+    C() { }
+    C(string p) { }
+
+    C M()
+    {
+        return new [|C|](""s"");
+    }   
+}
+", @"
+using System.Collections.Generic;
+class C : List<string> 
+{
+    C() { }
+    C(string p) { }
+
+    C M()
+    {
+        return new(""s"");
+    }   
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_CollectionExpressionToExplicit()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> x)
+    {
+        x = [|[]|];
+    }   
+}
+", @"
+using System.Collections.Generic;
+class C
+{
+    void M(List<string> x)
+    {
+        x = new List<string>();
+    }   
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
 }
