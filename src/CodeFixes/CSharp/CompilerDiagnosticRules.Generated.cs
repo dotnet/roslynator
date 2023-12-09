@@ -2060,6 +2060,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        "", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
+        /// <summary>CS8610</summary>
+        public static readonly DiagnosticDescriptor NullabilityOfReferenceTypesInTypeOfParameterDoesNotMatchOverriddenMember = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8610_NullabilityOfReferenceTypesInTypeOfParameterDoesNotMatchOverriddenMember, 
+            title:              "Nullability of reference types in type of parameter doesn't match overridden member.", 
+            messageFormat:      "Nullability of reference types in type of parameter '{0}' doesn't match overridden member.", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
         /// <summary>CS8618</summary>
         public static readonly DiagnosticDescriptor NonNullableMemberIsUninitialized = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized, 
@@ -2089,6 +2101,30 @@ namespace Roslynator.CSharp
             id:                 CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext, 
             title:              "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.", 
             messageFormat:      "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
+        /// <summary>CS8765</summary>
+        public static readonly DiagnosticDescriptor NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember, 
+            title:              "Nullability of type of parameter doesn't match overridden member.", 
+            messageFormat:      "Nullability of type of parameter 'arg0' doesn't match overridden member.", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
+        /// <summary>CS8767</summary>
+        public static readonly DiagnosticDescriptor NullabilityDoesNotMatchImplementedMember = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8767_NullabilityDoesNotMatchImplementedMember, 
+            title:              "Nullability of reference types in type of parameter doesn't match implicitly implemented member.", 
+            messageFormat:      "Nullability of reference types in type of parameter '{0}' of '{1}' doesn't match implicitly implemented member '{2}'.", 
             category:           "Compiler", 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 

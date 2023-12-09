@@ -177,8 +177,11 @@ namespace Roslynator.CSharp
         public const string CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT = "CS8403";
         public const string CS8602_DereferenceOfPossiblyNullReference = "CS8602";
         public const string CS8604_PossibleNullReferenceArgumentForParameter = "CS8604";
+        public const string CS8610_NullabilityOfReferenceTypesInTypeOfParameterDoesNotMatchOverriddenMember = "CS8610";
         public const string CS8618_NonNullableMemberIsUninitialized = "CS8618";
         public const string CS8625_CannotConvertNullLiteralToNonNullableReferenceType = "CS8625";
         public const string CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext = "CS8632";
+        public const string CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember = "CS8765";
+        public const string CS8767_NullabilityDoesNotMatchImplementedMember = "CS8767";
     }
 }

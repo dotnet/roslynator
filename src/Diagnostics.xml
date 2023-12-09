@@ -1198,6 +1198,13 @@
     Message="Possible null reference argument for parameter '{0}' in '{1}'"
     HelpUrl="" />
   <Diagnostic
+    Id="CS8610"
+    Identifier="NullabilityOfReferenceTypesInTypeOfParameterDoesNotMatchOverriddenMember"
+    Severity="Warning"
+    Title="Nullability of reference types in type of parameter doesn't match overridden member."
+    Message="Nullability of reference types in type of parameter '{0}' doesn't match overridden member."
+    HelpUrl="" />
+  <Diagnostic
     Id="CS8618"
     Identifier="NonNullableMemberIsUninitialized"
     Severity="Warning"
@@ -1217,5 +1224,19 @@
     Severity="Warning"
     Title="The annotation for nullable reference types should only be used in code within a '#nullable' annotations context." 
     Message="The annotation for nullable reference types should only be used in code within a '#nullable' annotations context" 
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS8765"
+    Identifier="NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember"
+    Severity="Warning"
+    Title="Nullability of type of parameter doesn't match overridden member."
+    Message="Nullability of type of parameter 'arg0' doesn't match overridden member."
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS8767"
+    Identifier="NullabilityDoesNotMatchImplementedMember"
+    Severity="Warning"
+    Title="Nullability of reference types in type of parameter doesn't match implicitly implemented member."
+    Message="Nullability of reference types in type of parameter '{0}' of '{1}' doesn't match implicitly implemented member '{2}'."
     HelpUrl="" />
 </Diagnostics>
