@@ -10,6 +10,56 @@ namespace Roslynator.CSharp;
 
 internal static class CSharpUtility
 {
+    //public static bool CanConvertToCollectionExpression(ImplicitObjectCreationExpressionSyntax implicitObjectCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    //{
+    //    return !implicitObjectCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument)
+    //        && implicitObjectCreation.ArgumentList?.Arguments.Any() != true
+    //        && SyntaxUtility.CanConvertToCollectionExpression(implicitObjectCreation, semanticModel, cancellationToken);
+    //}
+
+    //public static bool CanConvertToCollectionExpression(ObjectCreationExpressionSyntax objectCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    //{
+    //    return !objectCreation.WalkUpParentheses().IsParentKind(SyntaxKind.Argument)
+    //        && objectCreation.ArgumentList?.Arguments.Any() != true
+    //        && SyntaxUtility.CanConvertToCollectionExpression(objectCreation, semanticModel, cancellationToken);
+    //}
+
+    //public static bool CanConvertToCollectionExpression(ArrayCreationExpressionSyntax arrayCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    //{
+    //    return CanConvertToCollectionExpression(arrayCreation)
+    //        && SyntaxUtility.CanConvertToCollectionExpression(arrayCreation, semanticModel, cancellationToken);
+    //}
+
+    //public static bool CanConvertToCollectionExpression(ImplicitArrayCreationExpressionSyntax implicitArrayCreation, SemanticModel semanticModel, CancellationToken cancellationToken)
+    //{
+    //    CSharpTypeAnalysis.IsTypeObvious(implicitArrayCreation, semanticModel, cancellationToken);
+    //    return CanConvertToCollectionExpression(implicitArrayCreation)
+    //        && SyntaxUtility.CanConvertToCollectionExpression(implicitArrayCreation, semanticModel, cancellationToken);
+    //}
+
+    //private static bool CanConvertToCollectionExpression(ExpressionSyntax expression)
+    //{
+    //    expression = expression.WalkUpParentheses();
+
+    //    if (expression.IsParentKind(
+    //        SyntaxKind.Argument,
+    //        SyntaxKind.ForEachStatement,
+    //        SyntaxKind.ForEachVariableStatement))
+    //    {
+    //        return false;
+    //    }
+
+    //    if (expression.Parent.IsKind(SyntaxKind.EqualsValueClause)
+    //        && expression.Parent.Parent.IsKind(SyntaxKind.VariableDeclarator)
+    //        && expression.Parent.Parent.Parent is VariableDeclarationSyntax variableDeclaration
+    //        && variableDeclaration.Type.IsVar)
+    //    {
+    //        return false;
+    //    }
+
+    //    return true;
+    //}
+
     public static bool IsNullableReferenceType(
         TypeSyntax type,
         SemanticModel semanticModel,

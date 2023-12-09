@@ -124,5 +124,6 @@ namespace Roslynator.CSharp
         public const string UseNullForgivingOperator = CodeFixIdentifier.CodeFixIdPrefix + "0119";
         public const string AddAsyncModifier = CodeFixIdentifier.CodeFixIdPrefix + "0120";
         public const string UseNullPropagationOperator = CodeFixIdentifier.CodeFixIdPrefix + "0121";
+        public const string AddNullableAnnotation = CodeFixIdentifier.CodeFixIdPrefix + "0122";
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.CodeStyle;
 
-internal enum ArrayCreationTypeStyle
+internal enum TypeStyle
 {
     None,
     Explicit,
