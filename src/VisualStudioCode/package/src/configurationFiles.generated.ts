@@ -139,6 +139,9 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_use_block_body_when_expression_spans_over_multiple_lines = true|false
 # Applicable to: rcs1016
 
+#roslynator_use_collection_expression = true|false
+# Applicable to: rcs1014, rcs1250
+
 #roslynator_use_var_instead_of_implicit_object_creation = true|false
 # Applicable to: rcs1250
 
@@ -341,7 +344,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Use explicitly/implicitly typed array
 #dotnet_diagnostic.rcs1014.severity = none
-# Options: roslynator_array_creation_type_style
+# Options: roslynator_array_creation_type_style, roslynator_use_collection_expression
 
 # Use nameof operator
 #dotnet_diagnostic.rcs1015.severity = suggestion
@@ -870,7 +873,7 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Use implicit/explicit object creation
 #dotnet_diagnostic.rcs1250.severity = none
-# Options: roslynator_object_creation_type_style, roslynator_use_var_instead_of_implicit_object_creation
+# Options: roslynator_object_creation_type_style, roslynator_use_collection_expression, roslynator_use_var_instead_of_implicit_object_creation
 
 # Remove unnecessary braces from record declaration
 #dotnet_diagnostic.rcs1251.severity = suggestion
@@ -1321,10 +1324,14 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_compiler_diagnostic_fix.cs8139.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8340.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8403.enabled = true
+#roslynator_compiler_diagnostic_fix.cs8600.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8602.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8604.enabled = true
+#roslynator_compiler_diagnostic_fix.cs8610.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8618.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8625.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8632.enabled = true
+#roslynator_compiler_diagnostic_fix.cs8765.enabled = true
+#roslynator_compiler_diagnostic_fix.cs8767.enabled = true
 `
 };

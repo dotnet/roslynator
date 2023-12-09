@@ -226,6 +226,12 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Use block body when expression spans over multiple lines");
 
+        public static readonly ConfigOptionDescriptor UseCollectionExpression = new(
+            key:                     ConfigOptionKeys.UseCollectionExpression, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Use collection expression for array/collection creation");
+
         public static readonly ConfigOptionDescriptor UseVarInsteadOfImplicitObjectCreation = new(
             key:                     ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, 
             defaultValue:            null, 

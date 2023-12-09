@@ -1730,7 +1730,7 @@ foreach (var item in items)
     <Id>RCS1014</Id>
     <Identifier>UseExplicitlyOrImplicitlyTypedArray</Identifier>
     <Title>Use explicitly/implicitly typed array</Title>
-    <MessageFormat>Use {0} typed array</MessageFormat>
+    <MessageFormat>{0}</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
@@ -1741,6 +1741,7 @@ foreach (var item in items)
     </Samples>
     <ConfigOptions>
       <Option Key="array_creation_type_style" IsRequired="true" />
+      <Option Key="use_collection_expression" />
     </ConfigOptions>
   </Analyzer>
   <Analyzer>
@@ -6905,7 +6906,7 @@ void M()
     <Id>RCS1250</Id>
     <Identifier>UseImplicitOrExplicitObjectCreation</Identifier>
     <Title>Use implicit/explicit object creation</Title>
-    <MessageFormat>Use {0} object creation</MessageFormat>
+    <MessageFormat>{0}</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <MinLanguageVersion>9.0</MinLanguageVersion>
@@ -6918,6 +6919,7 @@ void M()
     <ConfigOptions>
       <Option Key="object_creation_type_style" IsRequired="true" />
       <Option Key="use_var_instead_of_implicit_object_creation" />
+      <Option Key="use_collection_expression" />
     </ConfigOptions>
     <Links>
       <Link>
