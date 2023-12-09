@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
 - Add code fix "Declare as nullable" ([PR](https://github.com/dotnet/roslynator/pull/1333))
   - Applicable to: `CS8600`, `CS8610`, `CS8765` and `CS8767`
-- Add option `roslynator_prefer_collection_expression = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1325))
+- Add option `roslynator_use_collection_expression = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1325))
   - Applicable to [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) and [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250)
 
 ### Changed

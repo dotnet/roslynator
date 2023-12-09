@@ -161,7 +161,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         if (style == TypeStyle.Implicit)
         {
             if (allowCollectionExpression
-                && PreferCollectionExpression(ref context))
+                && UseCollectionExpression(ref context))
             {
                 ReportExplicitToCollectionExpression(ref context);
                 return true;
@@ -176,7 +176,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         {
             if (isObvious
                 && allowCollectionExpression
-                && PreferCollectionExpression(ref context))
+                && UseCollectionExpression(ref context))
             {
                 ReportExplicitToCollectionExpression(ref context);
                 return true;
@@ -294,9 +294,9 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         return isObvious;
     }
 
-    protected override bool PreferCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
+    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
     {
-        return PreferCollectionExpression(ref context);
+        return UseCollectionExpression(ref context);
     }
 
     public override TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)

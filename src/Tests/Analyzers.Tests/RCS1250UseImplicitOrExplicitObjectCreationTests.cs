@@ -1637,7 +1637,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
@@ -1656,7 +1656,7 @@ class C
     List<string> P { get; } = [""""];
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
@@ -1681,7 +1681,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
@@ -1700,7 +1700,7 @@ class C
     List<string> P { get; } = [""""];
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
@@ -1778,7 +1778,7 @@ class C
 }
 ", options: Options
             .AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, false));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
@@ -1797,7 +1797,7 @@ class C
     List<string> P { get; } = new() { """" };
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, false));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
@@ -1828,7 +1828,7 @@ class C : List<string>
     }   
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]

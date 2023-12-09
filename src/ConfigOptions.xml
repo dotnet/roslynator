@@ -225,9 +225,9 @@
       <Value>omit_after_block</Value>
     </Values>
   </Option>
-  <Option Id="PreferCollectionExpression">
+  <Option Id="UseCollectionExpression">
     <ValuePlaceholder>true|false</ValuePlaceholder>
-    <Description>Prefer collection expression for array/collection creation</Description>
+    <Description>Use collection expression for array/collection creation</Description>
   </Option>
   <!--
   <Option Id="">

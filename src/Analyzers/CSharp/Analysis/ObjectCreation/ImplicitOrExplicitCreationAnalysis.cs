@@ -531,7 +531,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             if (SymbolEqualityComparer.Default.Equals(typeSymbol1, typeSymbol2))
             {
                 if (((ObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
-                    && PreferCollectionExpression(ref context))
+                    && UseCollectionExpression(ref context))
                 {
                     ReportExplicitToCollectionExpression(ref context);
                 }
@@ -596,14 +596,14 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         {
             if (context.Node.IsKind(SyntaxKind.CollectionExpression))
             {
-                if (context.PreferCollectionExpression() == false)
+                if (context.UseCollectionExpression() == false)
                 {
                     ReportCollectionExpressionToImplicit(ref context);
                     return true;
                 }
             }
             else if (allowCollectionExpression
-                && PreferCollectionExpressionFromImplicit(ref context))
+                && UseCollectionExpressionFromImplicit(ref context))
             {
                 ReportImplicitToCollectionExpression(ref context);
                 return true;
@@ -620,14 +620,14 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
             if (context.Node.IsKind(SyntaxKind.CollectionExpression))
             {
-                if (context.PreferCollectionExpression() == false)
+                if (context.UseCollectionExpression() == false)
                 {
                     ReportCollectionExpressionToImplicit(ref context);
                     return true;
                 }
             }
             else if (allowCollectionExpression
-                && PreferCollectionExpressionFromImplicit(ref context))
+                && UseCollectionExpressionFromImplicit(ref context))
             {
                 ReportImplicitToCollectionExpression(ref context);
                 return true;
@@ -637,7 +637,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         return false;
     }
 
-    protected abstract bool PreferCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context);
+    protected abstract bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context);
 
     protected static bool IsSingleReturnStatement(SyntaxNode parent)
     {
@@ -647,11 +647,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             && parent.Parent.Parent is MemberDeclarationSyntax;
     }
 
-    protected static bool PreferCollectionExpression(ref SyntaxNodeAnalysisContext context)
+    protected static bool UseCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         Debug.Assert(!context.Node.IsKind(SyntaxKind.CollectionExpression), context.Node.Kind().ToString());
 
-        return context.PreferCollectionExpression() == true
+        return context.UseCollectionExpression() == true
             && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression()
             && SyntaxUtility.CanConvertToCollectionExpression(context.Node, context.SemanticModel, context.CancellationToken);
     }

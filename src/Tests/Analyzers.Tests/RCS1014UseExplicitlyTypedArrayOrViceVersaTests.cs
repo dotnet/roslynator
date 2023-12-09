@@ -64,7 +64,7 @@ class C
     private object[] f = [string.Empty];
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -240,7 +240,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -257,7 +257,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -280,7 +280,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -310,7 +310,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -327,7 +327,7 @@ class C
     string[] P { get; } = [""""];
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -350,7 +350,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -367,7 +367,7 @@ class C
     string[] P { get; } = [""""];
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -438,7 +438,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, false));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -455,7 +455,7 @@ class C
     string[] P { get; } = new[] { """" };
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, false));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -470,7 +470,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, true));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -501,6 +501,6 @@ class C
     }   
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
-            .AddConfigOption(ConfigOptionKeys.PreferCollectionExpression, false));
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
 }
