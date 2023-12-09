@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -38,7 +39,10 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                 CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized,
                 CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT,
                 CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference,
-                CompilerDiagnosticIdentifiers.CS8604_PossibleNullReferenceArgumentForParameter
+                CompilerDiagnosticIdentifiers.CS8604_PossibleNullReferenceArgumentForParameter,
+                CompilerDiagnosticIdentifiers.CS8610_NullabilityOfReferenceTypesInTypeOfParameterDoesNotMatchOverriddenMember,
+                CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember,
+                CompilerDiagnosticIdentifiers.CS8767_NullabilityDoesNotMatchImplementedMember
                 );
         }
     }
@@ -606,6 +610,85 @@ public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
                             SyntaxKind.AsyncKeyword,
                             additionalKey: CodeFixIdentifiers.AddAsyncModifier);
                     }
+
+                    break;
+                }
+            case CompilerDiagnosticIdentifiers.CS8610_NullabilityOfReferenceTypesInTypeOfParameterDoesNotMatchOverriddenMember:
+            case CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember:
+            case CompilerDiagnosticIdentifiers.CS8767_NullabilityDoesNotMatchImplementedMember:
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddNullableAnnotation, document, root.SyntaxTree))
+                        break;
+
+                    if (token.Parent is not MemberDeclarationSyntax memberDeclaration)
+                        return;
+
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    ISymbol symbol = semanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
+
+                    if (symbol is null)
+                        return;
+
+                    ISymbol baseSymbol = null;
+                    if (diagnostic.Id == CompilerDiagnosticIdentifiers.CS8767_NullabilityDoesNotMatchImplementedMember)
+                    {
+                        using IEnumerator<ISymbol> en = symbol.FindImplementedInterfaceMembers().GetEnumerator();
+
+                        if (en.MoveNext())
+                        {
+                            baseSymbol = en.Current;
+
+                            if (en.MoveNext())
+                                return;
+                        }
+                    }
+                    else
+                    {
+                        baseSymbol = symbol.OverriddenSymbol();
+
+                        if (baseSymbol is null)
+                            return;
+                    }
+
+                    SeparatedSyntaxList<ParameterSyntax> parameters = CSharpUtility.GetParameters(memberDeclaration);
+
+                    ImmutableArray<IParameterSymbol> parameterSymbols = symbol.GetParameters();
+
+                    if (parameters.Count != parameterSymbols.Length)
+                        return;
+
+                    ImmutableArray<IParameterSymbol> parametersSymbols2 = baseSymbol.GetParameters();
+
+                    if (parameters.Count != parametersSymbols2.Length)
+                        return;
+
+                    MemberDeclarationSyntax newNode = memberDeclaration;
+                    int offset = 0;
+
+                    for (int i = parameters.Count - 1; i >= 0; i--)
+                    {
+                        if (!SymbolEqualityComparer.IncludeNullability.Equals(parameterSymbols[i].Type, parametersSymbols2[i].Type))
+                        {
+                            var parameter = (BaseParameterSyntax)newNode.FindNode(parameters[i].Span.Offset(-offset));
+
+                            TypeSyntax newType = parametersSymbols2[i].Type.ToTypeSyntax()
+                                .WithTriviaFrom(parameter.Type)
+                                .WithSimplifierAnnotation();
+
+                            if (newNode == memberDeclaration)
+                                offset = newNode.FullSpan.Start;
+
+                            newNode = newNode.ReplaceNode(parameter, parameter.WithType(newType));
+                        }
+                    }
+
+                    context.RegisterCodeFix(
+                        CodeAction.Create(
+                            "Declare as nullable",
+                            ct => document.ReplaceNodeAsync(memberDeclaration, newNode, ct),
+                            GetEquivalenceKey(diagnostic)),
+                        diagnostic);
 
                     break;
                 }

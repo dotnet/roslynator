@@ -1321,10 +1321,14 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_compiler_diagnostic_fix.cs8139.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8340.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8403.enabled = true
+#roslynator_compiler_diagnostic_fix.cs8600.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8602.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8604.enabled = true
+#roslynator_compiler_diagnostic_fix.cs8610.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8618.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8625.enabled = true
 #roslynator_compiler_diagnostic_fix.cs8632.enabled = true
+#roslynator_compiler_diagnostic_fix.cs8765.enabled = true
+#roslynator_compiler_diagnostic_fix.cs8767.enabled = true
 `
 };
