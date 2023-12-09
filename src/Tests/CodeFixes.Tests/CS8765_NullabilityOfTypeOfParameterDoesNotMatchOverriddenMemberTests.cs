@@ -10,7 +10,6 @@ public class CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMemberTest
 {
     public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember;
 
-
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8765_NullabilityOfTypeOfParameterDoesNotMatchOverriddenMember)]
     public async Task Test_Method_TwoParameters()
     {
