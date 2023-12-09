@@ -1184,6 +1184,13 @@
     Message="Method '{0}' with an iterator block must be 'async' to return '{1}'"
     HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs8403" />
   <Diagnostic
+    Id="CS8600"
+    Identifier="ConvertingNullLiteralOrPossibleNullValueToNonNullableType"
+    Severity="Warning"
+    Title="Converting null literal or possible null value to non-nullable type."
+    Message="Converting null literal or possible null value to non-nullable type"
+    HelpUrl="" />
+  <Diagnostic
     Id="CS8602"
     Identifier="DereferenceOfPossiblyNullReference"
     Severity="Warning"

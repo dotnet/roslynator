@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Option (required): `roslynator_blank_line_between_switch_sections = include|omit|omit_after_block` 
   - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
 - Add code fix "Declare as nullable" ([PR](https://github.com/dotnet/roslynator/pull/1333))
-  - This code fix can be applied to following compiler diagnostics: `CS8610`, `CS8765` and `CS8767`
+  - Applicable to: `CS8600`, `CS8610`, `CS8765` and `CS8767`
 
 ### Changed
 

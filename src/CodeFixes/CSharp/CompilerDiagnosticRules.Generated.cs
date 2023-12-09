@@ -2036,6 +2036,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        "https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs8403", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
+        /// <summary>CS8600</summary>
+        public static readonly DiagnosticDescriptor ConvertingNullLiteralOrPossibleNullValueToNonNullableType = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8600_ConvertingNullLiteralOrPossibleNullValueToNonNullableType, 
+            title:              "Converting null literal or possible null value to non-nullable type.", 
+            messageFormat:      "Converting null literal or possible null value to non-nullable type", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
         /// <summary>CS8602</summary>
         public static readonly DiagnosticDescriptor DereferenceOfPossiblyNullReference = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference, 

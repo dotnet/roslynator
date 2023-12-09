@@ -693,6 +693,7 @@
   </CodeFix>
   <CodeFix Id="RCF0122" Identifier="AddNullableAnnotation" Title="Add nullable annotation">
     <FixableDiagnosticIds>
+      <Id>CS8600</Id>
       <Id>CS8610</Id>
       <Id>CS8765</Id>
       <Id>CS8767</Id>
