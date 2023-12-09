@@ -601,9 +601,7 @@ public static class SyntaxKindTests
 
         if (unknownKinds is not null)
         {
-            Assert.True(
-                false,
-                $"Unknown enum value(s) {string.Join(", ", unknownKinds.Select(f => $"'{f}'"))}.");
+            Assert.Fail($"Unknown enum value(s) {string.Join(", ", unknownKinds.Select(f => $"'{f}'"))}.");
         }
     }
 }
