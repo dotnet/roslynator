@@ -74,16 +74,18 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                     if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression
                         && interpolatedStringExpression.StringStartToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken))
                     {
-                        text = interpolatedStringExpression.StringStartToken.ValueText.Substring(1)
-                            + text
-                            + interpolatedStringExpression.StringEndToken.ValueText;
+                        text = string.Concat(
+                            interpolatedStringExpression.StringStartToken.ValueText.AsSpan(1),
+                            text,
+                            interpolatedStringExpression.StringEndToken.ValueText);
                     }
                     else if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression2
                         && interpolatedStringExpression2.StringStartToken.IsKind(SyntaxKind.InterpolatedMultiLineRawStringStartToken))
                     {
-                        text = interpolatedStringExpression2.StringStartToken.ValueText.Substring(1)
-                            + text
-                            + interpolatedStringExpression2.StringEndToken.ValueText;
+                        text = string.Concat(
+                            interpolatedStringExpression2.StringStartToken.ValueText.AsSpan(1),
+                            text,
+                            interpolatedStringExpression2.StringEndToken.ValueText);
                     }
                     else if (isVerbatim)
                     {
