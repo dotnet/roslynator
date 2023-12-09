@@ -47,6 +47,7 @@ roslynator_blank_line_after_file_scoped_namespace_declaration = true
 roslynator_null_check_style = pattern_matching
 roslynator_trailing_comma_style = omit_when_single_line
 roslynator_prefer_collection_expression = true
+roslynator_blank_line_between_switch_section = omit
 
 dotnet_diagnostic.RCS0001.severity = suggestion
 dotnet_diagnostic.RCS0003.severity = suggestion
@@ -88,6 +89,7 @@ dotnet_diagnostic.RCS0057.severity = suggestion
 dotnet_diagnostic.RCS0058.severity = suggestion
 dotnet_diagnostic.RCS0059.severity = suggestion
 dotnet_diagnostic.RCS0060.severity = suggestion
+dotnet_diagnostic.RCS0061.severity = suggestion
 dotnet_diagnostic.RCS1002.severity = silent
 dotnet_diagnostic.RCS1006.severity = suggestion
 dotnet_diagnostic.RCS1008.severity = suggestion
