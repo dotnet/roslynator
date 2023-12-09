@@ -913,5 +913,15 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             "CS8602");
 
+        /// <summary>RCF0122 (fixes CS8600, CS8610, CS8765, CS8767)</summary>
+        public static readonly CodeFixDescriptor AddNullableAnnotation = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.AddNullableAnnotation, 
+            title:              "Add nullable annotation", 
+            isEnabledByDefault: true, 
+            "CS8600", 
+            "CS8610", 
+            "CS8765", 
+            "CS8767");
+
     }
 }
