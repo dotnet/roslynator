@@ -42,10 +42,7 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
                 && equalsValueClause.Parent.Parent is VariableDeclarationSyntax variableDeclaration
                 && variableDeclaration.Variables.Count == 1)
             {
-                TypeSyntax type = variableDeclaration.Type;
-
-                if (!type.IsKind(SyntaxKind.NullableType))
-                    TryRegisterCodeFix(context, diagnostic, type);
+                TryRegisterCodeFix(context, diagnostic, variableDeclaration.Type);
             }
         }
         else if (node is DeclarationExpressionSyntax declarationExpression)
@@ -56,18 +53,18 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
 
     private static void TryRegisterCodeFix(CodeFixContext context, Diagnostic diagnostic, TypeSyntax type)
     {
-        if (!type.IsKind(SyntaxKind.NullableType))
-        {
-            CodeAction codeAction = CodeAction.Create(
-                "Declare as nullable",
-                ct =>
-                {
-                    NullableTypeSyntax newType = SyntaxFactory.NullableType(type.WithoutTrivia()).WithTriviaFrom(type);
-                    return context.Document.ReplaceNodeAsync(type, newType, ct);
-                },
-                GetEquivalenceKey(diagnostic));
+        if (type.IsKind(SyntaxKind.NullableType))
+            return;
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        CodeAction codeAction = CodeAction.Create(
+            "Declare as nullable",
+            ct =>
+            {
+                NullableTypeSyntax newType = SyntaxFactory.NullableType(type.WithoutTrivia()).WithTriviaFrom(type);
+                return context.Document.ReplaceNodeAsync(type, newType, ct);
+            },
+            GetEquivalenceKey(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }
