@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Replace type declaration's empty braces with semicolon ([RCS1251](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1251) ([PR](https://github.com/dotnet/roslynator/pull/1323), [PR](https://github.com/dotnet/roslynator/pull/1327))
+- [TestFramework] Bump `MSTest.TestFramerk` to `3.1.1` ([PR](https://github.com/dotnet/roslynator/pull/1332))
+- [TestFramework] Bump `xunit.assert` to `2.6.2` ([PR](https://github.com/dotnet/roslynator/pull/1332))
 - Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1325))
 
 ## [4.7.0] - 2023-12-03
