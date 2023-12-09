@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -14,7 +15,7 @@ internal class DiffTracker
 
     public int Count => _dic.Count;
 
-    public bool TryGetValue(DocumentId documentId, out List<DiffSpan> spans)
+    public bool TryGetValue(DocumentId documentId, [NotNullWhen(true)] out List<DiffSpan>? spans)
     {
         return _dic.TryGetValue(documentId, out spans);
     }
@@ -26,7 +27,7 @@ internal class DiffTracker
 
     public TextSpan GetCurrentSpan(TextSpan span, DocumentId documentId)
     {
-        if (!TryGetValue(documentId, out List<DiffSpan> spans))
+        if (!TryGetValue(documentId, out List<DiffSpan>? spans))
             return span;
 
         int start = span.Start;
@@ -61,7 +62,7 @@ internal class DiffTracker
 
     public bool SpanExists(TextSpan span, DocumentId documentId)
     {
-        if (TryGetValue(documentId, out List<DiffSpan> spans))
+        if (TryGetValue(documentId, out List<DiffSpan>? spans))
         {
             int index = spans.BinarySearch(new DiffSpan(span, 0), DiffSpanComparer.Instance);
 
@@ -84,7 +85,7 @@ internal class DiffTracker
         {
             DocumentId documentId = grouping.Key;
 
-            if (!TryGetValue(documentId, out List<DiffSpan> spans))
+            if (!TryGetValue(documentId, out List<DiffSpan>? spans))
             {
                 spans = new List<DiffSpan>();
                 _dic.Add(documentId, spans);
@@ -111,7 +112,7 @@ internal class DiffTracker
 
     public void AddSpan(TextSpan span, int diff, DocumentId documentId)
     {
-        if (!TryGetValue(documentId, out List<DiffSpan> spans))
+        if (!TryGetValue(documentId, out List<DiffSpan>? spans))
         {
             spans = new List<DiffSpan>() { new DiffSpan(span, diff) };
             _dic.Add(documentId, spans);
@@ -180,7 +181,7 @@ internal class DiffTracker
         {
             DocumentId documentId = kvp.Key;
 
-            if (TryGetValue(documentId, out List<DiffSpan> spans))
+            if (TryGetValue(documentId, out List<DiffSpan>? spans))
             {
                 foreach (DiffSpan diffSpan in kvp.Value)
                     AddSpan(diffSpan.Span, diffSpan.Diff, spans);

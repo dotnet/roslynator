@@ -124,7 +124,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
     /// </summary>
     /// <param name="obj">The object to compare with the current instance. </param>
     /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is ExpressionChain other && Equals(other);
     }
@@ -330,7 +330,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
             _state = State.Start;
         }
 
-        public override readonly bool Equals(object obj) => throw new NotSupportedException();
+        public override readonly bool Equals(object? obj) => throw new NotSupportedException();
 
         public override readonly int GetHashCode() => throw new NotSupportedException();
 

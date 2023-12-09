@@ -70,7 +70,7 @@ internal static class FileSystemHelpers
         baseDirectoryPath = baseDirectoryPath.Replace(@"\", "/").TrimEnd('/');
 
         filePath = Path.GetFullPath(filePath);
-        string directoryPath = Path.GetDirectoryName(filePath).Replace(@"\", "/").TrimEnd('/');
+        string directoryPath = Path.GetDirectoryName(filePath)!.Replace(@"\", "/").TrimEnd('/');
 
         if (string.Equals(baseDirectoryPath, directoryPath, Comparison))
             return "";

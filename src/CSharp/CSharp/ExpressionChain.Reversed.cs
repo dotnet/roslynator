@@ -90,7 +90,7 @@ public readonly partial struct ExpressionChain
             return _chain.ToString();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Reversed other && Equals(other);
         }
@@ -266,7 +266,7 @@ public readonly partial struct ExpressionChain
                 _state = State.Start;
             }
 
-            public override readonly bool Equals(object obj) => throw new NotSupportedException();
+            public override readonly bool Equals(object? obj) => throw new NotSupportedException();
 
             public override readonly int GetHashCode() => throw new NotSupportedException();
 

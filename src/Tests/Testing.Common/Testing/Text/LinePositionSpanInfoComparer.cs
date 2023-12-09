@@ -18,7 +18,7 @@ internal abstract class LinePositionSpanInfoComparer : IComparer<LinePositionSpa
 
     public abstract int GetHashCode(LinePositionSpanInfo obj);
 
-    public int Compare(object x, object y)
+    public int Compare(object? x, object? y)
     {
         if (x == y)
             return 0;
@@ -38,7 +38,7 @@ internal abstract class LinePositionSpanInfoComparer : IComparer<LinePositionSpa
         throw new ArgumentException("", nameof(x));
     }
 
-    new public bool Equals(object x, object y)
+    new public bool Equals(object? x, object? y)
     {
         if (x == y)
             return true;

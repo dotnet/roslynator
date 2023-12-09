@@ -177,7 +177,7 @@ internal class CodeAnalyzer
             }
         }
 
-        string projectDirectoryPath = Path.GetDirectoryName(project.FilePath);
+        string projectDirectoryPath = Path.GetDirectoryName(project.FilePath)!;
 
         LogHelpers.WriteDiagnostics(FilterDiagnostics(diagnostics.Where(f => f.IsAnalyzerExceptionDiagnostic()), project, cancellationToken).ToImmutableArray(), baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Detailed);
 #if DEBUG
@@ -268,7 +268,7 @@ internal class CodeAnalyzer
                 {
                     DiagnosticAnalyzer analyzer = kvp.Key;
 
-                    if (!telemetryInfos.TryGetValue(analyzer, out AnalyzerTelemetryInfo telemetryInfo))
+                    if (!telemetryInfos.TryGetValue(analyzer, out AnalyzerTelemetryInfo? telemetryInfo))
                         telemetryInfo = new AnalyzerTelemetryInfo();
 
                     telemetryInfo.Add(kvp.Value);

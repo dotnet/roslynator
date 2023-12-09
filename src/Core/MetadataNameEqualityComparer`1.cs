@@ -106,15 +106,15 @@ public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSy
     /// <param name="x">The first object to compare.</param>
     /// <param name="y">The second object to compare.</param>
     /// <returns>true if the specified objects are equal; otherwise, false.</returns>
-    public override bool Equals(TSymbol x, TSymbol y)
+    public override bool Equals(TSymbol? x, TSymbol? y)
     {
         if (object.ReferenceEquals(x, y))
             return true;
 
-        if (Default.Equals(x, default(TSymbol)!))
+        if (x is null)
             return false;
 
-        if (Default.Equals(y, default(TSymbol)!))
+        if (y is null)
             return false;
 
         if (!StringComparer.Ordinal.Equals(x.MetadataName, y.MetadataName))

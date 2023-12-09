@@ -22,7 +22,7 @@ internal class EnumMemberDeclarationValueComparer : IComparer<EnumMemberDeclarat
         _cancellationToken = cancellationToken;
     }
 
-    public int Compare(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
+    public int Compare(EnumMemberDeclarationSyntax? x, EnumMemberDeclarationSyntax? y)
     {
         if (object.ReferenceEquals(x, y))
             return 0;

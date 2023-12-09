@@ -22,7 +22,7 @@ internal static class ConvertStringFormatToInterpolatedStringRefactoring
     {
         SemanticModel semanticModel = null;
 
-        ImmutableArray<ISymbol> formatMethods;
+        ImmutableArray<ISymbol> formatMethods = default;
 
         while (invocation is not null)
         {

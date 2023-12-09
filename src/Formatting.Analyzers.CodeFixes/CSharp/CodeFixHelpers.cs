@@ -681,6 +681,7 @@ internal static class CodeFixHelpers
         }
         else
         {
+            list = default;
             separatedList = (SeparatedSyntaxList<TNode>)nodes;
 
             isSingleLine = separatedList.IsSingleLine(

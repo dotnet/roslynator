@@ -138,7 +138,7 @@ internal readonly struct BracesAnalysis : IEquatable<BracesAnalysis>
         }
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is BracesAnalysis other && Equals(other);
     }

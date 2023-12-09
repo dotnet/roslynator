@@ -99,7 +99,7 @@ internal class FixList
 
             foreach (KeyValuePair<string, ImmutableHashSet<SpellingFix>> kvp in LoadFile(filePath).Items)
             {
-                if (fixes.TryGetValue(kvp.Key, out List<string> values))
+                if (fixes.TryGetValue(kvp.Key, out List<string>? values))
                 {
                     values.AddRange(kvp.Value.Select(f => f.Value));
                 }
@@ -149,7 +149,7 @@ internal class FixList
             if (string.Equals(key, value, StringComparison.Ordinal))
                 continue;
 
-            if (dic.TryGetValue(key, out HashSet<string> fixes))
+            if (dic.TryGetValue(key, out HashSet<string>? fixes))
             {
                 Debug.Assert(!fixes.Contains(value), $"Fix list already contains {key}={value}");
 

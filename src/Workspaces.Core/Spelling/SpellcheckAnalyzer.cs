@@ -264,7 +264,7 @@ internal class SpellcheckAnalyzer
                 if (SpellingData.IgnoredValues.Contains(diagnostic.Value))
                     continue;
 
-                LogHelpers.WriteSpellingDiagnostic(diagnostic, Options, sourceText, Path.GetDirectoryName(project.FilePath), "    ", Verbosity.Normal);
+                LogHelpers.WriteSpellingDiagnostic(diagnostic, Options, sourceText, Path.GetDirectoryName(project.FilePath)!, "    ", Verbosity.Normal);
 
                 SpellingFix fix = GetFix(diagnostic);
 
@@ -436,7 +436,7 @@ internal class SpellcheckAnalyzer
                 if (diagnostic is null)
                     continue;
 
-                LogHelpers.WriteSpellingDiagnostic(diagnostic, Options, sourceText, Path.GetDirectoryName(project.FilePath), "    ", Verbosity.Normal);
+                LogHelpers.WriteSpellingDiagnostic(diagnostic, Options, sourceText, Path.GetDirectoryName(project.FilePath)!, "    ", Verbosity.Normal);
 
                 SpellingFix fix = GetFix(diagnostic);
 

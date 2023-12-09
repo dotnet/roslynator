@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -74,7 +75,7 @@ public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
 
         if (memberDeclaration is not null)
         {
-            SyntaxList<MemberDeclarationSyntax> members;
+            SyntaxList<MemberDeclarationSyntax> members = default;
 
             if (memberDeclaration is StructDeclarationSyntax structDeclaration)
             {

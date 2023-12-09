@@ -41,7 +41,7 @@ internal static class EnumValueComparer
 
         public static readonly SByteValueComparer Instance = new();
 
-        public int Compare(object x, object y)
+        public int Compare(object? x, object? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -70,7 +70,7 @@ internal static class EnumValueComparer
 
         public static readonly ByteValueComparer Instance = new();
 
-        public int Compare(object x, object y)
+        public int Compare(object? x, object? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -99,7 +99,7 @@ internal static class EnumValueComparer
 
         public static readonly ShortValueComparer Instance = new();
 
-        public int Compare(object x, object y)
+        public int Compare(object? x, object? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -128,7 +128,7 @@ internal static class EnumValueComparer
 
         public static readonly UShortValueComparer Instance = new();
 
-        public int Compare(object x, object y)
+        public int Compare(object? x, object? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -157,7 +157,7 @@ internal static class EnumValueComparer
 
         public static readonly IntValueComparer Instance = new();
 
-        public int Compare(object x, object y)
+        public int Compare(object? x, object? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -186,7 +186,7 @@ internal static class EnumValueComparer
 
         public static readonly UIntValueComparer Instance = new();
 
-        public int Compare(object x, object y)
+        public int Compare(object? x, object? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -215,7 +215,7 @@ internal static class EnumValueComparer
 
         public static readonly LongValueComparer Instance = new();
 
-        public int Compare(object x, object y)
+        public int Compare(object? x, object? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -244,7 +244,7 @@ internal static class EnumValueComparer
 
         public static readonly ULongValueComparer Instance = new();
 
-        public int Compare(object x, object y)
+        public int Compare(object? x, object? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;

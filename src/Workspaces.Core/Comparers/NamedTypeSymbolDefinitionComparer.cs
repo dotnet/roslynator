@@ -15,7 +15,7 @@ internal sealed class NamedTypeSymbolDefinitionComparer : IComparer<INamedTypeSy
 
     public SymbolDefinitionComparer SymbolComparer { get; }
 
-    public int Compare(INamedTypeSymbol x, INamedTypeSymbol y)
+    public int Compare(INamedTypeSymbol? x, INamedTypeSymbol? y)
     {
         if (object.ReferenceEquals(x, y))
             return 0;

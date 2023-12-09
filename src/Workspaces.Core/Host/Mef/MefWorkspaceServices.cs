@@ -43,7 +43,7 @@ internal class MefWorkspaceServices
     {
         if (_languages is null)
         {
-            ImmutableArray<string> languages = _mefServices.GetExports<ILanguageService, LanguageServiceMetadata>()
+            ImmutableArray<string> languages = _mefServices.GetExports<ILanguageService, LanguageServiceMetadata>()!
                 .Select(lazy => lazy.Metadata.Language)
                 .Where(f => f is not null)
                 .Cast<string>()

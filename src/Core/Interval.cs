@@ -64,7 +64,7 @@ internal readonly struct Interval : IEquatable<Interval>
 
     public bool Equals(Interval other) => Min == other.Min && Max == other.Max;
 
-    public override bool Equals(object obj) => obj is Interval span && Equals(span);
+    public override bool Equals(object? obj) => obj is Interval span && Equals(span);
 
     public override int GetHashCode() => Hash.Combine(Min, Max);
 

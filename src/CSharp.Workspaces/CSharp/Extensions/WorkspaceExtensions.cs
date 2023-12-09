@@ -305,23 +305,23 @@ public static class WorkspaceExtensions
         SourceText newSourceText = sourceText;
         IEnumerable<DirectiveTriviaSyntax> sortedDirectives = directives.OrderBy(f => f.SpanStart);
 
-        DirectiveTriviaSyntax firstDirective = sortedDirectives.FirstOrDefault();
-
-        int spanStart = firstDirective.FullSpan.Start;
-        SyntaxTrivia parentTrivia = firstDirective.ParentTrivia;
-        SyntaxTriviaList triviaList = parentTrivia.GetContainingList();
-        int parentTriviaIndex = triviaList.IndexOf(parentTrivia);
-
-        if (parentTriviaIndex > 0)
-        {
-            SyntaxTrivia previousTrivia = triviaList[parentTriviaIndex - 1];
-
-            if (previousTrivia.IsWhitespaceTrivia())
-                spanStart = previousTrivia.SpanStart;
-        }
+        DirectiveTriviaSyntax? firstDirective = sortedDirectives.FirstOrDefault();
 
         if (firstDirective is not null)
         {
+            int spanStart = firstDirective.FullSpan.Start;
+            SyntaxTrivia parentTrivia = firstDirective.ParentTrivia;
+            SyntaxTriviaList triviaList = parentTrivia.GetContainingList();
+            int parentTriviaIndex = triviaList.IndexOf(parentTrivia);
+
+            if (parentTriviaIndex > 0)
+            {
+                SyntaxTrivia previousTrivia = triviaList[parentTriviaIndex - 1];
+
+                if (previousTrivia.IsWhitespaceTrivia())
+                    spanStart = previousTrivia.SpanStart;
+            }
+
             TextSpan span = TextSpan.FromBounds(spanStart, sortedDirectives.Last().FullSpan.End);
 
             return sourceText.WithChange(span, "");

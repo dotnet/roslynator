@@ -16,10 +16,10 @@ internal sealed class MemberSymbolDefinitionComparer : IComparer<ISymbol>
 
     public SymbolDefinitionComparer SymbolComparer { get; }
 
-    public int Compare(ISymbol x, ISymbol y)
+    public int Compare(ISymbol? x, ISymbol? y)
     {
-        Debug.Assert(x.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property), x.Kind.ToString());
-        Debug.Assert(y.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property), y.Kind.ToString());
+        Debug.Assert(x.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property));
+        Debug.Assert(y.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property));
 
         if (object.ReferenceEquals(x, y))
             return 0;

@@ -28,9 +28,9 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
 
     public Assembly Assembly { get; }
 
-    internal string FullName => Assembly.FullName;
+    internal string FullName => Assembly.FullName!;
 
-    internal string Name => Assembly.GetName().Name;
+    internal string Name => Assembly.GetName().Name!;
 
     public bool HasAnalyzers => AnalyzersByLanguage.Count > 0;
 
@@ -43,7 +43,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
     public ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> FixersByLanguage { get; }
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    private string DebuggerDisplay => FullName;
+    private string? DebuggerDisplay => FullName;
 
     internal IEnumerable<DiagnosticAnalyzer> GetAnalyzers()
     {
@@ -87,8 +87,8 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
 
             WriteLine(message, ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
-            foreach (Exception loaderException in ex.LoaderExceptions)
-                WriteLine($"  {loaderException.Message}", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+            foreach (Exception? loaderException in ex.LoaderExceptions)
+                WriteLine($"  {loaderException?.Message}", ConsoleColors.DarkGray, Verbosity.Diagnostic);
         }
 
         foreach (TypeInfo typeInfo in types)
@@ -97,7 +97,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
                 && !typeInfo.IsAbstract
                 && typeInfo.IsSubclassOf(typeof(DiagnosticAnalyzer)))
             {
-                DiagnosticAnalyzerAttribute attribute = typeInfo.GetCustomAttribute<DiagnosticAnalyzerAttribute>();
+                DiagnosticAnalyzerAttribute? attribute = typeInfo.GetCustomAttribute<DiagnosticAnalyzerAttribute>();
 
                 if (attribute is not null)
                 {
@@ -113,7 +113,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
                             if (language is null
                                 || language == language2)
                             {
-                                if (!analyzers.TryGetValue(language2, out ImmutableArray<DiagnosticAnalyzer>.Builder value))
+                                if (!analyzers.TryGetValue(language2, out ImmutableArray<DiagnosticAnalyzer>.Builder? value))
                                     analyzers[language2] = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>();
 
                                 analyzers[language2].Add(analyzer);
@@ -126,7 +126,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
                 && !typeInfo.IsAbstract
                 && typeInfo.IsSubclassOf(typeof(CodeFixProvider)))
             {
-                ExportCodeFixProviderAttribute attribute = typeInfo.GetCustomAttribute<ExportCodeFixProviderAttribute>();
+                ExportCodeFixProviderAttribute? attribute = typeInfo.GetCustomAttribute<ExportCodeFixProviderAttribute>();
 
                 if (attribute is not null)
                 {
@@ -142,7 +142,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
                             if (language is null
                                 || language == language2)
                             {
-                                if (!fixers.TryGetValue(language2, out ImmutableArray<CodeFixProvider>.Builder value))
+                                if (!fixers.TryGetValue(language2, out ImmutableArray<CodeFixProvider>.Builder? value))
                                     fixers[language2] = ImmutableArray.CreateBuilder<CodeFixProvider>();
 
                                 fixers[language2].Add(fixer);
@@ -163,7 +163,7 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
     {
         try
         {
-            return (T)Activator.CreateInstance(typeInfo.AsType());
+            return (T?)Activator.CreateInstance(typeInfo.AsType());
         }
         catch (TargetInvocationException ex)
         {
@@ -176,10 +176,10 @@ internal sealed class AnalyzerAssembly : IEquatable<AnalyzerAssembly>
 
     public override int GetHashCode()
     {
-        return StringComparer.Ordinal.GetHashCode(FullName);
+        return (FullName is not null) ? StringComparer.Ordinal.GetHashCode(FullName) : 0;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return Equals(obj as AnalyzerAssembly);
     }

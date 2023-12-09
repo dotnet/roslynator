@@ -562,7 +562,7 @@ internal class CodeFixer
     {
         int count = 0;
 
-        string solutionDirectory = Path.GetDirectoryName(project.Solution.FilePath);
+        string solutionDirectory = Path.GetDirectoryName(project.Solution.FilePath)!;
 
         foreach (DocumentId documentId in project.DocumentIds)
         {
@@ -626,7 +626,7 @@ internal class CodeFixer
 
         Project newProject = await CodeFormatter.FormatProjectAsync(project, syntaxFacts, cancellationToken).ConfigureAwait(false);
 
-        string solutionDirectory = Path.GetDirectoryName(project.Solution.FilePath);
+        string solutionDirectory = Path.GetDirectoryName(project.Solution.FilePath)!;
 
         ImmutableArray<DocumentId> formattedDocuments = await CodeFormatter.GetFormattedDocumentsAsync(project, newProject, syntaxFacts).ConfigureAwait(false);
 

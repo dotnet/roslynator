@@ -104,9 +104,10 @@ internal class AnalyzerLoader
                 .Distinct()
                 .OfType<AnalyzerFileReference>()
                 .Select(f => f.GetAssembly())
-                .Where(f => !_defaultAssemblies.ContainsKey(f.FullName)))
+                .Where(f => f.FullName is not null
+                    && !_defaultAssemblies.ContainsKey(f.FullName)))
             {
-                if (!_cache.TryGetValue(assembly.FullName, out AnalyzerAssembly analyzerAssembly))
+                if (!_cache.TryGetValue(assembly.FullName!, out AnalyzerAssembly? analyzerAssembly))
                 {
                     analyzerAssembly = AnalyzerAssembly.Load(assembly);
                     _cache.Add(analyzerAssembly.FullName, analyzerAssembly);

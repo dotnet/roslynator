@@ -211,7 +211,7 @@ public class SeparatedSyntaxListSelection<TNode> : ISelection<TNode> where TNode
             _index = -1;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             throw new NotSupportedException();
         }

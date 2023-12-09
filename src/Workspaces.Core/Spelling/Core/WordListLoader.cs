@@ -178,7 +178,7 @@ internal static class WordListLoader
 
                     Debug.Assert(value.Length > 0);
 
-                    if (fixes.TryGetValue(key, out HashSet<string> fixes2))
+                    if (fixes.TryGetValue(key, out HashSet<string>? fixes2))
                     {
                         fixes2.Add(value);
                     }

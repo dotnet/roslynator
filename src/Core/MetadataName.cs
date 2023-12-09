@@ -160,7 +160,7 @@ public readonly struct MetadataName : IEquatable<MetadataName>
     /// </summary>
     /// <param name="obj">The object to compare with the current instance.</param>
     /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is MetadataName other
             && Equals(other);

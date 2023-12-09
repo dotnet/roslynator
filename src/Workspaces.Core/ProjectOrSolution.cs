@@ -43,7 +43,7 @@ internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
         return (_project ?? (object?)_solution)?.ToString();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is ProjectOrSolution other
             && Equals(other);

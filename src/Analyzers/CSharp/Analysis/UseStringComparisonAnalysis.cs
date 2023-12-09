@@ -71,7 +71,7 @@ internal static class UseStringComparisonAnalysis
 
         string name = invocationInfo.NameText;
 
-        SimpleMemberInvocationExpressionInfo invocationInfo3;
+        SimpleMemberInvocationExpressionInfo invocationInfo3 = default;
 
         bool isStringLiteral = argumentExpression.IsKind(SyntaxKind.StringLiteralExpression);
 

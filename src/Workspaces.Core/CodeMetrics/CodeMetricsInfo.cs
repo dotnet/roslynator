@@ -60,7 +60,7 @@ internal readonly struct CodeMetricsInfo : IEquatable<CodeMetricsInfo>
             blockBoundaryLineCount: metrics.Sum(f => f.BlockBoundaryLineCount));
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is CodeMetricsInfo other && Equals(other);
     }

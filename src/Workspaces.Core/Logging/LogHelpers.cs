@@ -239,7 +239,7 @@ internal static class LogHelpers
     {
         WriteLine("  Infinite loop detected: Reported diagnostics have been previously fixed", ConsoleColors.Yellow, Verbosity.Normal);
 
-        string baseDirectoryPath = Path.GetDirectoryName(project.FilePath);
+        string baseDirectoryPath = Path.GetDirectoryName(project.FilePath)!;
 
         WriteLine(Verbosity.Detailed);
         WriteLine("  Diagnostics:", Verbosity.Detailed);

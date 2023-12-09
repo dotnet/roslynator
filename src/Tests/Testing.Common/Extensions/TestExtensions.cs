@@ -20,8 +20,8 @@ internal static class TestExtensions
         Type type = codeAction.GetType();
         if (type.Name == "CodeActionWithNestedActions")
         {
-            PropertyInfo propertyInfo = type.GetProperty("NestedCodeActions", BindingFlags.NonPublic | BindingFlags.Instance);
-            return (ImmutableArray<CodeAction>)propertyInfo.GetValue(codeAction);
+            PropertyInfo propertyInfo = type.GetProperty("NestedCodeActions", BindingFlags.NonPublic | BindingFlags.Instance)!;
+            return (ImmutableArray<CodeAction>)propertyInfo.GetValue(codeAction)!;
         }
 
         return ImmutableArray<CodeAction>.Empty;

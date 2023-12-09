@@ -40,7 +40,7 @@ internal class TextWriterWithVerbosity : TextWriter
             Write(value);
     }
 
-    public override void Write(char[] buffer)
+    public override void Write(char[]? buffer)
     {
         Writer.Write(buffer);
     }
@@ -70,7 +70,7 @@ internal class TextWriterWithVerbosity : TextWriter
         Writer.Write(value);
     }
 
-    public override void Write(object value)
+    public override void Write(object? value)
     {
         Writer.Write(value);
     }
@@ -96,22 +96,22 @@ internal class TextWriterWithVerbosity : TextWriter
             Write(value);
     }
 
-    public override void Write(string format, object arg0)
+    public override void Write(string format, object? arg0)
     {
         Writer.Write(format, arg0);
     }
 
-    public override void Write(string format, object arg0, object arg1)
+    public override void Write(string format, object? arg0, object? arg1)
     {
         Writer.Write(format, arg0, arg1);
     }
 
-    public override void Write(string format, object arg0, object arg1, object arg2)
+    public override void Write(string format, object? arg0, object? arg1, object? arg2)
     {
         Writer.Write(format, arg0, arg1, arg2);
     }
 
-    public override void Write(string format, params object[] arg)
+    public override void Write(string format, params object?[] arg)
     {
         Writer.Write(format, arg);
     }
@@ -152,7 +152,7 @@ internal class TextWriterWithVerbosity : TextWriter
         Writer.WriteLine(value);
     }
 
-    public override void WriteLine(char[] buffer)
+    public override void WriteLine(char[]? buffer)
     {
         Writer.WriteLine(buffer);
     }
@@ -182,7 +182,7 @@ internal class TextWriterWithVerbosity : TextWriter
         Writer.WriteLine(value);
     }
 
-    public override void WriteLine(object value)
+    public override void WriteLine(object? value)
     {
         Writer.WriteLine(value);
     }
@@ -192,7 +192,7 @@ internal class TextWriterWithVerbosity : TextWriter
         Writer.WriteLine(value);
     }
 
-    public override void WriteLine(string value)
+    public override void WriteLine(string? value)
     {
         Writer.WriteLine(value);
     }
@@ -213,22 +213,22 @@ internal class TextWriterWithVerbosity : TextWriter
             WriteLine(value);
     }
 
-    public override void WriteLine(string format, object arg0)
+    public override void WriteLine(string format, object? arg0)
     {
         Writer.WriteLine(format, arg0);
     }
 
-    public override void WriteLine(string format, object arg0, object arg1)
+    public override void WriteLine(string format, object? arg0, object? arg1)
     {
         Writer.WriteLine(format, arg0, arg1);
     }
 
-    public override void WriteLine(string format, object arg0, object arg1, object arg2)
+    public override void WriteLine(string format, object? arg0, object? arg1, object? arg2)
     {
         Writer.WriteLine(format, arg0, arg1, arg2);
     }
 
-    public override void WriteLine(string format, params object[] arg)
+    public override void WriteLine(string format, params object?[] arg)
     {
         Writer.WriteLine(format, arg);
     }

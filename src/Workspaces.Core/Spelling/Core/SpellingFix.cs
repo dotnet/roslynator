@@ -26,7 +26,7 @@ internal readonly struct SpellingFix : IEquatable<SpellingFix>
 
     public SpellingFix WithValue(string value) => new(value, Kind);
 
-    public override bool Equals(object obj) => obj is SpellingFix fix && Equals(fix);
+    public override bool Equals(object? obj) => obj is SpellingFix fix && Equals(fix);
 
     public bool Equals(SpellingFix other) => Value == other.Value;
 

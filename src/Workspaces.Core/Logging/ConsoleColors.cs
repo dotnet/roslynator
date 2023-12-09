@@ -47,7 +47,7 @@ internal readonly struct ConsoleColors : IEquatable<ConsoleColors>
         }
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is ConsoleColors colors
             && Equals(colors);

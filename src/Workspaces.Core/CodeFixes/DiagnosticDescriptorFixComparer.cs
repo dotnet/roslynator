@@ -22,7 +22,7 @@ internal class DiagnosticDescriptorFixComparer : IComparer<DiagnosticDescriptor>
 
     private Dictionary<string, ImmutableArray<CodeFixProvider>> FixersById { get; }
 
-    public int Compare(DiagnosticDescriptor x, DiagnosticDescriptor y)
+    public int Compare(DiagnosticDescriptor? x, DiagnosticDescriptor? y)
     {
         if (object.ReferenceEquals(x, y))
             return 0;

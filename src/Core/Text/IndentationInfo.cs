@@ -39,7 +39,7 @@ internal readonly struct IndentationInfo : IEquatable<IndentationInfo>
         return default;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is IndentationInfo other
             && Equals(other);

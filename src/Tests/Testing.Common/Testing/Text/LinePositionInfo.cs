@@ -25,7 +25,7 @@ internal readonly struct LinePositionInfo : IEquatable<LinePositionInfo>
         get { return new LinePosition(LineIndex, ColumnIndex); }
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is LinePositionInfo other
             && Equals(other);

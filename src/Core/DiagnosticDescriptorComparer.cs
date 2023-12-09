@@ -13,13 +13,13 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
 
     public static DiagnosticDescriptorComparer IdPrefix { get; } = new DiagnosticDescriptorIdPrefixComparer();
 
-    public abstract int Compare(DiagnosticDescriptor x, DiagnosticDescriptor y);
+    public abstract int Compare(DiagnosticDescriptor? x, DiagnosticDescriptor? y);
 
-    public abstract bool Equals(DiagnosticDescriptor x, DiagnosticDescriptor y);
+    public abstract bool Equals(DiagnosticDescriptor? x, DiagnosticDescriptor? y);
 
     public abstract int GetHashCode(DiagnosticDescriptor obj);
 
-    public int Compare(object x, object y)
+    public int Compare(object? x, object? y)
     {
         if (x == y)
             return 0;
@@ -39,7 +39,7 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
         throw new ArgumentException("", nameof(x));
     }
 
-    new public bool Equals(object x, object y)
+    new public bool Equals(object? x, object? y)
     {
         if (x == y)
             return true;
@@ -72,7 +72,7 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
 
     private class DiagnosticDescriptorIdComparer : DiagnosticDescriptorComparer
     {
-        public override int Compare(DiagnosticDescriptor x, DiagnosticDescriptor y)
+        public override int Compare(DiagnosticDescriptor? x, DiagnosticDescriptor? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -86,7 +86,7 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
             return string.CompareOrdinal(x.Id, y.Id);
         }
 
-        public override bool Equals(DiagnosticDescriptor x, DiagnosticDescriptor y)
+        public override bool Equals(DiagnosticDescriptor? x, DiagnosticDescriptor? y)
         {
             if (object.ReferenceEquals(x, y))
                 return true;
@@ -111,12 +111,12 @@ internal abstract class DiagnosticDescriptorComparer : IComparer<DiagnosticDescr
 
     private class DiagnosticDescriptorIdPrefixComparer : DiagnosticDescriptorComparer
     {
-        public override int Compare(DiagnosticDescriptor x, DiagnosticDescriptor y)
+        public override int Compare(DiagnosticDescriptor? x, DiagnosticDescriptor? y)
         {
             return DiagnosticIdComparer.Prefix.Compare(x?.Id, y?.Id);
         }
 
-        public override bool Equals(DiagnosticDescriptor x, DiagnosticDescriptor y)
+        public override bool Equals(DiagnosticDescriptor? x, DiagnosticDescriptor? y)
         {
             return DiagnosticIdComparer.Prefix.Equals(x?.Id, y?.Id);
         }

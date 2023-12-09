@@ -22,7 +22,7 @@ internal abstract class SpellingFixComparer :
 
     public abstract int GetHashCode(SpellingFix obj);
 
-    public int Compare(object x, object y)
+    public int Compare(object? x, object? y)
     {
         if (x == y)
             return 0;
@@ -42,7 +42,7 @@ internal abstract class SpellingFixComparer :
         throw new ArgumentException("", nameof(x));
     }
 
-    new public bool Equals(object x, object y)
+    new public bool Equals(object? x, object? y)
     {
         if (x == y)
             return true;

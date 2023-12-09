@@ -11,13 +11,13 @@ internal abstract class SpellingFixResultEqualityComparer : IEqualityComparer<Sp
 
     public static SpellingFixResultEqualityComparer ValueAndLineSpan { get; } = new ValueAndLineSpanComparer();
 
-    public abstract bool Equals(SpellingFixResult x, SpellingFixResult y);
+    public abstract bool Equals(SpellingFixResult? x, SpellingFixResult? y);
 
     public abstract int GetHashCode(SpellingFixResult obj);
 
     private class ValueAndReplacementComparer : SpellingFixResultEqualityComparer
     {
-        public override bool Equals(SpellingFixResult x, SpellingFixResult y)
+        public override bool Equals(SpellingFixResult? x, SpellingFixResult? y)
         {
             if (object.ReferenceEquals(x, y))
                 return true;
@@ -45,7 +45,7 @@ internal abstract class SpellingFixResultEqualityComparer : IEqualityComparer<Sp
 
     private class ValueAndLineSpanComparer : SpellingFixResultEqualityComparer
     {
-        public override bool Equals(SpellingFixResult x, SpellingFixResult y)
+        public override bool Equals(SpellingFixResult? x, SpellingFixResult? y)
         {
             if (object.ReferenceEquals(x, y))
                 return true;

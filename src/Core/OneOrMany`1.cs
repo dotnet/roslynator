@@ -92,7 +92,7 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
         return Empty.Enumerator<T>();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is OneOrMany<T> other && Equals(other);
     }
@@ -170,7 +170,7 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
             _index = -1;
         }
 
-        public override readonly bool Equals(object obj) => throw new NotSupportedException();
+        public override readonly bool Equals(object? obj) => throw new NotSupportedException();
 
         public override readonly int GetHashCode() => throw new NotSupportedException();
     }

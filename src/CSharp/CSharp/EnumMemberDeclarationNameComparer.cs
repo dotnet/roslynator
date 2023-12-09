@@ -14,12 +14,12 @@ internal sealed class EnumMemberDeclarationNameComparer : IComparer<EnumMemberDe
 
     public static readonly EnumMemberDeclarationNameComparer Instance = new();
 
-    public int Compare(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
+    public int Compare(EnumMemberDeclarationSyntax? x, EnumMemberDeclarationSyntax? y)
     {
         return CompareCore(x, y);
     }
 
-    private static int CompareCore(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
+    private static int CompareCore(EnumMemberDeclarationSyntax? x, EnumMemberDeclarationSyntax? y)
     {
         if (object.ReferenceEquals(x, y))
             return 0;

@@ -129,7 +129,7 @@ internal static class SpellingFixProvider
                 continue;
             }
 
-            if ((matches ??= ImmutableHashSet.CreateBuilder(WordList.DefaultComparer)).Add(value2))
+            if ((matches ??= ImmutableHashSet.CreateBuilder<string>(WordList.DefaultComparer)).Add(value2))
                 success = true;
         }
 

@@ -21,7 +21,7 @@ internal sealed class DiagnosticDeepEqualityComparer : IEqualityComparer<Diagnos
     {
     }
 
-    public bool Equals(Diagnostic x, Diagnostic y)
+    public bool Equals(Diagnostic? x, Diagnostic? y)
     {
         if (object.ReferenceEquals(x, y))
             return true;

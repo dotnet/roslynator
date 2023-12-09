@@ -62,7 +62,7 @@ internal static class Hash
             if (count >= maxItemsToHash)
                 break;
 
-            if (!comparer.Equals(value, default(T)!))
+            if (value is not null)
                 hash = Combine(comparer.GetHashCode(value), hash);
 
             count++;
@@ -87,7 +87,7 @@ internal static class Hash
         {
             T value = values[i];
 
-            if (!comparer.Equals(value, default(T)!))
+            if (value is not null)
                 hash = Combine(comparer.GetHashCode(value), hash);
         }
 
@@ -110,7 +110,7 @@ internal static class Hash
         {
             T value = values[i];
 
-            if (!comparer.Equals(value, default(T)!))
+            if (value is not null)
                 hash = Combine(comparer.GetHashCode(value), hash);
         }
 

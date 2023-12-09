@@ -112,7 +112,7 @@ internal static class CSharpUtility
 
             if (symbol?.Kind == SymbolKind.Namespace)
             {
-                string namespaceText = namespaceSymbol.ToString();
+                string namespaceText = namespaceSymbol.ToString()!;
 
                 if (string.Equals(namespaceText, symbol.ToString(), StringComparison.Ordinal))
                 {

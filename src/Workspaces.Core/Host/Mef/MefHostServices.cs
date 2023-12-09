@@ -81,10 +81,10 @@ internal class MefHostServices
         static IEnumerable<string> GetAssemblyNames()
         {
             AssemblyName assemblyName = typeof(MefHostServices).GetTypeInfo().Assembly.GetName();
-            Version assemblyVersion = assemblyName.Version;
-            string publicKeyToken = assemblyName.GetPublicKeyToken().Aggregate("", (s, b) => s + b.ToString("x2"));
+            Version assemblyVersion = assemblyName.Version!;
+            string publicKeyToken = assemblyName.GetPublicKeyToken()!.Aggregate("", (s, b) => s + b.ToString("x2"));
 
-            string prefix = Regex.Match(assemblyName.Name, @"\A.*Roslynator(?=\..*\z)", RegexOptions.RightToLeft).Value;
+            string prefix = Regex.Match(assemblyName.Name!, @"\A.*Roslynator(?=\..*\z)", RegexOptions.RightToLeft).Value;
 
             yield return $"{prefix}.CSharp.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken={publicKeyToken}";
             yield return $"{prefix}.VisualBasic.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken={publicKeyToken}";

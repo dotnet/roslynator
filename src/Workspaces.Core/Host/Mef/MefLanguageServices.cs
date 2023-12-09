@@ -21,7 +21,7 @@ internal class MefLanguageServices
         WorkspaceServices = workspaceServices;
         Language = language;
 
-        _services = workspaceServices.GetExports<ILanguageService, LanguageServiceMetadata>()
+        _services = workspaceServices.GetExports<ILanguageService, LanguageServiceMetadata>()!
             .Where(lazy => lazy.Metadata.Language == language)
             .ToImmutableArray();
     }
@@ -53,7 +53,7 @@ internal class MefLanguageServices
                 serviceType,
                 type =>
                 {
-                    string fullName = type.FullName;
+                    string? fullName = type.FullName;
 
                     return _services.SingleOrDefault(lz => lz.Metadata.ServiceType == fullName, shouldThrow: false);
                 });

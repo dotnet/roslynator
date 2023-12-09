@@ -56,7 +56,7 @@ public readonly struct ExtensionMethodSymbolInfo : IEquatable<ExtensionMethodSym
     }
 
 #pragma warning disable CS1591
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is ExtensionMethodSymbolInfo other && Equals(other);
     }

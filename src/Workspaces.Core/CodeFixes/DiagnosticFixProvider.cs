@@ -256,7 +256,7 @@ internal static class DiagnosticFixProvider
 
         public string? EquivalenceKey2 { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is MultipleFixesInfo other && Equals(other);
         }

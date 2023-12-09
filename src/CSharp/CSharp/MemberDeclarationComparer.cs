@@ -19,7 +19,7 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
 
     internal static MemberDeclarationComparer ByKindThenByName { get; } = new ByKindThenByNameMemberDeclarationComparer();
 
-    public abstract int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y);
+    public abstract int Compare(MemberDeclarationSyntax? x, MemberDeclarationSyntax? y);
 
     public virtual int GetRank(MemberDeclarationSyntax member)
     {
@@ -73,7 +73,7 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
 
     private class ByKindMemberDeclarationComparer : MemberDeclarationComparer
     {
-        public override int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y)
+        public override int Compare(MemberDeclarationSyntax? x, MemberDeclarationSyntax? y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -90,13 +90,13 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
 
     private sealed class ByKindThenByNameMemberDeclarationComparer : ByKindMemberDeclarationComparer
     {
-        public override int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y)
+        public override int Compare(MemberDeclarationSyntax? x, MemberDeclarationSyntax? y)
         {
             int result = base.Compare(x, y);
 
             if (result == 0)
             {
-                return string.Compare(GetName(x), GetName(y), StringComparison.CurrentCulture);
+                return string.Compare(GetName(x!), GetName(y!), StringComparison.CurrentCulture);
             }
             else
             {

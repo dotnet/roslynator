@@ -211,7 +211,7 @@ public class SyntaxListSelection<TNode> : ISelection<TNode> where TNode : Syntax
             _index = -1;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             throw new NotSupportedException();
         }

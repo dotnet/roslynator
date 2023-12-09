@@ -34,7 +34,7 @@ internal readonly struct TypeAnalysis : IEquatable<TypeAnalysis>
         return (Flags & flags) != 0;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is TypeAnalysis other && Equals(other);
     }

@@ -10,10 +10,16 @@ internal sealed class LocalSymbolComparer : IComparer<ISymbol>
 {
     public static LocalSymbolComparer Instance { get; } = new();
 
-    public int Compare(ISymbol x, ISymbol y)
+    public int Compare(ISymbol? x, ISymbol? y)
     {
         if (object.ReferenceEquals(x, y))
             return 0;
+
+        if (x is null)
+            return -1;
+
+        if (y is null)
+            return 1;
 
         int rank1 = GetRank(x);
         int rank2 = GetRank(y);

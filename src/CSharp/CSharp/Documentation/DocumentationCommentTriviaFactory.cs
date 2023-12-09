@@ -68,7 +68,7 @@ internal static class DocumentationCommentTriviaFactory
 
         using (var sr = new StringReader(innerXml))
         {
-            string s;
+            string? s;
 
             while ((s = sr.ReadLine()) is not null)
             {

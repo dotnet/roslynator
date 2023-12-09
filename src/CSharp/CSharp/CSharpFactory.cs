@@ -1694,7 +1694,7 @@ public static class CSharpFactory
         if (value is double doubleValue)
             return NumericLiteralExpression(doubleValue);
 
-        return StringLiteralExpression(value.ToString());
+        return StringLiteralExpression(value.ToString() ?? "");
     }
     #endregion LiteralExpression
 

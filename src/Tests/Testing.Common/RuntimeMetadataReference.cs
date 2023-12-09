@@ -29,8 +29,8 @@ internal static class RuntimeMetadataReference
             static ImmutableDictionary<string, string> CreateTrustedPlatformAssemblies()
             {
                 return AppContext
-                    .GetData("TRUSTED_PLATFORM_ASSEMBLIES")
-                    .ToString()
+                    .GetData("TRUSTED_PLATFORM_ASSEMBLIES")!
+                    .ToString()!
                     .Split((RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? ';' : ':')
                     .ToImmutableDictionary(f => Path.GetFileName(f));
             }

@@ -30,7 +30,7 @@ internal readonly struct OverriddenSymbolInfo : IEquatable<OverriddenSymbolInfo>
         get { return $"{Symbol.ToDisplayString(SymbolDisplayFormats.Test)} {OverriddenSymbol.ToDisplayString(SymbolDisplayFormats.Test)}"; }
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is OverriddenSymbolInfo other && Equals(other);
     }

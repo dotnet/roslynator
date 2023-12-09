@@ -14,7 +14,7 @@ internal sealed class NamespaceSymbolDefinitionComparer : IComparer<INamespaceSy
 
     public SymbolDefinitionComparer SymbolComparer { get; }
 
-    public int Compare(INamespaceSymbol x, INamespaceSymbol y)
+    public int Compare(INamespaceSymbol? x, INamespaceSymbol? y)
     {
         if (object.ReferenceEquals(x, y))
             return 0;

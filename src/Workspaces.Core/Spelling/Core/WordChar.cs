@@ -26,7 +26,7 @@ internal readonly struct WordChar : IEquatable<WordChar>
         return new WordChar(value[index], index);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is WordChar wordChar
             && Equals(wordChar);

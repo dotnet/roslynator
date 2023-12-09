@@ -62,7 +62,7 @@ internal partial class CSharpSpellingService : SpellingService
         string? parent = diagnostic.Properties.GetValueOrDefault("Parent");
 
         int parentIndex = (diagnostic.Properties.TryGetValue("ParentIndex", out string? parentIndexText))
-            ? int.Parse(parentIndexText)
+            ? int.Parse(parentIndexText!)
             : 0;
 
         SyntaxTrivia trivia = root.FindTrivia(span.Start, findInsideTrivia: true);

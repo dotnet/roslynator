@@ -155,7 +155,7 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
             _current = null;
         }
 
-        public override readonly bool Equals(object obj) => throw new NotSupportedException();
+        public override readonly bool Equals(object? obj) => throw new NotSupportedException();
 
         public override readonly int GetHashCode() => throw new NotSupportedException();
     }

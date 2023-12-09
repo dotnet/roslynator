@@ -68,7 +68,7 @@ public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnu
     /// </summary>
     /// <param name="obj">The object to compare with the current instance. </param>
     /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is IfStatementCascade other && Equals(other);
     }
@@ -182,7 +182,7 @@ public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnu
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             throw new NotSupportedException();
         }

@@ -31,7 +31,7 @@ internal abstract class SymbolDefinitionComparer : IComparer<ISymbol>
 
     public abstract IComparer<ISymbol> MemberComparer { get; }
 
-    public int Compare(ISymbol x, ISymbol y)
+    public int Compare(ISymbol? x, ISymbol? y)
     {
         if (object.ReferenceEquals(x, y))
             return 0;
