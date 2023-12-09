@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <Version>$(RoslynatorAnalyzersVersion)</Version>
-    <AssemblyName>Roslynator.CodeAnalysis.Analyzers</AssemblyName>
+    <AssemblyName>Roslynator.CodeAnalysis.CSharp.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.CodeAnalysis</RootNamespace>
     <PackageId>CodeAnalysis.Analyzers</PackageId>
     <IsPackable>false</IsPackable>
@@ -31,7 +31,7 @@
       <_Parameter1>Roslynator.CodeAnalysis.Analyzers.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.CodeAnalysis.Analyzers.CodeFixes, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+      <_Parameter1>Roslynator.CodeAnalysis.CSharp.Analyzers.CodeFixes, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
 

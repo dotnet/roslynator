@@ -89,19 +89,19 @@ Roslynator.NameGenerator</Description>
       <_Parameter1>Roslynator.Refactorings.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.CodeAnalysis.Analyzers, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+      <_Parameter1>Roslynator.CodeAnalysis.CSharp.Analyzers, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.CodeAnalysis.Analyzers.CodeFixes, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+      <_Parameter1>Roslynator.CodeAnalysis.CSharp.Analyzers.CodeFixes, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Roslynator.CodeAnalysis.Analyzers.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.Formatting.Analyzers, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+      <_Parameter1>Roslynator.Formatting.CSharp.Analyzers, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Roslynator.Formatting.Analyzers.CodeFixes, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+      <_Parameter1>Roslynator.Formatting.CSharp.Analyzers.CodeFixes, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>Roslynator.Formatting.Analyzers.Tests, PublicKey=$(RoslynatorPublicKey)</_Parameter1>

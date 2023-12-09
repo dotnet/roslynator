@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <Version>$(RoslynatorAnalyzersVersion)</Version>
-    <AssemblyName>Roslynator.CodeAnalysis.Analyzers.CodeFixes</AssemblyName>
+    <AssemblyName>Roslynator.CodeAnalysis.CSharp.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CodeAnalysis</RootNamespace>
     <NuspecFile>Roslynator.CodeAnalysis.Analyzers.nuspec</NuspecFile> 
     <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorAnalyzersPackageVersion)</NuspecProperties>
