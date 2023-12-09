@@ -1352,6 +1352,21 @@ public static class SymbolsGetKindsGenerator
                             yield return SyntaxKind.ScopedType;
                             break;
                         }
+                    case "CollectionExpressionSyntax":
+                        {
+                            yield return SyntaxKind.CollectionExpression;
+                            break;
+                        }
+                    case "ExpressionElementSyntax":
+                        {
+                            yield return SyntaxKind.ExpressionElement;
+                            break;
+                        }
+                    case "SpreadElementSyntax":
+                        {
+                            yield return SyntaxKind.SpreadElement;
+                            break;
+                        }
                     default:
                         {
                             throw new InvalidOperationException(syntaxSymbol.Name);

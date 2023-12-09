@@ -3,10 +3,7 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.CodeStyle;
 
 namespace Roslynator.CSharp.Analysis;
 
@@ -20,9 +17,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
         get
         {
             if (_supportedDiagnostics.IsDefault)
-            {
                 Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray);
-            }
 
             return _supportedDiagnostics;
         }
@@ -32,146 +27,23 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(
-            c =>
-            {
-                ArrayCreationTypeStyle style = c.GetArrayCreationTypeStyle();
-
-                if (style == ArrayCreationTypeStyle.Explicit
-                    || style == ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious)
-                {
-                    AnalyzeImplicitArrayCreationExpression(c, style);
-                }
-            },
-            SyntaxKind.ImplicitArrayCreationExpression);
-
-        context.RegisterSyntaxNodeAction(
-            c =>
-            {
-                ArrayCreationTypeStyle style = c.GetArrayCreationTypeStyle();
-
-                if (style == ArrayCreationTypeStyle.Implicit
-                    || style == ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious)
-                {
-                    AnalyzeArrayCreationExpression(c, style);
-                }
-            },
-            SyntaxKind.ArrayCreationExpression);
+        context.RegisterSyntaxNodeAction(c => AnalyzeArrayCreationExpression(c), SyntaxKind.ArrayCreationExpression);
+        context.RegisterSyntaxNodeAction(c => AnalyzeImplicitArrayCreationExpression(c), SyntaxKind.ImplicitArrayCreationExpression);
+        context.RegisterSyntaxNodeAction(c => AnalyzeCollectionExpression(c), SyntaxKind.CollectionExpression);
     }
 
-    private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context, ArrayCreationTypeStyle kind)
+    private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
     {
-        var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
-
-        if (expression.ContainsDiagnostics)
-            return;
-
-        if (expression.NewKeyword.ContainsDirectives)
-            return;
-
-        if (expression.OpenBracketToken.ContainsDirectives)
-            return;
-
-        if (expression.CloseBracketToken.ContainsDirectives)
-            return;
-
-        IArrayTypeSymbol arrayTypeSymbol = null;
-
-        if (kind == ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious)
-        {
-            InitializerExpressionSyntax initializer = expression.Initializer;
-
-            if (initializer is not null)
-            {
-                var isObvious = false;
-
-                foreach (ExpressionSyntax expression2 in initializer.Expressions)
-                {
-                    if (arrayTypeSymbol is null)
-                    {
-                        arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
-
-                        if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
-                            return;
-                    }
-
-                    isObvious = CSharpTypeAnalysis.IsTypeObvious(expression2, arrayTypeSymbol.ElementType, includeNullability: true, context.SemanticModel, context.CancellationToken);
-
-                    if (!isObvious)
-                        break;
-                }
-
-                if (isObvious)
-                    return;
-            }
-        }
-
-        if (arrayTypeSymbol is null)
-        {
-            arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
-
-            if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
-                return;
-        }
-
-        Location location = Location.Create(expression.SyntaxTree, TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End));
-
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-            location,
-            "explicitly");
+        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeExplicitCreation(ref context);
     }
 
-    private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context, ArrayCreationTypeStyle kind)
+    private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
     {
-        var arrayCreation = (ArrayCreationExpressionSyntax)context.Node;
+        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeImplicitCreation(ref context);
+    }
 
-        if (arrayCreation.ContainsDiagnostics)
-            return;
-
-        ArrayTypeSyntax arrayType = arrayCreation.Type;
-
-        if (arrayType.ContainsDirectives)
-            return;
-
-        SeparatedSyntaxList<ExpressionSyntax> expressions = arrayCreation.Initializer?.Expressions ?? default;
-
-        if (!expressions.Any())
-            return;
-
-        ITypeSymbol typeSymbol = null;
-
-        if (kind == ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious)
-        {
-            foreach (ExpressionSyntax expression in expressions)
-            {
-                if (typeSymbol is null)
-                {
-                    typeSymbol = context.SemanticModel.GetTypeSymbol(arrayCreation.Type.ElementType, context.CancellationToken);
-
-                    if (typeSymbol?.IsErrorType() != false)
-                        return;
-                }
-
-                if (!CSharpTypeAnalysis.IsTypeObvious(expression, typeSymbol, includeNullability: true, context.SemanticModel, context.CancellationToken))
-                    return;
-            }
-        }
-
-        TypeSyntax elementType = arrayType.ElementType;
-        SyntaxList<ArrayRankSpecifierSyntax> rankSpecifiers = arrayType.RankSpecifiers;
-
-        TextSpan textSpan = TextSpan.FromBounds(
-            elementType.SpanStart,
-            ((rankSpecifiers.Count > 1) ? rankSpecifiers.LastButOne() : (SyntaxNode)elementType).Span.End);
-
-        Location location = Location.Create(arrayCreation.SyntaxTree, textSpan);
-
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-            location,
-            "implicitly");
+    private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
+    {
+        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeCollectionExpression(ref context);
     }
 }
