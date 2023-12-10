@@ -22,11 +22,12 @@ internal static class DocumentRefactorings
         Document document,
         TypeSyntax type,
         ITypeSymbol typeSymbol,
+        SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
         if (type.IsVar
             && type.Parent is DeclarationExpressionSyntax declarationExpression
-            && declarationExpression.Designation.IsKind(SyntaxKind.ParenthesizedVariableDesignation))
+            && declarationExpression.Designation is ParenthesizedVariableDesignationSyntax designation)
         {
 #if DEBUG
             SyntaxNode parent = declarationExpression.Parent;
@@ -52,17 +53,25 @@ internal static class DocumentRefactorings
                     }
             }
 #endif
-            TupleExpressionSyntax tupleExpression = CreateTupleExpression(typeSymbol)
-                .WithTriviaFrom(declarationExpression);
+            TupleExpressionSyntax tupleExpression = CreateTupleExpression(typeSymbol, designation, GetSymbolDisplayFormat(semanticModel, type.SpanStart))
+                .WithTriviaFrom(declarationExpression)
+                .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(declarationExpression, tupleExpression, cancellationToken).ConfigureAwait(false);
         }
 
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
         TypeSyntax newType = ChangeType(type, typeSymbol, semanticModel);
 
         return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static SymbolDisplayFormat GetSymbolDisplayFormat(SemanticModel semanticModel, int position)
+    {
+        NullableContext context = semanticModel.GetNullableContext(position);
+
+        return ((context & NullableContext.AnnotationsEnabled) != 0)
+                ? SymbolDisplayFormats.FullName
+                : SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier;
     }
 
     private static TypeSyntax ChangeType(TypeSyntax type, ITypeSymbol typeSymbol, SemanticModel semanticModel)
@@ -90,30 +99,53 @@ internal static class DocumentRefactorings
         }
     }
 
-    private static TupleExpressionSyntax CreateTupleExpression(ITypeSymbol typeSymbol)
+    private static TupleExpressionSyntax CreateTupleExpression(
+        ITypeSymbol typeSymbol,
+        ParenthesizedVariableDesignationSyntax designation,
+        SymbolDisplayFormat format)
     {
         if (!typeSymbol.SupportsExplicitDeclaration())
             throw new ArgumentException($"Type '{typeSymbol.ToDisplayString()}' does not support explicit declaration.", nameof(typeSymbol));
 
-        var tupleExpression = (TupleExpressionSyntax)ParseExpression(typeSymbol.ToDisplayString(SymbolDisplayFormats.FullName));
+        var tupleExpression = (TupleExpressionSyntax)ParseExpression(typeSymbol.ToDisplayString(format));
 
-        SeparatedSyntaxList<ArgumentSyntax> newArguments = tupleExpression
-            .Arguments
-            .Select(f =>
+        SeparatedSyntaxList<VariableDesignationSyntax> variables = designation.Variables;
+        SeparatedSyntaxList<ArgumentSyntax> arguments = tupleExpression.Arguments;
+        SeparatedSyntaxList<ArgumentSyntax> newArguments = arguments.ForEach(argument =>
+        {
+            if (argument.Expression is DeclarationExpressionSyntax declarationExpression)
+                return argument.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
+
+            if (argument.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
             {
-                if (f.Expression is DeclarationExpressionSyntax declarationExpression)
-                    return f.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
+                return argument.WithExpression(
+                    DeclarationExpression(
+                        ParseTypeName(argument.Expression.ToString()).WithSimplifierAnnotation(),
+                        variables[arguments.IndexOf(argument)]));
+            }
 
-                if (f.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
-                {
-                    return f.WithExpression(DeclarationExpression(ParseTypeName(f.Expression.ToString()).WithSimplifierAnnotation(), DiscardDesignation()));
-                }
+            SyntaxDebug.Fail(argument.Expression);
 
-                SyntaxDebug.Fail(f.Expression);
+            return argument;
+        });
 
-                return f;
-            })
-            .ToSeparatedSyntaxList();
+        //SeparatedSyntaxList<ArgumentSyntax> newArguments = tupleExpression
+        //    .Arguments
+        //    .Select(argument =>
+        //    {
+        //        if (argument.Expression is DeclarationExpressionSyntax declarationExpression)
+        //            return argument.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
+
+        //        if (argument.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
+        //        {
+        //            return argument.WithExpression(DeclarationExpression(ParseTypeName(argument.Expression.ToString()).WithSimplifierAnnotation(), DiscardDesignation()));
+        //        }
+
+        //        SyntaxDebug.Fail(argument.Expression);
+
+        //        return argument;
+        //    })
+        //    .ToSeparatedSyntaxList();
 
         return tupleExpression.WithArguments(newArguments);
     }

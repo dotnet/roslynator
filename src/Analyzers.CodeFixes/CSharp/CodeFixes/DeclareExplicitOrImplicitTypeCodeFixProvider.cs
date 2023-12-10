@@ -52,8 +52,17 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
         {
             if (type.IsVar)
             {
-                Debug.Assert(node.IsParentKind(SyntaxKind.VariableDeclaration, SyntaxKind.DeclarationExpression, SyntaxKind.ForEachStatement), node.Parent.Kind().ToString());
-                node = node.Parent;
+                if (node.IsParentKind(SyntaxKind.VariableDeclaration, SyntaxKind.ForEachStatement))
+                {
+                    node = node.Parent;
+                }
+                else if (node.IsParentKind(SyntaxKind.DeclarationExpression))
+                {
+                    node = node.Parent;
+
+                    if (node.IsParentKind(SyntaxKind.ForEachVariableStatement))
+                        node = node.Parent;
+                }
             }
             else
             {
@@ -105,8 +114,22 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
                 }
             case DeclarationExpressionSyntax declarationExpression:
                 {
-                    var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
-                    ITypeSymbol typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
+                    ITypeSymbol typeSymbol = null;
+                    if (declarationExpression.Parent is AssignmentExpressionSyntax assignment)
+                    {
+                        typeSymbol = semanticModel.GetTypeSymbol(assignment.Right, context.CancellationToken);
+                    }
+                    else if (declarationExpression.Parent is ArgumentSyntax argument)
+                    {
+                        IParameterSymbol parameterSymbol = DetermineParameterHelper.DetermineParameter(argument, semanticModel, cancellationToken: context.CancellationToken);
+                        typeSymbol = parameterSymbol?.Type;
+                    }
+
+                    if (typeSymbol is null)
+                    {
+                        var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
+                        typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
+                    }
 
                     CodeAction codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic, "ToExplicit"));
                     context.RegisterCodeFix(codeAction, diagnostic);

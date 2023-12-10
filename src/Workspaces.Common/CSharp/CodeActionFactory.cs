@@ -358,19 +358,9 @@ internal static class CodeActionFactory
             }
         }
 
-        return ChangeType(document, type, newTypeSymbol, title, equivalenceKey);
-    }
-
-    private static CodeAction ChangeType(
-        Document document,
-        TypeSyntax type,
-        ITypeSymbol newTypeSymbol,
-        string title,
-        string equivalenceKey = null)
-    {
         return CodeAction.Create(
             title,
-            ct => DocumentRefactorings.ChangeTypeAsync(document, type, newTypeSymbol, ct),
+            ct => DocumentRefactorings.ChangeTypeAsync(document, type, newTypeSymbol, semanticModel, ct),
             equivalenceKey);
     }
 

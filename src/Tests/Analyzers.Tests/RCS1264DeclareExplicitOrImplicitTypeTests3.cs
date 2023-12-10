@@ -167,6 +167,84 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
+    public async Task Test_TupleExpression_NullableAnnotation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+class C
+{
+    void M(object p)
+    {
+        [|var|] (x, y) = GetValue();
+    }
+
+    (string x, string? y) GetValue()
+    {
+        return default;
+    }
+}
+", @"
+#nullable enable
+class C
+{
+    void M(object p)
+    {
+        (string x, string? y) = GetValue();
+    }
+
+    (string x, string? y) GetValue()
+    {
+        return default;
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
+    public async Task Test_DeclarationExpression_OutParameter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Collections.Generic;
+#nullable enable
+class C
+{
+    public bool TryGetValue(out List<DateTime> spans)
+    {
+        spans = new List<DateTime>();
+        return true;
+    }
+
+    public void M()
+    {
+        if (TryGetValue(out [|var|] spans))
+        {
+        }
+    }
+}
+", @"
+using System;
+using System.Collections.Generic;
+#nullable enable
+class C
+{
+    public bool TryGetValue(out List<DateTime> spans)
+    {
+        spans = new List<DateTime>();
+        return true;
+    }
+
+    public void M()
+    {
+        if (TryGetValue(out List<DateTime> spans))
+        {
+        }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"
