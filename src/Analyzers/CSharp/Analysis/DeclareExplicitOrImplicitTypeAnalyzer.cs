@@ -90,7 +90,7 @@ public sealed class DeclareExplicitOrImplicitTypeAnalyzer : BaseDiagnosticAnalyz
         }
         else if (style == TypeStyle.Explicit)
         {
-            if (CSharpTypeAnalysis.IsImplicitThatCanBeExplicit(declarationExpression, context.SemanticModel,  context.CancellationToken))
+            if (CSharpTypeAnalysis.IsImplicitThatCanBeExplicit(declarationExpression, context.SemanticModel, context.CancellationToken))
                 ReportImplicitToExplicit(context, declarationExpression.Type);
         }
         else if (style == TypeStyle.ImplicitWhenTypeIsObvious)
