@@ -131,6 +131,42 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
+    public async Task Test_NullableAnnotation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+#nullable disable
+class C
+{
+    void M(object p)
+    {
+        [|var|] s = GetValue();
+    }
+#nullable enable
+    IEnumerable<string?> GetValue()
+    {
+        yield return null;
+    }
+}
+", @"
+using System.Collections.Generic;
+#nullable disable
+class C
+{
+    void M(object p)
+    {
+        IEnumerable<string> s = GetValue();
+    }
+#nullable enable
+    IEnumerable<string?> GetValue()
+    {
+        yield return null;
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_ImplicitWhenTypeIsObvious));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic()
     {
         await VerifyNoDiagnosticAsync(@"

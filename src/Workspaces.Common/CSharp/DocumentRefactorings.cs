@@ -18,7 +18,7 @@ namespace Roslynator.CSharp;
 
 internal static class DocumentRefactorings
 {
-    public static Task<Document> ChangeTypeAsync(
+    public static async Task<Document> ChangeTypeAsync(
         Document document,
         TypeSyntax type,
         ITypeSymbol typeSymbol,
@@ -55,18 +55,24 @@ internal static class DocumentRefactorings
             TupleExpressionSyntax tupleExpression = CreateTupleExpression(typeSymbol)
                 .WithTriviaFrom(declarationExpression);
 
-            return document.ReplaceNodeAsync(declarationExpression, tupleExpression, cancellationToken);
+            return await document.ReplaceNodeAsync(declarationExpression, tupleExpression, cancellationToken).ConfigureAwait(false);
         }
 
-        TypeSyntax newType = ChangeType(type, typeSymbol);
+        var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        return document.ReplaceNodeAsync(type, newType, cancellationToken);
+        TypeSyntax newType = ChangeType(type, typeSymbol, semanticModel);
+
+        return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
     }
 
-    private static TypeSyntax ChangeType(TypeSyntax type, ITypeSymbol typeSymbol)
+    private static TypeSyntax ChangeType(TypeSyntax type, ITypeSymbol typeSymbol, SemanticModel semanticModel)
     {
+        NullableContext context = semanticModel.GetNullableContext(type.SpanStart);
+
         TypeSyntax newType = typeSymbol
-            .ToTypeSyntax()
+            .ToTypeSyntax(((context & NullableContext.AnnotationsEnabled) != 0)
+                ? SymbolDisplayFormats.FullName
+                : SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier)
             .WithTriviaFrom(type);
 
         if (newType is TupleTypeSyntax tupleType)
@@ -148,6 +154,7 @@ internal static class DocumentRefactorings
         VariableDeclaratorSyntax variableDeclarator,
         SyntaxNode containingDeclaration,
         ITypeSymbol newTypeSymbol,
+        SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
         TypeSyntax type = variableDeclaration.Type;
@@ -156,7 +163,7 @@ internal static class DocumentRefactorings
 
         AwaitExpressionSyntax newValue = AwaitExpression(value.WithoutTrivia()).WithTriviaFrom(value);
 
-        TypeSyntax newType = ChangeType(type, newTypeSymbol);
+        TypeSyntax newType = ChangeType(type, newTypeSymbol, semanticModel);
 
         VariableDeclarationSyntax newVariableDeclaration = variableDeclaration
             .ReplaceNode(value, newValue)
