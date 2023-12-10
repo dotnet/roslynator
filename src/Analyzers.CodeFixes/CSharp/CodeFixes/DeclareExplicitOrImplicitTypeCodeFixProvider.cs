@@ -5,6 +5,7 @@ using System.Composition;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -56,7 +57,7 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
             }
             else
             {
-                Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = ChangeTypeToVar(document, type, equivalenceKey: GetEquivalenceKey(diagnostic));
+                CodeAction codeAction = ChangeTypeToVar(document, type, equivalenceKey: GetEquivalenceKey(diagnostic, "ToImplicit"));
                 context.RegisterCodeFix(codeAction, diagnostic);
                 return;
             }
@@ -66,7 +67,7 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
         {
             case TupleExpressionSyntax tupleExpression:
                 {
-                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = ChangeTypeToVar(document, tupleExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = ChangeTypeToVar(document, tupleExpression, equivalenceKey: GetEquivalenceKey(diagnostic, "ToImplicit"));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
@@ -98,7 +99,7 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
                         }
                     }
 
-                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = UseExplicitType(document, variableDeclaration.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = UseExplicitType(document, variableDeclaration.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic, "ToExplicit"));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
@@ -107,7 +108,7 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
                     var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
                     ITypeSymbol typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
 
-                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic, "ToExplicit"));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
@@ -115,7 +116,7 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
                 {
                     ITypeSymbol typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
 
-                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = UseExplicitType(document, forEachStatement.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = UseExplicitType(document, forEachStatement.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic, "ToExplicit"));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
@@ -124,7 +125,7 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
                     var declarationExpression = (DeclarationExpressionSyntax)forEachVariableStatement.Variable;
                     ITypeSymbol typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
 
-                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic, "ToExplicit"));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
