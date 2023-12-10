@@ -187,5 +187,4 @@ public sealed class DeclareExplicitOrImplicitTypeAnalyzer : BaseDiagnosticAnalyz
         return declarationExpression.IsParentKind(SyntaxKind.Argument)
             && declarationExpression.Parent.IsParentKind(SyntaxKind.TupleExpression);
     }
-
 }

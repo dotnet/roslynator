@@ -279,7 +279,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_ImplicitWhenTypeIsObvious)
-        .AddAllowedCompilerDiagnosticId("CS8603"));
+            .AddAllowedCompilerDiagnosticId("CS8603"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
@@ -312,7 +312,7 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_ImplicitWhenTypeIsObvious)
-    .AddAllowedCompilerDiagnosticId("CS8603"));
+            .AddAllowedCompilerDiagnosticId("CS8603"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
