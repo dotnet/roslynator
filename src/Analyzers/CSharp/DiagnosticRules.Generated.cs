@@ -105,7 +105,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious, 
             title:              "Use explicit type instead of 'var' (when the type is not obvious)", 
-            messageFormat:      "Use explicit type instead of 'var'", 
+            messageFormat:      "([deprecated] Use RCS1264 instead) Use explicit type instead of 'var'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -117,7 +117,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarInForEach = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach, 
             title:              "Use explicit type instead of 'var' (foreach variable)", 
-            messageFormat:      "Use explicit type instead of 'var'", 
+            messageFormat:      "([deprecated] Use RCS1264 instead) Use explicit type instead of 'var'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsObvious = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious, 
             title:              "Use 'var' instead of explicit type (when the type is obvious)", 
-            messageFormat:      "Use 'var' instead of explicit type", 
+            messageFormat:      "([deprecated] Use RCS1264 instead) Use 'var' instead of explicit type", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -141,7 +141,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsObvious = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious, 
             title:              "Use explicit type instead of 'var' (when the type is obvious)", 
-            messageFormat:      "Use explicit type instead of 'var'", 
+            messageFormat:      "([deprecated] Use RCS1264 instead) Use explicit type instead of 'var'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -1617,7 +1617,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious, 
             title:              "Use 'var' instead of explicit type (when the type is not obvious)", 
-            messageFormat:      "Use 'var' instead of explicit type", 
+            messageFormat:      "([deprecated] Use RCS1264 instead) Use 'var' instead of explicit type", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -1629,7 +1629,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeInForEach = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach, 
             title:              "Use 'var' instead of explicit type (in foreach)", 
-            messageFormat:      "Use 'var' instead of explicit type", 
+            messageFormat:      "([deprecated] Use RCS1264 instead) Use 'var' instead of explicit type", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
@@ -2601,6 +2601,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.InvalidReferenceInDocumentationComment, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1264</summary>
+        public static readonly DiagnosticDescriptor DeclareExplicitOrImplicitType = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.DeclareExplicitOrImplicitType, 
+            title:              "Declare explicit/implicit type", 
+            messageFormat:      "Use {0} type", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.DeclareExplicitOrImplicitType, 
             customTags:         Array.Empty<string>());
 
     }

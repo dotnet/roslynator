@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1176UseVarInsteadOfExplicitTypeWhenTypeIsNotObviousTests : AbstractCSharpDiagnosticVerifier<UseVarInsteadOfExplicitTypeWhenTypeIsNotObviousAnalyzer, UseVarInsteadOfExplicitTypeCodeFixProvider>
+public class RCS1264DeclareExplicitOrImplicitTypeTests : AbstractCSharpDiagnosticVerifier<DeclareExplicitOrImplicitTypeAnalyzer, UseImplicitTypeCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareExplicitOrImplicitType;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -35,10 +35,10 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task Test_TupleExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -61,10 +61,10 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task Test_TupleExpression_Var()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -87,10 +87,10 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task Test_DiscardDesignation()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -113,10 +113,10 @@ class C
         }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task Test_TryParse_GenericType()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -153,10 +153,10 @@ class C
         TryParse<IntPtr>(""wasted"", out var i);
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_ForEach_DeclarationExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -173,30 +173,10 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
-    public async Task TestNoDiagnostic_ForEach_TupleExpression()
-    {
-        await VerifyNoDiagnosticAsync(@"
-using System.Collections.Generic;
-
-class C
-{
-    IEnumerable<(object x, string y)> M()
-    {
-        foreach ((object x, string y) in M())
-        {
-        }
-
-        return default;
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_ParseMethod()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -209,10 +189,10 @@ class C
         TimeSpan timeSpan = TimeSpan.Parse(null);
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_SpanStackAlloc()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -226,10 +206,10 @@ class C
         ReadOnlySpan<char> readonlySpan = stackalloc char[1];
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_DefaultLiteralWithSuppressNullableWarning()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -242,10 +222,10 @@ class C
         T result = default!;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_ImplicitObjectCreationExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -258,10 +238,10 @@ class C
         C x = new();
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_NullableReferenceType()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -277,10 +257,10 @@ class C
         Type? nullableType = type;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_InferredType_Invocation_IdentifierName()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -300,10 +280,10 @@ class C
         TryParse(""wasted"", out IntPtr i);
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_InferredType_Invocation_MemberAccessExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -324,10 +304,10 @@ static class C
         return false;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_FixedStatement()
     {
         await VerifyNoDiagnosticAsync(@"

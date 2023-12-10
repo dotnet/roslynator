@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1177UseVarInsteadOfExplicitTypeInForEachTests : AbstractCSharpDiagnosticVerifier<UseVarInsteadOfExplicitTypeInForEachAnalyzer, UseVarInsteadOfExplicitTypeCodeFixProvider>
+public class RCS1264DeclareExplicitOrImplicitTypeTests6 : AbstractCSharpDiagnosticVerifier<DeclareExplicitOrImplicitTypeAnalyzer, UseImplicitTypeCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseVarInsteadOfExplicitTypeInForEach;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareExplicitOrImplicitType;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -43,10 +43,10 @@ class C
         }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task Test_TupleExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -77,10 +77,10 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task Test_TupleExpression_Var()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -111,10 +111,44 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
+    public async Task Test_TupleExpression2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<(object x, string y)> M()
+    {
+        foreach ([|(object x, string y)|] in M())
+        {
+        }
+
+        return default;
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<(object x, string y)> M()
+    {
+        foreach (var (x, y) in M())
+        {
+        }
+
+        return default;
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Implicit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_TupleExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -127,6 +161,6 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_ImplicitWhenTypeIsObvious));
     }
 }

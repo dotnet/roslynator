@@ -13,9 +13,9 @@ using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseVarInsteadOfExplicitTypeCodeFixProvider))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseImplicitTypeCodeFixProvider))]
 [Shared]
-public sealed class UseVarInsteadOfExplicitTypeCodeFixProvider : BaseCodeFixProvider
+public sealed class UseImplicitTypeCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
@@ -24,7 +24,8 @@ public sealed class UseVarInsteadOfExplicitTypeCodeFixProvider : BaseCodeFixProv
             return ImmutableArray.Create(
                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious,
                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious,
-                DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach);
+                DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach,
+                DiagnosticIdentifiers.DeclareExplicitOrImplicitType);
         }
     }
 

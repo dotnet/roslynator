@@ -220,5 +220,6 @@ namespace Roslynator.CSharp
         public const string DisposeResourceAsynchronously = "RCS1261";
         public const string UnnecessaryRawStringLiteral = "RCS1262";
         public const string InvalidReferenceInDocumentationComment = "RCS1263";
+        public const string DeclareExplicitOrImplicitType = "RCS1264";
     }
 }

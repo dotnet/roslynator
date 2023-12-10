@@ -14,9 +14,9 @@ using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.CodeFixes;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitTypeInsteadOfVarCodeFixProvider))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitTypeCodeFixProvider))]
 [Shared]
-public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProvider
+public sealed class UseExplicitTypeCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
@@ -24,7 +24,8 @@ public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProv
         {
             return ImmutableArray.Create(
                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
-                DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious);
+                DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious,
+                DiagnosticIdentifiers.DeclareExplicitOrImplicitType);
         }
     }
 
@@ -32,8 +33,21 @@ public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProv
     {
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.VariableDeclaration, SyntaxKind.DeclarationExpression)))
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(
+                SyntaxKind.VariableDeclaration,
+                SyntaxKind.DeclarationExpression,
+                SyntaxKind.ForEachStatement,
+                SyntaxKind.ForEachVariableStatement)))
+        {
             return;
+        }
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -68,10 +82,8 @@ public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProv
 
             RegisterCodeFix(context, variableDeclaration.Type, typeSymbol, semanticModel);
         }
-        else
+        else if (node is DeclarationExpressionSyntax declarationExpression)
         {
-            var declarationExpression = (DeclarationExpressionSyntax)node;
-
             TypeSyntax type = declarationExpression.Type;
 
             var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
@@ -79,6 +91,28 @@ public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProv
             ITypeSymbol typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
 
             RegisterCodeFix(context, type, typeSymbol, semanticModel);
+        }
+        else if (node is ForEachStatementSyntax forEachStatement)
+        {
+            TypeSyntax type = forEachStatement.Type;
+
+            ITypeSymbol typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
+
+            CodeAction codeAction = CodeActionFactory.UseExplicitType(document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+        else if (node is ForEachVariableStatementSyntax forEachVariableStatement)
+        {
+            var declarationExpression2 = (DeclarationExpressionSyntax)forEachVariableStatement.Variable;
+
+            TypeSyntax type = declarationExpression2.Type;
+
+            ITypeSymbol typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
+
+            CodeAction codeAction = CodeActionFactory.UseExplicitType(document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 
