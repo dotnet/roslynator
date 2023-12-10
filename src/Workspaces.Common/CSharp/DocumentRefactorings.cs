@@ -58,7 +58,7 @@ internal static class DocumentRefactorings
             return await document.ReplaceNodeAsync(declarationExpression, tupleExpression, cancellationToken).ConfigureAwait(false);
         }
 
-        var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
         TypeSyntax newType = ChangeType(type, typeSymbol, semanticModel);
 
