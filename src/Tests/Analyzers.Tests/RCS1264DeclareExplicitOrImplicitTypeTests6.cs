@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1264DeclareExplicitOrImplicitTypeTests6 : AbstractCSharpDiagnosticVerifier<DeclareExplicitOrImplicitTypeAnalyzer, UseImplicitTypeCodeFixProvider>
+public class RCS1264DeclareExplicitOrImplicitTypeTests6 : AbstractCSharpDiagnosticVerifier<DeclareExplicitOrImplicitTypeAnalyzer, DeclareExplicitOrImplicitTypeCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareExplicitOrImplicitType;
 
