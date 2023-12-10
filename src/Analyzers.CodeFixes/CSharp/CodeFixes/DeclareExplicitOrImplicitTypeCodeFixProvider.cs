@@ -25,7 +25,7 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
-        var root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
         if (!TryFindFirstAncestorOrSelf(
             root,
@@ -42,10 +42,10 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
             return;
         }
 
-        var document = context.Document;
-        var diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-        var semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
         if (node is TypeSyntax type)
         {
@@ -56,7 +56,7 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
             }
             else
             {
-                var codeAction = ChangeTypeToVar(document, type, equivalenceKey: GetEquivalenceKey(diagnostic));
+                Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = ChangeTypeToVar(document, type, equivalenceKey: GetEquivalenceKey(diagnostic));
                 context.RegisterCodeFix(codeAction, diagnostic);
                 return;
             }
@@ -66,14 +66,14 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
         {
             case TupleExpressionSyntax tupleExpression:
                 {
-                    var codeAction = ChangeTypeToVar(document, tupleExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = ChangeTypeToVar(document, tupleExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
             case VariableDeclarationSyntax variableDeclaration:
                 {
-                    var value = variableDeclaration.Variables[0].Initializer.Value;
-                    var typeSymbol = semanticModel.GetTypeSymbol(value, context.CancellationToken);
+                    ExpressionSyntax value = variableDeclaration.Variables[0].Initializer.Value;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(value, context.CancellationToken);
 
                     if (typeSymbol is null)
                     {
@@ -98,33 +98,33 @@ public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixPr
                         }
                     }
 
-                    var codeAction = UseExplicitType(document, variableDeclaration.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = UseExplicitType(document, variableDeclaration.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
             case DeclarationExpressionSyntax declarationExpression:
                 {
                     var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
-                    var typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
+                    ITypeSymbol typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
 
-                    var codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
             case ForEachStatementSyntax forEachStatement:
                 {
-                    var typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
+                    ITypeSymbol typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
 
-                    var codeAction = UseExplicitType(document, forEachStatement.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = UseExplicitType(document, forEachStatement.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
             case ForEachVariableStatementSyntax forEachVariableStatement:
                 {
                     var declarationExpression = (DeclarationExpressionSyntax)forEachVariableStatement.Variable;
-                    var typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
+                    ITypeSymbol typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
 
-                    var codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                    Microsoft.CodeAnalysis.CodeActions.CodeAction codeAction = UseExplicitType(document, declarationExpression.Type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
