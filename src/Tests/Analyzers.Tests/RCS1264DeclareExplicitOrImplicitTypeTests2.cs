@@ -131,6 +131,38 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
+    public async Task Test_NestedTuple()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        [|var|] ((x, (y, y2)), z) = M2();
+    }
+
+    ((string?, (string, string?)), string) M2() => default(((string?, (string, string?)), string));
+}
+", @"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        ((string? x, (string y, string? y2)), string z) = M2();
+    }
+
+    ((string?, (string, string?)), string) M2() => default(((string?, (string, string?)), string));
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TypeStyle, ConfigOptionValues.TypeStyle_Explicit));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareExplicitOrImplicitType)]
     public async Task TestNoDiagnostic_ForEach_DeclarationExpression()
     {
         await VerifyNoDiagnosticAsync(@"

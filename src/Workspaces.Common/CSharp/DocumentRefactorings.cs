@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -107,54 +108,97 @@ internal static class DocumentRefactorings
         if (!typeSymbol.SupportsExplicitDeclaration())
             throw new ArgumentException($"Type '{typeSymbol.ToDisplayString()}' does not support explicit declaration.", nameof(typeSymbol));
 
-        var tupleExpression = (TupleExpressionSyntax)ParseExpression(typeSymbol.ToDisplayString(format));
+        var tupleType = (TupleTypeSyntax)ParseTypeName(typeSymbol.ToDisplayString(format));
+        var sb = new StringBuilder();
+
+        ConstructTupleExpression(sb, tupleType, designation);
+
+        var tupleExpression = (TupleExpressionSyntax)ParseExpression(sb.ToString());
+
+        static void ConstructTupleExpression(
+            StringBuilder sb,
+            TupleTypeSyntax tupleType,
+            ParenthesizedVariableDesignationSyntax designation)
+        {
+            sb.Append('(');
+
+            var isFirst = true;
+            for (int i = 0; i < tupleType.Elements.Count; i++)
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    sb.Append(", ");
+                }
+
+                VariableDesignationSyntax variable = designation.Variables[i];
+                TupleElementSyntax element = tupleType.Elements[i];
+
+                if (element.Type is TupleTypeSyntax tupleType2
+                    && variable is ParenthesizedVariableDesignationSyntax designation2)
+                {
+                    ConstructTupleExpression(sb, tupleType2, designation2);
+                }
+                else
+                {
+                    sb.Append(element.Type);
+
+                    if (variable is SingleVariableDesignationSyntax singleDesignation)
+                    {
+                        sb.Append(' ');
+                        sb.Append(singleDesignation.Identifier);
+                    }
+                    else if (variable is DiscardDesignationSyntax)
+                    {
+                        sb.Append(" _");
+                    }
+                    else
+                    {
+                        SyntaxDebug.Fail(variable);
+                        sb.Append(" _");
+                    }
+                }
+            }
+
+            sb.Append(')');
+        }
 
         SeparatedSyntaxList<VariableDesignationSyntax> variables = designation.Variables;
         SeparatedSyntaxList<ArgumentSyntax> arguments = tupleExpression.Arguments;
-        SeparatedSyntaxList<ArgumentSyntax> newArguments = arguments.ForEach(argument =>
-        {
-            VariableDesignationSyntax variableDesignation = variables[arguments.IndexOf(argument)];
 
-            if (argument.Expression is DeclarationExpressionSyntax declarationExpression)
+        tupleExpression = tupleExpression.ReplaceNodes(
+            tupleExpression
+                .DescendantNodes()
+                .Where(f => f is ArgumentSyntax argument && !argument.Expression.IsKind(SyntaxKind.TupleExpression)),
+            (node, _) =>
             {
-                return argument.WithExpression(
-                    declarationExpression.Update(
-                        declarationExpression.Type.WithSimplifierAnnotation(),
-                        variableDesignation));
-            }
+                var argument = (ArgumentSyntax)node;
 
-            if (argument.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
-            {
-                return argument.WithExpression(
-                    DeclarationExpression(
-                        ParseTypeName(argument.Expression.ToString()).WithSimplifierAnnotation(),
-                        variableDesignation));
-            }
+                if (argument.Expression is DeclarationExpressionSyntax declarationExpression)
+                {
+                    return argument.WithExpression(
+                        declarationExpression.WithType(
+                            declarationExpression.Type.WithSimplifierAnnotation()));
+                }
 
-            SyntaxDebug.Fail(argument.Expression);
+                if (argument.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
+                {
+                    VariableDesignationSyntax variableDesignation = variables[arguments.IndexOf(argument)];
 
-            return argument;
-        });
+                    return argument.WithExpression(
+                        DeclarationExpression(
+                            ParseTypeName(argument.Expression.ToString()).WithSimplifierAnnotation(),
+                            variableDesignation));
+                }
 
-        //SeparatedSyntaxList<ArgumentSyntax> newArguments = tupleExpression
-        //    .Arguments
-        //    .Select(argument =>
-        //    {
-        //        if (argument.Expression is DeclarationExpressionSyntax declarationExpression)
-        //            return argument.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
+                SyntaxDebug.Fail(tupleExpression);
+                return node;
+            });
 
-        //        if (argument.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
-        //        {
-        //            return argument.WithExpression(DeclarationExpression(ParseTypeName(argument.Expression.ToString()).WithSimplifierAnnotation(), DiscardDesignation()));
-        //        }
-
-        //        SyntaxDebug.Fail(argument.Expression);
-
-        //        return argument;
-        //    })
-        //    .ToSeparatedSyntaxList();
-
-        return tupleExpression.WithArguments(newArguments);
+        return tupleExpression;
     }
 
     public static Task<Document> ChangeTypeToVarAsync(

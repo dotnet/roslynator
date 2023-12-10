@@ -430,6 +430,13 @@ internal static class CSharpTypeAnalysis
         if (!type.IsVar)
             return false;
 
+        if (declarationExpression.Parent is AssignmentExpressionSyntax assignment)
+        {
+            ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(assignment.Right, cancellationToken);
+
+            return typeSymbol?.SupportsExplicitDeclaration() == true;
+        }
+
         switch (declarationExpression.Designation)
         {
             case SingleVariableDesignationSyntax singleVariableDesignation:
@@ -444,10 +451,10 @@ internal static class CSharpTypeAnalysis
                 {
                     foreach (VariableDesignationSyntax variableDesignation in parenthesizedVariableDesignation.Variables)
                     {
-                        if (variableDesignation is not SingleVariableDesignationSyntax singleVariableDesignation2)
+                        if (variableDesignation is not SingleVariableDesignationSyntax)
                             return false;
 
-                        if (!IsLocalThatSupportsExplicitDeclaration(singleVariableDesignation2))
+                        if (!IsLocalThatSupportsExplicitDeclaration(variableDesignation))
                             return false;
                     }
 

@@ -102,7 +102,8 @@ public sealed class DeclareExplicitOrImplicitTypeAnalyzer : BaseDiagnosticAnalyz
             }
             else
             {
-                if (!IsObviousTupleExpression(declarationExpression)
+                if (!IsObvious(declarationExpression)
+                    && !IsObviousTupleExpression(declarationExpression)
                     && CSharpTypeAnalysis.IsImplicitThatCanBeExplicit(declarationExpression, context.SemanticModel, TypeAppearance.Obvious, context.CancellationToken))
                 {
                     ReportImplicitToExplicit(context, declarationExpression.Type);
@@ -112,6 +113,12 @@ public sealed class DeclareExplicitOrImplicitTypeAnalyzer : BaseDiagnosticAnalyz
                 {
                     return IsPartOfTupleExpression(declarationExpression)
                         && declarationExpression.Parent.Parent.Parent is AssignmentExpressionSyntax assignmentExpression
+                        && assignmentExpression.Right.IsKind(SyntaxKind.DefaultExpression);
+                }
+
+                static bool IsObvious(DeclarationExpressionSyntax declarationExpression)
+                {
+                    return declarationExpression.Parent is AssignmentExpressionSyntax assignmentExpression
                         && assignmentExpression.Right.IsKind(SyntaxKind.DefaultExpression);
                 }
             }
