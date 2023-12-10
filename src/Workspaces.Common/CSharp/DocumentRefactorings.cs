@@ -113,15 +113,22 @@ internal static class DocumentRefactorings
         SeparatedSyntaxList<ArgumentSyntax> arguments = tupleExpression.Arguments;
         SeparatedSyntaxList<ArgumentSyntax> newArguments = arguments.ForEach(argument =>
         {
+            VariableDesignationSyntax variableDesignation = variables[arguments.IndexOf(argument)];
+
             if (argument.Expression is DeclarationExpressionSyntax declarationExpression)
-                return argument.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
+            {
+                return argument.WithExpression(
+                    declarationExpression.Update(
+                        declarationExpression.Type.WithSimplifierAnnotation(),
+                        variableDesignation));
+            }
 
             if (argument.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
             {
                 return argument.WithExpression(
                     DeclarationExpression(
                         ParseTypeName(argument.Expression.ToString()).WithSimplifierAnnotation(),
-                        variables[arguments.IndexOf(argument)]));
+                        variableDesignation));
             }
 
             SyntaxDebug.Fail(argument.Expression);

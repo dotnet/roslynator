@@ -175,7 +175,7 @@ class C
 {
     void M(object p)
     {
-        [|var|] (x, y) = GetValue();
+        [|var|] (x2, y2) = GetValue();
     }
 
     (string x, string? y) GetValue()
@@ -189,7 +189,7 @@ class C
 {
     void M(object p)
     {
-        (string x, string? y) = GetValue();
+        (string x2, string? y2) = GetValue();
     }
 
     (string x, string? y) GetValue()
