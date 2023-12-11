@@ -104,7 +104,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1008</summary>
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious, 
-            title:              "Use explicit type instead of 'var' (when the type is not obvious)", 
+            title:              "[deprecated] Use explicit type instead of 'var' (when the type is not obvious)", 
             messageFormat:      "([deprecated] Use RCS1264 instead) Use explicit type instead of 'var'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -116,7 +116,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1009</summary>
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarInForEach = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach, 
-            title:              "Use explicit type instead of 'var' (foreach variable)", 
+            title:              "[deprecated] Use explicit type instead of 'var' (foreach variable)", 
             messageFormat:      "([deprecated] Use RCS1264 instead) Use explicit type instead of 'var'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1010</summary>
         public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsObvious = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious, 
-            title:              "Use 'var' instead of explicit type (when the type is obvious)", 
+            title:              "[deprecated] Use 'var' instead of explicit type (when the type is obvious)", 
             messageFormat:      "([deprecated] Use RCS1264 instead) Use 'var' instead of explicit type", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -140,7 +140,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1012</summary>
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsObvious = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious, 
-            title:              "Use explicit type instead of 'var' (when the type is obvious)", 
+            title:              "[deprecated] Use explicit type instead of 'var' (when the type is obvious)", 
             messageFormat:      "([deprecated] Use RCS1264 instead) Use explicit type instead of 'var'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -304,7 +304,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1035</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantCommaInInitializer = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantCommaInInitializer, 
-            title:              "Remove redundant comma in initializer", 
+            title:              "[deprecated] Remove redundant comma in initializer", 
             messageFormat:      "([deprecated] Use RCS1260 instead) Remove redundant comma in initializer", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -340,7 +340,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1038</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyStatement = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyStatement, 
-            title:              "Remove empty statement", 
+            title:              "[deprecated] Remove empty statement", 
             messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty statement", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -364,7 +364,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1040</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyElseClause = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyElseClause, 
-            title:              "Remove empty 'else' clause", 
+            title:              "[deprecated] Remove empty 'else' clause", 
             messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty 'else' clause", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -376,7 +376,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1041</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyInitializer = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyInitializer, 
-            title:              "Remove empty initializer", 
+            title:              "[deprecated] Remove empty initializer", 
             messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty initializer", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -590,7 +590,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1063</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of do statement to create an infinite loop", 
+            title:              "[deprecated] Avoid usage of do statement to create an infinite loop", 
             messageFormat:      "([deprecated] Use RCS1252 instead) Use while statement to create an infinite loop", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -602,7 +602,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1064</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfForStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of for statement to create an infinite loop", 
+            title:              "[deprecated] Avoid usage of for statement to create an infinite loop", 
             messageFormat:      "([deprecated] Use RCS1252 instead) Use while statement to create an infinite loop", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -614,7 +614,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1065</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfWhileStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of while statement to create an infinite loop", 
+            title:              "[deprecated] Avoid usage of while statement to create an infinite loop", 
             messageFormat:      "([deprecated] Use RCS1252 instead) Use for statement to create an infinite loop", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -626,7 +626,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1066</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyFinallyClause = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyFinallyClause, 
-            title:              "Remove empty 'finally' clause", 
+            title:              "[deprecated] Remove empty 'finally' clause", 
             messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty 'finally' clause", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -688,7 +688,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1072</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyNamespaceDeclaration = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration, 
-            title:              "Remove empty namespace declaration", 
+            title:              "[deprecated] Remove empty namespace declaration", 
             messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty namespace declaration", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -850,7 +850,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1091</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyRegion = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyRegion, 
-            title:              "Remove empty region", 
+            title:              "[deprecated] Remove empty region", 
             messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty region", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -936,7 +936,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1100</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnSingleLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine, 
-            title:              "Format documentation summary on a single line", 
+            title:              "[deprecated] Format documentation summary on a single line", 
             messageFormat:      "([deprecated] Use RCS1253 instead) Format documentation summary on a single line", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -948,7 +948,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1101</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnMultipleLines = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines, 
-            title:              "Format documentation summary on multiple lines", 
+            title:              "[deprecated] Format documentation summary on multiple lines", 
             messageFormat:      "([deprecated] Use RCS1253 instead) Format documentation summary on multiple lines", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -1008,7 +1008,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1106</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyDestructor = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyDestructor, 
-            title:              "Remove empty destructor", 
+            title:              "[deprecated] Remove empty destructor", 
             messageFormat:      "([deprecated] Use RCS1259 instead) Remove empty destructor", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -1616,7 +1616,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1176</summary>
         public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious, 
-            title:              "Use 'var' instead of explicit type (when the type is not obvious)", 
+            title:              "[deprecated] Use 'var' instead of explicit type (when the type is not obvious)", 
             messageFormat:      "([deprecated] Use RCS1264 instead) Use 'var' instead of explicit type", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -1628,7 +1628,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1177</summary>
         public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeInForEach = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach, 
-            title:              "Use 'var' instead of explicit type (in foreach)", 
+            title:              "[deprecated] Use 'var' instead of explicit type (in foreach)", 
             messageFormat:      "([deprecated] Use RCS1264 instead) Use 'var' instead of explicit type", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -2294,7 +2294,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1237</summary>
         public static readonly DiagnosticDescriptor UseBitShiftOperator = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseBitShiftOperator, 
-            title:              "Use bit shift operator", 
+            title:              "[deprecated] Use bit shift operator", 
             messageFormat:      "([deprecated] Use RCS1254 instead) Use bit shift operator", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 

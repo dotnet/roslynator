@@ -109,6 +109,11 @@ public class DiagnosticRulesGenerator
 
         idExpression = ModifyIdExpression(idExpression);
 
+        string title = parent?.Title ?? analyzer.Title;
+
+        if (analyzer.Status == AnalyzerStatus.Obsolete)
+            title = "[deprecated] " + title;
+
         FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
             (analyzer.Status == AnalyzerStatus.Disabled) ? Modifiers.Internal_Static_ReadOnly() : Modifiers.Public_Static_ReadOnly(),
             IdentifierName("DiagnosticDescriptor"),
@@ -122,7 +127,7 @@ public class DiagnosticRulesGenerator
                         idExpression),
                     Argument(
                         NameColon("title"),
-                        StringLiteralExpression(parent?.Title ?? analyzer.Title)),
+                        StringLiteralExpression(title)),
                     Argument(
                         NameColon("messageFormat"),
                         StringLiteralExpression(analyzer.MessageFormat)),
