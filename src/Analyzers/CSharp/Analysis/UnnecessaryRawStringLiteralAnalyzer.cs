@@ -66,6 +66,9 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         if (!startToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken))
             return;
 
+        if (startToken.ValueText.Contains("$$"))
+            return;
+
         foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
         {
             if (content is InterpolatedStringTextSyntax interpolatedStringText)

@@ -113,4 +113,19 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    public async Task TestNoDiagnostic_MultipleDollarSigns()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string s = string.Empty;
+        s = $$""""""{{s}}{s}"""""";
+    }
+}
+");
+    }
 }
