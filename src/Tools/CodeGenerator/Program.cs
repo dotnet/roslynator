@@ -46,10 +46,6 @@ internal static class Program
             RefactoringIdentifiersGenerator.Generate(refactorings, obsolete: false, comparer: comparer));
 
         WriteCompilationUnit(
-            @"Refactorings\CSharp\RefactoringIdentifiers.Deprecated.Generated.cs",
-            RefactoringIdentifiersGenerator.Generate(refactorings, obsolete: true, comparer: comparer));
-
-        WriteCompilationUnit(
             @"VisualStudio\RefactoringsOptionsPage.Generated.cs",
             RefactoringsOptionsPageGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer));
 
@@ -140,17 +136,8 @@ internal static class Program
                 normalizeWhitespace: false);
 
             WriteCompilationUnit(
-                Path.Combine(dirPath, $"{descriptorsClassName}.Deprecated.Generated.cs"),
-                DiagnosticRulesGenerators.Default.Generate(analyzers.Where(f => f.Status == AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName, categoryName: categoryName),
-                normalizeWhitespace: false);
-
-            WriteCompilationUnit(
                 Path.Combine(dirPath, $"{identifiersClassName}.Generated.cs"),
                 DiagnosticIdentifiersGenerator.Generate(analyzers.Where(f => f.Status != AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: identifiersClassName));
-
-            WriteCompilationUnit(
-                Path.Combine(dirPath, $"{identifiersClassName}.Deprecated.Generated.cs"),
-                DiagnosticIdentifiersGenerator.Generate(analyzers.Where(f => f.Status == AnalyzerStatus.Disabled), comparer: comparer, @namespace: @namespace, className: identifiersClassName));
         }
 
         void WriteCompilationUnit(
