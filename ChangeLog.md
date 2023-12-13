@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [TestFramework] Bump `xunit.assert` to `2.6.2` ([PR](https://github.com/dotnet/roslynator/pull/1332))
 - Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1325))
 
+### Fixed
+
+- Fix analyzer [RCS1262](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1262) ([PR](https://github.com/dotnet/roslynator/pull/1339))
+
 ## [4.7.0] - 2023-12-03
 
 ### Added
