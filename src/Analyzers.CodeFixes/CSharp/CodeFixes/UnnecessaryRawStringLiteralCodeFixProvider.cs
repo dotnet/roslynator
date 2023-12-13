@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -71,9 +72,26 @@ public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProv
         InterpolatedStringExpressionSyntax interpolatedString,
         CancellationToken cancellationToken)
     {
-        string newText = interpolatedString.ToString();
-        int startIndex = interpolatedString.StringStartToken.Text.Length;
-        newText = "$\"" + newText.Substring(startIndex, newText.Length - startIndex - interpolatedString.StringEndToken.Text.Length) + "\"";
+        InterpolatedStringExpressionSyntax newInterpolatedString = interpolatedString.ReplaceTokens(
+            interpolatedString
+                .Contents
+                .OfType<InterpolationSyntax>()
+                .SelectMany(f => new SyntaxToken[] { f.OpenBraceToken, f.CloseBraceToken }),
+            (token, _) =>
+            {
+                if (token.IsKind(SyntaxKind.OpenBraceToken))
+                {
+                    return SyntaxFactory.Token(SyntaxKind.OpenBraceToken).WithTriviaFrom(token);
+                }
+                else
+                {
+                    return SyntaxFactory.Token(SyntaxKind.CloseBraceToken).WithTriviaFrom(token);
+                }
+            });
+
+        string text = newInterpolatedString.ToString();
+        int startIndex = newInterpolatedString.StringStartToken.Text.Length;
+        string newText = "$\"" + text.Substring(startIndex, text.Length - startIndex - newInterpolatedString.StringEndToken.Text.Length) + "\"";
 
         return document.WithTextChangeAsync(interpolatedString.Span, newText, cancellationToken);
     }
