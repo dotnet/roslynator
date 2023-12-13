@@ -76,7 +76,7 @@ public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProv
             interpolatedString
                 .Contents
                 .OfType<InterpolationSyntax>()
-                .SelectMany(f => new SyntaxToken[] { f.OpenBraceToken, f.CloseBraceToken }),
+                .SelectMany(interpolation => new SyntaxToken[] { interpolation.OpenBraceToken, interpolation.CloseBraceToken }),
             (token, _) =>
             {
                 if (token.IsKind(SyntaxKind.OpenBraceToken))
