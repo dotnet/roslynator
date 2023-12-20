@@ -97,7 +97,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                     catch (ProjectOrSolutionLoadException ex)
                     {
                         WriteLine(ex.Message, Colors.Message_Warning, Verbosity.Minimal);
-                        WriteError(ex.InnerException, ConsoleColor.Yellow, Verbosity.Minimal);
+                        WriteError(ex.InnerException);
                         status = CommandStatus.Fail;
                         continue;
                     }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using static Roslynator.Logger;
@@ -63,99 +62,6 @@ internal static class DelegateFactory
         return result is not null;
     }
 
-    public static bool TryCreateFromCodeFile<TDelegate>(
-        string filePath,
-        Type returnType,
-        Type parameterType,
-        out TDelegate result) where TDelegate : Delegate
-    {
-        if (!ParseHelpers.TryReadAllText(filePath, out string content, f => Logger.WriteError(f)))
-        {
-            result = null;
-            return false;
-        }
-
-        Assembly assembly = AssemblyFactory.FromSourceText(content);
-
-        if (assembly is null)
-        {
-            result = null;
-            return false;
-        }
-
-        result = CreateDelegateAndCatchIfThrows<TDelegate>(assembly, returnType, new Type[] { parameterType });
-        return result is not null;
-    }
-
-    public static bool TryCreateFromAssembly<TDelegate>(
-        string path,
-        Type returnType,
-        Type parameterType,
-        out TDelegate result) where TDelegate : Delegate
-    {
-        return TryCreateFromAssembly(path, returnType, new Type[] { parameterType }, out result);
-    }
-
-    private static bool TryCreateFromAssembly<TDelegate>(
-        string path,
-        Type returnType,
-        Type[] parameters,
-        out TDelegate result) where TDelegate : Delegate
-    {
-        result = default;
-
-        if (path is null)
-            return false;
-
-        int index = path.LastIndexOf(',');
-
-        if (index <= 0
-            || index >= path.Length - 1)
-        {
-            WriteError($"Invalid value: {path}. "
-                + "The expected format is \"MyLib.dll,MyNamespace.MyClass.MyMethod\".");
-
-            return false;
-        }
-
-        string assemblyName = path.Substring(0, index);
-
-        string methodFullName = path.Substring(index + 1);
-
-        index = methodFullName.LastIndexOf('.');
-
-        if (index < 0
-            || index >= path.Length - 1)
-        {
-            WriteError($"Invalid method full name: {methodFullName}. "
-                + "The expected format is \"MyNamespace.MyClass.MyMethod\".");
-
-            return false;
-        }
-
-        Assembly assembly;
-
-        try
-        {
-            assembly = Assembly.LoadFrom(assemblyName);
-        }
-        catch (Exception ex) when (ex is ArgumentException
-            || ex is IOException
-            || ex is BadImageFormatException)
-        {
-            Logger.WriteError(ex);
-            return false;
-        }
-
-        string typeName = methodFullName.Substring(0, index);
-
-        string methodName = methodFullName.Substring(index + 1);
-
-        result = CreateDelegateAndCatchIfThrows<TDelegate>(assembly, returnType, parameters, typeName, methodName);
-
-        return result is not null;
-    }
-
     private static TDelegate CreateDelegateAndCatchIfThrows<TDelegate>(
         Assembly assembly,
         Type returnType,
@@ -174,7 +80,7 @@ internal static class DelegateFactory
             || ex is MissingMemberException
             || ex is TypeLoadException)
         {
-            Logger.WriteError(ex);
+            WriteCriticalError(ex);
             return null;
         }
     }

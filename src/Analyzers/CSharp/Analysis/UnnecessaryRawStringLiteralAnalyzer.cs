@@ -48,7 +48,7 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
 
         string text = info.Text;
 
-        if (ContainsBackSlashQuote(text, info.QuoteCount, text.Length - (info.QuoteCount * 2)))
+        if (ContainsBackSlashOrQuote(text, info.QuoteCount, text.Length - (info.QuoteCount * 2)))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(
@@ -72,18 +72,20 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
             {
                 string text = interpolatedStringText.TextToken.Text;
 
-                if (ContainsBackSlashQuote(text, 0, text.Length))
+                if (ContainsBackSlashOrQuoteOrOpenBrace(text, 0, text.Length))
                     return;
             }
         }
 
+        int offset = startToken.ValueText.LastIndexOf('$') + 2;
+
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UnnecessaryRawStringLiteral,
-            Location.Create(interpolatedString.SyntaxTree, new TextSpan(startToken.SpanStart + 2, startToken.Span.Length - 2)));
+            Location.Create(interpolatedString.SyntaxTree, new TextSpan(startToken.SpanStart + offset, startToken.Span.Length - offset)));
     }
 
-    private static bool ContainsBackSlashQuote(string text, int start, int length)
+    private static bool ContainsBackSlashOrQuote(string text, int start, int length)
     {
         for (int pos = start; pos < start + length; pos++)
         {
@@ -91,6 +93,22 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
             {
                 case '\\':
                 case '"':
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool ContainsBackSlashOrQuoteOrOpenBrace(string text, int start, int length)
+    {
+        for (int pos = start; pos < start + length; pos++)
+        {
+            switch (text[pos])
+            {
+                case '\\':
+                case '"':
+                case '{':
                     return true;
             }
         }
