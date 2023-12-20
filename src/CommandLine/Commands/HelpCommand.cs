@@ -47,7 +47,7 @@ internal class HelpCommand
         }
         catch (ArgumentException ex)
         {
-            WriteError(ex);
+            WriteCriticalError(ex);
             return CommandStatus.Fail;
         }
     }

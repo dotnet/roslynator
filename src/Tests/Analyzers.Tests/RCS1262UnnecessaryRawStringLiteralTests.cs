@@ -59,6 +59,32 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    public async Task Test_InterpolatedString_MultipleDollarSigns()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string s1 = """";
+        string s2 = """";
+        string s3 = $$$""[|""""|] {{{s1}}} foo {{{s2}}} """""";
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string s1 = """";
+        string s2 = """";
+        string s3 = $"" {s1} foo {s2} "";
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_ContainsQuote()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -109,6 +135,21 @@ class C
     void M()
     {
         string s = $"""""" {""""} \t """""";
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
+    public async Task TestNoDiagnostic_MultipleDollarSigns()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string s = string.Empty;
+        s = $$""""""{{s}}{s}"""""";
     }
 }
 ");

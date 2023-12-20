@@ -215,7 +215,7 @@ internal static class Program
             || ex is FileNotFoundException
             || ex is InvalidOperationException)
         {
-            WriteError(ex);
+            WriteCriticalError(ex);
         }
         finally
         {
