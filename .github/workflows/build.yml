@@ -153,6 +153,7 @@ jobs:
     env:
       Version: ${{ needs.pre_build.outputs.version }}
       DeployExtension: false
+      RoslynatorExtensionWithAnalyzers: true
     defaults:
       run:
         working-directory: src/VisualStudio
@@ -161,7 +162,7 @@ jobs:
       - run: (Get-Content source.extension-with-analyzers.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension-with-analyzers.vsixmanifest
       - run: dotnet restore
       - uses: microsoft/setup-msbuild@v1.3.1
-      - run: msbuild -m /p:RoslynatorExtensionWithAnalyzers=true
+      - run: msbuild -m
       - uses: actions/upload-artifact@v3
         with:
           name: vs_extension_with_analyzers
