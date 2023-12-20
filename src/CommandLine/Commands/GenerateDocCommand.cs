@@ -215,7 +215,7 @@ internal class GenerateDocCommand : MSBuildWorkspaceCommand<CommandResult>
             }
             catch (IOException ex)
             {
-                WriteError(ex);
+                WriteCriticalError(ex);
                 return CommandResults.Fail;
             }
         }

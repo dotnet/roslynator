@@ -1,14 +1,17 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 
 namespace Roslynator;
 
 internal sealed class ConsoleWriter : TextWriterWithVerbosity
 {
-    public static ConsoleWriter Instance { get; } = new();
+    public static ConsoleWriter Out { get; } = new(Console.Out, Console.Out.FormatProvider);
 
-    private ConsoleWriter() : base(Console.Out, Console.Out.FormatProvider)
+    public static ConsoleWriter Error { get; } = new(Console.Error, Console.Error.FormatProvider);
+
+    private ConsoleWriter(TextWriter writer, IFormatProvider formatProvider) : base(writer, formatProvider)
     {
     }
 

@@ -37,7 +37,7 @@ internal static class ParseHelpers
                 return false;
             }
 
-            if (!TryReadAllText(filePath, out filePath, ex => WriteError(ex)))
+            if (!TryReadAllText(filePath, out filePath, ex => WriteCriticalError(ex)))
                 return false;
 
             return DelegateFactory.TryCreateFromSourceText(filePath, returnType, parameterType, out func);
