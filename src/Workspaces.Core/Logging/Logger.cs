@@ -6,7 +6,9 @@ namespace Roslynator;
 
 internal static class Logger
 {
-    public static ConsoleWriter ConsoleOut { get; } = ConsoleWriter.Instance;
+    public static ConsoleWriter ConsoleOut { get; } = ConsoleWriter.Out;
+
+    public static ConsoleWriter ConsoleError { get; } = ConsoleWriter.Error;
 
     public static TextWriterWithVerbosity? Out { get; set; }
 
@@ -268,42 +270,31 @@ internal static class Logger
         Out?.WriteLine(value);
     }
 
+    public static void WriteCriticalError(Exception exception)
+    {
+        WriteError(exception, isCritical: true, ConsoleColor.Red, Verbosity.Minimal);
+    }
+
     public static void WriteError(
         Exception exception,
-        ConsoleColor color = ConsoleColor.Red,
-        Verbosity verbosity = Verbosity.Quiet)
+        ConsoleColor color = ConsoleColor.Yellow,
+        Verbosity verbosity = Verbosity.Minimal)
+    {
+        WriteError(exception, isCritical: false, color, verbosity);
+    }
+
+    private static void WriteError(Exception exception, bool isCritical, ConsoleColor color, Verbosity verbosity)
     {
         var colors = new ConsoleColors(color);
 
-        string message = exception.Message;
-#if DEBUG
-        if (ShouldWrite(Verbosity.Diagnostic))
-            message = exception.ToString();
-#endif
-        WriteLine(message, colors, verbosity);
+        ConsoleError.WriteLine(
+            (isCritical || ConsoleError.ShouldWrite(Verbosity.Diagnostic)) ? exception.ToString() : exception.Message,
+            colors,
+            verbosity: verbosity);
 
-        if (exception is AggregateException aggregateException)
-            WriteInnerExceptions(aggregateException, "");
-
-        void WriteInnerExceptions(AggregateException aggregateException, string indent)
-        {
-            indent += "  ";
-
-            foreach (Exception innerException in aggregateException.InnerExceptions)
-            {
-                string message = innerException.Message;
-#if DEBUG
-                if (ShouldWrite(Verbosity.Diagnostic))
-                    message = innerException.ToString();
-#endif
-                WriteLine(indent + "Inner exception: " + message, colors, verbosity);
-
-                if (innerException is AggregateException aggregateException2)
-                    WriteInnerExceptions(aggregateException2, indent);
-            }
-
-            indent = indent.Substring(2);
-        }
+        Out?.WriteLine(
+            (isCritical || Out.ShouldWrite(Verbosity.Diagnostic)) ? exception.ToString() : exception.Message,
+            verbosity: verbosity);
     }
 
     public static bool ShouldWrite(Verbosity verbosity)
