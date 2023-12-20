@@ -186,7 +186,7 @@ internal class MigrateCommand
         catch (XmlException ex)
         {
             WriteLine($"Cannot load '{path}'", Colors.Message_Warning, Verbosity.Minimal);
-            WriteError(ex, verbosity: Verbosity.Minimal);
+            WriteError(ex);
             return CommandStatus.NotSuccess;
         }
 
@@ -287,7 +287,7 @@ internal class MigrateCommand
         catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
         {
             WriteLine($"Cannot load '{path}'", Verbosity.Minimal);
-            WriteError(ex, verbosity: Verbosity.Minimal);
+            WriteError(ex);
             return CommandStatus.NotSuccess;
         }
 
@@ -355,7 +355,7 @@ internal class MigrateCommand
                 catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
                 {
                     WriteLine($"Cannot save '{path}'", Colors.Message_Warning, Verbosity.Minimal);
-                    WriteError(ex, verbosity: Verbosity.Minimal);
+                    WriteError(ex);
                     return CommandStatus.NotSuccess;
                 }
             }
