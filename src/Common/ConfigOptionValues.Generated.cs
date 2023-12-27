@@ -55,10 +55,10 @@ namespace Roslynator
         public const string TrailingCommaStyle_Include                                                  = "include";
         public const string TrailingCommaStyle_Omit                                                     = "omit";
         public const string TrailingCommaStyle_OmitWhenSingleLine                                       = "omit_when_single_line";
-        public const string TypeStyle_Explicit                                                          = "explicit";
-        public const string TypeStyle_Implicit                                                          = "implicit";
-        public const string TypeStyle_ImplicitWhenTypeIsObvious                                         = "implicit_when_type_is_obvious";
         public const string UseAnonymousFunctionOrMethodGroup_AnonymousFunction                         = "anonymous_function";
         public const string UseAnonymousFunctionOrMethodGroup_MethodGroup                               = "method_group";
+        public const string UseVar_Always                                                               = "always";
+        public const string UseVar_Never                                                                = "never";
+        public const string UseVar_WhenTypeIsObvious                                                    = "when_type_is_obvious";
     }
 }

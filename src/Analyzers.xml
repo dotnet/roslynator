@@ -7647,13 +7647,13 @@ public string Foo(string bar)
   </Analyzer>
   <Analyzer>
     <Id>RCS1264</Id>
-    <Identifier>DeclareExplicitOrImplicitType</Identifier>
-    <Title>Declare explicit/implicit type</Title>
-    <MessageFormat>Use {0} type</MessageFormat>
+    <Identifier>UseVarOrExplicitType</Identifier>
+    <Title>Use 'var' or explicit type</Title>
+    <MessageFormat>{0}</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
-      <Option Key="type_style" IsRequired="true" />
+      <Option Key="use_var" IsRequired="true" />
     </ConfigOptions>
   </Analyzer>
   <Analyzer>

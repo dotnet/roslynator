@@ -449,17 +449,17 @@ internal static class CodeStyleExtensions
     {
         AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.TypeStyle, out string rawValue))
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseVar, out string rawValue))
         {
-            if (string.Equals(rawValue, ConfigOptionValues.TypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(rawValue, ConfigOptionValues.UseVar_Always, StringComparison.OrdinalIgnoreCase))
             {
                 return TypeStyle.Implicit;
             }
-            else if (string.Equals(rawValue, ConfigOptionValues.TypeStyle_Explicit, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(rawValue, ConfigOptionValues.UseVar_Never, StringComparison.OrdinalIgnoreCase))
             {
                 return TypeStyle.Explicit;
             }
-            else if (string.Equals(rawValue, ConfigOptionValues.TypeStyle_ImplicitWhenTypeIsObvious, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(rawValue, ConfigOptionValues.UseVar_WhenTypeIsObvious, StringComparison.OrdinalIgnoreCase))
             {
                 return TypeStyle.ImplicitWhenTypeIsObvious;
             }

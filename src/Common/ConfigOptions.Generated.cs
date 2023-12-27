@@ -202,12 +202,6 @@ namespace Roslynator
             defaultValuePlaceholder: "include|omit|omit_when_single_line", 
             description:             "Include/omit trailing comma in initializer or enum");
 
-        public static readonly ConfigOptionDescriptor TypeStyle = new(
-            key:                     ConfigOptionKeys.TypeStyle, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "explicit|implicit|implicit_when_type_is_obvious", 
-            description:             "Prefer explicit/implicit type when declaring a variable");
-
         public static readonly ConfigOptionDescriptor UnityCodeAnalysisEnabled = new(
             key:                     ConfigOptionKeys.UnityCodeAnalysisEnabled, 
             defaultValue:            null, 
@@ -237,6 +231,12 @@ namespace Roslynator
             defaultValue:            null, 
             defaultValuePlaceholder: "true|false", 
             description:             "Use collection expression for array/collection creation");
+
+        public static readonly ConfigOptionDescriptor UseVar = new(
+            key:                     ConfigOptionKeys.UseVar, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "always|never|when_type_is_obvious", 
+            description:             "Use 'var' insted of explicit type");
 
         public static readonly ConfigOptionDescriptor UseVarInsteadOfImplicitObjectCreation = new(
             key:                     ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, 
@@ -274,7 +274,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1253", JoinOptionKeys(ConfigOptionKeys.DocCommentSummaryStyle));
             yield return new KeyValuePair<string, string>("RCS1254", JoinOptionKeys(ConfigOptionKeys.EnumFlagValueStyle));
             yield return new KeyValuePair<string, string>("RCS1260", JoinOptionKeys(ConfigOptionKeys.TrailingCommaStyle));
-            yield return new KeyValuePair<string, string>("RCS1264", JoinOptionKeys(ConfigOptionKeys.TypeStyle));
+            yield return new KeyValuePair<string, string>("RCS1264", JoinOptionKeys(ConfigOptionKeys.UseVar));
         }
     }
 }

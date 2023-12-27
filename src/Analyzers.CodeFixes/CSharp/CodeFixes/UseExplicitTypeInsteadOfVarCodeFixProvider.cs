@@ -15,7 +15,7 @@ using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.CodeFixes;
 
-[Obsolete("Use code fix provider 'DeclareExplicitOrImplicitTypeCodeFixProvider' instead.")]
+[Obsolete("Use code fix provider 'UseVarOrExplicitTypeCodeFixProvider' instead.")]
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitTypeInsteadOfVarCodeFixProvider))]
 [Shared]
 public sealed class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProvider

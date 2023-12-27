@@ -10,7 +10,7 @@ using Roslynator.CSharp.CodeStyle;
 namespace Roslynator.CSharp.Analysis;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class DeclareExplicitOrImplicitTypeAnalyzer : BaseDiagnosticAnalyzer
+public sealed class UseVarOrExplicitTypeAnalyzer : BaseDiagnosticAnalyzer
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ public sealed class DeclareExplicitOrImplicitTypeAnalyzer : BaseDiagnosticAnalyz
         get
         {
             if (_supportedDiagnostics.IsDefault)
-                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.DeclareExplicitOrImplicitType);
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseVarOrExplicitType);
 
             return _supportedDiagnostics;
         }
@@ -175,18 +175,18 @@ public sealed class DeclareExplicitOrImplicitTypeAnalyzer : BaseDiagnosticAnalyz
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
-            DiagnosticRules.DeclareExplicitOrImplicitType,
+            DiagnosticRules.UseVarOrExplicitType,
             node.GetLocation(),
-            "implicit");
+            "Use 'var' instead of explicit type");
     }
 
     private static void ReportImplicitToExplicit(SyntaxNodeAnalysisContext context, SyntaxNode node)
     {
         DiagnosticHelpers.ReportDiagnostic(
             context,
-            DiagnosticRules.DeclareExplicitOrImplicitType,
+            DiagnosticRules.UseVarOrExplicitType,
             node.GetLocation(),
-            "explicit");
+            "Use explicit type instead of 'var'");
     }
 
     private static bool IsPartOfTupleExpression(DeclarationExpressionSyntax declarationExpression)

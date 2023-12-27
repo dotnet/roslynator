@@ -229,12 +229,12 @@
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Use collection expression for array/collection creation</Description>
   </Option>
-  <Option Id="TypeStyle">
-    <Description>Prefer explicit/implicit type when declaring a variable</Description>
+  <Option Id="UseVar">
+    <Description>Use 'var' insted of explicit type</Description>
     <Values>
-      <Value>explicit</Value>
-      <Value>implicit</Value>
-      <Value>implicit_when_type_is_obvious</Value>
+      <Value>always</Value>
+      <Value>never</Value>
+      <Value>when_type_is_obvious</Value>
     </Values>
   </Option>
   <!--

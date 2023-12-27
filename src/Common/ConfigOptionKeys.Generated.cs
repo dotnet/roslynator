@@ -38,12 +38,12 @@ namespace Roslynator
         public const string SuppressUnityScriptMethods                        = "roslynator_suppress_unity_script_methods";
         public const string TabLength                                         = "roslynator_tab_length";
         public const string TrailingCommaStyle                                = "roslynator_trailing_comma_style";
-        public const string TypeStyle                                         = "roslynator_type_style";
         public const string UnityCodeAnalysisEnabled                          = "roslynator_unity_code_analysis.enabled";
         public const string UseAnonymousFunctionOrMethodGroup                 = "roslynator_use_anonymous_function_or_method_group";
         public const string UseBlockBodyWhenDeclarationSpansOverMultipleLines = "roslynator_use_block_body_when_declaration_spans_over_multiple_lines";
         public const string UseBlockBodyWhenExpressionSpansOverMultipleLines  = "roslynator_use_block_body_when_expression_spans_over_multiple_lines";
         public const string UseCollectionExpression                           = "roslynator_use_collection_expression";
+        public const string UseVar                                            = "roslynator_use_var";
         public const string UseVarInsteadOfImplicitObjectCreation             = "roslynator_use_var_instead_of_implicit_object_creation";
     }
 }

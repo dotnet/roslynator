@@ -127,9 +127,6 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_trailing_comma_style = include|omit|omit_when_single_line
 # Applicable to: rcs1260
 
-#roslynator_type_style = explicit|implicit|implicit_when_type_is_obvious
-# Applicable to: rcs1264
-
 #roslynator_unity_code_analysis.enabled = true|false
 # Applicable to: rcs1169, rcs1213
 
@@ -144,6 +141,9 @@ roslynator_analyzers.enabled_by_default = true|false
 
 #roslynator_use_collection_expression = true|false
 # Applicable to: rcs1014, rcs1250
+
+#roslynator_use_var = always|never|when_type_is_obvious
+# Applicable to: rcs1264
 
 #roslynator_use_var_instead_of_implicit_object_creation = true|false
 # Applicable to: rcs1250
@@ -903,9 +903,9 @@ roslynator_analyzers.enabled_by_default = true|false
 # Invalid reference in a documentation comment
 #dotnet_diagnostic.rcs1263.severity = warning
 
-# Declare explicit/implicit type
+# Use 'var' or explicit type
 #dotnet_diagnostic.rcs1264.severity = none
-# Options: roslynator_type_style
+# Options: roslynator_use_var
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

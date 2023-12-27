@@ -2604,15 +2604,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1264</summary>
-        public static readonly DiagnosticDescriptor DeclareExplicitOrImplicitType = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.DeclareExplicitOrImplicitType, 
-            title:              "Declare explicit/implicit type", 
-            messageFormat:      "Use {0} type", 
+        public static readonly DiagnosticDescriptor UseVarOrExplicitType = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseVarOrExplicitType, 
+            title:              "Use 'var' or explicit type", 
+            messageFormat:      "{0}", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.DeclareExplicitOrImplicitType, 
+            helpLinkUri:        DiagnosticIdentifiers.UseVarOrExplicitType, 
             customTags:         Array.Empty<string>());
 
     }

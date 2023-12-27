@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Option (required): `roslynator_blank_line_between_switch_sections = include|omit|omit_after_block` 
   - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
 - Add analyzer "Declare explicit/implicit type" ([RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264)) ([PR](https://github.com/dotnet/roslynator/pull/1335))
-  - Option (required): `roslynator_type_style = explicit | implicit | implicit_when_type_obvious` 
+  - Option (required): `roslynator_use_var = always | never | when_type_obvious` 
   - This analyzer consolidate following analyzers (which are made obsolete):
     - [RCS1008](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1008)
     - [RCS1009](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1009)

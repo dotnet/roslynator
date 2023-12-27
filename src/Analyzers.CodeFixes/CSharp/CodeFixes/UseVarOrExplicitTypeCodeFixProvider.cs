@@ -15,13 +15,13 @@ using static Roslynator.CSharp.CodeActionFactory;
 
 namespace Roslynator.CSharp.CodeFixes;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DeclareExplicitOrImplicitTypeCodeFixProvider))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseVarOrExplicitTypeCodeFixProvider))]
 [Shared]
-public sealed class DeclareExplicitOrImplicitTypeCodeFixProvider : BaseCodeFixProvider
+public sealed class UseVarOrExplicitTypeCodeFixProvider : BaseCodeFixProvider
 {
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareExplicitOrImplicitType); }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseVarOrExplicitType); }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
