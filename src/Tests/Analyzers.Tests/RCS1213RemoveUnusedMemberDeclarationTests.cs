@@ -408,4 +408,23 @@ class MyAttribute : Attribute
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS9113"));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+    public async Task TestNoDiagnostic_BaseList()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+internal abstract class B(Action action)
+{
+    public Action Action { get; } = action;
+}
+
+internal sealed class C() : B(Do)
+{
+    private static void Do()
+    {
+    }
+}");
+    }
 }
