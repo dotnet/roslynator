@@ -1650,6 +1650,8 @@ else if (condition2)
   <Analyzer>
     <Id>RCS1008</Id>
     <Identifier>UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1264 instead</ObsoleteMessage>
     <Title>Use explicit type instead of 'var' (when the type is not obvious)</Title>
     <MessageFormat>Use explicit type instead of 'var'</MessageFormat>
     <DefaultSeverity>Hidden</DefaultSeverity>
@@ -1665,6 +1667,8 @@ else if (condition2)
     <Id>RCS1009</Id>
     <Identifier>UseExplicitTypeInsteadOfVarInForEach</Identifier>
     <Title>Use explicit type instead of 'var' (foreach variable)</Title>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1264 instead</ObsoleteMessage>
     <MessageFormat>Use explicit type instead of 'var'</MessageFormat>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1686,6 +1690,8 @@ foreach (var item in items)
   <Analyzer>
     <Id>RCS1010</Id>
     <Identifier>UseVarInsteadOfExplicitTypeWhenTypeIsObvious</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1264 instead</ObsoleteMessage>
     <Title>Use 'var' instead of explicit type (when the type is obvious)</Title>
     <MessageFormat>Use 'var' instead of explicit type</MessageFormat>
     <DefaultSeverity>Hidden</DefaultSeverity>
@@ -1701,6 +1707,8 @@ foreach (var item in items)
   <Analyzer>
     <Id>RCS1012</Id>
     <Identifier>UseExplicitTypeInsteadOfVarWhenTypeIsObvious</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1264 instead</ObsoleteMessage>
     <Title>Use explicit type instead of 'var' (when the type is obvious)</Title>
     <MessageFormat>Use explicit type instead of 'var'</MessageFormat>
     <DefaultSeverity>Hidden</DefaultSeverity>
@@ -4985,6 +4993,8 @@ else
   <Analyzer>
     <Id>RCS1176</Id>
     <Identifier>UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1264 instead</ObsoleteMessage>
     <Title>Use 'var' instead of explicit type (when the type is not obvious)</Title>
     <MessageFormat>Use 'var' instead of explicit type</MessageFormat>
     <DefaultSeverity>Hidden</DefaultSeverity>
@@ -4999,6 +5009,8 @@ else
   <Analyzer>
     <Id>RCS1177</Id>
     <Identifier>UseVarInsteadOfExplicitTypeInForEach</Identifier>
+    <Status>Obsolete</Status>
+    <ObsoleteMessage>Use RCS1264 instead</ObsoleteMessage>
     <Title>Use 'var' instead of explicit type (in foreach)</Title>
     <MessageFormat>Use 'var' instead of explicit type</MessageFormat>
     <DefaultSeverity>Hidden</DefaultSeverity>
@@ -7149,6 +7161,17 @@ public string Foo(string bar)
 ]]></Before>
       </Sample>
     </Samples>
+  </Analyzer>
+  <Analyzer>
+    <Id>RCS1264</Id>
+    <Identifier>UseVarOrExplicitType</Identifier>
+    <Title>Use 'var' or explicit type</Title>
+    <MessageFormat>{0}</MessageFormat>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="use_var" IsRequired="true" />
+    </ConfigOptions>
   </Analyzer>
   <Analyzer>
     <Id>RCS9001</Id>

@@ -400,6 +400,29 @@ internal static class CodeStyleExtensions
         return TypeStyle.None;
     }
 
+    public static TypeStyle GetTypeStyle(this SyntaxNodeAnalysisContext context)
+    {
+        AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+        if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseVar, out string rawValue))
+        {
+            if (string.Equals(rawValue, ConfigOptionValues.UseVar_Always, StringComparison.OrdinalIgnoreCase))
+            {
+                return TypeStyle.Implicit;
+            }
+            else if (string.Equals(rawValue, ConfigOptionValues.UseVar_Never, StringComparison.OrdinalIgnoreCase))
+            {
+                return TypeStyle.Explicit;
+            }
+            else if (string.Equals(rawValue, ConfigOptionValues.UseVar_WhenTypeIsObvious, StringComparison.OrdinalIgnoreCase))
+            {
+                return TypeStyle.ImplicitWhenTypeIsObvious;
+            }
+        }
+
+        return TypeStyle.None;
+    }
+
     public static bool? UseCollectionExpression(this SyntaxNodeAnalysisContext context)
     {
         return UseCollectionExpression(context.GetConfigOptions());

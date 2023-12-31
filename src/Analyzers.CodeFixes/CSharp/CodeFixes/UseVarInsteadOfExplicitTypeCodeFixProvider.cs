@@ -13,6 +13,7 @@ using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes;
 
+[Obsolete("Use code fix provider 'UseVarOrExplicitTypeCodeFixProvider' instead.")]
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseVarInsteadOfExplicitTypeCodeFixProvider))]
 [Shared]
 public sealed class UseVarInsteadOfExplicitTypeCodeFixProvider : BaseCodeFixProvider

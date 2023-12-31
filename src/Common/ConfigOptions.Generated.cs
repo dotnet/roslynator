@@ -232,6 +232,12 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Use collection expression for array/collection creation");
 
+        public static readonly ConfigOptionDescriptor UseVar = new(
+            key:                     ConfigOptionKeys.UseVar, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "always|never|when_type_is_obvious", 
+            description:             "Use 'var' insted of explicit type");
+
         public static readonly ConfigOptionDescriptor UseVarInsteadOfImplicitObjectCreation = new(
             key:                     ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, 
             defaultValue:            null, 
@@ -268,6 +274,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1253", JoinOptionKeys(ConfigOptionKeys.DocCommentSummaryStyle));
             yield return new KeyValuePair<string, string>("RCS1254", JoinOptionKeys(ConfigOptionKeys.EnumFlagValueStyle));
             yield return new KeyValuePair<string, string>("RCS1260", JoinOptionKeys(ConfigOptionKeys.TrailingCommaStyle));
+            yield return new KeyValuePair<string, string>("RCS1264", JoinOptionKeys(ConfigOptionKeys.UseVar));
         }
     }
 }

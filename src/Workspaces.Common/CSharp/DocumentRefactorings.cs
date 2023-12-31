@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -18,15 +19,16 @@ namespace Roslynator.CSharp;
 
 internal static class DocumentRefactorings
 {
-    public static Task<Document> ChangeTypeAsync(
+    public static async Task<Document> ChangeTypeAsync(
         Document document,
         TypeSyntax type,
         ITypeSymbol typeSymbol,
+        SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
         if (type.IsVar
             && type.Parent is DeclarationExpressionSyntax declarationExpression
-            && declarationExpression.Designation.IsKind(SyntaxKind.ParenthesizedVariableDesignation))
+            && declarationExpression.Designation is ParenthesizedVariableDesignationSyntax designation)
         {
 #if DEBUG
             SyntaxNode parent = declarationExpression.Parent;
@@ -52,21 +54,35 @@ internal static class DocumentRefactorings
                     }
             }
 #endif
-            TupleExpressionSyntax tupleExpression = CreateTupleExpression(typeSymbol)
-                .WithTriviaFrom(declarationExpression);
+            TupleExpressionSyntax tupleExpression = CreateTupleExpression(typeSymbol, designation, GetSymbolDisplayFormat(semanticModel, type.SpanStart))
+                .WithTriviaFrom(declarationExpression)
+                .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(declarationExpression, tupleExpression, cancellationToken);
+            return await document.ReplaceNodeAsync(declarationExpression, tupleExpression, cancellationToken).ConfigureAwait(false);
         }
 
-        TypeSyntax newType = ChangeType(type, typeSymbol);
+        TypeSyntax newType = ChangeType(type, typeSymbol, semanticModel);
 
-        return document.ReplaceNodeAsync(type, newType, cancellationToken);
+        return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
     }
 
-    private static TypeSyntax ChangeType(TypeSyntax type, ITypeSymbol typeSymbol)
+    private static SymbolDisplayFormat GetSymbolDisplayFormat(SemanticModel semanticModel, int position)
     {
+        NullableContext context = semanticModel.GetNullableContext(position);
+
+        return ((context & NullableContext.AnnotationsEnabled) != 0)
+                ? SymbolDisplayFormats.FullName
+                : SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier;
+    }
+
+    private static TypeSyntax ChangeType(TypeSyntax type, ITypeSymbol typeSymbol, SemanticModel semanticModel)
+    {
+        NullableContext context = semanticModel.GetNullableContext(type.SpanStart);
+
         TypeSyntax newType = typeSymbol
-            .ToTypeSyntax()
+            .ToTypeSyntax(((context & NullableContext.AnnotationsEnabled) != 0)
+                ? SymbolDisplayFormats.FullName
+                : SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier)
             .WithTriviaFrom(type);
 
         if (newType is TupleTypeSyntax tupleType)
@@ -84,32 +100,105 @@ internal static class DocumentRefactorings
         }
     }
 
-    private static TupleExpressionSyntax CreateTupleExpression(ITypeSymbol typeSymbol)
+    private static TupleExpressionSyntax CreateTupleExpression(
+        ITypeSymbol typeSymbol,
+        ParenthesizedVariableDesignationSyntax designation,
+        SymbolDisplayFormat format)
     {
         if (!typeSymbol.SupportsExplicitDeclaration())
             throw new ArgumentException($"Type '{typeSymbol.ToDisplayString()}' does not support explicit declaration.", nameof(typeSymbol));
 
-        var tupleExpression = (TupleExpressionSyntax)ParseExpression(typeSymbol.ToDisplayString(SymbolDisplayFormats.FullName));
+        var tupleType = (TupleTypeSyntax)ParseTypeName(typeSymbol.ToDisplayString(format));
+        var sb = new StringBuilder();
 
-        SeparatedSyntaxList<ArgumentSyntax> newArguments = tupleExpression
-            .Arguments
-            .Select(f =>
+        ConstructTupleExpression(sb, tupleType, designation);
+
+        var tupleExpression = (TupleExpressionSyntax)ParseExpression(sb.ToString());
+
+        static void ConstructTupleExpression(
+            StringBuilder sb,
+            TupleTypeSyntax tupleType,
+            ParenthesizedVariableDesignationSyntax designation)
+        {
+            sb.Append('(');
+
+            var isFirst = true;
+            for (int i = 0; i < tupleType.Elements.Count; i++)
             {
-                if (f.Expression is DeclarationExpressionSyntax declarationExpression)
-                    return f.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
-
-                if (f.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
+                if (isFirst)
                 {
-                    return f.WithExpression(DeclarationExpression(ParseTypeName(f.Expression.ToString()).WithSimplifierAnnotation(), DiscardDesignation()));
+                    isFirst = false;
+                }
+                else
+                {
+                    sb.Append(", ");
                 }
 
-                SyntaxDebug.Fail(f.Expression);
+                VariableDesignationSyntax variable = designation.Variables[i];
+                TupleElementSyntax element = tupleType.Elements[i];
 
-                return f;
-            })
-            .ToSeparatedSyntaxList();
+                if (element.Type is TupleTypeSyntax tupleType2
+                    && variable is ParenthesizedVariableDesignationSyntax designation2)
+                {
+                    ConstructTupleExpression(sb, tupleType2, designation2);
+                }
+                else
+                {
+                    sb.Append(element.Type);
 
-        return tupleExpression.WithArguments(newArguments);
+                    if (variable is SingleVariableDesignationSyntax singleDesignation)
+                    {
+                        sb.Append(' ');
+                        sb.Append(singleDesignation.Identifier);
+                    }
+                    else if (variable is DiscardDesignationSyntax)
+                    {
+                        sb.Append(" _");
+                    }
+                    else
+                    {
+                        SyntaxDebug.Fail(variable);
+                        sb.Append(" _");
+                    }
+                }
+            }
+
+            sb.Append(')');
+        }
+
+        SeparatedSyntaxList<VariableDesignationSyntax> variables = designation.Variables;
+        SeparatedSyntaxList<ArgumentSyntax> arguments = tupleExpression.Arguments;
+
+        tupleExpression = tupleExpression.ReplaceNodes(
+            tupleExpression
+                .DescendantNodes()
+                .Where(f => f is ArgumentSyntax argument && !argument.Expression.IsKind(SyntaxKind.TupleExpression)),
+            (node, _) =>
+            {
+                var argument = (ArgumentSyntax)node;
+
+                if (argument.Expression is DeclarationExpressionSyntax declarationExpression)
+                {
+                    return argument.WithExpression(
+                        declarationExpression.WithType(
+                            declarationExpression.Type.WithSimplifierAnnotation()));
+                }
+
+                if (argument.Expression is PredefinedTypeSyntax or MemberAccessExpressionSyntax)
+                {
+                    VariableDesignationSyntax variableDesignation = variables[arguments.IndexOf(argument)];
+
+                    return argument.WithExpression(
+                        DeclarationExpression(
+                            ParseTypeName(argument.Expression.ToString()).WithSimplifierAnnotation(),
+                            variableDesignation));
+                }
+
+                SyntaxDebug.Fail(tupleExpression);
+                return node;
+            });
+
+        return tupleExpression;
     }
 
     public static Task<Document> ChangeTypeToVarAsync(
@@ -148,6 +237,7 @@ internal static class DocumentRefactorings
         VariableDeclaratorSyntax variableDeclarator,
         SyntaxNode containingDeclaration,
         ITypeSymbol newTypeSymbol,
+        SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
         TypeSyntax type = variableDeclaration.Type;
@@ -156,7 +246,7 @@ internal static class DocumentRefactorings
 
         AwaitExpressionSyntax newValue = AwaitExpression(value.WithoutTrivia()).WithTriviaFrom(value);
 
-        TypeSyntax newType = ChangeType(type, newTypeSymbol);
+        TypeSyntax newType = ChangeType(type, newTypeSymbol, semanticModel);
 
         VariableDeclarationSyntax newVariableDeclaration = variableDeclaration
             .ReplaceNode(value, newValue)

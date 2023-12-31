@@ -52,7 +52,7 @@ internal static class DocumentRefactoringFactory
 
         ITypeSymbol typeArgument = ((INamedTypeSymbol)newTypeSymbol).TypeArguments[0];
 
-        return ct => DocumentRefactorings.ChangeTypeAndAddAwaitAsync(document, variableDeclaration, variableDeclarator, containingMethod, typeArgument, ct);
+        return ct => DocumentRefactorings.ChangeTypeAndAddAwaitAsync(document, variableDeclaration, variableDeclarator, containingMethod, typeArgument, semanticModel, ct);
 
         SyntaxNode GetContainingMethod()
         {
