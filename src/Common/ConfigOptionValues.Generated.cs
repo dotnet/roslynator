@@ -57,5 +57,8 @@ namespace Roslynator
         public const string TrailingCommaStyle_OmitWhenSingleLine                                       = "omit_when_single_line";
         public const string UseAnonymousFunctionOrMethodGroup_AnonymousFunction                         = "anonymous_function";
         public const string UseAnonymousFunctionOrMethodGroup_MethodGroup                               = "method_group";
+        public const string UseVar_Always                                                               = "always";
+        public const string UseVar_Never                                                                = "never";
+        public const string UseVar_WhenTypeIsObvious                                                    = "when_type_is_obvious";
     }
 }

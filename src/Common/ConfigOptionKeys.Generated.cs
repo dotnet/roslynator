@@ -43,6 +43,7 @@ namespace Roslynator
         public const string UseBlockBodyWhenDeclarationSpansOverMultipleLines = "roslynator_use_block_body_when_declaration_spans_over_multiple_lines";
         public const string UseBlockBodyWhenExpressionSpansOverMultipleLines  = "roslynator_use_block_body_when_expression_spans_over_multiple_lines";
         public const string UseCollectionExpression                           = "roslynator_use_collection_expression";
+        public const string UseVar                                            = "roslynator_use_var";
         public const string UseVarInsteadOfImplicitObjectCreation             = "roslynator_use_var_instead_of_implicit_object_creation";
     }
 }

@@ -147,7 +147,7 @@ internal static class EditorConfigCodeAnalysisConfigLoader
 
         string text = File.ReadAllText(path);
 
-        AnalyzerConfig config = AnalyzerConfig.Parse(text, path);
+        var config = AnalyzerConfig.Parse(text, path);
 
         AnalyzerConfigSet configSet = AnalyzerConfigSet.Create(ImmutableArray.Create(config), out ImmutableArray<Diagnostic> diagnostics);
 
