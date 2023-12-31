@@ -156,7 +156,7 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0014</summary>
         public static readonly DiagnosticDescriptor AddBlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections, 
-            title:              "Add blank line between switch sections", 
+            title:              "[deprecated] Add blank line between switch sections", 
             messageFormat:      "([deprecated] Use RCS0061 instead) Add blank line between switch sections", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -216,7 +216,7 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0022</summary>
         public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfEmptyBlock = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock, 
-            title:              "Add new line after opening brace of empty block", 
+            title:              "[deprecated] Add new line after opening brace of empty block", 
             messageFormat:      "([deprecated] Use RCS0021 instead) Format braces on multiple lines", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -372,7 +372,7 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0038</summary>
         public static readonly DiagnosticDescriptor RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace, 
-            title:              "Remove blank line between using directives with same root namespace", 
+            title:              "[deprecated] Remove blank line between using directives with same root namespace", 
             messageFormat:      "([deprecated] Use RCS0015 instead) Remove blank line between using directives", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -420,7 +420,7 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0043</summary>
         public static readonly DiagnosticDescriptor FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine, 
-            title:              "Format accessor's braces on a single line when expression is on single line", 
+            title:              "[deprecated] Format accessor's braces on a single line when expression is on single line", 
             messageFormat:      "([deprecated] Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line) Format braces on a single line", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -468,7 +468,7 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0047</summary>
         public static readonly DiagnosticDescriptor WrapAndIndentEachNodeInList = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.WrapAndIndentEachNodeInList, 
-            title:              "Wrap and indent each node in list", 
+            title:              "[deprecated] Wrap and indent each node in list", 
             messageFormat:      "([deprecated] Use RCS0053 instead) Wrap and indent each node in list", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 

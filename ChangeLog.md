@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add analyzer "Add/remove blank line between switch sections" ([RCS0061](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0061)) ([PR](https://github.com/dotnet/roslynator/pull/1302))
   - Option (required): `roslynator_blank_line_between_switch_sections = include|omit|omit_after_block` 
   - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
+- Add analyzer "Declare explicit/implicit type" ([RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264)) ([PR](https://github.com/dotnet/roslynator/pull/1335))
+  - Required option: `roslynator_use_var = always | never | when_type_is_obvious` 
+  - This analyzer consolidates following analyzers (which are made obsolete):
+    - [RCS1008](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1008)
+    - [RCS1009](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1009)
+    - [RCS1010](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1010)
+    - [RCS1012](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1012)
+    - [RCS1176](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1176)
+    - [RCS1177](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1177)
 - Add code fix "Declare as nullable" ([PR](https://github.com/dotnet/roslynator/pull/1333))
   - Applicable to: `CS8600`, `CS8610`, `CS8765` and `CS8767`
 - Add option `roslynator_use_collection_expression = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1325))

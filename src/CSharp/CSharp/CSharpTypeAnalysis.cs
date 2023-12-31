@@ -76,31 +76,8 @@ internal static class CSharpTypeAnalysis
             }
         }
 
-        switch (expression.Kind())
-        {
-            case SyntaxKind.ObjectCreationExpression:
-            case SyntaxKind.ArrayCreationExpression:
-            case SyntaxKind.CastExpression:
-            case SyntaxKind.AsExpression:
-            case SyntaxKind.ThisExpression:
-            case SyntaxKind.DefaultExpression:
-                {
-                    flags |= TypeAnalysisFlags.TypeObvious;
-                    break;
-                }
-            case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    ISymbol? symbol = semanticModel.GetSymbol(expression, cancellationToken);
-
-                    if (symbol?.Kind == SymbolKind.Field
-                        && symbol.ContainingType?.TypeKind == TypeKind.Enum)
-                    {
-                        flags |= TypeAnalysisFlags.TypeObvious;
-                    }
-
-                    break;
-                }
-        }
+        if (IsTypeObvious(expression, typeSymbol, includeNullability: false, semanticModel, cancellationToken))
+            flags |= TypeAnalysisFlags.TypeObvious;
 
         return new TypeAnalysis(typeSymbol, flags);
     }
@@ -434,6 +411,15 @@ internal static class CSharpTypeAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
+        return IsImplicitThatCanBeExplicit(declarationExpression, semanticModel, TypeAppearance.None, cancellationToken);
+    }
+
+    public static bool IsImplicitThatCanBeExplicit(
+        DeclarationExpressionSyntax declarationExpression,
+        SemanticModel semanticModel,
+        TypeAppearance typeAppearance,
+        CancellationToken cancellationToken = default)
+    {
         TypeSyntax type = declarationExpression.Type;
 
         Debug.Assert(type is not null);
@@ -443,6 +429,13 @@ internal static class CSharpTypeAnalysis
 
         if (!type.IsVar)
             return false;
+
+        if (declarationExpression.Parent is AssignmentExpressionSyntax assignment)
+        {
+            ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(assignment.Right, cancellationToken);
+
+            return typeSymbol?.SupportsExplicitDeclaration() == true;
+        }
 
         switch (declarationExpression.Designation)
         {
@@ -458,11 +451,30 @@ internal static class CSharpTypeAnalysis
                 {
                     foreach (VariableDesignationSyntax variableDesignation in parenthesizedVariableDesignation.Variables)
                     {
-                        if (variableDesignation is not SingleVariableDesignationSyntax singleVariableDesignation2)
+                        if (variableDesignation is not SingleVariableDesignationSyntax)
                             return false;
 
-                        if (!IsLocalThatSupportsExplicitDeclaration(singleVariableDesignation2))
+                        if (!IsLocalThatSupportsExplicitDeclaration(variableDesignation))
                             return false;
+                    }
+
+                    if (declarationExpression.Parent is AssignmentExpressionSyntax assignmentExpression
+                        && declarationExpression == assignmentExpression.Left)
+                    {
+                        ExpressionSyntax expression = assignmentExpression.Right;
+
+                        if (expression is not null)
+                        {
+                            switch (typeAppearance)
+                            {
+                                case TypeAppearance.Obvious:
+                                    return !IsTypeObvious(expression, semanticModel, cancellationToken);
+                                case TypeAppearance.NotObvious:
+                                    return IsTypeObvious(expression, semanticModel, cancellationToken);
+                            }
+
+                            Debug.Assert(typeAppearance == TypeAppearance.None, typeAppearance.ToString());
+                        }
                     }
 
                     return true;

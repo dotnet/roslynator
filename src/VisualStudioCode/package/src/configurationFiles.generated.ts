@@ -142,6 +142,9 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_use_collection_expression = true|false
 # Applicable to: rcs1014, rcs1250
 
+#roslynator_use_var = always|never|when_type_is_obvious
+# Applicable to: rcs1264
+
 #roslynator_use_var_instead_of_implicit_object_creation = true|false
 # Applicable to: rcs1250
 
@@ -326,18 +329,6 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Add braces
 #dotnet_diagnostic.rcs1007.severity = none
-
-# Use explicit type instead of 'var' (when the type is not obvious)
-#dotnet_diagnostic.rcs1008.severity = none
-
-# Use explicit type instead of 'var' (foreach variable)
-#dotnet_diagnostic.rcs1009.severity = none
-
-# Use 'var' instead of explicit type (when the type is obvious)
-#dotnet_diagnostic.rcs1010.severity = none
-
-# Use explicit type instead of 'var' (when the type is obvious)
-#dotnet_diagnostic.rcs1012.severity = none
 
 # Use predefined type
 #dotnet_diagnostic.rcs1013.severity = none
@@ -667,12 +658,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Unused 'this' parameter
 #dotnet_diagnostic.rcs1175.severity = suggestion
 
-# Use 'var' instead of explicit type (when the type is not obvious)
-#dotnet_diagnostic.rcs1176.severity = none
-
-# Use 'var' instead of explicit type (in foreach)
-#dotnet_diagnostic.rcs1177.severity = none
-
 # Unnecessary assignment
 #dotnet_diagnostic.rcs1179.severity = suggestion
 
@@ -917,6 +902,10 @@ roslynator_analyzers.enabled_by_default = true|false
 
 # Invalid reference in a documentation comment
 #dotnet_diagnostic.rcs1263.severity = warning
+
+# Use 'var' or explicit type
+#dotnet_diagnostic.rcs1264.severity = none
+# Options: roslynator_use_var
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
