@@ -202,7 +202,8 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
 
     public override void VisitBaseList(BaseListSyntax node)
     {
-        Debug.Fail($"{nameof(UnusedMemberWalker)}.{nameof(VisitBaseList)}");
+        if (node is not null)
+            base.VisitBaseList(node);
     }
 
     public override void VisitTypeParameterConstraintClause(TypeParameterConstraintClauseSyntax node)
@@ -230,6 +231,7 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     {
         VisitAttributeLists(node.AttributeLists);
         VisitParameterList(node.ParameterList);
+        VisitBaseList(node.BaseList);
         VisitMembers(node.Members);
     }
 
@@ -237,6 +239,7 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     {
         VisitAttributeLists(node.AttributeLists);
         VisitParameterList(node.ParameterList);
+        VisitBaseList(node.BaseList);
         VisitMembers(node.Members);
     }
 
@@ -244,12 +247,14 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     {
         VisitAttributeLists(node.AttributeLists);
         VisitParameterList(node.ParameterList);
+        VisitBaseList(node.BaseList);
         VisitMembers(node.Members);
     }
 
     public override void VisitRecordDeclaration(RecordDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+        VisitBaseList(node.BaseList);
         VisitMembers(node.Members);
     }
 

@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1012UseExplicitTypeInsteadOfVarWhenTypeIsObviousTests : AbstractCSharpDiagnosticVerifier<UseExplicitTypeInsteadOfVarWhenTypeIsObviousAnalyzer, UseExplicitTypeInsteadOfVarCodeFixProvider>
+public class RCS1264UseVarOrExplicitTypeTests2 : AbstractCSharpDiagnosticVerifier<UseVarOrExplicitTypeAnalyzer, UseVarOrExplicitTypeCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseExplicitTypeInsteadOfVarWhenTypeIsObvious;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseVarOrExplicitType;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -35,10 +35,10 @@ class C
         List<string> x = new List<string>();
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_Tuple_DeclarationExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -57,10 +57,10 @@ class C
         (object x, System.DateTime y) = default((object, System.DateTime));
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_TupleExpression()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -79,10 +79,10 @@ class C
         (object x, System.DateTime y) = default((object, System.DateTime));
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_TupleExpression_AllVar()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -101,10 +101,10 @@ class C
         (object x, System.DateTime y) = default((object, System.DateTime));
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_ParseMethod()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -127,10 +127,42 @@ class C
         TimeSpan timeSpan = TimeSpan.Parse(null);
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
+    public async Task Test_NestedTuple()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        [|var|] ((x, (y, y2)), z) = M2();
+    }
+
+    ((string?, (string, string?)), string) M2() => default(((string?, (string, string?)), string));
+}
+", @"
+using System;
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        ((string? x, (string y, string? y2)), string z) = M2();
+    }
+
+    ((string?, (string, string?)), string) M2() => default(((string?, (string, string?)), string));
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ForEach_DeclarationExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -147,10 +179,10 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ForEach_TupleExpression()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -167,6 +199,6 @@ class C
         return default;
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Never));
     }
 }
