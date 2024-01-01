@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.8.0] - 2024-01-01
+
+### Added
+
+- Add analyzer "Add/remove blank line between switch sections" ([RCS0061](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0061)) ([PR](https://github.com/dotnet/roslynator/pull/1302))
+  - Option (required): `roslynator_blank_line_between_switch_sections = include|omit|omit_after_block`
+  - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
+- Add analyzer "Declare explicit/implicit type" ([RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264)) ([PR](https://github.com/dotnet/roslynator/pull/1335))
+  - Required option: `roslynator_use_var = always | never | when_type_is_obvious`
+  - This analyzer consolidates following analyzers (which are made obsolete):
+    - [RCS1008](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1008)
+    - [RCS1009](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1009)
+    - [RCS1010](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1010)
+    - [RCS1012](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1012)
+    - [RCS1176](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1176)
+    - [RCS1177](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1177)
+- Add code fix "Declare as nullable" ([PR](https://github.com/dotnet/roslynator/pull/1333))
+  - Applicable to: `CS8600`, `CS8610`, `CS8765` and `CS8767`
+- Add option `roslynator_use_collection_expression = true|false` ([PR](https://github.com/dotnet/roslynator/pull/1325))
+  - Applicable to [RCS1014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1014) and [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250)
+
+### Changed
+
+- Replace type declaration's empty braces with semicolon ([RCS1251](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1251) ([PR](https://github.com/dotnet/roslynator/pull/1323), [PR](https://github.com/dotnet/roslynator/pull/1327))
+- [TestFramework] Bump `MSTest.TestFramerk` to `3.1.1` ([PR](https://github.com/dotnet/roslynator/pull/1332))
+- [TestFramework] Bump `xunit.assert` to `2.6.2` ([PR](https://github.com/dotnet/roslynator/pull/1332))
+- Bump Roslyn to 4.7.0 ([PR](https://github.com/dotnet/roslynator/pull/1325))
+
+### Fixed
+
+- Fix analyzer [RCS1262](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1262) ([PR](https://github.com/dotnet/roslynator/pull/1339))
+- Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1343))
+
 ## [4.7.0] - 2023-12-03
 
 ### Added
