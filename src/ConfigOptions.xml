@@ -230,7 +230,7 @@
     <Description>Use collection expression for array/collection creation</Description>
   </Option>
   <Option Id="UseVar">
-    <Description>Use 'var' insted of explicit type</Description>
+    <Description>Use 'var' instead of explicit type</Description>
     <Values>
       <Value>always</Value>
       <Value>never</Value>
