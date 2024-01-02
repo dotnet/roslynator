@@ -23,7 +23,7 @@ internal sealed class SymbolComparer : IComparer<ISymbol>
         bool includeNamespaces = true,
         SymbolDisplayAdditionalMemberOptions additionalOptions = SymbolDisplayAdditionalMemberOptions.None)
     {
-        return new SymbolComparer(
+        return new(
             TypeSymbolDisplayFormats.GetFormat(includeNamespaces: false),
             systemNamespaceFirst: systemNamespaceFirst,
             includeNamespaces: includeNamespaces,

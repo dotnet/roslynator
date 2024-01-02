@@ -12,7 +12,7 @@ public class DocumentationOptions
     private int _maxDerivedTypes = DefaultValues.MaxDerivedTypes;
     private CommonDocumentationParts _ignoredCommonParts = CommonDocumentationParts.None;
 
-    public List<MetadataName> IgnoredNames { get; } = new();
+    public List<MetadataName> IgnoredNames { get; } = [];
 
     public string RootFileHeading { get; set; }
 

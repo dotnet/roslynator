@@ -203,7 +203,7 @@ internal class SpellingData
 
     public SpellingData AddWord(string value)
     {
-        return new SpellingData(WordList.AddValue(value), CaseSensitiveWordList, Fixes, IgnoredValues);
+        return new(WordList.AddValue(value), CaseSensitiveWordList, Fixes, IgnoredValues);
     }
 
     public SpellingData AddFix(string error, SpellingFix fix)
@@ -215,11 +215,11 @@ internal class SpellingData
 
     public SpellingData AddIgnoredValue(string value)
     {
-        return new SpellingData(WordList, CaseSensitiveWordList, Fixes, IgnoredValues.Add(value));
+        return new(WordList, CaseSensitiveWordList, Fixes, IgnoredValues.Add(value));
     }
 
     public SpellingData AddIgnoredValues(IEnumerable<string> values)
     {
-        return new SpellingData(WordList, CaseSensitiveWordList, Fixes, IgnoredValues.Union(values));
+        return new(WordList, CaseSensitiveWordList, Fixes, IgnoredValues.Union(values));
     }
 }

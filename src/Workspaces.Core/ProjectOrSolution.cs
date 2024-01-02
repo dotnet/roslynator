@@ -80,7 +80,7 @@ internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
 
     public static implicit operator ProjectOrSolution(Project project)
     {
-        return new ProjectOrSolution(project);
+        return new(project);
     }
 
     public static implicit operator Project?(in ProjectOrSolution projectOrSolution)
@@ -90,7 +90,7 @@ internal readonly struct ProjectOrSolution : IEquatable<ProjectOrSolution>
 
     public static implicit operator ProjectOrSolution(Solution solution)
     {
-        return new ProjectOrSolution(solution);
+        return new(solution);
     }
 
     public static implicit operator Solution?(in ProjectOrSolution projectOrSolution)

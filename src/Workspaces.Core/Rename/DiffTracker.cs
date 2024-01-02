@@ -10,7 +10,7 @@ namespace Roslynator.Rename;
 
 internal class DiffTracker
 {
-    private readonly Dictionary<DocumentId, List<DiffSpan>> _dic = new();
+    private readonly Dictionary<DocumentId, List<DiffSpan>> _dic = [];
 
     public int Count => _dic.Count;
 

@@ -71,7 +71,7 @@ public sealed class RefactoringTestData
         IEnumerable<AdditionalFile> additionalFiles,
         string equivalenceKey)
     {
-        return new RefactoringTestData(
+        return new(
             source: source,
             spans: spans,
             additionalFiles: additionalFiles,

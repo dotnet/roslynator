@@ -13,12 +13,11 @@ internal sealed class RequiredConfigOptionNotSetAnalyzer : AbstractRequiredConfi
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-    private static readonly ConfigOptionDescriptor[] _useBlockBodyOrExpressionBodyOptions = new ConfigOptionDescriptor[]
-    {
+    private static readonly ConfigOptionDescriptor[] _useBlockBodyOrExpressionBodyOptions = [
         ConfigOptions.BodyStyle,
         ConfigOptions.UseBlockBodyWhenDeclarationSpansOverMultipleLines,
         ConfigOptions.UseBlockBodyWhenExpressionSpansOverMultipleLines,
-    };
+    ];
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {

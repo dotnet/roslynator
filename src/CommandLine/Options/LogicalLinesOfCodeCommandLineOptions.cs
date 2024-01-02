@@ -5,6 +5,4 @@ using CommandLine;
 namespace Roslynator.CommandLine;
 
 [Verb("lloc", HelpText = "Counts logical lines of code in the specified project or solution.")]
-public class LogicalLinesOfCodeCommandLineOptions : AbstractLinesOfCodeCommandLineOptions
-{
-}
+public class LogicalLinesOfCodeCommandLineOptions : AbstractLinesOfCodeCommandLineOptions;

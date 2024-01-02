@@ -350,39 +350,28 @@ internal sealed class IndentationAnalysis
             {
                 case SyntaxKind.WhileStatement:
                     return ((WhileStatementSyntax)statement).Statement;
-
                 case SyntaxKind.DoStatement:
                     return ((DoStatementSyntax)statement).Statement;
-
                 case SyntaxKind.ForStatement:
                     return ((ForStatementSyntax)statement).Statement;
-
                 case SyntaxKind.ForEachStatement:
                 case SyntaxKind.ForEachVariableStatement:
                     return ((CommonForEachStatementSyntax)statement).Statement;
-
                 case SyntaxKind.UsingStatement:
                     return ((UsingStatementSyntax)statement).Statement;
-
                 case SyntaxKind.FixedStatement:
                     return ((FixedStatementSyntax)statement).Statement;
-
                 case SyntaxKind.CheckedStatement:
                 case SyntaxKind.UncheckedStatement:
                     return ((CheckedStatementSyntax)statement).Block;
-
                 case SyntaxKind.UnsafeStatement:
                     return ((UnsafeStatementSyntax)statement).Block;
-
                 case SyntaxKind.LockStatement:
                     return ((LockStatementSyntax)statement).Statement;
-
                 case SyntaxKind.IfStatement:
                     return ((IfStatementSyntax)statement).Statement;
-
                 case SyntaxKind.TryStatement:
                     return ((TryStatementSyntax)statement).Block;
-
                 default:
                     return null;
             }

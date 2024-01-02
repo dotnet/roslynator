@@ -23,7 +23,7 @@ internal readonly struct WordChar : IEquatable<WordChar>
 
     public static WordChar Create(string value, int index)
     {
-        return new WordChar(value[index], index);
+        return new(value[index], index);
     }
 
     public override bool Equals(object obj)

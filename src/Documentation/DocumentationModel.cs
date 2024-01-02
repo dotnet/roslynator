@@ -454,12 +454,12 @@ public sealed class DocumentationModel
 
         public SymbolDocumentationData WithModel(object model)
         {
-            return new SymbolDocumentationData(model, XmlDocumentation);
+            return new(model, XmlDocumentation);
         }
 
         public SymbolDocumentationData WithXmlDocumentation(SymbolXmlDocumentation xmlDocumentation)
         {
-            return new SymbolDocumentationData(Model, xmlDocumentation);
+            return new(Model, xmlDocumentation);
         }
     }
 }

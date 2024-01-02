@@ -66,7 +66,7 @@ public readonly partial struct ExpressionChain
 
         public Enumerator GetEnumerator()
         {
-            return new Enumerator(_chain);
+            return new(_chain);
         }
 
         IEnumerator<ExpressionSyntax> IEnumerable<ExpressionSyntax>.GetEnumerator()

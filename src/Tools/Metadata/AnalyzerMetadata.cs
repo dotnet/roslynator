@@ -34,13 +34,13 @@ public class AnalyzerMetadata
 
     public string Remarks { get; init; }
 
-    public List<string> Tags { get; } = new();
+    public List<string> Tags { get; } = [];
 
-    public List<AnalyzerConfigOption> ConfigOptions { get; } = new();
+    public List<AnalyzerConfigOption> ConfigOptions { get; } = [];
 
-    public List<SampleMetadata> Samples { get; } = new();
+    public List<SampleMetadata> Samples { get; } = [];
 
-    public List<LinkMetadata> Links { get; } = new();
+    public List<LinkMetadata> Links { get; } = [];
 
     public AnalyzerMetadata Parent { get; init; }
 

@@ -88,7 +88,7 @@ public sealed class CompilerDiagnosticFixTestData
         IEnumerable<AdditionalFile> additionalFiles,
         string equivalenceKey)
     {
-        return new CompilerDiagnosticFixTestData(
+        return new(
             diagnosticId: diagnosticId,
             source: source,
             additionalFiles: additionalFiles,

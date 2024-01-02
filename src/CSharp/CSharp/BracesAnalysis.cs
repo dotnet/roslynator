@@ -155,7 +155,7 @@ internal readonly struct BracesAnalysis : IEquatable<BracesAnalysis>
 
     public static implicit operator BracesAnalysis(BracesAnalysisFlags value)
     {
-        return new BracesAnalysis(value);
+        return new(value);
     }
 
     public static implicit operator BracesAnalysisFlags(in BracesAnalysis value)

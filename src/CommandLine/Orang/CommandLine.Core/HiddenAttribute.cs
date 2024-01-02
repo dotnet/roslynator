@@ -5,6 +5,4 @@ using System;
 namespace Roslynator;
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-internal sealed class HiddenAttribute : Attribute
-{
-}
+internal sealed class HiddenAttribute : Attribute;

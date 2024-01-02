@@ -105,12 +105,12 @@ public sealed class VisualBasicTestOptions : TestOptions
 
     public VisualBasicTestOptions WithParseOptions(VisualBasicParseOptions parseOptions)
     {
-        return new VisualBasicTestOptions(this) { ParseOptions = parseOptions ?? throw new ArgumentNullException(nameof(parseOptions)) };
+        return new(this) { ParseOptions = parseOptions ?? throw new ArgumentNullException(nameof(parseOptions)) };
     }
 
     public VisualBasicTestOptions WithCompilationOptions(VisualBasicCompilationOptions compilationOptions)
     {
-        return new VisualBasicTestOptions(this) { CompilationOptions = compilationOptions ?? throw new ArgumentNullException(nameof(compilationOptions)) };
+        return new(this) { CompilationOptions = compilationOptions ?? throw new ArgumentNullException(nameof(compilationOptions)) };
     }
 
     new public VisualBasicTestOptions WithConfigOptions(IEnumerable<KeyValuePair<string, string>> values)

@@ -23,6 +23,6 @@ internal readonly struct SimpleProjectInfo
 
     public static SimpleProjectInfo Create(Project project)
     {
-        return new SimpleProjectInfo(project.Name, project.FilePath);
+        return new(project.Name, project.FilePath);
     }
 }

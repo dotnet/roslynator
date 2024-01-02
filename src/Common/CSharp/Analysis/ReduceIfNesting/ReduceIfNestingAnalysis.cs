@@ -13,12 +13,12 @@ internal static class ReduceIfNestingAnalysis
 {
     private static ReduceIfNestingAnalysisResult Success(SyntaxKind jumpKind, SyntaxNode topNode)
     {
-        return new ReduceIfNestingAnalysisResult(jumpKind, topNode);
+        return new(jumpKind, topNode);
     }
 
     private static ReduceIfNestingAnalysisResult Fail(SyntaxNode topNode)
     {
-        return new ReduceIfNestingAnalysisResult(SyntaxKind.None, topNode);
+        return new(SyntaxKind.None, topNode);
     }
 
     public static ReduceIfNestingAnalysisResult Analyze(

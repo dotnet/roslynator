@@ -4,6 +4,4 @@ using Roslynator.CodeFixes;
 
 namespace Roslynator.Formatting.CodeFixes;
 
-public abstract class BaseCodeFixProvider : AbstractCodeFixProvider
-{
-}
+public abstract class BaseCodeFixProvider : AbstractCodeFixProvider;

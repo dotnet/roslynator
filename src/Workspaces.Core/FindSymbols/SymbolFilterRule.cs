@@ -4,6 +4,4 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator.FindSymbols;
 
-internal abstract class SymbolFilterRule : FilterRule<ISymbol>
-{
-}
+internal abstract class SymbolFilterRule : FilterRule<ISymbol>;
