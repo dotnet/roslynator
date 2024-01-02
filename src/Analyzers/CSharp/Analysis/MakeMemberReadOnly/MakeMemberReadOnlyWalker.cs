@@ -26,7 +26,7 @@ internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
 
     public CancellationToken CancellationToken { get; set; }
 
-    public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = new();
+    public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = [];
 
     public static MakeMemberReadOnlyWalker GetInstance()
     {

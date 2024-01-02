@@ -34,7 +34,7 @@ internal static class DiagnosticDescriptorFactory
 
     public static DiagnosticDescriptor CreateFadeOut(DiagnosticDescriptor descriptor)
     {
-        return new DiagnosticDescriptor(
+        return new(
             descriptor.Id + "FadeOut",
             descriptor.Title,
             descriptor.MessageFormat,

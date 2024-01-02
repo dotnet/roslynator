@@ -15,7 +15,7 @@ public abstract class DocumentationUrlProvider
 {
     internal string ExtensionsFileName = "Extensions.md";
 
-    private readonly Dictionary<string, string> _symbolToLinkMap = new();
+    private readonly Dictionary<string, string> _symbolToLinkMap = [];
 
     protected DocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
     {

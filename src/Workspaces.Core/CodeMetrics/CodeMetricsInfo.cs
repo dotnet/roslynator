@@ -40,7 +40,7 @@ internal readonly struct CodeMetricsInfo : IEquatable<CodeMetricsInfo>
 
     internal CodeMetricsInfo Add(in CodeMetricsInfo codeMetrics)
     {
-        return new CodeMetricsInfo(
+        return new(
             totalLineCount: TotalLineCount + codeMetrics.TotalLineCount,
             codeLineCount: CodeLineCount + codeMetrics.CodeLineCount,
             whitespaceLineCount: WhitespaceLineCount + codeMetrics.WhitespaceLineCount,
@@ -51,7 +51,7 @@ internal readonly struct CodeMetricsInfo : IEquatable<CodeMetricsInfo>
 
     public static CodeMetricsInfo Create(IEnumerable<CodeMetricsInfo> metrics)
     {
-        return new CodeMetricsInfo(
+        return new(
             totalLineCount: metrics.Sum(f => f.TotalLineCount),
             codeLineCount: metrics.Sum(f => f.CodeLineCount),
             whitespaceLineCount: metrics.Sum(f => f.WhitespaceLineCount),

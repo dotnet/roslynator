@@ -58,12 +58,12 @@ public class LegacyAnalyzerOptionMetadata
 
     public string Summary { get; init; }
 
-    public List<SampleMetadata> Samples { get; } = new();
+    public List<SampleMetadata> Samples { get; } = [];
 
     [Obsolete("This property is obsolete", error: true)]
     public bool IsObsolete { get; init; }
 
     public AnalyzerStatus Status { get; init; }
 
-    public List<string> Tags { get; } = new();
+    public List<string> Tags { get; } = [];
 }

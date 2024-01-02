@@ -17,7 +17,7 @@ internal class MarkLocalVariableAsConstWalker : AssignedExpressionWalker
     [ThreadStatic]
     private static MarkLocalVariableAsConstWalker _cachedInstance;
 
-    public Dictionary<string, ILocalSymbol> Identifiers { get; } = new();
+    public Dictionary<string, ILocalSymbol> Identifiers { get; } = [];
 
     public SemanticModel SemanticModel { get; set; }
 

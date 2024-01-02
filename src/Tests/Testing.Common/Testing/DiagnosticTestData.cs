@@ -175,7 +175,7 @@ public sealed class DiagnosticTestData
         string equivalenceKey,
         bool alwaysVerifyAdditionalLocations)
     {
-        return new DiagnosticTestData(
+        return new(
             descriptor: descriptor,
             source: source,
             spans: spans,

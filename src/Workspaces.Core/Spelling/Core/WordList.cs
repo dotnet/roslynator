@@ -87,7 +87,7 @@ internal class WordList
 
     public WordList AddValue(string value)
     {
-        return new WordList(Words.Add(value), Comparison);
+        return new(Words.Add(value), Comparison);
     }
 
     public WordList AddValues(IEnumerable<string> values)
@@ -109,7 +109,7 @@ internal class WordList
 
     public WordList WithValues(IEnumerable<string> values)
     {
-        return new WordList(values, Comparison);
+        return new(values, Comparison);
     }
 
     public static void Save(

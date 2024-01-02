@@ -13,9 +13,9 @@ namespace Roslynator.CSharp.SyntaxRewriters;
 
 internal sealed class UseAsyncAwaitRewriter : SkipFunctionRewriter
 {
-    private static readonly SyntaxAnnotation[] _asyncAwaitAnnotation = new[] { new SyntaxAnnotation() };
+    private static readonly SyntaxAnnotation[] _asyncAwaitAnnotation = [new SyntaxAnnotation()];
 
-    private static readonly SyntaxAnnotation[] _asyncAwaitAnnotationAndFormatterAnnotation = new SyntaxAnnotation[] { _asyncAwaitAnnotation[0], Formatter.Annotation };
+    private static readonly SyntaxAnnotation[] _asyncAwaitAnnotationAndFormatterAnnotation = [_asyncAwaitAnnotation[0], Formatter.Annotation];
 
     private UseAsyncAwaitRewriter(bool keepReturnStatement)
     {

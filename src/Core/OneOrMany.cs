@@ -10,7 +10,7 @@ internal static class OneOrMany
 {
     public static OneOrMany<T> Create<T>(T value)
     {
-        return new OneOrMany<T>(value);
+        return new(value);
     }
 
     public static OneOrMany<T> Create<T>(IEnumerable<T> values)

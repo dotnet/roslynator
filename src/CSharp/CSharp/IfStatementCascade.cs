@@ -36,7 +36,7 @@ public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnu
     /// </summary>
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(IfStatement);
+        return new(IfStatement);
     }
 
     IEnumerator<IfStatementOrElseClause> IEnumerable<IfStatementOrElseClause>.GetEnumerator()

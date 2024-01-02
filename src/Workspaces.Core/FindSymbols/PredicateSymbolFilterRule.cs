@@ -25,6 +25,6 @@ internal class PredicateSymbolFilterRule : SymbolFilterRule
 
     public PredicateSymbolFilterRule Invert()
     {
-        return new PredicateSymbolFilterRule(f => !_isMatch(f), _isApplicable, Reason);
+        return new(f => !_isMatch(f), _isApplicable, Reason);
     }
 }

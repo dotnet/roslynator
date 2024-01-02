@@ -156,7 +156,7 @@ public class SeparatedSyntaxListSelection<TNode> : ISelection<TNode> where TNode
     /// </summary>
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(this);
+        return new(this);
     }
 
     IEnumerator<TNode> IEnumerable<TNode>.GetEnumerator()

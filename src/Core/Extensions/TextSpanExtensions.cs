@@ -11,17 +11,17 @@ internal static class TextSpanExtensions
 {
     public static TextSpan TrimFromStart(this TextSpan span, int length)
     {
-        return new TextSpan(span.Start + length, span.Length - length);
+        return new(span.Start + length, span.Length - length);
     }
 
     public static TextSpan Offset(this TextSpan span, int value)
     {
-        return new TextSpan(span.Start + value, span.Length);
+        return new(span.Start + value, span.Length);
     }
 
     public static TextSpan WithLength(this TextSpan span, int length)
     {
-        return new TextSpan(span.Start, length);
+        return new(span.Start, length);
     }
 
     public static bool IsContainedIn(this TextSpan self, TextSpan span)

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings;
 
 internal static class AddDocumentationCommentRefactoring
 {
-    private static readonly string[] _tagSeparator = new[] { "," };
+    private static readonly string[] _tagSeparator = [","];
 
     public static async Task<Document> RefactorAsync(
         Document document,

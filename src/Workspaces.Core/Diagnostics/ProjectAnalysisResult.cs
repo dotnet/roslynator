@@ -40,7 +40,7 @@ internal class ProjectAnalysisResult
 
     internal static ProjectAnalysisResult Create(Project project)
     {
-        return new ProjectAnalysisResult(SimpleProjectInfo.Create(project));
+        return new(SimpleProjectInfo.Create(project));
     }
 
     internal static ProjectAnalysisResult Create(
@@ -49,7 +49,7 @@ internal class ProjectAnalysisResult
         ImmutableArray<Diagnostic> diagnostics,
         ImmutableDictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo> telemetry)
     {
-        return new ProjectAnalysisResult(
+        return new(
             SimpleProjectInfo.Create(project),
             ImmutableArray.CreateRange(compilerDiagnostics, f => DiagnosticInfo.Create(f)),
             ImmutableArray.CreateRange(diagnostics, f => DiagnosticInfo.Create(f)),

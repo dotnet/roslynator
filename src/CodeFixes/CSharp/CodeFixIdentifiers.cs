@@ -2,6 +2,4 @@
 
 namespace Roslynator.CSharp;
 
-public static partial class CodeFixIdentifiers
-{
-}
+public static partial class CodeFixIdentifiers;

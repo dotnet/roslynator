@@ -77,7 +77,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
     /// </summary>
     public Reversed Reverse()
     {
-        return new Reversed(this);
+        return new(this);
     }
 
     internal ExpressionSyntax First()
@@ -92,7 +92,7 @@ public readonly partial struct ExpressionChain : IEquatable<ExpressionChain>, IE
     /// </summary>
     public Enumerator GetEnumerator()
     {
-        return new Enumerator(this);
+        return new(this);
     }
 
     IEnumerator<ExpressionSyntax> IEnumerable<ExpressionSyntax>.GetEnumerator()

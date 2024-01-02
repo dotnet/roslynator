@@ -85,9 +85,9 @@ internal class SymbolProvider
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => _supportedDiagnostics;
 
-        public ConcurrentBag<ISymbol> Symbols { get; } = new();
+        public ConcurrentBag<ISymbol> Symbols { get; } = [];
 
-        public List<SymbolKind> SymbolKinds { get; } = new();
+        public List<SymbolKind> SymbolKinds { get; } = [];
 
         public bool IncludeGeneratedCode { get; init; }
 

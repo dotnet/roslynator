@@ -245,7 +245,7 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         private int _localFunctionDepth;
         private int _anonymousFunctionDepth;
 
-        public Dictionary<string, IParameterSymbol> Parameters { get; } = new();
+        public Dictionary<string, IParameterSymbol> Parameters { get; } = [];
 
         public SemanticModel SemanticModel { get; set; }
 

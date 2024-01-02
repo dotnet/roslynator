@@ -18,6 +18,6 @@ internal readonly struct CodeFixRegistrationResult
 
     public static CodeFixRegistrationResult Combine(in CodeFixRegistrationResult result1, in CodeFixRegistrationResult result2)
     {
-        return new CodeFixRegistrationResult(result1.Success || result2.Success);
+        return new(result1.Success || result2.Success);
     }
 }

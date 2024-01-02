@@ -32,7 +32,7 @@ public class SymbolRenamerOptions
     /// <summary>
     /// A list of compiler diagnostic IDs that should be ignored.
     /// </summary>
-    public HashSet<string> IgnoredCompilerDiagnosticIds { get; } = new();
+    public HashSet<string> IgnoredCompilerDiagnosticIds { get; } = [];
 
     /// <summary>
     /// Include symbols that are part of generated code.

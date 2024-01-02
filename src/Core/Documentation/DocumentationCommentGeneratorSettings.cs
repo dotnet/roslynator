@@ -36,7 +36,7 @@ internal class DocumentationCommentGeneratorSettings
 
     public DocumentationCommentGeneratorSettings WithIndentation(string indentation)
     {
-        return new DocumentationCommentGeneratorSettings(
+        return new(
             summary: Summary,
             ignoredTags: IgnoredTags,
             indentation: indentation,
