@@ -18,7 +18,6 @@ roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line
 roslynator_array_creation_type_style = implicit_when_type_is_obvious
 roslynator_arrow_token_new_line = before
 roslynator_binary_operator_new_line = before
-roslynator_blank_line_between_closing_brace_and_switch_section = false
 roslynator_blank_line_between_single_line_accessors = false
 roslynator_blank_line_between_using_directives = never
 roslynator_block_braces_style = multi_line
