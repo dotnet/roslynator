@@ -74,7 +74,7 @@ public readonly struct BinaryExpressionInfo
     /// </summary>
     public ExpressionChain AsChain()
     {
-        return new ExpressionChain(BinaryExpression);
+        return new(BinaryExpression);
     }
 
     internal static BinaryExpressionInfo Create(

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Spelling;
 internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
 {
     private readonly SpellingAnalysisContext _analysisContext;
-    private readonly Stack<SyntaxNode> _stack = new();
+    private readonly Stack<SyntaxNode> _stack = [];
 
     private SpellcheckOptions Options => _analysisContext.Options;
 

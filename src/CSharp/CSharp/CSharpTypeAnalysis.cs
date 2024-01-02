@@ -566,25 +566,26 @@ internal static class CSharpTypeAnalysis
                     {
                         case SyntaxKind.IdentifierName:
                             return false;
-
                         case SyntaxKind.GenericName:
                             return true;
-
                         case SyntaxKind.SimpleMemberAccessExpression:
-                            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                            {
+                                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                            if (memberAccess.Name.IsKind(SyntaxKind.IdentifierName))
-                                return false;
+                                if (memberAccess.Name.IsKind(SyntaxKind.IdentifierName))
+                                    return false;
 
-                            if (memberAccess.Name.IsKind(SyntaxKind.GenericName))
-                                return true;
+                                if (memberAccess.Name.IsKind(SyntaxKind.GenericName))
+                                    return true;
 
-                            Debug.Fail(memberAccess.Name.Kind().ToString());
-                            break;
-
+                                Debug.Fail(memberAccess.Name.Kind().ToString());
+                                break;
+                            }
                         default:
-                            Debug.Fail(invocation.Expression.Kind().ToString());
-                            break;
+                            {
+                                Debug.Fail(invocation.Expression.Kind().ToString());
+                                break;
+                            }
                     }
                 }
             }

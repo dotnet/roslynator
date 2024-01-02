@@ -33,7 +33,7 @@ internal static class CodeFixHelpers
 
     public static TextChange GetNewLineBeforeTextChange(SyntaxToken token, string indentation)
     {
-        return new TextChange(
+        return new(
             TextSpan.FromBounds(token.GetPreviousToken().Span.End, token.SpanStart),
             DetermineEndOfLine(token).ToString() + indentation);
     }
@@ -51,7 +51,7 @@ internal static class CodeFixHelpers
 
     public static TextChange GetNewLineAfterTextChange(SyntaxToken token, string indentation)
     {
-        return new TextChange(
+        return new(
             TextSpan.FromBounds(token.Span.End, token.GetNextToken().SpanStart),
             DetermineEndOfLine(token).ToString() + indentation);
     }

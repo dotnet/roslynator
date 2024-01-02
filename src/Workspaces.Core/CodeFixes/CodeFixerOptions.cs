@@ -77,7 +77,7 @@ internal class CodeFixerOptions : CodeAnalysisOptions
 
     public bool IgnoreCompilerErrors { get; }
 
-    public HashSet<string> IgnoredCompilerDiagnosticIds { get; } = new();
+    public HashSet<string> IgnoredCompilerDiagnosticIds { get; } = [];
 
     public string? FileBanner { get; }
 

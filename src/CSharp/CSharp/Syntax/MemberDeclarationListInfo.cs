@@ -202,7 +202,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
     internal static MemberDeclarationListInfo Create(MemberDeclarationListSelection selectedMembers)
     {
-        return new MemberDeclarationListInfo(selectedMembers.Parent, selectedMembers.UnderlyingList);
+        return new(selectedMembers.Parent, selectedMembers.UnderlyingList);
     }
 
     /// <summary>

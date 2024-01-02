@@ -153,7 +153,7 @@ public static class SyntaxExtensions
     /// </summary>
     public static ExpressionChain AsChain(this BinaryExpressionSyntax binaryExpression, TextSpan? span = null)
     {
-        return new ExpressionChain(binaryExpression, span);
+        return new(binaryExpression, span);
     }
     #endregion BinaryExpressionSyntax
 

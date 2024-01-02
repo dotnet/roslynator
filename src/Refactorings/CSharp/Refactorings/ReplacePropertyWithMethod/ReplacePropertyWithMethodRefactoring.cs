@@ -13,8 +13,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod;
 
 internal static class ReplacePropertyWithMethodRefactoring
 {
-    private static readonly string[] _prefixes = new[]
-    {
+    private static readonly string[] _prefixes = [
         "Is",
         "Has",
         "Are",
@@ -24,7 +23,7 @@ internal static class ReplacePropertyWithMethodRefactoring
         "Should",
         "Get",
         "Set",
-    };
+    ];
 
     public static void ComputeRefactoring(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
     {

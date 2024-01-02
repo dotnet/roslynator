@@ -223,7 +223,7 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
 
     public static implicit operator IfStatementOrElseClause(IfStatementSyntax ifStatement)
     {
-        return new IfStatementOrElseClause(ifStatement);
+        return new(ifStatement);
     }
 
     public static implicit operator IfStatementSyntax?(in IfStatementOrElseClause ifOrElse)
@@ -233,7 +233,7 @@ public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseCla
 
     public static implicit operator IfStatementOrElseClause(ElseClauseSyntax elseClause)
     {
-        return new IfStatementOrElseClause(elseClause);
+        return new(elseClause);
     }
 
     public static implicit operator ElseClauseSyntax?(in IfStatementOrElseClause ifOrElse)

@@ -106,10 +106,11 @@ public sealed class UseCompoundAssignmentAnalyzer : BaseDiagnosticAnalyzer
                 case SyntaxKind.LeftShiftExpression:
                 case SyntaxKind.RightShiftExpression:
                     return true;
-
                 case SyntaxKind.CoalesceExpression:
-                    return ((CSharpCompilation)context.Compilation).LanguageVersion >= LanguageVersion.CSharp8
-                        && !((BinaryExpressionSyntax)expression).Right.IsKind(SyntaxKind.ThrowExpression);
+                    {
+                        return ((CSharpCompilation)context.Compilation).LanguageVersion >= LanguageVersion.CSharp8
+                            && !((BinaryExpressionSyntax)expression).Right.IsKind(SyntaxKind.ThrowExpression);
+                    }
             }
 
             return false;

@@ -14,12 +14,12 @@ public sealed class RemovePartialModifierFromTypeWithSinglePartAnalyzer : BaseDi
 {
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-    private static readonly MetadataName[] _metadataNames = new[] {
+    private static readonly MetadataName[] _metadataNames = [
         // ASP.NET Core
         MetadataName.Parse("Microsoft.AspNetCore.Components.ComponentBase"),
         // WPF
         MetadataName.Parse("System.Windows.FrameworkElement"),
-    };
+    ];
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {

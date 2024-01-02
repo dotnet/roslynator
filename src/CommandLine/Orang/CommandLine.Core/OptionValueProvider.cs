@@ -54,7 +54,7 @@ public class OptionValueProvider
 
     public OptionValueProvider WithValues(string name, params OptionValue[] values)
     {
-        return new OptionValueProvider(name, this, Values.AddRange(values));
+        return new(name, this, Values.AddRange(values));
     }
 
     public OptionValueProvider WithoutValues(params OptionValue[] values)

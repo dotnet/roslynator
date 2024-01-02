@@ -21,6 +21,6 @@ internal readonly struct DiagnosticInfo
 
     public static DiagnosticInfo Create(Diagnostic diagnostic)
     {
-        return new DiagnosticInfo(diagnostic.Descriptor, diagnostic.Location.GetMappedLineSpan(), diagnostic.Severity);
+        return new(diagnostic.Descriptor, diagnostic.Location.GetMappedLineSpan(), diagnostic.Severity);
     }
 }

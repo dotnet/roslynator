@@ -2,6 +2,4 @@
 
 namespace Roslynator.CodeFixes;
 
-public abstract class BaseCodeFixProvider : AbstractCodeFixProvider
-{
-}
+public abstract class BaseCodeFixProvider : AbstractCodeFixProvider;

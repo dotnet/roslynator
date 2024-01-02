@@ -77,7 +77,7 @@ public sealed class CSharpTestOptions : TestOptions
 
     private static CSharpTestOptions CreateDefault()
     {
-        return new CSharpTestOptions(
+        return new(
             metadataReferences: RuntimeMetadataReference.DefaultMetadataReferences.Select(f => f.Value).ToImmutableArray());
     }
 
@@ -242,12 +242,12 @@ public sealed class CSharpTestOptions : TestOptions
 
     public CSharpTestOptions WithCompilationOptions(CSharpCompilationOptions compilationOptions)
     {
-        return new CSharpTestOptions(this) { CompilationOptions = compilationOptions ?? throw new ArgumentNullException(nameof(compilationOptions)) };
+        return new(this) { CompilationOptions = compilationOptions ?? throw new ArgumentNullException(nameof(compilationOptions)) };
     }
 
     public CSharpTestOptions WithParseOptions(CSharpParseOptions parseOptions)
     {
-        return new CSharpTestOptions(this) { ParseOptions = parseOptions ?? throw new ArgumentNullException(nameof(parseOptions)) };
+        return new(this) { ParseOptions = parseOptions ?? throw new ArgumentNullException(nameof(parseOptions)) };
     }
 
     new public CSharpTestOptions WithMetadataReferences(IEnumerable<MetadataReference> values)

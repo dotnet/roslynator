@@ -9,7 +9,7 @@ namespace Roslynator;
 
 internal static class GeneratedCodeUtility
 {
-    private static readonly char[] _separators = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar, Path.VolumeSeparatorChar };
+    private static readonly char[] _separators = [Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar, Path.VolumeSeparatorChar];
 
     public static bool IsGeneratedCode(SyntaxTree tree, Func<SyntaxTrivia, bool> isComment, CancellationToken cancellationToken = default)
     {

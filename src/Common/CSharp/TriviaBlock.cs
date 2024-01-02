@@ -56,7 +56,7 @@ internal readonly struct TriviaBlock
 
     public TriviaBlockReader CreateReader()
     {
-        return new TriviaBlockReader(First, Second);
+        return new(First, Second);
     }
 
     public static TriviaBlock FromLeading(SyntaxNodeOrToken nodeOrToken)

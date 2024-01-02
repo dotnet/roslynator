@@ -7,13 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.8.0] - 2024-01-02
+
 ### Added
 
 - Add analyzer "Add/remove blank line between switch sections" ([RCS0061](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0061)) ([PR](https://github.com/dotnet/roslynator/pull/1302))
-  - Option (required): `roslynator_blank_line_between_switch_sections = include|omit|omit_after_block` 
+  - Option (required): `roslynator_blank_line_between_switch_sections = include|omit|omit_after_block`
   - Make analyzer [RCS0014](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0014) obsolete
 - Add analyzer "Declare explicit/implicit type" ([RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264)) ([PR](https://github.com/dotnet/roslynator/pull/1335))
-  - Required option: `roslynator_use_var = always | never | when_type_is_obvious` 
+  - Required option: `roslynator_use_var = always | never | when_type_is_obvious`
   - This analyzer consolidates following analyzers (which are made obsolete):
     - [RCS1008](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1008)
     - [RCS1009](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1009)

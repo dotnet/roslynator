@@ -60,7 +60,7 @@ internal abstract class SymbolDefinitionWriter : IDisposable
 
     private protected ImmutableHashSet<INamedTypeSymbol> TypeSymbols { get; private set; }
 
-    private protected List<ISymbol> SymbolHierarchy { get; } = new();
+    private protected List<ISymbol> SymbolHierarchy { get; } = [];
 
     internal SymbolDefinitionListLayout Layout => Format.Layout;
 
