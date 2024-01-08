@@ -23,7 +23,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             context,
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             objectCreation.Type.GetLocation(),
-            "Simplify array creation");
+            "Simplify object creation");
     }
 
     protected override void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context)
@@ -54,6 +54,16 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             "Simplify array creation");
     }
 
+    protected override void ReportVarToExplicit(ref SyntaxNodeAnalysisContext context, TypeSyntax type)
+    {
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
+            context.Node.GetLocation(),
+            properties: _varToExplicit,
+            "Use explicit object creation");
+    }
+
     protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         DiagnosticHelpers.ReportDiagnostic(
@@ -61,7 +71,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             context.Node.GetLocation(),
             properties: _implicitToCollectionExpression,
-            "Simplify array creation");
+            "Simplify object creation");
     }
 
     protected override void ReportCollectionExpressionToImplicit(ref SyntaxNodeAnalysisContext context)
@@ -71,7 +81,7 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             context.Node.GetLocation(),
             properties: _collectionExpressionToImplicit,
-            "Simplify array creation");
+            "Simplify object creation");
     }
 #endif
 }
