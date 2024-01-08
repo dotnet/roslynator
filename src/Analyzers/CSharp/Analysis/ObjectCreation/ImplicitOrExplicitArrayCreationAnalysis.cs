@@ -320,6 +320,30 @@ internal class ImplicitOrExplicitArrayCreationAnalysis : ImplicitOrExplicitCreat
         return context.Node.GetLocation();
     }
 
+    protected override void ReportVarToExplicit(ref SyntaxNodeAnalysisContext context, TypeSyntax type)
+    {
+#if ROSLYN_4_7
+        if (context.Node.IsKind(SyntaxKind.CollectionExpression))
+            return;
+#endif
+        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+        if (typeSymbol?.IsErrorType() != false)
+            return;
+
+        ITypeSymbol expressionTypeSymbol = context.SemanticModel.GetTypeSymbol(context.Node, context.CancellationToken);
+
+        if (!SymbolEqualityComparer.IncludeNullability.Equals(typeSymbol, expressionTypeSymbol))
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
+            GetLocationFromImplicit(ref context),
+            properties: _varToExplicit,
+            "Use explicitly typed array");
+    }
+
 #if ROSLYN_4_7
     private static bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context, CollectionExpressionSyntax collectionExpression)
     {
@@ -365,29 +389,6 @@ internal class ImplicitOrExplicitArrayCreationAnalysis : ImplicitOrExplicitCreat
             GetLocationFromExplicit(ref context),
             properties: _explicitToCollectionExpression,
             "Simplify array creation");
-    }
-
-    protected override void ReportVarToExplicit(ref SyntaxNodeAnalysisContext context, TypeSyntax type)
-    {
-        if (context.Node.IsKind(SyntaxKind.CollectionExpression))
-            return;
-
-        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
-
-        if (typeSymbol?.IsErrorType() != false)
-            return;
-
-        ITypeSymbol expressionTypeSymbol = context.SemanticModel.GetTypeSymbol(context.Node, context.CancellationToken);
-
-        if (!SymbolEqualityComparer.IncludeNullability.Equals(typeSymbol, expressionTypeSymbol))
-            return;
-
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-            GetLocationFromImplicit(ref context),
-            properties: _varToExplicit,
-            "Use explicitly typed array");
     }
 
     protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
