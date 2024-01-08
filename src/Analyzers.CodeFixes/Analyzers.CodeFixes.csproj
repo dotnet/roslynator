@@ -13,7 +13,7 @@
     <AssemblyName>Roslynator.CSharp.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CSharp</RootNamespace>
     <NuspecFile>Roslynator.Analyzers.nuspec</NuspecFile> 
-    <NuspecProperties>Configuration=$(Configuration);Version=$(RoslynatorAnalyzersPackageVersion)</NuspecProperties>
+    <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorAnalyzersPackageVersion)</NuspecProperties>
     <IsPackable>true</IsPackable>
     <IncludeSymbols>false</IncludeSymbols>
 </PropertyGroup>
