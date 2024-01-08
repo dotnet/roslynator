@@ -59,9 +59,13 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             bool useCollectionExpression = diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ExplicitToCollectionExpression);
 #endif
             CodeAction codeAction = CodeAction.Create(
+#if ROSLYN_4_7
                 (useCollectionExpression)
                     ? UseCollectionExpressionTitle
                     : UseImplicitObjectCreationTitle,
+#else
+                UseImplicitObjectCreationTitle,
+#endif
                 ct =>
                 {
                     SyntaxNode newNode;
@@ -97,7 +101,14 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                         return document.ReplaceNodeAsync(objectCreation, newNode, ct);
                     }
                 },
-                GetEquivalenceKey(diagnostic, (useCollectionExpression) ? UseCollectionExpressionEquivalenceKey : null));
+                GetEquivalenceKey(
+                    diagnostic,
+#if ROSLYN_4_7
+                    (useCollectionExpression) ? UseCollectionExpressionEquivalenceKey : null
+#else
+                    null
+#endif
+                    ));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
