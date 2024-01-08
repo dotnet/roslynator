@@ -50,7 +50,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
-    public async Task TestNoDiagnostic_EmptyLine2()
+    public async Task TestNoDiagnostic_NoBraces()
     {
         await VerifyNoDiagnosticAsync(@"
 class C;
