@@ -43,19 +43,19 @@ public sealed class FormatTypeDeclarationBracesAnalyzer : BaseDiagnosticAnalyzer
 
         SyntaxToken openBrace = typeDeclaration.OpenBraceToken;
 
-        if (openBrace.IsKind(SyntaxKind.None))
+        if (openBrace.IsKind(SyntaxKind.None)
+            || openBrace.IsMissing)
+        {
             return;
-
-        if (openBrace.IsMissing)
-            return;
+        }
 
         SyntaxToken closeBrace = typeDeclaration.CloseBraceToken;
 
-        if (closeBrace.IsKind(SyntaxKind.None))
+        if (closeBrace.IsKind(SyntaxKind.None)
+            || closeBrace.IsMissing)
+        {
             return;
-
-        if (closeBrace.IsMissing)
-            return;
+        }
 
         if (typeDeclaration.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(openBrace.SpanStart, closeBrace.SpanStart)))
         {
