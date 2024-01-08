@@ -51,7 +51,7 @@ internal class ImplicitOrExplicitObjectCreationAnalysis : ImplicitOrExplicitCrea
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             objectCreation.Type.GetLocation(),
             properties: _explicitToCollectionExpression,
-            "Simplify array creation");
+            "Simplify object creation");
     }
 
     protected override void ReportVarToExplicit(ref SyntaxNodeAnalysisContext context, TypeSyntax type)

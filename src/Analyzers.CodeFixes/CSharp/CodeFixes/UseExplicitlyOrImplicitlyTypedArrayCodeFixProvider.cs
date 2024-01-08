@@ -82,10 +82,10 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             diagnostic.Location.SourceSpan,
             out SyntaxNode node,
             predicate: f => f.IsKind(
-                SyntaxKind.ImplicitArrayCreationExpression,
 #if ROSLYN_4_7
                 SyntaxKind.CollectionExpression,
 #endif
+                SyntaxKind.ImplicitArrayCreationExpression,
                 SyntaxKind.ArrayCreationExpression)))
         {
             throw new InvalidOperationException();
@@ -100,10 +100,10 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             }
             else
             {
+#endif
                 return (ct => ConvertToImplicitAsync(document, arrayCreation, ct), UseImplicitlyTypedArrayTitle);
+#if ROSLYN_4_7
             }
-#else
-            return (ct => ConvertToImplicitAsync(document, arrayCreation, ct), UseImplicitlyTypedArrayTitle);
 #endif
         }
         else if (node is ImplicitArrayCreationExpressionSyntax implicitArrayCreation)
@@ -119,10 +119,10 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             }
             else
             {
+#endif
                 return (ct => ConvertToExplicitAsync(document, implicitArrayCreation, ct), UseExplicitlyTypedArrayTitle);
+#if ROSLYN_4_7
             }
-#else
-            return (ct => ConvertToExplicitAsync(document, implicitArrayCreation, ct), UseExplicitlyTypedArrayTitle);
 #endif
         }
 #if ROSLYN_4_7
