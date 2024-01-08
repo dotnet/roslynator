@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add support for Unity ([PR](https://github.com/dotnet/roslynator/pull/1349))
+  - NuGet packages with analyzers support multiple versions of Roslyn including 3.8 which is version used by Unity. 
+
 ## [4.8.0] - 2024-01-02
 
 ### Added

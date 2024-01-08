@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of formatting analyzers, powered by Roslyn.
 
-  - This package requires Roslyn 3.8.0 or higher.
+  - This package requires Roslyn 3.8 or higher.
   - All analyzers are disabled by default.</description>
     <summary>A collection of formatting analyzers, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2023 Josef Pihrt</copyright>
