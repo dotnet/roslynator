@@ -4,15 +4,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RoslynVersion)' != ''">
+    <BaseOutputPath>bin\$(RoslynVersion)</BaseOutputPath>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Version>$(RoslynatorAnalyzersVersion)</Version>
     <AssemblyName>Roslynator.CSharp.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CSharp</RootNamespace>
     <NuspecFile>Roslynator.Analyzers.nuspec</NuspecFile> 
-    <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorAnalyzersPackageVersion)</NuspecProperties>
+    <NuspecProperties>OutputPath=$(OutputPath);Version=$(RoslynatorAnalyzersPackageVersion);RoslynVersion=$(RoslynVersion)</NuspecProperties>
     <IsPackable>true</IsPackable>
     <IncludeSymbols>false</IncludeSymbols>
-    <BaseOutputPath>bin\$(RoslynVersion)</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
