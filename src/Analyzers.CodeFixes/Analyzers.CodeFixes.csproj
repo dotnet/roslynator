@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynVersion)' != ''">
-    <BaseOutputPath>bin\$(RoslynVersion)</BaseOutputPath>
+    <BaseOutputPath>bin\$(RoslynVersion)\</BaseOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -13,10 +13,10 @@
     <AssemblyName>Roslynator.CSharp.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CSharp</RootNamespace>
     <NuspecFile>Roslynator.Analyzers.nuspec</NuspecFile> 
-    <NuspecProperties>OutputPath=$(OutputPath);Version=$(RoslynatorAnalyzersPackageVersion);RoslynVersion=$(RoslynVersion)</NuspecProperties>
+    <NuspecProperties>Configuration=$(Configuration);Version=$(RoslynatorAnalyzersPackageVersion)</NuspecProperties>
     <IsPackable>true</IsPackable>
     <IncludeSymbols>false</IncludeSymbols>
-  </PropertyGroup>
+</PropertyGroup>
 
   <ItemGroup>
     <None Remove="tools\install.ps1" />
