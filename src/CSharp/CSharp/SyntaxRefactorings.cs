@@ -444,10 +444,10 @@ internal static class SyntaxRefactorings
         }
         else
         {
+#endif
             return RemoveNode(namespaceDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
+#if ROSLYN_4_0
         }
-#else
-        return RemoveNode(namespaceDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
 #endif
     }
 
@@ -825,6 +825,7 @@ internal static class SyntaxRefactorings
             operatorToken: Token(token.LeadingTrivia, newTokenKind, token.TrailingTrivia),
             right: left.WithTriviaFrom(right));
     }
+
 #if ROSLYN_4_7
     public static CollectionExpressionSyntax ConvertInitializerToCollectionExpression(InitializerExpressionSyntax? initializer)
     {

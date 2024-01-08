@@ -169,12 +169,11 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             }
             else
             {
+#endif
                 ReportExplicitToImplicit(ref context);
                 return true;
+#if ROSLYN_4_7
             }
-#else
-            ReportExplicitToImplicit(ref context);
-            return true;
 #endif
 
         }
@@ -274,46 +273,6 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         return false;
     }
 
-#if ROSLYN_4_7
-    private static bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context, CollectionExpressionSyntax collectionExpression)
-    {
-        SeparatedSyntaxList<CollectionElementSyntax> elements = collectionExpression.Elements;
-
-        IArrayTypeSymbol arrayTypeSymbol = null;
-        var isObvious = false;
-
-        foreach (CollectionElementSyntax element in elements)
-        {
-            if (element is not ExpressionElementSyntax expressionElement)
-                return false;
-
-            if (arrayTypeSymbol is null)
-            {
-                ITypeSymbol type = context.SemanticModel.GetTypeInfo(collectionExpression, context.CancellationToken).ConvertedType;
-
-                arrayTypeSymbol = type as IArrayTypeSymbol;
-
-                if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
-                    return true;
-            }
-
-            isObvious = CSharpTypeAnalysis.IsTypeObvious(expressionElement.Expression, arrayTypeSymbol.ElementType, includeNullability: true, context.SemanticModel, context.CancellationToken);
-
-            if (!isObvious)
-                return false;
-        }
-
-        return isObvious;
-    }
-#endif
-
-#if ROSLYN_4_7
-    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
-    {
-        return UseCollectionExpression(ref context);
-    }
-#endif
-
     public override TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
     {
         return context.GetArrayCreationTypeStyle();
@@ -362,6 +321,42 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
     }
 
 #if ROSLYN_4_7
+    private static bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context, CollectionExpressionSyntax collectionExpression)
+    {
+        SeparatedSyntaxList<CollectionElementSyntax> elements = collectionExpression.Elements;
+
+        IArrayTypeSymbol arrayTypeSymbol = null;
+        var isObvious = false;
+
+        foreach (CollectionElementSyntax element in elements)
+        {
+            if (element is not ExpressionElementSyntax expressionElement)
+                return false;
+
+            if (arrayTypeSymbol is null)
+            {
+                ITypeSymbol type = context.SemanticModel.GetTypeInfo(collectionExpression, context.CancellationToken).ConvertedType;
+
+                arrayTypeSymbol = type as IArrayTypeSymbol;
+
+                if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
+                    return true;
+            }
+
+            isObvious = CSharpTypeAnalysis.IsTypeObvious(expressionElement.Expression, arrayTypeSymbol.ElementType, includeNullability: true, context.SemanticModel, context.CancellationToken);
+
+            if (!isObvious)
+                return false;
+        }
+
+        return isObvious;
+    }
+
+    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
+    {
+        return UseCollectionExpression(ref context);
+    }
+
     protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         DiagnosticHelpers.ReportDiagnostic(

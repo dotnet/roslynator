@@ -545,10 +545,10 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 }
                 else
                 {
+#endif
                     ReportExplicitToImplicit(ref context);
+#if ROSLYN_4_7
                 }
-#else
-                ReportExplicitToImplicit(ref context);
 #endif
             }
         }
@@ -652,10 +652,6 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         return false;
     }
 
-#if ROSLYN_4_7
-    protected abstract bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context);
-#endif
-
     protected static bool IsSingleReturnStatement(SyntaxNode parent)
     {
         return parent.IsKind(SyntaxKind.ReturnStatement)
@@ -665,6 +661,8 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
     }
 
 #if ROSLYN_4_7
+    protected abstract bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context);
+
     protected static bool UseCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         Debug.Assert(!context.Node.IsKind(SyntaxKind.CollectionExpression), context.Node.Kind().ToString());

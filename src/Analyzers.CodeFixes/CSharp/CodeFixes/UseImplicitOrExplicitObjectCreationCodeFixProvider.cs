@@ -57,8 +57,6 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
         {
 #if ROSLYN_4_7
             bool useCollectionExpression = diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ExplicitToCollectionExpression);
-#else
-            const bool useCollectionExpression = false;
 #endif
             CodeAction codeAction = CodeAction.Create(
                 (useCollectionExpression)
@@ -67,20 +65,21 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                 ct =>
                 {
                     SyntaxNode newNode;
-
+#if ROSLYN_4_7
                     if (useCollectionExpression)
                     {
-#if ROSLYN_4_7
                         newNode = ConvertInitializerToCollectionExpression(objectCreation.Initializer).WithFormatterAnnotation();
-#endif
                     }
                     else
                     {
+#endif
                         newNode = ImplicitObjectCreationExpression(
                             objectCreation.NewKeyword.WithTrailingTrivia(objectCreation.NewKeyword.TrailingTrivia.EmptyIfWhitespace()),
                             objectCreation.ArgumentList ?? ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
                             objectCreation.Initializer);
+#if ROSLYN_4_7
                     }
+#endif
 
                     if (objectCreation.IsParentKind(SyntaxKind.EqualsValueClause)
                         && objectCreation.Parent.IsParentKind(SyntaxKind.VariableDeclarator)

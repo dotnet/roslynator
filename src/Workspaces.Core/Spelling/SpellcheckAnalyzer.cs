@@ -14,7 +14,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Host.Mef;
-using Roslynator.Rename;
 using static Roslynator.Logger;
 
 namespace Roslynator.Spelling;

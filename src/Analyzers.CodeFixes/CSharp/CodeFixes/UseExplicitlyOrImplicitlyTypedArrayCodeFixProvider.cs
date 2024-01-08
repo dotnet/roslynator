@@ -83,12 +83,10 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             out SyntaxNode node,
             predicate: f => f.IsKind(
                 SyntaxKind.ImplicitArrayCreationExpression,
-                SyntaxKind.ArrayCreationExpression
 #if ROSLYN_4_7
-                ,
-                SyntaxKind.CollectionExpression
+                SyntaxKind.CollectionExpression,
 #endif
-                )))
+                SyntaxKind.ArrayCreationExpression)))
         {
             throw new InvalidOperationException();
         }
@@ -172,25 +170,6 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         return await document.ReplaceNodeAsync(implicitArrayCreation, newNode, cancellationToken).ConfigureAwait(false);
     }
 
-#if ROSLYN_4_7
-    private static async Task<Document> ConvertToExplicitAsync(
-        Document document,
-        CollectionExpressionSyntax collectionExpression,
-        CancellationToken cancellationToken)
-    {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(collectionExpression, cancellationToken).ConvertedType;
-
-        ArrayCreationExpressionSyntax arrayCreation = ArrayCreationExpression(
-            Token(SyntaxKind.NewKeyword),
-            (ArrayTypeSyntax)typeSymbol.ToTypeSyntax().WithSimplifierAnnotation(),
-            ConvertCollectionExpressionToInitializer(collectionExpression, SyntaxKind.ArrayInitializerExpression))
-            .WithTriviaFrom(collectionExpression);
-
-        return await document.ReplaceNodeAsync(collectionExpression, arrayCreation, cancellationToken).ConfigureAwait(false);
-    }
-#endif
-
     private static async Task<Document> ConvertToImplicitAsync(
         Document document,
         ArrayCreationExpressionSyntax arrayCreation,
@@ -228,6 +207,23 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
     }
 
 #if ROSLYN_4_7
+    private static async Task<Document> ConvertToExplicitAsync(
+        Document document,
+        CollectionExpressionSyntax collectionExpression,
+        CancellationToken cancellationToken)
+    {
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(collectionExpression, cancellationToken).ConvertedType;
+
+        ArrayCreationExpressionSyntax arrayCreation = ArrayCreationExpression(
+            Token(SyntaxKind.NewKeyword),
+            (ArrayTypeSyntax)typeSymbol.ToTypeSyntax().WithSimplifierAnnotation(),
+            ConvertCollectionExpressionToInitializer(collectionExpression, SyntaxKind.ArrayInitializerExpression))
+            .WithTriviaFrom(collectionExpression);
+
+        return await document.ReplaceNodeAsync(collectionExpression, arrayCreation, cancellationToken).ConfigureAwait(false);
+    }
+
     private static async Task<Document> ConvertToImplicitAsync(
         Document document,
         CollectionExpressionSyntax collectionExpression,

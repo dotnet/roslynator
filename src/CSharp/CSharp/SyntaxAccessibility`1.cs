@@ -336,12 +336,10 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (declaration.IsParentKind(
                 SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration,
-                SyntaxKind.RecordDeclaration
 #if ROSLYN_4_0
-                ,
-                SyntaxKind.RecordStructDeclaration
+                SyntaxKind.RecordStructDeclaration,
 #endif
-                ))
+                SyntaxKind.RecordDeclaration))
             {
                 return Accessibility.Private;
             }
@@ -359,11 +357,10 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (declaration.IsParentKind(
                 SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration,
-                SyntaxKind.RecordDeclaration
 #if ROSLYN_4_0
-                ,
-                SyntaxKind.RecordStructDeclaration
+                SyntaxKind.RecordStructDeclaration,
 #endif
+                SyntaxKind.RecordDeclaration
                 ))
             {
                 return Accessibility.Private;
@@ -804,6 +801,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             return Accessibility.NotApplicable;
         }
     }
+
 #if ROSLYN_4_0
     private class FileScopedNamespaceAccessibility : SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>
     {
@@ -837,6 +835,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
         }
     }
 #endif
+
     private class OperatorAccessibility : SyntaxAccessibility<OperatorDeclarationSyntax>
     {
         public override Accessibility GetDefaultAccessibility(OperatorDeclarationSyntax declaration)
