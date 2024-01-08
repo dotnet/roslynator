@@ -35,6 +35,16 @@ internal class ImplicitOrExplicitObjectCreationAnalysis : ImplicitOrExplicitCrea
             "Use explicit object creation");
     }
 
+    protected override void ReportVarToExplicit(ref SyntaxNodeAnalysisContext context, TypeSyntax type)
+    {
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
+            context.Node.GetLocation(),
+            properties: _varToExplicit,
+            "Use explicit object creation");
+    }
+
 #if ROSLYN_4_7
     protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
     {
@@ -52,16 +62,6 @@ internal class ImplicitOrExplicitObjectCreationAnalysis : ImplicitOrExplicitCrea
             objectCreation.Type.GetLocation(),
             properties: _explicitToCollectionExpression,
             "Simplify object creation");
-    }
-
-    protected override void ReportVarToExplicit(ref SyntaxNodeAnalysisContext context, TypeSyntax type)
-    {
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
-            context.Node.GetLocation(),
-            properties: _varToExplicit,
-            "Use explicit object creation");
     }
 
     protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
