@@ -29,7 +29,9 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
         context.RegisterSyntaxNodeAction(c => AnalyzeArrayCreationExpression(c), SyntaxKind.ArrayCreationExpression);
         context.RegisterSyntaxNodeAction(c => AnalyzeImplicitArrayCreationExpression(c), SyntaxKind.ImplicitArrayCreationExpression);
+#if ROSLYN_4_7
         context.RegisterSyntaxNodeAction(c => AnalyzeCollectionExpression(c), SyntaxKind.CollectionExpression);
+#endif
     }
 
     private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)

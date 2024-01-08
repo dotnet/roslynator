@@ -101,8 +101,16 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
         if (methodDeclaration.ContainsDiagnostics)
             return;
 
-        if (!methodDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+        if (!methodDeclaration.IsParentKind(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration))
+        {
             return;
+        }
 
         if (methodDeclaration.Modifiers.ContainsAny(
             SyntaxKind.AbstractKeyword,
@@ -202,8 +210,16 @@ public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
         if (indexerDeclaration.ContainsDiagnostics)
             return;
 
-        if (!indexerDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+        if (!indexerDeclaration.IsParentKind(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration))
+        {
             return;
+        }
 
         if (indexerDeclaration.Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
             return;

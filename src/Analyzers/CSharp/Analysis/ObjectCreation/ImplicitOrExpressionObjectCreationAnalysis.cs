@@ -15,12 +15,6 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
         return context.GetObjectCreationTypeStyle();
     }
 
-    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
-    {
-        return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
-            && UseCollectionExpression(ref context);
-    }
-
     protected override void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context)
     {
         var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
@@ -30,6 +24,23 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             objectCreation.Type.GetLocation(),
             "Simplify array creation");
+    }
+
+
+    protected override void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context)
+    {
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
+            context.Node,
+            "Use explicit object creation");
+    }
+
+#if ROSLYN_4_7
+    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
+    {
+        return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
+            && UseCollectionExpression(ref context);
     }
 
     protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
@@ -42,15 +53,6 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             objectCreation.Type.GetLocation(),
             properties: _explicitToCollectionExpression,
             "Simplify array creation");
-    }
-
-    protected override void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context)
-    {
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
-            context.Node,
-            "Use explicit object creation");
     }
 
     protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
@@ -72,4 +74,5 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             properties: _collectionExpressionToImplicit,
             "Simplify array creation");
     }
+#endif
 }

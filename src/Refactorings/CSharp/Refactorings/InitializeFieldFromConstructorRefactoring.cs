@@ -95,8 +95,16 @@ internal static class InitializeFieldFromConstructorRefactoring
         if (fieldDeclaration.Parent is not TypeDeclarationSyntax typeDeclaration)
             return false;
 
-        if (!typeDeclaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+        if (!typeDeclaration.IsKind(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration))
+        {
             return false;
+        }
 
         return typeDeclaration
             .Members

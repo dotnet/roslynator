@@ -33,7 +33,9 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
             f => AnalyzeTypeDeclaration(f),
             SyntaxKind.ClassDeclaration,
             SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
             SyntaxKind.RecordStructDeclaration,
+#endif
             SyntaxKind.InterfaceDeclaration);
 
         context.RegisterSyntaxNodeAction(f => AnalyzeDelegateDeclaration(f), SyntaxKind.DelegateDeclaration);

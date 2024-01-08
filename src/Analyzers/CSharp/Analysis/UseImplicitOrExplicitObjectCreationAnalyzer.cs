@@ -35,7 +35,9 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
             }
 
             startContext.RegisterSyntaxNodeAction(c => AnalyzeImplicitObjectCreationExpression(c), SyntaxKind.ImplicitObjectCreationExpression);
+#if ROSLYN_4_7
             startContext.RegisterSyntaxNodeAction(c => AnalyzeCollectionExpression(c), SyntaxKind.CollectionExpression);
+#endif
         });
     }
 
@@ -49,8 +51,10 @@ public sealed class UseImplicitOrExplicitObjectCreationAnalyzer : BaseDiagnostic
         ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeImplicitCreation(ref context);
     }
 
+#if ROSLYN_4_7
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
         ImplicitOrExpressionObjectCreationAnalysis.Instance.AnalyzeCollectionExpression(ref context);
     }
+#endif
 }

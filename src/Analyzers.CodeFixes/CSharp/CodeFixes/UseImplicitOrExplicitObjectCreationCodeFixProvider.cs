@@ -42,7 +42,9 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             predicate: f => f.IsKind(
                 SyntaxKind.ObjectCreationExpression,
                 SyntaxKind.ImplicitObjectCreationExpression,
+#if ROSLYN_4_7
                 SyntaxKind.CollectionExpression,
+#endif
                 SyntaxKind.VariableDeclaration)))
         {
             return;
@@ -53,8 +55,11 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
         if (node is ObjectCreationExpressionSyntax objectCreation)
         {
+#if ROSLYN_4_7
             bool useCollectionExpression = diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ExplicitToCollectionExpression);
-
+#else
+            const bool useCollectionExpression = false;
+#endif
             CodeAction codeAction = CodeAction.Create(
                 (useCollectionExpression)
                     ? UseCollectionExpressionTitle
@@ -65,7 +70,9 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                     if (useCollectionExpression)
                     {
+#if ROSLYN_4_7
                         newNode = ConvertInitializerToCollectionExpression(objectCreation.Initializer).WithFormatterAnnotation();
+#endif
                     }
                     else
                     {
@@ -97,6 +104,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
         }
         else if (node is ImplicitObjectCreationExpressionSyntax implicitObjectCreation)
         {
+#if ROSLYN_4_7
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
                 CodeAction codeAction = CodeAction.Create(
@@ -119,6 +127,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             }
             else
             {
+#endif
                 CodeAction codeAction = CodeAction.Create(
                     UseExplicitObjectCreationTitle,
                     async ct =>
@@ -143,8 +152,11 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
+#if ROSLYN_4_7
             }
+#endif
         }
+#if ROSLYN_4_7
         else if (node is CollectionExpressionSyntax collectionExpression)
         {
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.CollectionExpressionToImplicit))
@@ -199,6 +211,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
+#endif
         else
         {
             var variableDeclaration = (VariableDeclarationSyntax)node;

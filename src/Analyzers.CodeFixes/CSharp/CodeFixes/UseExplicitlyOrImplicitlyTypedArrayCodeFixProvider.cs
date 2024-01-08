@@ -31,6 +31,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray); }
     }
 
+#if ROSLYN_4_0
     public override FixAllProvider GetFixAllProvider()
     {
         return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
@@ -51,6 +52,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             return document;
         }
     }
+#endif
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
@@ -81,14 +83,18 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             out SyntaxNode node,
             predicate: f => f.IsKind(
                 SyntaxKind.ImplicitArrayCreationExpression,
-                SyntaxKind.ArrayCreationExpression,
-                SyntaxKind.CollectionExpression)))
+                SyntaxKind.ArrayCreationExpression
+#if ROSLYN_4_7
+                , SyntaxKind.CollectionExpression
+#endif
+                )))
         {
             throw new InvalidOperationException();
         }
 
         if (node is ArrayCreationExpressionSyntax arrayCreation)
         {
+#if ROSLYN_4_7
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ExplicitToCollectionExpression))
             {
                 return (ct => ConvertToCollectionExpressionAsync(document, arrayCreation, ct), UseCollectionExpressionTitle);
@@ -97,9 +103,13 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             {
                 return (ct => ConvertToImplicitAsync(document, arrayCreation, ct), UseImplicitlyTypedArrayTitle);
             }
+#else
+            return (ct => ConvertToImplicitAsync(document, arrayCreation, ct), UseImplicitlyTypedArrayTitle);
+#endif
         }
         else if (node is ImplicitArrayCreationExpressionSyntax implicitArrayCreation)
         {
+#if ROSLYN_4_7
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
                 return (ct => ConvertToCollectionExpressionAsync(document, implicitArrayCreation, ct), UseCollectionExpressionTitle);
@@ -108,7 +118,11 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             {
                 return (ct => ConvertToExplicitAsync(document, implicitArrayCreation, ct), UseExplicitlyTypedArrayTitle);
             }
+#else
+            return (ct => ConvertToExplicitAsync(document, implicitArrayCreation, ct), UseExplicitlyTypedArrayTitle);
+#endif
         }
+#if ROSLYN_4_7
         else if (node is CollectionExpressionSyntax collectionExpression)
         {
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.CollectionExpressionToImplicit))
@@ -120,6 +134,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
                 return (ct => ConvertToExplicitAsync(document, collectionExpression, ct), UseExplicitlyTypedArrayTitle);
             }
         }
+#endif
         else
         {
             throw new InvalidOperationException();
@@ -156,6 +171,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         return await document.ReplaceNodeAsync(implicitArrayCreation, newNode, cancellationToken).ConfigureAwait(false);
     }
 
+#if ROSLYN_4_7
     private static async Task<Document> ConvertToExplicitAsync(
         Document document,
         CollectionExpressionSyntax collectionExpression,
@@ -172,6 +188,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
 
         return await document.ReplaceNodeAsync(collectionExpression, arrayCreation, cancellationToken).ConfigureAwait(false);
     }
+#endif
 
     private static async Task<Document> ConvertToImplicitAsync(
         Document document,
@@ -209,6 +226,7 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         return await document.ReplaceNodeAsync(arrayCreation, implicitArrayCreation, cancellationToken).ConfigureAwait(false);
     }
 
+#if ROSLYN_4_7
     private static async Task<Document> ConvertToImplicitAsync(
         Document document,
         CollectionExpressionSyntax collectionExpression,
@@ -245,4 +263,5 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
 
         return await document.ReplaceNodeAsync(implicitArrayCreation, collectionExpression, cancellationToken).ConfigureAwait(false);
     }
+#endif
 }

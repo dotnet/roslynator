@@ -15,7 +15,13 @@ internal static class ConvertAutoPropertyToFullPropertyWithoutBackingFieldRefact
 {
     public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
     {
-        return propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration)
+        return propertyDeclaration.IsParentKind(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration)
             && propertyDeclaration
                 .AccessorList?
                 .Accessors

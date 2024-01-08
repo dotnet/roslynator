@@ -72,7 +72,11 @@ internal static class VariableDeclarationRefactoring
 
         context.RegisterRefactoring(
             $"Rename '{oldName}' to '{newName}'",
+#if ROSLYN_4_4
             ct => Renamer.RenameSymbolAsync(context.Solution, localSymbol, default(SymbolRenameOptions), newName, ct),
+#else
+            ct => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(Microsoft.CodeAnalysis.Options.OptionSet), ct),
+#endif
             RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
     }
 }

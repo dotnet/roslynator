@@ -144,7 +144,11 @@ internal static class PropertyDeclarationRefactoring
 
         context.RegisterRefactoring(
             $"Rename '{oldName}' to '{newName}'",
+#if ROSLYN_4_4
             ct => Renamer.RenameSymbolAsync(context.Solution, symbol, new SymbolRenameOptions(RenameOverloads: true), newName, ct),
+#else
+            ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(Microsoft.CodeAnalysis.Options.OptionSet), ct),
+#endif
             RefactoringDescriptors.RenamePropertyAccordingToTypeName);
     }
 }

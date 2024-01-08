@@ -160,6 +160,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
 
         if (style == TypeStyle.Implicit)
         {
+#if ROSLYN_4_7
             if (allowCollectionExpression
                 && UseCollectionExpression(ref context))
             {
@@ -171,9 +172,15 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
                 ReportExplicitToImplicit(ref context);
                 return true;
             }
+#else
+            ReportExplicitToImplicit(ref context);
+            return true;
+#endif
+
         }
         else if (style == TypeStyle.ImplicitWhenTypeIsObvious)
         {
+#if ROSLYN_4_7
             if (isObvious
                 && allowCollectionExpression
                 && UseCollectionExpression(ref context))
@@ -181,7 +188,9 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
                 ReportExplicitToCollectionExpression(ref context);
                 return true;
             }
-            else if (isObvious
+            else
+#endif
+            if (isObvious
                 || IsInitializerObvious(ref context))
             {
                 ReportExplicitToImplicit(ref context);
@@ -225,8 +234,10 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         if (context.Node is ImplicitArrayCreationExpressionSyntax implicitArrayCreation)
             return IsInitializerObvious(ref context, implicitArrayCreation, implicitArrayCreation.Initializer);
 
+#if ROSLYN_4_7
         if (context.Node is CollectionExpressionSyntax collectionExpression)
             return IsInitializerObvious(ref context, collectionExpression);
+#endif
 
         return false;
     }
@@ -263,6 +274,7 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         return false;
     }
 
+#if ROSLYN_4_7
     private static bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context, CollectionExpressionSyntax collectionExpression)
     {
         SeparatedSyntaxList<CollectionElementSyntax> elements = collectionExpression.Elements;
@@ -293,11 +305,14 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
 
         return isObvious;
     }
+#endif
 
+#if ROSLYN_4_7
     protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
     {
         return UseCollectionExpression(ref context);
     }
+#endif
 
     public override TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
     {
@@ -313,16 +328,6 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             "Simplify array creation");
     }
 
-    protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
-    {
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-            GetLocationFromExplicit(ref context),
-            properties: _explicitToCollectionExpression,
-            "Simplify array creation");
-    }
-
     private static Location GetLocationFromExplicit(ref SyntaxNodeAnalysisContext context)
     {
         return ((ArrayCreationExpressionSyntax)context.Node).Type.ElementType.GetLocation();
@@ -330,27 +335,18 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
 
     protected override void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context)
     {
+#if ROSLYN_4_7
         if (context.Node is CollectionExpressionSyntax collectionExpression
             && !CanConvertCollectionExpression(ref context, collectionExpression))
         {
             return;
         }
-
+#endif
         DiagnosticHelpers.ReportDiagnostic(
             context,
             DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
             GetLocationFromImplicit(ref context),
             "Use explicitly typed array");
-    }
-
-    protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
-    {
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-            GetLocationFromImplicit(ref context),
-            properties: _implicitToCollectionExpression,
-            "Simplify array creation");
     }
 
     private static Location GetLocationFromImplicit(ref SyntaxNodeAnalysisContext context)
@@ -363,6 +359,27 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
         }
 
         return context.Node.GetLocation();
+    }
+
+#if ROSLYN_4_7
+    protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
+    {
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
+            GetLocationFromExplicit(ref context),
+            properties: _explicitToCollectionExpression,
+            "Simplify array creation");
+    }
+
+    protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
+    {
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
+            GetLocationFromImplicit(ref context),
+            properties: _implicitToCollectionExpression,
+            "Simplify array creation");
     }
 
     protected override void ReportCollectionExpressionToImplicit(ref SyntaxNodeAnalysisContext context)
@@ -393,4 +410,5 @@ internal class ImplicitOrExpressionArrayCreationAnalysis : ImplicitOrExplicitCre
             .ConvertedType?
             .IsKind(SymbolKind.ArrayType) == true;
     }
+#endif
 }

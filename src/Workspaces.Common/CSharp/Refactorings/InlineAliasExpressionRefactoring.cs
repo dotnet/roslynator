@@ -22,7 +22,11 @@ internal static class InlineAliasExpressionRefactoring
 
         SyntaxNode parent = usingDirective.Parent;
 
+#if ROSLYN_4_0
         Debug.Assert(parent.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration), "");
+#else
+        Debug.Assert(parent.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration), "");
+#endif
 
         int index = SyntaxInfo.UsingDirectiveListInfo(parent).IndexOf(usingDirective);
 
@@ -43,8 +47,10 @@ internal static class InlineAliasExpressionRefactoring
                 return compilationUnit.RemoveNode(compilationUnit.Usings[index]);
             case NamespaceDeclarationSyntax namespaceDeclaration:
                 return namespaceDeclaration.RemoveNode(namespaceDeclaration.Usings[index]);
+#if ROSLYN_4_0
             case FileScopedNamespaceDeclarationSyntax fileScopedNamespaceDeclaration:
                 return fileScopedNamespaceDeclaration.RemoveNode(fileScopedNamespaceDeclaration.Usings[index]);
+#endif
         }
 
         return node;

@@ -38,10 +38,10 @@ internal static class CSharpTypeAnalysis
 
         if (expression is null)
             return default;
-
+#if ROSLYN_4_7
         if (expression.IsKind(SyntaxKind.CollectionExpression))
             return default;
-
+#endif
         ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
         if (typeSymbol is null)
@@ -205,8 +205,10 @@ internal static class CSharpTypeAnalysis
         if (expression.IsKind(
             SyntaxKind.NullLiteralExpression,
             SyntaxKind.DefaultLiteralExpression,
-            SyntaxKind.ImplicitObjectCreationExpression,
-            SyntaxKind.CollectionExpression))
+#if ROSLYN_4_7
+            SyntaxKind.CollectionExpression,
+#endif
+            SyntaxKind.ImplicitObjectCreationExpression))
         {
             return false;
         }

@@ -188,8 +188,10 @@ public sealed class MemberDeclarationCodeFixProvider : CompilerDiagnosticCodeFix
                                     if (memberDeclaration.IsParentKind(
                                         SyntaxKind.ClassDeclaration,
                                         SyntaxKind.StructDeclaration,
-                                        SyntaxKind.RecordDeclaration,
-                                        SyntaxKind.RecordStructDeclaration))
+#if ROSLYN_4_0
+                                        SyntaxKind.RecordStructDeclaration,
+#endif
+                                        SyntaxKind.RecordDeclaration))
                                     {
                                         node = memberDeclaration.Parent;
                                     }
@@ -198,7 +200,9 @@ public sealed class MemberDeclarationCodeFixProvider : CompilerDiagnosticCodeFix
                                 }
                             case SyntaxKind.ClassDeclaration:
                             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
                             case SyntaxKind.RecordStructDeclaration:
+#endif
                             case SyntaxKind.InterfaceDeclaration:
                             case SyntaxKind.RecordDeclaration:
                                 {

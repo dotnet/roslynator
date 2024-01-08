@@ -11,11 +11,43 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <Choose>
+    <When Condition="$(RoslynVersion) == 'roslyn3.8'">
+      <PropertyGroup>
+        <RoslynatorRoslynVersion>3.8.0</RoslynatorRoslynVersion>
+        <RoslynatorRoslynAnalyzersVersion>3.11.0-beta1.23525.2</RoslynatorRoslynAnalyzersVersion>
+        <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_3_8_ONLY</DefineConstants>
+        <NoWarn>$(NoWarn);8600;8604;8625;RS1038</NoWarn>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(RoslynVersion) == 'roslyn4.0'">
+      <PropertyGroup>
+        <RoslynatorRoslynVersion>4.0.1</RoslynatorRoslynVersion>
+        <RoslynatorRoslynAnalyzersVersion>3.3.2</RoslynatorRoslynAnalyzersVersion>
+        <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_0_ONLY</DefineConstants>
+        <NoWarn>$(NoWarn);8600;8604;8625;RS1038</NoWarn>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(RoslynVersion) == 'roslyn4.4'">
+      <PropertyGroup>
+        <RoslynatorRoslynVersion>4.4.0</RoslynatorRoslynVersion>
+        <RoslynatorRoslynAnalyzersVersion>3.3.3</RoslynatorRoslynAnalyzersVersion>
+        <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_4;ROSLYN_4_4_ONLY</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <!-- Update version in nuspec description when updating 'RoslynatorRoslynVersion' -->
+        <RoslynatorRoslynVersion>4.7.0</RoslynatorRoslynVersion>
+        <RoslynatorRoslynAnalyzersVersion>3.3.4</RoslynatorRoslynAnalyzersVersion>
+        <DefineConstants>$(DefineConstants);ROSLYN_3_8;ROSLYN_4_0;ROSLYN_4_4;ROSLYN_4_7;ROSLYN_4_7_ONLY</DefineConstants>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
   <PropertyGroup>
     <Version Condition="'$(Version)' == ''">1.0.0</Version>
     <!-- Update version in nuspec description when updating 'RoslynatorRoslynVersion' -->
-    <RoslynatorRoslynVersion>4.7.0</RoslynatorRoslynVersion>
-    <RoslynatorRoslynAnalyzersVersion>3.3.4</RoslynatorRoslynAnalyzersVersion>
     <RoslynatorCliRoslynVersion>4.8.0</RoslynatorCliRoslynVersion>
     <RoslynatorTestingRoslynVersion>4.8.0</RoslynatorTestingRoslynVersion>
     <RoslynatorAnalyzersPackageReferenceVersion>4.8.0</RoslynatorAnalyzersPackageReferenceVersion>

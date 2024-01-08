@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Host.Mef;
+using Roslynator.Rename;
 using static Roslynator.Logger;
 
 namespace Roslynator.Spelling;
@@ -486,6 +487,7 @@ internal class SpellcheckAnalyzer
                 try
                 {
                     //TODO: detect naming conflict
+#if ROSLYN_4_4
                     newSolution = await Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(
                         CurrentSolution,
                         symbol,
@@ -494,6 +496,15 @@ internal class SpellcheckAnalyzer
                         newName,
                         cancellationToken)
                         .ConfigureAwait(false);
+#else
+                    newSolution = await Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(
+                        CurrentSolution,
+                        symbol,
+                        newName,
+                        default(Microsoft.CodeAnalysis.Options.OptionSet),
+                        cancellationToken)
+                        .ConfigureAwait(false);
+#endif
                 }
                 catch (InvalidOperationException
 #if DEBUG

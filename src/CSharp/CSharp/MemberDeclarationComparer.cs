@@ -52,7 +52,9 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
             case SyntaxKind.EnumDeclaration:
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.NamespaceDeclaration:
@@ -133,7 +135,9 @@ internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationS
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)member).Identifier.ValueText;
                 case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
                 case SyntaxKind.RecordStructDeclaration:
+#endif
                     return ((RecordDeclarationSyntax)member).Identifier.ValueText;
                 case SyntaxKind.NamespaceDeclaration:
                     return ((NamespaceDeclarationSyntax)member).Name.ToString();

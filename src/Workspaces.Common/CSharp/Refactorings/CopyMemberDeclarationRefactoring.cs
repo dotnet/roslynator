@@ -135,7 +135,9 @@ internal static class CopyMemberDeclarationRefactoring
             case SyntaxKind.ClassDeclaration:
                 return ((ClassDeclarationSyntax)node).Identifier;
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)node).Identifier;
             case SyntaxKind.StructDeclaration:
                 return ((StructDeclarationSyntax)node).Identifier;
@@ -165,7 +167,9 @@ internal static class CopyMemberDeclarationRefactoring
             case SyntaxKind.ClassDeclaration:
                 return ((ClassDeclarationSyntax)member).WithIdentifier(identifier);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)member).WithIdentifier(identifier);
             case SyntaxKind.StructDeclaration:
                 return ((StructDeclarationSyntax)member).WithIdentifier(identifier);
