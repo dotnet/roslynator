@@ -26,7 +26,6 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             "Simplify array creation");
     }
 
-
     protected override void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context)
     {
         DiagnosticHelpers.ReportDiagnostic(

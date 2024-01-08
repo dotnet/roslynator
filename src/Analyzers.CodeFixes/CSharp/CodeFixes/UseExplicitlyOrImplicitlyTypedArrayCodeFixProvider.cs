@@ -85,7 +85,8 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
                 SyntaxKind.ImplicitArrayCreationExpression,
                 SyntaxKind.ArrayCreationExpression
 #if ROSLYN_4_7
-                , SyntaxKind.CollectionExpression
+                ,
+                SyntaxKind.CollectionExpression
 #endif
                 )))
         {
