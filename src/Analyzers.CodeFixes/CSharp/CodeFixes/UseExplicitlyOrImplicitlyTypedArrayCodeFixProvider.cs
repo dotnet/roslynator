@@ -31,9 +31,11 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray); }
     }
 
-#if ROSLYN_4_0
     public override FixAllProvider GetFixAllProvider()
     {
+#if ROSLYN_3_8
+        return UseExplicitlyOrImplicitlyTypedArrayFixAllProvider.Instance;
+#else
         return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
 
         static async Task<Document> FixAllAsync(
@@ -51,8 +53,8 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
 
             return document;
         }
-    }
 #endif
+    }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
@@ -259,6 +261,30 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             .WithFormatterAnnotation();
 
         return await document.ReplaceNodeAsync(implicitArrayCreation, collectionExpression, cancellationToken).ConfigureAwait(false);
+    }
+#endif
+
+#if ROSLYN_3_8
+    private class UseExplicitlyOrImplicitlyTypedArrayFixAllProvider : DocumentBasedFixAllProvider
+    {
+        public static readonly UseExplicitlyOrImplicitlyTypedArrayFixAllProvider Instance = new();
+
+        private UseExplicitlyOrImplicitlyTypedArrayFixAllProvider()
+        {
+        }
+
+        protected override async Task<Document> FixAllAsync(FixAllContext fixAllContext, Document document, ImmutableArray<Diagnostic> diagnostics)
+        {
+            foreach (Diagnostic diagnostic in diagnostics.OrderByDescending(d => d.Location.SourceSpan.Start))
+            {
+                (Func<CancellationToken, Task<Document>> CreateChangedDocument, string) result
+                    = await GetChangedDocumentAsync(document, diagnostic, fixAllContext.CancellationToken).ConfigureAwait(false);
+
+                document = await result.CreateChangedDocument(fixAllContext.CancellationToken).ConfigureAwait(false);
+            }
+
+            return document;
+        }
     }
 #endif
 }
