@@ -1525,7 +1525,7 @@ class C
 {
     void M()
     {
-        [|string s = new(' ', 1)|];
+        string s = [|new(' ', 1)|];
     }
 }
 ", @"
@@ -1563,7 +1563,7 @@ class C
 {
     void M()
     {
-        using ([|StringReader s = new("""")|])
+        using (StringReader s = [|new("""")|])
         {
         }
     }
