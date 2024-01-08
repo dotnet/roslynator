@@ -12,6 +12,7 @@
     <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorAnalyzersPackageVersion)</NuspecProperties>
     <IsPackable>true</IsPackable>
     <IncludeSymbols>false</IncludeSymbols>
+    <BaseOutputPath>bin\$(RoslynVersion)</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

@@ -20,7 +20,7 @@
     <readme>docs\README.md</readme>
   </metadata>
   <files>
-    <file src="bin\$Configuration$\netstandard2.0\Roslynator*.dll" target="analyzers\dotnet\cs" />
+    <file src="$OutputPath$\netstandard2.0\Roslynator*.dll" target="analyzers\dotnet\$RoslynVersion$\cs" />
     <file src="tools\*.ps1" target="tools\" />
     <file src="..\..\images\roslynator-logo-small.png" target="icon.png" />
     <file src="docs\NuGetReadme.md" target="docs\README.md" />

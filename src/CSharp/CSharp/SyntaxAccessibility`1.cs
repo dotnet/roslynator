@@ -338,7 +338,8 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
                 SyntaxKind.StructDeclaration,
                 SyntaxKind.RecordDeclaration
 #if ROSLYN_4_0
-                , SyntaxKind.RecordStructDeclaration
+                ,
+                SyntaxKind.RecordStructDeclaration
 #endif
                 ))
             {
@@ -360,7 +361,8 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
                 SyntaxKind.StructDeclaration,
                 SyntaxKind.RecordDeclaration
 #if ROSLYN_4_0
-                , SyntaxKind.RecordStructDeclaration
+                ,
+                SyntaxKind.RecordStructDeclaration
 #endif
                 ))
             {
