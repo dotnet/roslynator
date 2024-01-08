@@ -1525,7 +1525,7 @@ class C
 {
     void M()
     {
-        [|string s = new(' ', 1)|];
+        string s = [|new(' ', 1)|];
     }
 }
 ", @"

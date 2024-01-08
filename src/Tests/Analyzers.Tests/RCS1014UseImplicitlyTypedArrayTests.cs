@@ -196,4 +196,75 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task Test_UseVarInsteadOfImplicitCreation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        string[] addresses = [|new[]|]
+        {
+            ""address 1"",
+            ""address 2""
+        };
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var addresses = new string[]
+        {
+            ""address 1"",
+            ""address 2""
+        };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task TestNoDiagnostic_UseVarInsteadOfImplicitCreation()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        ICollection<string> addresses = new[]
+        {
+            ""a"",
+            ""b""
+        };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task TestNoDiagnostic_UseVarInsteadOfImplicitCreation_CollectionExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        string[] addresses = [ ""a"", ""b"" ];
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
+    }
 }

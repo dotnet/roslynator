@@ -100,7 +100,11 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         }
         else if (node is ImplicitArrayCreationExpressionSyntax implicitArrayCreation)
         {
-            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.VarToExplicit))
+            {
+                return (ct => ConvertToExplicitAndUseVarAsync(document, implicitArrayCreation, ct), UseCollectionExpressionTitle);
+            }
+            else if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
                 return (ct => ConvertToCollectionExpressionAsync(document, implicitArrayCreation, ct), UseCollectionExpressionTitle);
             }
@@ -131,6 +135,28 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         ImplicitArrayCreationExpressionSyntax implicitArrayCreation,
         CancellationToken cancellationToken)
     {
+        ArrayCreationExpressionSyntax newNode = await CreateArrayCreationAsync(document, implicitArrayCreation, cancellationToken).ConfigureAwait(false);
+
+        return await document.ReplaceNodeAsync(implicitArrayCreation, newNode, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static async Task<Document> ConvertToExplicitAndUseVarAsync(
+        Document document,
+        ImplicitArrayCreationExpressionSyntax implicitArrayCreation,
+        CancellationToken cancellationToken)
+    {
+        ArrayCreationExpressionSyntax arrayCreation = await CreateArrayCreationAsync(document, implicitArrayCreation, cancellationToken).ConfigureAwait(false);
+
+        VariableDeclarationSyntax variableDeclaration = implicitArrayCreation.FirstAncestor<VariableDeclarationSyntax>();
+
+        VariableDeclarationSyntax newVariableDeclaration = variableDeclaration.ReplaceNode(implicitArrayCreation, arrayCreation)
+            .WithType(CSharpFactory.VarType().WithTriviaFrom(variableDeclaration.Type));
+
+        return await document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static async Task<ArrayCreationExpressionSyntax> CreateArrayCreationAsync(Document document, ImplicitArrayCreationExpressionSyntax implicitArrayCreation, CancellationToken cancellationToken)
+    {
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, cancellationToken);
         var arrayType = (ArrayTypeSyntax)typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
@@ -146,14 +172,12 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
             initializer.Expressions,
             (node, _) => (node.IsKind(SyntaxKind.CastExpression)) ? node.WithSimplifierAnnotation() : node);
 
-        ArrayCreationExpressionSyntax newNode = ArrayCreationExpression(
+        return ArrayCreationExpression(
             newKeyword,
             arrayType
                 .WithLeadingTrivia(implicitArrayCreation.OpenBracketToken.LeadingTrivia)
                 .WithTrailingTrivia(implicitArrayCreation.CloseBracketToken.TrailingTrivia),
             newInitializer);
-
-        return await document.ReplaceNodeAsync(implicitArrayCreation, newNode, cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<Document> ConvertToExplicitAsync(
