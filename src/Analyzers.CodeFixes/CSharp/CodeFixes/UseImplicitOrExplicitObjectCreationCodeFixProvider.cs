@@ -165,9 +165,9 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
+#endif
             else
             {
-#endif
                 CodeAction codeAction = CodeAction.Create(
                     UseExplicitObjectCreationTitle,
                     async ct =>
@@ -192,9 +192,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
-#if ROSLYN_4_7
             }
-#endif
         }
 #if ROSLYN_4_7
         else if (node is CollectionExpressionSyntax collectionExpression)
