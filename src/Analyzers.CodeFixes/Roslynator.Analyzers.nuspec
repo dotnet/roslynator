@@ -9,9 +9,7 @@
     <projectUrl>https://github.com/dotnet/roslynator</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A collection of 200+ analyzers for C#, powered by Roslyn.
-
-  - This package requires Roslyn 3.8 or higher.</description>
+    <description>A collection of 200+ analyzers for C#, powered by Roslyn.</description>
     <summary>A collection of 200+ analyzers for C#, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2023 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
