@@ -6,19 +6,13 @@ using Roslynator.CSharp.CodeStyle;
 
 namespace Roslynator.CSharp.Analysis;
 
-internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCreationAnalysis
+internal class ImplicitOrExplicitObjectCreationAnalysis : ImplicitOrExplicitCreationAnalysis
 {
-    public static ImplicitOrExpressionObjectCreationAnalysis Instance { get; } = new();
+    public static ImplicitOrExplicitObjectCreationAnalysis Instance { get; } = new();
 
     public override TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
     {
         return context.GetObjectCreationTypeStyle();
-    }
-
-    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
-    {
-        return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
-            && UseCollectionExpression(ref context);
     }
 
     protected override void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context)
@@ -29,18 +23,6 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             context,
             DiagnosticRules.UseImplicitOrExplicitObjectCreation,
             objectCreation.Type.GetLocation(),
-            "Simplify object creation");
-    }
-
-    protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
-    {
-        var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
-
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
-            objectCreation.Type.GetLocation(),
-            properties: _explicitToCollectionExpression,
             "Simplify object creation");
     }
 
@@ -63,6 +45,25 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             "Use explicit object creation");
     }
 
+#if ROSLYN_4_7
+    protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
+    {
+        return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
+            && UseCollectionExpression(ref context);
+    }
+
+    protected override void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
+    {
+        var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseImplicitOrExplicitObjectCreation,
+            objectCreation.Type.GetLocation(),
+            properties: _explicitToCollectionExpression,
+            "Simplify object creation");
+    }
+
     protected override void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         DiagnosticHelpers.ReportDiagnostic(
@@ -82,4 +83,5 @@ internal class ImplicitOrExpressionObjectCreationAnalysis : ImplicitOrExplicitCr
             properties: _collectionExpressionToImplicit,
             "Simplify object creation");
     }
+#endif
 }

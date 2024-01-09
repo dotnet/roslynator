@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of 200+ analyzers for C#, powered by Roslyn.
 
-  - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 4.7.0.</description>
+  - This package requires Roslyn 3.8 or higher.</description>
     <summary>A collection of 200+ analyzers for C#, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2023 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
@@ -20,7 +20,8 @@
     <readme>docs\README.md</readme>
   </metadata>
   <files>
-    <file src="bin\$Configuration$\netstandard2.0\Roslynator*.dll" target="analyzers\dotnet\cs" />
+    <file src="bin\roslyn3.8\$Configuration$\netstandard2.0\Roslynator*.dll" target="analyzers/dotnet/roslyn3.8/cs" />
+    <file src="bin\roslyn4.7\$Configuration$\netstandard2.0\Roslynator*.dll" target="analyzers/dotnet/roslyn4.7/cs" />
     <file src="tools\*.ps1" target="tools\" />
     <file src="..\..\images\roslynator-logo-small.png" target="icon.png" />
     <file src="docs\NuGetReadme.md" target="docs\README.md" />

@@ -29,21 +29,23 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayAnalyzer : BaseDiagnostic
 
         context.RegisterSyntaxNodeAction(c => AnalyzeArrayCreationExpression(c), SyntaxKind.ArrayCreationExpression);
         context.RegisterSyntaxNodeAction(c => AnalyzeImplicitArrayCreationExpression(c), SyntaxKind.ImplicitArrayCreationExpression);
+#if ROSLYN_4_7
         context.RegisterSyntaxNodeAction(c => AnalyzeCollectionExpression(c), SyntaxKind.CollectionExpression);
+#endif
     }
 
     private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeExplicitCreation(ref context);
+        ImplicitOrExplicitArrayCreationAnalysis.Instance.AnalyzeExplicitCreation(ref context);
     }
 
     private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeImplicitCreation(ref context);
+        ImplicitOrExplicitArrayCreationAnalysis.Instance.AnalyzeImplicitCreation(ref context);
     }
 
     private static void AnalyzeCollectionExpression(SyntaxNodeAnalysisContext context)
     {
-        ImplicitOrExpressionArrayCreationAnalysis.Instance.AnalyzeCollectionExpression(ref context);
+        ImplicitOrExplicitArrayCreationAnalysis.Instance.AnalyzeCollectionExpression(ref context);
     }
 }

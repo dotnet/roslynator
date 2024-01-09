@@ -392,8 +392,10 @@ internal static class CSharpUtility
             case SyntaxKind.VariableDeclarator:
                 return ((VariableDeclaratorSyntax)node).Identifier;
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
                 return ((RecordDeclarationSyntax)node).Identifier;
+#endif
             case SyntaxKind.Parameter:
                 return ((ParameterSyntax)node).Identifier;
             case SyntaxKind.TypeParameter:
@@ -460,7 +462,9 @@ internal static class CSharpUtility
                 case SyntaxKind.NamespaceDeclaration:
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
                 case SyntaxKind.RecordStructDeclaration:
+#endif
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.EnumDeclaration:
@@ -695,12 +699,16 @@ internal static class CSharpUtility
             case SyntaxKind.LocalFunctionStatement:
                 return ((LocalFunctionStatementSyntax)declaration).ParameterList;
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)declaration).ParameterList;
+#if ROSLYN_4_7
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.StructDeclaration:
             case SyntaxKind.InterfaceDeclaration:
                 return ((TypeDeclarationSyntax)declaration).ParameterList;
+#endif
             default:
                 return null;
         }
@@ -728,7 +736,9 @@ internal static class CSharpUtility
             case SyntaxKind.LocalFunctionStatement:
                 return ((LocalFunctionStatementSyntax)declaration).TypeParameterList;
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)declaration).TypeParameterList;
             default:
                 return null;

@@ -40,7 +40,9 @@ public sealed class RemoveEmptySyntaxCodeFixProvider : BaseCodeFixProvider
                     case SyntaxKind.EmptyStatement:
                     case SyntaxKind.FinallyClause:
                     case SyntaxKind.NamespaceDeclaration:
+#if ROSLYN_4_0
                     case SyntaxKind.FileScopedNamespaceDeclaration:
+#endif
                     case SyntaxKind.ObjectCreationExpression:
                     case SyntaxKind.RegionDirectiveTrivia:
                         return true;
@@ -98,6 +100,7 @@ public sealed class RemoveEmptySyntaxCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
+#if ROSLYN_4_0
             case BaseNamespaceDeclarationSyntax namespaceDeclaration:
                 {
                     CodeAction codeAction = CodeAction.Create(
@@ -108,6 +111,18 @@ public sealed class RemoveEmptySyntaxCodeFixProvider : BaseCodeFixProvider
                     context.RegisterCodeFix(codeAction, diagnostic);
                     break;
                 }
+#else
+            case NamespaceDeclarationSyntax namespaceDeclaration:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove empty namespace declaration",
+                        ct => document.RemoveNodeAsync(namespaceDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+#endif
             case RegionDirectiveTriviaSyntax regionDirective:
                 {
                     CodeAction codeAction = CodeAction.Create(

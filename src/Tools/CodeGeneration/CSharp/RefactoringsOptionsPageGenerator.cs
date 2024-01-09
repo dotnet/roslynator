@@ -19,11 +19,12 @@ public static class RefactoringsOptionsPageGenerator
                 "System.Collections.Generic",
                 "Roslynator.CSharp.Refactorings"),
             List(new MemberDeclarationSyntax[] {
-                FileScopedNamespaceDeclaration(ParseName("Roslynator.VisualStudio")),
-                ClassDeclaration(
-                    Modifiers.Public_Partial(),
-                    "RefactoringsOptionsPage",
-                    CreateMembers(refactorings, comparer).ToSyntaxList()),
+                NamespaceDeclaration(
+                    "Roslynator.VisualStudio",
+                    ClassDeclaration(
+                        Modifiers.Public_Partial(),
+                        "RefactoringsOptionsPage",
+                        CreateMembers(refactorings, comparer).ToSyntaxList())),
             }));
     }
 

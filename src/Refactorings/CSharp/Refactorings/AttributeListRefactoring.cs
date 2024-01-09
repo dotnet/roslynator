@@ -18,7 +18,11 @@ internal static class AttributeListRefactoring
         if (context.IsAnyRefactoringEnabled(
             RefactoringDescriptors.SplitAttributes,
             RefactoringDescriptors.MergeAttributes)
-            && !member.IsKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration)
+            && !member.IsKind(
+#if ROSLYN_4_0
+                SyntaxKind.FileScopedNamespaceDeclaration,
+#endif
+                SyntaxKind.NamespaceDeclaration)
             && SyntaxListSelection<AttributeListSyntax>.TryCreate(member.GetAttributeLists(), context.Span, out SyntaxListSelection<AttributeListSyntax> selectedAttributeLists))
         {
             if (context.IsRefactoringEnabled(RefactoringDescriptors.SplitAttributes)
@@ -109,7 +113,9 @@ internal static class AttributeListRefactoring
             case SyntaxKind.TypeParameter:
                 return ((TypeParameterSyntax)node).AttributeLists;
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)node).AttributeLists;
             case SyntaxKind.StructDeclaration:
                 return ((StructDeclarationSyntax)node).AttributeLists;
@@ -170,7 +176,9 @@ internal static class AttributeListRefactoring
             case SyntaxKind.TypeParameter:
                 return ((TypeParameterSyntax)node).WithAttributeLists(attributeLists);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)node).WithAttributeLists(attributeLists);
             case SyntaxKind.StructDeclaration:
                 return ((StructDeclarationSyntax)node).WithAttributeLists(attributeLists);

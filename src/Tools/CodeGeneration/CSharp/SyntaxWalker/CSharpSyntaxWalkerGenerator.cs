@@ -1,4 +1,5 @@
-﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿#if ROSLYN_4_7_ONLY
+// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -586,3 +587,4 @@ public partial class CSharpSyntaxWalkerGenerator
         }
     }
 }
+#endif

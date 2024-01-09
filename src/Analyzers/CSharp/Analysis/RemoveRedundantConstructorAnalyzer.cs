@@ -84,7 +84,10 @@ public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
                 members = structDeclaration.Members;
             }
             else if (memberDeclaration is RecordDeclarationSyntax recordDeclaration
-                && recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword))
+#if ROSLYN_4_0
+                && recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword)
+#endif
+                )
             {
                 if (memberDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
                     return false;

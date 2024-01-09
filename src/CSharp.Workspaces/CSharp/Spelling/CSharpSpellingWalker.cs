@@ -175,7 +175,9 @@ internal sealed class CSharpSpellingWalker : CSharpSyntaxWalker
                     break;
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     if (ShouldVisit(SpellingScopeFilter.Record))
                         base.VisitTupleType(node);

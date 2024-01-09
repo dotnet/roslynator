@@ -45,8 +45,10 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
         context.RegisterSyntaxNodeAction(
             f => AnalyzeTypeDeclaration(f),
             SyntaxKind.ClassDeclaration,
-            SyntaxKind.StructDeclaration,
-            SyntaxKind.RecordStructDeclaration);
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.StructDeclaration);
     }
 
     private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)

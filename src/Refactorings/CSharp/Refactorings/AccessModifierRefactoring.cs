@@ -26,8 +26,10 @@ internal static class AccessModifierRefactoring
         if (node.IsKind(
             SyntaxKind.ClassDeclaration,
             SyntaxKind.InterfaceDeclaration,
-            SyntaxKind.StructDeclaration,
-            SyntaxKind.RecordStructDeclaration))
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.StructDeclaration))
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

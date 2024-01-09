@@ -229,7 +229,9 @@ internal static class CheckParameterForNullRefactoring
             case SyntaxKind.OperatorDeclaration:
             case SyntaxKind.ConversionOperatorDeclaration:
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     break;
                 }

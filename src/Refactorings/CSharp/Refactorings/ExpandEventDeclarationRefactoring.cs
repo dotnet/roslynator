@@ -14,7 +14,13 @@ internal static class ExpandEventDeclarationRefactoring
 {
     public static bool CanRefactor(EventFieldDeclarationSyntax eventDeclaration)
     {
-        return eventDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration)
+        return eventDeclaration.IsParentKind(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration)
             && eventDeclaration.Declaration?.Variables.Count == 1;
     }
 

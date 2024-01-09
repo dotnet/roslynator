@@ -14,10 +14,11 @@ public static class CodeFixesOptionsPageGenerator
         return CompilationUnit(
             UsingDirectives("Roslynator.CSharp"),
             List(new MemberDeclarationSyntax[] {
-                FileScopedNamespaceDeclaration(ParseName("Roslynator.VisualStudio")),
-                ClassDeclaration(
-                    Modifiers.Public_Partial(),
-                    "CodeFixesOptionsPage"),
+                NamespaceDeclaration(
+                    "Roslynator.VisualStudio",
+                    ClassDeclaration(
+                        Modifiers.Public_Partial(),
+                        "CodeFixesOptionsPage")),
             }));
     }
 }

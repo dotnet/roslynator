@@ -230,7 +230,9 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     public override void VisitClassDeclaration(ClassDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+#if ROSLYN_4_7
         VisitParameterList(node.ParameterList);
+#endif
         VisitBaseList(node.BaseList);
         VisitMembers(node.Members);
     }
@@ -238,7 +240,9 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+#if ROSLYN_4_7
         VisitParameterList(node.ParameterList);
+#endif
         VisitBaseList(node.BaseList);
         VisitMembers(node.Members);
     }
@@ -246,7 +250,9 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     public override void VisitStructDeclaration(StructDeclarationSyntax node)
     {
         VisitAttributeLists(node.AttributeLists);
+#if ROSLYN_4_7
         VisitParameterList(node.ParameterList);
+#endif
         VisitBaseList(node.BaseList);
         VisitMembers(node.Members);
     }

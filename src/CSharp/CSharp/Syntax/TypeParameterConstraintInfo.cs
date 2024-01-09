@@ -175,7 +175,9 @@ internal readonly struct TypeParameterConstraintInfo
                     return new TypeParameterConstraintInfo(constraint, constraintClause);
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     var recordDeclaration = (RecordDeclarationSyntax)parent;
 

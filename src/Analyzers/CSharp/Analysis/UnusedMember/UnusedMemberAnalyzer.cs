@@ -38,8 +38,10 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
         context.RegisterSyntaxNodeAction(
             f => AnalyzeTypeDeclaration(f),
             SyntaxKind.ClassDeclaration,
-            SyntaxKind.StructDeclaration,
-            SyntaxKind.RecordStructDeclaration);
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.StructDeclaration);
     }
 
     [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.")]
@@ -56,7 +58,11 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
         INamedTypeSymbol declarationSymbol = null;
         ImmutableArray<AttributeData> attributes = default;
 
+#if ROSLYN_4_0
         if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+#else
+        if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration))
+#endif
         {
             declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
 
