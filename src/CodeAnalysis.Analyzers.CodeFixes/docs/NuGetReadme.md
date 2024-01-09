@@ -7,8 +7,8 @@ The package is applicable for projects that reference Roslyn packages (Microsoft
 ## Requirements
 
 * Visual Studio 2022
-* VS Code with [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) 1.21.13 or higher
-* Roslyn 4.4.0 (when used directly, not as a part of IDE)
+* VS Code with [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) extension 1.21.13 or higher
+* Roslyn 3.8.0 or higher (when used directly, not as a part of IDE)
 
 ## Usage
 
