@@ -11,7 +11,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of analyzers for Roslyn API.
 
-  - This package requires Roslyn 3.8 or higher.
   - This package is applicable for projects that reference Roslyn packages (Microsoft.CodeAnalysis*).</description>
     <summary>A collection of analyzers for Roslyn API.</summary>
     <copyright>Copyright (c) 2016-2023 Josef Pihrt</copyright>
