@@ -63,7 +63,9 @@ internal static class DocumentationCommentGenerator
             case SyntaxKind.IndexerDeclaration:
                 return Generate((IndexerDeclarationSyntax)memberDeclaration, settings);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return Generate((RecordDeclarationSyntax)memberDeclaration, settings);
             default:
                 throw new ArgumentException("", nameof(memberDeclaration));
@@ -633,7 +635,9 @@ internal static class DocumentationCommentGenerator
             case SyntaxKind.ClassDeclaration:
                 return ((ClassDeclarationSyntax)parent).BaseList?.Types.Any() == true;
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)parent).BaseList?.Types.Any() == true;
             case SyntaxKind.StructDeclaration:
                 return ((StructDeclarationSyntax)parent).BaseList?.Types.Any() == true;

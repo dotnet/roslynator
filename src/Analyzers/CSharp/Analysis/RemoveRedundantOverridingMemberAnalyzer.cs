@@ -87,6 +87,7 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
         if (!SymbolEqualityComparer.Default.Equals(overriddenMethod, symbol))
             return;
 
+#if ROSLYN_4_0
         if (symbol.ContainingType?.IsRecord == true)
         {
             switch (symbol.Name)
@@ -97,6 +98,7 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
                     return;
             }
         }
+#endif
 
         if (!CheckParameters(methodDeclaration.ParameterList, invocationInfo.ArgumentList, semanticModel, cancellationToken))
             return;

@@ -1,4 +1,5 @@
-﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿#if ROSLYN_4_2
+// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -96,3 +97,4 @@ public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProv
         return document.WithTextChangeAsync(interpolatedString.Span, newText, cancellationToken);
     }
 }
+#endif

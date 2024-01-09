@@ -59,7 +59,10 @@ internal static class ExpandPositionalConstructorRefactoring
         }
 
         bool isWritable = !recordDeclaration.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
-            && recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword);
+#if ROSLYN_4_0
+            && recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword)
+#endif
+            ;
 
         foreach (ParameterSyntax parameter in parameters)
         {

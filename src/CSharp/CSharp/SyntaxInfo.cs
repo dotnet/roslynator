@@ -300,6 +300,7 @@ public static class SyntaxInfo
         return Syntax.MemberDeclarationListInfo.Create(declaration);
     }
 
+#if ROSLYN_4_0
     /// <summary>
     /// Creates a new <see cref="Syntax.MemberDeclarationListInfo"/> from the specified declaration.
     /// </summary>
@@ -307,6 +308,7 @@ public static class SyntaxInfo
     {
         return Syntax.MemberDeclarationListInfo.Create(declaration);
     }
+#endif
 
     /// <summary>
     /// Creates a new <see cref="Syntax.MemberDeclarationListInfo"/> from the specified declaration.
@@ -935,6 +937,7 @@ public static class SyntaxInfo
         return Syntax.UsingDirectiveListInfo.Create(declaration);
     }
 
+#if ROSLYN_4_0
     /// <summary>
     /// Creates a new <see cref="Syntax.UsingDirectiveListInfo"/> from the specified declaration.
     /// </summary>
@@ -942,6 +945,7 @@ public static class SyntaxInfo
     {
         return Syntax.UsingDirectiveListInfo.Create(declaration);
     }
+#endif
 
     /// <summary>
     /// Creates a new <see cref="Syntax.XmlElementInfo"/> from the specified xml node.

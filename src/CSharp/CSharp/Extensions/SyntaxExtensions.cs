@@ -2990,7 +2990,9 @@ public static class SyntaxExtensions
                 case SyntaxKind.ReturnStatement:
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
                 case SyntaxKind.RecordStructDeclaration:
+#endif
                 case SyntaxKind.SwitchStatement:
                 case SyntaxKind.ThrowStatement:
                 case SyntaxKind.TryStatement:
@@ -3835,7 +3837,9 @@ public static class SyntaxExtensions
             case SyntaxKind.ClassDeclaration:
                 return ((ClassDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
             case SyntaxKind.StructDeclaration:
                 return ((StructDeclarationSyntax)typeDeclaration).WithMembers(newMembers);

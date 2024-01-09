@@ -40,9 +40,12 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             context.Span,
             out SyntaxNode node,
             predicate: f => f.IsKind(
+#if ROSLYN_4_7
+                SyntaxKind.CollectionExpression,
+#endif
                 SyntaxKind.ObjectCreationExpression,
-                SyntaxKind.ImplicitObjectCreationExpression,
-                SyntaxKind.CollectionExpression)))
+                SyntaxKind.ImplicitObjectCreationExpression)))
+
         {
             return;
         }
@@ -52,27 +55,35 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
         if (node is ObjectCreationExpressionSyntax objectCreation)
         {
+#if ROSLYN_4_7
             bool useCollectionExpression = diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ExplicitToCollectionExpression);
-
+#endif
             CodeAction codeAction = CodeAction.Create(
+#if ROSLYN_4_7
                 (useCollectionExpression)
                     ? UseCollectionExpressionTitle
                     : UseImplicitObjectCreationTitle,
+#else
+                UseImplicitObjectCreationTitle,
+#endif
                 ct =>
                 {
                     SyntaxNode newNode;
-
+#if ROSLYN_4_7
                     if (useCollectionExpression)
                     {
                         newNode = ConvertInitializerToCollectionExpression(objectCreation.Initializer).WithFormatterAnnotation();
                     }
                     else
                     {
+#endif
                         newNode = ImplicitObjectCreationExpression(
                             objectCreation.NewKeyword.WithTrailingTrivia(objectCreation.NewKeyword.TrailingTrivia.EmptyIfWhitespace()),
                             objectCreation.ArgumentList ?? ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
                             objectCreation.Initializer);
+#if ROSLYN_4_7
                     }
+#endif
 
                     if (objectCreation.IsParentKind(SyntaxKind.EqualsValueClause)
                         && objectCreation.Parent.IsParentKind(SyntaxKind.VariableDeclarator)
@@ -90,7 +101,14 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                         return document.ReplaceNodeAsync(objectCreation, newNode, ct);
                     }
                 },
-                GetEquivalenceKey(diagnostic, (useCollectionExpression) ? UseCollectionExpressionEquivalenceKey : null));
+                GetEquivalenceKey(
+                    diagnostic,
+#if ROSLYN_4_7
+                    (useCollectionExpression) ? UseCollectionExpressionEquivalenceKey : null
+#else
+                    null
+#endif
+                    ));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
@@ -126,6 +144,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
+#if ROSLYN_4_7
             else if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
                 CodeAction codeAction = CodeAction.Create(
@@ -146,6 +165,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
+#endif
             else
             {
                 CodeAction codeAction = CodeAction.Create(
@@ -174,6 +194,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
+#if ROSLYN_4_7
         else if (node is CollectionExpressionSyntax collectionExpression)
         {
             if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.CollectionExpressionToImplicit))
@@ -228,5 +249,6 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
+#endif
     }
 }

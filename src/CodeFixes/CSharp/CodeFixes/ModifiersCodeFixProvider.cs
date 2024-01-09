@@ -138,7 +138,11 @@ public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
                                 });
                         }
                         else if (node.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration, SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration)
-                            && node.IsParentKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration)
+                            && node.IsParentKind(
+#if ROSLYN_4_0
+                                SyntaxKind.RecordStructDeclaration,
+#endif
+                                SyntaxKind.StructDeclaration)
                             && modifiers.Contains(SyntaxKind.VirtualKeyword))
                         {
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.VirtualKeyword);
@@ -393,7 +397,9 @@ public sealed class ModifiersCodeFixProvider : CompilerDiagnosticCodeFixProvider
                         if (!node.IsKind(
                             SyntaxKind.ClassDeclaration,
                             SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
                             SyntaxKind.RecordStructDeclaration,
+#endif
                             SyntaxKind.InterfaceDeclaration,
                             SyntaxKind.MethodDeclaration))
                         {

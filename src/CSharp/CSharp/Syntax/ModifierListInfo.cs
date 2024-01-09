@@ -179,7 +179,9 @@ public readonly struct ModifierListInfo
             case SyntaxKind.PropertyDeclaration:
                 return new ModifierListInfo(node, ((PropertyDeclarationSyntax)node).Modifiers);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return new ModifierListInfo(node, ((RecordDeclarationSyntax)node).Modifiers);
             case SyntaxKind.StructDeclaration:
                 return new ModifierListInfo(node, ((StructDeclarationSyntax)node).Modifiers);
@@ -595,7 +597,9 @@ public readonly struct ModifierListInfo
                     return new ModifierListInfo(newNode, newNode.Modifiers);
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     var recordDeclaration = (RecordDeclarationSyntax)Parent;
                     RecordDeclarationSyntax newNode = recordDeclaration.WithModifiers(modifiers);

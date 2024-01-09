@@ -114,7 +114,9 @@ internal static class SelectedMemberDeclarationsRefactoring
                             break;
                         }
                     case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
                     case SyntaxKind.RecordStructDeclaration:
+#endif
                         {
                             if (((RecordDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
                                 return true;

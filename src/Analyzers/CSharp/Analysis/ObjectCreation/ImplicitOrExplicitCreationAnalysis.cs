@@ -38,15 +38,17 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
     protected abstract void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context);
 
-    protected abstract void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context);
-
     protected abstract void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context);
 
     protected abstract void ReportVarToExplicit(ref SyntaxNodeAnalysisContext context, TypeSyntax type);
 
+#if ROSLYN_4_7
+    protected abstract void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context);
+
     protected abstract void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context);
 
     protected abstract void ReportCollectionExpressionToImplicit(ref SyntaxNodeAnalysisContext context);
+#endif
 
     protected virtual bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context) => false;
 
@@ -341,7 +343,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                         {
                             bool isVar = variableDeclaration.Type.IsVar;
 
+#if ROSLYN_4_7
                             SyntaxDebug.Assert(!isVar || context.Node.IsKind(SyntaxKind.CollectionExpression, SyntaxKind.ImplicitArrayCreationExpression), variableDeclaration);
+#else
+                            SyntaxDebug.Assert(!isVar || context.Node.IsKind(SyntaxKind.ImplicitArrayCreationExpression), variableDeclaration);
+#endif
                             SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), parent.Parent);
 
                             if (!AnalyzeImplicit(ref context, isObvious: !isVar, allowCollectionExpression: !isVar)
@@ -537,15 +543,20 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
             if (SymbolEqualityComparer.Default.Equals(typeSymbol1, typeSymbol2))
             {
+#if ROSLYN_4_7
                 if (((ObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
-                    && UseCollectionExpression(ref context))
+                    && UseCollectionExpression(ref context)
+                    )
                 {
                     ReportExplicitToCollectionExpression(ref context);
                 }
                 else
                 {
+#endif
                     ReportExplicitToImplicit(ref context);
+#if ROSLYN_4_7
                 }
+#endif
             }
         }
     }
@@ -601,6 +612,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
 
         if (style == TypeStyle.Implicit)
         {
+#if ROSLYN_4_7
             if (context.Node.IsKind(SyntaxKind.CollectionExpression))
             {
                 if (context.UseCollectionExpression() == false)
@@ -615,6 +627,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 ReportImplicitToCollectionExpression(ref context);
                 return true;
             }
+#endif
         }
         else if (style == TypeStyle.ImplicitWhenTypeIsObvious)
         {
@@ -625,6 +638,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 return true;
             }
 
+#if ROSLYN_4_7
             if (context.Node.IsKind(SyntaxKind.CollectionExpression))
             {
                 if (context.UseCollectionExpression() == false)
@@ -639,12 +653,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                 ReportImplicitToCollectionExpression(ref context);
                 return true;
             }
+#endif
         }
 
         return false;
     }
-
-    protected abstract bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context);
 
     protected static bool IsSingleReturnStatement(SyntaxNode parent)
     {
@@ -654,6 +667,9 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             && parent.Parent.Parent is MemberDeclarationSyntax;
     }
 
+#if ROSLYN_4_7
+    protected abstract bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context);
+
     protected static bool UseCollectionExpression(ref SyntaxNodeAnalysisContext context)
     {
         Debug.Assert(!context.Node.IsKind(SyntaxKind.CollectionExpression), context.Node.Kind().ToString());
@@ -662,4 +678,5 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             && ((CSharpCompilation)context.Compilation).SupportsCollectionExpression()
             && SyntaxUtility.CanConvertToCollectionExpression(context.Node, context.SemanticModel, context.CancellationToken);
     }
+#endif
 }

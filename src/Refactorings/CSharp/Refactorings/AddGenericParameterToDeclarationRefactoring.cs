@@ -260,7 +260,9 @@ internal static class AddGenericParameterToDeclarationRefactoring
                     break;
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     newNode = GetNewNode((RecordDeclarationSyntax)node, constraint, semanticModel);
                     break;

@@ -109,8 +109,10 @@ jobs:
         working-directory: src/${{ matrix.component.name }}.CodeFixes
     steps:
       - uses: actions/checkout@v3
-      - run: dotnet restore
-      - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true
+      - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
+      - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true /p:RoslynVersion=roslyn3.8
+      - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
+      - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true /p:RoslynVersion=roslyn4.7
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v3
         with:
@@ -158,7 +160,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: dotnet restore
-      - run: dotnet build --no-restore /p:DefineConstants=VSCODE
+      - run: dotnet build --no-restore
       - run: |
           mkdir package/roslyn/analyzers
           mkdir package/roslyn/refactorings
