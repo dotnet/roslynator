@@ -43,15 +43,26 @@ public sealed class FormatTypeDeclarationBracesAnalyzer : BaseDiagnosticAnalyzer
 
         SyntaxToken openBrace = typeDeclaration.OpenBraceToken;
 
-        if (openBrace.IsMissing)
+        if (openBrace.IsKind(SyntaxKind.None)
+            || openBrace.IsMissing)
+        {
             return;
+        }
 
-        if (!typeDeclaration.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(openBrace.Span.End, openBrace.GetNextToken().SpanStart)))
+        SyntaxToken closeBrace = typeDeclaration.CloseBraceToken;
+
+        if (closeBrace.IsKind(SyntaxKind.None)
+            || closeBrace.IsMissing)
+        {
             return;
+        }
 
-        DiagnosticHelpers.ReportDiagnostic(
-            context,
-            DiagnosticRules.FormatTypeDeclarationBraces,
-            openBrace);
+        if (typeDeclaration.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(openBrace.SpanStart, closeBrace.SpanStart)))
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.FormatTypeDeclarationBraces,
+                openBrace);
+        }
     }
 }

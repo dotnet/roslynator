@@ -7,4 +7,5 @@ internal static class DiagnosticPropertyKeys
     internal static readonly string ImplicitToCollectionExpression = nameof(ImplicitToCollectionExpression);
     internal static readonly string CollectionExpressionToImplicit = nameof(CollectionExpressionToImplicit);
     internal static readonly string ExplicitToCollectionExpression = nameof(ExplicitToCollectionExpression);
+    internal static readonly string VarToExplicit = nameof(VarToExplicit);
 }

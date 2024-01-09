@@ -42,8 +42,7 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
             predicate: f => f.IsKind(
                 SyntaxKind.ObjectCreationExpression,
                 SyntaxKind.ImplicitObjectCreationExpression,
-                SyntaxKind.CollectionExpression,
-                SyntaxKind.VariableDeclaration)))
+                SyntaxKind.CollectionExpression)))
         {
             return;
         }
@@ -97,7 +96,37 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
         }
         else if (node is ImplicitObjectCreationExpressionSyntax implicitObjectCreation)
         {
-            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
+            if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.VarToExplicit))
+            {
+                VariableDeclarationSyntax variableDeclaration = node.FirstAncestor<VariableDeclarationSyntax>();
+
+                CodeAction codeAction = CodeAction.Create(
+                    UseExplicitObjectCreationTitle,
+                    ct =>
+                    {
+                        var implicitObjectCreation = (ImplicitObjectCreationExpressionSyntax)variableDeclaration.Variables.Single().Initializer.Value;
+
+                        SyntaxToken newKeyword = implicitObjectCreation.NewKeyword;
+
+                        if (!newKeyword.TrailingTrivia.Any())
+                            newKeyword = newKeyword.WithTrailingTrivia(ElasticSpace);
+
+                        ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
+                            newKeyword,
+                            variableDeclaration.Type.WithoutTrivia(),
+                            implicitObjectCreation.ArgumentList,
+                            implicitObjectCreation.Initializer);
+
+                        VariableDeclarationSyntax newVariableDeclaration = variableDeclaration.ReplaceNode(implicitObjectCreation, objectCreation)
+                            .WithType(CSharpFactory.VarType().WithTriviaFrom(variableDeclaration.Type));
+
+                        return document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, ct);
+                    },
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else if (diagnostic.Properties.ContainsKey(DiagnosticPropertyKeys.ImplicitToCollectionExpression))
             {
                 CodeAction codeAction = CodeAction.Create(
                     UseCollectionExpressionTitle,
@@ -198,36 +227,6 @@ public class UseImplicitOrExplicitObjectCreationCodeFixProvider : BaseCodeFixPro
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
-        }
-        else
-        {
-            var variableDeclaration = (VariableDeclarationSyntax)node;
-
-            CodeAction codeAction = CodeAction.Create(
-                UseExplicitObjectCreationTitle,
-                ct =>
-                {
-                    var implicitObjectCreation = (ImplicitObjectCreationExpressionSyntax)variableDeclaration.Variables.Single().Initializer.Value;
-
-                    SyntaxToken newKeyword = implicitObjectCreation.NewKeyword;
-
-                    if (!newKeyword.TrailingTrivia.Any())
-                        newKeyword = newKeyword.WithTrailingTrivia(ElasticSpace);
-
-                    ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
-                        newKeyword,
-                        variableDeclaration.Type.WithoutTrivia(),
-                        implicitObjectCreation.ArgumentList,
-                        implicitObjectCreation.Initializer);
-
-                    VariableDeclarationSyntax newVariableDeclaration = variableDeclaration.ReplaceNode(implicitObjectCreation, objectCreation)
-                        .WithType(CSharpFactory.VarType().WithTriviaFrom(variableDeclaration.Type));
-
-                    return document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, ct);
-                },
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

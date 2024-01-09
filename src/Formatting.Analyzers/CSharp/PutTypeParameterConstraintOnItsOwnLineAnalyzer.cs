@@ -47,12 +47,16 @@ public sealed class PutTypeParameterConstraintOnItsOwnLineAnalyzer : BaseDiagnos
 
         SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = typeDeclaration.ConstraintClauses;
 
-        TypeParameterListSyntax typeParameterList = typeDeclaration.TypeParameterList;
+        BaseTypeSyntax baseType = typeDeclaration.BaseList?.Types.LastOrDefault();
 
-        if (typeParameterList is null)
-            return;
-
-        Analyze(context, typeParameterList.GreaterThanToken, constraintClauses);
+        if (baseType is not null)
+        {
+            Analyze(context, baseType, constraintClauses);
+        }
+        else if (typeDeclaration.TypeParameterList is not null)
+        {
+            Analyze(context, typeDeclaration.TypeParameterList.GreaterThanToken, constraintClauses);
+        }
     }
 
     private static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
