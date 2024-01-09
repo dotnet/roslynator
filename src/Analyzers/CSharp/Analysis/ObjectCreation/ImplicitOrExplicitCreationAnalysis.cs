@@ -29,6 +29,11 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
             new KeyValuePair<string, string>(DiagnosticPropertyKeys.ExplicitToCollectionExpression, null)
         });
 
+    protected static readonly ImmutableDictionary<string, string> _varToExplicit = ImmutableDictionary.CreateRange(new[]
+        {
+            new KeyValuePair<string, string>(DiagnosticPropertyKeys.VarToExplicit, null)
+        });
+
     public abstract TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context);
 
     protected abstract void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context);
@@ -36,6 +41,8 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
     protected abstract void ReportExplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context);
 
     protected abstract void ReportImplicitToExplicit(ref SyntaxNodeAnalysisContext context);
+
+    protected abstract void ReportVarToExplicit(ref SyntaxNodeAnalysisContext context, TypeSyntax type);
 
     protected abstract void ReportImplicitToCollectionExpression(ref SyntaxNodeAnalysisContext context);
 
@@ -343,7 +350,7 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
                                 && !isVar
                                 && context.UseVarInsteadOfImplicitObjectCreation() == true)
                             {
-                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitOrExplicitObjectCreation, variableDeclaration, "explicit");
+                                ReportVarToExplicit(ref context, variableDeclaration.Type);
                             }
                         }
                     }

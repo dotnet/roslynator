@@ -167,4 +167,23 @@ class C<T> where T : struct
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
+    public async Task TestNoDiagnostic_BaseType()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+public interface IBaseInterface<TType, TKey>
+    where TType : class
+    where TKey : struct, IEquatable<TKey>
+{
+}
+
+public interface IInterface<TType, TKey> : IBaseInterface<TType, TKey>
+    where TType : class
+    where TKey : struct, IEquatable<TKey>
+{
+}");
+    }
 }

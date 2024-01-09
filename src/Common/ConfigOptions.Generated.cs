@@ -236,7 +236,7 @@ namespace Roslynator
             key:                     ConfigOptionKeys.UseVar, 
             defaultValue:            null, 
             defaultValuePlaceholder: "always|never|when_type_is_obvious", 
-            description:             "Use 'var' insted of explicit type");
+            description:             "Use 'var' instead of explicit type");
 
         public static readonly ConfigOptionDescriptor UseVarInsteadOfImplicitObjectCreation = new(
             key:                     ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, 
