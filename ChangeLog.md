@@ -10,8 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add support for Unity ([PR](https://github.com/dotnet/roslynator/pull/1349))
-  - Unity uses Roslyn 3.8 and this version is now supported by Roslynator NuGet packages with analyzers (Roslynator.Analyzers etc.)
-  - https://docs.unity3d.com/Manual/roslyn-analyzers.html
+  - [Unity uses Roslyn 3.8](https://docs.unity3d.com/Manual/roslyn-analyzers.html) and this version is now supported by Roslynator NuGet packages with analyzers (Roslynator.Analyzers etc.)
 
 ### Fixed
 
