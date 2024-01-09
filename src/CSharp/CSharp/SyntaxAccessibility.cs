@@ -47,7 +47,9 @@ public static class SyntaxAccessibility
             case SyntaxKind.ClassDeclaration:
                 return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetDefaultAccessibility((ClassDeclarationSyntax)declaration);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return SyntaxAccessibility<RecordDeclarationSyntax>.Instance.GetDefaultAccessibility((RecordDeclarationSyntax)declaration);
             case SyntaxKind.StructDeclaration:
                 return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetDefaultAccessibility((StructDeclarationSyntax)declaration);
@@ -61,8 +63,10 @@ public static class SyntaxAccessibility
                 return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetDefaultAccessibility((EnumMemberDeclarationSyntax)declaration);
             case SyntaxKind.NamespaceDeclaration:
                 return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetDefaultAccessibility((NamespaceDeclarationSyntax)declaration);
+#if ROSLYN_4_0
             case SyntaxKind.FileScopedNamespaceDeclaration:
                 return SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>.Instance.GetDefaultAccessibility((FileScopedNamespaceDeclarationSyntax)declaration);
+#endif
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
@@ -111,7 +115,9 @@ public static class SyntaxAccessibility
             case SyntaxKind.ClassDeclaration:
                 return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((ClassDeclarationSyntax)declaration);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return SyntaxAccessibility<RecordDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((RecordDeclarationSyntax)declaration);
             case SyntaxKind.StructDeclaration:
                 return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((StructDeclarationSyntax)declaration);
@@ -125,8 +131,10 @@ public static class SyntaxAccessibility
                 return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((EnumMemberDeclarationSyntax)declaration);
             case SyntaxKind.NamespaceDeclaration:
                 return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((NamespaceDeclarationSyntax)declaration);
+#if ROSLYN_4_0
             case SyntaxKind.FileScopedNamespaceDeclaration:
                 return SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((FileScopedNamespaceDeclarationSyntax)declaration);
+#endif
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
@@ -175,7 +183,9 @@ public static class SyntaxAccessibility
             case SyntaxKind.ClassDeclaration:
                 return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetAccessibility((ClassDeclarationSyntax)declaration);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return SyntaxAccessibility<RecordDeclarationSyntax>.Instance.GetAccessibility((RecordDeclarationSyntax)declaration);
             case SyntaxKind.StructDeclaration:
                 return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetAccessibility((StructDeclarationSyntax)declaration);
@@ -189,8 +199,10 @@ public static class SyntaxAccessibility
                 return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetAccessibility((EnumMemberDeclarationSyntax)declaration);
             case SyntaxKind.NamespaceDeclaration:
                 return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetAccessibility((NamespaceDeclarationSyntax)declaration);
+#if ROSLYN_4_0
             case SyntaxKind.FileScopedNamespaceDeclaration:
                 return SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>.Instance.GetAccessibility((FileScopedNamespaceDeclarationSyntax)declaration);
+#endif
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
@@ -239,7 +251,9 @@ public static class SyntaxAccessibility
             case SyntaxKind.ClassDeclaration:
                 return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetExplicitAccessibility((ClassDeclarationSyntax)declaration);
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return SyntaxAccessibility<RecordDeclarationSyntax>.Instance.GetExplicitAccessibility((RecordDeclarationSyntax)declaration);
             case SyntaxKind.StructDeclaration:
                 return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetExplicitAccessibility((StructDeclarationSyntax)declaration);
@@ -253,8 +267,10 @@ public static class SyntaxAccessibility
                 return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetExplicitAccessibility((EnumMemberDeclarationSyntax)declaration);
             case SyntaxKind.NamespaceDeclaration:
                 return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetExplicitAccessibility((NamespaceDeclarationSyntax)declaration);
+#if ROSLYN_4_0
             case SyntaxKind.FileScopedNamespaceDeclaration:
                 return SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>.Instance.GetExplicitAccessibility((FileScopedNamespaceDeclarationSyntax)declaration);
+#endif
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
@@ -336,8 +352,13 @@ public static class SyntaxAccessibility
 
         do
         {
+#if ROSLYN_4_0
             if (declaration.IsKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration))
                 return true;
+#else
+            if (declaration.IsKind(SyntaxKind.NamespaceDeclaration))
+                return true;
+#endif
 
             if (!GetAccessibility(declaration).Is(
                 Accessibility.Public,
@@ -405,13 +426,17 @@ public static class SyntaxAccessibility
         switch (node.Parent?.Kind())
         {
             case SyntaxKind.NamespaceDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.FileScopedNamespaceDeclaration:
+#endif
             case SyntaxKind.CompilationUnit:
                 {
                     return accessibility.Is(Accessibility.Public, Accessibility.Internal);
                 }
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     if (accessibility.ContainsProtected())
                         return false;
@@ -426,7 +451,9 @@ public static class SyntaxAccessibility
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
             case SyntaxKind.EnumDeclaration:
                 {
                     return true;

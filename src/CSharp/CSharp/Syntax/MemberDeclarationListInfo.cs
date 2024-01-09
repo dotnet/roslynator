@@ -131,6 +131,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
         return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
     }
 
+#if ROSLYN_4_0
     internal static MemberDeclarationListInfo Create(BaseNamespaceDeclarationSyntax namespaceDeclaration)
     {
         if (namespaceDeclaration is null)
@@ -138,6 +139,7 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
 
         return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
     }
+#endif
 
     internal static MemberDeclarationListInfo Create(TypeDeclarationSyntax typeDeclaration)
     {
@@ -181,15 +183,23 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
                     return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                 }
             case SyntaxKind.NamespaceDeclaration:
-            case SyntaxKind.FileScopedNamespaceDeclaration:
                 {
-                    var namespaceDeclaration = (BaseNamespaceDeclarationSyntax)node;
+                    var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
                     return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
                 }
+#if ROSLYN_4_0
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                {
+                    var namespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)node;
+                    return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
+                }
+#endif
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
             case SyntaxKind.InterfaceDeclaration:
                 {
                     var typeDeclaration = (TypeDeclarationSyntax)node;
@@ -229,12 +239,19 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
                     return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                 }
             case SyntaxKind.NamespaceDeclaration:
-            case SyntaxKind.FileScopedNamespaceDeclaration:
                 {
-                    var declaration = (BaseNamespaceDeclarationSyntax)Parent;
+                    var declaration = (NamespaceDeclarationSyntax)Parent;
                     declaration = declaration.WithMembers(members);
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
+#if ROSLYN_4_0
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                {
+                    var declaration = (FileScopedNamespaceDeclarationSyntax)Parent;
+                    declaration = declaration.WithMembers(members);
+                    return new MemberDeclarationListInfo(declaration, declaration.Members);
+                }
+#endif
             case SyntaxKind.ClassDeclaration:
                 {
                     var declaration = (ClassDeclarationSyntax)Parent;
@@ -242,7 +259,9 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     var declaration = (RecordDeclarationSyntax)Parent;
                     declaration = declaration.WithMembers(members);
@@ -281,12 +300,19 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
                     return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                 }
             case SyntaxKind.NamespaceDeclaration:
-            case SyntaxKind.FileScopedNamespaceDeclaration:
                 {
-                    var declaration = (BaseNamespaceDeclarationSyntax)Parent;
+                    var declaration = (NamespaceDeclarationSyntax)Parent;
                     declaration = declaration.RemoveNode(node, options)!;
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
+#if ROSLYN_4_0
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                {
+                    var declaration = (FileScopedNamespaceDeclarationSyntax)Parent;
+                    declaration = declaration.RemoveNode(node, options)!;
+                    return new MemberDeclarationListInfo(declaration, declaration.Members);
+                }
+#endif
             case SyntaxKind.ClassDeclaration:
                 {
                     var declaration = (ClassDeclarationSyntax)Parent;
@@ -294,7 +320,9 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     var declaration = (RecordDeclarationSyntax)Parent;
                     declaration = declaration.RemoveNode(node, options)!;
@@ -333,12 +361,19 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
                     return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                 }
             case SyntaxKind.NamespaceDeclaration:
-            case SyntaxKind.FileScopedNamespaceDeclaration:
                 {
-                    var declaration = (BaseNamespaceDeclarationSyntax)Parent;
+                    var declaration = (NamespaceDeclarationSyntax)Parent;
                     declaration = declaration.ReplaceNode(oldNode, newNode);
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
+#if ROSLYN_4_0
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                {
+                    var declaration = (FileScopedNamespaceDeclarationSyntax)Parent;
+                    declaration = declaration.ReplaceNode(oldNode, newNode);
+                    return new MemberDeclarationListInfo(declaration, declaration.Members);
+                }
+#endif
             case SyntaxKind.ClassDeclaration:
                 {
                     var declaration = (ClassDeclarationSyntax)Parent;
@@ -346,7 +381,9 @@ public readonly struct MemberDeclarationListInfo : IReadOnlyList<MemberDeclarati
                     return new MemberDeclarationListInfo(declaration, declaration.Members);
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     var declaration = (RecordDeclarationSyntax)Parent;
                     declaration = declaration.ReplaceNode(oldNode, newNode);

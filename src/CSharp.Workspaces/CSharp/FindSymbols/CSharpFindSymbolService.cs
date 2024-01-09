@@ -37,7 +37,9 @@ internal class CSharpFindSymbolService : FindSymbolService
                     case SyntaxKind.PropertyDeclaration:
                     case SyntaxKind.RecordDeclaration:
                     case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
                     case SyntaxKind.RecordStructDeclaration:
+#endif
                     case SyntaxKind.TypeParameter:
                     case SyntaxKind.UsingDirective:
                     case SyntaxKind.VariableDeclarator:

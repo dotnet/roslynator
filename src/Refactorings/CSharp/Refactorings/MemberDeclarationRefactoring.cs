@@ -26,7 +26,9 @@ internal static class MemberDeclarationRefactoring
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.EnumDeclaration:
                 {
@@ -109,7 +111,9 @@ internal static class MemberDeclarationRefactoring
                     break;
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     var recordDeclaration = (RecordDeclarationSyntax)member;
                     await RecordDeclarationRefactoring.ComputeRefactoringsAsync(context, recordDeclaration).ConfigureAwait(false);
@@ -279,7 +283,9 @@ internal static class MemberDeclarationRefactoring
                     return (member2.OpenBraceToken, member2.CloseBraceToken);
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     var member3 = ((RecordDeclarationSyntax)member);
                     return (member3.OpenBraceToken, member3.CloseBraceToken);

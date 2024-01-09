@@ -73,7 +73,7 @@ internal static class OptimizeStringBuilderAppendCallAnalysis
             {
                 case SyntaxKind.InterpolatedStringExpression:
                     {
-                        if (((CSharpCompilation)context.Compilation).LanguageVersion < LanguageVersion.CSharp10
+                        if (((CSharpCompilation)context.Compilation).LanguageVersion <= LanguageVersion.CSharp9
                             || !context.SemanticModel.HasConstantValue(expression, context.CancellationToken))
                         {
                             ReportDiagnostic(argument);

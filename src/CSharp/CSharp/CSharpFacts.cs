@@ -93,7 +93,9 @@ public static class CSharpFacts
             case SyntaxKind.EnumDeclaration:
                 return "enum";
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return "record";
             case SyntaxKind.IncompleteMember:
                 return "member";
@@ -154,11 +156,13 @@ public static class CSharpFacts
         {
             case SyntaxKind.CompilationUnit:
             case SyntaxKind.NamespaceDeclaration:
-            case SyntaxKind.FileScopedNamespaceDeclaration:
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.StructDeclaration:
-            case SyntaxKind.RecordStructDeclaration:
             case SyntaxKind.InterfaceDeclaration:
+#if ROSLYN_4_0
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+            case SyntaxKind.RecordStructDeclaration:
+#endif
                 return true;
             default:
                 return false;
@@ -305,7 +309,9 @@ public static class CSharpFacts
             case SyntaxKind.PropertyDeclaration:
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
             case SyntaxKind.IncompleteMember:
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
@@ -1047,7 +1053,9 @@ public static class CSharpFacts
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.MethodDeclaration:
             case SyntaxKind.DelegateDeclaration:

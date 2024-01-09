@@ -71,6 +71,8 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                     string text = interpolatedStringText.TextToken.Text;
 
                     text = StringUtility.ReplaceDoubleBracesWithSingleBrace(text);
+
+#if ROSLYN_4_2
                     if (content.Parent is InterpolatedStringExpressionSyntax interpolatedStringExpression
                         && interpolatedStringExpression.StringStartToken.IsKind(SyntaxKind.InterpolatedSingleLineRawStringStartToken))
                     {
@@ -85,7 +87,9 @@ internal static class ConvertInterpolatedStringToStringBuilderMethodRefactoring
                             + text
                             + interpolatedStringExpression2.StringEndToken.ValueText;
                     }
-                    else if (isVerbatim)
+                    else
+#endif
+                    if (isVerbatim)
                     {
                         text = "@\"" + text + "\"";
                     }

@@ -132,8 +132,10 @@ public readonly struct GenericInfo
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.StructDeclaration:
-            case SyntaxKind.RecordStructDeclaration:
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
+            case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     return new GenericInfo((TypeDeclarationSyntax)node);
                 }
@@ -241,7 +243,9 @@ public readonly struct GenericInfo
             case SyntaxKind.MethodDeclaration:
                 return new GenericInfo(((MethodDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return new GenericInfo(((RecordDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
             case SyntaxKind.StructDeclaration:
                 return new GenericInfo(((StructDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
@@ -273,7 +277,9 @@ public readonly struct GenericInfo
             case SyntaxKind.MethodDeclaration:
                 return new GenericInfo(((MethodDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return new GenericInfo(((RecordDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
             case SyntaxKind.StructDeclaration:
                 return new GenericInfo(((StructDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
@@ -320,7 +326,9 @@ public readonly struct GenericInfo
             case SyntaxKind.MethodDeclaration:
                 return new GenericInfo(((MethodDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return new GenericInfo(((RecordDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
             case SyntaxKind.StructDeclaration:
                 return new GenericInfo(((StructDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
@@ -350,7 +358,9 @@ public readonly struct GenericInfo
             case SyntaxKind.MethodDeclaration:
                 return new GenericInfo(((MethodDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return new GenericInfo(((RecordDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));
             case SyntaxKind.StructDeclaration:
                 return new GenericInfo(((StructDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));

@@ -50,7 +50,9 @@ internal static class SyntaxRefactorings
             case SyntaxKind.TypeParameter:
                 return (T)(SyntaxNode)AddAttributeLists((TypeParameterSyntax)(SyntaxNode)node, keepDocumentationCommentOnTop, attributeLists, f => f.AttributeLists.Any(), (f, g) => f.WithAttributeLists(g), (f, g) => f.AddAttributeLists(g));
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return (T)(SyntaxNode)AddAttributeLists((RecordDeclarationSyntax)(SyntaxNode)node, keepDocumentationCommentOnTop, attributeLists, f => f.AttributeLists.Any(), (f, g) => f.WithAttributeLists(g), (f, g) => f.AddAttributeLists(g));
             case SyntaxKind.StructDeclaration:
                 return (T)(SyntaxNode)AddAttributeLists((StructDeclarationSyntax)(SyntaxNode)node, keepDocumentationCommentOnTop, attributeLists, f => f.AttributeLists.Any(), (f, g) => f.WithAttributeLists(g), (f, g) => f.AddAttributeLists(g));
@@ -417,7 +419,11 @@ internal static class SyntaxRefactorings
         return RemoveNode(interfaceDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
     }
 
+#if ROSLYN_4_0
     public static BaseNamespaceDeclarationSyntax RemoveMember(BaseNamespaceDeclarationSyntax namespaceDeclaration, MemberDeclarationSyntax member)
+#else
+    public static NamespaceDeclarationSyntax RemoveMember(NamespaceDeclarationSyntax namespaceDeclaration, MemberDeclarationSyntax member)
+#endif
     {
         if (namespaceDeclaration is null)
             throw new ArgumentNullException(nameof(namespaceDeclaration));
@@ -431,14 +437,18 @@ internal static class SyntaxRefactorings
 
         namespaceDeclaration = namespaceDeclaration.WithMembers(namespaceDeclaration.Members.ReplaceAt(index, newMember));
 
+#if ROSLYN_4_0
         if (namespaceDeclaration.IsKind(SyntaxKind.FileScopedNamespaceDeclaration))
         {
             return namespaceDeclaration.RemoveNode(namespaceDeclaration.Members[index], GetRemoveOptions(newMember))!;
         }
         else
         {
+#endif
             return RemoveNode(namespaceDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
+#if ROSLYN_4_0
         }
+#endif
     }
 
     public static StructDeclarationSyntax RemoveMember(StructDeclarationSyntax structDeclaration, MemberDeclarationSyntax member)
@@ -816,6 +826,7 @@ internal static class SyntaxRefactorings
             right: left.WithTriviaFrom(right));
     }
 
+#if ROSLYN_4_7
     public static CollectionExpressionSyntax ConvertInitializerToCollectionExpression(InitializerExpressionSyntax? initializer)
     {
         if (initializer is not null)
@@ -845,4 +856,5 @@ internal static class SyntaxRefactorings
 
         return default;
     }
+#endif
 }

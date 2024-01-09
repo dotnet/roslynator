@@ -37,7 +37,13 @@ internal static class IntroduceConstructorRefactoring
                 }
             }
         }
-        else if (kind.Is(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+        else if (kind.Is(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration))
         {
             SemanticModel semanticModel = null;
 
@@ -95,8 +101,16 @@ internal static class IntroduceConstructorRefactoring
         if (symbol.IsStatic)
             return false;
 
-        if (!propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+        if (!propertyDeclaration.IsParentKind(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration))
+        {
             return false;
+        }
 
         ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
@@ -311,7 +325,9 @@ internal static class IntroduceConstructorRefactoring
             case SyntaxKind.ClassDeclaration:
                 return ((ClassDeclarationSyntax)declaration).Identifier.Text;
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return ((RecordDeclarationSyntax)declaration).Identifier.Text;
             case SyntaxKind.StructDeclaration:
                 return ((StructDeclarationSyntax)declaration).Identifier.Text;
@@ -327,7 +343,9 @@ internal static class IntroduceConstructorRefactoring
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 return declaration;
             default:
                 {
