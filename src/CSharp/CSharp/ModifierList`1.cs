@@ -770,7 +770,11 @@ public abstract class ModifierList<TNode> where TNode : SyntaxNode
     {
         internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LambdaExpressionSyntax node)
         {
+#if ROSLYN_4_0
             return node.AttributeLists;
+#else
+            return default;
+#endif
         }
 
         internal override SyntaxTokenList GetModifiers(LambdaExpressionSyntax node)

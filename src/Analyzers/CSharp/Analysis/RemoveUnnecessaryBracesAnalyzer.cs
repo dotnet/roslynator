@@ -28,7 +28,12 @@ public sealed class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(c => AnalyzeRecordDeclaration(c), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
+        context.RegisterSyntaxNodeAction(
+            c => AnalyzeRecordDeclaration(c),
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration);
 
         context.RegisterCompilationStartAction(startContext =>
         {
@@ -65,7 +70,10 @@ public sealed class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
             if (!closeBrace.IsKind(SyntaxKind.None)
                 && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
                 && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
-                && typeDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false)
+#if ROSLYN_4_7
+                && typeDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false
+#endif
+                )
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
@@ -81,7 +89,10 @@ public sealed class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
         var typeDeclaration = (TypeDeclarationSyntax)context.Node;
 
         if (!typeDeclaration.Members.Any()
-            && typeDeclaration.ParameterList is null)
+#if ROSLYN_4_7
+            && typeDeclaration.ParameterList is null
+#endif
+            )
         {
             Analyze(context, typeDeclaration);
         }

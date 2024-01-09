@@ -33,7 +33,9 @@ public sealed class RemoveNewLineBeforeBaseListAnalyzer : BaseDiagnosticAnalyzer
             f => AnalyzeTypeDeclaration(f),
             SyntaxKind.ClassDeclaration,
             SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
             SyntaxKind.RecordStructDeclaration,
+#endif
             SyntaxKind.InterfaceDeclaration);
 
         context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);

@@ -23,8 +23,16 @@ internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
         if (!attribute.IsParentKind(SyntaxKind.AttributeList))
             return;
 
-        if (!attribute.Parent.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+        if (!attribute.Parent.IsParentKind(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.RecordDeclaration))
+        {
             return;
+        }
 
         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

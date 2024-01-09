@@ -33,7 +33,9 @@ public sealed class UnnecessaryUnsafeContextAnalyzer : BaseDiagnosticAnalyzer
             f => AnalyzeTypeDeclaration(f),
             SyntaxKind.ClassDeclaration,
             SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
             SyntaxKind.RecordStructDeclaration,
+#endif
             SyntaxKind.InterfaceDeclaration);
 
         context.RegisterSyntaxNodeAction(f => AnalyzeUnsafeStatement(f), SyntaxKind.UnsafeStatement);

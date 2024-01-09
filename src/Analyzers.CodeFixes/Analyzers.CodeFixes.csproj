@@ -4,6 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RoslynVersion)' != ''">
+    <BaseOutputPath>bin\$(RoslynVersion)\</BaseOutputPath>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Version>$(RoslynatorAnalyzersVersion)</Version>
     <AssemblyName>Roslynator.CSharp.Analyzers.CodeFixes</AssemblyName>
@@ -12,7 +16,7 @@
     <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorAnalyzersPackageVersion)</NuspecProperties>
     <IsPackable>true</IsPackable>
     <IncludeSymbols>false</IncludeSymbols>
-  </PropertyGroup>
+</PropertyGroup>
 
   <ItemGroup>
     <None Remove="tools\install.ps1" />

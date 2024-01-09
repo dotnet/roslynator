@@ -756,6 +756,7 @@ internal class SymbolRenameState
 
         try
         {
+#if ROSLYN_4_4
             var options = new Microsoft.CodeAnalysis.Rename.SymbolRenameOptions(
                 RenameOverloads: Options.RenameOverloads,
                 RenameInStrings: Options.RenameInStrings,
@@ -769,6 +770,15 @@ internal class SymbolRenameState
                 newName,
                 cancellationToken)
                 .ConfigureAwait(false);
+#else
+            newSolution = await Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(
+                CurrentSolution,
+                symbol,
+                newName,
+                default(Microsoft.CodeAnalysis.Options.OptionSet)!,
+                cancellationToken)
+                .ConfigureAwait(false);
+#endif
         }
         catch (InvalidOperationException ex)
         {

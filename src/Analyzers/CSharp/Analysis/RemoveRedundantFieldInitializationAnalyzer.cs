@@ -42,7 +42,11 @@ public sealed class RemoveRedundantFieldInitializationAnalyzer : BaseDiagnosticA
         if (fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
             return;
 
-        if (fieldDeclaration.IsParentKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+        if (fieldDeclaration.IsParentKind(
+#if ROSLYN_4_0
+            SyntaxKind.RecordStructDeclaration,
+#endif
+            SyntaxKind.StructDeclaration))
         {
             var structSymbol = context.SemanticModel.GetDeclaredSymbol(fieldDeclaration.Parent, context.CancellationToken) as INamedTypeSymbol;
 

@@ -60,10 +60,10 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
 
         if (typeof(TNode) == typeof(NamespaceDeclarationSyntax))
             return new NamespaceAccessibility();
-
+#if ROSLYN_4_0
         if (typeof(TNode) == typeof(FileScopedNamespaceDeclarationSyntax))
             return new FileScopedNamespaceAccessibility();
-
+#endif
         if (typeof(TNode) == typeof(OperatorDeclarationSyntax))
             return new OperatorAccessibility();
 
@@ -186,7 +186,11 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
+#if ROSLYN_4_0
             return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+#else
+            return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration))
+#endif
                 ? Accessibility.Private
                 : Accessibility.Internal;
         }
@@ -196,7 +200,11 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
+#if ROSLYN_4_0
             return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+#else
+            return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration))
+#endif
                 ? Accessibility.Private
                 : Accessibility.Internal;
         }
@@ -325,9 +333,20 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
-                ? Accessibility.Private
-                : Accessibility.Internal;
+            if (declaration.IsParentKind(
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+                SyntaxKind.RecordStructDeclaration,
+#endif
+                SyntaxKind.RecordDeclaration))
+            {
+                return Accessibility.Private;
+            }
+            else
+            {
+                return Accessibility.Internal;
+            }
         }
 
         public override Accessibility GetDefaultExplicitAccessibility(DelegateDeclarationSyntax declaration)
@@ -335,9 +354,21 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
-                ? Accessibility.Private
-                : Accessibility.Internal;
+            if (declaration.IsParentKind(
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
+                SyntaxKind.RecordStructDeclaration,
+#endif
+                SyntaxKind.RecordDeclaration
+                ))
+            {
+                return Accessibility.Private;
+            }
+            else
+            {
+                return Accessibility.Internal;
+            }
         }
 
         public override Accessibility GetAccessibility(DelegateDeclarationSyntax declaration)
@@ -771,6 +802,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
         }
     }
 
+#if ROSLYN_4_0
     private class FileScopedNamespaceAccessibility : SyntaxAccessibility<FileScopedNamespaceDeclarationSyntax>
     {
         public override Accessibility GetDefaultAccessibility(FileScopedNamespaceDeclarationSyntax declaration)
@@ -802,6 +834,7 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             return Accessibility.NotApplicable;
         }
     }
+#endif
 
     private class OperatorAccessibility : SyntaxAccessibility<OperatorDeclarationSyntax>
     {

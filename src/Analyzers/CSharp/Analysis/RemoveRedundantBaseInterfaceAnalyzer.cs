@@ -42,7 +42,9 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
         if (!baseList.IsParentKind(
             SyntaxKind.ClassDeclaration,
             SyntaxKind.StructDeclaration,
+#if ROSLYN_4_0
             SyntaxKind.RecordStructDeclaration,
+#endif
             SyntaxKind.InterfaceDeclaration))
         {
             return;

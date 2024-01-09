@@ -1,4 +1,5 @@
-﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿#if ROSLYN_4_2
+// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -116,3 +117,4 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         return false;
     }
 }
+#endif

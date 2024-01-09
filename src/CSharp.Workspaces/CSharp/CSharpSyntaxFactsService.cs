@@ -79,7 +79,9 @@ internal sealed class CSharpSyntaxFactsService : ISyntaxFactsService
             case SyntaxKind.TypeParameter:
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.StructDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.RecordDeclaration:
             case SyntaxKind.EnumDeclaration:

@@ -83,12 +83,12 @@ public sealed class ParameterNameDiffersFromBaseCodeFixProvider : BaseCodeFixPro
 
                         CodeAction codeAction = CodeAction.Create(
                             $"Rename '{oldName}' to '{newName}'",
-                            ct => Renamer.RenameSymbolAsync(
-                                context.Document.Solution(),
-                                parameterSymbol,
-                                default(SymbolRenameOptions),
-                                newName,
-                                ct),
+                            ct =>
+#if ROSLYN_4_4
+                            Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, default(SymbolRenameOptions), newName, ct),
+#else
+                            Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, newName, default(Microsoft.CodeAnalysis.Options.OptionSet), ct),
+#endif
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);

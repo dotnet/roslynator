@@ -54,7 +54,7 @@ internal static class AddUsingDirectiveRefactoring
         {
             if (ancestor.IsKind(SyntaxKind.UsingDirective))
                 return;
-
+#if ROSLYN_4_0
             if (ancestor.IsKind(SyntaxKind.FileScopedNamespaceDeclaration))
             {
                 if (((FileScopedNamespaceDeclarationSyntax)ancestor).Name.Contains(node))
@@ -62,7 +62,7 @@ internal static class AddUsingDirectiveRefactoring
 
                 break;
             }
-
+#endif
             if (ancestor is StatementSyntax
                 || ancestor is MemberDeclarationSyntax)
             {

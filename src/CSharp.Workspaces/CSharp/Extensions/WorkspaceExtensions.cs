@@ -92,12 +92,19 @@ public static class WorkspaceExtensions
                     return document.ReplaceNodeAsync(compilationUnit, SyntaxRefactorings.RemoveMember(compilationUnit, member), cancellationToken);
                 }
             case SyntaxKind.NamespaceDeclaration:
-            case SyntaxKind.FileScopedNamespaceDeclaration:
                 {
-                    var namespaceDeclaration = (BaseNamespaceDeclarationSyntax)parent;
+                    var namespaceDeclaration = (NamespaceDeclarationSyntax)parent;
 
                     return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRefactorings.RemoveMember(namespaceDeclaration, member), cancellationToken);
                 }
+#if ROSLYN_4_0
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                {
+                    var namespaceDeclaration = (FileScopedNamespaceDeclarationSyntax)parent;
+
+                    return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRefactorings.RemoveMember(namespaceDeclaration, member), cancellationToken);
+                }
+#endif
             case SyntaxKind.ClassDeclaration:
                 {
                     var classDeclaration = (ClassDeclarationSyntax)parent;
@@ -117,7 +124,9 @@ public static class WorkspaceExtensions
                     return document.ReplaceNodeAsync(interfaceDeclaration, SyntaxRefactorings.RemoveMember(interfaceDeclaration, member), cancellationToken);
                 }
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 {
                     var recordDeclaration = (RecordDeclarationSyntax)parent;
 

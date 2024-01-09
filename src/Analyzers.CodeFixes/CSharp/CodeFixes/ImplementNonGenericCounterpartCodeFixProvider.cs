@@ -303,7 +303,10 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
             newTypeDeclaration = recordDeclaration.WithBaseList(baseList.WithTypes(baseTypes));
         }
         else if (kind == SyntaxKind.StructDeclaration
-            || kind == SyntaxKind.RecordStructDeclaration)
+#if ROSLYN_4_0
+            || kind == SyntaxKind.RecordStructDeclaration
+#endif
+            )
         {
             var structDeclaration = (StructDeclarationSyntax)newTypeDeclaration;
 
