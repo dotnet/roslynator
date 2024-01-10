@@ -62,6 +62,14 @@
     <RoslynatorDllPrefix>Roslynator_Formatting_Analyzers_</RoslynatorDllPrefix>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RoslynatorRefactoringsNuGet)' == true">
+    <RoslynatorDllPrefix>Roslynator_Refactorings_</RoslynatorDllPrefix>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(RoslynatorCodeFixesNuGet)' == true">
+    <RoslynatorDllPrefix>Roslynator_CodeFixes_</RoslynatorDllPrefix>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="roslynator.analyzers" Version="$(RoslynatorAnalyzersPackageReferenceVersion)">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
