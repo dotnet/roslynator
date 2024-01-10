@@ -2,7 +2,12 @@
 
 A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-For further information please visit Roslynator [repo](https://github.com/dotnet/roslynator).
+## Instructions After First Installation
+
+- Set VS Code setting `dotnet.server.useOmnisharp` to `true`
+- Disable extension **C# Dev Kit** (if installed)
+
+NOTE: After each installation, Roslynator updates `omnisharp.json` to include references to Roslynator DLLs.
 
 ## Configuration
 
