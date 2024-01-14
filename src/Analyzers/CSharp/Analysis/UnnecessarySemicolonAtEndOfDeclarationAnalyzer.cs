@@ -121,12 +121,15 @@ public sealed class UnnecessarySemicolonAtEndOfDeclarationAnalyzer : BaseDiagnos
     {
         var declaration = (EnumDeclarationSyntax)context.Node;
 
-        SyntaxToken semicolon = declaration.SemicolonToken;
-
-        if (semicolon.Parent is not null
-            && !semicolon.IsMissing)
+        if (declaration.CloseBraceToken.IsKind(SyntaxKind.CloseBraceToken))
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration, semicolon);
+            SyntaxToken semicolon = declaration.SemicolonToken;
+
+            if (semicolon.Parent is not null
+                && !semicolon.IsMissing)
+            {
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessarySemicolonAtEndOfDeclaration, semicolon);
+            }
         }
     }
 }
