@@ -35,4 +35,12 @@ struct C;
 interface C;
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessarySemicolonAtEndOfDeclaration)]
+    public async Task TestNoDiagnostic_Enum()
+    {
+        await VerifyNoDiagnosticAsync(@"
+enum E;
+");
+    }
 }
