@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1265RemoveRedundantCantchBlockTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantCatchBlockAnalyzer, RemoveRedundantCatchBlockCodeFixProvider>
+public class RCS1265RemoveRedundantCatchBlockTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantCatchBlockAnalyzer, RemoveRedundantCatchBlockCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantCatchBlock;
 
