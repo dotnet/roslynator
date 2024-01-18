@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Publish NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings) and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes) ([PR](https://github.com/dotnet/roslynator/pull/1358))
+  - These packages are recommended to be used in an environment where Roslynator IDE extension cannot be used, e.g. VS Code + C# Dev Kit (see related [issue](https://github.com/dotnet/vscode-csharp/issues/6790))
+
+### Fixed
+
+- Fix analyzer [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1361))
+
+## [4.9.0] - 2024-01-10
+
+### Added
+
 - Add support for Unity ([PR](https://github.com/dotnet/roslynator/pull/1349))
   - [Unity uses Roslyn 3.8](https://docs.unity3d.com/Manual/roslyn-analyzers.html) and this version is now supported by Roslynator NuGet packages with analyzers (Roslynator.Analyzers etc.)
 
