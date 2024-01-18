@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata minClientVersion="2.8">
-    <id>Roslynator.CodeFixes</id>
+    <id>Roslynator.Refactorings</id>
     <version>$version$</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
@@ -9,8 +9,8 @@
     <projectUrl>https://github.com/dotnet/roslynator</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A collection of code fixes for C# compiler diagnostics, powered by Roslyn.</description>
-    <summary>A collection of code fixes for C# compiler diagnostics, powered by Roslyn.</summary>
+    <description>A collection of 200+ refactorings for C#, powered by Roslyn.</description>
+    <summary>A collection of 200+ refactorings for C#, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2024 Josef Pihrt</copyright>
     <tags>Roslyn Refactoring Productivity CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>
