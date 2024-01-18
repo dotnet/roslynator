@@ -119,6 +119,48 @@ jobs:
           name: nuget_packages
           path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.*nupkg
 
+  build_refactorings:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    needs: pre_build
+    runs-on: ubuntu-22.04
+    env:
+      Version: ${{ needs.pre_build.outputs.version }}
+    defaults:
+      run:
+        working-directory: src/Refactorings
+    steps:
+      - uses: actions/checkout@v3
+      - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
+      - run: dotnet build --no-restore /p:RoslynatorRefactoringsNuGet=true /p:RoslynVersion=roslyn3.8
+      - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
+      - run: dotnet build --no-restore /p:RoslynatorRefactoringsNuGet=true /p:RoslynVersion=roslyn4.7
+      - run: dotnet pack --no-build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget_packages
+          path: src/Refactorings/bin/Release/*.*nupkg
+
+  build_code_fixes:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    needs: pre_build
+    runs-on: ubuntu-22.04
+    env:
+      Version: ${{ needs.pre_build.outputs.version }}
+    defaults:
+      run:
+        working-directory: src/CodeFixes
+    steps:
+      - uses: actions/checkout@v3
+      - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
+      - run: dotnet build --no-restore /p:RoslynatorCodeFixesNuGet=true /p:RoslynVersion=roslyn3.8
+      - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
+      - run: dotnet build --no-restore /p:RoslynatorCodeFixesNuGet=true /p:RoslynVersion=roslyn4.7
+      - run: dotnet pack --no-build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget_packages
+          path: src/CodeFixes/bin/Release/*.*nupkg
+
   build_vs_extension:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: pre_build
@@ -300,7 +342,7 @@ jobs:
           path: src/CommandLine/bin/Release/*.*nupkg
 
   publish_nuget_packages:
-    needs: [ build_core_and_testing, build_analyzers ]
+    needs: [ build_core_and_testing, build_analyzers, build_refactorings, build_code_fixes ]
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
