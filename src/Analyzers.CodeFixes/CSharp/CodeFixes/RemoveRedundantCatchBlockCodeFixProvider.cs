@@ -51,6 +51,8 @@ public class RemoveRedundantCatchBlockCodeFixProvider : BaseCodeFixProvider
                 .Statements
                 .Select(f => f.WithFormatterAnnotation());
 
+            newNodes = new[] { newNodes.First().WithLeadingTrivia(tryStatement.GetLeadingTrivia()) }.Concat(newNodes.Skip(1));
+
             return await document.ReplaceNodeAsync(tryStatement, newNodes, cancellationToken).ConfigureAwait(false);
         }
         else

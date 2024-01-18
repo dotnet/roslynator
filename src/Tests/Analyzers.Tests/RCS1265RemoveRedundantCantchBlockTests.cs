@@ -149,4 +149,31 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCatchBlock)]
+    public async Task Test_NoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        try
+        {
+            DoSomething();
+        }
+        catch
+        {
+            throw new SystemException();
+        }
+
+        void DoSomething()
+        {
+        }
+    }
+}
+");
+    }
 }

@@ -41,13 +41,18 @@ public sealed class RemoveRedundantCatchBlockAnalyzer : BaseDiagnosticAnalyzer
         if (catchClause.Parent is not TryStatementSyntax tryStatement)
             return;
 
+        CatchClauseSyntax lastCatchClause = tryStatement.Catches.Last();
+
+        if (!catchClause.Equals(lastCatchClause))
+            return;
+
         if (catchClause.Declaration is not null)
             return;
 
         if (catchClause.Block?.Statements.Count != 1)
             return;
 
-        if (catchClause.Block?.Statements[0] is not ThrowStatementSyntax)
+        if (catchClause.Block.Statements[0] is not ThrowStatementSyntax throwStatement || throwStatement.Expression is not null)
             return;
 
         if (tryStatement.Catches.Count > 1 || tryStatement.Finally is not null)
@@ -59,9 +64,6 @@ public sealed class RemoveRedundantCatchBlockAnalyzer : BaseDiagnosticAnalyzer
             BlockSyntax tryBlock = tryStatement.Block;
 
             if (tryBlock?.Statements.Any() != true)
-                return;
-
-            if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(tryStatement.TryKeyword))
                 return;
 
             if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(tryBlock.OpenBraceToken))
