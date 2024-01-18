@@ -2,6 +2,11 @@
 
 A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
+## Analyzers Support
+
+Analyzers will be removed from Roslynator extension in the next major release.
+As a replacement, use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
+
 ## OmniSharp vs. C# Dev Kit
 
 Ability to use this extension depends on whether you want to use OmniSharp or [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit).
