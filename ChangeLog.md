@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Publish NuGet packages with [refactorings](https://www.nuget.org/packages/roslynator.refactorings) and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes) ([PR](https://github.com/dotnet/roslynator/pull/1358))
+  - These packages are recommended to be used in an environment where Roslynator IDE extension cannot be used, e.g. VS Code + C# Dev Kit (see related [issue](https://github.com/dotnet/vscode-csharp/issues/6790))
+
 ### Fixed
 
 - Fix analyzer [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1361))
