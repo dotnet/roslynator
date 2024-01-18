@@ -18,7 +18,7 @@ NOTE: After each installation, Roslynator updates `omnisharp.json` to include re
 ### C# Dev Kit
 
 C# Dev Kit currently does not support loading Roslyn features from an extension (see related [issue](https://github.com/dotnet/vscode-csharp/issues/6790)), which means that this extension won't work with C# Dev Kit.
-As an alternative, use NuGet packages with [refactorings](https://www.nuget.org/packages/roslynator.refactorings)
+As an alternative, it's possible to use NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings)
  and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes).
 
 ## Configuration
