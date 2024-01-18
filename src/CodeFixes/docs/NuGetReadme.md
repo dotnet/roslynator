@@ -2,6 +2,9 @@
 
 A collection [code fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C# compiler diagnostics, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
+This package is recommended to be used in an enviroment where Roslynator IDE extensions cannot be used, e.g. for VS Code with C# Dev Kit.
+Otherwise, do not use this package and use IDE extension which has the same functionality.
+
 ## Requirements
 
 * Visual Studio 2022

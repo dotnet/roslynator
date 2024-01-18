@@ -2,6 +2,9 @@
 
 A collection of 200+ [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
+This package is recommended to be used in an enviroment where Roslynator IDE extensions cannot be used, e.g. for VS Code with C# Dev Kit.
+Otherwise, do not use this package and use IDE extension which has the same functionality.
+
 ## Requirements
 
 * Visual Studio 2022
