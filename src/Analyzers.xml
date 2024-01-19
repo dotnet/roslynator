@@ -7687,7 +7687,7 @@ finally
 {
    DoSomethingElse();
 }
-					]]></After>
+]]></After>
       </Sample>
     </Samples>
   </Analyzer>

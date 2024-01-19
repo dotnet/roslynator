@@ -27,7 +27,7 @@ class C
         }
         [|catch
         {
-           throw;
+            throw;
         }|]
         finally
         {
@@ -73,15 +73,15 @@ class C
     {
         try
         {
-           DoSomething();
+            DoSomething();
         }
         catch (SystemException ex)
         {
-           DoSomething();
+            DoSomething();
         }
         [|catch
         {
-           throw;
+            throw;
         }|]
     }
 
@@ -98,11 +98,11 @@ class C
     {
         try
         {
-           DoSomething();
+            DoSomething();
         }
         catch (SystemException ex)
         {
-           DoSomething();
+            DoSomething();
         }
     }
 
@@ -123,11 +123,11 @@ class C
     {
         try
         {
-           DoSomething();
+            DoSomething();
         }
         [|catch
         {
-           throw;
+            throw;
         }|]
     }
 
@@ -162,11 +162,11 @@ class C
     {
         try
         {
-            DoSomething();
+             DoSomething();
         }
         catch
         {
-            throw new SystemException();
+             throw new SystemException();
         }
 
         void DoSomething()
