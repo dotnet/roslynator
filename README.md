@@ -2,6 +2,9 @@
 
 Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
+IMPORTANT: Analyzers will be removed from Roslynator IDE extensions in the next major release.
+It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) instead.
+
 ## Tools
 
 - IDE extensions for:

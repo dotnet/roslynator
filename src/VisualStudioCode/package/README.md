@@ -4,8 +4,8 @@ A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/an
 
 ## Analyzers Support
 
-Analyzers will be removed from Roslynator extension in the next major release.
-As a replacement, use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
+Analyzers will be removed from Roslynator for VS Code in the next major release.
+It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) instead.
 
 ## OmniSharp vs. C# Dev Kit
 
