@@ -31,33 +31,30 @@ public sealed class RemoveRedundantCatchBlockAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(f => AnalyzeCatchClause(f), SyntaxKind.CatchClause);
+        context.RegisterSyntaxNodeAction(f => AnalyzeCatchClause(f), SyntaxKind.TryStatement);
     }
 
     private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
     {
-        var catchClause = (CatchClauseSyntax)context.Node;
+        var tryStatement = (TryStatementSyntax)context.Node;
 
-        if (catchClause.Parent is not TryStatementSyntax tryStatement)
+        if (!tryStatement.Catches.Any())
             return;
 
         CatchClauseSyntax lastCatchClause = tryStatement.Catches.Last();
 
-        if (!catchClause.Equals(lastCatchClause))
+        if (lastCatchClause.Declaration is not null)
             return;
 
-        if (catchClause.Declaration is not null)
+        if (lastCatchClause.Block?.Statements.Count != 1)
             return;
 
-        if (catchClause.Block?.Statements.Count != 1)
-            return;
-
-        if (catchClause.Block.Statements[0] is not ThrowStatementSyntax throwStatement || throwStatement.Expression is not null)
+        if (lastCatchClause.Block.Statements[0] is not ThrowStatementSyntax throwStatement || throwStatement.Expression is not null)
             return;
 
         if (tryStatement.Catches.Count > 1 || tryStatement.Finally is not null)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantCatchBlock, catchClause);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantCatchBlock, lastCatchClause);
         }
         else
         {
@@ -72,10 +69,10 @@ public sealed class RemoveRedundantCatchBlockAnalyzer : BaseDiagnosticAnalyzer
             if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(tryBlock.CloseBraceToken))
                 return;
 
-            if (!catchClause.CatchKeyword.LeadingTrivia.IsEmptyOrWhitespace())
+            if (!lastCatchClause.CatchKeyword.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantCatchBlock, catchClause);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantCatchBlock, lastCatchClause);
         }
     }
 }

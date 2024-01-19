@@ -40,11 +40,9 @@ public class RemoveRedundantCatchBlockCodeFixProvider : BaseCodeFixProvider
     private static async Task<Document> RemoveRedundantCatchAsync(Document document, CatchClauseSyntax catchClause, CancellationToken cancellationToken)
     {
         var tryStatement = (TryStatementSyntax)catchClause.Parent;
-
         SyntaxList<CatchClauseSyntax> catchClauses = tryStatement.Catches;
-        SyntaxList<CatchClauseSyntax> newCatchClauses = SyntaxFactory.List(catchClauses.Take(catchClauses.Count - 1));
 
-        if (!newCatchClauses.Any() && tryStatement.Finally is null)
+        if (catchClauses.Count == 1 && tryStatement.Finally is null)
         {
             IEnumerable<StatementSyntax> newNodes = tryStatement
                 .Block
@@ -57,8 +55,9 @@ public class RemoveRedundantCatchBlockCodeFixProvider : BaseCodeFixProvider
         }
         else
         {
-            TryStatementSyntax newTryStatement = tryStatement.WithCatches(newCatchClauses);
+            TryStatementSyntax newTryStatement = tryStatement.RemoveNode(catchClauses.Last(), SyntaxRemoveOptions.KeepNoTrivia);
             return await document.ReplaceNodeAsync(tryStatement, newTryStatement, cancellationToken).ConfigureAwait(false);
         }
+
     }
 }
