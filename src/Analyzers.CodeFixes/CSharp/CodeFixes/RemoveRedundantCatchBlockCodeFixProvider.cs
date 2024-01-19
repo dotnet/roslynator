@@ -58,6 +58,5 @@ public class RemoveRedundantCatchBlockCodeFixProvider : BaseCodeFixProvider
             TryStatementSyntax newTryStatement = tryStatement.RemoveNode(catchClauses.Last(), SyntaxRemoveOptions.KeepNoTrivia);
             return await document.ReplaceNodeAsync(tryStatement, newTryStatement, cancellationToken).ConfigureAwait(false);
         }
-
     }
 }
