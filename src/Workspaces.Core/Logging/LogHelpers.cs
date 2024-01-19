@@ -63,6 +63,20 @@ internal static class LogHelpers
         WriteLine(text, diagnostic.Severity.GetColors(), verbosity);
     }
 
+    public static void WriteDiagnostic(
+        Diagnostic diagnostic,
+        string filePath,
+        string? baseDirectoryPath = null,
+        IFormatProvider? formatProvider = null,
+        string? indentation = null,
+        Verbosity verbosity = Verbosity.Diagnostic)
+    {
+        string text = DiagnosticFormatter.FormatDiagnostic(diagnostic, filePath, baseDirectoryPath, formatProvider);
+
+        Write(indentation, verbosity);
+        WriteLine(text, diagnostic.Severity.GetColors(), verbosity);
+    }
+
     public static void WriteDiagnostics(
         ImmutableArray<Diagnostic> diagnostics,
         string? baseDirectoryPath = null,

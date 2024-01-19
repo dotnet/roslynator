@@ -43,6 +43,19 @@ internal class SpellingAnalysisContext
 
         ProcessMatches(matches, textSpan, syntaxTree);
     }
+    public void AnalyzeFileName(SyntaxTree syntaxTree)
+    {
+        string path = syntaxTree.FilePath;
+        int separatorIndex = FileSystemHelpers.LastIndexOfDirectorySeparator(path);
+        int extensionIndex = FileSystemHelpers.GetExtensionIndex(path);
+
+        if (extensionIndex == -1)
+            extensionIndex = path.Length;
+
+        ImmutableArray<SpellingMatch> matches = _spellchecker.AnalyzeText(path, separatorIndex + 1, extensionIndex - separatorIndex - 1);
+
+        ProcessMatches(matches, syntaxTree);
+    }
 
     public void AnalyzeIdentifier(
         SyntaxToken identifier,
@@ -84,6 +97,22 @@ internal class SpellingAnalysisContext
             Diagnostic diagnostic = Diagnostic.Create(
                 SpellcheckAnalyzer.DiagnosticDescriptor,
                 Location.Create(syntaxTree, new TextSpan(index, match.Value.Length)),
+                properties: properties,
+                messageArgs: match.Value);
+
+            _reportDiagnostic(diagnostic);
+        }
+    }
+
+    private void ProcessMatches(ImmutableArray<SpellingMatch> matches, SyntaxTree syntaxTree)
+    {
+        foreach (SpellingMatch match in matches)
+        {
+            ImmutableDictionary<string, string?> properties = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string?>("FilePath", syntaxTree.FilePath) });
+
+            Diagnostic diagnostic = Diagnostic.Create(
+                SpellcheckAnalyzer.DiagnosticDescriptor,
+                Location.None,
                 properties: properties,
                 messageArgs: match.Value);
 

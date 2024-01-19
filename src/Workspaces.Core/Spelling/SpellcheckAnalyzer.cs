@@ -192,6 +192,13 @@ internal class SpellcheckAnalyzer
                     continue;
                 }
 
+                if (diagnostic.Location.Kind == LocationKind.None)
+                {
+                    string filePath = diagnostic.Properties["FilePath"]!;
+                    LogHelpers.WriteDiagnostic(diagnostic, filePath, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Normal);
+                    continue;
+                }
+
                 SpellingDiagnostic spellingDiagnostic = service.CreateSpellingDiagnostic(diagnostic);
 
                 spellingDiagnostics.Add(spellingDiagnostic);

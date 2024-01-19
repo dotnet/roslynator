@@ -60,9 +60,6 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
             MinWordLength = Options.MinWordLength,
             MaxWordLength = Options.MaxWordLength,
             IncludeGeneratedCode = Options.IncludeGeneratedCode,
-#if DEBUG
-            Autofix = !Options.NoAutofix,
-#endif
             Interactive = Options.Interactive,
             DryRun = Options.DryRun,
         };
@@ -87,7 +84,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
 
             Solution solution = project.Solution;
 
-            spellingFixer = GetSpellingFixer(solution);
+            spellingFixer = GetSpellcheckAnalyzer(solution);
 
             WriteLine($"Analyze '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
@@ -103,7 +100,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
         {
             Solution solution = projectOrSolution.AsSolution();
 
-            spellingFixer = GetSpellingFixer(solution);
+            spellingFixer = GetSpellcheckAnalyzer(solution);
 
             results = await spellingFixer.FixSolutionAsync(f => IsMatch(f), cancellationToken);
         }
@@ -118,7 +115,7 @@ internal class SpellcheckCommand : MSBuildWorkspaceCommand<SpellcheckCommandResu
                 : CommandStatus.NotSuccess,
             results);
 
-        SpellcheckAnalyzer GetSpellingFixer(Solution solution)
+        SpellcheckAnalyzer GetSpellcheckAnalyzer(Solution solution)
         {
             return new SpellcheckAnalyzer(
                 solution,

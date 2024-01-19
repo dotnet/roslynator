@@ -23,10 +23,26 @@ internal static class DiagnosticFormatter
         sb.Append(' ');
         sb.Append(diagnostic.Id);
         sb.Append(": ");
+        sb.Append(diagnostic.GetMessage(formatProvider));
 
-        string message = diagnostic.GetMessage(formatProvider);
+        return StringBuilderCache.GetStringAndFree(sb);
+    }
 
-        sb.Append(message);
+    public static string FormatDiagnostic(
+        Diagnostic diagnostic,
+        string filePath,
+        string? baseDirectoryPath = null,
+        IFormatProvider? formatProvider = null)
+    {
+        StringBuilder sb = StringBuilderCache.GetInstance();
+
+        sb.Append(PathUtilities.TrimStart(filePath, baseDirectoryPath));
+        sb.Append(": ");
+        sb.Append(DiagnosticFormatter.GetSeverityText(diagnostic.Severity));
+        sb.Append(' ');
+        sb.Append(diagnostic.Id);
+        sb.Append(": ");
+        sb.Append(diagnostic.GetMessage(formatProvider));
 
         return StringBuilderCache.GetStringAndFree(sb);
     }
