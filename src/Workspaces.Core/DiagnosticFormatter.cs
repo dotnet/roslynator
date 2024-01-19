@@ -19,11 +19,7 @@ internal static class DiagnosticFormatter
 
         FormatLocation(diagnostic.Location, baseDirectoryPath, ref sb);
 
-        sb.Append(GetSeverityText(diagnostic.Severity));
-        sb.Append(' ');
-        sb.Append(diagnostic.Id);
-        sb.Append(": ");
-        sb.Append(diagnostic.GetMessage(formatProvider));
+        AppendDiagnosticInfo(diagnostic, formatProvider, sb);
 
         return StringBuilderCache.GetStringAndFree(sb);
     }
@@ -38,13 +34,19 @@ internal static class DiagnosticFormatter
 
         sb.Append(PathUtilities.TrimStart(filePath, baseDirectoryPath));
         sb.Append(": ");
-        sb.Append(DiagnosticFormatter.GetSeverityText(diagnostic.Severity));
+
+        AppendDiagnosticInfo(diagnostic, formatProvider, sb);
+
+        return StringBuilderCache.GetStringAndFree(sb);
+    }
+
+    private static void AppendDiagnosticInfo(Diagnostic diagnostic, IFormatProvider? formatProvider, StringBuilder sb)
+    {
+        sb.Append(GetSeverityText(diagnostic.Severity));
         sb.Append(' ');
         sb.Append(diagnostic.Id);
         sb.Append(": ");
         sb.Append(diagnostic.GetMessage(formatProvider));
-
-        return StringBuilderCache.GetStringAndFree(sb);
     }
 
     internal static void FormatLocation(
@@ -80,18 +82,13 @@ internal static class DiagnosticFormatter
 
     private static string GetSeverityText(DiagnosticSeverity diagnosticSeverity)
     {
-        switch (diagnosticSeverity)
+        return diagnosticSeverity switch
         {
-            case DiagnosticSeverity.Hidden:
-                return "hidden";
-            case DiagnosticSeverity.Info:
-                return "info";
-            case DiagnosticSeverity.Warning:
-                return "warning";
-            case DiagnosticSeverity.Error:
-                return "error";
-            default:
-                throw new InvalidOperationException();
-        }
+            DiagnosticSeverity.Hidden => "hidden",
+            DiagnosticSeverity.Info => "info",
+            DiagnosticSeverity.Warning => "warning",
+            DiagnosticSeverity.Error => "error",
+            _ => throw new InvalidOperationException(),
+        };
     }
 }
