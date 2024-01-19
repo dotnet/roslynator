@@ -4,17 +4,24 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RoslynVersion)' != ''">
+    <BaseOutputPath>bin\$(RoslynVersion)\</BaseOutputPath>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Version>$(RoslynatorVersion)</Version>
     <AssemblyName>Roslynator.CSharp.Refactorings</AssemblyName>
     <RootNamespace>Roslynator.CSharp.Refactorings</RootNamespace>
+    <NuspecFile>Roslynator.Refactorings.nuspec</NuspecFile>
+    <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorPackageVersion)</NuspecProperties>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>false</IncludeSymbols>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <IsPackable>false</IsPackable>
-    <Company></Company>
-    <Description></Description>
-  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="tools\install.ps1" />
+    <None Remove="tools\uninstall.ps1" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="$(RoslynatorRoslynAnalyzersVersion)">
@@ -23,8 +30,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynatorRoslynVersion)" />
   </ItemGroup>
-
-
 
   <ItemGroup>
     <ProjectReference Include="..\Workspaces.Common\Workspaces.Common.csproj" />
