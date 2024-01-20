@@ -33,7 +33,7 @@ public sealed class SpellcheckCommandLineOptions : MSBuildCommandLineOptions
 
     [Option(
         longName: OptionNames.IgnoredScope,
-        HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol and symbol.",
+        HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol, symbol and file-name.",
         MetaValue = "<SCOPE>")]
     public IEnumerable<string> IgnoredScope { get; set; }
 
