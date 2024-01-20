@@ -575,7 +575,7 @@ internal static class Program
             options.Scope,
             OptionNames.Scope,
             out SpellingScopeFilter scopeFilter,
-            SpellingScopeFilter.Comment | SpellingScopeFilter.Region | SpellingScopeFilter.Symbol | SpellingScopeFilter.FileName))
+            SpellingScopeFilter.Comment | SpellingScopeFilter.Region | SpellingScopeFilter.Symbol))
         {
             return ExitCodes.Error;
         }
