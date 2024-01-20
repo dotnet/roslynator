@@ -46,13 +46,13 @@ internal class SpellingAnalysisContext
     public void AnalyzeFileName(SyntaxTree syntaxTree)
     {
         string path = syntaxTree.FilePath;
-        int separatorIndex = FileSystemHelpers.LastIndexOfDirectorySeparator(path);
+        int separatorIndex = FileSystemHelpers.LastIndexOfDirectorySeparator(path) + 1;
         int extensionIndex = FileSystemHelpers.GetExtensionIndex(path);
 
         if (extensionIndex == -1)
             extensionIndex = path.Length;
 
-        ImmutableArray<SpellingMatch> matches = _spellchecker.AnalyzeText(path, separatorIndex + 1, extensionIndex - separatorIndex - 1);
+        ImmutableArray<SpellingMatch> matches = _spellchecker.AnalyzeText(path, separatorIndex, extensionIndex - separatorIndex);
 
         ProcessMatches(matches, syntaxTree);
     }
@@ -108,7 +108,11 @@ internal class SpellingAnalysisContext
     {
         foreach (SpellingMatch match in matches)
         {
-            ImmutableDictionary<string, string?> properties = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string?>("FilePath", syntaxTree.FilePath) });
+            ImmutableDictionary<string, string?> properties = ImmutableDictionary.CreateRange(new[]
+                {
+                    new KeyValuePair<string, string?>("Value", match.Value),
+                    new KeyValuePair<string, string?>("FilePath", syntaxTree.FilePath),
+                });
 
             Diagnostic diagnostic = Diagnostic.Create(
                 SpellcheckAnalyzer.DiagnosticDescriptor,

@@ -194,8 +194,13 @@ internal class SpellcheckAnalyzer
 
                 if (diagnostic.Location.Kind == LocationKind.None)
                 {
-                    string filePath = diagnostic.Properties["FilePath"]!;
-                    LogHelpers.WriteDiagnostic(diagnostic, filePath, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Normal);
+                    if (diagnostic.Properties.TryGetValue("FilePath", out string? filePath))
+                    {
+                        Diagnostic diagnostic2 = Diagnostic.Create(diagnostic.Descriptor, Location.Create(filePath!, default, default), diagnostic.AdditionalLocations, diagnostic.Properties, messageArgs: diagnostic.Properties["Value"]);
+
+                        LogHelpers.WriteDiagnostic(diagnostic2, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: FormatProvider, indentation: "  ", omitSpan: true, verbosity: Verbosity.Normal);
+                    }
+
                     continue;
                 }
 
