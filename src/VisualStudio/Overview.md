@@ -7,9 +7,7 @@
 * [List of code fixes for CS diagnostics](https://josefpihrt.github.io/docs/roslynator/fixes)
 * [Release notes](https://github.com/dotnet/roslynator/blob/main/ChangeLog.md)
 
-## Analyzers Support
-
-Analyzers will be removed from Roslynator extension in the next major release.
+IMPORTANT: Analyzers will be removed from Roslynator extension in the next major release.
 As a replacement, use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)).
 
 ## Donation
