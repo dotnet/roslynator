@@ -293,7 +293,7 @@ public static class MarkdownGenerator
             while (match.Success)
             {
                 yield return message.Substring(index, match.Index);
-                yield return Link(match.Value, match.Value);
+                yield return Link(match.Value, $"./{match.Value}");
                 index = match.Index + match.Length;
                 match = match.NextMatch();
             }
