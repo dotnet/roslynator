@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -94,8 +93,6 @@ public sealed class OptimizeStringBuilderAppendCallCodeFixProvider : BaseCodeFix
         SimpleMemberInvocationExpressionInfo invocationInfo,
         CancellationToken cancellationToken)
     {
-        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
         InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
         InvocationExpressionSyntax newInvocation;
 
@@ -103,142 +100,18 @@ public sealed class OptimizeStringBuilderAppendCallCodeFixProvider : BaseCodeFix
 
         ExpressionSyntax expression = argument.Expression;
 
-        switch (expression.Kind())
-        {
-            case SyntaxKind.InterpolatedStringExpression:
-                {
-                    newInvocation = ConvertInterpolatedStringExpressionToInvocationExpression((InterpolatedStringExpressionSyntax)expression, invocationInfo, semanticModel);
-                    break;
-                }
-            case SyntaxKind.AddExpression:
-                {
-                    ImmutableArray<ExpressionSyntax> expressions = SyntaxInfo.BinaryExpressionInfo((BinaryExpressionSyntax)expression)
-                        .AsChain()
-                        .ToImmutableArray();
+        newInvocation = CreateInvocationExpression(
+            (InvocationExpressionSyntax)expression,
+            invocation);
 
-                    newInvocation = invocation
-                        .ReplaceNode(invocationInfo.Name, IdentifierName("Append").WithTriviaFrom(invocationInfo.Name))
-                        .WithArgumentList(invocation.ArgumentList.WithArguments(SingletonSeparatedList(Argument(ReplaceStringLiteralWithCharacterLiteral(expressions[0])))).WithoutTrailingTrivia());
-
-                    for (int i = 1; i < expressions.Length; i++)
-                    {
-                        ExpressionSyntax argumentExpression = expressions[i];
-
-                        string methodName;
-                        if (i == expressions.Length - 1
-                            && isAppendLine
-                            && semanticModel
-                                .GetTypeInfo(argumentExpression, cancellationToken)
-                                .ConvertedType?
-                                .SpecialType == SpecialType.System_String)
-                        {
-                            methodName = "AppendLine";
-                        }
-                        else
-                        {
-                            methodName = "Append";
-
-                            argumentExpression = ReplaceStringLiteralWithCharacterLiteral(argumentExpression);
-                        }
-
-                        newInvocation = SimpleMemberInvocationExpression(
-                            newInvocation,
-                            IdentifierName(methodName),
-                            ArgumentList(Argument(argumentExpression)));
-
-                        if (i == expressions.Length - 1
-                            && isAppendLine
-                            && !string.Equals(methodName, "AppendLine", StringComparison.Ordinal))
-                        {
-                            newInvocation = SimpleMemberInvocationExpression(
-                                newInvocation,
-                                IdentifierName("AppendLine"),
-                                ArgumentList());
-                        }
-                    }
-
-                    break;
-                }
-            default:
-                {
-                    newInvocation = CreateInvocationExpression(
-                        (InvocationExpressionSyntax)expression,
-                        invocation);
-
-                    if (isAppendLine)
-                        newInvocation = SimpleMemberInvocationExpression(newInvocation, IdentifierName("AppendLine"), ArgumentList());
-
-                    break;
-                }
-        }
+        if (isAppendLine)
+            newInvocation = SimpleMemberInvocationExpression(newInvocation, IdentifierName("AppendLine"), ArgumentList());
 
         newInvocation = newInvocation
             .WithTriviaFrom(invocation)
             .WithFormatterAnnotation();
 
         return await document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken).ConfigureAwait(false);
-    }
-
-    private static InvocationExpressionSyntax ConvertInterpolatedStringExpressionToInvocationExpression(
-        InterpolatedStringExpressionSyntax interpolatedString,
-        in SimpleMemberInvocationExpressionInfo invocationInfo,
-        SemanticModel semanticModel)
-    {
-        bool isVerbatim = interpolatedString.IsVerbatim();
-
-        bool isAppendLine = string.Equals(invocationInfo.NameText, "AppendLine", StringComparison.Ordinal);
-
-        InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
-
-        InvocationExpressionSyntax newExpression = null;
-
-        SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
-
-        for (int i = 0; i < contents.Count; i++)
-        {
-            (SyntaxKind contentKind, string methodName, ImmutableArray<ArgumentSyntax> arguments) = ConvertInterpolatedStringToStringBuilderMethodRefactoring.Refactor(contents[i], isVerbatim);
-
-            if (i == contents.Count - 1
-                && isAppendLine
-                && string.Equals(methodName, "Append", StringComparison.Ordinal)
-                && (contentKind == SyntaxKind.InterpolatedStringText
-                    || semanticModel.IsImplicitConversion(((InterpolationSyntax)contents[i]).Expression, semanticModel.Compilation.GetSpecialType(SpecialType.System_String))))
-            {
-                methodName = "AppendLine";
-            }
-            else if (methodName == "Append")
-            {
-                arguments = ReplaceStringLiteralWithCharacterLiteral(arguments);
-            }
-
-            if (newExpression is null)
-            {
-                arguments = arguments.Replace(arguments[0], arguments[0].WithLeadingTrivia(interpolatedString.GetLeadingTrivia()));
-
-                newExpression = invocation
-                    .ReplaceNode(invocationInfo.Name, IdentifierName(methodName).WithTriviaFrom(invocationInfo.Name))
-                    .WithArgumentList(invocation.ArgumentList.WithArguments(arguments.ToSeparatedSyntaxList()).WithoutTrailingTrivia());
-            }
-            else
-            {
-                newExpression = SimpleMemberInvocationExpression(
-                    newExpression,
-                    IdentifierName(methodName),
-                    ArgumentList(arguments.ToSeparatedSyntaxList()));
-            }
-
-            if (i == contents.Count - 1
-                && isAppendLine
-                && !string.Equals(methodName, "AppendLine", StringComparison.Ordinal))
-            {
-                newExpression = SimpleMemberInvocationExpression(
-                    newExpression,
-                    IdentifierName("AppendLine"),
-                    ArgumentList());
-            }
-        }
-
-        return newExpression;
     }
 
     private static InvocationExpressionSyntax CreateInvocationExpression(
@@ -316,38 +189,5 @@ public sealed class OptimizeStringBuilderAppendCallCodeFixProvider : BaseCodeFix
         return invocationExpression
             .WithExpression(memberAccess.WithName(IdentifierName(methodName).WithTriviaFrom(memberAccess.Name)))
             .WithArgumentList(argumentList);
-    }
-
-    private static ExpressionSyntax ReplaceStringLiteralWithCharacterLiteral(ExpressionSyntax expression)
-    {
-        if (expression.IsKind(SyntaxKind.StringLiteralExpression))
-        {
-            var literalExpression = (LiteralExpressionSyntax)expression;
-
-            if (literalExpression.Token.ValueText.Length == 1)
-                return SyntaxRefactorings.ReplaceStringLiteralWithCharacterLiteral(literalExpression);
-        }
-
-        return expression;
-    }
-
-    private static ImmutableArray<ArgumentSyntax> ReplaceStringLiteralWithCharacterLiteral(ImmutableArray<ArgumentSyntax> arguments)
-    {
-        ArgumentSyntax argument = arguments.SingleOrDefault(shouldThrow: false);
-
-        if (argument is not null)
-        {
-            ExpressionSyntax expression = argument.Expression;
-
-            if (expression is not null)
-            {
-                ExpressionSyntax newExpression = ReplaceStringLiteralWithCharacterLiteral(expression);
-
-                if (newExpression != expression)
-                    arguments = arguments.Replace(argument, argument.WithExpression(newExpression));
-            }
-        }
-
-        return arguments;
     }
 }
