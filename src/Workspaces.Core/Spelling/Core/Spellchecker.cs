@@ -58,14 +58,18 @@ internal partial class Spellchecker
         Data = data;
         Options = options ?? SpellcheckerOptions.Default;
     }
-
     public ImmutableArray<SpellingMatch> AnalyzeText(string value)
+    {
+        return AnalyzeText(value, 0, value.Length);
+    }
+
+    public ImmutableArray<SpellingMatch> AnalyzeText(string value, int startIndex, int length)
     {
         ImmutableArray<SpellingMatch>.Builder? builder = null;
 
-        int prevEnd = 0;
+        int prevEnd = startIndex;
 
-        Match match = _urlRegex.Match(value, prevEnd);
+        Match match = _urlRegex.Match(value, prevEnd, length);
 
         while (match.Success)
         {

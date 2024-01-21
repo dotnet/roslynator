@@ -18,6 +18,16 @@ namespace Roslynator.CommandLine.Rename;
 
 internal class CliSymbolRenameState : SymbolRenameState
 {
+    private static readonly SymbolDisplayFormat _symbolDefinitionFormat = SymbolDisplayFormat.CSharpErrorMessageFormat.Update(
+        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+        parameterOptions: SymbolDisplayParameterOptions.IncludeParamsRefOut
+            | SymbolDisplayParameterOptions.IncludeType
+            | SymbolDisplayParameterOptions.IncludeName
+            | SymbolDisplayParameterOptions.IncludeDefaultValue,
+        miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+            | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+            | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
+
     public CliSymbolRenameState(
         Solution solution,
         Func<ISymbol, bool> predicate,
@@ -103,7 +113,9 @@ internal class CliSymbolRenameState : SymbolRenameState
         Document document,
         CancellationToken cancellationToken)
     {
-        LogHelpers.WriteSymbolDefinition(symbol, baseDirectoryPath: Path.GetDirectoryName(document.Project.FilePath), "    ", Verbosity.Normal);
+        string text = DiagnosticFormatter.FormatSymbolDefinition(symbol, baseDirectoryPath: Path.GetDirectoryName(document.Project.FilePath), "    ", _symbolDefinitionFormat);
+
+        WriteLine(text, ConsoleColors.Cyan, Verbosity.Normal);
 
         if (ShouldWrite(Verbosity.Detailed)
             || CodeContext >= 0)
