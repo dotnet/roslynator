@@ -54,6 +54,9 @@ internal partial class CSharpSpellingService
                 _options,
                 context.CancellationToken);
 
+            if ((_options.ScopeFilter & SpellingScopeFilter.FileName) != 0)
+                analysisContext.AnalyzeFileName(tree);
+
             CSharpSpellingWalker walker = CSharpSpellingWalker.Create(analysisContext);
 
             walker.Visit(root);

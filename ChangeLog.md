@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Publish NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings) and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes) ([PR](https://github.com/dotnet/roslynator/pull/1358))
   - These packages are recommended to be used in an environment where Roslynator IDE extension cannot be used, e.g. VS Code + C# Dev Kit (see related [issue](https://github.com/dotnet/vscode-csharp/issues/6790))
+- Add analyzer "Remove redundant catch block" [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) ([PR](https://github.com/dotnet/roslynator/pull/1364) by @jakubreznak)
+- [CLI] Spellcheck file names ([PR](https://github.com/dotnet/roslynator/pull/1368))
+  - `roslynator spellcheck --scope file-name` 
 
 ### Fixed
 

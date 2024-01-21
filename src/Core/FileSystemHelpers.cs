@@ -80,4 +80,33 @@ internal static class FileSystemHelpers
 
         return directoryUri.MakeRelativeUri(baseDirectoryUri).ToString().TrimEnd('/');
     }
+
+    public static int LastIndexOfDirectorySeparator(string path)
+    {
+        for (int i = path.Length - 1; i >= 0; i--)
+        {
+            if (IsDirectorySeparator(path[i]))
+                return i;
+        }
+
+        return -1;
+    }
+
+    public static int GetExtensionIndex(string path)
+    {
+        int length = path.Length;
+
+        for (int i = length - 1; i >= 0; i--)
+        {
+            char ch = path[i];
+
+            if (ch == '.')
+                return i;
+
+            if (IsDirectorySeparator(ch))
+                break;
+        }
+
+        return path.Length;
+    }
 }
