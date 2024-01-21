@@ -2,27 +2,19 @@
 
 A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-## Analyzers Support
-
-Analyzers will be removed from Roslynator for VS Code in the next major release.
+IMPORTANT: Analyzers will be removed from Roslynator for VS Code in the next major release.
 It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) instead.
 
-## OmniSharp vs. C# Dev Kit
+## Prerequsities
 
-Ability to use this extension depends on whether you want to use OmniSharp or [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit).
-
-### OmniSharp
-
-It's necessary to carry out following steps after first installation:
+Prerequisite for this extension is to use OmniSharp:
 
 - Set VS Code setting `dotnet.server.useOmnisharp` to `true`
 - Disable extension **C# Dev Kit** (if installed)
 
 NOTE: After each installation, Roslynator updates `omnisharp.json` to include references to Roslynator DLLs.
 
-### C# Dev Kit
-
-C# Dev Kit currently does not support loading Roslyn features from an extension (see related [issue](https://github.com/dotnet/vscode-csharp/issues/6790)), which means that this extension won't work with C# Dev Kit.
+[C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit) currently does not support loading Roslyn features from an extension (see related [issue](https://github.com/dotnet/vscode-csharp/issues/6790)), which means that this extension won't work with C# Dev Kit.
 As an alternative, it's possible to use NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings)
  and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes).
 
