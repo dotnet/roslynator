@@ -2615,5 +2615,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UseVarOrExplicitType, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1265</summary>
+        public static readonly DiagnosticDescriptor RemoveRedundantCatchBlock = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveRedundantCatchBlock, 
+            title:              "Remove redundant catch block", 
+            messageFormat:      "Remove redundant catch block", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantCatchBlock, 
+            customTags:         Array.Empty<string>());
+
     }
 }
