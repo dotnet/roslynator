@@ -10,7 +10,7 @@ It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](h
 - IDE extensions for:
   - [Visual Studio](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
   - [VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
-    - Prerequisite is to use OmniSharp. Otherwise (e.g. C# Dev Kit), use NuGet packages with analyzers, refactorings and code fixes.
+    - Prerequisite is to use OmniSharp. Otherwise (i.e. C# Dev Kit), use NuGet packages with analyzers, refactorings and code fixes.
   - [Open VSX](https://open-vsx.org/extension/josefpihrt-vscode/roslynator)
 - [NuGet packages](#nuget-packages) that contain collection of analyzers
   - [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers)
