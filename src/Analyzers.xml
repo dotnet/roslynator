@@ -7174,6 +7174,41 @@ public string Foo(string bar)
     </ConfigOptions>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1265</Id>
+    <Identifier>RemoveRedundantCatchBlock</Identifier>
+    <Title>Remove redundant catch block</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[
+try
+{
+   DoSomething();
+}
+catch
+{
+   throw;
+}
+finally
+{
+   DoSomethingElse();
+}
+]]></Before>
+        <After><![CDATA[
+try
+{
+   DoSomething();
+}
+finally
+{
+   DoSomethingElse();
+}
+]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching</Title>

@@ -36,6 +36,7 @@ internal enum SpellingScopeFilter
     ReturnType = 1 << 21,
     Symbol = Namespace | Type | Member | Local | Parameter | TypeParameter | UsingAlias | ReturnType,
     Literal = 1 << 22,
-    NonSymbol = Comment | Region | Literal,
-    All = Symbol | NonSymbol,
+    FileName = 1 << 23,
+    NonSymbol = Comment | Region | Literal | FileName,
+    All = Symbol | NonSymbol | FileName,
 }

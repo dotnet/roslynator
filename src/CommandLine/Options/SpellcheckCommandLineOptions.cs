@@ -33,7 +33,7 @@ public sealed class SpellcheckCommandLineOptions : MSBuildCommandLineOptions
 
     [Option(
         longName: OptionNames.IgnoredScope,
-        HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol and symbol.",
+        HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol, symbol and file-name.",
         MetaValue = "<SCOPE>")]
     public IEnumerable<string> IgnoredScope { get; set; }
 
@@ -60,15 +60,10 @@ public sealed class SpellcheckCommandLineOptions : MSBuildCommandLineOptions
         HelpText = "Specifies minimal word length to be checked. Default value is 3.",
         MetaValue = "<NUM>")]
     public int MinWordLength { get; set; }
-#if DEBUG
-    [Option(
-        longName: OptionNames.NoAutofix,
-        HelpText = "Disable applying predefined fixes.")]
-    public bool NoAutofix { get; set; }
-#endif
+
     [Option(
         longName: OptionNames.Scope,
-        HelpText = "Defines syntax that should be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol, symbol and all. Literals are not analyzed by default.",
+        HelpText = "Defines syntax that should be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol, symbol, file-name and all. Literals and file names are not analyzed by default.",
         MetaValue = "<SCOPE>")]
     public IEnumerable<string> Scope { get; set; }
 
