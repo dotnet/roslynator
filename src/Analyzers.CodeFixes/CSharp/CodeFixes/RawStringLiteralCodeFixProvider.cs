@@ -4,6 +4,7 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -15,15 +16,20 @@ using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes;
 
-[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryRawStringLiteralCodeFixProvider))]
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RawStringLiteralCodeFixProvider))]
 [Shared]
-public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProvider
+public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
 {
     private const string Title = "Unnecessary raw string literal";
 
     public override ImmutableArray<string> FixableDiagnosticIds
     {
-        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryRawStringLiteral); }
+        get
+        {
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.UnnecessaryRawStringLiteral,
+                DiagnosticIdentifiers.UseRawStringLiteral);
+        }
     }
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -38,12 +44,24 @@ public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProv
 
         if (node is LiteralExpressionSyntax literalExpression)
         {
-            CodeAction codeAction = CodeAction.Create(
-                Title,
-                ct => RefactorAsync(document, literalExpression, ct),
-                GetEquivalenceKey(diagnostic));
+            if (literalExpression.Token.IsKind(SyntaxKind.StringLiteralToken))
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Use raw string literal",
+                    ct => UseRawStringLiteralAsync(document, literalExpression, ct),
+                    GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => RefactorAsync(document, literalExpression, ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
         }
         else if (node is InterpolatedStringExpressionSyntax interpolatedString)
         {
@@ -95,6 +113,32 @@ public sealed class UnnecessaryRawStringLiteralCodeFixProvider : BaseCodeFixProv
         string newText = "$\"" + text.Substring(startIndex, text.Length - startIndex - newInterpolatedString.StringEndToken.Text.Length) + "\"";
 
         return document.WithTextChangeAsync(interpolatedString.Span, newText, cancellationToken);
+    }
+
+    private static Task<Document> UseRawStringLiteralAsync(
+        Document document,
+        LiteralExpressionSyntax literalExpression,
+        CancellationToken cancellationToken)
+    {
+        string text = literalExpression.Token.Text;
+        int quoteCount = 0;
+        Match match = Regex.Match(text, @"""+");
+
+        while (match.Success)
+        {
+            if (match.Length > quoteCount)
+                quoteCount = match.Length / 2;
+
+            match = match.NextMatch();
+        }
+
+        quoteCount = (quoteCount > 2) ? quoteCount + 1 : 3;
+        var quotes = new string('"', quoteCount);
+
+        string newText = text.Replace("\"\"", "\"");
+        newText = quotes + newText.Substring(2, newText.Length - 3) + quotes;
+
+        return document.WithTextChangeAsync(literalExpression.Span, newText, cancellationToken);
     }
 }
 #endif

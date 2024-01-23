@@ -7692,6 +7692,27 @@ finally
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1266</Id>
+    <Identifier>UseRawStringLiteral</Identifier>
+    <Title>Use raw string literal</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[
+string s = @"
+  ""foo""
+";
+]]></Before>
+        <After><![CDATA[
+string s = """
+  "foo"
+""";
+]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching</Title>

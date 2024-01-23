@@ -2627,5 +2627,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantCatchBlock, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1266</summary>
+        public static readonly DiagnosticDescriptor UseRawStringLiteral = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseRawStringLiteral, 
+            title:              "Use raw string literal", 
+            messageFormat:      "Use raw string literal", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UseRawStringLiteral, 
+            customTags:         Array.Empty<string>());
+
     }
 }
