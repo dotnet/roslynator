@@ -42,8 +42,7 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
         if (!tree.TryGetText(out SourceText sourceText))
             return;
 
-        AnalyzerConfigOptions configOptions = context.GetConfigOptions();
-        int maxLength = configOptions.GetMaxLineLength();
+        int maxLength = context.GetConfigOptions().GetMaxLineLength();
 
         if (maxLength <= 0)
             return;
