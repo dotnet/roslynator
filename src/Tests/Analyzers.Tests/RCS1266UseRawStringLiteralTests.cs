@@ -32,7 +32,9 @@ class C
     void M()
     {
         string s = """
+
  "foo"
+
 """;
     }
 }
@@ -41,6 +43,32 @@ class C
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
     public async Task Test2()
+    {
+        await VerifyDiagnosticAndFixAsync(""""
+class C
+{
+    void M()
+    {
+        string s = [|@"|]""
+""";
+    }
+}
+"""", """"
+class C
+{
+    void M()
+    {
+        string s = """
+"
+"
+""";
+    }
+}
+"""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
+    public async Task Test_MoreQuotes()
     {
         await VerifyDiagnosticAndFixAsync("""""""
 class C
@@ -58,7 +86,9 @@ class C
     void M()
     {
         string s = """"
+
  """foo"
+
 """";
     }
 }
@@ -76,38 +106,6 @@ class C
         string s = @"
  foo
 ";
-    }
-}
-""""""");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
-    public async Task TestNoDiagnostic_LeadingTrivia()
-    {
-        await VerifyNoDiagnosticAsync("""""""
-class C
-{
-    void M()
-    {
-        string s = @"    
- """"""foo""
-";
-    }
-}
-""""""");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
-    public async Task TestNoDiagnostic_TrailingTrivia()
-    {
-        await VerifyNoDiagnosticAsync("""""""
-class C
-{
-    void M()
-    {
-        string s = @"
- """"""foo""
-    ";
     }
 }
 """"""");

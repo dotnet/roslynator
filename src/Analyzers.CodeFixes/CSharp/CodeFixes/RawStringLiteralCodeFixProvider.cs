@@ -1,9 +1,12 @@
 ﻿#if ROSLYN_4_2
 // Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -133,10 +136,14 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
         quoteCount = (quoteCount > 2) ? quoteCount + 1 : 3;
         var quotes = new string('"', quoteCount);
 
-        string newText = text.Replace("\"\"", "\"");
-        newText = quotes + newText.Substring(2, newText.Length - 3) + quotes;
+        var sb = new StringBuilder();
+        sb.AppendLine(quotes);
+        sb.Append(text, 2, text.Length - 3);
+        sb.Replace("\"\"", "\"", quoteCount, sb.Length - quoteCount);
+        sb.AppendLine();
+        sb.Append(quotes);
 
-        return document.WithTextChangeAsync(literalExpression.Span, newText, cancellationToken);
+        return document.WithTextChangeAsync(literalExpression.Span, sb.ToString(), cancellationToken);
     }
 }
 #endif

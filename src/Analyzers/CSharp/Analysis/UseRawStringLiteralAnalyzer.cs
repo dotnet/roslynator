@@ -2,7 +2,6 @@
 // Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -52,51 +51,11 @@ public sealed class UseRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         string s = token.Text;
 
         if (s.StartsWith("@")
-            && ScanStart(s)
-            && ScanEnd(s)
+            && s.IndexOf("\n", 2, s.Length - 3) >= 0
             && s.IndexOf("\"", 2, s.Length - 3) >= 0)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseRawStringLiteral, Location.Create(node.SyntaxTree, new TextSpan(node.SpanStart, 2)));
         }
-    }
-
-    private static bool ScanStart(string s)
-    {
-        for (int i = 2; i < s.Length - 1; i++)
-        {
-            if (s[i] == '\r'
-                || s[i] == '\n')
-            {
-                return true;
-            }
-
-            if (char.IsWhiteSpace(s[i]))
-                return false;
-        }
-
-        Debug.Fail("");
-        return false;
-    }
-
-    private static bool ScanEnd(string s)
-    {
-        int i = s.Length - 2;
-        while (i >= 0)
-        {
-            if (s[i] == '\r'
-                || s[i] == '\n')
-            {
-                return true;
-            }
-
-            if (char.IsWhiteSpace(s[i]))
-                return false;
-
-            i--;
-        }
-
-        Debug.Fail("");
-        return false;
     }
 }
 #endif

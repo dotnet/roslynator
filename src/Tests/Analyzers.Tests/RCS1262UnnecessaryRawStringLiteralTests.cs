@@ -17,6 +17,7 @@ public class RCS1262UnnecessaryRawStringLiteralTests : AbstractCSharpDiagnosticV
     public async Task Test_SingleLineRawStringLiteral()
     {
         await VerifyDiagnosticAndFixAsync(@"
+
 class C
 {
     void M()
@@ -24,6 +25,7 @@ class C
         string s = ""[|""""|]foo"""""";
     }
 }
+
 ", @"
 class C
 {
