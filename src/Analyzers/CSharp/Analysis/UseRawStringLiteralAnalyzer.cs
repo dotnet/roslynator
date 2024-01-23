@@ -50,37 +50,31 @@ public sealed class UseRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
 
         string s = token.Text;
 
-        if (!s.StartsWith("@"))
-            return;
-
-        if (!ScanStart(s))
-            return;
-
-        if (!ScanEnd(s))
-            return;
-
-        if (s.IndexOf("\"", 2, s.Length - 3) == -1)
-            return;
-
-        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseRawStringLiteral, node);
-
-        static bool ScanStart(string s)
+        if (s.StartsWith("@")
+            && ScanStart(s)
+            && ScanEnd(s)
+            && s.IndexOf("\"", 2, s.Length - 3) >= 0)
         {
-            for (int i = 2; i < s.Length - 1; i++)
-            {
-                if (s[i] == '\r'
-                    || s[i] == '\n')
-                {
-                    return true;
-                }
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseRawStringLiteral, node);
+        }
+    }
 
-                if (char.IsWhiteSpace(s[i]))
-                    return false;
+    private static bool ScanStart(string s)
+    {
+        for (int i = 2; i < s.Length - 1; i++)
+        {
+            if (s[i] == '\r'
+                || s[i] == '\n')
+            {
+                return true;
             }
 
-            Debug.Fail("");
-            return false;
+            if (char.IsWhiteSpace(s[i]))
+                return false;
         }
+
+        Debug.Fail("");
+        return false;
     }
 
     private static bool ScanEnd(string s)
