@@ -1182,50 +1182,110 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
-    public async Task TestNoDiagnostic_LongStringLiteral()
+    public async Task TestNoDiagnostic_LongStringLiteral_Argument()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
+class C
+{
+    static void M(string x, string y)
+    {
+        C.M(
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongStringLiteral_AttributeArgument()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    [Obsolete(
+        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")]
+    static void M()
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongStringLiteral_AttributeArgument2()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    [My(
+        Value = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")]
+    static void M()
+    {
+    }
+}
+
+class MyAttribute : Attribute
+{
+    public string Value { get; set; }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongVerbatimStringLiteral()
+    {
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     static void M(string x, int y)
     {
         C.M(
-            ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"",
+            @"
+            
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             0);
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongInterpolatedString()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
-    static void M(string x, int y)
+    static void M(string x, string y)
     {
         C.M(
-            $""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"",
-            0);
+            $"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            $"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task TestNoDiagnostic_LongRawInterpolatedString()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync(""""
 class C
 {
     static void M(string x, int y)
     {
         C.M(
-            $""""""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"""""",
+            $"""
+            
+               xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            """,
             0);
     }
 }
-");
+"""");
     }
 }
