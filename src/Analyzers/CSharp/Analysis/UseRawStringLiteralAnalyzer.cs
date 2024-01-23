@@ -52,29 +52,20 @@ public sealed class UseRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         if (!s.StartsWith("@"))
             return;
 
-        int i = 2;
-
-        if (!ScanStart(s, ref i))
+        if (!ScanStart(s))
             return;
 
-        if (!ScanEnd(s, ref i))
+        if (!ScanEnd(s))
             return;
 
-        i--;
-        while (i >= 2)
-        {
-            if (s[i] == '\"')
-            {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseRawStringLiteral, node);
-                return;
-            }
+        if (s.IndexOf("\"", 2, s.Length - 3) == -1)
+            return;
 
-            i--;
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseRawStringLiteral, node);
 
-        static bool ScanStart(string s, ref int i)
+        static bool ScanStart(string s)
         {
-            while (i < s.Length - 1)
+            for (int i = 2; i < s.Length - 1; i++)
             {
                 if (s[i] == '\r'
                     || s[i] == '\n')
@@ -84,8 +75,6 @@ public sealed class UseRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
 
                 if (char.IsWhiteSpace(s[i]))
                     return false;
-
-                i++;
             }
 
             Debug.Fail("");
@@ -93,9 +82,9 @@ public sealed class UseRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private static bool ScanEnd(string s, ref int i)
+    private static bool ScanEnd(string s)
     {
-        i = s.Length - 2;
+        int i = s.Length - 2;
         while (i >= 0)
         {
             if (s[i] == '\r'

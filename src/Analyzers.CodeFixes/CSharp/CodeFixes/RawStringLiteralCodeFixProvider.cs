@@ -20,8 +20,6 @@ namespace Roslynator.CSharp.CodeFixes;
 [Shared]
 public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
 {
-    private const string Title = "Unnecessary raw string literal";
-
     public override ImmutableArray<string> FixableDiagnosticIds
     {
         get
@@ -56,7 +54,7 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    Title,
+                    "Unnecessary raw string literal",
                     ct => RefactorAsync(document, literalExpression, ct),
                     GetEquivalenceKey(diagnostic));
 
@@ -66,7 +64,7 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
         else if (node is InterpolatedStringExpressionSyntax interpolatedString)
         {
             CodeAction codeAction = CodeAction.Create(
-                Title,
+                "Unnecessary raw string literal",
                 ct => RefactorAsync(document, interpolatedString, ct),
                 GetEquivalenceKey(diagnostic));
 
