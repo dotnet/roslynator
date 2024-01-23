@@ -110,8 +110,10 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
 
                 if (token2.IsKind(
                     SyntaxKind.StringLiteralToken,
-                    SyntaxKind.InterpolatedStringEndToken,
-                    SyntaxKind.InterpolatedRawStringEndToken))
+#if ROSLYN_4_2
+                    SyntaxKind.InterpolatedRawStringEndToken,
+#endif
+                    SyntaxKind.InterpolatedStringEndToken))
                 {
                     SyntaxNode parent = token2.Parent;
 
