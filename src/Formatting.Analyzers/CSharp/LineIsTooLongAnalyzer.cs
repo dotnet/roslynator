@@ -40,7 +40,8 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
         if (!tree.TryGetText(out SourceText sourceText))
             return;
 
-        int maxLength = context.GetConfigOptions().GetMaxLineLength();
+        AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+        int maxLength = configOptions.GetMaxLineLength();
 
         if (maxLength <= 0)
             return;
@@ -73,6 +74,7 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
             }
         }
 
+        int indentSize = 0;
         TextLineCollection lines = sourceText.Lines;
 
         for (; i < lines.Count; i++)
@@ -86,9 +88,9 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
 
             SyntaxToken token = root.FindToken(end);
 
-            if (token.IsKind(SyntaxKind.StringLiteralToken))
+            if (token.IsKind(SyntaxKind.StringLiteralToken, SyntaxKind.InterpolatedStringEndToken, SyntaxKind.InterpolatedRawStringEndToken))
             {
-                TextSpan span = token.Span;
+                TextSpan span = token.Parent.Span;
 
                 if (span.End == end)
                 {
@@ -100,6 +102,58 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
                 {
                     continue;
                 }
+            }
+            else
+            {
+                var isStringThanCannotBeWrapped = false;
+                SyntaxToken token2 = token;
+                while (true)
+                {
+                    token2 = token2.GetPreviousToken();
+
+                    if (token2.IsKind(SyntaxKind.None)
+                        || token2.Span.End < line.Start)
+                    {
+                        break;
+                    }
+
+                    if (token2.IsKind(SyntaxKind.StringLiteralToken, SyntaxKind.InterpolatedStringEndToken, SyntaxKind.InterpolatedRawStringEndToken))
+                    {
+                        TextSpan span = token2.Parent.Span;
+
+                        if (span.Start < line.Start)
+                        {
+                            if ((span.End - line.Start) > maxLength)
+                            {
+                                isStringThanCannotBeWrapped = true;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (indentSize == 0)
+                                indentSize = GetIndentSize(configOptions);
+
+                            SyntaxTrivia indentationTrivia = SyntaxTriviaAnalysis.DetermineIndentation(token2, context.CancellationToken);
+
+                            int length = span.Length + indentSize;
+
+                            foreach (char ch in indentationTrivia.ToString())
+                            {
+                                length += (ch == '\t') ? indentSize : 1;
+                            }
+
+                            if (length > maxLength)
+                            {
+                                isStringThanCannotBeWrapped = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (isStringThanCannotBeWrapped)
+                    continue;
             }
 
             SyntaxTriviaList list = default;
@@ -152,5 +206,25 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
                 Location.Create(tree, line.Span),
                 line.Span.Length);
         }
+    }
+
+    private static int GetIndentSize(AnalyzerConfigOptions configOptions)
+    {
+        int tabLength = 4;
+
+        if (configOptions.TryGetIndentStyle(out IndentStyle indentStyle)
+            && indentStyle == IndentStyle.Tab)
+        {
+            if (configOptions.TryGetTabLength(out int tabLength2))
+                tabLength = tabLength2;
+
+            return tabLength;
+        }
+        else if (configOptions.TryGetIndentSize(out int indentSize2))
+        {
+            return indentSize2;
+        }
+
+        return 4;
     }
 }
