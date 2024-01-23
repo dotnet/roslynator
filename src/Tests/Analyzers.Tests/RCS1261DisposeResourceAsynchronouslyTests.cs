@@ -921,4 +921,28 @@ internal class Disposable : IDisposable, IAsyncDisposable
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
+    public async Task TestNoDiagnostic_LockStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.IO;
+using System.Threading.Tasks;
+
+abstract class C
+{
+    object _lock = new();
+
+    async Task Foo()
+    {
+        lock (_lock)
+        {
+            using FileStream fs = new(""test.txt"", FileMode.OpenOrCreate);
+        }
+
+        await Task.Yield();
+    }
+}
+");
+    }
 }
