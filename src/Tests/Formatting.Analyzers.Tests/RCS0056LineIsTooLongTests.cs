@@ -1000,12 +1000,12 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task TestNoFix_ExpressionBody_AlreadyWrapped()
     {
-        await VerifyDiagnosticAndNoFixAsync(
+        await VerifyNoDiagnosticAsync(
 @"
 class C
 {
     string M(object p)
-[|        => ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"";|]
+        => ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"";
 }
 ");
     }
@@ -1013,11 +1013,11 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task TestNoFix_ExpressionBody_AlreadyWrapped2()
     {
-        await VerifyDiagnosticAndNoFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M(object p) =>
-[|        ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"";|]
+        ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"";
 }
 ");
     }
@@ -1189,7 +1189,9 @@ class C
 {
     static void M(string x, int y)
     {
-        C.M(""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"", 0);
+        C.M(
+            ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"",
+            0);
     }
 }
 ");
@@ -1203,7 +1205,9 @@ class C
 {
     static void M(string x, int y)
     {
-        C.M($""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"", 0);
+        C.M(
+            $""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"",
+            0);
     }
 }
 ");
@@ -1217,7 +1221,9 @@ class C
 {
     static void M(string x, int y)
     {
-        C.M($""""""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"""""", 0);
+        C.M(
+            $""""""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"""""",
+            0);
     }
 }
 ");

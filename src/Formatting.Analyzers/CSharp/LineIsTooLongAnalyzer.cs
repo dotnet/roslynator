@@ -1,8 +1,10 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
@@ -74,7 +76,6 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
             }
         }
 
-        int indentSize = 0;
         TextLineCollection lines = sourceText.Lines;
 
         for (; i < lines.Count; i++)
@@ -84,76 +85,72 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
             if (line.Span.Length <= maxLength)
                 continue;
 
+            int start = line.Start;
             int end = line.End;
 
             SyntaxToken token = root.FindToken(end);
 
-            if (token.IsKind(SyntaxKind.StringLiteralToken, SyntaxKind.InterpolatedStringEndToken, SyntaxKind.InterpolatedRawStringEndToken))
+            if (token.IsKind(SyntaxKind.None)
+                || token.Span.End < start)
             {
-                TextSpan span = token.Parent.Span;
-
-                if (span.End == end)
-                {
-                    if (span.Length >= maxLength)
-                        continue;
-                }
-                else if (span.Contains(end)
-                    && end - span.Start >= maxLength)
-                {
-                    continue;
-                }
+                continue;
             }
-            else
+
+            SyntaxToken token2 = token;
+
+            if (token2.IsKind(SyntaxKind.CommaToken, SyntaxKind.SemicolonToken))
+                token2 = token2.GetPreviousToken();
+
+            if (!token2.IsKind(SyntaxKind.None)
+                && token2.Span.End >= start)
             {
-                var isStringThanCannotBeWrapped = false;
-                SyntaxToken token2 = token;
-                while (true)
+                while (token2.IsKind(SyntaxKind.CloseParenToken, SyntaxKind.CloseBraceToken, SyntaxKind.CloseBracketToken))
                 {
                     token2 = token2.GetPreviousToken();
-
-                    if (token2.IsKind(SyntaxKind.None)
-                        || token2.Span.End < line.Start)
-                    {
-                        break;
-                    }
-
-                    if (token2.IsKind(SyntaxKind.StringLiteralToken, SyntaxKind.InterpolatedStringEndToken, SyntaxKind.InterpolatedRawStringEndToken))
-                    {
-                        TextSpan span = token2.Parent.Span;
-
-                        if (span.Start < line.Start)
-                        {
-                            if ((span.End - line.Start) > maxLength)
-                            {
-                                isStringThanCannotBeWrapped = true;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            if (indentSize == 0)
-                                indentSize = GetIndentSize(configOptions);
-
-                            SyntaxTrivia indentationTrivia = SyntaxTriviaAnalysis.DetermineIndentation(token2, context.CancellationToken);
-
-                            int length = span.Length + indentSize;
-
-                            foreach (char ch in indentationTrivia.ToString())
-                            {
-                                length += (ch == '\t') ? indentSize : 1;
-                            }
-
-                            if (length > maxLength)
-                            {
-                                isStringThanCannotBeWrapped = true;
-                                break;
-                            }
-                        }
-                    }
                 }
 
-                if (isStringThanCannotBeWrapped)
-                    continue;
+                if (token2.IsKind(
+                    SyntaxKind.StringLiteralToken,
+                    SyntaxKind.InterpolatedStringEndToken,
+                    SyntaxKind.InterpolatedRawStringEndToken))
+                {
+                    SyntaxNode parent = token2.Parent;
+
+                    if (parent.SpanStart <= start)
+                        continue;
+
+                    token2 = parent.GetFirstToken().GetPreviousToken();
+
+                    if (token2.IsKind(SyntaxKind.None)
+                        || token2.Span.End < start)
+                    {
+                        continue;
+                    }
+
+                    if (parent.IsParentKind(
+                        SyntaxKind.ArrowExpressionClause,
+                        SyntaxKind.Argument,
+                        SyntaxKind.AttributeArgument))
+                    {
+                        SyntaxToken firstToken = parent.Parent.GetFirstToken();
+
+                        if (firstToken.SpanStart >= start)
+                        {
+                            SyntaxToken token3 = firstToken.GetPreviousToken();
+
+                            if (token3.IsKind(SyntaxKind.None)
+                                || token3.Span.End < start)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+
+                    if (token2.Parent.Span.End > end)
+                    {
+                        i = lines.IndexOf(token2.Parent.Span.End) - 1;
+                    }
+                }
             }
 
             SyntaxTriviaList list = default;
@@ -206,25 +203,5 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
                 Location.Create(tree, line.Span),
                 line.Span.Length);
         }
-    }
-
-    private static int GetIndentSize(AnalyzerConfigOptions configOptions)
-    {
-        int tabLength = 4;
-
-        if (configOptions.TryGetIndentStyle(out IndentStyle indentStyle)
-            && indentStyle == IndentStyle.Tab)
-        {
-            if (configOptions.TryGetTabLength(out int tabLength2))
-                tabLength = tabLength2;
-
-            return tabLength;
-        }
-        else if (configOptions.TryGetIndentSize(out int indentSize2))
-        {
-            return indentSize2;
-        }
-
-        return 4;
     }
 }
