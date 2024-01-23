@@ -911,7 +911,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs1265.severity = suggestion
 
 # Use raw string literal
-#dotnet_diagnostic.rcs1266.severity = suggestion
+#dotnet_diagnostic.rcs1266.severity = silent
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
