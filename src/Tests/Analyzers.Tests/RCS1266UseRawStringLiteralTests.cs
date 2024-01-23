@@ -21,9 +21,9 @@ class C
 {
     void M()
     {
-        string s = [|@"
+        string s = [|@"|]
  ""foo""
-"|];
+";
     }
 }
 """, """"
@@ -47,9 +47,9 @@ class C
 {
     void M()
     {
-        string s = [|@"
+        string s = [|@"|]
  """"""foo""
-"|];
+";
     }
 }
 """"""", """"""
