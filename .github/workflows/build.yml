@@ -98,10 +98,13 @@ jobs:
     strategy:
       matrix:
         component:
+          - id: analyzers
           - name: Analyzers
             propertyName: Analyzers
+          - id: formatting_analyzers
           - name: Formatting.Analyzers
             propertyName: FormattingAnalyzers
+          - id: code_analysis_analyzers
           - name: CodeAnalysis.Analyzers
             propertyName: CodeAnalysisAnalyzers
     defaults:
@@ -116,7 +119,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages_analyzers
+          name: nuget_packages_analyzers_${{ matrix.component.id }}
           path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.*nupkg
 
   build_refactorings:
