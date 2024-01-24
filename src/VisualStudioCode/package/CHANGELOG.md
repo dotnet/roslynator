@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.10.0] - 2024-01-24
+
+### Added
+
+- Publish NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings) and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes) ([PR](https://github.com/dotnet/roslynator/pull/1358))
+  - These packages are recommended to be used in an environment where Roslynator IDE extension cannot be used, e.g. VS Code + C# Dev Kit (see related [issue](https://github.com/dotnet/vscode-csharp/issues/6790))
+- Add analyzer "Remove redundant catch block" [RCS1265](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1265) ([PR](https://github.com/dotnet/roslynator/pull/1364) by @jakubreznak)
+- [CLI] Spellcheck file names ([PR](https://github.com/dotnet/roslynator/pull/1368))
+  - `roslynator spellcheck --scope file-name` 
+
+### Changed
+
+- Update analyzer [RCS1197](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1197) ([PR](https://github.com/dotnet/roslynator/pull/1370))
+  - Do not report interpolated string and string concatenation 
+
+### Fixed
+
+- Fix analyzer [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1361))
+- Fix analyzer [RCS1261](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1261) ([PR](https://github.com/dotnet/roslynator/pull/1374))
+- Fix analyzer [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) ([PR](https://github.com/dotnet/roslynator/pull/1373))
+- Fix analyzer [RCS1211](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1211) ([PR](https://github.com/dotnet/roslynator/pull/1377))
+- Fix analyzer [RCS0061](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0061) ([PR](https://github.com/dotnet/roslynator/pull/1376))
+
 ## [4.9.0] - 2024-01-10
 
 ### Added
