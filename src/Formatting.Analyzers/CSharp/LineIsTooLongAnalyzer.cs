@@ -1,10 +1,8 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
@@ -103,7 +101,10 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
             if (!token2.IsKind(SyntaxKind.None)
                 && token2.Span.End >= start)
             {
-                while (token2.IsKind(SyntaxKind.CloseParenToken, SyntaxKind.CloseBraceToken, SyntaxKind.CloseBracketToken))
+                while (token2.IsKind(
+                    SyntaxKind.CloseParenToken,
+                    SyntaxKind.CloseBraceToken,
+                    SyntaxKind.CloseBracketToken))
                 {
                     token2 = token2.GetPreviousToken();
                 }
@@ -147,9 +148,9 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
                         }
                     }
 
-                    if (token2.Parent.Span.End > end)
+                    if (parent.Span.End > end)
                     {
-                        i = lines.IndexOf(token2.Parent.Span.End) - 1;
+                        i = lines.IndexOf(parent.Span.End) - 1;
                     }
                 }
             }
