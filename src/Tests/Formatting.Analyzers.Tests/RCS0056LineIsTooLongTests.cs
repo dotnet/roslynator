@@ -1000,12 +1000,12 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task TestNoFix_ExpressionBody_AlreadyWrapped()
     {
-        await VerifyDiagnosticAndNoFixAsync(
+        await VerifyNoDiagnosticAsync(
 @"
 class C
 {
     string M(object p)
-[|        => ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"";|]
+        => ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"";
 }
 ");
     }
@@ -1013,11 +1013,11 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
     public async Task TestNoFix_ExpressionBody_AlreadyWrapped2()
     {
-        await VerifyDiagnosticAndNoFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M(object p) =>
-[|        ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"";|]
+        ""xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"";
 }
 ");
     }
@@ -1179,5 +1179,113 @@ class C
     }
 }
 ");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongStringLiteral_Argument()
+    {
+        await VerifyNoDiagnosticAsync("""
+class C
+{
+    static void M(string x, string y)
+    {
+        C.M(
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongStringLiteral_AttributeArgument()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    [Obsolete(
+        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")]
+    static void M()
+    {
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongStringLiteral_AttributeArgument2()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    [My(
+        Value = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")]
+    static void M()
+    {
+    }
+}
+
+class MyAttribute : Attribute
+{
+    public string Value { get; set; }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongVerbatimStringLiteral()
+    {
+        await VerifyNoDiagnosticAsync("""
+class C
+{
+    static void M(string x, int y)
+    {
+        C.M(
+            @"
+            
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            0);
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongInterpolatedString()
+    {
+        await VerifyNoDiagnosticAsync("""
+class C
+{
+    static void M(string x, string y)
+    {
+        C.M(
+            $"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            $"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongRawInterpolatedString()
+    {
+        await VerifyNoDiagnosticAsync(""""
+class C
+{
+    static void M(string x, int y)
+    {
+        C.M(
+            $"""
+            
+               xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            """,
+            0);
+    }
+}
+"""");
     }
 }
