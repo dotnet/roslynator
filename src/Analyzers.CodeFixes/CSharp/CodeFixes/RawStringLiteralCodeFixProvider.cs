@@ -1,10 +1,8 @@
 ﻿#if ROSLYN_4_2
 // Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -66,12 +64,24 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
         }
         else if (node is InterpolatedStringExpressionSyntax interpolatedString)
         {
-            CodeAction codeAction = CodeAction.Create(
-                "Unnecessary raw string literal",
-                ct => RefactorAsync(document, interpolatedString, ct),
-                GetEquivalenceKey(diagnostic));
+            if (interpolatedString.StringStartToken.IsKind(SyntaxKind.InterpolatedVerbatimStringStartToken))
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Use raw string literal",
+                    ct => UseRawStringLiteralAsync(document, interpolatedString, ct),
+                    GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Unnecessary raw string literal",
+                    ct => RefactorAsync(document, interpolatedString, ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
         }
     }
 
@@ -144,6 +154,57 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
         sb.Append(quotes);
 
         return document.WithTextChangeAsync(literalExpression.Span, sb.ToString(), cancellationToken);
+    }
+
+    private static Task<Document> UseRawStringLiteralAsync(
+        Document document,
+        InterpolatedStringExpressionSyntax interpolatedString,
+        CancellationToken cancellationToken)
+    {
+        int quoteCount = 0;
+
+        foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
+        {
+            if (content is InterpolatedStringTextSyntax interpolatedText)
+            {
+                Match match = Regex.Match(interpolatedText.TextToken.Text, @"""+");
+
+                while (match.Success)
+                {
+                    if (match.Length > quoteCount)
+                        quoteCount = match.Length / 2;
+
+                    match = match.NextMatch();
+                }
+            }
+        }
+
+        quoteCount = (quoteCount > 2) ? quoteCount + 1 : 3;
+        var quotes = new string('"', quoteCount);
+
+        var sb = new StringBuilder();
+        sb.Append('$');
+        sb.AppendLine(quotes);
+
+        foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
+        {
+            if (content is InterpolatedStringTextSyntax interpolatedText)
+            {
+                string text = interpolatedText.TextToken.Text;
+                int startIndex = sb.Length;
+                sb.Append(text);
+                sb.Replace("\"\"", "\"", startIndex, text.Length);
+            }
+            else
+            {
+                sb.Append(content.ToString());
+            }
+        }
+
+        sb.AppendLine();
+        sb.Append(quotes);
+
+        return document.WithTextChangeAsync(interpolatedString.Span, sb.ToString(), cancellationToken);
     }
 }
 #endif

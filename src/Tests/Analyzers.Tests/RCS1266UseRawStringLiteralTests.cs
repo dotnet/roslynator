@@ -14,7 +14,7 @@ public class RCS1266UseRawStringLiteralTests : AbstractCSharpDiagnosticVerifier<
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseRawStringLiteral;
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
-    public async Task Test()
+    public async Task Test_StringLiteral()
     {
         await VerifyDiagnosticAndFixAsync("""
 class C
@@ -42,7 +42,91 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
-    public async Task Test2()
+    public async Task Test_InterpolatedString_DollarFirst()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        string s = [|$@"|]
+"" {""} "" {"foo"}  
+";
+    }
+}
+""", """"
+class C
+{
+    void M()
+    {
+        string s = $"""
+
+" {""} " {"foo"}  
+
+""";
+    }
+}
+"""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
+    public async Task Test_InterpolatedString_AtFirst()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        string s = [|@$"|]
+"" {""} "" {"foo"}  
+";
+    }
+}
+""", """"
+class C
+{
+    void M()
+    {
+        string s = $"""
+
+" {""} " {"foo"}  
+
+""";
+    }
+}
+"""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
+    public async Task Test_InterpolatedString_MoreQuotes()
+    {
+        await VerifyDiagnosticAndFixAsync("""""""""
+class C
+{
+    void M()
+    {
+        string s = [|@$"|]
+"""""""" {""} "" {"foo"}  
+";
+    }
+}
+""""""""", """"""
+class C
+{
+    void M()
+    {
+        string s = $"""""
+
+"""" {""} " {"foo"}  
+
+""""";
+    }
+}
+"""""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
+    public async Task Test_LiteralExpression2()
     {
         await VerifyDiagnosticAndFixAsync(""""
 class C
@@ -68,7 +152,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
-    public async Task Test_MoreQuotes()
+    public async Task Test_StringLiteral_MoreQuotes()
     {
         await VerifyDiagnosticAndFixAsync("""""""
 class C
@@ -96,9 +180,9 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
-    public async Task TestNoDiagnostic_NoQuotes()
+    public async Task TestNoDiagnostic_StringLiteral_NoQuotes()
     {
-        await VerifyNoDiagnosticAsync("""""""
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
@@ -108,7 +192,23 @@ class C
 ";
     }
 }
-""""""");
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
+    public async Task TestNoDiagnostic_InterpolatedString_NoQuotes()
+    {
+        await VerifyNoDiagnosticAsync("""
+class C
+{
+    void M()
+    {
+        string s = $@"
+ {""} {"foo"}
+";
+    }
+}
+""");
     }
 }
 #endif

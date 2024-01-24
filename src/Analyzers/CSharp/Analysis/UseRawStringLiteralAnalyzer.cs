@@ -35,6 +35,7 @@ public sealed class UseRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
             if (((CSharpCompilation)startContext.Compilation).LanguageVersion >= LanguageVersion.CSharp11)
             {
                 startContext.RegisterSyntaxNodeAction(f => AnalyzeStringLiteralExpression(f), SyntaxKind.StringLiteralExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeInterpolatedStringExpression(f), SyntaxKind.InterpolatedStringExpression);
             }
         });
     }
@@ -55,6 +56,37 @@ public sealed class UseRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
             && s.IndexOf("\"", 2, s.Length - 3) >= 0)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseRawStringLiteral, Location.Create(node.SyntaxTree, new TextSpan(node.SpanStart, 2)));
+        }
+    }
+
+    private static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
+    {
+        var interpolatedString = (InterpolatedStringExpressionSyntax)context.Node;
+
+        if (!interpolatedString.StringStartToken.IsKind(SyntaxKind.InterpolatedVerbatimStringStartToken))
+            return;
+
+        var containsNewLine = false;
+        var containsQuote = false;
+
+        foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
+        {
+            if (content is InterpolatedStringTextSyntax interpolatedText)
+            {
+                string text = interpolatedText.TextToken.Text;
+
+                if (!containsNewLine)
+                    containsNewLine = text.Contains("\n");
+
+                if (!containsQuote)
+                    containsQuote = text.Contains("\"");
+
+                if (containsNewLine && containsQuote)
+                {
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseRawStringLiteral, interpolatedString.StringStartToken);
+                    break;
+                }
+            }
         }
     }
 }
