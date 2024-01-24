@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.10.0] - 2024-01-24
+
 ### Added
 
 - Publish NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings) and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes) ([PR](https://github.com/dotnet/roslynator/pull/1358))
