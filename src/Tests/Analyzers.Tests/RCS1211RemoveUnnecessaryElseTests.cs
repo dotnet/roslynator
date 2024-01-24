@@ -47,6 +47,30 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
+    public async Task TestNoDiagnostic_PreprocessorDirectives()
+    {
+        await VerifyNoDiagnosticAsync(@"
+#define FOO
+class C
+{
+    int M(bool flag)
+    {
+        if(flag)
+        {
+            return 1;
+        }
+        else
+        {
+#if FOO
+            return 0;
+#endif
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryElse)]
     public async Task TestNoDiagnostic_OverlappingLocalVariables()
     {
         await VerifyNoDiagnosticAsync(@"
