@@ -55,29 +55,29 @@ public sealed class BlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnaly
         {
             TriviaBlock block = TriviaBlock.FromBetween(previousSection, en.Current);
 
-            if (!block.Success)
-                continue;
-
-            if (block.Kind == TriviaBlockKind.BlankLine)
+            if (block.Success)
             {
-                if (option == BlankLineBetweenSwitchSections.Omit)
+                if (block.Kind == TriviaBlockKind.BlankLine)
                 {
-                    ReportDiagnostic(context, block, "Remove");
+                    if (option == BlankLineBetweenSwitchSections.Omit)
+                    {
+                        ReportDiagnostic(context, block, "Remove");
+                    }
+                    else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
+                        && previousLastStatement.IsKind(SyntaxKind.Block))
+                    {
+                        ReportDiagnostic(context, block, "Remove");
+                    }
+                }
+                else if (option == BlankLineBetweenSwitchSections.Include)
+                {
+                    ReportDiagnostic(context, block, "Add");
                 }
                 else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
-                    && previousLastStatement.IsKind(SyntaxKind.Block))
+                    && !previousLastStatement.IsKind(SyntaxKind.Block))
                 {
-                    ReportDiagnostic(context, block, "Remove");
+                    ReportDiagnostic(context, block, "Add");
                 }
-            }
-            else if (option == BlankLineBetweenSwitchSections.Include)
-            {
-                ReportDiagnostic(context, block, "Add");
-            }
-            else if (option == BlankLineBetweenSwitchSections.OmitAfterBlock
-                && !previousLastStatement.IsKind(SyntaxKind.Block))
-            {
-                ReportDiagnostic(context, block, "Add");
             }
 
             previousSection = en.Current;
