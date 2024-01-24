@@ -69,33 +69,6 @@ internal static class OptimizeStringBuilderAppendCallAnalysis
 
             SyntaxKind expressionKind = expression.Kind();
 
-            switch (expressionKind)
-            {
-                case SyntaxKind.InterpolatedStringExpression:
-                    {
-                        if (((CSharpCompilation)context.Compilation).LanguageVersion <= LanguageVersion.CSharp9
-                            || !context.SemanticModel.HasConstantValue(expression, context.CancellationToken))
-                        {
-                            ReportDiagnostic(argument);
-                        }
-
-                        return;
-                    }
-                case SyntaxKind.AddExpression:
-                    {
-                        BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo((BinaryExpressionSyntax)expression);
-
-                        if (binaryExpressionInfo.Success
-                            && binaryExpressionInfo.AsChain().Reverse().IsStringConcatenation(context.SemanticModel, context.CancellationToken)
-                            && !context.SemanticModel.GetConstantValue(expression, context.CancellationToken).HasValue)
-                        {
-                            ReportDiagnostic(argument);
-                        }
-
-                        return;
-                    }
-            }
-
             if (expressionKind != SyntaxKind.InvocationExpression)
                 return;
 

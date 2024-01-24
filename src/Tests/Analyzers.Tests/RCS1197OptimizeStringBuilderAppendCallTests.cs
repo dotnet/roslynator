@@ -305,9 +305,9 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedString()
+    public async Task TestNoDiagnostic_InterpolatedString()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -317,29 +317,16 @@ class C
         string s = null;
         var sb = new StringBuilder();
 
-        sb.Append([|$""{s}s""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.Append(s).Append('s');
+        sb.Append($""{s}s"");
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedString_Braces()
+    public async Task TestNoDiagnostic_InterpolatedString_Braces()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -350,30 +337,16 @@ class C
         var sb = new StringBuilder();
 
         sb.Append(
-            [|$""a{{b}}c{s}a{{b}}c""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.Append(
-            ""a{b}c"").Append(s).Append(""a{b}c"");
+            $""a{{b}}c{s}a{{b}}c"");
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedRawString_ContainingQuotes()
+    public async Task TestNoDiagnostic_InterpolatedRawString_ContainingQuotes()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 class C
 {
@@ -381,27 +354,16 @@ class C
     {
         string s = null;
         var sb = new StringBuilder();
-        sb.Append([|$""""""""<a href=""somelink"">{s}</a>""""""""|]);
-    }
-}
-", @"
-using System.Text;
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-        sb.Append(""""""""<a href=""somelink"">"""""""").Append(s).Append(""""""""</a>"""""""");
+        sb.Append($""""""""<a href=""somelink"">{s}</a>"""""""");
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp11);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedMultilineRawString_ContainingQuotes()
+    public async Task TestNoDiagnostic_InterpolatedMultilineRawString_ContainingQuotes()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 class C
 {
@@ -409,34 +371,19 @@ class C
     {
         string s = null;
         var sb = new StringBuilder();
-        sb.Append([|$""""""
+        sb.Append($""""""
                     <a href=""somelink"">{s}</a>
-""""""|]
+""""""
         );
     }
 }
-", @"
-using System.Text;
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-        sb.Append(""""""
-                    <a href=""somelink"">
-"""""").Append(s).Append(""""""
-</a>
-"""""");
-    }
-}
 ", options: WellKnownCSharpTestOptions.Default_CSharp11);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedString_Char()
+    public async Task TestNoDiagnostic_InterpolatedString_Char()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -446,29 +393,16 @@ class C
         string s = null;
         var sb = new StringBuilder();
 
-        sb.Append([|$""\""{s}'""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.Append('\""').Append(s).Append('\'');
+        sb.Append($""\""{s}'"");
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedString_AppendLine()
+    public async Task TestNoDiagnostic_InterpolatedString_AppendLine()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -478,10 +412,52 @@ class C
         string s = null;
         var sb = new StringBuilder();
 
-        sb.AppendLine([|$""{s}s""|]);
+        sb.AppendLine($""{s}s"");
     }
 }
-", @"
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task TestNoDiagnostic_InterpolatedString_AppendLine2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($""ab{'s'}"");
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task TestNoDiagnostic_InterpolatedString_AppendLine3()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine($""ab{'s'}s"");
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task TestNoDiagnostic_InterpolatedString_WithFormat_AppendLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -491,108 +467,16 @@ class C
         string s = null;
         var sb = new StringBuilder();
 
-        sb.Append(s).AppendLine(""s"");
+        sb.AppendLine($""{s,1:f}"");
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedString_AppendLine2()
+    public async Task TestNoDiagnostic_InterpolatedString_WithFormat_AppendLine2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        var sb = new StringBuilder();
-
-        sb.AppendLine([|$""ab{'s'}""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        var sb = new StringBuilder();
-
-        sb.Append(""ab"").Append('s').AppendLine();
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedString_AppendLine3()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        var sb = new StringBuilder();
-
-        sb.AppendLine([|$""ab{'s'}s""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        var sb = new StringBuilder();
-
-        sb.Append(""ab"").Append('s').AppendLine(""s"");
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedString_WithFormat_AppendLine()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.AppendLine([|$""{s,1:f}""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.AppendFormat(""{0,1:f}"", s).AppendLine();
-    }
-}
-");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_InterpolatedString_WithFormat_AppendLine2()
-    {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Text;
 
@@ -602,29 +486,16 @@ class C
     {
         string s = null;
         var sb = new StringBuilder();
-        sb.Append([|$@""{x:hh\:mm\:ss\.fff}""|]).ToString();
-    }
-}
-", @"
-using System;
-using System.Text;
-
-class C
-{
-    void M(DateTime x)
-    {
-        string s = null;
-        var sb = new StringBuilder();
-        sb.AppendFormat(@""{0:hh\:mm\:ss\.fff}"", x).ToString();
+        sb.Append($@""{x:hh\:mm\:ss\.fff}"").ToString();
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_Concatenation()
+    public async Task TestNoDiagnostic_Concatenation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -634,29 +505,16 @@ class C
         string s = null;
         var sb = new StringBuilder();
 
-        sb.Append([|""ab"" + s + ""cd""|]).Append([|""ef"" + s + ""gh""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.Append(""ab"").Append(s).Append(""cd"").Append(""ef"").Append(s).Append(""gh"");
+        sb.Append(""ab"" + s + ""cd"").Append(""ef"" + s + ""gh"");
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_Concatenation_Char()
+    public async Task TestNoDiagnostic_Concatenation_Char()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -667,30 +525,16 @@ class C
 
         var sb = new StringBuilder();
 
-        sb.Append([|a + ""b"" + ""c""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        char a = 'a';
-
-        var sb = new StringBuilder();
-
-        sb.Append(a).Append('b').Append('c');
+        sb.Append(a + ""b"" + ""c"");
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_Concatenation_AppendLine()
+    public async Task TestNoDiagnostic_Concatenation_AppendLine()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -700,29 +544,16 @@ class C
         string s = null;
         var sb = new StringBuilder();
 
-        sb.Append([|s + ""ab""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.Append(s).Append(""ab"");
+        sb.Append(s + ""ab"");
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_Concatenation_AppendLine2()
+    public async Task TestNoDiagnostic_Concatenation_AppendLine2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -732,29 +563,16 @@ class C
         string s = null;
         var sb = new StringBuilder();
 
-        sb.AppendLine([|""ab"" + s|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.Append(""ab"").AppendLine(s);
+        sb.AppendLine(""ab"" + s);
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_Concatenation_AppendLine3()
+    public async Task TestNoDiagnostic_Concatenation_AppendLine3()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -764,29 +582,16 @@ class C
         int i = 0;
         var sb = new StringBuilder();
 
-        sb.AppendLine([|""ab"" + i|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        int i = 0;
-        var sb = new StringBuilder();
-
-        sb.Append(""ab"").Append(i).AppendLine();
+        sb.AppendLine(""ab"" + i);
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_Concatenation_AppendLine4()
+    public async Task TestNoDiagnostic_Concatenation_AppendLine4()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -796,29 +601,16 @@ class C
         object o = null;
         var sb = new StringBuilder();
 
-        sb.AppendLine([|""ab"" + o|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        object o = null;
-        var sb = new StringBuilder();
-
-        sb.Append(""ab"").Append(o).AppendLine();
+        sb.AppendLine(""ab"" + o);
     }
 }
 ");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-    public async Task Test_Concatenation_AppendLine5()
+    public async Task TestNoDiagnostic_Concatenation_AppendLine5()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -828,20 +620,7 @@ class C
         string s = null;
         var sb = new StringBuilder();
 
-        sb.AppendLine([|""ab"" + s + ""b""|]).AppendLine([|""ef"" + s + ""d""|]);
-    }
-}
-", @"
-using System.Text;
-
-class C
-{
-    void M()
-    {
-        string s = null;
-        var sb = new StringBuilder();
-
-        sb.Append(""ab"").Append(s).AppendLine(""b"").Append(""ef"").Append(s).AppendLine(""d"");
+        sb.AppendLine(""ab"" + s + ""b"").AppendLine(""ef"" + s + ""d"");
     }
 }
 ");

@@ -15,9 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [CLI] Spellcheck file names ([PR](https://github.com/dotnet/roslynator/pull/1368))
   - `roslynator spellcheck --scope file-name` 
 
+### Changed
+
+- Update analyzer [RCS1197](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1197) ([PR](https://github.com/dotnet/roslynator/pull/1370))
+  - Do not report interpolated string and string concatenation 
+
 ### Fixed
 
 - Fix analyzer [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1361))
+- Fix analyzer [RCS1261](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1261) ([PR](https://github.com/dotnet/roslynator/pull/1374))
+- Fix analyzer [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) ([PR](https://github.com/dotnet/roslynator/pull/1373))
 
 ## [4.9.0] - 2024-01-10
 
