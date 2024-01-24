@@ -2,16 +2,25 @@
 
 A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-## Instructions After First Installation
+IMPORTANT: Analyzers will be removed from Roslynator for VS Code in the next major release.
+It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) instead.
+
+## Prerequsities
+
+Prerequisite for this extension is to use OmniSharp:
 
 - Set VS Code setting `dotnet.server.useOmnisharp` to `true`
 - Disable extension **C# Dev Kit** (if installed)
 
 NOTE: After each installation, Roslynator updates `omnisharp.json` to include references to Roslynator DLLs.
 
+[C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit) currently does not support loading Roslyn features from an extension (see related [issue](https://github.com/dotnet/vscode-csharp/issues/6790)), which means that this extension won't work with C# Dev Kit.
+As an alternative, it's possible to use NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings)
+ and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes).
+
 ## Configuration
 
-Use EditorConfig file to configure analyzers, refactoring and compiler diagnostic fixes.
+Use EditorConfig file to configure analyzers, refactorings and compiler diagnostic fixes.
 
 ```editorconfig
 # Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
