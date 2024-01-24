@@ -2,11 +2,15 @@
 
 Roslynator is a set of code analysis tools for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
+IMPORTANT: Analyzers will be removed from Roslynator IDE extensions in the next major release.
+It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) instead.
+
 ## Tools
 
 - IDE extensions for:
   - [Visual Studio](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
   - [VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
+    - Prerequisite is to use OmniSharp. Otherwise (i.e. C# Dev Kit), use NuGet packages with analyzers, refactorings and code fixes.
   - [Open VSX](https://open-vsx.org/extension/josefpihrt-vscode/roslynator)
 - [NuGet packages](#nuget-packages) that contain collection of analyzers
   - [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers)

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.10.0] - 2024-01-24
+
 ### Added
 
 - Publish NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings) and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes) ([PR](https://github.com/dotnet/roslynator/pull/1358))
@@ -26,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1055](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1055) ([PR](https://github.com/dotnet/roslynator/pull/1361))
 - Fix analyzer [RCS1261](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1261) ([PR](https://github.com/dotnet/roslynator/pull/1374))
 - Fix analyzer [RCS0056](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0056) ([PR](https://github.com/dotnet/roslynator/pull/1373))
+- Fix analyzer [RCS1211](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1211) ([PR](https://github.com/dotnet/roslynator/pull/1377))
+- Fix analyzer [RCS0061](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0061) ([PR](https://github.com/dotnet/roslynator/pull/1376))
 
 ## [4.9.0] - 2024-01-10
 
