@@ -82,23 +82,76 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
             if (line.Span.Length <= maxLength)
                 continue;
 
+            int start = line.Start;
             int end = line.End;
 
             SyntaxToken token = root.FindToken(end);
 
-            if (token.IsKind(SyntaxKind.StringLiteralToken))
+            if (token.IsKind(SyntaxKind.None)
+                || token.Span.End < start)
             {
-                TextSpan span = token.Span;
+                continue;
+            }
 
-                if (span.End == end)
+            SyntaxToken token2 = token;
+
+            if (token2.IsKind(SyntaxKind.CommaToken, SyntaxKind.SemicolonToken))
+                token2 = token2.GetPreviousToken();
+
+            if (!token2.IsKind(SyntaxKind.None)
+                && token2.Span.End >= start)
+            {
+                while (token2.IsKind(
+                    SyntaxKind.CloseParenToken,
+                    SyntaxKind.CloseBraceToken,
+                    SyntaxKind.CloseBracketToken))
                 {
-                    if (span.Length >= maxLength)
-                        continue;
+                    token2 = token2.GetPreviousToken();
                 }
-                else if (span.Contains(end)
-                    && end - span.Start >= maxLength)
+
+                if (token2.IsKind(
+                    SyntaxKind.StringLiteralToken,
+#if ROSLYN_4_2
+                    SyntaxKind.InterpolatedRawStringEndToken,
+#endif
+                    SyntaxKind.InterpolatedStringEndToken))
                 {
-                    continue;
+                    SyntaxNode parent = token2.Parent;
+
+                    if (parent.SpanStart <= start)
+                        continue;
+
+                    token2 = parent.GetFirstToken().GetPreviousToken();
+
+                    if (token2.IsKind(SyntaxKind.None)
+                        || token2.Span.End < start)
+                    {
+                        continue;
+                    }
+
+                    if (parent.IsParentKind(
+                        SyntaxKind.ArrowExpressionClause,
+                        SyntaxKind.Argument,
+                        SyntaxKind.AttributeArgument))
+                    {
+                        SyntaxToken firstToken = parent.Parent.GetFirstToken();
+
+                        if (firstToken.SpanStart >= start)
+                        {
+                            SyntaxToken token3 = firstToken.GetPreviousToken();
+
+                            if (token3.IsKind(SyntaxKind.None)
+                                || token3.Span.End < start)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+
+                    if (parent.Span.End > end)
+                    {
+                        i = lines.IndexOf(parent.Span.End) - 1;
+                    }
                 }
             }
 
