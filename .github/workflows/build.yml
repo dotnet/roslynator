@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: src
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - run: dotnet tool install -g GitVersion.Tool --version 5.11.1
@@ -56,11 +56,11 @@ jobs:
       - run: |
           dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
       - run: dotnet test Roslynator.sln --no-build
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: josefpihrt/wordb
           path: wordb
-      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.7.0
+      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.8.3
       - run: |
           roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
             spellcheck \
@@ -80,7 +80,7 @@ jobs:
       run:
         working-directory: src
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore Roslynator.CoreAndTesting.slnf
       - run: dotnet build Roslynator.CoreAndTesting.slnf --no-restore
       - run: dotnet pack Roslynator.CoreAndTesting.slnf --no-build -o _nupkg
@@ -108,7 +108,7 @@ jobs:
       run:
         working-directory: src/${{ matrix.component.name }}.CodeFixes
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
       - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
@@ -129,7 +129,7 @@ jobs:
       run:
         working-directory: src/Refactorings
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
       - run: dotnet build --no-restore /p:RoslynatorRefactoringsNuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
@@ -150,7 +150,7 @@ jobs:
       run:
         working-directory: src/CodeFixes
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
       - run: dotnet build --no-restore /p:RoslynatorCodeFixesNuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
@@ -172,7 +172,7 @@ jobs:
       run:
         working-directory: src/VisualStudio
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: (Get-Content source.extension.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension.vsixmanifest
       - run: dotnet restore
       - uses: microsoft/setup-msbuild@v1.1
@@ -200,7 +200,7 @@ jobs:
       run:
         working-directory: src/VisualStudioCode
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: |
@@ -252,7 +252,7 @@ jobs:
       run:
         working-directory: src/CommandLine
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: dotnet pack --no-build
@@ -273,7 +273,7 @@ jobs:
       run:
         working-directory: src/CommandLine
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: dotnet publish --no-build
