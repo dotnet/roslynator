@@ -86,7 +86,7 @@ jobs:
       - run: dotnet pack Roslynator.CoreAndTesting.slnf --no-build -o _nupkg
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_packages_core_and_testing
           path: src/_nupkg/*nupkg
 
   build_analyzers:
@@ -116,7 +116,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_packages_analyzers
           path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.*nupkg
 
   build_refactorings:
@@ -137,7 +137,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_packages_refactorings
           path: src/Refactorings/bin/Release/*.*nupkg
 
   build_code_fixes:
@@ -158,7 +158,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_packages_code_fixes
           path: src/CodeFixes/bin/Release/*.*nupkg
 
   build_vs_extension:
@@ -258,7 +258,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_packages_core_cli
           path: src/CommandLine/bin/Release/*.*nupkg
 
   build_framework_cli:
@@ -280,7 +280,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_packages_framework_cli
           path: src/CommandLine/bin/Release/*.*nupkg
 
   publish_nuget_packages:
@@ -288,10 +288,12 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: nuget_packages
           path: nuget_packages
+          pattern: nuget_packages_*
+          merge-multiple: true
       - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
         working-directory: nuget_packages
 
@@ -300,10 +302,12 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'cli-v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: nuget_packages
           path: nuget_packages
+          pattern: nuget_packages_*
+          merge-multiple: true
       - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
         working-directory: nuget_packages
 
@@ -312,7 +316,7 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: vs_code_extension
           path: vs_code_extension
@@ -325,7 +329,7 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ovsx_extension
           path: ovsx_extension
@@ -338,7 +342,7 @@ jobs:
     runs-on: windows-latest
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: vs_extension
           path: vs_extension
