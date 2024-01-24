@@ -61,6 +61,9 @@ public sealed class RemoveUnnecessaryElseAnalyzer : BaseDiagnosticAnalyzer
         if (ifStatementStatement is not BlockSyntax ifBlock)
             return CSharpFacts.IsJumpStatement(ifStatementStatement.Kind());
 
+        if (elseClause.SpanContainsDirectives())
+            return false;
+
         if (elseClause.Statement is BlockSyntax elseBlock)
         {
             if (LocalDeclaredVariablesOverlap(elseBlock, ifBlock, semanticModel))
