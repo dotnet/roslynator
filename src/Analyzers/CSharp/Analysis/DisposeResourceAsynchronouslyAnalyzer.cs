@@ -107,6 +107,10 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
                 Analyze(context, anonymousMethod.Modifiers, usingKeyword, anonymousMethod);
                 break;
             }
+            else if (node is LockStatementSyntax)
+            {
+                return;
+            }
         }
     }
 
