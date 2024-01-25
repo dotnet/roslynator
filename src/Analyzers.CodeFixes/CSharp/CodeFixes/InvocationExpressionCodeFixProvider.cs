@@ -122,7 +122,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                 case DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Use interpolated string",
+                            "Use string interpolation",
                             ct => ConvertStringConcatToInterpolatedStringAsync(context.Document, invocation, ct),
                             GetEquivalenceKey(diagnostic));
 

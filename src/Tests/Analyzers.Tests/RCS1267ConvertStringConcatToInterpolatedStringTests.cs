@@ -40,6 +40,33 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    public async Task Test_Verbatim()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = [|string.Concat(@"Now: ", DateTime.Now, @", Now UTC: ", DateTime.UtcNow)|];
+    }
+}
+""", """
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = @$"Now: {DateTime.Now}, Now UTC: {DateTime.UtcNow}";
+    }
+}
+"""
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
     public async Task TestNoDiagnostic_SingleArgument()
     {
         await VerifyNoDiagnosticAsync("""
