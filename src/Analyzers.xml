@@ -7692,6 +7692,19 @@ finally
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1267</Id>
+    <Identifier>ConvertStringConcatToInterpolatedString</Identifier>
+    <Title>Convert 'string.Concat' to interpolated string</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var s = string.Concat("Id: ", id, ", Value: ", value);]]></Before>
+        <After><![CDATA[var s = $"Id: {id}, Value: {value}";]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching</Title>

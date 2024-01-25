@@ -907,6 +907,12 @@ roslynator_analyzers.enabled_by_default = true|false
 #dotnet_diagnostic.rcs1264.severity = none
 # Options: roslynator_use_var
 
+# Remove redundant catch block
+#dotnet_diagnostic.rcs1265.severity = suggestion
+
+# Convert 'string.Concat' to interpolated string
+#dotnet_diagnostic.rcs1267.severity = suggestion
+
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
 

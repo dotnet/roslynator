@@ -44,7 +44,8 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                     DiagnosticRules.RemoveRedundantCast,
                     DiagnosticRules.SimplifyLogicalNegation,
                     DiagnosticRules.UseCoalesceExpression,
-                    DiagnosticRules.OptimizeMethodCall);
+                    DiagnosticRules.OptimizeMethodCall,
+                    DiagnosticRules.ConvertStringConcatToInterpolatedString);
             }
 
             return _supportedDiagnostics;
@@ -449,6 +450,16 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                         && argumentCount >= 2)
                     {
                         OptimizeMethodCallAnalysis.OptimizeStringJoin(context, invocationInfo);
+                    }
+
+                    break;
+                }
+            case "Concat":
+                {
+                    if (DiagnosticRules.ConvertStringConcatToInterpolatedString.IsEffective(context)
+                        && argumentCount > 1)
+                    {
+                        ConvertStringConcatToInterpolatedStringAnalysis.Analyze(context, invocationInfo);
                     }
 
                     break;
