@@ -45,7 +45,7 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                     DiagnosticRules.SimplifyLogicalNegation,
                     DiagnosticRules.UseCoalesceExpression,
                     DiagnosticRules.OptimizeMethodCall,
-                    DiagnosticRules.ConvertStringConcatToInterpolatedString);
+                    DiagnosticRules.UseStringInterpolationInsteadOfStringConcat);
             }
 
             return _supportedDiagnostics;
@@ -456,10 +456,10 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                 }
             case "Concat":
                 {
-                    if (DiagnosticRules.ConvertStringConcatToInterpolatedString.IsEffective(context)
+                    if (DiagnosticRules.UseStringInterpolationInsteadOfStringConcat.IsEffective(context)
                         && argumentCount > 1)
                     {
-                        ConvertStringConcatToInterpolatedStringAnalysis.Analyze(context, invocationInfo);
+                        UseStringInterpolationInsteadOfStringConcatAnalysis.Analyze(context, invocationInfo);
                     }
 
                     break;

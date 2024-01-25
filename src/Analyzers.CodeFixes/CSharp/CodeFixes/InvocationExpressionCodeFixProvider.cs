@@ -34,7 +34,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                 DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
                 DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod,
                 DiagnosticIdentifiers.CallThenByInsteadOfOrderBy,
-                DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString);
+                DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat);
         }
     }
 
@@ -119,11 +119,11 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString:
+                case DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Use string interpolation",
-                            ct => ConvertStringConcatToInterpolatedStringAsync(context.Document, invocation, ct),
+                            ct => UseStringInterpolationInsteadOfStringConcatAsync(context.Document, invocation, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -163,7 +163,7 @@ public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
         return document.ReplaceNodeAsync(invocationExpression, newInvocationExpression, cancellationToken);
     }
 
-    private static Task<Document> ConvertStringConcatToInterpolatedStringAsync(
+    private static Task<Document> UseStringInterpolationInsteadOfStringConcatAsync(
         Document document,
         InvocationExpressionSyntax invocationExpression,
         CancellationToken cancellationToken)

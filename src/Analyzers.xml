@@ -7693,8 +7693,8 @@ finally
   </Analyzer>
   <Analyzer>
     <Id>RCS1267</Id>
-    <Identifier>ConvertStringConcatToInterpolatedString</Identifier>
-    <Title>Convert 'string.Concat' to interpolated string</Title>
+    <Identifier>UseStringInterpolationInsteadOfStringConcat</Identifier>
+    <Title>Use string interpolation instead of 'string.Concat'</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>

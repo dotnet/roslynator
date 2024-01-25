@@ -8,7 +8,7 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis;
 
-internal static class ConvertStringConcatToInterpolatedStringAnalysis
+internal static class UseStringInterpolationInsteadOfStringConcatAnalysis
 {
     internal static void Analyze(SyntaxNodeAnalysisContext context, SimpleMemberInvocationExpressionInfo invocationInfo)
     {
@@ -56,7 +56,7 @@ internal static class ConvertStringConcatToInterpolatedStringAnalysis
             if (isVerbatim is not null
                 && invocationInfo.ArgumentList.IsSingleLine())
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertStringConcatToInterpolatedString, invocationInfo.InvocationExpression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseStringInterpolationInsteadOfStringConcat, invocationInfo.InvocationExpression);
             }
         }
     }

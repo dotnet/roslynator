@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1267ConvertStringConcatToInterpolatedStringTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
+public class RCS1267UseStringInterpolationInsteadOfStringConcatTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
 {
-    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertStringConcatToInterpolatedString;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseStringInterpolationInsteadOfStringConcat;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
     public async Task Test()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -39,7 +39,7 @@ class C
         );
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
     public async Task Test_Verbatim()
     {
         await VerifyDiagnosticAndFixAsync("""
@@ -66,7 +66,7 @@ class C
         );
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
     public async Task TestNoDiagnostic_SingleArgument()
     {
         await VerifyNoDiagnosticAsync("""
@@ -83,7 +83,7 @@ class C
         );
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
     public async Task TestNoDiagnostic_NoStringLiteral()
     {
         await VerifyNoDiagnosticAsync("""
@@ -100,7 +100,7 @@ class C
         );
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
     public async Task TestNoDiagnostic_ContainsInterpolatedString()
     {
         await VerifyNoDiagnosticAsync("""
@@ -117,7 +117,7 @@ class C
         );
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
     public async Task TestNoDiagnostic_ContainsVerbatimAndNonVerbatimLiterals()
     {
         await VerifyNoDiagnosticAsync("""
@@ -134,7 +134,7 @@ class C
         );
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
     public async Task TestNoDiagnostic_ContainsVerbatimAndNonVerbatimLiterals2()
     {
         await VerifyNoDiagnosticAsync("""
@@ -151,7 +151,7 @@ class C
         );
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
     public async Task TestNoDiagnostic_SpansOverMultipleLines()
     {
         await VerifyNoDiagnosticAsync("""

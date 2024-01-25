@@ -2628,15 +2628,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1267</summary>
-        public static readonly DiagnosticDescriptor ConvertStringConcatToInterpolatedString = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString, 
-            title:              "Convert 'string.Concat' to interpolated string", 
-            messageFormat:      "Convert 'string.Concat' to interpolated string", 
+        public static readonly DiagnosticDescriptor UseStringInterpolationInsteadOfStringConcat = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat, 
+            title:              "Use string interpolation instead of 'string.Concat'", 
+            messageFormat:      "Use string interpolation instead of 'string.Concat'", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString, 
+            helpLinkUri:        DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat, 
             customTags:         Array.Empty<string>());
 
     }
