@@ -2,7 +2,6 @@
 
 namespace Roslynator.Documentation;
 
-//TODO: ClassHierarchy
 internal enum SymbolDefinitionListLayout
 {
     NamespaceList = 0,
