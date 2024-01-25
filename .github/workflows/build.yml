@@ -182,15 +182,15 @@ jobs:
       - run: msbuild -m
       - uses: actions/upload-artifact@v4
         with:
-          name: vs_extension
+          name: vs_extension_vsix
           path: src/VisualStudio/bin/Release/net472/*.vsix
       - uses: actions/upload-artifact@v4
         with:
-          name: vs_extension
+          name: vs_extension_manifest
           path: src/VisualStudio/manifest.json
       - uses: actions/upload-artifact@v4
         with:
-          name: vs_extension
+          name: vs_extension_overview
           path: src/VisualStudio/Overview.md
 
   build_vs_code_extension:
@@ -349,6 +349,8 @@ jobs:
         with:
           name: vs_extension
           path: vs_extension
+          pattern: vs_extension_*
+          merge-multiple: true
       - run: |
           $visualStudioPath = vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VSSDK -property installationPath
           $vsixPublisher = Join-Path "$visualStudioPath" "VSSDK\VisualStudioIntegration\Tools\Bin\VsixPublisher.exe"
