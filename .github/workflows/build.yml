@@ -99,13 +99,13 @@ jobs:
       matrix:
         component:
           - id: analyzers
-          - name: Analyzers
+            name: Analyzers
             propertyName: Analyzers
           - id: formatting_analyzers
-          - name: Formatting.Analyzers
+            name: Formatting.Analyzers
             propertyName: FormattingAnalyzers
           - id: code_analysis_analyzers
-          - name: CodeAnalysis.Analyzers
+            name: CodeAnalysis.Analyzers
             propertyName: CodeAnalysisAnalyzers
     defaults:
       run:
