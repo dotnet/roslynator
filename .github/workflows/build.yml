@@ -192,11 +192,6 @@ jobs:
         with:
           name: vs_extension_overview
           path: src/VisualStudio/Overview.md
-
-  merge_vs_extension_artifacts:
-    runs-on: ubuntu-latest
-    needs: build_vs_extension
-    steps:
       - uses: actions/upload-artifact/merge@v4
         with:
           name: vs_extension
@@ -323,7 +318,7 @@ jobs:
         working-directory: nuget
 
   publish_vs_code_extension:
-    needs: [ pre_build, merge_vs_extension_artifacts ]
+    needs: [ pre_build, build_vs_extension ]
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
