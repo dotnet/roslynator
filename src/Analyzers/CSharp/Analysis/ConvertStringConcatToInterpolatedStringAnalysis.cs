@@ -18,7 +18,8 @@ internal static class ConvertStringConcatToInterpolatedStringAnalysis
             && symbol.IsStatic
             && symbol.ContainingType.IsString())
         {
-            var containsLiteral = false;
+            bool? isVerbatim = null;
+
             foreach (ArgumentSyntax argument in invocationInfo.Arguments)
             {
                 ExpressionSyntax expression = argument.Expression;
@@ -27,10 +28,32 @@ internal static class ConvertStringConcatToInterpolatedStringAnalysis
                     return;
 
                 if (expression.IsKind(SyntaxKind.StringLiteralExpression))
-                    containsLiteral = true;
+                {
+                    var literalExpression = (LiteralExpressionSyntax)expression;
+
+                    if (literalExpression.Token.Text.StartsWith("@"))
+                    {
+                        if (isVerbatim is null)
+                        {
+                            isVerbatim = true;
+                        }
+                        else if (isVerbatim == false)
+                        {
+                            return;
+                        }
+                    }
+                    else if (isVerbatim is null)
+                    {
+                        isVerbatim = false;
+                    }
+                    else if (isVerbatim == true)
+                    {
+                        return;
+                    }
+                }
             }
 
-            if (containsLiteral
+            if (isVerbatim is not null
                 && invocationInfo.ArgumentList.IsSingleLine())
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertStringConcatToInterpolatedString, invocationInfo.InvocationExpression);

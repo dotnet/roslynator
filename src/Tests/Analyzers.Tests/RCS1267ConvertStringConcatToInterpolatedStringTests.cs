@@ -38,4 +38,110 @@ class C
 """
         );
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    public async Task TestNoDiagnostic_SingleArgument()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = string.Concat("");
+    }
+}
+"""
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    public async Task TestNoDiagnostic_NoStringLiteral()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = string.Concat(DateTime.Now, DateTime.Now);
+    }
+}
+"""
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    public async Task TestNoDiagnostic_ContainsInterpolatedString()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = string.Concat(DateTime.Now, "", $"");
+    }
+}
+"""
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    public async Task TestNoDiagnostic_ContainsVerbatimAndNonVerbatimLiterals()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = string.Concat(DateTime.Now, "", @"");
+    }
+}
+"""
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    public async Task TestNoDiagnostic_ContainsVerbatimAndNonVerbatimLiterals2()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = string.Concat(DateTime.Now, @"", "");
+    }
+}
+"""
+        );
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertStringConcatToInterpolatedString)]
+    public async Task TestNoDiagnostic_SpansOverMultipleLines()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = string.Concat(
+            "Now: ",
+            DateTime.Now,
+            ", Now UTC: ",
+            DateTime.UtcNow);
+    }
+}
+"""
+        );
+    }
 }
