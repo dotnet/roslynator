@@ -86,7 +86,7 @@ jobs:
       - run: dotnet pack Roslynator.CoreAndTesting.slnf --no-build -o _nupkg
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages_core_and_testing
+          name: nuget_core_and_testing
           path: src/_nupkg/*nupkg
 
   build_analyzers:
@@ -119,7 +119,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages_${{ matrix.component.id }}
+          name: nuget_${{ matrix.component.id }}
           path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.*nupkg
 
   build_refactorings:
@@ -140,7 +140,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages_refactorings
+          name: nuget_refactorings
           path: src/Refactorings/bin/Release/*.*nupkg
 
   build_code_fixes:
@@ -161,7 +161,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages_code_fixes
+          name: nuget_code_fixes
           path: src/CodeFixes/bin/Release/*.*nupkg
 
   build_vs_extension:
@@ -192,6 +192,16 @@ jobs:
         with:
           name: vs_extension_overview
           path: src/VisualStudio/Overview.md
+
+  merge_vs_extension_artifacts:
+    runs-on: ubuntu-latest
+    needs: build_vs_extension
+    steps:
+      - uses: actions/upload-artifact/merge@v4
+        with:
+          name: vs_extension
+          pattern: vs_extension_*
+          delete-merged: true
 
   build_vs_code_extension:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
@@ -261,7 +271,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages_core_cli
+          name: nuget_core_cli
           path: src/CommandLine/bin/Release/*.*nupkg
 
   build_framework_cli:
@@ -283,7 +293,7 @@ jobs:
       - run: dotnet pack --no-build
       - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages_framework_cli
+          name: nuget_framework_cli
           path: src/CommandLine/bin/Release/*.*nupkg
 
   publish_nuget_packages:
@@ -293,12 +303,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: nuget_packages
-          path: nuget_packages
-          pattern: nuget_packages_*
+          pattern: nuget_*
+          path: nuget
           merge-multiple: true
       - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
-        working-directory: nuget_packages
+        working-directory: nuget
 
   publish_cli_nuget_packages:
     needs: [ build_core_cli, build_framework_cli ]
@@ -307,15 +316,14 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: nuget_packages
-          path: nuget_packages
-          pattern: nuget_packages_*
+          pattern: nuget_*
+          path: nuget
           merge-multiple: true
       - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
-        working-directory: nuget_packages
+        working-directory: nuget
 
   publish_vs_code_extension:
-    needs: [ pre_build, build_vs_code_extension ]
+    needs: [ pre_build, merge_vs_extension_artifacts ]
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
@@ -349,8 +357,6 @@ jobs:
         with:
           name: vs_extension
           path: vs_extension
-          pattern: vs_extension_*
-          merge-multiple: true
       - run: |
           $visualStudioPath = vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VSSDK -property installationPath
           $vsixPublisher = Join-Path "$visualStudioPath" "VSSDK\VisualStudioIntegration\Tools\Bin\VsixPublisher.exe"
