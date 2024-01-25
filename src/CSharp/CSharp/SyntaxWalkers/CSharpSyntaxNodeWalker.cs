@@ -11,9 +11,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers
 {
-    internal abstract class CSharpSyntaxNodeWalker : CSharpSyntaxWalker
+    internal abstract class CSharpSyntaxNodeWalker2 : CSharpSyntaxWalker
     {
-        protected CSharpSyntaxNodeWalker() : base(depth: SyntaxWalkerDepth.Node)
+        protected CSharpSyntaxNodeWalker2() : base(depth: SyntaxWalkerDepth.Node)
         {
         }
 

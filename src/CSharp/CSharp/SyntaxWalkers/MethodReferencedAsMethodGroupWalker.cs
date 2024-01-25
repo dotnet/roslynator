@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers;
 
-internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
+internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxWalker2
 {
     [ThreadStatic]
     private static MethodReferencedAsMethodGroupWalker? _cachedInstance;

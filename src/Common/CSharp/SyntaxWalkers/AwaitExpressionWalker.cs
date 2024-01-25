@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers;
 
-internal class AwaitExpressionWalker : CSharpSyntaxNodeWalker
+internal class AwaitExpressionWalker : CSharpSyntaxWalker2
 {
     [ThreadStatic]
     private static AwaitExpressionWalker _cachedInstance;

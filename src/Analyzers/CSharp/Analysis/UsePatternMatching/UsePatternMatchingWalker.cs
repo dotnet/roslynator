@@ -10,7 +10,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UsePatternMatching;
 
-internal class UsePatternMatchingWalker : CSharpSyntaxNodeWalker
+internal class UsePatternMatchingWalker : CSharpSyntaxWalker2
 {
     [ThreadStatic]
     private static UsePatternMatchingWalker _cachedInstance;
