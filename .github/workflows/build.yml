@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: src
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - run: dotnet tool install -g GitVersion.Tool --version 5.11.1
@@ -56,11 +56,11 @@ jobs:
       - run: |
           dotnet format Roslynator.sln --no-restore --verify-no-changes --severity info
       - run: dotnet test Roslynator.sln --no-build
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: josefpihrt/wordb
           path: wordb
-      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.7.0
+      - run: dotnet tool install -g Roslynator.DotNet.Cli --version 0.8.3
       - run: |
           roslynator spellcheck Roslynator.sln --dry-run --scope all --words \
             spellcheck \
@@ -80,13 +80,13 @@ jobs:
       run:
         working-directory: src
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore Roslynator.CoreAndTesting.slnf
       - run: dotnet build Roslynator.CoreAndTesting.slnf --no-restore
       - run: dotnet pack Roslynator.CoreAndTesting.slnf --no-build -o _nupkg
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_core_and_testing
           path: src/_nupkg/*nupkg
 
   build_analyzers:
@@ -98,25 +98,28 @@ jobs:
     strategy:
       matrix:
         component:
-          - name: Analyzers
+          - id: analyzers
+            name: Analyzers
             propertyName: Analyzers
-          - name: Formatting.Analyzers
+          - id: formatting_analyzers
+            name: Formatting.Analyzers
             propertyName: FormattingAnalyzers
-          - name: CodeAnalysis.Analyzers
+          - id: code_analysis_analyzers
+            name: CodeAnalysis.Analyzers
             propertyName: CodeAnalysisAnalyzers
     defaults:
       run:
         working-directory: src/${{ matrix.component.name }}.CodeFixes
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
       - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
       - run: dotnet build --no-restore /p:Roslynator${{ matrix.component.propertyName }}NuGet=true /p:RoslynVersion=roslyn4.7
       - run: dotnet pack --no-build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_${{ matrix.component.id }}
           path: src/${{ matrix.component.name }}.CodeFixes/bin/Release/*.*nupkg
 
   build_refactorings:
@@ -129,15 +132,15 @@ jobs:
       run:
         working-directory: src/Refactorings
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
       - run: dotnet build --no-restore /p:RoslynatorRefactoringsNuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
       - run: dotnet build --no-restore /p:RoslynatorRefactoringsNuGet=true /p:RoslynVersion=roslyn4.7
       - run: dotnet pack --no-build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_refactorings
           path: src/Refactorings/bin/Release/*.*nupkg
 
   build_code_fixes:
@@ -150,15 +153,15 @@ jobs:
       run:
         working-directory: src/CodeFixes
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore --force /p:RoslynVersion=roslyn3.8
       - run: dotnet build --no-restore /p:RoslynatorCodeFixesNuGet=true /p:RoslynVersion=roslyn3.8
       - run: dotnet restore --force /p:RoslynVersion=roslyn4.7
       - run: dotnet build --no-restore /p:RoslynatorCodeFixesNuGet=true /p:RoslynVersion=roslyn4.7
       - run: dotnet pack --no-build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_code_fixes
           path: src/CodeFixes/bin/Release/*.*nupkg
 
   build_vs_extension:
@@ -172,23 +175,28 @@ jobs:
       run:
         working-directory: src/VisualStudio
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: (Get-Content source.extension.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension.vsixmanifest
       - run: dotnet restore
-      - uses: microsoft/setup-msbuild@v1.3.1
+      - uses: microsoft/setup-msbuild@v1.3
       - run: msbuild -m
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: vs_extension
+          name: vs_extension_vsix
           path: src/VisualStudio/bin/Release/net472/*.vsix
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: vs_extension
+          name: vs_extension_manifest
           path: src/VisualStudio/manifest.json
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vs_extension_overview
+          path: src/VisualStudio/Overview.md
+      - uses: actions/upload-artifact/merge@v4
         with:
           name: vs_extension
-          path: src/VisualStudio/Overview.md
+          pattern: vs_extension_*
+          delete-merged: true
 
   build_vs_extension_with_analyzers:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
@@ -222,7 +230,7 @@ jobs:
       run:
         working-directory: src/VisualStudioCode
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: |
@@ -245,7 +253,7 @@ jobs:
       - run: npm install -g @vscode/vsce
       - run: vsce package
         working-directory: src/VisualStudioCode/package
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: vs_code_extension
           path: src/VisualStudioCode/package/*.vsix
@@ -253,7 +261,7 @@ jobs:
       - run: sed -i s/ms-dotnettools.csharp/muhammad-sammy.csharp/ package/package.json
       - run: vsce package
         working-directory: src/VisualStudioCode/package
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ovsx_extension
           path: src/VisualStudioCode/package/*.vsix
@@ -310,13 +318,13 @@ jobs:
       run:
         working-directory: src/CommandLine
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: dotnet pack --no-build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_core_cli
           path: src/CommandLine/bin/Release/*.*nupkg
 
   build_framework_cli:
@@ -331,14 +339,14 @@ jobs:
       run:
         working-directory: src/CommandLine
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: dotnet publish --no-build
       - run: dotnet pack --no-build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: nuget_packages
+          name: nuget_framework_cli
           path: src/CommandLine/bin/Release/*.*nupkg
 
   publish_nuget_packages:
@@ -346,31 +354,33 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: nuget_packages
-          path: nuget_packages
+          pattern: nuget_*
+          path: nuget
+          merge-multiple: true
       - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
-        working-directory: nuget_packages
+        working-directory: nuget
 
   publish_cli_nuget_packages:
     needs: [ build_core_cli, build_framework_cli ]
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'cli-v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: nuget_packages
-          path: nuget_packages
+          pattern: nuget_*
+          path: nuget
+          merge-multiple: true
       - run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s "https://api.nuget.org/v3/index.json" --skip-duplicate
-        working-directory: nuget_packages
+        working-directory: nuget
 
   publish_vs_code_extension:
-    needs: [ pre_build, build_vs_code_extension ]
+    needs: [ pre_build, build_vs_extension ]
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: vs_code_extension
           path: vs_code_extension
@@ -383,7 +393,7 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ovsx_extension
           path: ovsx_extension
@@ -396,7 +406,7 @@ jobs:
     runs-on: windows-latest
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: vs_extension
           path: vs_extension

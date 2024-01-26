@@ -91,7 +91,7 @@ public sealed class UseExceptionFilterAnalyzer : BaseDiagnosticAnalyzer
             && throwStatement.Expression is null;
     }
 
-    private class UseExceptionFilterWalker : CSharpSyntaxNodeWalker
+    private class UseExceptionFilterWalker : BaseCSharpSyntaxWalker
     {
         [ThreadStatic]
         private static UseExceptionFilterWalker _cachedInstance;

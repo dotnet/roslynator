@@ -113,7 +113,7 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
 
         var methodSymbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(declaration, cancellationToken);
 
-        SyntaxWalker walker = null;
+        RefReadOnlyParameterWalker walker = null;
 
         foreach (IParameterSymbol parameter in methodSymbol.Parameters)
         {
@@ -150,7 +150,7 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
                 if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                     break;
 
-                walker = SyntaxWalker.GetInstance();
+                walker = RefReadOnlyParameterWalker.GetInstance();
             }
             else if (walker.Parameters.ContainsKey(parameter.Name))
             {
@@ -220,7 +220,7 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         }
         finally
         {
-            SyntaxWalker.Free(walker);
+            RefReadOnlyParameterWalker.Free(walker);
         }
 
         bool IsReferencedAsMethodGroup()
@@ -237,10 +237,10 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private class SyntaxWalker : CSharpSyntaxNodeWalker
+    private class RefReadOnlyParameterWalker : BaseCSharpSyntaxWalker
     {
         [ThreadStatic]
-        private static SyntaxWalker _cachedInstance;
+        private static RefReadOnlyParameterWalker _cachedInstance;
 
         private int _localFunctionDepth;
         private int _anonymousFunctionDepth;
@@ -322,9 +322,9 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
             _localFunctionDepth--;
         }
 
-        public static SyntaxWalker GetInstance()
+        public static RefReadOnlyParameterWalker GetInstance()
         {
-            SyntaxWalker walker = _cachedInstance;
+            RefReadOnlyParameterWalker walker = _cachedInstance;
 
             if (walker is not null)
             {
@@ -336,10 +336,10 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
                 return walker;
             }
 
-            return new SyntaxWalker();
+            return new RefReadOnlyParameterWalker();
         }
 
-        public static void Free(SyntaxWalker walker)
+        public static void Free(RefReadOnlyParameterWalker walker)
         {
             walker.Reset();
 
