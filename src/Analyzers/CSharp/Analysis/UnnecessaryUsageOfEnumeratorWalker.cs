@@ -10,7 +10,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis;
 
-internal class UnnecessaryUsageOfEnumeratorWalker : CSharpSyntaxNodeWalker
+internal class UnnecessaryUsageOfEnumeratorWalker : BaseCSharpSyntaxWalker
 {
     [ThreadStatic]
     private static UnnecessaryUsageOfEnumeratorWalker _cachedInstance;
