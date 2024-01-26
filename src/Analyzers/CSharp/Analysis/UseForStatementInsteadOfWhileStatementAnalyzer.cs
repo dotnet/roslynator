@@ -180,7 +180,7 @@ public sealed class UseForStatementInsteadOfWhileStatementAnalyzer : BaseDiagnos
             : default;
     }
 
-    private class ContainsContinueStatementWalker : SyntaxWalkers.SyntaxWalker
+    private class ContainsContinueStatementWalker : BaseCSharpSyntaxWalker
     {
         [ThreadStatic]
         private static ContainsContinueStatementWalker _cachedInstance;

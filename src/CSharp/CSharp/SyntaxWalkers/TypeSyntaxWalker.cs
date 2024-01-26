@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers;
 
-internal abstract class TypeSyntaxWalker : SyntaxWalker
+internal abstract class TypeSyntaxWalker : BaseCSharpSyntaxWalker
 {
     protected abstract void VisitType(TypeSyntax? node);
 
