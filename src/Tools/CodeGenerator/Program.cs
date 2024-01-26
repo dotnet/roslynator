@@ -92,14 +92,6 @@ internal static class Program
             Roslynator.CodeGeneration.CSharp.CodeGenerator.GenerateConfigOptionValues(options),
             normalizeWhitespace: false);
 
-        WriteCompilationUnit(
-            @"Tools\CodeGeneration\CSharp\Symbols.Generated.cs",
-            SymbolsGetKindsGenerator.Generate());
-
-        WriteCompilationUnit(
-            @"CSharp\CSharp\SyntaxWalkers\CSharpSyntaxNodeWalker.cs",
-            CSharpSyntaxNodeWalkerGenerator.Generate());
-
         File.WriteAllText(
             Path.Combine(rootPath, @"VisualStudioCode\package\src\configurationFiles.generated.ts"),
             @"export const configurationFileContent = {

@@ -171,7 +171,7 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
         return !areAllImplicitlyDeclared;
     }
 
-    private class MakeClassStaticWalker : CSharpSyntaxNodeWalker
+    private class MakeClassStaticWalker : TypeSyntaxWalker
     {
         [ThreadStatic]
         private static MakeClassStaticWalker _cachedInstance;
@@ -209,8 +209,6 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
                     CanBeMadeStatic = false;
                 }
             }
-
-            base.VisitType(node);
         }
 
         public static MakeClassStaticWalker GetInstance()
