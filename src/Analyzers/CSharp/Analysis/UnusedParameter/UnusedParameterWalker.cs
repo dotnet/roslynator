@@ -68,6 +68,9 @@ internal class UnusedParameterWalker : TypeCSharpSyntaxWalker
 
     protected override void VisitType(TypeSyntax node)
     {
+        if (node is null)
+            return;
+
         switch (node.Kind())
         {
             case SyntaxKind.ArrayType:

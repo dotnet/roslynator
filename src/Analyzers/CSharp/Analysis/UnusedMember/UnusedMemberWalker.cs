@@ -174,8 +174,11 @@ internal class UnusedMemberWalker : TypeCSharpSyntaxWalker
 
     protected override void VisitType(TypeSyntax node)
     {
-        if (IsAnyNodeDelegate)
+        if (node is not null
+            && IsAnyNodeDelegate)
+        {
             base.VisitType(node);
+        }
     }
 
     public override void VisitGotoStatement(GotoStatementSyntax node)

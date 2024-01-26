@@ -188,6 +188,9 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
 
         protected override void VisitType(TypeSyntax node)
         {
+            if (node is null)
+                return;
+
             if (node is IdentifierNameSyntax identifierName)
             {
                 if (!identifierName.IsVar
