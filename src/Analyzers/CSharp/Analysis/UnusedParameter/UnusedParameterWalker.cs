@@ -11,7 +11,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UnusedParameter;
 
-internal class UnusedParameterWalker : CSharpSyntaxWalker2
+internal class UnusedParameterWalker : TypeCSharpSyntaxWalker
 {
     [ThreadStatic]
     private static UnusedParameterWalker _cachedInstance;

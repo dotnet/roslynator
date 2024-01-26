@@ -171,7 +171,7 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
         return !areAllImplicitlyDeclared;
     }
 
-    private class MakeClassStaticWalker : CSharpSyntaxWalker2
+    private class MakeClassStaticWalker : TypeCSharpSyntaxWalker
     {
         [ThreadStatic]
         private static MakeClassStaticWalker _cachedInstance;
