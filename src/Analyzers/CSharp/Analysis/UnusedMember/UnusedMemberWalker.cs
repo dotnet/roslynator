@@ -548,9 +548,11 @@ internal class UnusedMemberWalker : TypeCSharpSyntaxWalker
             case SyntaxKind.FieldDeclaration:
                 VisitFieldDeclaration((FieldDeclarationSyntax)node);
                 break;
+#if ROSLYN_4_0
             case SyntaxKind.FileScopedNamespaceDeclaration:
                 VisitFileScopedNamespaceDeclaration((FileScopedNamespaceDeclarationSyntax)node);
                 break;
+#endif
             case SyntaxKind.GlobalStatement:
                 VisitGlobalStatement((GlobalStatementSyntax)node);
                 break;
@@ -576,7 +578,9 @@ internal class UnusedMemberWalker : TypeCSharpSyntaxWalker
                 VisitPropertyDeclaration((PropertyDeclarationSyntax)node);
                 break;
             case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
+#endif
                 VisitRecordDeclaration((RecordDeclarationSyntax)node);
                 break;
             case SyntaxKind.StructDeclaration:
