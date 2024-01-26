@@ -4,13 +4,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers;
 
-internal abstract class LocalOrParameterReferenceWalker : TypeCSharpSyntaxWalker
+internal abstract class LocalOrParameterReferenceWalker : CSharpSyntaxWalker2
 {
     protected LocalOrParameterReferenceWalker()
-    {
-    }
-
-    protected override void VisitType(TypeSyntax? node)
     {
     }
 

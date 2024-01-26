@@ -1,67 +1,12 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers;
 
-internal class TypeCSharpSyntaxWalker : CSharpSyntaxWalker2
+internal abstract class TypeCSharpSyntaxWalker : CSharpSyntaxWalker2
 {
-    protected virtual void VisitType(TypeSyntax? node)
-    {
-        if (node is null)
-            return;
-
-        switch (node.Kind())
-        {
-            case SyntaxKind.AliasQualifiedName:
-                VisitAliasQualifiedName((AliasQualifiedNameSyntax)node);
-                break;
-            case SyntaxKind.ArrayType:
-                VisitArrayType((ArrayTypeSyntax)node);
-                break;
-            case SyntaxKind.FunctionPointerType:
-                VisitFunctionPointerType((FunctionPointerTypeSyntax)node);
-                break;
-            case SyntaxKind.GenericName:
-                VisitGenericName((GenericNameSyntax)node);
-                break;
-            case SyntaxKind.IdentifierName:
-                VisitIdentifierName((IdentifierNameSyntax)node);
-                break;
-            case SyntaxKind.NullableType:
-                VisitNullableType((NullableTypeSyntax)node);
-                break;
-            case SyntaxKind.OmittedTypeArgument:
-                VisitOmittedTypeArgument((OmittedTypeArgumentSyntax)node);
-                break;
-            case SyntaxKind.PointerType:
-                VisitPointerType((PointerTypeSyntax)node);
-                break;
-            case SyntaxKind.PredefinedType:
-                VisitPredefinedType((PredefinedTypeSyntax)node);
-                break;
-            case SyntaxKind.QualifiedName:
-                VisitQualifiedName((QualifiedNameSyntax)node);
-                break;
-            case SyntaxKind.RefType:
-                VisitRefType((RefTypeSyntax)node);
-                break;
-#if ROSLYN_4_4
-            case SyntaxKind.ScopedType:
-                VisitScopedType((ScopedTypeSyntax)node);
-                break;
-#endif
-            case SyntaxKind.TupleType:
-                VisitTupleType((TupleTypeSyntax)node);
-                break;
-            default:
-                Debug.Fail($"Unrecognized kind '{node.Kind()}'.");
-                base.Visit(node);
-                break;
-        }
-    }
+    protected abstract void VisitType(TypeSyntax? node);
 
     public override void VisitArrayType(ArrayTypeSyntax node)
     {

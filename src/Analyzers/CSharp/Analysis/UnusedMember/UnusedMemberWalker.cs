@@ -177,7 +177,7 @@ internal class UnusedMemberWalker : TypeCSharpSyntaxWalker
         if (node is not null
             && IsAnyNodeDelegate)
         {
-            base.VisitType(node);
+            Visit(node);
         }
     }
 

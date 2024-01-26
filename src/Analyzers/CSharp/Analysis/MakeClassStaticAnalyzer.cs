@@ -188,9 +188,6 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
 
         protected override void VisitType(TypeSyntax node)
         {
-            if (node is null)
-                return;
-
             if (node is IdentifierNameSyntax identifierName)
             {
                 if (!identifierName.IsVar
@@ -212,8 +209,6 @@ public sealed class MakeClassStaticAnalyzer : BaseDiagnosticAnalyzer
                     CanBeMadeStatic = false;
                 }
             }
-
-            base.VisitType(node);
         }
 
         public static MakeClassStaticWalker GetInstance()

@@ -90,13 +90,13 @@ internal class UnusedParameterWalker : TypeCSharpSyntaxWalker
             case SyntaxKind.TupleType:
                 {
                     if (IsAnyTypeParameter)
-                        base.VisitType(node);
+                        Visit(node);
 
                     break;
                 }
             default:
                 {
-                    base.VisitType(node);
+                    Visit(node);
                     break;
                 }
         }
