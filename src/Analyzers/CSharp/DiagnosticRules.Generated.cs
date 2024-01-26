@@ -2633,7 +2633,7 @@ namespace Roslynator.CSharp
             title:              "Use raw string literal", 
             messageFormat:      "Use raw string literal", 
             category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseRawStringLiteral, 

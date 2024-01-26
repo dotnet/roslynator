@@ -7695,7 +7695,7 @@ finally
     <Id>RCS1266</Id>
     <Identifier>UseRawStringLiteral</Identifier>
     <Title>Use raw string literal</Title>
-    <DefaultSeverity>Hidden</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
