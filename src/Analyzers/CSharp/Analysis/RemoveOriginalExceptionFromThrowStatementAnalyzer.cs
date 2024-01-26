@@ -82,7 +82,7 @@ public sealed class RemoveOriginalExceptionFromThrowStatementAnalyzer : BaseDiag
         }
     }
 
-    private class Walker : CSharpSyntaxNodeWalker
+    private class Walker : CSharpSyntaxWalker
     {
         [ThreadStatic]
         private static Walker _cachedInstance;

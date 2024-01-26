@@ -12,7 +12,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UnusedMember;
 
-internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
+internal class UnusedMemberWalker : TypeSyntaxWalker
 {
     [ThreadStatic]
     private static UnusedMemberWalker _cachedInstance;
@@ -174,8 +174,11 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
 
     protected override void VisitType(TypeSyntax node)
     {
-        if (IsAnyNodeDelegate)
-            base.VisitType(node);
+        if (node is not null
+            && IsAnyNodeDelegate)
+        {
+            Visit(node);
+        }
     }
 
     public override void VisitGotoStatement(GotoStatementSyntax node)
@@ -508,6 +511,85 @@ internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
                 return;
 
             VisitMemberDeclaration(memberDeclaration);
+        }
+    }
+
+    private void VisitMemberDeclaration(MemberDeclarationSyntax node)
+    {
+        switch (node.Kind())
+        {
+            case SyntaxKind.ClassDeclaration:
+                VisitClassDeclaration((ClassDeclarationSyntax)node);
+                break;
+            case SyntaxKind.ConstructorDeclaration:
+                VisitConstructorDeclaration((ConstructorDeclarationSyntax)node);
+                break;
+            case SyntaxKind.ConversionOperatorDeclaration:
+                VisitConversionOperatorDeclaration((ConversionOperatorDeclarationSyntax)node);
+                break;
+            case SyntaxKind.DelegateDeclaration:
+                VisitDelegateDeclaration((DelegateDeclarationSyntax)node);
+                break;
+            case SyntaxKind.DestructorDeclaration:
+                VisitDestructorDeclaration((DestructorDeclarationSyntax)node);
+                break;
+            case SyntaxKind.EnumDeclaration:
+                VisitEnumDeclaration((EnumDeclarationSyntax)node);
+                break;
+            case SyntaxKind.EnumMemberDeclaration:
+                VisitEnumMemberDeclaration((EnumMemberDeclarationSyntax)node);
+                break;
+            case SyntaxKind.EventDeclaration:
+                VisitEventDeclaration((EventDeclarationSyntax)node);
+                break;
+            case SyntaxKind.EventFieldDeclaration:
+                VisitEventFieldDeclaration((EventFieldDeclarationSyntax)node);
+                break;
+            case SyntaxKind.FieldDeclaration:
+                VisitFieldDeclaration((FieldDeclarationSyntax)node);
+                break;
+#if ROSLYN_4_0
+            case SyntaxKind.FileScopedNamespaceDeclaration:
+                VisitFileScopedNamespaceDeclaration((FileScopedNamespaceDeclarationSyntax)node);
+                break;
+#endif
+            case SyntaxKind.GlobalStatement:
+                VisitGlobalStatement((GlobalStatementSyntax)node);
+                break;
+            case SyntaxKind.IncompleteMember:
+                VisitIncompleteMember((IncompleteMemberSyntax)node);
+                break;
+            case SyntaxKind.IndexerDeclaration:
+                VisitIndexerDeclaration((IndexerDeclarationSyntax)node);
+                break;
+            case SyntaxKind.InterfaceDeclaration:
+                VisitInterfaceDeclaration((InterfaceDeclarationSyntax)node);
+                break;
+            case SyntaxKind.MethodDeclaration:
+                VisitMethodDeclaration((MethodDeclarationSyntax)node);
+                break;
+            case SyntaxKind.NamespaceDeclaration:
+                VisitNamespaceDeclaration((NamespaceDeclarationSyntax)node);
+                break;
+            case SyntaxKind.OperatorDeclaration:
+                VisitOperatorDeclaration((OperatorDeclarationSyntax)node);
+                break;
+            case SyntaxKind.PropertyDeclaration:
+                VisitPropertyDeclaration((PropertyDeclarationSyntax)node);
+                break;
+            case SyntaxKind.RecordDeclaration:
+#if ROSLYN_4_0
+            case SyntaxKind.RecordStructDeclaration:
+#endif
+                VisitRecordDeclaration((RecordDeclarationSyntax)node);
+                break;
+            case SyntaxKind.StructDeclaration:
+                VisitStructDeclaration((StructDeclarationSyntax)node);
+                break;
+            default:
+                Debug.Fail($"Unrecognized kind '{node.Kind()}'.");
+                base.Visit(node);
+                break;
         }
     }
 
