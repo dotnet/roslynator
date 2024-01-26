@@ -453,7 +453,7 @@ public sealed class UseAutoPropertyAnalyzer : BaseDiagnosticAnalyzer
         return true;
     }
 
-    private class UseAutoPropertyWalker : CSharpSyntaxWalker2
+    private class UseAutoPropertyWalker : SyntaxWalkers.SyntaxWalker
     {
         private bool _isInInstanceConstructor;
 

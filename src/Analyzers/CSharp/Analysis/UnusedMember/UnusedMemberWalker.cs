@@ -12,7 +12,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UnusedMember;
 
-internal class UnusedMemberWalker : TypeCSharpSyntaxWalker
+internal class UnusedMemberWalker : TypeSyntaxWalker
 {
     [ThreadStatic]
     private static UnusedMemberWalker _cachedInstance;

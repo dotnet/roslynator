@@ -237,7 +237,7 @@ public sealed class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
-    private class SyntaxWalker : CSharpSyntaxWalker2
+    private class SyntaxWalker : SyntaxWalkers.SyntaxWalker
     {
         [ThreadStatic]
         private static SyntaxWalker _cachedInstance;

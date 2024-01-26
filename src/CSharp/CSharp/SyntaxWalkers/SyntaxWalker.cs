@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.SyntaxWalkers;
 
-internal class CSharpSyntaxWalker2 : CSharpSyntaxWalker
+internal class SyntaxWalker : CSharpSyntaxWalker
 {
     public override void DefaultVisit(SyntaxNode node)
     {
