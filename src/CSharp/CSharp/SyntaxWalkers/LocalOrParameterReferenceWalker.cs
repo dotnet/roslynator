@@ -10,7 +10,7 @@ internal abstract class LocalOrParameterReferenceWalker : CSharpSyntaxWalker2
     {
     }
 
-    protected override void VisitType(TypeSyntax node)
+    protected override void VisitType(TypeSyntax? node)
     {
     }
 
