@@ -48,9 +48,11 @@ internal class TypeCSharpSyntaxWalker : CSharpSyntaxWalker2
             case SyntaxKind.RefType:
                 VisitRefType((RefTypeSyntax)node);
                 break;
+#if ROSLYN_4_4
             case SyntaxKind.ScopedType:
                 VisitScopedType((ScopedTypeSyntax)node);
                 break;
+#endif
             case SyntaxKind.TupleType:
                 VisitTupleType((TupleTypeSyntax)node);
                 break;
@@ -139,11 +141,13 @@ internal class TypeCSharpSyntaxWalker : CSharpSyntaxWalker2
         base.VisitExplicitInterfaceSpecifier(node);
     }
 
+#if ROSLYN_4_0
     public override void VisitFileScopedNamespaceDeclaration(FileScopedNamespaceDeclarationSyntax node)
     {
         VisitType(node.Name);
         base.VisitFileScopedNamespaceDeclaration(node);
     }
+#endif
 
     public override void VisitForEachStatement(ForEachStatementSyntax node)
     {
@@ -228,11 +232,13 @@ internal class TypeCSharpSyntaxWalker : CSharpSyntaxWalker2
         base.VisitParameter(node);
     }
 
+#if ROSLYN_4_0
     public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
     {
         VisitType(node.ReturnType);
         base.VisitParenthesizedLambdaExpression(node);
     }
+#endif
 
     public override void VisitPointerType(PointerTypeSyntax node)
     {
@@ -282,11 +288,13 @@ internal class TypeCSharpSyntaxWalker : CSharpSyntaxWalker2
         base.VisitRefValueExpression(node);
     }
 
+#if ROSLYN_4_4
     public override void VisitScopedType(ScopedTypeSyntax node)
     {
         VisitType(node.Type);
         base.VisitScopedType(node);
     }
+#endif
 
     public override void VisitSimpleBaseType(SimpleBaseTypeSyntax node)
     {
@@ -347,7 +355,9 @@ internal class TypeCSharpSyntaxWalker : CSharpSyntaxWalker2
     public override void VisitUsingDirective(UsingDirectiveSyntax node)
     {
         VisitType(node.Name);
+#if ROSLYN_4_7
         VisitType(node.NamespaceOrType);
+#endif
         base.VisitUsingDirective(node);
     }
 
