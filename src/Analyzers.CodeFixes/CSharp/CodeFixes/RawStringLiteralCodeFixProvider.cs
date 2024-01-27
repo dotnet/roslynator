@@ -162,6 +162,7 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
         CancellationToken cancellationToken)
     {
         int quoteCount = 0;
+        int braceCount = 0;
 
         foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
         {
@@ -176,6 +177,16 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
 
                     match = match.NextMatch();
                 }
+
+                match = Regex.Match(interpolatedText.TextToken.Text, @"\{+");
+
+                while (match.Success)
+                {
+                    if (match.Length > braceCount)
+                        braceCount = match.Length / 2;
+
+                    match = match.NextMatch();
+                }
             }
         }
 
@@ -183,7 +194,7 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
         var quotes = new string('"', quoteCount);
 
         var sb = new StringBuilder();
-        sb.Append('$');
+        sb.Append('$', braceCount + 1);
         sb.AppendLine(quotes);
 
         foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
@@ -193,11 +204,15 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
                 string text = interpolatedText.TextToken.Text;
                 int startIndex = sb.Length;
                 sb.Append(text);
-                sb.Replace("\"\"", "\"", startIndex, text.Length);
+                sb.Replace("\"\"", "\"", startIndex, sb.Length - startIndex);
+                sb.Replace("{{", "{", startIndex, sb.Length - startIndex);
+                sb.Replace("}}", "}", startIndex, sb.Length - startIndex);
             }
             else
             {
+                sb.Append('{', braceCount);
                 sb.Append(content.ToString());
+                sb.Append('}', braceCount);
             }
         }
 

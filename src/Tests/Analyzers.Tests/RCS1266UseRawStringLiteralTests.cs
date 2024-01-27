@@ -126,6 +126,62 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
+    public async Task Test_InterpolatedString_ContainsBrace()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        string s = [|@$"|]
+"" {string.Empty} {{ }}
+";
+    }
+}
+""", """"
+class C
+{
+    void M()
+    {
+        string s = $$"""
+
+" {{string.Empty}} { }
+
+""";
+    }
+}
+"""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
+    public async Task Test_InterpolatedString_ContainsBraces()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+class C
+{
+    void M()
+    {
+        string s = [|@$"|]
+"" {string.Empty} {{{{ }}}}
+";
+    }
+}
+""", """"
+class C
+{
+    void M()
+    {
+        string s = $$$"""
+
+" {{{string.Empty}}} {{ }}
+
+""";
+    }
+}
+"""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRawStringLiteral)]
     public async Task Test_LiteralExpression2()
     {
         await VerifyDiagnosticAndFixAsync(""""
