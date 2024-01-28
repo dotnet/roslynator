@@ -7706,7 +7706,9 @@ string s = @"
 ]]></Before>
         <After><![CDATA[
 string s = """
+
   "foo"
+
 """;
 ]]></After>
       </Sample>
