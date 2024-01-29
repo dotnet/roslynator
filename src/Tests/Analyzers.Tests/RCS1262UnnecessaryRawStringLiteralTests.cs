@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests;
 
-public class RCS1262UnnecessaryRawStringLiteralTests : AbstractCSharpDiagnosticVerifier<UnnecessaryRawStringLiteralAnalyzer, UnnecessaryRawStringLiteralCodeFixProvider>
+public class RCS1262UnnecessaryRawStringLiteralTests : AbstractCSharpDiagnosticVerifier<UnnecessaryRawStringLiteralAnalyzer, RawStringLiteralCodeFixProvider>
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryRawStringLiteral;
 
