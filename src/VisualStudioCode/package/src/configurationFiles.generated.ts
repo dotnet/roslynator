@@ -913,6 +913,9 @@ roslynator_analyzers.enabled_by_default = true|false
 # Use raw string literal
 #dotnet_diagnostic.rcs1266.severity = suggestion
 
+# Use string interpolation instead of 'string.Concat'
+#dotnet_diagnostic.rcs1267.severity = suggestion
+
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
 
