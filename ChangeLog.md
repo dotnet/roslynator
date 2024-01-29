@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add analyzer "Use raw string literal" [RCS1266](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1266) ([PR](https://github.com/dotnet/roslynator/pull/1375))
+
 ## [4.10.0] - 2024-01-24
 
 ### Added
