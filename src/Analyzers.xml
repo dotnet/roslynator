@@ -7715,6 +7715,19 @@ string s = """
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1267</Id>
+    <Identifier>UseStringInterpolationInsteadOfStringConcat</Identifier>
+    <Title>Use string interpolation instead of 'string.Concat'</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var s = string.Concat("Id: ", id, ", Value: ", value);]]></Before>
+        <After><![CDATA[var s = $"Id: {id}, Value: {value}";]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching</Title>
