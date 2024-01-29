@@ -7692,6 +7692,29 @@ finally
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1266</Id>
+    <Identifier>UseRawStringLiteral</Identifier>
+    <Title>Use raw string literal</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[
+string s = @"
+  ""foo""
+";
+]]></Before>
+        <After><![CDATA[
+string s = """
+
+  "foo"
+
+""";
+]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS1267</Id>
     <Identifier>UseStringInterpolationInsteadOfStringConcat</Identifier>
     <Title>Use string interpolation instead of 'string.Concat'</Title>
