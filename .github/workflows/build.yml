@@ -178,7 +178,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: (Get-Content source.extension.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension.vsixmanifest
       - run: dotnet restore
-      - uses: microsoft/setup-msbuild@v1.3
+      - uses: upload-artifact@v4microsoft/setup-msbuild@v2
       - run: msbuild -m
       - uses: actions/upload-artifact@v4
         with:
@@ -213,7 +213,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: (Get-Content source.extension-with-analyzers.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension-with-analyzers.vsixmanifest
       - run: dotnet restore
-      - uses: microsoft/setup-msbuild@v1.3
+      - uses: upload-artifact@v4microsoft/setup-msbuild@v2
       - run: msbuild -m
       - uses: actions/upload-artifact@v4
         with:
