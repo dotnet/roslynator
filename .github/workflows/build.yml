@@ -210,12 +210,12 @@ jobs:
       run:
         working-directory: src/VisualStudio
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: (Get-Content source.extension-with-analyzers.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension-with-analyzers.vsixmanifest
       - run: dotnet restore
-      - uses: microsoft/setup-msbuild@v1.3.1
+      - uses: microsoft/setup-msbuild@v1.3
       - run: msbuild -m
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: vs_extension_with_analyzers
           path: src/VisualStudio/bin/Release/net472/*.vsix
@@ -276,7 +276,7 @@ jobs:
       run:
         working-directory: src/VisualStudioCode
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: |
@@ -301,7 +301,7 @@ jobs:
       - run: npm install -g @vscode/vsce
       - run: vsce package
         working-directory: src/VisualStudioCode/package
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: vs_code_extension_with_analyzers
           path: src/VisualStudioCode/package/*.vsix
