@@ -134,11 +134,13 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
 
                                 break;
                             }
+                        case "Average":
                         case "Max":
                         case "Min":
+                        case "Sum":
                             {
                                 if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context))
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeSelectAndMinOrMax(context, invocationInfo);
+                                    OptimizeLinqMethodCallAnalysis.AnalyzeSelectAndAverageOrMinOrMaxOrSum(context, invocationInfo);
 
                                 break;
                             }
