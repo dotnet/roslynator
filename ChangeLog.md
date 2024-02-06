@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add analyzer "Use raw string literal" [RCS1266](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1266) ([PR](https://github.com/dotnet/roslynator/pull/1375))
 - Add analyzer "Convert 'string.Concat' to interpolated string" [RCS1267](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1267) ([PR](https://github.com/dotnet/roslynator/pull/1379))
+- Simplify LINQ query [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/1077) ([PR](https://github.com/dotnet/roslynator/pull/1384))
+  - `items.Select(selector).Average()` => `items.Average(selector)`
+  - `items.Select(selector).Sum()` => `items.Sum(selector)`
 
 ## [4.10.0] - 2024-01-24
 
