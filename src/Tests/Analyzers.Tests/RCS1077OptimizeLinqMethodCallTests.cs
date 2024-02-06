@@ -181,6 +181,58 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_SelectAndAverage()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        double max = Enumerable.Empty<int>().[|Select(f => f).Average()|];
+    }
+}
+", @"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        double max = Enumerable.Empty<int>().Average(f => f);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_SelectAndSum()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int max = Enumerable.Empty<int>().[|Select(f => f).Sum()|];
+    }
+}
+", @"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int max = Enumerable.Empty<int>().Sum(f => f);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     public async Task Test_SelectAndMin_ImmutableArray()
     {
         await VerifyDiagnosticAndFixAsync(@"

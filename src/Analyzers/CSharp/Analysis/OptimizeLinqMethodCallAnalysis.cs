@@ -107,8 +107,8 @@ internal static class OptimizeLinqMethodCallAnalysis
             Properties.SimplifyLinqMethodChain);
     }
 
-    // items.Select(selector).Min/Max() >>> items.Min/Max(selector)
-    public static void AnalyzeSelectAndMinOrMax(
+    // items.Select(selector).Average/Min/Max/Sum() >>> items.Average/Min/Max/Sum(selector)
+    public static void AnalyzeSelectAndAverageOrMinOrMaxOrSum(
         SyntaxNodeAnalysisContext context,
         in SimpleMemberInvocationExpressionInfo invocationInfo)
     {
