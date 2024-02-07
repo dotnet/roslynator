@@ -421,7 +421,7 @@ namespace Roslynator.Formatting.CSharp
         public static readonly DiagnosticDescriptor FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine, 
             title:              "[deprecated] Format accessor's braces on a single line when expression is on single line", 
-            messageFormat:      "([deprecated] Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line) Format braces on a single line", 
+            messageFormat:      "([deprecated] Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line') Format braces on a single line", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 

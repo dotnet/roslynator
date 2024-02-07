@@ -102,4 +102,14 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterTopComment)]
+    public async Task TestNoDiagnostic_NoComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+}
+");
+    }
 }
