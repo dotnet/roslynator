@@ -1064,7 +1064,7 @@ else if (y)
     <Id>RCS0043</Id>
     <Identifier>FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine</Identifier>
     <Status>Obsolete</Status>
-    <ObsoleteMessage>Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line'</ObsoleteMessage>
+    <ObsoleteMessage>Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line</ObsoleteMessage>
     <Title>Format accessor's braces on a single line when expression is on single line</Title>
     <MessageFormat>Format braces on a single line</MessageFormat>
     <DefaultSeverity>Info</DefaultSeverity>
