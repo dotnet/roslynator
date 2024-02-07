@@ -85,7 +85,7 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
         CancellationToken cancellationToken = context.CancellationToken;
         MemberDeclarationSyntax member;
         MemberDeclarationSyntax previousMember = members[0];
-        bool isPreviousGlobalStatement = previousMember.IsKind(SyntaxKind.GlobalStatement);
+        bool isPreviousSkippable = previousMember.IsKind(SyntaxKind.GlobalStatement, SyntaxKind.IncompleteMember);
         bool? isSingleLine;
         bool? isPreviousSingleLine = null;
 
@@ -94,11 +94,11 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             member = members[i];
             isSingleLine = null;
 
-            bool isGlobalStatement = member.IsKind(SyntaxKind.GlobalStatement);
-            bool areGlobalStatements = isPreviousGlobalStatement && isGlobalStatement;
-            isPreviousGlobalStatement = isGlobalStatement;
+            bool isSkippable = member.IsKind(SyntaxKind.GlobalStatement, SyntaxKind.IncompleteMember);
+            bool areSkippable = isPreviousSkippable && isSkippable;
+            isPreviousSkippable = isSkippable;
 
-            if (areGlobalStatements)
+            if (areSkippable)
                 continue;
 
             TriviaBlock block = TriviaBlock.FromBetween(previousMember, member);

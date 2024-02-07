@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `items.Select(selector).Average()` => `items.Average(selector)`
   - `items.Select(selector).Sum()` => `items.Sum(selector)`
 
+### Fixed
+
+- Fix analyzer [RCS0049](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0049) ([PR](https://github.com/dotnet/roslynator/pull/1386))
+
 ## [4.10.0] - 2024-01-24
 
 ### Added

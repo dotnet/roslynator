@@ -46,7 +46,8 @@ public sealed class AddBlankLineAfterTopCommentAnalyzer : BaseDiagnosticAnalyzer
 
         TriviaBlock block = TriviaBlock.FromLeading(node);
 
-        if (block.Kind == TriviaBlockKind.NewLine)
+        if (block.Kind == TriviaBlockKind.NewLine
+            && block.ContainsSingleLineComment)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
