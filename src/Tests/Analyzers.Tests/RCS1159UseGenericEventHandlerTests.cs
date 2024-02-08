@@ -225,4 +225,28 @@ public interface IEventTest
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
+    public async Task TestNoDiagnostic_Wpf_RoutedEventHandler()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Windows;
+
+namespace System.Windows
+{
+    public delegate void RoutedEventHandler(object sender, RoutedEventArgs e);
+
+    public class RoutedEventArgs : EventArgs;
+}
+
+class C
+{
+    public event RoutedEventHandler Foo
+    {
+        add {  }
+        remove {  }
+    }
+}
+");
+    }
 }
