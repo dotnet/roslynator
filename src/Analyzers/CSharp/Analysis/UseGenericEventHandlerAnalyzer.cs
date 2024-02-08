@@ -10,6 +10,8 @@ namespace Roslynator.CSharp.Analysis;
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class UseGenericEventHandlerAnalyzer : BaseDiagnosticAnalyzer
 {
+    private static readonly MetadataName System_Windows_RoutedEventHandler = MetadataName.Parse("System.Windows.RoutedEventHandler");
+
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -49,6 +51,9 @@ public sealed class UseGenericEventHandlerAnalyzer : BaseDiagnosticAnalyzer
             return;
 
         if (namedType.HasMetadataName(MetadataNames.System_EventHandler))
+            return;
+
+        if (namedType.HasMetadataName(System_Windows_RoutedEventHandler))
             return;
 
         IMethodSymbol delegateInvokeMethod = namedType.DelegateInvokeMethod;
