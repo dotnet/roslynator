@@ -101,28 +101,31 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
             async ct =>
             {
                 NullableTypeSyntax newType = SyntaxFactory.NullableType(type.WithoutTrivia()).WithTriviaFrom(type);
-                Document changedDocument = await context.Document.ReplaceNodeAsync(type, newType, ct).ConfigureAwait(false);
 
-                // This could be in a variable declaration, so grab the new syntax root and find the newly-replaced type node
-                SyntaxNode root = await changedDocument.GetSyntaxRootAsync(ct).ConfigureAwait(false);
-                SyntaxNode insertedNewType = root.FindNode(type.Span);
-
-                // Try finding a surrounding variable declaration whose type we also have to change
-                if (insertedNewType.AncestorsAndSelf().FirstOrDefault(a => a.IsKind(SyntaxKind.EqualsValueClause)) is EqualsValueClauseSyntax equalsValueClause)
-                {
-                    ExpressionSyntax expression = equalsValueClause.Value;
-
-                    if (equalsValueClause.IsParentKind(SyntaxKind.VariableDeclarator)
-                        && equalsValueClause.Parent.Parent is VariableDeclarationSyntax variableDeclaration
-                        && variableDeclaration.Variables.Count == 1
-                        && !variableDeclaration.Type.IsKind(SyntaxKind.NullableType)
-                        && variableDeclaration.Type is not IdentifierNameSyntax { Identifier.Text: "var" })
+                // This could be in a variable declaration whose type we also may have to change
+                if (type.Parent?.Parent is EqualsValueClauseSyntax
                     {
-                        NullableTypeSyntax newDeclarationType = SyntaxFactory.NullableType(variableDeclaration.Type.WithoutTrivia()).WithTriviaFrom(variableDeclaration.Type);
-                        changedDocument = await changedDocument.ReplaceNodeAsync(variableDeclaration.Type, newDeclarationType, ct).ConfigureAwait(false);
+                        Parent: VariableDeclaratorSyntax
+                        {
+                            Parent: VariableDeclarationSyntax
+                            {
+                                Variables.Count: 1,
+                                Type: { IsVar: false } declarationType
+                            } variableDeclaration
+                        }
                     }
+                    && !declarationType.IsKind(SyntaxKind.NullableType))
+                {
+                    NullableTypeSyntax newDeclarationType = SyntaxFactory.NullableType(declarationType.WithoutTrivia()).WithTriviaFrom(declarationType);
+                    VariableDeclarationSyntax newVariableDeclaration = variableDeclaration
+                        .ReplaceNode(type, newType)
+                        .WithType(newDeclarationType);
+                    return await context.Document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, ct).ConfigureAwait(false);
                 }
-                return changedDocument;
+                else
+                {
+                    return await context.Document.ReplaceNodeAsync(type, newType, ct).ConfigureAwait(false);
+                }
             },
             GetEquivalenceKey(diagnostic));
 
