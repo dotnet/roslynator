@@ -389,7 +389,7 @@ if (y)
       <Syntax>while statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0046" Identifier="ExtractTypeDeclarationToNewFile" Title="Extract type declaration to a new file">
+  <Refactoring Id="RR0046" Identifier="ExtractTypeDeclarationToNewFile" Title="Extract type declaration to a new file" IsEnabledByDefault="false">
     <OptionKey>extract_type_declaration_to_new_file</OptionKey>
     <Syntaxes>
       <Syntax>class declaration</Syntax>
