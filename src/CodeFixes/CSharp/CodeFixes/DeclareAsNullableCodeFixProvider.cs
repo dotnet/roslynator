@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -30,7 +31,7 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
         if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddNullableAnnotation, context.Document, root.SyntaxTree))
             return;
 
-        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.EqualsValueClause, SyntaxKind.DeclarationExpression, SyntaxKind.SimpleAssignmentExpression)))
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.EqualsValueClause, SyntaxKind.DeclarationExpression, SyntaxKind.SimpleAssignmentExpression, SyntaxKind.CastExpression)))
             return;
 
         if (node is EqualsValueClauseSyntax equalsValueClause)
@@ -67,6 +68,10 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
                 }
             }
         }
+        else if (node is CastExpressionSyntax castExpression)
+        {
+            TryRegisterCodeFixForCast(context, diagnostic, castExpression.Type);
+        }
     }
 
     private static void TryRegisterCodeFix(CodeFixContext context, Diagnostic diagnostic, TypeSyntax type)
@@ -80,6 +85,48 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
             {
                 NullableTypeSyntax newType = SyntaxFactory.NullableType(type.WithoutTrivia()).WithTriviaFrom(type);
                 return context.Document.ReplaceNodeAsync(type, newType, ct);
+            },
+            GetEquivalenceKey(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    private static void TryRegisterCodeFixForCast(CodeFixContext context, Diagnostic diagnostic, TypeSyntax type)
+    {
+        if (type.IsKind(SyntaxKind.NullableType))
+            return;
+
+        CodeAction codeAction = CodeAction.Create(
+            "Declare as nullable",
+            async ct =>
+            {
+                NullableTypeSyntax newType = SyntaxFactory.NullableType(type.WithoutTrivia()).WithTriviaFrom(type);
+
+                // This could be in a variable declaration whose type we also may have to change
+                if (type.Parent?.Parent is EqualsValueClauseSyntax
+                    {
+                        Parent: VariableDeclaratorSyntax
+                        {
+                            Parent: VariableDeclarationSyntax
+                            {
+                                Variables.Count: 1,
+                                Type: { IsVar: false } declarationType
+                            } variableDeclaration
+                        }
+                    }
+                    && !declarationType.IsKind(SyntaxKind.NullableType))
+                {
+                    NullableTypeSyntax newDeclarationType = SyntaxFactory.NullableType(declarationType.WithoutTrivia()).WithTriviaFrom(declarationType);
+                    VariableDeclarationSyntax newVariableDeclaration = variableDeclaration
+                        .ReplaceNode(type, newType)
+                        .WithType(newDeclarationType);
+
+                    return await context.Document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, ct).ConfigureAwait(false);
+                }
+                else
+                {
+                    return await context.Document.ReplaceNodeAsync(type, newType, ct).ConfigureAwait(false);
+                }
             },
             GetEquivalenceKey(diagnostic));
 
