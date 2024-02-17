@@ -17,6 +17,12 @@ internal class ImplicitOrExplicitObjectCreationAnalysis : ImplicitOrExplicitCrea
         return context.GetObjectCreationTypeStyle();
     }
 
+    public override void AnalyzeCollectionExpression(ref SyntaxNodeAnalysisContext context)
+    {
+        if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.TypeKind != TypeKind.Array)
+            AnalyzeImplicit(ref context);
+    }
+
     protected override void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context)
     {
         var objectCreation = (ObjectCreationExpressionSyntax)context.Node;

@@ -13,6 +13,12 @@ internal class ImplicitOrExplicitArrayCreationAnalysis : ImplicitOrExplicitCreat
 {
     public static ImplicitOrExplicitArrayCreationAnalysis Instance { get; } = new();
 
+    public override void AnalyzeCollectionExpression(ref SyntaxNodeAnalysisContext context)
+    {
+        if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.TypeKind == TypeKind.Array)
+            AnalyzeImplicit(ref context);
+    }
+
     public override void AnalyzeExplicitCreation(ref SyntaxNodeAnalysisContext context)
     {
         if (context.Node.ContainsDiagnostics)
