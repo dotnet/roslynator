@@ -98,8 +98,8 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
 #else
         if (members.SingleOrDefault(shouldThrow: false) is NamespaceDeclarationSyntax namespaceDeclaration)
 #endif
-            {
-                MemberDeclarationSyntax member = namespaceDeclaration.Members.SingleOrDefault(shouldThrow: false);
+        {
+            MemberDeclarationSyntax member = namespaceDeclaration.Members.SingleOrDefault(shouldThrow: false);
 
             return member is not null
                 && member.Kind() != SyntaxKind.NamespaceDeclaration;
