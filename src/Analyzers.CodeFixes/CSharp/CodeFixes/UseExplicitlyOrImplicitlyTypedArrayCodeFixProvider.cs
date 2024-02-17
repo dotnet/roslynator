@@ -237,15 +237,25 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
         CancellationToken cancellationToken)
     {
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(collectionExpression, cancellationToken).ConvertedType;
+        var typeSymbol = (IArrayTypeSymbol)semanticModel.GetTypeInfo(collectionExpression, cancellationToken).ConvertedType;
 
-        ArrayCreationExpressionSyntax arrayCreation = ArrayCreationExpression(
-            Token(SyntaxKind.NewKeyword),
-            (ArrayTypeSyntax)typeSymbol.ToTypeSyntax().WithSimplifierAnnotation(),
-            ConvertCollectionExpressionToInitializer(collectionExpression, SyntaxKind.ArrayInitializerExpression))
-            .WithTriviaFrom(collectionExpression);
+        InitializerExpressionSyntax initializer = ConvertCollectionExpressionToInitializer(collectionExpression, SyntaxKind.ArrayInitializerExpression);
 
-        return await document.ReplaceNodeAsync(collectionExpression, arrayCreation, cancellationToken).ConfigureAwait(false);
+        SyntaxNode newNode;
+        if (initializer is not null)
+        {
+            newNode = ArrayCreationExpression(
+                Token(SyntaxKind.NewKeyword),
+                (ArrayTypeSyntax)typeSymbol.ToTypeSyntax().WithSimplifierAnnotation(),
+                initializer)
+                .WithTriviaFrom(collectionExpression);
+        }
+        else
+        {
+            newNode = CreateArrayEmpty(typeSymbol);
+        }
+
+        return await document.ReplaceNodeAsync(collectionExpression, newNode, cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<Document> ConvertToImplicitAsync(
@@ -255,10 +265,31 @@ public sealed class UseExplicitlyOrImplicitlyTypedArrayCodeFixProvider : BaseCod
     {
         InitializerExpressionSyntax initializer = ConvertCollectionExpressionToInitializer(collectionExpression, SyntaxKind.ArrayInitializerExpression);
 
-        ImplicitArrayCreationExpressionSyntax implicitArrayCreation = ImplicitArrayCreationExpression(initializer)
-            .WithTriviaFrom(collectionExpression);
+        SyntaxNode newNode;
+        if (initializer is not null)
+        {
+            newNode = ImplicitArrayCreationExpression(initializer);
+        }
+        else
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        return await document.ReplaceNodeAsync(collectionExpression, implicitArrayCreation, cancellationToken).ConfigureAwait(false);
+            var typeSymbol = (IArrayTypeSymbol)semanticModel.GetTypeInfo(collectionExpression, cancellationToken).ConvertedType;
+
+            newNode = CreateArrayEmpty(typeSymbol);
+        }
+
+        newNode = newNode.WithTriviaFrom(collectionExpression);
+
+        return await document.ReplaceNodeAsync(collectionExpression, newNode, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static InvocationExpressionSyntax CreateArrayEmpty(IArrayTypeSymbol typeSymbol)
+    {
+        return CSharpFactory.SimpleMemberInvocationExpression(
+            ParseExpression("global::System.Array").WithSimplifierAnnotation(),
+            (SimpleNameSyntax)ParseName($"Empty<{typeSymbol.ElementType.ToTypeSyntax().WithSimplifierAnnotation()}>"),
+            ArgumentList());
     }
 
     private static async Task<Document> ConvertToCollectionExpressionAsync(

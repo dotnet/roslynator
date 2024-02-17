@@ -1,5 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeStyle;
@@ -13,6 +15,12 @@ internal class ImplicitOrExplicitObjectCreationAnalysis : ImplicitOrExplicitCrea
     public override TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context)
     {
         return context.GetObjectCreationTypeStyle();
+    }
+
+    public override void AnalyzeCollectionExpression(ref SyntaxNodeAnalysisContext context)
+    {
+        if (context.SemanticModel.GetTypeInfo(context.Node, context.CancellationToken).ConvertedType?.TypeKind != TypeKind.Array)
+            AnalyzeImplicit(ref context);
     }
 
     protected override void ReportExplicitToImplicit(ref SyntaxNodeAnalysisContext context)
@@ -48,7 +56,10 @@ internal class ImplicitOrExplicitObjectCreationAnalysis : ImplicitOrExplicitCrea
 #if ROSLYN_4_7
     protected override bool UseCollectionExpressionFromImplicit(ref SyntaxNodeAnalysisContext context)
     {
-        return ((ImplicitObjectCreationExpressionSyntax)context.Node).ArgumentList?.Arguments.Any() != true
+        var implicitObjectCreation = (ImplicitObjectCreationExpressionSyntax)context.Node;
+
+        return implicitObjectCreation.ArgumentList?.Arguments.Any() != true
+            && implicitObjectCreation.Initializer?.Expressions.Any(f => f.IsKind(SyntaxKind.SimpleAssignmentExpression)) != true
             && UseCollectionExpression(ref context);
     }
 

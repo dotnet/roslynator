@@ -1854,4 +1854,53 @@ class C
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task TestNoDiagnostic_ObjectInitializerWithPropertySet()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+class C : IEnumerable<int>
+{
+    public string P { get; set; }
+
+    public IEnumerator<int> GetEnumerator() => throw new NotImplementedException();
+
+    IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
+
+    static C M()
+    {
+        C c = new() { P = "" };
+
+        return c;
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+    public async Task TestNoDiagnostic_Array()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M1()
+    {
+        string[] values = [];
+    }
+
+    void M2()
+    {
+        string[] values = ["a", "b", "c"];
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+    }
 }

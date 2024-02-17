@@ -1,12 +1,9 @@
 ﻿is_global = true
 
-roslnator.max_line_length = 140
-roslynator.prefix_field_identifier_with_underscore = false
-
-roslynator.refactoring.RR0010.enabled = false
-roslynator.refactoring.RR0012.enabled = false
-roslynator.refactoring.RR0066.enabled = false
-roslynator.refactoring.RR0088.enabled = false
-roslynator.refactoring.RR0138.enabled = false
-roslynator.refactoring.RR0171.enabled = false
-roslynator.refactoring.RR0188.enabled = false
+roslynator_refactoring.convert_foreach_to_for_and_reverse_loop.enabled = false
+roslynator_refactoring.expand_initializer.enabled = false
+roslynator_refactoring.extract_type_declaration_to_new_file.enabled = false
+roslynator_refactoring.introduce_constructor.enabled = false
+roslynator_refactoring.remove_all_documentation_comments.enabled = false
+roslynator_refactoring.replace_method_with_property.enabled = false
+roslynator_refactoring.use_string_empty_instead_of_empty_string_literal.enabled = false
