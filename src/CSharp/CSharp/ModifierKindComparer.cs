@@ -29,8 +29,10 @@ internal class ModifierKindComparer : IComparer<SyntaxKind>
                 return 30;
             case SyntaxKind.InternalKeyword:
                 return 40;
+#if ROSLYN_4_4
             case SyntaxKind.FileKeyword:
                 return 50;
+#endif
             case SyntaxKind.ConstKeyword:
                 return 60;
             case SyntaxKind.StaticKeyword:
