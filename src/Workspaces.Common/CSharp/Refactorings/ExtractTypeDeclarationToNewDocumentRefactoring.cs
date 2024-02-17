@@ -54,7 +54,8 @@ internal static class ExtractTypeDeclarationToNewDocumentRefactoring
 
         int index = members.IndexOf(member);
 
-        if (index == 0
+        if (member.IsParentKind(SyntaxKind.NamespaceDeclaration)
+            && index == 0
             && index < members.Count - 1)
         {
             MemberDeclarationSyntax nextMember = newMemberList[index];

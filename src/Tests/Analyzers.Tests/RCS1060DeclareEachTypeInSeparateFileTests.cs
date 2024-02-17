@@ -51,6 +51,7 @@ public class [|C2|]
 }
 """, """
 namespace N;
+
 public class C2
 {
 }
