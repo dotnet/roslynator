@@ -43,6 +43,40 @@ public class C
     }
 
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8600_ConvertingNullLiteralOrPossibleNullValueToNonNullableType)]
+    public async Task Test_LocalDeclarationWithCast()
+    {
+        await VerifyFixAsync(@"
+using System;
+#nullable enable
+
+public class C
+{
+    private object? Get() => null;
+
+    void M()
+    {
+      var s = (string) Get();
+      string s2 = (string) Get();
+    }
+}
+", @"
+using System;
+#nullable enable
+
+public class C
+{
+    private object? Get() => null;
+
+    void M()
+    {
+      var s = (string?) Get();
+      string? s2 = (string?) Get();
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+    }
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8600_ConvertingNullLiteralOrPossibleNullValueToNonNullableType)]
     public async Task Test_DeclarationExpression()
     {
         await VerifyFixAsync(@"
