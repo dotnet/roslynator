@@ -303,7 +303,6 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         AnalyzeImplicit(ref context);
     }
 
-
     protected void AnalyzeImplicit(ref SyntaxNodeAnalysisContext context)
     {
         if (context.Node.ContainsDiagnostics)
