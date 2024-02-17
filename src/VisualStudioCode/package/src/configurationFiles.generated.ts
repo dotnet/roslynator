@@ -916,6 +916,9 @@ roslynator_analyzers.enabled_by_default = true|false
 # Use string interpolation instead of 'string.Concat'
 #dotnet_diagnostic.rcs1267.severity = suggestion
 
+# Simplify numeric comparison expression
+#dotnet_diagnostic.rcs1268.severity = suggestion
+
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent
 
@@ -1024,11 +1027,6 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_refactoring.generate_enum_values.enabled = true
 #roslynator_refactoring.generate_event_invoking_method.enabled = true
 #roslynator_refactoring.generate_property_for_debuggerdisplay_attribute.enabled = true
-#roslynator_refactoring.change_accessibility.enabled = true
-#roslynator_refactoring.change_method_return_type_to_void.enabled = true
-#roslynator_refactoring.change_type_according_to_expression.enabled = true
-#roslynator_refactoring.check_expression_for_null.enabled = true
-#roslynator_refactoring.check_parameter_for_null.enabled = true
 #roslynator_refactoring.implement_custom_enumerator.enabled = true
 #roslynator_refactoring.implement_iequatable.enabled = true
 #roslynator_refactoring.initialize_field_from_constructor.enabled = true
