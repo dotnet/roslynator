@@ -120,6 +120,7 @@ public sealed class DeclareAsNullableCodeFixProvider : CompilerDiagnosticCodeFix
                     VariableDeclarationSyntax newVariableDeclaration = variableDeclaration
                         .ReplaceNode(type, newType)
                         .WithType(newDeclarationType);
+
                     return await context.Document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, ct).ConfigureAwait(false);
                 }
                 else
