@@ -48,7 +48,12 @@ internal static class ExtractTypeDeclarationToNewFileRefactoring
     private static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax memberDeclaration, SyntaxToken identifier)
     {
         if (identifier.Span.Contains(context.Span)
-            && memberDeclaration.IsParentKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.CompilationUnit)
+            && memberDeclaration.IsParentKind(
+                SyntaxKind.NamespaceDeclaration,
+#if ROSLYN_4_0
+                SyntaxKind.FileScopedNamespaceDeclaration,
+#endif
+                SyntaxKind.CompilationUnit)
             && context.IsRootCompilationUnit
             && context.Workspace.Kind != WorkspaceKind.MiscellaneousFiles
             && ExtractTypeDeclarationToNewDocumentRefactoring.GetNonNestedTypeDeclarations((CompilationUnitSyntax)context.Root).Skip(1).Any())

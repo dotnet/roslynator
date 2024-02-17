@@ -52,15 +52,15 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
         {
             foreach (MemberDeclarationSyntax member in members)
             {
-                SyntaxKind kind = member.Kind();
-
-                if (kind == SyntaxKind.NamespaceDeclaration)
+#if ROSLYN_4_0
+                if (member is BaseNamespaceDeclarationSyntax namespaceDeclaration)
+#else
+                if (member is NamespaceDeclarationSyntax namespaceDeclaration)
+#endif
                 {
-                    var namespaceDeclaration = (NamespaceDeclarationSyntax)member;
-
                     Analyze(namespaceDeclaration.Members);
                 }
-                else if (SyntaxFacts.IsTypeDeclaration(kind))
+                else if (SyntaxFacts.IsTypeDeclaration(member.Kind()))
                 {
                     if (firstTypeDeclaration is null)
                     {
@@ -93,16 +93,18 @@ public sealed class DeclareEachTypeInSeparateFileAnalyzer : BaseDiagnosticAnalyz
 
     private static bool ContainsSingleNamespaceWithSingleNonNamespaceMember(SyntaxList<MemberDeclarationSyntax> members)
     {
-        MemberDeclarationSyntax member = members.SingleOrDefault(shouldThrow: false);
+#if ROSLYN_4_0
+        if (members.SingleOrDefault(shouldThrow: false) is BaseNamespaceDeclarationSyntax namespaceDeclaration)
+#else
+        if (members.SingleOrDefault(shouldThrow: false) is NamespaceDeclarationSyntax namespaceDeclaration)
+#endif
+            {
+                MemberDeclarationSyntax member = namespaceDeclaration.Members.SingleOrDefault(shouldThrow: false);
 
-        if (member?.Kind() != SyntaxKind.NamespaceDeclaration)
-            return false;
+            return member is not null
+                && member.Kind() != SyntaxKind.NamespaceDeclaration;
+        }
 
-        var namespaceDeclaration = (NamespaceDeclarationSyntax)member;
-
-        member = namespaceDeclaration.Members.SingleOrDefault(shouldThrow: false);
-
-        return member is not null
-            && member.Kind() != SyntaxKind.NamespaceDeclaration;
+        return false;
     }
 }

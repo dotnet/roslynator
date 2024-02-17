@@ -113,10 +113,12 @@ internal static class ExtractTypeDeclarationToNewDocumentRefactoring
         {
             SyntaxKind kind = member.Kind();
 
-            if (kind == SyntaxKind.NamespaceDeclaration)
+#if ROSLYN_4_0
+            if (member is BaseNamespaceDeclarationSyntax namespaceDeclaration)
+#else
+            if (member is NamespaceDeclarationSyntax namespaceDeclaration)
+#endif
             {
-                var namespaceDeclaration = (NamespaceDeclarationSyntax)member;
-
                 foreach (MemberDeclarationSyntax member2 in GetNonNestedTypeDeclarations(namespaceDeclaration.Members))
                     yield return member2;
             }
