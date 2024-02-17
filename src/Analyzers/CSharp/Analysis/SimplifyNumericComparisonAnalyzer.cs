@@ -30,9 +30,13 @@ public sealed class SimplifyNumericComparisonAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(f => AnalyzeComparison(f)
-            ,SyntaxKind.EqualsExpression, SyntaxKind.GreaterThanExpression, SyntaxKind.GreaterThanOrEqualExpression
-            ,SyntaxKind.LessThanExpression, SyntaxKind.LessThanOrEqualExpression);
+        context.RegisterSyntaxNodeAction(
+            f => AnalyzeComparison(f),
+            SyntaxKind.EqualsExpression,
+            SyntaxKind.GreaterThanExpression,
+            SyntaxKind.GreaterThanOrEqualExpression,
+            SyntaxKind.LessThanExpression,
+            SyntaxKind.LessThanOrEqualExpression);
     }
 
     private static void AnalyzeComparison(SyntaxNodeAnalysisContext context)

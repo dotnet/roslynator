@@ -426,5 +426,4 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
 
         return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, cancellationToken);
     }
-
 }
