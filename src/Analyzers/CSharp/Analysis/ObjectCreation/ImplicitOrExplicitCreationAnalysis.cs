@@ -50,6 +50,8 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
     protected abstract void ReportCollectionExpressionToImplicit(ref SyntaxNodeAnalysisContext context);
 #endif
 
+    public abstract void AnalyzeCollectionExpression(ref SyntaxNodeAnalysisContext context);
+
     protected virtual bool IsInitializerObvious(ref SyntaxNodeAnalysisContext context) => false;
 
     public virtual void AnalyzeExplicitCreation(ref SyntaxNodeAnalysisContext context)
@@ -301,12 +303,8 @@ internal abstract class ImplicitOrExplicitCreationAnalysis
         AnalyzeImplicit(ref context);
     }
 
-    public virtual void AnalyzeCollectionExpression(ref SyntaxNodeAnalysisContext context)
-    {
-        AnalyzeImplicit(ref context);
-    }
 
-    private void AnalyzeImplicit(ref SyntaxNodeAnalysisContext context)
+    protected void AnalyzeImplicit(ref SyntaxNodeAnalysisContext context)
     {
         if (context.Node.ContainsDiagnostics)
             return;
