@@ -503,4 +503,78 @@ class C
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
             .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToImplicit_EmptyArray()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System;
+
+class C
+{
+    void M1()
+    {
+        string[] values = [|[]|];
+    }
+
+    void M2()
+    {
+        string[] values = [|["a", "b", "c"]|];
+    }
+}
+""", """
+using System;
+
+class C
+{
+    void M1()
+    {
+        string[] values = Array.Empty<string>();
+    }
+
+    void M2()
+    {
+        string[] values = new[] { "a", "b", "c" };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+    public async Task Test_CollectionExpressionToExplicit_EmptyArray()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System;
+
+class C
+{
+    void M1()
+    {
+        string[] values = [|[]|];
+    }
+
+    void M2()
+    {
+        string[] values = [|["a", "b", "c"]|];
+    }
+}
+""", """
+using System;
+
+class C
+{
+    void M1()
+    {
+        string[] values = Array.Empty<string>();
+    }
+
+    void M2()
+    {
+        string[] values = new string[] { "a", "b", "c" };
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit)
+            .AddConfigOption(ConfigOptionKeys.UseCollectionExpression, false));
+    }
 }
