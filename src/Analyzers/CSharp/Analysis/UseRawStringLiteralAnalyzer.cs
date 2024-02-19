@@ -89,5 +89,5 @@ public sealed class UseRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
             }
         }
     }
-s#endif
+#endif
 }
