@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1019](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1019) ([PR](https://github.com/dotnet/roslynator/pull/1402))
 - Fix analyzer [RCS1250](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1250) ([PR](https://github.com/dotnet/roslynator/pull/1403), [PR](https://github.com/dotnet/roslynator/pull/1404))
 - Fix code fix for [CS8600](https://josefpihrt.github.io/docs/roslynator/fixes/CS8600) changing the wrong type when casts or `var` are involved ([PR](https://github.com/dotnet/roslynator/pull/1393) by @jroessel)
+- Fix Roslyn multi-targeting ([PR](https://github.com/dotnet/roslynator/pull/1407))
 
 ## [4.10.0] - 2024-01-24
 
