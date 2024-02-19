@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
         public static RefactoringDescriptor ExpandPositionalConstructor = new RefactoringDescriptor("RR0215", "roslynator_refactoring.expand_positional_constructor.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ExtractEventHandlerMethod = new RefactoringDescriptor("RR0203", "roslynator_refactoring.extract_event_handler_method.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ExtractExpressionFromCondition = new RefactoringDescriptor("RR0043", "roslynator_refactoring.extract_expression_from_condition.enabled", isEnabledByDefault: true);
-        public static RefactoringDescriptor ExtractTypeDeclarationToNewFile = new RefactoringDescriptor("RR0046", "roslynator_refactoring.extract_type_declaration_to_new_file.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor ExtractTypeDeclarationToNewFile = new RefactoringDescriptor("RR0046", "roslynator_refactoring.extract_type_declaration_to_new_file.enabled", isEnabledByDefault: false);
         public static RefactoringDescriptor GenerateBaseConstructors = new RefactoringDescriptor("RR0054", "roslynator_refactoring.generate_base_constructors.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor GenerateCombinedEnumMember = new RefactoringDescriptor("RR0055", "roslynator_refactoring.generate_combined_enum_member.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor GenerateEnumMember = new RefactoringDescriptor("RR0056", "roslynator_refactoring.generate_enum_member.enabled", isEnabledByDefault: true);
