@@ -15,184 +15,184 @@ public class RCS1214UnnecessaryInterpolatedStringTests : AbstractCSharpDiagnosti
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_StringLiteral()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = [|$""{""""}""|];
+        string s = [|$"{""}"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = """";
+        string s = "";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_InterpolatedString()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|$""{$""{s}""}""|];
+        s = [|$"{$"{s}"}"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
-        s = $""{s}"";
+        s = $"{s}";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_NonNullStringConstant()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        const string x = """";
-        string s = [|$""{x}""|];
+        const string x = "";
+        string s = [|$"{x}"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        const string x = """";
+        const string x = "";
         string s = x;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_NoInterpolation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = [|$|]""abc"";
+        string s = [|$|]"abc";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = ""abc"";
+        string s = "abc";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_NoInterpolation2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = [|$|]@""abc"";
+        string s = [|$|]@"abc";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = @""abc"";
+        string s = @"abc";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task Test_NoInterpolation3()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = @[|$|]""abc"";
+        string s = @[|$|]"abc";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = @""abc"";
+        string s = @"abc";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
         const string x = null;
-        string s = $""{x}"";
+        string s = $"{x}";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic_FormattableString()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
 {
-    string Call(FormattableString s) => Call($"""");
+    string Call(FormattableString s) => Call($"");
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic_FormattableString2()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
 {
-    string Call(FormattableString s) => Call($""x"");
+    string Call(FormattableString s) => Call($"x");
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
     public async Task TestNoDiagnostic_FormattableString3()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
@@ -200,10 +200,10 @@ class C
     string Call(FormattableString s)
     {
         string x = null;
-        return Call($""{""x""}"");
+        return Call($"{"x"}");
     }
 
 }
-");
+""");
     }
 }

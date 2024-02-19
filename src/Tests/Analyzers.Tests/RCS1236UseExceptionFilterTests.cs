@@ -443,7 +443,7 @@ static class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
     public async Task TestNoDiagnostic_ContainsMethodThatCanThrow_XmlCommentContainsException()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
@@ -461,13 +461,13 @@ class C
     }
 
     /// <summary></summary>
-    /// <exception cref=""Exception""></exception>
+    /// <exception cref="Exception"></exception>
     bool M2(Exception ex)
     {
         return false;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]

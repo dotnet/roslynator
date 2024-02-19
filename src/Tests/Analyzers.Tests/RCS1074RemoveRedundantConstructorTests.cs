@@ -53,60 +53,60 @@ namespace JetBrains.Annotations
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_StructWithFieldInitializer()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 struct C
 {
-    private string _f = """";
+    private string _f = "";
 
     public C()
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_StructWithPropertyInitializer()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 struct C
 {
-    public string P { get; init; } = """";
+    public string P { get; init; } = "";
 
     public C()
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_RecordStructWithFieldInitializer()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 record struct C
 {
-    private string _f = """";
+    private string _f = "";
 
     public C()
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
     public async Task TestNoDiagnostic_RecordStructWithPropertyInitializer()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 record struct C
 {
-    public string P { get; init; } = """";
+    public string P { get; init; } = "";
 
     public C()
     {
     }
 }
-");
+""");
     }
 }

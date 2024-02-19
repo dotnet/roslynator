@@ -88,26 +88,26 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
     public async Task Test_TrailingComment2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M<T1, T2>() where T1 : class where T2 : class [|// x|]
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary>
     /// x
     /// </summary>
-    /// <typeparam name=""T1""></typeparam>
-    /// <typeparam name=""T2""></typeparam>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
     void M<T1, T2>() where T1 : class where T2 : class
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]

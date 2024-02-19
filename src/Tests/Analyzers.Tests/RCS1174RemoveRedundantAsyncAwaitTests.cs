@@ -478,7 +478,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task Test_SwitchWithDefaultSection()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Threading.Tasks;
 
 class C
@@ -489,11 +489,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return await GetAsync();
                 }
-            case ""b"":
+            case "b":
                 {
                     return await GetAsync();
                 }
@@ -504,7 +504,7 @@ class C
         }
     }
 }
-", @"
+""", """
 using System.Threading.Tasks;
 
 class C
@@ -515,11 +515,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return GetAsync();
                 }
-            case ""b"":
+            case "b":
                 {
                     return GetAsync();
                 }
@@ -530,7 +530,7 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
@@ -734,7 +734,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_ReturnTypeAndAwaitTypeDoNotEqual()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Threading.Tasks;
 
@@ -833,11 +833,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return await GetAsync();
                 }
-            case ""b"":
+            case "b":
                 {
                     return await GetAsync();
                 }
@@ -848,13 +848,13 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_AwaitContainsAwait()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Threading.Tasks;
 
@@ -936,11 +936,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return await GetAsync(await GetAsync());
                 }
-            case ""b"":
+            case "b":
                 {
                     return await GetAsync(await GetAsync());
                 }
@@ -955,11 +955,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return await GetAsync(await GetAsync());
                 }
-            case ""b"":
+            case "b":
                 {
                     return await GetAsync(await GetAsync());
                 }
@@ -970,13 +970,13 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_UsingDeclaration()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -985,7 +985,7 @@ class C
 {
     private async Task<string> M()
     {
-        using var stream = File.OpenRead("""");
+        using var stream = File.OpenRead("");
         return await this.M2(stream);
     }
 
@@ -994,6 +994,6 @@ class C
         throw new NotImplementedException();
     }
 }
-");
+""");
     }
 }

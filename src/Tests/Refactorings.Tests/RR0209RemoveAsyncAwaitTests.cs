@@ -417,7 +417,7 @@ class C
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
     public async Task Test_SwitchWithoutDefaultSection()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 using System.Threading.Tasks;
 
 class C
@@ -428,11 +428,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return await GetAsync();
                 }
-            case ""b"":
+            case "b":
                 {
                     return await GetAsync();
                 }
@@ -441,7 +441,7 @@ class C
         return await GetAsync();
     }
 }
-", @"
+""", """
 using System.Threading.Tasks;
 
 class C
@@ -452,11 +452,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return GetAsync();
                 }
-            case ""b"":
+            case "b":
                 {
                     return GetAsync();
                 }
@@ -465,13 +465,13 @@ class C
         return GetAsync();
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
     public async Task Test_SwitchWithDefaultSection()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 using System.Threading.Tasks;
 
 class C
@@ -482,11 +482,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return await GetAsync();
                 }
-            case ""b"":
+            case "b":
                 {
                     return await GetAsync();
                 }
@@ -497,7 +497,7 @@ class C
         }
     }
 }
-", @"
+""", """
 using System.Threading.Tasks;
 
 class C
@@ -508,11 +508,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return GetAsync();
                 }
-            case ""b"":
+            case "b":
                 {
                     return GetAsync();
                 }
@@ -523,6 +523,6 @@ class C
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 }

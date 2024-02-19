@@ -103,29 +103,29 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_NoIndentation2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string M(string x) 
     {
         return M(
-[|"""" +
-"""" +
-""""|]);
+[|"" +
+"" +
+""|]);
     }
 }
-", @"
+""", """
 class C
 {
     string M(string x) 
     {
         return M(
-            """" +
-            """" +
-            """");
+            "" +
+            "" +
+            "");
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "after"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.BinaryOperatorNewLine, "after"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
@@ -192,7 +192,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_LeftIsMultiline_RightIsSingleLine()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M() 
@@ -201,10 +201,10 @@ class C
 
         x = [|y
             .ToString()
-            .Equals("""") && z|];
+            .Equals("") && z|];
     }
 }
-", @"
+""", """
 class C
 {
     void M() 
@@ -213,17 +213,17 @@ class C
 
         x = y
             .ToString()
-            .Equals("""")
+            .Equals("")
             && z;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
     public async Task Test_NestedBinaryExpressionOfDifferentKind()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
@@ -234,11 +234,11 @@ class C
             .Equals([|x
             && y|])
                 || y
-                    .Equals(""b"")|])
+                    .Equals("b")|])
             && z;
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -249,35 +249,37 @@ class C
             .Equals(x
                 && y)
             || y
-                .Equals(""b""))
+                .Equals("b"))
             && z;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]
     public async Task TestDiagnostic_StringConcatInsideTopLevelAttribute()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
-[Obsolete([|""a""
-+ ""b""
-+ ""c""|])]
+[Obsolete([|"a"
++ "b"
++ "c"|])]
 class C
 {
 }
-        ", @"
+        
+""", """
 using System;
 
-[Obsolete(""a""
-    + ""b""
-    + ""c"")]
+[Obsolete("a"
+    + "b"
+    + "c")]
 class C
 {
 }
-        ");
+        
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]

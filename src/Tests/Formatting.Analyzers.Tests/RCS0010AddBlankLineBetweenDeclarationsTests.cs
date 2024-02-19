@@ -223,10 +223,10 @@ enum E
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarations)]
     public async Task TestNoDiagnostic_GlobalStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
-var s = """";
+        await VerifyNoDiagnosticAsync("""
+var s = "";
 s = s
     .ToString();
-", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 }

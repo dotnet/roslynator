@@ -15,23 +15,23 @@ public class RCS1014UseImplicitlyTypedArrayTests : AbstractCSharpDiagnosticVerif
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var x = new [|string|][] { """" };
+        var x = new [|string|][] { "" };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var x = new[] { """" };
+        var x = new[] { "" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -63,23 +63,23 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test_TypeIsObvious()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var x = new [|string|][] { """" };
+        var x = new [|string|][] { "" };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var x = new[] { """" };
+        var x = new[] { "" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -111,43 +111,43 @@ class B : A
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task Test_NestedArray()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string[][] _f = new [|string|][][]
     {
-        new[] { """" },
+        new[] { "" },
     };
 }
-", @"
+""", """
 class C
 {
     string[][] _f = new[]
     {
-        new[] { """" },
+        new[] { "" },
     };
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
     public async Task TestNoDiagnostic_TypeIsObvious()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
         var x = new[]
         {
-            new[] { """", new string('a', 1) },
-            new[] { new string('a', 1), """" }
+            new[] { "", new string('a', 1) },
+            new[] { new string('a', 1), "" }
         };
     }
 
     string M2() => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
@@ -200,7 +200,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task Test_UseVarInsteadOfImplicitCreation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 class C
@@ -209,12 +209,12 @@ class C
     {
         string[] addresses = [|new[]|]
         {
-            ""address 1"",
-            ""address 2""
+            "address 1",
+            "address 2"
         };
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 class C
@@ -223,19 +223,19 @@ class C
     {
         var addresses = new string[]
         {
-            ""address 1"",
-            ""address 2""
+            "address 1",
+            "address 2"
         };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit)
             .AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task TestNoDiagnostic_UseVarInsteadOfImplicitCreation()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 
 class C
@@ -244,27 +244,27 @@ class C
     {
         ICollection<string> addresses = new[]
         {
-            ""a"",
-            ""b""
+            "a",
+            "b"
         };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
     public async Task TestNoDiagnostic_UseVarInsteadOfImplicitCreation_CollectionExpression()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 
 class C
 {
     void M()
     {
-        string[] addresses = [ ""a"", ""b"" ];
+        string[] addresses = [ "a", "b" ];
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, true));
     }
 }

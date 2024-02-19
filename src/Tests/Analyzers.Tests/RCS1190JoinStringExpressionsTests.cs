@@ -15,357 +15,357 @@ public class RCS1190JoinStringExpressionsTests : AbstractCSharpDiagnosticVerifie
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_Literal_Regular()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        s = [|""\x1g"" + ""\x1\x1234"" + ""\x1""|];
+        s = [|"\x1g" + "\x1\x1234" + "\x1"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = ""\x1g\x1\x1234\x1"";
+        s = "\x1g\x1\x1234\x1";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_Literal_Regular2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        s = s + [|""a"" + ""b"" + ""c""|] + s;
+        s = s + [|"a" + "b" + "c"|] + s;
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = s + ""abc"" + s;
+        s = s + "abc" + s;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_Literal_Verbatim()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        s = [|@""a"" + @""b"" + @""c""|];
+        s = [|@"a" + @"b" + @"c"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = @""abc"";
+        s = @"abc";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_Literal_Verbatim2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        s = s + [|@""a"" + @""b"" + @""c""|] + s;
+        s = s + [|@"a" + @"b" + @"c"|] + s;
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = s + @""abc"" + s;
+        s = s + @"abc" + s;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_InterpolatedString_Regular()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        s = [|$""\x1g"" + $""\x1\x1234"" + $""{s}\x1""|];
+        s = [|$"\x1g" + $"\x1\x1234" + $"{s}\x1"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = $""\x1g\x1\x1234{s}\x1"";
+        s = $"\x1g\x1\x1234{s}\x1";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_InterpolatedString_Regular2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        s = s + [|$""a"" + $""b"" + $""{s}\x1""|] + s;
+        s = s + [|$"a" + $"b" + $"{s}\x1"|] + s;
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = s + $""ab{s}\x1"" + s;
+        s = s + $"ab{s}\x1" + s;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_InterpolatedString_Verbatim()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        s = [|$@""a"" + $@""b"" + $@""c""|];
+        s = [|$@"a" + $@"b" + $@"c"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = $@""abc"";
+        s = $@"abc";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_InterpolatedString_Verbatim2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        s = s + [|$@""a"" + $@""b"" + $@""c""|] + s;
+        s = s + [|$@"a" + $@"b" + $@"c"|] + s;
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = s + $@""abc"" + s;
+        s = s + $@"abc" + s;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_Verbatim_Multiline()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-            s = [|@""a"" + @""b
-c"" + @""d
-e""|];
+            s = [|@"a" + @"b
+c" + @"d
+e"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-            s = @""ab
+            s = @"ab
 cd
-e"";
+e";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task Test_InterpolatedString_Multiline()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-            s = [|$@""a"" + $@""b
-c"" + $@""d
-e""|];
+            s = [|$@"a" + $@"b
+c" + $@"d
+e"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-            s = $@""ab
+            s = $@"ab
 cd
-e"";
+e";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task TestNoDiagnostic_Regular_Multiline()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string s)
     {
-        s = ""a""
-            + ""b"";
+        s = "a"
+            + "b";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task TestNoDiagnostic_Verbatim_Multiline()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string s)
     {
-        s = @""a
-            b"" + @""c""
-            + @""d"";
+        s = @"a
+            b" + @"c"
+            + @"d";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task TestNoDiagnostic_RegularAndVerbatim()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string s)
     {
-        s = ""a"" + @""b"";
-        s = @""a"" + ""b"";
+        s = "a" + @"b";
+        s = @"a" + "b";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task TestNoDiagnostic_LiteralAndInterpolated()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string s)
     {
-        s = ""a"" + $""b"";
-        s = $""a"" + ""b"";
+        s = "a" + $"b";
+        s = $"a" + "b";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task TestNoDiagnostic_LiteralAndInterpolated_Verbatim()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string s)
     {
-        s = @""a"" + $@""b"";
-        s = $@""a"" + @""b"";
+        s = @"a" + $@"b";
+        s = $@"a" + @"b";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task TestNoDiagnostic_AddExpressionIsNotStringConcatenation()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string s)
     {
-        s = default(C) + ""a"" + ""b"";
+        s = default(C) + "a" + "b";
     }
 
     public static string operator +(C left, string right) => null;
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task TestNoDiagnostic_LiteralsMixedWithExpressions()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string s1, string s2, string s3)
     {
-        s1 = s1 + ""a"" + s2 +  ""b"" + s3;
+        s1 = s1 + "a" + s2 +  "b" + s3;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
     public async Task TestNoDiagnostic_HexadecimalDigit()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Text.RegularExpressions;
 class C
 {
-    private static readonly Regex _regex = new Regex(""\x1A"" + ""E\\d+E"");
+    private static readonly Regex _regex = new Regex("\x1A" + "E\\d+E");
 
     void M(string s)
     {
-        s = ""a"" + ""\x1"" + ""b"";
-        s = ""a"" + ""\x12"" + ""b"";
-        s = ""a"" + ""\x123"" + ""b"";
+        s = "a" + "\x1" + "b";
+        s = "a" + "\x12" + "b";
+        s = "a" + "\x123" + "b";
 
-        s = ""a"" + $""{s}\x1"" + ""b"";
-        s = ""a"" + $""{s}\x12"" + ""b"";
-        s = ""a"" + $""{s}\x123"" + ""b"";
+        s = "a" + $"{s}\x1" + "b";
+        s = "a" + $"{s}\x12" + "b";
+        s = "a" + $"{s}\x123" + "b";
     }
 }
-");
+""");
     }
 }

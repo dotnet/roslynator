@@ -15,20 +15,20 @@ public class RCS1139AddSummaryElementToDocumentationCommentTests : AbstractCShar
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]
     public async Task Test_Class()
     {
-        await VerifyDiagnosticAndFixAsync(@"
-///[| <typeparam name=""T""></typeparam>
+        await VerifyDiagnosticAndFixAsync("""
+///[| <typeparam name="T"></typeparam>
 |]class C<T>
 {
 }
-", @"
+""", """
 /// <summary>
 /// 
 /// </summary>
-/// <typeparam name=""T""></typeparam>
+/// <typeparam name="T"></typeparam>
 class C<T>
 {
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddSummaryElementToDocumentationComment)]

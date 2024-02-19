@@ -15,15 +15,15 @@ public class RCS9009UnknownLanguageNameTests : AbstractCSharpDiagnosticVerifier<
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnknownLanguageName)]
     public async Task Test_DiagnosticAnalyzer()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-[DiagnosticAnalyzer([|""Foo""|])]
+[DiagnosticAnalyzer([|"Foo"|])]
 abstract class C : DiagnosticAnalyzer
 {
 }
-", @"
+""", """
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -31,21 +31,21 @@ using Microsoft.CodeAnalysis.Diagnostics;
 abstract class C : DiagnosticAnalyzer
 {
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticIdentifiers.UnknownLanguageName, "C#"));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticIdentifiers.UnknownLanguageName, "C#"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnknownLanguageName)]
     public async Task Test_DiagnosticAnalyzer_ParamArray()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-[DiagnosticAnalyzer(LanguageNames.FSharp, [|""Foo""|], LanguageNames.VisualBasic, [|""Bar""|])]
+[DiagnosticAnalyzer(LanguageNames.FSharp, [|"Foo"|], LanguageNames.VisualBasic, [|"Bar"|])]
 abstract class C : DiagnosticAnalyzer
 {
 }
-", @"
+""", """
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -53,21 +53,21 @@ using Microsoft.CodeAnalysis.Diagnostics;
 abstract class C : DiagnosticAnalyzer
 {
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticIdentifiers.UnknownLanguageName, "C#"));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticIdentifiers.UnknownLanguageName, "C#"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnknownLanguageName)]
     public async Task Test_CodeFixProvider()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 
-[ExportCodeFixProvider([|""Foo""|])]
+[ExportCodeFixProvider([|"Foo"|])]
 abstract class C : CodeFixProvider
 {
 }
-", @"
+""", """
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 
@@ -75,21 +75,21 @@ using Microsoft.CodeAnalysis.CodeFixes;
 abstract class C : CodeFixProvider
 {
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticIdentifiers.UnknownLanguageName, "C#"));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticIdentifiers.UnknownLanguageName, "C#"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnknownLanguageName)]
     public async Task Test_CodeRefactoringProvider()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 
-[ExportCodeRefactoringProvider([|""Foo""|])]
+[ExportCodeRefactoringProvider([|"Foo"|])]
 abstract class C : CodeRefactoringProvider
 {
 }
-", @"
+""", """
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 
@@ -97,7 +97,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 abstract class C : CodeRefactoringProvider
 {
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticIdentifiers.UnknownLanguageName, "C#"));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticIdentifiers.UnknownLanguageName, "C#"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnknownLanguageName)]

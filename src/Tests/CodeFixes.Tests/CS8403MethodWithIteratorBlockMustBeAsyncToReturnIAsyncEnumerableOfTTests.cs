@@ -13,7 +13,7 @@ public class CS8403MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT)]
     public async Task Test_Method()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,10 +21,10 @@ class C
 {
     IAsyncEnumerable<string> DoAsync()
     {
-        yield return await Task.FromResult("""");
+        yield return await Task.FromResult("");
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -32,16 +32,16 @@ class C
 {
     async IAsyncEnumerable<string> DoAsync()
     {
-        yield return await Task.FromResult("""");
+        yield return await Task.FromResult("");
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.AddAsyncModifier));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.AddAsyncModifier));
     }
 
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT)]
     public async Task Test_LocalFunction()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -51,11 +51,11 @@ class C
     {
         IAsyncEnumerable<string> DoAsync()
         {
-            yield return await Task.FromResult("""");
+            yield return await Task.FromResult("");
         }
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -65,10 +65,10 @@ class C
     {
         async IAsyncEnumerable<string> DoAsync()
         {
-            yield return await Task.FromResult("""");
+            yield return await Task.FromResult("");
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.AddAsyncModifier));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.AddAsyncModifier));
     }
 }

@@ -138,18 +138,18 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
     public async Task TestNoDiagnostic()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     public unsafe void M()
     {
-        string s = """";
+        string s = "";
 
-        s = (s != null) ? """" : s;
-        s = (s == null) ? s : """";
+        s = (s != null) ? "" : s;
+        s = (s == null) ? s : "";
     }
 }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
@@ -172,15 +172,16 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
     public async Task TestNoDiagnostic_DefaultOfTEqualsToNull()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
 {
     T M<T>()
     {
-        return default(T) == null ? (T)Convert.ChangeType("""", typeof(T)) : default(T);
+        return default(T) == null ? (T)Convert.ChangeType("", typeof(T)) : default(T);
     }
-}", options: Options.WithAllowUnsafe(true));
+}
+""", options: Options.WithAllowUnsafe(true));
     }
 }

@@ -111,7 +111,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_Method_LocalStatement_WithoutAsync_TaskOfT()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Threading.Tasks;
 
@@ -121,7 +121,7 @@ class C
     {
         [|using|] var disposable = GetDisposable();
 
-        return Task.FromResult("""");
+        return Task.FromResult("");
     }
 
     private Disposable GetDisposable() => throw new NotImplementedException();
@@ -132,7 +132,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     public void Dispose() => throw new NotImplementedException();
     public ValueTask DisposeAsync() => throw new NotImplementedException();
 }
-", @"
+""", """
 using System;
 using System.Threading.Tasks;
 
@@ -142,7 +142,7 @@ class C
     {
         await using var disposable = GetDisposable();
 
-        return await Task.FromResult("""");
+        return await Task.FromResult("");
     }
 
     private Disposable GetDisposable() => throw new NotImplementedException();
@@ -153,7 +153,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     public void Dispose() => throw new NotImplementedException();
     public ValueTask DisposeAsync() => throw new NotImplementedException();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
@@ -263,7 +263,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_LocalFunction_LocalStatement_WithoutAsync_TaskOfT()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Threading.Tasks;
 
@@ -275,7 +275,7 @@ class C
         {
             [|using|] var disposable = GetDisposable();
 
-            return Task.FromResult("""");
+            return Task.FromResult("");
         }
     }
 
@@ -287,7 +287,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     public void Dispose() => throw new NotImplementedException();
     public ValueTask DisposeAsync() => throw new NotImplementedException();
 }
-", @"
+""", """
 using System;
 using System.Threading.Tasks;
 
@@ -299,7 +299,7 @@ class C
         {
             await using var disposable = GetDisposable();
 
-            return await Task.FromResult("""");
+            return await Task.FromResult("");
         }
     }
 
@@ -311,7 +311,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     public void Dispose() => throw new NotImplementedException();
     public ValueTask DisposeAsync() => throw new NotImplementedException();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
@@ -413,7 +413,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_Method_UsingStatement_WithoutAsync_TaskOfT()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Threading.Tasks;
 
@@ -423,7 +423,7 @@ class C
     {
         [|using|] (var disposable = GetDisposable()) { }
 
-        return Task.FromResult("""");
+        return Task.FromResult("");
     }
 
     private Disposable GetDisposable() => throw new NotImplementedException();
@@ -434,7 +434,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     public void Dispose() => throw new NotImplementedException();
     public ValueTask DisposeAsync() => throw new NotImplementedException();
 }
-", @"
+""", """
 using System;
 using System.Threading.Tasks;
 
@@ -444,7 +444,7 @@ class C
     {
         await using (var disposable = GetDisposable()) { }
 
-        return await Task.FromResult("""");
+        return await Task.FromResult("");
     }
 
     private Disposable GetDisposable() => throw new NotImplementedException();
@@ -455,7 +455,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     public void Dispose() => throw new NotImplementedException();
     public ValueTask DisposeAsync() => throw new NotImplementedException();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
@@ -565,7 +565,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task Test_LocalFunction_UsingStatement_WithoutAsync_TaskOfT()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Threading.Tasks;
 
@@ -577,7 +577,7 @@ class C
         {
             [|using|] (var disposable = GetDisposable()) { }
 
-            return Task.FromResult("""");
+            return Task.FromResult("");
         }
     }
 
@@ -589,7 +589,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     public void Dispose() => throw new NotImplementedException();
     public ValueTask DisposeAsync() => throw new NotImplementedException();
 }
-", @"
+""", """
 using System;
 using System.Threading.Tasks;
 
@@ -601,7 +601,7 @@ class C
         {
             await using (var disposable = GetDisposable()) { }
 
-            return await Task.FromResult("""");
+            return await Task.FromResult("");
         }
     }
 
@@ -613,7 +613,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     public void Dispose() => throw new NotImplementedException();
     public ValueTask DisposeAsync() => throw new NotImplementedException();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
@@ -925,7 +925,7 @@ internal class Disposable : IDisposable, IAsyncDisposable
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DisposeResourceAsynchronously)]
     public async Task TestNoDiagnostic_LockStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.IO;
 using System.Threading.Tasks;
 
@@ -937,12 +937,12 @@ abstract class C
     {
         lock (_lock)
         {
-            using FileStream fs = new(""test.txt"", FileMode.OpenOrCreate);
+            using FileStream fs = new("test.txt", FileMode.OpenOrCreate);
         }
 
         await Task.Yield();
     }
 }
-");
+""");
     }
 }

@@ -13,7 +13,7 @@ public class RR0090RemoveAllPreprocessorDirectivesTests : AbstractCSharpRefactor
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAllPreprocessorDirectives)]
     public async Task Test()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 #nullable disable
 
 class C
@@ -22,7 +22,7 @@ class C
     public void M()
     {
 #if DEBUG
-        string s = ""DEBUG"";
+        string s = "DEBUG";
 #endif
     }
     #endregion
@@ -34,18 +34,18 @@ class C
     public string P { get; set; }
     #endregion
 }
-", @"
+""", """
 
 class C
 {
     public void M()
     {
-        string s = ""DEBUG"";
+        string s = "DEBUG";
     }
 
 
     public string P { get; set; }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 }

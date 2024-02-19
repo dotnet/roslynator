@@ -15,65 +15,65 @@ public class RCS0059PlaceNewLineAfterOrBeforeNullConditionalOperatorTests : Abst
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator)]
     public async Task Test_BeforeInsteadOfAfter()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Linq;
 
 class C
 {
     void M()
     {
-        string s = """"
+        string s = ""
             .Select(f => f.ToString())
             .FirstOrDefault()?[||]
             .ToString();
     }
 }
-", @"
+""", """
 using System.Linq;
 
 class C
 {
     void M()
     {
-        string s = """"
+        string s = ""
             .Select(f => f.ToString())
             .FirstOrDefault()
             ?.ToString();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "before"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "before"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator)]
     public async Task Test_AfterInsteadOfBefore()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Linq;
 
 class C
 {
     void M()
     {
-        string s = """"
+        string s = ""
             .Select(f => f.ToString())
             .FirstOrDefault()[||]
             ?.ToString();
     }
 }
-", @"
+""", """
 using System.Linq;
 
 class C
 {
     void M()
     {
-        string s = """"
+        string s = ""
             .Select(f => f.ToString())
             .FirstOrDefault()?
             .ToString();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "after"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "after"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator)]
@@ -109,74 +109,74 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator)]
     public async Task TestNoDiagnostic_BeforeInsteadOfAfter()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Linq;
 
 class C
 {
     void M()
     {
-        string s = """"
+        string s = ""
             .Select(f => f.ToString())
             .FirstOrDefault()
             ?.ToString();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "before"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "before"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator)]
     public async Task TestNoDiagnostic_BeforeInsteadOfAfter_SingleLine()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Linq;
 
 class C
 {
     void M()
     {
-        string s = """"
+        string s = ""
             .Select(f => f.ToString())
             .FirstOrDefault()?.ToString();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "before"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "before"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator)]
     public async Task TestNoDiagnostic_AfterInsteadOfBefore()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Linq;
 
 class C
 {
     void M()
     {
-        string s = """"
+        string s = ""
             .Select(f => f.ToString())
             .FirstOrDefault()?
             .ToString();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "after"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "after"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator)]
     public async Task TestNoDiagnostic_AfterInsteadOfBefore_SingleLine()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Linq;
 
 class C
 {
     void M()
     {
-        string s = """"
+        string s = ""
             .Select(f => f.ToString())
             .FirstOrDefault()?.ToString();
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "after"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "after"));
     }
 }

@@ -765,16 +765,16 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
     public async Task TestNoDiagnostic_MethodWithMultilineStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     string M()
     {
-        return @""a
-            b"";
+        return @"a
+            b";
     }
 }
-", options: Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines));
+""", options: Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]

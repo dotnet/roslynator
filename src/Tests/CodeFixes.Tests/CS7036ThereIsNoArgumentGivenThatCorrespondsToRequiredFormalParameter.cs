@@ -13,7 +13,7 @@ public class CS7036ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParamete
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
     public async Task Test()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 class C2
 {
     void M()
@@ -21,7 +21,7 @@ class C2
         var c = new C()
         {
             P1 = string.Empty,
-            P2 = ""x"",
+            P2 = "x",
         };
     }
 }
@@ -37,12 +37,12 @@ class C
     public string P1 { get; private set; }
     public string P2 { get; private set; }
 }
-", @"
+""", """
 class C2
 {
     void M()
     {
-        var c = new C(string.Empty, ""x"");
+        var c = new C(string.Empty, "x");
     }
 }
 
@@ -57,13 +57,13 @@ class C
     public string P1 { get; private set; }
     public string P2 { get; private set; }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
     }
 
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
     public async Task Test_NoArgumentList()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 class C2
 {
     void M()
@@ -71,7 +71,7 @@ class C2
         var c = new C
         {
             P1 = string.Empty,
-            P2 = ""x"",
+            P2 = "x",
         };
     }
 }
@@ -87,12 +87,12 @@ class C
     public string P1 { get; private set; }
     public string P2 { get; private set; }
 }
-", @"
+""", """
 class C2
 {
     void M()
     {
-        var c = new C(string.Empty, ""x"");
+        var c = new C(string.Empty, "x");
     }
 }
 
@@ -107,13 +107,13 @@ class C
     public string P1 { get; private set; }
     public string P2 { get; private set; }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
     }
 
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
     public async Task Test_NotAllProperties()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 class C2
 {
     void M()
@@ -122,7 +122,7 @@ class C2
         {
             P1 = string.Empty,
             P3 = string.Empty,
-            P2 = ""x"",
+            P2 = "x",
         };
     }
 }
@@ -139,12 +139,12 @@ class C
     public string P2 { get; private set; }
     public string P3 { get; set; }
 }
-", @"
+""", """
 class C2
 {
     void M()
     {
-        var c = new C(string.Empty, ""x"")
+        var c = new C(string.Empty, "x")
         {
 
             P3 = string.Empty,
@@ -165,6 +165,6 @@ class C
     public string P2 { get; private set; }
     public string P3 { get; set; }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
     }
 }
