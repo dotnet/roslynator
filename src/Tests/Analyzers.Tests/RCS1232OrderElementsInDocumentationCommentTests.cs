@@ -15,172 +15,172 @@ public class RCS1232OrderElementsInDocumentationCommentTests : AbstractCSharpDia
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_Parameters()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// [|<param name=""c""></param>|]
-    /// <param name=""b""></param>
-    /// <param name=""a"" />
+    /// [|<param name="c"></param>|]
+    /// <param name="b"></param>
+    /// <param name="a" />
     void M(object a, object b, object c)
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
-    /// <param name=""a"" />
-    /// <param name=""b""></param>
-    /// <param name=""c""></param>
+    /// <param name="a" />
+    /// <param name="b"></param>
+    /// <param name="c"></param>
     void M(object a, object b, object c)
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_Parameters2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// [|<param name=""b""></param>|]
-    /// <param name=""a""></param>
-    /// <param name=""c""></param>
+    /// [|<param name="b"></param>|]
+    /// <param name="a"></param>
+    /// <param name="c"></param>
     void M(object a, object b, object c)
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
-    /// <param name=""a""></param>
-    /// <param name=""b""></param>
-    /// <param name=""c""></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
     void M(object a, object b, object c)
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_Parameters3()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// <param name=""a""></param>
-    /// [|<param name=""c""></param>|]
-    /// <param name=""b""></param>
+    /// <param name="a"></param>
+    /// [|<param name="c"></param>|]
+    /// <param name="b"></param>
     void M(object a, object b, object c)
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
-    /// <param name=""a""></param>
-    /// <param name=""b""></param>
-    /// <param name=""c""></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
     void M(object a, object b, object c)
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_Parameters4()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// [|<param name=""c""></param>|]
-    /// <param name=""b""></param>
+    /// [|<param name="c"></param>|]
+    /// <param name="b"></param>
     void M(object a, object b, object c)
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
-    /// <param name=""b""></param>
-    /// <param name=""c""></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
     void M(object a, object b, object c)
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task Test_TypeParameters()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// [|<typeparam name=""T3""></param>|]
-    /// <typeparam name=""T2""></param>
-    /// <typeparam name=""T1"" />
+    /// [|<typeparam name="T3"></param>|]
+    /// <typeparam name="T2"></param>
+    /// <typeparam name="T1" />
     void M<T1, T2, T3>()
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
-    /// <typeparam name=""T1"" />
-    /// <typeparam name=""T2""></param>
-    /// <typeparam name=""T3""></param>
+    /// <typeparam name="T1" />
+    /// <typeparam name="T2"></param>
+    /// <typeparam name="T3"></param>
     void M<T1, T2, T3>()
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task TestNoDiagnostic_Parameters()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     /// <summary></summary>
-    /// <param name=""a""></param>
-    /// <param name=""b""></param>
-    /// <param name=""c""></param>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
     void M(object a, object b, object c)
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderElementsInDocumentationComment)]
     public async Task TestNoDiagnostic_TypeParameters()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     /// <summary></summary>
-    /// <typeparam name=""T1""></param>
-    /// <typeparam name=""T2""></param>
-    /// <typeparam name=""T3""></param>
+    /// <typeparam name="T1"></param>
+    /// <typeparam name="T2"></param>
+    /// <typeparam name="T3"></param>
     void M<T1, T2, T3>()
     {
     }
 }
-");
+""");
     }
 }

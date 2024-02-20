@@ -44,7 +44,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
     public async Task Test_IfStatement_Block_Literal()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
@@ -53,11 +53,11 @@ class C
     {
         [|if|] (x is null)
         {
-            throw new ArgumentNullException(""x"");
+            throw new ArgumentNullException("x");
         }
     }
 }
-", @"
+""", """
 using System;
 
 class C
@@ -67,7 +67,7 @@ class C
         ArgumentNullException.ThrowIfNull(x);
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
@@ -100,7 +100,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyArgumentNullCheck)]
     public async Task TestNoDiagnostic_TwoArguments()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
@@ -109,10 +109,10 @@ class C
     {
         if (x is null)
         {
-            throw new ArgumentNullException(nameof(x), ""message"");
+            throw new ArgumentNullException(nameof(x), "message");
         }
     }
 }
-");
+""");
     }
 }

@@ -79,7 +79,7 @@ public class C
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8600_ConvertingNullLiteralOrPossibleNullValueToNonNullableType)]
     public async Task Test_DeclarationExpression()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 using System.Collections.Generic;
 #nullable enable
 
@@ -88,10 +88,10 @@ public class C
     void M()
     {
         var dic = new Dictionary<string, string>();
-        if (dic.TryGetValue("""", out string value)) { }
+        if (dic.TryGetValue("", out string value)) { }
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 #nullable enable
 
@@ -100,16 +100,16 @@ public class C
     void M()
     {
         var dic = new Dictionary<string, string>();
-        if (dic.TryGetValue("""", out string? value)) { }
+        if (dic.TryGetValue("", out string? value)) { }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
     }
 
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8600_ConvertingNullLiteralOrPossibleNullValueToNonNullableType)]
     public async Task Test_AssignmentExpression()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 using System.IO;
 #nullable enable
 
@@ -117,14 +117,14 @@ public class C
 {
     void M()
     {
-        using var sr = new StreamReader(("""");
+        using var sr = new StreamReader(("");
         string s;
         while ((s = sr.ReadLine()) is not null)
         {
         }
     }
 }
-", @"
+""", """
 using System.IO;
 #nullable enable
 
@@ -132,13 +132,13 @@ public class C
 {
     void M()
     {
-        using var sr = new StreamReader(("""");
+        using var sr = new StreamReader(("");
         string? s;
         while ((s = sr.ReadLine()) is not null)
         {
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
     }
 }

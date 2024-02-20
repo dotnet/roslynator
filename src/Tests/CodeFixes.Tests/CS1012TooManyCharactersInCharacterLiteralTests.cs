@@ -13,22 +13,22 @@ public class CS1012TooManyCharactersInCharacterLiteralTests : AbstractCSharpComp
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1012_TooManyCharactersInCharacterLiteral)]
     public async Task Test()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 class C
 {
     void M()
     {
-        var x = 'a\'\""\nb';
+        var x = 'a\'\"\nb';
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var x = ""a\'\""\nb"";
+        var x = "a\'\"\nb";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
     }
 }

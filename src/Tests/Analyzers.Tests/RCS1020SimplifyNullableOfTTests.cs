@@ -125,24 +125,24 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
     public async Task TestNoDiagnostic_Cref()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
 {
         /// <summary>
-        /// <see cref=""Nullable{T}""/>
-        /// <see cref=""System.Nullable{T}""/>
-        /// <see cref=""global::System.Nullable{T}""/>
-        /// <see cref=""Nullable{T}.HasValue""/>
-        /// <see cref=""System.Nullable{T}.HasValue""/>
-        /// <see cref=""global::System.Nullable{T}.HasValue""/>
+        /// <see cref="Nullable{T}"/>
+        /// <see cref="System.Nullable{T}"/>
+        /// <see cref="global::System.Nullable{T}"/>
+        /// <see cref="Nullable{T}.HasValue"/>
+        /// <see cref="System.Nullable{T}.HasValue"/>
+        /// <see cref="global::System.Nullable{T}.HasValue"/>
         /// </summary>
         void M()
         {
         }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]

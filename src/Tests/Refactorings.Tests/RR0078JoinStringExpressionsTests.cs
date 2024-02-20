@@ -14,117 +14,117 @@ public class RR0078JoinStringExpressionsTests : AbstractCSharpRefactoringVerifie
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M(string s)
     {
-        s = s + [|""a"" + @""b""|];
+        s = s + [|"a" + @"b"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s = s + ""ab"";
+        s = s + "ab";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_ToInterpolatedString()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M(string s1, string s2, string s3)
     {
-        s1 = [|s1 + ""a"" + s2 +  @""b"" + s3|];
+        s1 = [|s1 + "a" + s2 +  @"b" + s3|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s1, string s2, string s3)
     {
-        s1 = $""{s1}a{s2}b{s3}"";
+        s1 = $"{s1}a{s2}b{s3}";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_RegularAndInterpolated()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|""{}"" + $""{s}""|];
+        s = [|"{}" + $"{s}"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
-        s = $""{{}}{s}"";
+        s = $"{{}}{s}";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_VerbatimAndInterpolated()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|@"" """" {} "" + $"" \"" {s} ""|];
+        s = [|@" "" {} " + $" \" {s} "|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
-        s = $"" \"" {{}}  \"" {s} "";
+        s = $" \" {{}}  \" {s} ";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_RegularAndVerbatimInterpolated()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|"" \"" {} "" + $@"" """" {s} ""|];
+        s = [|" \" {} " + $@" "" {s} "|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
-        s = $"" \"" {{}}  \"" {s} "";
+        s = $" \" {{}}  \" {s} ";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -132,133 +132,133 @@ class C
     {
         string newLineText = (Environment.NewLine == "\r\n") ? @"\r\n" : @"\n";
 
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|"" \r\n "" + @""
-""|];
+        s = [|" \r\n " + @"
+"|];
     }
 }
-", $@"
+""", $$"""
 class C
-{{
+{
     void M()
-    {{
+    {
         string s = null;
-        s = "" \r\n {newLineText}"";
-    }}
-}}
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+        s = " \r\n {{newLineText}}";
+    }
+}
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_ToMultilineStringLiteral()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|""\r\n"" +
-"" ""|];
+        s = [|"\r\n" +
+" "|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
-        s = @""
- "";
+        s = @"
+ ";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId, "Multiline"));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId, "Multiline"));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_StringConcatenationOnMultipleLines_LeadingTriviaIncluded()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
         string s =
-[|            ""a"" +
-            ""b"" +
-            ""c""|];
+[|            "a" +
+            "b" +
+            "c"|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s =
-            ""abc"";
+            "abc";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_StringConcatenationOnMultipleLines_TrailingTriviaIncluded()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
         string s =
-            [|""a"" +
-            ""b"" +
-            ""c"" //|]
+            [|"a" +
+            "b" +
+            "c" //|]
 ;
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s =
-            ""abc"" //
+            "abc" //
 ;
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
     public async Task Test_StringConcatenation_PreprocessorDirectives()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
-        string s = ""a""
+        string s = "a"
 #if DEBUG
-            + [|""b"" + ""c""|];
+            + [|"b" + "c"|];
     }
 #endif
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = ""a""
+        string s = "a"
 #if DEBUG
-            + ""bc"";
+            + "bc";
     }
 #endif
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.WithDebugPreprocessorSymbol());
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.WithDebugPreprocessorSymbol());
     }
 }

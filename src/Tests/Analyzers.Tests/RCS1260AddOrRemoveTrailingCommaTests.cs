@@ -81,252 +81,252 @@ enum Foo { A, B }
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_ArrayInitializer_Include()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         var arr = new[]
         {
-            """",
-            """"[||]
+            "",
+            ""[||]
         };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         var arr = new[]
         {
-            """",
-            """",
+            "",
+            "",
         };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_ArrayInitializer_Omit()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         var arr = new[]
         {
-            """",
-            """"[|,|]
+            "",
+            ""[|,|]
         };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         var arr = new[]
         {
-            """",
-            """"
+            "",
+            ""
         };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineArrayInitializer_Include()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var arr = new[] { """", """"[||] };
+        var arr = new[] { "", ""[||] };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var arr = new[] { """", """", };
+        var arr = new[] { "", "", };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineArrayInitializer_Omit()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var arr = new[] { """", """"[|,|] };
+        var arr = new[] { "", ""[|,|] };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var arr = new[] { """", """" };
+        var arr = new[] { "", "" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineArrayInitializer_OmitWhenSingleLine()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var arr = new[] { """", """"[|,|] };
+        var arr = new[] { "", ""[|,|] };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var arr = new[] { """", """" };
+        var arr = new[] { "", "" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_AnonymousObjectCreationExpression_Include()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         var obj = new
         {
-            A = """",
-            B = """"[||]
+            A = "",
+            B = ""[||]
         };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         var obj = new
         {
-            A = """",
-            B = """",
+            A = "",
+            B = "",
         };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_AnonymousObjectCreationExpression_Omit()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         var obj = new
         {
-            A = """",
-            B = """"[|,|]
+            A = "",
+            B = ""[|,|]
         };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         var obj = new
         {
-            A = """",
-            B = """"
+            A = "",
+            B = ""
         };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineAnonymousObjectCreationExpression_Include()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var obj = new { A = """", B = """"[||] };
+        var obj = new { A = "", B = ""[||] };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var obj = new { A = """", B = """", };
+        var obj = new { A = "", B = "", };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineAnonymousObjectCreationExpression_Omit()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var obj = new { A = """", B = """"[|,|] };
+        var obj = new { A = "", B = ""[|,|] };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var obj = new { A = """", B = """" };
+        var obj = new { A = "", B = "" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
     public async Task Test_SingleLineAnonymousObjectCreationExpression_OmitWhenSingleLine()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var obj = new { A = """", B = """"[|,|] };
+        var obj = new { A = "", B = ""[|,|] };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var obj = new { A = """", B = """" };
+        var obj = new { A = "", B = "" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
+""", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_OmitWhenSingleLine));
     }
 }

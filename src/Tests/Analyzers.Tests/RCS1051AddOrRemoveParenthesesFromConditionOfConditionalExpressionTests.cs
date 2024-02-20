@@ -15,150 +15,150 @@ public class RCS1051AddOrRemoveParenthesesFromConditionOfConditionalExpressionTe
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_AddParentheses()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|s != null|] ? ""true"" : ""false"";
+        s = [|s != null|] ? "true" : "false";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
-        s = (s != null) ? ""true"" : ""false"";
+        s = (s != null) ? "true" : "false";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_AddParentheses_SingleTokenExpression()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         bool b = false;
-        string s = [|b|] ? ""true"" : ""false"";
+        string s = [|b|] ? "true" : "false";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         bool b = false;
-        string s = (b) ? ""true"" : ""false"";
+        string s = (b) ? "true" : "false";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_RemoveParentheses()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|(s != null)|] ? ""true"" : ""false"";
+        s = [|(s != null)|] ? "true" : "false";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
-        s = s != null ? ""true"" : ""false"";
+        s = s != null ? "true" : "false";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_RemoveParentheses_SingleTokenExpression()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         bool b = false;
-        string s = [|(b)|] ? ""true"" : ""false"";
+        string s = [|(b)|] ? "true" : "false";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         bool b = false;
-        string s = b ? ""true"" : ""false"";
+        string s = b ? "true" : "false";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task Test_RemoveParentheses_OmitWhenSingleToken()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         bool b = false;
-        string s = [|(b)|] ? ""true"" : ""false"";
+        string s = [|(b)|] ? "true" : "false";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         bool b = false;
-        string s = b ? ""true"" : ""false"";
+        string s = b ? "true" : "false";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task TestNoDiagnostic_NoParentheses_SingleTokenExpression()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
         bool b = false;
-        string s = b ? ""true"" : ""false"";
+        string s = b ? "true" : "false";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
     public async Task TestNoDiagnostic_Parentheses_SingleTokenExpression()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 public class C
 {
     void M()
     {
         bool b = false;
-        string s = (b) ? ""true"" : ""false"";
+        string s = (b) ? "true" : "false";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
     }
 }

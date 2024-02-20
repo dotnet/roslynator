@@ -37,38 +37,38 @@ class C
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
     public async Task Test_ChangeReturnTypeAccordingToReturnExpression()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 class C
 {
     int M()
     {
-        return """";
+        return "";
     }
 }
-", @"
+""", """
 class C
 {
     string M()
     {
-        return """";
+        return "";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
     }
 
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
     public async Task Test_ChangeReturnTypeAccordingToReturnExpression_ExpressionBody()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 class C
 {
-    int M() => """";
+    int M() => "";
 }
-", @"
+""", """
 class C
 {
-    string M() => """";
+    string M() => "";
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
     }
 }

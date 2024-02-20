@@ -15,122 +15,122 @@ public class RCS1205OrderNamedArgumentsTests : AbstractCSharpDiagnosticVerifier<
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
     public async Task Test()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string a, string b, string c)
     {
-        M([|c: ""c"", a: ""a"", b: ""b""|]);
+        M([|c: "c", a: "a", b: "b"|]);
     }
 }
-", @"
+""", """
 class C
 {
     void M(string a, string b, string c)
     {
-        M(a: ""a"", b: ""b"", c: ""c"");
+        M(a: "a", b: "b", c: "c");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
     public async Task Test_OptionalArguments()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string a, string b, string c, string d = null)
     {
-        M([|c: ""c"", a: ""a"", b: ""b""|]);
+        M([|c: "c", a: "a", b: "b"|]);
     }
 }
-", @"
+""", """
 class C
 {
     void M(string a, string b, string c, string d = null)
     {
-        M(a: ""a"", b: ""b"", c: ""c"");
+        M(a: "a", b: "b", c: "c");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
     public async Task Test_OptionalArguments2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
-    void M(string a, string b = """", string c = """", string d = """", string e = """")
+    void M(string a, string b = "", string c = "", string d = "", string e = "")
     {
         M(
-            """",
-            b: """",
-            """",
-            [|e: """",
-            d: """"|]);
+            "",
+            b: "",
+            "",
+            [|e: "",
+            d: ""|]);
     }
 }
-", @"
+""", """
 class C
 {
-    void M(string a, string b = """", string c = """", string d = """", string e = """")
+    void M(string a, string b = "", string c = "", string d = "", string e = "")
     {
         M(
-            """",
-            b: """",
-            """",
-            d: """",
-            e: """");
+            "",
+            b: "",
+            "",
+            d: "",
+            e: "");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
     public async Task Test_OptionalArguments3()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
-    void M(string a = """", string b = """", string c = """", string d = """")
+    void M(string a = "", string b = "", string c = "", string d = "")
     {
         M(
-            [|c: """",
-            b: """"|],
-            d: """");
+            [|c: "",
+            b: ""|],
+            d: "");
     }
 }
-", @"
+""", """
 class C
 {
-    void M(string a = """", string b = """", string c = """", string d = """")
+    void M(string a = "", string b = "", string c = "", string d = "")
     {
         M(
-            b: """",
-            c: """",
-            d: """");
+            b: "",
+            c: "",
+            d: "");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
     public async Task TestNoDiagnostic_OptionalArguments()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
-    void M(string a, string b = """", string c = """", string d = """")
+    void M(string a, string b = "", string c = "", string d = "")
     {
         M(
-            """",
-            b: """",
-            d: """");
+            "",
+            b: "",
+            d: "");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]

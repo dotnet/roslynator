@@ -39,36 +39,36 @@ class C
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
     public async Task Test_Field_VerbatimLiteral()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
-    public const string K = @""x"";
+    public const string K = @"x";
 
     void M(string s)
     {
         s = [|K|];
     }
 }
-", @"
+""", """
 class C
 {
-    public const string K = @""x"";
+    public const string K = @"x";
 
     void M(string s)
     {
-        s = @""x"";
+        s = @"x";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
     public async Task Test_Field_VerbatimLiteral_MultipleDefinitions()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
-    public const string K = @""x"";
+    public const string K = @"x";
     public const string K2 = K;
     public const string K3 = K2;
 
@@ -77,56 +77,56 @@ class C
         s = [|K3|];
     }
 }
-", @"
+""", """
 class C
 {
-    public const string K = @""x"";
+    public const string K = @"x";
     public const string K2 = K;
     public const string K3 = K2;
 
     void M(string s)
     {
-        s = @""x"";
+        s = @"x";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
     public async Task Test_Field_QualifiedWithClassName()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
-    public const string K = @""x"";
+    public const string K = @"x";
 
     void M(string s)
     {
         s = [|C.K|];
     }
 }
-", @"
+""", """
 class C
 {
-    public const string K = @""x"";
+    public const string K = @"x";
 
     void M(string s)
     {
-        s = @""x"";
+        s = @"x";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
     public async Task Test_Field_QualifiedWithNamespaceName()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 namespace A.B
 {
     class C
     {
-        public const string K = @""x"";
+        public const string K = @"x";
 
         void M(string s)
         {
@@ -134,20 +134,20 @@ namespace A.B
         }
     }
 }
-", @"
+""", """
 namespace A.B
 {
     class C
     {
-        public const string K = @""x"";
+        public const string K = @"x";
 
         void M(string s)
         {
-            s = @""x"";
+            s = @"x";
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
@@ -257,10 +257,10 @@ class C
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
     public async Task Test_Field_AddExpression()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
-    public const string K = @""a"";
+    public const string K = @"a";
     public const string K2 = K + K;
 
     void M()
@@ -268,24 +268,24 @@ class C
         string s = [|K2|];
     }
 }
-", @"
+""", """
 class C
 {
-    public const string K = @""a"";
+    public const string K = @"a";
     public const string K2 = K + K;
 
     void M()
     {
-        string s = ""aa"";
+        string s = "aa";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
     public async Task Test_MultipleDocumentsAsync()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 namespace A.B
 {
     class C
@@ -298,7 +298,7 @@ namespace A.B
         }
     }
 }
-", @"
+""", """
 namespace A.B
 {
     class C
@@ -307,11 +307,11 @@ namespace A.B
 
         void M(string s)
         {
-            s = @""x"";
+            s = @"x";
         }
     }
 }
-", additionalFiles: new[] { @"
+""", additionalFiles: new[] { @"
 namespace A.B
 {
     class C2
@@ -319,21 +319,21 @@ namespace A.B
         public const string K2 = C3.K3;
     }
 }
-", @"
+", """
 namespace A.B
 {
     class C3
     {
-        public const string K3 = @""x"";
+        public const string K3 = @"x";
     }
 }
-", }, equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", }, equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
     public async Task TestNoRefactoring()
     {
-        await VerifyNoRefactoringAsync(@"
+        await VerifyNoRefactoringAsync("""
 using System;
 
 class C
@@ -342,13 +342,13 @@ class C
 
     void M(string s)
     {
-        s = [|""x""|];
-        s = [|""x"" + ""x""|];
+        s = [|"x"|];
+        s = [|"x" + "x"|];
         s = [|F|];
         s = [|string.Empty|];
         var options = [|StringSplitOptions.None|];
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 }

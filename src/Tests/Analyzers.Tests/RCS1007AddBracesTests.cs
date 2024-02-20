@@ -223,23 +223,23 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]
     public async Task Test_ForeachTuple()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(object x, object y)
     {
-        foreach ((string, string) item in new [] { ("""","""") })
+        foreach ((string, string) item in new [] { ("","") })
             [|M(
                 x,
                 y);|]
     }
 }
-", @"
+""", """
 class C
 {
     void M(object x, object y)
     {
-        foreach ((string, string) item in new [] { ("""","""") })
+        foreach ((string, string) item in new [] { ("","") })
         {
             M(
                 x,
@@ -247,7 +247,7 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBraces)]

@@ -184,24 +184,24 @@ class C
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
     public async Task Test_ReplaceComparisonWithAssignment()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 class C
 {
     void M(string s)
     {
         s == null;
-        s == """";
+        s == "";
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
         s = null;
-        s = """";
+        s = "";
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ReplaceComparisonWithAssignment));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ReplaceComparisonWithAssignment));
     }
 }

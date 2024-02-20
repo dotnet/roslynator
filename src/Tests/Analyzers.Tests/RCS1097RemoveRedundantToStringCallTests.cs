@@ -39,125 +39,125 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
     public async Task Test_StringLiteral()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = """"[|.ToString()|];
+        string s = ""[|.ToString()|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = """";
+        string s = "";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
     public async Task Test_InterpolatedString()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = $""""[|.ToString()|];
+        string s = $""[|.ToString()|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = $"""";
+        string s = $"";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
     public async Task Test_PlusString()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(object o)
     {
-        string s = """" + o[|.ToString()|];
-        string s2 = o[|.ToString()|] + """";
+        string s = "" + o[|.ToString()|];
+        string s2 = o[|.ToString()|] + "";
         string s3 = o.ToString() + o[|.ToString()|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(object o)
     {
-        string s = """" + o;
-        string s2 = o + """";
+        string s = "" + o;
+        string s2 = o + "";
         string s3 = o.ToString() + o;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
     public async Task Test_Interpolation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = $""{s[|.ToString()|]}"";
+        s = $"{s[|.ToString()|]}";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
-        s = $""{s}"";
+        s = $"{s}";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
     public async Task TestNoDiagnostic_Int()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
         int i = 10;
-        string s = $""'{i.ToString()}'"";
+        string s = $"'{i.ToString()}'";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
     public async Task TestNoDiagnostic_Struct()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 struct S{}
 class C
 {
     void M()
     {
         S s = new S();
-        string str = $""'{s.ToString()}'"";
+        string str = $"'{s.ToString()}'";
     }
 }
-");
+""");
     }
 }

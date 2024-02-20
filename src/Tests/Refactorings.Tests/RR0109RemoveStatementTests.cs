@@ -39,7 +39,7 @@ class C
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
     public async Task Test_IfInSwitchSection()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
@@ -49,7 +49,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 if (f)
                 {
                 }[||]
@@ -59,7 +59,7 @@ class C
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -69,14 +69,14 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 break;
             default:
                 break;
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]

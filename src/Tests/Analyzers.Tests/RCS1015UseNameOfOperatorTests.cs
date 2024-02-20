@@ -15,7 +15,7 @@ public class RCS1015UseNameOfOperatorTests : AbstractCSharpDiagnosticVerifier<Us
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseNameOfOperator)]
     public async Task Test()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
@@ -25,12 +25,12 @@ class C
         if (parameter == null)
         {
             throw new ArgumentNullException(
-                [|""parameter""|],
-                ""message"");
+                [|"parameter"|],
+                "message");
         }
     }
 }
-", @"
+""", """
 using System;
 
 class C
@@ -41,17 +41,17 @@ class C
         {
             throw new ArgumentNullException(
                 nameof(parameter),
-                ""message"");
+                "message");
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseNameOfOperator)]
     public async Task TestNoDiagnostic_LanguageVersion()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
@@ -61,11 +61,11 @@ class C
         if (parameter == null)
         {
             throw new ArgumentNullException(
-                ""parameter"",
-                ""message"");
+                "parameter",
+                "message");
         }
     }
 }
-", options: WellKnownCSharpTestOptions.Default_CSharp5);
+""", options: WellKnownCSharpTestOptions.Default_CSharp5);
     }
 }

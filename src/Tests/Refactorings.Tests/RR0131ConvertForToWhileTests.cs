@@ -159,7 +159,7 @@ class C
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
     public async Task Test_ForWithMultipleDeclarationsAndIncrementors()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
@@ -167,13 +167,13 @@ class C
         string x = null;
         string y = null;
 
-        [||]for (x = """", y = """"; x != null; x = x.ToString(), y = y.ToString())
+        [||]for (x = "", y = ""; x != null; x = x.ToString(), y = y.ToString())
         {
             x = x.ToString();
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -181,8 +181,8 @@ class C
         string x = null;
         string y = null;
 
-        x = """";
-        y = """";
+        x = "";
+        y = "";
         while (x != null)
         {
             x = x.ToString();
@@ -191,7 +191,7 @@ class C
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]

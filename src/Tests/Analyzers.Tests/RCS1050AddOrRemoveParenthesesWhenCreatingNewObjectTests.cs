@@ -15,67 +15,67 @@ public class RCS1050AddOrRemoveParenthesesWhenCreatingNewObjectTests : AbstractC
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task Test_AddParentheses()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 public class C
 {
-    List<string> items = new List<string>[||] { ""a"", ""b"", ""c"" };
+    List<string> items = new List<string>[||] { "a", "b", "c" };
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 public class C
 {
-    List<string> items = new List<string>() { ""a"", ""b"", ""c"" };
+    List<string> items = new List<string>() { "a", "b", "c" };
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task Test_RemoveParentheses()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 public class C
 {
-    List<string> items = new List<string>[|()|] { ""a"", ""b"", ""c"" };
+    List<string> items = new List<string>[|()|] { "a", "b", "c" };
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 public class C
 {
-    List<string> items = new List<string> { ""a"", ""b"", ""c"" };
+    List<string> items = new List<string> { "a", "b", "c" };
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task TestNoDiagnostic_AddParentheses()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 
 public class C
 {
-    List<string> items = new List<string>() { ""a"", ""b"", ""c"" };
+    List<string> items = new List<string>() { "a", "b", "c" };
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
     public async Task TestNoDiagnostic_RemoveParentheses()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 
 public class C
 {
-    List<string> items = new List<string>() { ""a"", ""b"", ""c"" };
+    List<string> items = new List<string>() { "a", "b", "c" };
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
+""", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.IncludeParenthesesWhenCreatingNewObject)]
