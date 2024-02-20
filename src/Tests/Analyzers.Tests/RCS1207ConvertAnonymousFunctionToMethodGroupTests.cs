@@ -179,16 +179,16 @@ static class Foo
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task Test_SwitchExpressionArm()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
 {
     Func<string, string> M(string s)
     {
-        return """" switch
+        return "" switch
         {
-            """" => [|f => M2(f)|],
+            "" => [|f => M2(f)|],
             _ => throw new NotImplementedException(),
         };
     }
@@ -198,16 +198,16 @@ class C
         return default;
     }
 }
-", @"
+""", """
 using System;
 
 class C
 {
     Func<string, string> M(string s)
     {
-        return """" switch
+        return "" switch
         {
-            """" => M2,
+            "" => M2,
             _ => throw new NotImplementedException(),
         };
     }
@@ -217,7 +217,7 @@ class C
         return default;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]

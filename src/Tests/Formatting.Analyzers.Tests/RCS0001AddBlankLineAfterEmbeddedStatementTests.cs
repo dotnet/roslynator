@@ -324,7 +324,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task Test_Fixed()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
@@ -333,13 +333,13 @@ class C
 
         unsafe
         {
-            fixed (char* p = """")
+            fixed (char* p = "")
                 M();[||]
             M();
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -348,14 +348,14 @@ class C
 
         unsafe
         {
-            fixed (char* p = """")
+            fixed (char* p = "")
                 M();
 
             M();
         }
     }
 }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
@@ -402,7 +402,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task TestNoDiagnostic_EmbeddedStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Collections.Generic;
 
@@ -428,17 +428,17 @@ class C
         lock (null) M();
         unsafe
         {
-            fixed (char* p = """") M();
+            fixed (char* p = "") M();
         }
     }
 }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement)]
     public async Task TestNoDiagnostic_NoEmbeddedStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Collections.Generic;
 
@@ -496,13 +496,13 @@ class C
 
         unsafe
         {
-            fixed (char* p = """")
+            fixed (char* p = "")
             {
                 M();
             }
         }
     }
 }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 }

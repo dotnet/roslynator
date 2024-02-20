@@ -15,25 +15,25 @@ public class RCS1264UseVarOrExplicitTypeTests4 : AbstractCSharpDiagnosticVerifie
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_LocalVariable()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var a = ""a"";
+        var a = "a";
         [|var|] s = a;
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var a = ""a"";
+        var a = "a";
         string s = a;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
@@ -230,27 +230,27 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_DiscardDesignation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        if (int.TryParse("""", out [|var|] result))
+        if (int.TryParse("", out [|var|] result))
         {
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        if (int.TryParse("""", out int result))
+        if (int.TryParse("", out int result))
         {
         }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]

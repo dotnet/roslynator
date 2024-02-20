@@ -15,33 +15,33 @@ public class RCS1081SplitVariableDeclarationTests : AbstractCSharpDiagnosticVeri
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SplitVariableDeclaration)]
     public async Task Test_SwitchSection()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        switch ("""")
+        switch ("")
         {
-            case """":
+            case "":
                 [|object x1, x2|];
                 break;
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        switch ("""")
+        switch ("")
         {
-            case """":
+            case "":
                 object x1;
                 object x2;
                 break;
         }
     }
 }
-");
+""");
     }
 }

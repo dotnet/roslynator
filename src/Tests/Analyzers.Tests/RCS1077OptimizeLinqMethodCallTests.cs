@@ -1244,7 +1244,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     public async Task TestNoDiagnostic_CombineWhereAndAny()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1254,10 +1254,10 @@ class C
     {
         var items = new List<string>();
 
-        if (items.Where(f => f.StartsWith(""a"")).Any(g => g.StartsWith(""b""))) { }
+        if (items.Where(f => f.StartsWith("a")).Any(g => g.StartsWith("b"))) { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]

@@ -84,7 +84,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
     public async Task TestNoDiagnostic_AppendFormat()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Text;
 
 class C
@@ -94,19 +94,19 @@ class C
         int i = 0;
         var sb = new StringBuilder();
 
-        sb.AppendFormat(""f"", i);
-        sb.AppendFormat(""f"", i, i);
-        sb.AppendFormat(""f"", i, i, i);
-        sb.AppendFormat(""f"", i, i, i, i);
+        sb.AppendFormat("f", i);
+        sb.AppendFormat("f", i, i);
+        sb.AppendFormat("f", i, i, i);
+        sb.AppendFormat("f", i, i, i, i);
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
     public async Task TestNoDiagnostic_NoTypeSymbol()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Text;
 
 class C
@@ -117,9 +117,9 @@ class C
 
         var sb = new StringBuilder();
 
-        sb.Append(f ? ""ab"" : 'c');
+        sb.Append(f ? "ab" : 'c');
     }
 }
-");
+""");
     }
 }

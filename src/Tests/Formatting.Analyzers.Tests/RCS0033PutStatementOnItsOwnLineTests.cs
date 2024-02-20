@@ -56,7 +56,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]
     public async Task Test_SwitchSection()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
@@ -64,13 +64,13 @@ class C
         string s = null;
         switch (s)
         {
-            case """":
+            case "":
                 M();[||] M();
                 break;
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -78,14 +78,14 @@ class C
         string s = null;
         switch (s)
         {
-            case """":
+            case "":
                 M();
                 M();
                 break;
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutStatementOnItsOwnLine)]

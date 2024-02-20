@@ -93,27 +93,27 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]
     public async Task TestDiagnostic_StringLiteral()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        if ([|""a""|] == s)
+        if ([|"a"|] == s)
         {
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        if (s == ""a"")
+        if (s == "a")
         {
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons)]

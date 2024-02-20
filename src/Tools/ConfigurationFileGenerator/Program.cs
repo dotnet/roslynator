@@ -30,9 +30,11 @@ internal static class Program
 
         string configFileContent = File.ReadAllText(configurationSourcePath);
 
-        configFileContent += @"# Full List of Options
+        configFileContent += """
+# Full List of Options
 
-```editorconfig title="".editorconfig"""
+```editorconfig title=".editorconfig"
+"""
             + EditorConfigGenerator.GenerateEditorConfig(metadata, includeAnalyzers: true, commentOut: false)
             + @"```
 ";

@@ -112,10 +112,10 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_ReferenceType()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class Foo
 {
-    const string NonNullConst = ""x"";
+    const string NonNullConst = "x";
 
     string P { get; }
 
@@ -145,7 +145,7 @@ class Foo
 
         if ([|x != null && (!x.Equals(x)|])) { }
 
-        if ([|x != null && x.P == ""x""|]) { }
+        if ([|x != null && x.P == "x"|]) { }
 
         if ([|x != null && x.P == NonNullConst|]) { }
 
@@ -157,14 +157,14 @@ class Foo
 
         if (f &&
      /*lt*/ [|x != null &&
-            x.Equals(""x"")|] /*tt*/
+            x.Equals("x")|] /*tt*/
             && f) { }
     }
 }
-", @"
+""", """
 class Foo
 {
-    const string NonNullConst = ""x"";
+    const string NonNullConst = "x";
 
     string P { get; }
 
@@ -194,7 +194,7 @@ class Foo
 
         if ((x?.Equals(x) == false)) { }
 
-        if (x?.P == ""x"") { }
+        if (x?.P == "x") { }
 
         if (x?.P == NonNullConst) { }
 
@@ -205,11 +205,11 @@ class Foo
         if (x?.P is object _) { }
 
         if (f &&
-     /*lt*/ x?.Equals(""x"") == true /*tt*/
+     /*lt*/ x?.Equals("x") == true /*tt*/
             && f) { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -287,7 +287,7 @@ class Foo
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_ElementAccess()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 class Foo
@@ -296,14 +296,14 @@ class Foo
     {
         Dictionary<int, string> dic = null;
 
-        if ([|dic != null && dic[0].Equals(""x"")|]) { }
+        if ([|dic != null && dic[0].Equals("x")|]) { }
 
         if ([|dic != null && dic[0].Length > 1|]) { }
 
-        if ([|dic != null && !dic[0].Equals(""x"")|]) { }
+        if ([|dic != null && !dic[0].Equals("x")|]) { }
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 class Foo
@@ -312,14 +312,14 @@ class Foo
     {
         Dictionary<int, string> dic = null;
 
-        if (dic?[0].Equals(""x"") == true) { }
+        if (dic?[0].Equals("x") == true) { }
 
         if (dic?[0].Length > 1) { }
 
-        if (dic?[0].Equals(""x"") == false) { }
+        if (dic?[0].Equals("x") == false) { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -369,10 +369,10 @@ class Foo
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task Test_LogicalAnd_NullableType()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 struct Foo
 {
-    const string NonNullConst = ""x"";
+    const string NonNullConst = "x";
 
     string P { get; }
 
@@ -386,7 +386,7 @@ struct Foo
 
         if ([|x != null && !x.Value.Equals(x)|]) { }
 
-        if ([|x != null && x.Value.P == ""x""|]) { }
+        if ([|x != null && x.Value.P == "x"|]) { }
 
         if ([|x != null && x.Value.P == NonNullConst|]) { }
 
@@ -399,10 +399,10 @@ struct Foo
         if (x != null && [|x.Value.ToString() != null && x.Value.ToString().ToString() != null|]) { }
     }
 }
-", @"
+""", """
 struct Foo
 {
-    const string NonNullConst = ""x"";
+    const string NonNullConst = "x";
 
     string P { get; }
 
@@ -416,7 +416,7 @@ struct Foo
 
         if (x?.Equals(x) == false) { }
 
-        if (x?.P == ""x"") { }
+        if (x?.P == "x") { }
 
         if (x?.P == NonNullConst) { }
 
@@ -429,7 +429,7 @@ struct Foo
         if (x?.ToString()?.ToString() != null) { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -494,11 +494,11 @@ struct Foo
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_ReferenceType()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class Foo
 {
     const string NullConst = null;
-    const string NonNullConst = ""x"";
+    const string NonNullConst = "x";
 
     string P { get; }
 
@@ -518,7 +518,7 @@ class Foo
 
         if (x != null && x.P == s && f) { }
 
-        if (x != null && x.P != ""x"" && f) { }
+        if (x != null && x.P != "x" && f) { }
 
         if (x != null && x.P != NonNullConst && f) { }
 
@@ -527,17 +527,17 @@ class Foo
         if (x != null && (x.P != null) is object _) { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalOr_ReferenceType()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class Foo
 {
     const string NullConst = null;
-    const string NonNullConst = ""x"";
+    const string NonNullConst = "x";
 
     string P { get; }
 
@@ -552,7 +552,7 @@ class Foo
 
         if (x == null || x.P.Length > 1) { }
 
-        if (x == null || x.P == ""x"") { }
+        if (x == null || x.P == "x") { }
 
         if (x == null || x.P == NonNullConst) { }
 
@@ -568,7 +568,7 @@ class Foo
 
         if (x == null || x.P == s && f) { }
 
-        if (x == null || x.P != ""x"" && f) { }
+        if (x == null || x.P != "x" && f) { }
 
         if (x == null || x.P != NonNullConst && f) { }
 
@@ -577,7 +577,7 @@ class Foo
         if (x == null || (x.P != null) is object _) { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -604,7 +604,7 @@ struct Foo
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalAnd_ValueTypeFieldAccess()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 struct Foo 
 {
     public static bool operator ==(Foo left, string right) => left.Equals(right);
@@ -615,10 +615,10 @@ class C
     public Foo F { get; } 
     void M(C c)
     {
-        if (c != null && c.F == ""someStr"") { }
+        if (c != null && c.F == "someStr") { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
@@ -671,10 +671,10 @@ struct Foo
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
     public async Task TestNoDiagnostic_LogicalOr_NullableType()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 struct Foo
 {
-    const string NonNullConst = ""x"";
+    const string NonNullConst = "x";
 
     string P { get; }
 
@@ -700,7 +700,7 @@ struct Foo
 
         if (x == null || x.Value.P.Length > 1) { }
 
-        if (x == null || x.Value.P == ""x"") { }
+        if (x == null || x.Value.P == "x") { }
 
         if (x == null || x.Value.P == NonNullConst) { }
 
@@ -731,7 +731,7 @@ struct Foo
     public static bool operator ==(Foo left, Foo right) => left.Equals(right);
     public static bool operator !=(Foo left, Foo right) => !(left == right);
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]

@@ -548,7 +548,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
     public async Task Test_SwitchExpressionArm()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
@@ -557,13 +557,13 @@ class C
 
     Func<object> M(Func<object> p)
     {
-        return """" switch
+        return "" switch
         {
             _ => [|M|],
         };
     }
 }
-", @"
+""", """
 using System;
 
 class C
@@ -572,13 +572,13 @@ class C
 
     Func<object> M(Func<object> p)
     {
-        return """" switch
+        return "" switch
         {
             _ => () => M(),
         };
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]

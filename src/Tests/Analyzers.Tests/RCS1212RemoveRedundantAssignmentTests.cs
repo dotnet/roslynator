@@ -67,14 +67,14 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_Local_WithComment()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string M()
     {
         string s = null;
         M2();
-        [|s = """"|]; //x
+        [|s = ""|]; //x
         return s;
     }
 
@@ -82,7 +82,7 @@ class C
     {
     }
 }
-", @"
+""", """
 class C
 {
     string M()
@@ -90,39 +90,39 @@ class C
         string s = null;
         M2();
         //x
-        return """";
+        return "";
     }
 
     void M2()
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
     public async Task Test_Local_ReferencedInRightSideOfAssignment()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string M()
     {
-        string s = """";
+        string s = "";
         [|s = s + s|];
         return s;
     }
 }
-", @"
+""", """
 class C
 {
     string M()
     {
-        string s = """";
+        string s = "";
         return s + s;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]

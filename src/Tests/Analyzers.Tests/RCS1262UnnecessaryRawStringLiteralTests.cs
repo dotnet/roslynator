@@ -16,144 +16,144 @@ public class RCS1262UnnecessaryRawStringLiteralTests : AbstractCSharpDiagnosticV
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task Test_SingleLineRawStringLiteral()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync(""""
 class C
 {
     void M()
     {
-        string s = ""[|""""|]foo"""""";
+        string s = "[|""|]foo""";
     }
 }
-", @"
+"""", """
 class C
 {
     void M()
     {
-        string s = ""foo"";
+        string s = "foo";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task Test_InterpolatedSingleLineRawString()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync(""""
 class C
 {
     void M()
     {
-        string s = """";
-        string s1 = $""[|""""|] {s} foo """""";
+        string s = "";
+        string s1 = $"[|""|] {s} foo """;
     }
 }
-", @"
+"""", """
 class C
 {
     void M()
     {
-        string s = """";
-        string s1 = $"" {s} foo "";
+        string s = "";
+        string s1 = $" {s} foo ";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task Test_InterpolatedString_MultipleDollarSigns()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync(""""
 class C
 {
     void M()
     {
-        string s1 = """";
-        string s2 = """";
-        string s3 = $$$""[|""""|] {{{s1}}} foo {{{s2}}} """""";
+        string s1 = "";
+        string s2 = "";
+        string s3 = $$$"[|""|] {{{s1}}} foo {{{s2}}} """;
     }
 }
-", @"
+"""", """
 class C
 {
     void M()
     {
-        string s1 = """";
-        string s2 = """";
-        string s3 = $"" {s1} foo {s2} "";
+        string s1 = "";
+        string s2 = "";
+        string s3 = $" {s1} foo {s2} ";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_ContainsQuote()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync(""""
 class C
 {
     void M()
     {
-        string s = """""" "" """""";
+        string s = """ " """;
     }
 }
-");
+"""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_ContainsEscape()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync(""""
 class C
 {
     void M()
     {
-        string s = """""" \t """""";
+        string s = """ \t """;
     }
 }
-");
+"""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_InterpolatedString_ContainsQuote()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync(""""
 class C
 {
     void M()
     {
-        string s = $"""""" {""""} "" """""";
+        string s = $""" {""} " """;
     }
 }
-");
+"""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_InterpolatedString_ContainsEscape()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync(""""
 class C
 {
     void M()
     {
-        string s = $"""""" {""""} \t """""";
+        string s = $""" {""} \t """;
     }
 }
-");
+"""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryRawStringLiteral)]
     public async Task TestNoDiagnostic_MultipleDollarSigns()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync(""""
 class C
 {
     void M()
     {
         string s = string.Empty;
-        s = $$""""""{{s}}{s}"""""";
+        s = $$"""{{s}}{s}""";
     }
 }
-");
+"""");
     }
 }
 #endif

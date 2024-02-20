@@ -235,7 +235,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AnonymousType_BeforeInsteadOfAfter()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Linq;
 using System.Collections.Generic;
 
@@ -245,10 +245,10 @@ class C
     {
         List<string> list = null;
         var x = list.Select(f => new { X =[||]
-            """" });
+            "" });
     }
 }
-", @"
+""", """
 using System.Linq;
 using System.Collections.Generic;
 
@@ -258,16 +258,16 @@ class C
     {
         List<string> list = null;
         var x = list.Select(f => new { X
-            = """" });
+            = "" });
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AnonymousType_AfterInsteadOfBefore()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Linq;
 using System.Collections.Generic;
 
@@ -277,10 +277,10 @@ class C
     {
         List<string> list = null;
         var x = list.Select(f => new { X[||]
-            = """" });
+            = "" });
     }
 }
-", @"
+""", """
 using System.Linq;
 using System.Collections.Generic;
 
@@ -290,54 +290,54 @@ class C
     {
         List<string> list = null;
         var x = list.Select(f => new { X =
-            """" });
+            "" });
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AttributeArgument_BeforeInsteadOfAfter()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Diagnostics;
 
-[DebuggerDisplay("""", Name =[||]
-    ""x"")]
+[DebuggerDisplay("", Name =[||]
+    "x")]
 class C
 {
 }
-", @"
+""", """
 using System.Diagnostics;
 
-[DebuggerDisplay("""", Name
-    = ""x"")]
+[DebuggerDisplay("", Name
+    = "x")]
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
     public async Task Test_AttributeArgument_AfterInsteadOfBefore()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Diagnostics;
 
-[DebuggerDisplay("""", Name[||]
-    = ""x"")]
+[DebuggerDisplay("", Name[||]
+    = "x")]
 class C
 {
 }
-", @"
+""", """
 using System.Diagnostics;
 
-[DebuggerDisplay("""", Name =
-    ""x"")]
+[DebuggerDisplay("", Name =
+    "x")]
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
+""", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]

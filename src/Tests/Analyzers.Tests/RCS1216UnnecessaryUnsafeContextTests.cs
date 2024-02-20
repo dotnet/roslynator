@@ -299,7 +299,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Property()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
     class C
     {
         unsafe string X
@@ -310,11 +310,11 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
                 {
                     var x = 1;
                 }
-                return ""1"";
+                return "1";
             }
         }
     }
-", @"
+""", """
     class C
     {
         unsafe string X
@@ -324,11 +324,11 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
                 {
                     var x = 1;
                 }
-                return ""1"";
+                return "1";
             }
         }
     }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
@@ -363,7 +363,7 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]
     public async Task Test_Indexer()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
     class C
     {
         unsafe string this[int i]
@@ -374,11 +374,11 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
                 {
                     var x = 1;
                 }
-                return ""1"";
+                return "1";
             }
         }
     }
-", @"
+""", """
     class C
     {
         unsafe string this[int i]
@@ -388,11 +388,11 @@ public class RCS1216UnnecessaryUnsafeContextTests : AbstractCSharpDiagnosticVeri
                 {
                     var x = 1;
                 }
-                return ""1"";
+                return "1";
             }
         }
     }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUnsafeContext)]

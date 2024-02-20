@@ -104,7 +104,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
     public async Task TestNoDiagnostic_ContainsOnlyThrowNew()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
@@ -137,8 +137,8 @@ class C
     /// <summary>
     /// ...
     /// </summary>
-    /// <param name=""p1""></param>
-    /// <param name=""p2""></param>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     public void Bar2(object p1, object p2) { throw new NotImplementedException(); }
 
     public static C operator +(C left, C right)
@@ -151,13 +151,13 @@ class C
         throw new NotImplementedException();
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
     public async Task TestNoDiagnostic_SwitchExpression()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
@@ -166,11 +166,11 @@ class C
     {
         return options switch
         {
-            _ => """"
+            _ => ""
         };
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]

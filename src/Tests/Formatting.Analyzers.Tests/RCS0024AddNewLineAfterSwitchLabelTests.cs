@@ -15,7 +15,7 @@ public class RCS0024AddNewLineAfterSwitchLabelTests : AbstractCSharpDiagnosticVe
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
     public async Task Test()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void Foo()
@@ -24,11 +24,11 @@ class C
 
         switch (s)
         {
-            case """":[||] break;
+            case "":[||] break;
         }
     }
 }
-", @"
+""", """
 class C
 {
     void Foo()
@@ -37,18 +37,18 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 break;
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
     public async Task Test_MultipleLabels()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void Foo()
@@ -57,12 +57,12 @@ class C
 
         switch (s)
         {
-            case ""a"":
-            case ""b"":[||] break;
+            case "a":
+            case "b":[||] break;
         }
     }
 }
-", @"
+""", """
 class C
 {
     void Foo()
@@ -71,19 +71,19 @@ class C
 
         switch (s)
         {
-            case ""a"":
-            case ""b"":
+            case "a":
+            case "b":
                 break;
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterSwitchLabel)]
     public async Task TestNoDiagnostic()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void Foo()
@@ -92,11 +92,11 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 break;
         }
     }
 }
-");
+""");
     }
 }

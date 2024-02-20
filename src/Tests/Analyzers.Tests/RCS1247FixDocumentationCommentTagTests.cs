@@ -15,7 +15,7 @@ public class RCS1247FixDocumentationCommentTagTests : AbstractCSharpDiagnosticVe
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
     public async Task Test_C_Multiline()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary>
@@ -28,7 +28,7 @@ class C
     /// </c>|]
     /// </para>
     /// </summary>
-    /// <param name=""p"">
+    /// <param name="p">
     /// [|<c>
     /// c
     /// </c>|]
@@ -42,7 +42,7 @@ class C
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary>
@@ -55,7 +55,7 @@ class C
     /// </code>
     /// </para>
     /// </summary>
-    /// <param name=""p"">
+    /// <param name="p">
     /// <code>
     /// c
     /// </code>
@@ -69,17 +69,17 @@ class C
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
     public async Task Test_C_Multiline_List()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary>
-    /// <list type=""bullet"">
+    /// <list type="bullet">
     /// <listheader>
     /// <term>
     /// [|<c>
@@ -110,11 +110,11 @@ class C
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary>
-    /// <list type=""bullet"">
+    /// <list type="bullet">
     /// <listheader>
     /// <term>
     /// <code>
@@ -145,13 +145,13 @@ class C
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
     public async Task Test_Code_Singleline()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary>
@@ -160,7 +160,7 @@ class C
     /// [|<code>b</code>|]
     /// </para>
     /// </summary>
-    /// <param name=""p"">
+    /// <param name="p">
     /// [|<code>c</code>|]
     /// </param>
     /// <returns>
@@ -170,7 +170,7 @@ class C
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary>
@@ -179,7 +179,7 @@ class C
     /// <c>b</c>
     /// </para>
     /// </summary>
-    /// <param name=""p"">
+    /// <param name="p">
     /// <c>c</c>
     /// </param>
     /// <returns>
@@ -189,17 +189,17 @@ class C
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
     public async Task Test_Code_Singleline_List()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary>
-    /// <list type=""bullet"">
+    /// <list type="bullet">
     /// <listheader>
     /// <term>
     /// [|<code>a</code>|]
@@ -222,11 +222,11 @@ class C
     {
     }
 }
-", @"
+""", """
 class C
 {
     /// <summary>
-    /// <list type=""bullet"">
+    /// <list type="bullet">
     /// <listheader>
     /// <term>
     /// <c>a</c>
@@ -249,13 +249,13 @@ class C
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
     public async Task TestNoDiagnostic_C_Singleline()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     /// <summary>
@@ -265,7 +265,7 @@ class C
     /// <c>b</c>
     /// </para>
     /// </summary>
-    /// <param name=""p""><c>x</c></param>
+    /// <param name="p"><c>x</c></param>
     /// <returns>
     /// <c>x</c>
     /// </returns>
@@ -273,13 +273,13 @@ class C
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixDocumentationCommentTag)]
     public async Task TestNoDiagnostic_Code_Multiline()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     /// <summary>
@@ -294,7 +294,7 @@ class C
     /// </code>
     /// </para>
     /// </summary>
-    /// <param name=""p"">
+    /// <param name="p">
     /// <code>
     /// x
     /// </code>
@@ -308,6 +308,6 @@ class C
     {
     }
 }
-");
+""");
     }
 }
