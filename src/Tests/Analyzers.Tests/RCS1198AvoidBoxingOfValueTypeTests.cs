@@ -15,7 +15,7 @@ public class RCS1198AvoidBoxingOfValueTypeTests : AbstractCSharpDiagnosticVerifi
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
     public async Task Test_Interpolation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
@@ -26,10 +26,10 @@ class C
     {
         var c = new C();
 
-        var x = $""{[|c?.P.TotalMilliseconds|]}"";
+        var x = $"{[|c?.P.TotalMilliseconds|]}";
     }
 }
-", @"
+""", """
 using System;
 
 class C
@@ -40,71 +40,71 @@ class C
     {
         var c = new C();
 
-        var x = $""{(c?.P.TotalMilliseconds).ToString()}"";
+        var x = $"{(c?.P.TotalMilliseconds).ToString()}";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
     public async Task Test_Interpolation_NullableType()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         int? i = null;
 
-        string s = $""{[|i|]}"";
+        string s = $"{[|i|]}";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         int? i = null;
 
-        string s = $""{i?.ToString()}"";
+        string s = $"{i?.ToString()}";
     }
 }
-");
+""");
     }
 
     // https://github.com/dotnet/roslyn/pull/35006
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
     public async Task TestNoDiagnostic_StringConcatenation()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
         int i = 0;
-        string s = """" + i;
+        string s = "" + i;
     }
 }
-");
+""");
     }
 
     // https://github.com/dotnet/roslyn/pull/35006
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
     public async Task TestNoDiagnostic_InterpolatedString()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
         int i = 0;
-        string s = """";
+        string s = "";
 
-        s = $""{i,1}"";
-        s = $""{i:f}"";
-        s = $""{i,1:f}"";
+        s = $"{i,1}";
+        s = $"{i:f}";
+        s = $"{i,1:f}";
     }
 }
-");
+""");
     }
 }

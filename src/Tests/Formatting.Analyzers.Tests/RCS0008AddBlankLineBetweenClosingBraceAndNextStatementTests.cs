@@ -217,30 +217,30 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement)]
     public async Task Test_Fixed()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     unsafe void M()
     {
-        fixed (char* p = """")
+        fixed (char* p = "")
         {
         }[||]
         M();
     }
 }
-", @"
+""", """
 class C
 {
     unsafe void M()
     {
-        fixed (char* p = """")
+        fixed (char* p = "")
         {
         }
 
         M();
     }
 }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement)]
@@ -465,12 +465,12 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement)]
     public async Task Test_Switch()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        switch ("""")
+        switch ("")
         {
             default:
                 break;
@@ -478,12 +478,12 @@ class C
         M();
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        switch ("""")
+        switch ("")
         {
             default:
                 break;
@@ -492,7 +492,7 @@ class C
         M();
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement)]

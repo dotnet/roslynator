@@ -66,14 +66,14 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
         WriteAttributeString("charset", "utf-8");
         WriteEndElement();
 #if DEBUG
-        _writer.WriteRaw(@"
-<style type=""text/css"">
+        _writer.WriteRaw("""
+<style type="text/css">
 * { font-family: Consolas, Courier; }
 .containing-namespace { color: gray; }
 .external-type { color: gray; }
 .type-hierarchy-link { text-decoration: none; }
 </style>
-");
+""");
 #endif
         WriteEndElement();
         WriteStartElement("body");

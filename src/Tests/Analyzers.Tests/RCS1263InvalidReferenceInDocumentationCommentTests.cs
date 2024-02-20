@@ -15,196 +15,196 @@ public class RCS1263InvalidReferenceInDocumentationCommentTests : AbstractCSharp
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_ParamElement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// <param name=""[|p|]""></param>
+    /// <param name="[|p|]"></param>
     void M(object p1, object p2) => M(p1, p2);
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
     void M(object p1, object p2) => M(p1, p2);
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_ParamElement2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// <param name=""[|p|]""></param>
+    /// <param name="[|p|]"></param>
     void M() => M();
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
     void M() => M();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_ParamElement_Empty()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// <param name=""[|p|]"" />
+    /// <param name="[|p|]" />
     void M(object p1, object p2) => M(p1, p2);
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
     void M(object p1, object p2) => M(p1, p2);
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_TypeParamElement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// <typeparam name=""[|T|]""></param>
+    /// <typeparam name="[|T|]"></param>
     void M<T1, T2>() => M<T1, T2>();
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
     void M<T1, T2>() => M<T1, T2>();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_TypeParamElement2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// <typeparam name=""[|T|]""></param>
+    /// <typeparam name="[|T|]"></param>
     void M() => M();
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
     void M() => M();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task Test_TypeParamElement_Empty()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary></summary>
-    /// <typeparam name=""[|T|]"" />
+    /// <typeparam name="[|T|]" />
     void M<T1, T2>() => M<T1, T2>();
 }
-", @"
+""", """
 class C
 {
     /// <summary></summary>
     void M<T1, T2>() => M<T1, T2>();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_ParamElement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     /// <summary></summary>
-    /// <param name=""p1""></param>
-    /// <param name=""p2""></param>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     void M(object p1, object p2) => M(p1, p2);
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_TypeParamElement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     /// <summary></summary>
-    /// <typeparam name=""T1"" />
-    /// <typeparam name=""T2"" />
+    /// <typeparam name="T1" />
+    /// <typeparam name="T2" />
     void M<T1, T2>() => M<T1, T2>();
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_Record()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 /// <summary>
 /// x
 /// </summary>
-/// <param name=""Bar"">bar</param>
+/// <param name="Bar">bar</param>
 public record Foo(string Bar);
-", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+""", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_RecordStruct()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 /// <summary>
 /// x
 /// </summary>
-/// <param name=""Bar"">bar</param>
+/// <param name="Bar">bar</param>
 public record struct Foo(string Bar);
-", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+""", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_ClassPrimaryConstructor()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 /// <summary>
 /// x
 /// </summary>
-/// <param name=""value"">x</param>
+/// <param name="value">x</param>
 public class Foo(string value)
 {
     public string Value { get; } = value;
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidReferenceInDocumentationComment)]
     public async Task TestNoDiagnostic_StructPrimaryConstructor()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 /// <summary>
 /// x
 /// </summary>
-/// <param name=""value"">x</param>
+/// <param name="value">x</param>
 public struct Foo(string value)
 {
     public string Value { get; } = value;
 }
-");
+""");
     }
 }

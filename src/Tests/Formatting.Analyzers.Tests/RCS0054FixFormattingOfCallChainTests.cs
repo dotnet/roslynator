@@ -273,14 +273,14 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
     public async Task Test_Invocation_IndentationsDiffer()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     C M(string s) 
     {
         var x = new C();
 
-        return [|x.M("""")
+        return [|x.M("")
         .M(new string(
             ' ',
             1))
@@ -292,14 +292,14 @@ class C
                 1))|];
     }
 }
-", @"
+""", """
 class C
 {
     C M(string s) 
     {
         var x = new C();
 
-        return x.M("""")
+        return x.M("")
             .M(new string(
                 ' ',
                 1))
@@ -311,14 +311,14 @@ class C
                 1));
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
     public async Task Test_TopLevelStatement_SwitchStatement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
-var s = """";
+        await VerifyDiagnosticAndFixAsync("""
+var s = "";
 
 s = [|s.ToString().ToString()
 .ToString()|];
@@ -328,8 +328,8 @@ switch (s)
     default:
         break;
 }
-", @"
-var s = """";
+""", """
+var s = "";
 
 s = s.ToString().ToString()
     .ToString();
@@ -339,14 +339,14 @@ switch (s)
     default:
         break;
 }
-", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
     public async Task Test_TopLevelStatement_ForEachStatement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
-var s = """";
+        await VerifyDiagnosticAndFixAsync("""
+var s = "";
 
 s = [|s.ToString().ToString()
 .ToString()|];
@@ -355,8 +355,8 @@ foreach (char ch in s)
 {
     var x = ch;
 }
-", @"
-var s = """";
+""", """
+var s = "";
 
 s = s.ToString().ToString()
     .ToString();
@@ -365,7 +365,7 @@ foreach (char ch in s)
 {
     var x = ch;
 }
-", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
@@ -389,34 +389,34 @@ partial class Program
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
     public async Task Test_TopLevelStatement2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
-var s = """";
+        await VerifyDiagnosticAndFixAsync("""
+var s = "";
 
 s = [|s.ToString().ToString()
 .ToString()|];
-", @"
-var s = """";
+""", """
+var s = "";
 
 s = s.ToString().ToString()
     .ToString();
-", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
     public async Task Test_TopLevelStatement3()
     {
-        await VerifyDiagnosticAndFixAsync(@"
-var s = """";
+        await VerifyDiagnosticAndFixAsync("""
+var s = "";
 
 s = [|s.ToString().ToString()
 
 .ToString()|];
-", @"
-var s = """";
+""", """
+var s = "";
 
 s = s.ToString().ToString()
     .ToString();
-", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]

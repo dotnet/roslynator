@@ -37,21 +37,21 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
     public async Task Test_AttributeArgument()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
-[Obsolete([|(|]""""))]
+[Obsolete([|(|]""))]
 class C
 {
 }
-", @"
+""", """
 using System;
 
-[Obsolete("""")]
+[Obsolete("")]
 class C
 {
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
@@ -443,7 +443,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
     public async Task TestNoDiagnostic_AssignmentInInitializer()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 
 class C
@@ -451,24 +451,24 @@ class C
     void M()
     {
         string x;
-        var items = new List<string>() { (x = ""x"") };    
+        var items = new List<string>() { (x = "x") };    
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
     public async Task TestNoDiagnostic_ConditionalExpressionInInterpolatedString()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
-            string s = $""{ ((true) ? ""a"" : ""b"")}"";
+            string s = $"{ ((true) ? "a" : "b")}";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
@@ -541,19 +541,19 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
     public async Task TestNoDiagnostic_AliasQualifiedNameInInterpolatedString()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 namespace N
 {
     class C
     {
-        static string M1() => $""{(global::N.C.M1())}"";
-        static string M2() => $""{(global::N.C.P)}"";
-        static string M3() => $""{(global::N.C.I.IM())}"";
-        static string M4() => $""{(global::N.C.I.IP)}"";
-        static string M5() => $""{(global::N.C.I[0])}"";
-        static string M6() => $""{(global::N.C.I?.IM())}"";
-        static string M7() => $""{(global::N.C.I?.IP)}"";
-        static string M8() => $""{(global::N.C.I?[0])}"";
+        static string M1() => $"{(global::N.C.M1())}";
+        static string M2() => $"{(global::N.C.P)}";
+        static string M3() => $"{(global::N.C.I.IM())}";
+        static string M4() => $"{(global::N.C.I.IP)}";
+        static string M5() => $"{(global::N.C.I[0])}";
+        static string M6() => $"{(global::N.C.I?.IM())}";
+        static string M7() => $"{(global::N.C.I?.IP)}";
+        static string M8() => $"{(global::N.C.I?[0])}";
 
         public static C I { get; } = new C();
 
@@ -566,13 +566,13 @@ namespace N
         public string this[int index] => null;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
     public async Task TestNoDiagnostic_SwitchExpressionInsideAwaitExpression()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Threading.Tasks;
 
@@ -584,12 +584,12 @@ class C
 
         return await (action switch
         {
-            """" => Task.FromResult(default(string)),
+            "" => Task.FromResult(default(string)),
             _ => throw new NotSupportedException(),
         });
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]

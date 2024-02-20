@@ -15,7 +15,7 @@ public class RCS1128UseCoalesceExpressionTests : AbstractCSharpDiagnosticVerifie
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task Test_LocalDeclarationStatement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
@@ -24,25 +24,25 @@ class C
 
         if (x == null)
         {
-            x = (true) ? ""a"" : ""b"";
+            x = (true) ? "a" : "b";
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        string x = s ?? ((true) ? ""a"" : ""b"");
+        string x = s ?? ((true) ? "a" : "b");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task Test_LocalDeclarationStatement_IsNull()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
@@ -51,25 +51,25 @@ class C
 
         if (x is null)
         {
-            x = (true) ? ""a"" : ""b"";
+            x = (true) ? "a" : "b";
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        string x = s ?? ((true) ? ""a"" : ""b"");
+        string x = s ?? ((true) ? "a" : "b");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task Test_LocalDeclarationStatement_WithComments()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
@@ -80,16 +80,16 @@ class C
         if (x == null)
         {
             // b
-            x = (true) ? ""a"" : ""b"";
+            x = (true) ? "a" : "b";
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        string x = s ?? ((true) ? ""a"" : ""b"");
+        string x = s ?? ((true) ? "a" : "b");
 
         // a
            
@@ -99,13 +99,13 @@ class C
         
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task Test_LocalDeclarationStatement_EmbeddedStatement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
@@ -113,18 +113,18 @@ class C
         [|string x = s;|]
 
         if (x == null)
-            x = """";
+            x = "";
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        string x = s ?? """";
+        string x = s ?? "";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
@@ -161,28 +161,28 @@ class B { }
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task Test_SimpleAssignmentStatement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s, string x)
     {
-        [|x = """";|]
+        [|x = "";|]
 
         if (x == null)
         {
-            x = (true) ? ""a"" : ""b"";
+            x = (true) ? "a" : "b";
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s, string x)
     {
-        x = """" ?? ((true) ? ""a"" : ""b"");
+        x = "" ?? ((true) ? "a" : "b");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
@@ -327,7 +327,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task Test_NullableReferenceType()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 #nullable enable
 
 public class C
@@ -341,9 +341,9 @@ public class C
         }
     }
 
-    string? GetValue() => """";
+    string? GetValue() => "";
 }
-", @"
+""", """
 #nullable enable
 
 public class C
@@ -353,43 +353,43 @@ public class C
         var s = GetValue() ?? new string(' ', 1);
     }
 
-    string? GetValue() => """";
+    string? GetValue() => "";
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task TestNoDiagnostic_NotEqualsToNull()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
-        string x = """";
+        string x = "";
 
         if (x != null)
-            x = """";
+            x = "";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
     public async Task TestNoDiagnostic_NotIsNull()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
-        string x = """";
+        string x = "";
 
         if (!(x is null))
-            x = """";
+            x = "";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]

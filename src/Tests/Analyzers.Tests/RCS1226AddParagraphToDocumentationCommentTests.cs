@@ -593,26 +593,26 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_ListElement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 /// <summary>
 /// a
 /// 
-/// <list type=""bullet"">
+/// <list type="bullet">
 /// <item><description>b</description></item>
 /// </list>
 /// </summary>
 class C
 {
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
     public async Task TestNoDiagnostic_ListElement2()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 /// <summary>
-/// <list type=""bullet"">
+/// <list type="bullet">
 /// <item><description>b</description></item>
 /// </list>
 /// 
@@ -621,6 +621,6 @@ class C
 class C
 {
 }
-");
+""");
     }
 }

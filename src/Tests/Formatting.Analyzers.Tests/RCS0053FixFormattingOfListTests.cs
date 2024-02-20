@@ -664,17 +664,17 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_ConditionalExpression()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string x, string y)
     {
         M([|x, (y != null)
             ? y
-            : """"|]);
+            : ""|]);
     }
 }
-", @"
+""", """
 class C
 {
     void M(string x, string y)
@@ -683,36 +683,36 @@ class C
             x,
             (y != null)
                 ? y
-                : """");
+                : "");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_SingleMultilineParameter_WrongIndentation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string x)
     {
         M([|(x != null)
     ? x
-    : """"|]);
+    : ""|]);
     }
 }
-", @"
+""", """
 class C
 {
     void M(string x)
     {
         M((x != null)
             ? x
-            : """");
+            : "");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
@@ -748,38 +748,38 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_SingleMultilineParameter_NoIndentation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string x)
     {
         M([|(x != null)
 ? x
-: """"|]);
+: ""|]);
     }
 }
-", @"
+""", """
 class C
 {
     void M(string x)
     {
         M((x != null)
             ? x
-            : """");
+            : "");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_BaseConstructorArguments()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C : B
 {
     public C(string x, string y) : base([|x, (y != null)
         ? y
-        : """"|])
+        : ""|])
     {
     }
 }
@@ -790,14 +790,14 @@ class B
     {
     }
 }
-", @"
+""", """
 class C : B
 {
     public C(string x, string y) : base(
         x,
         (y != null)
             ? y
-            : """")
+            : "")
     {
     }
 }
@@ -808,19 +808,19 @@ class B
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_BaseConstructorArguments2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C : B
 {
     public C(string x, string y)
         : base([|x, (y != null)
             ? y
-            : """"|])
+            : ""|])
     {
     }
 }
@@ -831,7 +831,7 @@ class B
     {
     }
 }
-", @"
+""", """
 class C : B
 {
     public C(string x, string y)
@@ -839,7 +839,7 @@ class C : B
             x,
             (y != null)
                 ? y
-                : """")
+                : "")
     {
     }
 }
@@ -850,101 +850,101 @@ class B
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_StringLiteral()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string x, string y)
     {
-        M([|x, @""
+        M([|x, @"
 a
 b
 c
-""|]);
+"|]);
     }
 }
-", @"
+""", """
 class C
 {
     void M(string x, string y)
     {
         M(
             x,
-            @""
+            @"
 a
 b
 c
-"");
+");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_AttributeList()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
 {
     [[|Flags, Obsolete(
-        """",
+        "",
         true)|]]
     enum E
     {
     }
 }
-", @"
+""", """
 using System;
 
 class C
 {
     [Flags,
         Obsolete(
-            """",
+            "",
             true)]
     enum E
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_AttributeList_NotIndented()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
 {
     [[|Flags, Obsolete(
-[|"""",
+[|"",
 true|])|]]
     enum E
     {
     }
 }
-", @"
+""", """
 using System;
 
 class C
 {
     [Flags,
         Obsolete(
-            """",
+            "",
             true)]
     enum E
     {
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
@@ -1085,30 +1085,30 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task Test_Multiline_ArrayInitializer()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        var x = new string[] { [|"""", default, new string(
+        var x = new string[] { [|"", default, new string(
             ' ',
             1)|] };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         var x = new string[] {
-            """",
+            "",
             default,
             new string(
                 ' ',
                 1) };
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
@@ -1223,45 +1223,45 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task TestNoDiagnostic_SingleMultilineParameter()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string x)
     {
         M((x != null)
             ? x
-            : """");
+            : "");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task TestNoDiagnostic_ArrayInitializerWithMultilineComment()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
         var x = new string[]
         {
-            /* x */ """"
+            /* x */ ""
         };
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task TestNoDiagnostic_LambdaBlockBodyInGlobalStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Linq;
 
 foreach (var item in Enumerable.Range(0, 10))
 {
-    var s = """";
+    var s = "";
 }
 
 var items = Enumerable.Range(0, 10)
@@ -1270,20 +1270,20 @@ var items = Enumerable.Range(0, 10)
         return f;
     })
     .Select(f => f);
-", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+""", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task TestNoDiagnostic_ArrayInitializerInGlobalStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 Foo.Method(
     foo: new Foo[]
     {
         new Foo(
-            """")
+            "")
     });
-", additionalFiles: new[] { @"
+""", additionalFiles: new[] { @"
 public class Foo
 {
     public Foo(string v1)

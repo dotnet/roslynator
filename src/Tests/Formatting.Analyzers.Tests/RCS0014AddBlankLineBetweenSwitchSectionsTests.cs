@@ -15,7 +15,7 @@ public class RCS0014AddBlankLineBetweenSwitchSectionsTests : AbstractCSharpDiagn
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task Test()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string M()
@@ -24,9 +24,9 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 return A();[||]
-            case ""b"":
+            case "b":
                 return B();[||]
             default:
                 return null;
@@ -36,7 +36,7 @@ class C
     public string A() => null;
     public string B() => null;
 }
-", @"
+""", """
 class C
 {
     string M()
@@ -45,10 +45,10 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 return A();
 
-            case ""b"":
+            case "b":
                 return B();
 
             default:
@@ -59,13 +59,13 @@ class C
     public string A() => null;
     public string B() => null;
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task Test_ClosingBraceAndSection()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string M()
@@ -74,12 +74,12 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
-                    return """";
+                    return "";
                 }[||]
-            case ""b"":
-                return """";[||]
+            case "b":
+                return "";[||]
             default:
                 return null;
         }
@@ -88,7 +88,7 @@ class C
     public string A() => null;
     public string B() => null;
 }
-", @"
+""", """
 class C
 {
     string M()
@@ -97,13 +97,13 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
-                    return """";
+                    return "";
                 }
 
-            case ""b"":
-                return """";
+            case "b":
+                return "";
 
             default:
                 return null;
@@ -113,13 +113,13 @@ class C
     public string A() => null;
     public string B() => null;
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task Test_ClosingBraceAndSection2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string M()
@@ -128,18 +128,18 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
-                    return """";
+                    return "";
                 }[||]
-            case ""b"":
-                return """";
+            case "b":
+                return "";
         }
 
         return null;
     }
 }
-", @"
+""", """
 class C
 {
     string M()
@@ -148,25 +148,25 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
-                    return """";
+                    return "";
                 }
 
-            case ""b"":
-                return """";
+            case "b":
+                return "";
         }
 
         return null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, true));
+""", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task Test_ClosingBraceAndSection3()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string M()
@@ -175,16 +175,16 @@ class C
 
         switch (s)
         {
-            case ""a"":
-                return """";[||]
-            case ""b"":
-                return """";
+            case "a":
+                return "";[||]
+            case "b":
+                return "";
         }
 
         return null;
     }
 }
-", @"
+""", """
 class C
 {
     string M()
@@ -193,23 +193,23 @@ class C
 
         switch (s)
         {
-            case ""a"":
-                return """";
+            case "a":
+                return "";
 
-            case ""b"":
-                return """";
+            case "b":
+                return "";
         }
 
         return null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
+""", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     string M()
@@ -218,24 +218,24 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
-                    return """";
+                    return "";
                 }
-            case ""b"":
-                return """";
+            case "b":
+                return "";
         }
 
         return null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
+""", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection2()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     string M()
@@ -244,25 +244,25 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
-                    return """";
+                    return "";
                 }
 
-            case ""b"":
-                return """";
+            case "b":
+                return "";
         }
 
         return null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, true));
+""", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection3()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     string M()
@@ -271,23 +271,23 @@ class C
 
         switch (s)
         {
-            case ""a"":
-                return """";
+            case "a":
+                return "";
 
-            case ""b"":
-                return """";
+            case "b":
+                return "";
         }
 
         return null;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
+""", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task Test_Comment()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     string M()
@@ -296,7 +296,7 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 return A(); //x[||]
             default:
                 return null;
@@ -305,7 +305,7 @@ class C
 
     public string A() => null;
 }
-", @"
+""", """
 class C
 {
     string M()
@@ -314,7 +314,7 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 return A(); //x
 
             default:
@@ -324,13 +324,13 @@ class C
 
     public string A() => null;
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
     public async Task TestNoDiagnostic_SingleSection()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     string M()
@@ -339,7 +339,7 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 return A();
         }
 
@@ -348,6 +348,6 @@ class C
 
     public string A() => null;
 }
-");
+""");
     }
 }

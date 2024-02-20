@@ -15,16 +15,16 @@ public class RCS1156UseStringLengthInsteadOfComparisonWithEmptyStringTests : Abs
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
     public async Task Test_ComparisonToEmptyString()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         string s = default;
-        if ([|s == """"|]) { }
+        if ([|s == ""|]) { }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -33,22 +33,22 @@ class C
         if (s?.Length == 0) { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]
     public async Task Test_ComparisonToEmptyString2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         string s = default;
-        if ([|("""") == (s)|]) { }
+        if ([|("") == (s)|]) { }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -57,7 +57,7 @@ class C
         if (0 == (s)?.Length) { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString)]

@@ -13,46 +13,46 @@ public class RR0063InsertStringInterpolationTests : AbstractCSharpRefactoringVer
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InsertStringInterpolation)]
     public async Task Test_EmptyStringLiteral()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
-        var x = ""[||]"";
+        var x = "[||]";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var x = $""{}"";
+        var x = $"{}";
     }
 }
-",
+""",
 equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InsertStringInterpolation)]
     public async Task Test_EmptyInterpolatedString()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
     {
-        var x = $""[||]"";
+        var x = $"[||]";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var x = $""{}"";
+        var x = $"{}";
     }
 }
-",
+""",
 equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
     }
 }

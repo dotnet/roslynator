@@ -16,69 +16,69 @@ public class RCS1118MarkLocalVariableAsConstTests : AbstractCSharpDiagnosticVeri
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task Test_ConstantValue()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        [|string|] s = ""a"";
-        string s2 = s + ""b"";
+        [|string|] s = "a";
+        string s2 = s + "b";
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        const string s = ""a"";
-        string s2 = s + ""b"";
+        const string s = "a";
+        string s2 = s + "b";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task Test_NullableReferenceType()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 #nullable enable
 
 class C
 {
     void M()
     {
-        [|var|] s = ""a"";
-        string s2 = s + ""b"";
+        [|var|] s = "a";
+        string s2 = s + "b";
     }
 }
-", @"
+""", """
 #nullable enable
 
 class C
 {
     void M()
     {
-        const string s = ""a"";
-        string s2 = s + ""b"";
+        const string s = "a";
+        string s2 = s + "b";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
     public async Task TestNoDiagnostic_InterpolatedString()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
-        string s = $""a"";
-        string s2 = $""a"" + """";
-        string s3 = $""a"";
+        string s = $"a";
+        string s2 = $"a" + "";
+        string s3 = $"a";
     }
 }
-", options: WellKnownCSharpTestOptions.Default_CSharp9);
+""", options: WellKnownCSharpTestOptions.Default_CSharp9);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]

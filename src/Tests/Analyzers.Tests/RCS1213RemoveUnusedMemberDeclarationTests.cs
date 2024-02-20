@@ -392,12 +392,12 @@ namespace UnityEngine
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_PrimaryConstructor()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class Class([My(Class.Const)] int i)
 {
-    private const string Const = ""const"";
+    private const string Const = "const";
 }
 
 class MyAttribute : Attribute
@@ -406,7 +406,7 @@ class MyAttribute : Attribute
     {
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId("CS9113"));
+""", options: Options.AddAllowedCompilerDiagnosticId("CS9113"));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]

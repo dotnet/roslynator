@@ -48,19 +48,19 @@ class C
     public async Task TestNoFix()
     {
         await VerifyNoFixAsync(
-@"
+"""
 class C
 {
     void M()
     {
             if (true)
             {
-                string s = "";
+                string s = ";
             }
 
             string s = null;
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
     }
 }

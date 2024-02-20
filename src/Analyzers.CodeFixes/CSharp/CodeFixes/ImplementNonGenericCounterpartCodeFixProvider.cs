@@ -26,7 +26,7 @@ public sealed class ImplementNonGenericCounterpartCodeFixProvider : BaseCodeFixP
 
     internal readonly string ExplicitEquivalenceKey;
 
-    private const string IComparableCompareText = @"
+    private const string IComparableCompareText = """
 public int global::System.IComparable.CompareTo(object obj)
 {
     if (obj == null)
@@ -39,11 +39,11 @@ public int global::System.IComparable.CompareTo(object obj)
         return CompareTo(x);
     }
 
-    throw new global::System.ArgumentException("""", nameof(obj));
+    throw new global::System.ArgumentException("", nameof(obj));
 }
-";
+""";
 
-    private const string IComparerCompareText = @"
+    private const string IComparerCompareText = """
 public int global::System.Collections.IComparer.Compare(object x, object y)
 {
     if (x == y)
@@ -67,11 +67,11 @@ public int global::System.Collections.IComparer.Compare(object x, object y)
         return Compare(a, b);
     }
 
-    throw new global::System.ArgumentException("""", nameof(x));
+    throw new global::System.ArgumentException("", nameof(x));
 }
-";
+""";
 
-    private const string IEqualityComparerEqualsText = @"
+    private const string IEqualityComparerEqualsText = """
 new public bool global::System.Collections.IEqualityComparer.Equals(object x, object y)
 {
     if (x == y)
@@ -90,11 +90,11 @@ new public bool global::System.Collections.IEqualityComparer.Equals(object x, ob
         return Equals(a, b);
     }
 
-    throw new global::System.ArgumentException("""", nameof(x));
+    throw new global::System.ArgumentException("", nameof(x));
 }
-";
+""";
 
-    private const string IEqualityComparerGetHashCodeText = @"
+    private const string IEqualityComparerGetHashCodeText = """
 public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 {
     if (obj == null)
@@ -107,9 +107,9 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
         return GetHashCode(x);
     }
 
-    throw new global::System.ArgumentException("""", nameof(obj));
+    throw new global::System.ArgumentException("", nameof(obj));
 }
-";
+""";
 
     private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparableCompare = new(() => CreateMethodDeclaration(IComparableCompareText, explicitInterfaceImplementation: false));
     private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparerCompare = new(() => CreateMethodDeclaration(IComparerCompareText, explicitInterfaceImplementation: false));

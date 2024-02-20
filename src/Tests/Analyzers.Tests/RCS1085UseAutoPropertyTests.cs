@@ -378,11 +378,11 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
     public async Task Test_FieldInCref()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     /// <summary>
-    /// <seealso cref=""p""/>
+    /// <seealso cref="p"/>
     /// </summary>
     public int [|P|]
         {
@@ -391,15 +391,15 @@ class C
 
     private readonly int p;
 }
-", @"
+""", """
 class C
 {
     /// <summary>
-    /// <seealso cref=""p""/>
+    /// <seealso cref="p"/>
     /// </summary>
     public int P { get; }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]

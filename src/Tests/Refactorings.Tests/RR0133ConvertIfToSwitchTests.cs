@@ -176,18 +176,18 @@ class C
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
     public async Task Test_ConstantAndPattern()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     int M()
     {
         string s = null;
 
-        [||]if (s == """")
+        [||]if (s == "")
         {
             return 1;
         }
-        else if (s == ""a"" || s == ""b"")
+        else if (s == "a" || s == "b")
         {
             return 2;
         }
@@ -203,7 +203,7 @@ class C
         return 0;
     }
 }
-", @"
+""", """
 class C
 {
     int M()
@@ -212,13 +212,13 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 {
                     return 1;
                 }
 
-            case ""a"":
-            case ""b"":
+            case "a":
+            case "b":
                 {
                     return 2;
                 }
@@ -238,7 +238,7 @@ class C
         return 0;
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]

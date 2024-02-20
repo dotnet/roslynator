@@ -15,7 +15,7 @@ public class RCS1078UseEmptyStringLiteralOrStringEmptyTests : AbstractCSharpDiag
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
     public async Task Test_StringEmpty()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
@@ -29,7 +29,7 @@ class C
         s = [|global::System.String.Empty|];
     }
 }
-", @"
+""", """
 using System;
 
 class C
@@ -37,32 +37,32 @@ class C
     void M()
     {
         string s = null;
-        s = """";
-        s = """";
-        s = """";
-        s = """";
+        s = "";
+        s = "";
+        s = "";
+        s = "";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Literal));
+""", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Literal));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
     public async Task Test_EmptyString()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = [|""""|];
-        s = [|@""""|];
-        s = [|$""""|];
-        s = [|@$""""|];
-        s = [|$@""""|];
+        s = [|""|];
+        s = [|@""|];
+        s = [|$""|];
+        s = [|@$""|];
+        s = [|$@""|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -75,47 +75,47 @@ class C
         s = string.Empty;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
+""", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
     public async Task TestNoDiagnostic()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
         string s = null;
-        s = "" "";
-        s = ""a"";
+        s = " ";
+        s = "a";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
+""", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEmptyStringLiteralOrStringEmpty)]
     public async Task TestNoDiagnostic_ExpressionMustBeConstant()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
 {
-     private const string _f = """";
+     private const string _f = "";
 
-    [Obsolete("""")]
-    void M(string p = """")
+    [Obsolete("")]
+    void M(string p = "")
     {
-        const string s = """";
+        const string s = "";
 
         switch (s)
         {
-            case """":
+            case "":
                 break;
         }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
+""", options: Options.AddConfigOption(ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field));
     }
 }
