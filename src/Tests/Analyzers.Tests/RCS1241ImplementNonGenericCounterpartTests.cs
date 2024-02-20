@@ -22,7 +22,7 @@ public class RCS1241ImplementNonGenericCounterpartTests : AbstractCSharpDiagnost
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
     public async Task Test_IComparable()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Collections.Generic;
 
@@ -34,7 +34,7 @@ public abstract class [|Comparable|] : IComparable<C>
 {
     public abstract int CompareTo(C other);
 }
-", @"
+""", """
 using System;
 using System.Collections.Generic;
 
@@ -45,7 +45,6 @@ public class C
 public abstract class Comparable : IComparable<C>, IComparable
 {
     public abstract int CompareTo(C other);
-
     public int CompareTo(object obj)
     {
         if (obj == null)
@@ -58,16 +57,16 @@ public abstract class Comparable : IComparable<C>, IComparable
             return CompareTo(x);
         }
 
-        throw new ArgumentException("""", nameof(obj));
+        throw new ArgumentException("", nameof(obj));
     }
 }
-", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
+""", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
     public async Task Test_Record_IComparable()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Collections.Generic;
 
@@ -79,7 +78,7 @@ public abstract record class [|Comparable|] : IComparable<C>
 {
     public abstract int CompareTo(C other);
 }
-", @"
+""", """
 using System;
 using System.Collections.Generic;
 
@@ -90,7 +89,6 @@ public class C
 public abstract record class Comparable : IComparable<C>, IComparable
 {
     public abstract int CompareTo(C other);
-
     public int CompareTo(object obj)
     {
         if (obj == null)
@@ -103,16 +101,16 @@ public abstract record class Comparable : IComparable<C>, IComparable
             return CompareTo(x);
         }
 
-        throw new ArgumentException("""", nameof(obj));
+        throw new ArgumentException("", nameof(obj));
     }
 }
-", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
+""", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
     public async Task Test_IComparable_Explicit()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Collections.Generic;
 
@@ -124,7 +122,7 @@ public abstract class [|Comparable|] : IComparable<C>
 {
     public abstract int CompareTo(C other);
 }
-", @"
+""", """
 using System;
 using System.Collections.Generic;
 
@@ -135,7 +133,6 @@ public class C
 public abstract class Comparable : IComparable<C>, IComparable
 {
     public abstract int CompareTo(C other);
-
     int IComparable.CompareTo(object obj)
     {
         if (obj == null)
@@ -148,16 +145,16 @@ public abstract class Comparable : IComparable<C>, IComparable
             return CompareTo(x);
         }
 
-        throw new ArgumentException("""", nameof(obj));
+        throw new ArgumentException("", nameof(obj));
     }
 }
-", equivalenceKey: _explicitEquivalenceKey);
+""", equivalenceKey: _explicitEquivalenceKey);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
     public async Task Test_IComparer()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -170,7 +167,7 @@ public abstract class [|Comparer|] : IComparer<C>
 {
     public abstract int Compare(C x, C y);
 }
-", @"
+""", """
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -182,7 +179,6 @@ public class C
 public abstract class Comparer : IComparer<C>, IComparer
 {
     public abstract int Compare(C x, C y);
-
     public int Compare(object x, object y)
     {
         if (x == y)
@@ -206,16 +202,16 @@ public abstract class Comparer : IComparer<C>, IComparer
             return Compare(a, b);
         }
 
-        throw new ArgumentException("""", nameof(x));
+        throw new ArgumentException("", nameof(x));
     }
 }
-", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
+""", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
     public async Task Test_IComparer_Explicit()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -228,7 +224,7 @@ public abstract class [|Comparer|] : IComparer<C>
 {
     public abstract int Compare(C x, C y);
 }
-", @"
+""", """
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -240,7 +236,6 @@ public class C
 public abstract class Comparer : IComparer<C>, IComparer
 {
     public abstract int Compare(C x, C y);
-
     int IComparer.Compare(object x, object y)
     {
         if (x == y)
@@ -264,16 +259,16 @@ public abstract class Comparer : IComparer<C>, IComparer
             return Compare(a, b);
         }
 
-        throw new ArgumentException("""", nameof(x));
+        throw new ArgumentException("", nameof(x));
     }
 }
-", equivalenceKey: _explicitEquivalenceKey);
+""", equivalenceKey: _explicitEquivalenceKey);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
     public async Task Test_IEqualityComparer()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -288,7 +283,7 @@ public abstract class [|EqualityComparer|] : IEqualityComparer<C>
 
     public abstract int GetHashCode(C obj);
 }
-", @"
+""", """
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -302,7 +297,6 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
     public abstract bool Equals(C x, C y);
 
     public abstract int GetHashCode(C obj);
-
     new public bool Equals(object x, object y)
     {
         if (x == y)
@@ -321,9 +315,8 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
             return Equals(a, b);
         }
 
-        throw new ArgumentException("""", nameof(x));
+        throw new ArgumentException("", nameof(x));
     }
-
     public int GetHashCode(object obj)
     {
         if (obj == null)
@@ -336,16 +329,16 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
             return GetHashCode(x);
         }
 
-        throw new ArgumentException("""", nameof(obj));
+        throw new ArgumentException("", nameof(obj));
     }
 }
-", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
+""", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
     public async Task Test_IEqualityComparer_Explicit()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -360,7 +353,7 @@ public abstract class [|EqualityComparer|] : IEqualityComparer<C>
 
     public abstract int GetHashCode(C obj);
 }
-", @"
+""", """
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -374,7 +367,6 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
     public abstract bool Equals(C x, C y);
 
     public abstract int GetHashCode(C obj);
-
     bool IEqualityComparer.Equals(object x, object y)
     {
         if (x == y)
@@ -393,9 +385,8 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
             return Equals(a, b);
         }
 
-        throw new ArgumentException("""", nameof(x));
+        throw new ArgumentException("", nameof(x));
     }
-
     int IEqualityComparer.GetHashCode(object obj)
     {
         if (obj == null)
@@ -408,9 +399,9 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
             return GetHashCode(x);
         }
 
-        throw new ArgumentException("""", nameof(obj));
+        throw new ArgumentException("", nameof(obj));
     }
 }
-", equivalenceKey: _explicitEquivalenceKey);
+""", equivalenceKey: _explicitEquivalenceKey);
     }
 }

@@ -1,5 +1,4 @@
-﻿#if ROSLYN_4_2
-// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using System.Composition;
@@ -33,6 +32,7 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
+#if ROSLYN_4_2
         SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
         if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression)))
@@ -83,8 +83,12 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
+#else
+        await Task.CompletedTask;
+#endif
     }
 
+#if ROSLYN_4_2
     private static Task<Document> RefactorAsync(
         Document document,
         LiteralExpressionSyntax literalExpression,
@@ -221,5 +225,5 @@ public sealed class RawStringLiteralCodeFixProvider : BaseCodeFixProvider
 
         return document.WithTextChangeAsync(interpolatedString.Span, sb.ToString(), cancellationToken);
     }
-}
 #endif
+}

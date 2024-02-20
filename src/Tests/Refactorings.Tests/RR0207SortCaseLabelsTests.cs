@@ -13,41 +13,41 @@ public class RR0207SortCaseLabelsTests : AbstractCSharpRefactoringVerifier
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
     public async Task Test_StringLiteral()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M(string s)
     {
         switch (s)
         {
-[|            case ""d"":
-            case ""a"":
-            case ""c"":|]
-            case ""b"":
+[|            case "d":
+            case "a":
+            case "c":|]
+            case "b":
                 break;
             default:
                 break;
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
         switch (s)
         {
-            case ""a"":
-            case ""c"":
-            case ""d"":
-            case ""b"":
+            case "a":
+            case "c":
+            case "d":
+            case "b":
                 break;
             default:
                 break;
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
@@ -103,24 +103,24 @@ class C
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
     public async Task TestNoRefactoring_StringLiteral_IsSorted()
     {
-        await VerifyNoRefactoringAsync(@"
+        await VerifyNoRefactoringAsync("""
 class C
 {
     void M(string s)
     {
         switch (s)
         {
-[|            case ""a"":
-            case ""b"":
-            case ""c"":
-            case ""d"":|]
+[|            case "a":
+            case "b":
+            case "c":
+            case "d":|]
                 break;
             default:
                 break;
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]

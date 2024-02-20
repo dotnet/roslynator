@@ -66,23 +66,23 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task Test_CoalesceExpression()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M(string s)
     {
-        [|s = s ?? """"|];
+        [|s = s ?? ""|];
     }
 }
-", @"
+""", """
 class C
 {
     void M(string s)
     {
-        s ??= """";
+        s ??= "";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
@@ -130,15 +130,15 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
     public async Task TestNoDiagnostic_CoalesceExpression_CSharp6()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M(string s)
     {
-        s = s ?? """";
+        s = s ?? "";
     }
 }
-", options: WellKnownCSharpTestOptions.Default_CSharp6);
+""", options: WellKnownCSharpTestOptions.Default_CSharp6);
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]

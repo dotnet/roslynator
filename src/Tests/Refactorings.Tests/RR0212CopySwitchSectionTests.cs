@@ -18,7 +18,7 @@ public class RR0212CopySwitchSectionTests : AbstractCSharpRefactoringVerifier
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopySwitchSection)]
     public async Task Test_OnCloseBrace()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
@@ -27,7 +27,7 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     M();
                     break;
@@ -37,7 +37,7 @@ class C
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -46,12 +46,12 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     M();
                     break;
                 }
-            case ""a"":
+            case "a":
                 {
                     M();
                     break;
@@ -61,13 +61,13 @@ class C
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopySwitchSection)]
     public async Task Test_OnEmptyLine()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
@@ -76,7 +76,7 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 M();
                 break;
 [||]
@@ -85,7 +85,7 @@ class C
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -94,11 +94,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 M();
                 break;
 
-            case ""a"":
+            case "a":
                 M();
                 break;
 
@@ -107,13 +107,13 @@ class C
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopySwitchSection)]
     public async Task Test_OnWhitespaceLine()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
@@ -122,7 +122,7 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 M();
                 break;
 [||]    
@@ -131,7 +131,7 @@ class C
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -140,11 +140,11 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 M();
                 break;
 
-            case ""a"":
+            case "a":
                 M();
                 break;
 
@@ -153,13 +153,13 @@ class C
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopySwitchSection)]
     public async Task Test_OnEmptyLineAfterLastSection()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 class C
 {
     void M()
@@ -168,14 +168,14 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 M();
                 break;
 [||]
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -184,16 +184,16 @@ class C
 
         switch (s)
         {
-            case ""a"":
+            case "a":
                 M();
                 break;
 
-            case ""a"":
+            case "a":
                 M();
                 break;
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 }

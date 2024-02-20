@@ -332,7 +332,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
     public async Task TestNoDiagnostic_ExtensionMethod()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 using System.Linq;
 
@@ -350,9 +350,9 @@ static class E
 {
     public static string GetString(this C c)
     {
-        return c?.ToString() ?? """";
+        return c?.ToString() ?? "";
     }
 }
-");
+""");
     }
 }

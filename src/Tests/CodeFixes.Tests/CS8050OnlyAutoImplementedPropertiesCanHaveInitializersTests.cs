@@ -13,7 +13,7 @@ public class CS8050OnlyAutoImplementedPropertiesCanHaveInitializersTests : Abstr
     [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers)]
     public async Task Test()
     {
-        await VerifyFixAsync(@"
+        await VerifyFixAsync("""
 class C
 {
     private string _p;
@@ -22,9 +22,9 @@ class C
     {
         get { return _p; }
         set { _p = value; }
-    } = "";
+    } = ";
 }
-", @"
+""", """
 class C
 {
     private string _p;
@@ -35,6 +35,6 @@ class C
         set { _p = value; }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
+""", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
     }
 }

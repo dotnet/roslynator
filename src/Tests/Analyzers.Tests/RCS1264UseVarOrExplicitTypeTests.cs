@@ -93,33 +93,33 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_DiscardDesignation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        if (int.TryParse("""", out [|int|] result))
+        if (int.TryParse("", out [|int|] result))
         {
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        if (int.TryParse("""", out var result))
+        if (int.TryParse("", out var result))
         {
         }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_TryParse_GenericType()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 #nullable enable
 
@@ -133,10 +133,10 @@ class C
             return false;
         }
 
-        TryParse<IntPtr>(""wasted"", out [|IntPtr|] i);
+        TryParse<IntPtr>("wasted", out [|IntPtr|] i);
     }
 }
-", @"
+""", """
 using System;
 #nullable enable
 
@@ -150,10 +150,10 @@ class C
             return false;
         }
 
-        TryParse<IntPtr>(""wasted"", out var i);
+        TryParse<IntPtr>("wasted", out var i);
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
@@ -263,7 +263,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_InferredType_Invocation_IdentifierName()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 #nullable enable
 
@@ -277,16 +277,16 @@ class C
             return false;
         }
 
-        TryParse(""wasted"", out IntPtr i);
+        TryParse("wasted", out IntPtr i);
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_InferredType_Invocation_MemberAccessExpression()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 #nullable enable
 
@@ -295,7 +295,7 @@ static class C
     static void M()
     {
 
-        C.TryParse(""wasted"", out IntPtr i);
+        C.TryParse("wasted", out IntPtr i);
     }
 
     static bool TryParse<T>(string? s, out T t)
@@ -304,7 +304,7 @@ static class C
         return false;
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_Always));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]

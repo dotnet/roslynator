@@ -171,31 +171,31 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
     public async Task Test_NullCheck()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
         string s = null;
 
-        if (s == null || [|s != null|] && s.Contains(""a""))
+        if (s == null || [|s != null|] && s.Contains("a"))
         {
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
         string s = null;
 
-        if (s == null || s.Contains(""a""))
+        if (s == null || s.Contains("a"))
         {
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]

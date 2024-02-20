@@ -85,23 +85,23 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task Test_ImplicitArrayCreation()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        [|string[]|] x = new[] { ""a"", ""b"" };
+        [|string[]|] x = new[] { "a", "b" };
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        var x = new[] { ""a"", ""b"" };
+        var x = new[] { "a", "b" };
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
@@ -247,7 +247,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -255,17 +255,17 @@ class C
 {
     void M()
     {
-        const string c = """";
+        const string c = "";
         string value1, value2;
         dynamic x = new object();
         dynamic x2 = c;
 
-        foreach (Match match in Regex.Matches(""input"", ""pattern""))
+        foreach (Match match in Regex.Matches("input", "pattern"))
         {
         }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
@@ -311,48 +311,48 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_DiscardDesignation()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
-        if (int.TryParse("""", out int result))
+        if (int.TryParse("", out int result))
         {
         }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ParseMethod()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
     {
-        string x = C.Parse("""");
+        string x = C.Parse("");
     }
 
     static string Parse(string value) => null;
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
     public async Task TestNoDiagnostic_ParseMethod2()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using I = System.Int32;
 
 class C
 {
     void M()
     {
-        int x = I.Parse("""");
+        int x = I.Parse("");
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
 }

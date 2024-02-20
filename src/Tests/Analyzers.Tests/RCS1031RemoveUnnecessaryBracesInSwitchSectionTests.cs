@@ -15,7 +15,7 @@ public class RCS1031RemoveUnnecessaryBracesInSwitchSectionTests : AbstractCSharp
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_Section()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
@@ -24,7 +24,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 [|{|]
                     M();
                     break;
@@ -34,7 +34,7 @@ class C
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -43,7 +43,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 M();
                 break;
 
@@ -52,13 +52,13 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_SectionWithComments()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
@@ -67,7 +67,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 // a
                 [|{|] // b
                     M();
@@ -79,7 +79,7 @@ class C
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -88,7 +88,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 // a
                 // b
                 M();
@@ -101,13 +101,13 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_LastSection()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
@@ -116,7 +116,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 [|{|]
                     M();
                     break;
@@ -124,7 +124,7 @@ class C
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -133,19 +133,19 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 M();
                 break;
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task Test_WithLocalVariablesThatDoNotOverlap()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
@@ -156,7 +156,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 [|{|]
                     var x = 1;
                     break;
@@ -169,7 +169,7 @@ class C
         }
     }
 }
-", @"
+""", """
 using System;
 
 class C
@@ -180,7 +180,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 var x = 1;
                 break;
 
@@ -190,13 +190,13 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_SectionWithoutBlock()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
@@ -205,18 +205,18 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 break;
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_UsingLocalVariable()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
@@ -227,7 +227,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 {
                     using IDisposable disposable = default;
                     break;
@@ -235,13 +235,13 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
     public async Task TestNoDiagnostic_WhenOverlappingLocalVariableDeclaration()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 
 class C
@@ -252,7 +252,7 @@ class C
 
         switch (s)
         {
-            case """":
+            case "":
                 {
                     var x = 1;
                     break;
@@ -265,7 +265,7 @@ class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]

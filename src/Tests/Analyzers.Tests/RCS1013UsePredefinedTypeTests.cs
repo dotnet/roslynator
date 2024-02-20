@@ -15,14 +15,14 @@ public class RCS1013UsePredefinedTypeTests : AbstractCSharpDiagnosticVerifier<Us
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
     public async Task Test()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// <see cref=""[|String|]""/>
-/// <see cref=""[|System.String|]""/>
-/// <see cref=""[|global::System.String|]""/>
+/// <see cref="[|String|]"/>
+/// <see cref="[|System.String|]"/>
+/// <see cref="[|global::System.String|]"/>
 /// </summary>
 class C
 {
@@ -41,14 +41,14 @@ class C
         x = nameof(Dictionary<[|System.String|], [|global::System.String|]>);
     }
 }
-", @"
+""", """
 using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// <see cref=""string""/>
-/// <see cref=""string""/>
-/// <see cref=""string""/>
+/// <see cref="string"/>
+/// <see cref="string"/>
+/// <see cref="string"/>
 /// </summary>
 class C
 {
@@ -67,7 +67,7 @@ class C
         x = nameof(Dictionary<string, string>);
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
@@ -97,12 +97,12 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePredefinedType)]
     public async Task TestNoDiagnostic()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using s = System.String;
 
 /// <summary>
-/// <see cref=""s""/>
+/// <see cref="s"/>
 /// </summary>
 class C
 {
@@ -115,6 +115,6 @@ class C
         x = nameof(global::System.String);
     }
 }
-");
+""");
     }
 }

@@ -13,7 +13,7 @@ public class RR0116InvertLinqMethodCallTests : AbstractCSharpRefactoringVerifier
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
     public async Task Test_InvertAny()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,12 +23,12 @@ class C
     {
         var items = new List<string>();
 
-        if (items.[||]Any(f => f.Contains("""")))
+        if (items.[||]Any(f => f.Contains("")))
         {
         }
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,18 +38,18 @@ class C
     {
         var items = new List<string>();
 
-        if (items.All(f => !f.Contains("""")))
+        if (items.All(f => !f.Contains("")))
         {
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
     public async Task Test_InvertAny_ParenthesizedLambda()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,12 +59,12 @@ class C
     {
         var items = new List<string>();
 
-        if (items.[||]Any((f) => f.Contains("""")))
+        if (items.[||]Any((f) => f.Contains("")))
         {
         }
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 using System.Linq;
 
@@ -74,18 +74,18 @@ class C
     {
         var items = new List<string>();
 
-        if (items.All((f) => !f.Contains("""")))
+        if (items.All((f) => !f.Contains("")))
         {
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
     public async Task Test_InvertAll()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 using System.Collections.Generic;
 using System.Linq;
 
@@ -95,12 +95,12 @@ class C
     {
         var items = new List<string>();
 
-        if (items.[||]All(f => f.Contains("""")))
+        if (items.[||]All(f => f.Contains("")))
         {
         }
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 using System.Linq;
 
@@ -110,18 +110,18 @@ class C
     {
         var items = new List<string>();
 
-        if (items.Any(f => !f.Contains("""")))
+        if (items.Any(f => !f.Contains("")))
         {
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 
     [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
     public async Task Test_InvertAll_ParenthesizedLambda()
     {
-        await VerifyRefactoringAsync(@"
+        await VerifyRefactoringAsync("""
 using System.Collections.Generic;
 using System.Linq;
 
@@ -131,12 +131,12 @@ class C
     {
         var items = new List<string>();
 
-        if (items.[||]All((f) => f.Contains("""")))
+        if (items.[||]All((f) => f.Contains("")))
         {
         }
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 using System.Linq;
 
@@ -146,11 +146,11 @@ class C
     {
         var items = new List<string>();
 
-        if (items.Any((f) => !f.Contains("""")))
+        if (items.Any((f) => !f.Contains("")))
         {
         }
     }
 }
-", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+""", equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
 }

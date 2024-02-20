@@ -15,13 +15,13 @@ public class RCS1132RemoveRedundantOverridingMemberTests : AbstractCSharpDiagnos
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantOverridingMember)]
     public async Task TestNoDiagnostic_Record()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Text;
 
 public record IntPoint(int X, int Y)
 {
-    public override string ToString() => $""[{X}, {Y}]"";
+    public override string ToString() => $"[{X}, {Y}]";
 }
 
 public record IntPointWithValue<T>(T value, int X, int Y) : IntPoint(X, Y)
@@ -32,6 +32,6 @@ public record IntPointWithValue<T>(T value, int X, int Y) : IntPoint(X, Y)
 
     protected override bool PrintMembers(StringBuilder builder) => base.PrintMembers(builder);
 }
-");
+""");
     }
 }

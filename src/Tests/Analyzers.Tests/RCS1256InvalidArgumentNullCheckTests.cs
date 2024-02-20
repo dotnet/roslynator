@@ -177,7 +177,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InvalidArgumentNullCheck)]
     public async Task Test_Constructor_NullableReferenceTypeParameter()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 #nullable enable
@@ -191,10 +191,10 @@ class C
             throw new ArgumentNullException(nameof(p));
         }
 
-        string x = """";
+        string x = "";
     }
 }
-", @"
+""", """
 using System;
 
 #nullable enable
@@ -204,9 +204,9 @@ class C
     C(string? p)
     {
 
-        string x = """";
+        string x = "";
     }
 }
-");
+""");
     }
 }

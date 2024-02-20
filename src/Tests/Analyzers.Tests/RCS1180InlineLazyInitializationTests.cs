@@ -15,7 +15,7 @@ public class RCS1180InlineLazyInitializationTests : AbstractCSharpDiagnosticVeri
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLazyInitialization)]
     public async Task Test_If()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 class C
@@ -31,10 +31,10 @@ class C
             x = new List<string>();
         }|]
 
-        x.Add("""");
+        x.Add("");
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 class C
@@ -45,16 +45,16 @@ class C
 
         M();
 
-        (x ??= new List<string>()).Add("""");
+        (x ??= new List<string>()).Add("");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLazyInitialization)]
     public async Task Test_If_WithoutBraces()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 class C
@@ -68,10 +68,10 @@ class C
         [|if (x == null)
             x = new List<string>();|]
 
-        x.Add("""");
+        x.Add("");
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 class C
@@ -82,16 +82,16 @@ class C
 
         M();
 
-        (x ??= new List<string>()).Add("""");
+        (x ??= new List<string>()).Add("");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLazyInitialization)]
     public async Task Test_If_Trivia()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 class C
@@ -107,10 +107,10 @@ class C
             x = new List<string>();|] // c
 
         // d
-        x.Add(""""); // e
+        x.Add(""); // e
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 class C
@@ -126,16 +126,16 @@ class C
         // c
 
         // d
-        (x ??= new List<string>()).Add(""""); // e
+        (x ??= new List<string>()).Add(""); // e
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLazyInitialization)]
     public async Task Test_If_CSharp7_3()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 class C
@@ -151,10 +151,10 @@ class C
             x = new List<string>();
         }|]
 
-        x.Add("""");
+        x.Add("");
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 class C
@@ -165,9 +165,9 @@ class C
 
         M();
 
-        (x ?? (x = new List<string>())).Add("""");
+        (x ?? (x = new List<string>())).Add("");
     }
 }
-", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
+""", options: WellKnownCSharpTestOptions.Default_CSharp7_3);
     }
 }

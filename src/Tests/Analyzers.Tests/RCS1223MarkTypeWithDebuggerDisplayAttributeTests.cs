@@ -15,16 +15,16 @@ public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpDi
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task Test_PublicClass()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Diagnostics;
 
 public class [|C|]
 {
 }
-", @"
+""", """
 using System.Diagnostics;
 
-[DebuggerDisplay(""{DebuggerDisplay,nq}"")]
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class C
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -36,24 +36,24 @@ public class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task Test_PublicClassWithDocComment()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Diagnostics;
 
 /// <summary></summary>
 public class [|C|]
 {
 }
-", @"
+""", """
 using System.Diagnostics;
 
 /// <summary></summary>
-[DebuggerDisplay(""{DebuggerDisplay,nq}"")]
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class C
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -65,13 +65,13 @@ public class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task Test_PublicClassWithAttribute()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Diagnostics;
 
@@ -79,12 +79,12 @@ using System.Diagnostics;
 public class [|C|]
 {
 }
-", @"
+""", """
 using System;
 using System.Diagnostics;
 
 [Obsolete]
-[DebuggerDisplay(""{DebuggerDisplay,nq}"")]
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class C
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -96,13 +96,13 @@ public class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task Test_PublicClassWithDocCommentAndAttribute()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Diagnostics;
 
@@ -113,7 +113,7 @@ using System.Diagnostics;
 public class [|C|]
 {
 }
-", @"
+""", """
 using System;
 using System.Diagnostics;
 
@@ -121,7 +121,7 @@ using System.Diagnostics;
 /// 
 /// </summary>
 [Obsolete]
-[DebuggerDisplay(""{DebuggerDisplay,nq}"")]
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class C
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -133,13 +133,13 @@ public class C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task Test_PublicStructWithDocCommentAndAttribute()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 using System.Diagnostics;
 
@@ -150,7 +150,7 @@ using System.Diagnostics;
 public struct [|C|]
 {
 }
-", @"
+""", """
 using System;
 using System.Diagnostics;
 
@@ -158,7 +158,7 @@ using System.Diagnostics;
 /// 
 /// </summary>
 [Obsolete]
-[DebuggerDisplay(""{DebuggerDisplay,nq}"")]
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public struct C
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -170,29 +170,29 @@ public struct C
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task TestNoDiagnostic_ClassWithDebuggerDisplayAttribute()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Diagnostics;
 
-[DebuggerDisplay("""")]
+[DebuggerDisplay("")]
 public class C
 {
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task TestNoDiagnostic_ClassWithDebuggerDisplayAttributeOnBaseClass()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Diagnostics;
 
-[DebuggerDisplay("""")]
+[DebuggerDisplay("")]
 public class B
 {
 }
@@ -200,7 +200,7 @@ public class B
 public class C : B
 {
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
@@ -226,10 +226,10 @@ public interface IC
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task TestNoDiagnostic_NonPubliclyVisibleType()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Diagnostics;
 
-[DebuggerDisplay("""")]
+[DebuggerDisplay("")]
 public class C
 {
     internal class IC
@@ -239,7 +239,7 @@ public class C
         protected class DC { }
     }
 
-    [DebuggerDisplay("""")]
+    [DebuggerDisplay("")]
     private class PC
     {
         public class C { }
@@ -254,16 +254,16 @@ internal class IC
     protected internal class FooProtectedInternal { }
     protected class FooProtected { }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task TestNoDiagnostic_NonPubliclyVisibleType_PrivateProtected()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Diagnostics;
 
-[DebuggerDisplay("""")]
+[DebuggerDisplay("")]
 public class C
 {
     private protected class PPC
@@ -273,7 +273,7 @@ public class C
         protected class DC { }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
@@ -291,16 +291,16 @@ public abstract class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
     public async Task Test_PublicRecord()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Diagnostics;
 
 public record [|R|]
 {
 }
-", @"
+""", """
 using System.Diagnostics;
 
-[DebuggerDisplay(""{DebuggerDisplay,nq}"")]
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public record R
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -312,6 +312,6 @@ public record R
         }
     }
 }
-");
+""");
     }
 }

@@ -405,7 +405,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
     public async Task TestNoDiagnostic_EmptyLineBetweenClosingBraceAndSwitchSection()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
@@ -414,18 +414,18 @@ class C
 
         switch (x)
         {
-            case ""a"":
+            case "a":
                 {
                     M();
                     break;
                 }
 
-            case ""b"":
+            case "b":
                 break;
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
@@ -485,7 +485,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
     public async Task Test_EmptyLineBetweenClosingBraceAndSwitchSection()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
@@ -493,23 +493,23 @@ class C
         string x = null;
         switch (x)
         {
-            case ""a"":
+            case "a":
                 {
                     M();
                     break;
                 }
 
-            case ""b"":
+            case "b":
                 {
                     M();
                     break;
                 }
 
-            case ""c"":
+            case "c":
                 break;
         }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
+""", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
     }
 }

@@ -286,7 +286,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine)]
     public async Task Test_Fixed()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
@@ -295,11 +295,11 @@ class C
 
         unsafe
         {
-            fixed (char* p = """")[||] M();
+            fixed (char* p = "")[||] M();
         }
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -308,18 +308,18 @@ class C
 
         unsafe
         {
-            fixed (char* p = """")
+            fixed (char* p = "")
                 M();
         }
     }
 }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine)]
     public async Task TestNoDiagnostic_EmbeddedStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Collections.Generic;
 
@@ -359,18 +359,18 @@ class C
 
         unsafe
         {
-            fixed (char* p = """")
+            fixed (char* p = "")
                 M();
         }
     }
 }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutEmbeddedStatementOnItsOwnLine)]
     public async Task TestNoDiagnostic_Block()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Collections.Generic;
 
@@ -428,13 +428,13 @@ class C
 
         unsafe
         {
-            fixed (char* p = """")
+            fixed (char* p = "")
             {
                 M();
             }
         }
     }
 }
-", options: Options.WithAllowUnsafe(true));
+""", options: Options.WithAllowUnsafe(true));
     }
 }

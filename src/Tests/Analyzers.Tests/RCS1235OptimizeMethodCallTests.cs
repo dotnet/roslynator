@@ -119,15 +119,15 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
     public async Task Test_CallStringConcatInsteadOfStringJoin_EmptyStringLiteral()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = [|string.Join("""", default(object), default(object))|];
+        string s = [|string.Join("", default(object), default(object))|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
@@ -135,83 +135,83 @@ class C
         string s = string.Concat(default(object), default(object));
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
     public async Task Test_CallStringConcatInsteadOfStringJoin_EmptyStringLiteral2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = [|string.Join("""", ""a"", ""b"")|];
+        string s = [|string.Join("", "a", "b")|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = string.Concat(""a"", ""b"");
+        string s = string.Concat("a", "b");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
     public async Task Test_CallStringConcatInsteadOfStringJoin_StringEmpty()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     void M()
     {
-        string s = [|string.Join(string.Empty, new string[] { """" })|];
+        string s = [|string.Join(string.Empty, new string[] { "" })|];
     }
 }
-", @"
+""", """
 class C
 {
     void M()
     {
-        string s = string.Concat(new string[] { """" });
+        string s = string.Concat(new string[] { "" });
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
     public async Task Test_CallStringConcatInsteadOfStringJoin_EmptyStringConstant()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
-    const string EmptyString = """";
+    const string EmptyString = "";
 
     void M()
     {
-        string s = [|string.Join(EmptyString, new object[] { """" })|];
+        string s = [|string.Join(EmptyString, new object[] { "" })|];
     }
 }
-", @"
+""", """
 class C
 {
-    const string EmptyString = """";
+    const string EmptyString = "";
 
     void M()
     {
-        string s = string.Concat(new object[] { """" });
+        string s = string.Concat(new object[] { "" });
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
     public async Task Test_CallDebugFailInsteadOfDebugAssert()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Diagnostics;
 
 class C
@@ -221,69 +221,69 @@ class C
         [|Debug.Assert(false)|];
     }
 }
-", @"
+""", """
 using System.Diagnostics;
 
 class C
 {
     void M()
     {
-        Debug.Fail("""");
+        Debug.Fail("");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
     public async Task Test_CallDebugFailInsteadOfDebugAssert2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Diagnostics;
 
 class C
 {
     void M()
     {
-        [|Debug.Assert(false, ""x"")|];
+        [|Debug.Assert(false, "x")|];
     }
 }
-", @"
+""", """
 using System.Diagnostics;
 
 class C
 {
     void M()
     {
-        Debug.Fail(""x"");
+        Debug.Fail("x");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
     public async Task Test_CallDebugFailInsteadOfDebugAssert3()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Diagnostics;
 
 class C
 {
     void M()
     {
-        [|Debug.Assert(false, ""x"", ""y"")|];
+        [|Debug.Assert(false, "x", "y")|];
     }
 }
-", @"
+""", """
 using System.Diagnostics;
 
 class C
 {
     void M()
     {
-        Debug.Fail(""x"", ""y"");
+        Debug.Fail("x", "y");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
@@ -588,7 +588,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
     public async Task TestNoDiagnostic_CallStringConcatInsteadOfStringJoin()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -598,10 +598,10 @@ class C
 {
     void M()
     {
-        string s = string.Join(""x"", new object[] { """" });
+        string s = string.Join("x", new object[] { "" });
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]

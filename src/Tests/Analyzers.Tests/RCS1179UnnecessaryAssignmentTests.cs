@@ -161,7 +161,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_SwitchStatement()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     int M()
@@ -170,12 +170,12 @@ class C
         int x = 1; // x
         [|switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     x = 2;
                     break;
                 }
-            case ""b"":
+            case "b":
                 x = 3;
                 break;
         }|]
@@ -183,7 +183,7 @@ class C
         return x;
     }
 }
-", @"
+""", """
 class C
 {
     int M()
@@ -191,24 +191,24 @@ class C
         string s = null;
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return 2;
                 }
-            case ""b"":
+            case "b":
                 return 3;
         }
 
         return 1; // x
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_SwitchStatement2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 class C
 {
     int M()
@@ -219,12 +219,12 @@ class C
         int x = 1;
         [|switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     x = 2;
                     break;
                 }
-            case ""b"":
+            case "b":
                 x = 3;
                 break;
         }|]
@@ -232,7 +232,7 @@ class C
         return x; // 1
     }
 }
-", @"
+""", """
 class C
 {
     int M()
@@ -242,24 +242,24 @@ class C
         // x
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return 2;
                 }
-            case ""b"":
+            case "b":
                 return 3;
         }
 
         return 1; // 1
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
     public async Task Test_SwitchStatement_Throw()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System;
 
 class C
@@ -271,12 +271,12 @@ class C
         int x = 1;
         [|switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     x = 2;
                     break;
                 }
-            case ""b"":
+            case "b":
                 x = 3;
                 break;
             default:
@@ -286,7 +286,7 @@ class C
         return x;
     }
 }
-", @"
+""", """
 using System;
 
 class C
@@ -298,18 +298,18 @@ class C
         int x = 1;
         switch (s)
         {
-            case ""a"":
+            case "a":
                 {
                     return 2;
                 }
-            case ""b"":
+            case "b":
                 return 3;
             default:
                 throw new Exception();
         }
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]

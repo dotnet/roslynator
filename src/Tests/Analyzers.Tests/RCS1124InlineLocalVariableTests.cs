@@ -42,28 +42,28 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
     public async Task Test_YieldReturn()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 
 class C
 {
     IEnumerable<string> M()
     {
-        [|var s = """";|]
+        [|var s = "";|]
         yield return s;
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 
 class C
 {
     IEnumerable<string> M()
     {
-        yield return """";
+        yield return "";
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
@@ -104,19 +104,19 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
     public async Task TestNoDiagnostic_YieldReturnIsNotLastStatement()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 
 class C
 {
     IEnumerable<string> M()
     {
-        var s = """";
+        var s = "";
         yield return s;
         s = null;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
@@ -145,7 +145,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
     public async Task TestNoDiagnostic_SwitchWithAwait()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Threading.Tasks;
 
 class C
@@ -156,14 +156,14 @@ class C
 
         switch (x)
         {
-            case """":
+            case "":
                 break;
         }
 
         return null;
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]

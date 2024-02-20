@@ -15,7 +15,7 @@ public class RCS1201UseMethodChainingTests : AbstractCSharpDiagnosticVerifier<In
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task Test()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Text;
 
 class C
@@ -24,16 +24,16 @@ class C
     {
         var sb = new StringBuilder();
 
-        [|sb.Append("""")|];
-        sb.AppendFormat(""f"", """");
-        sb.AppendLine("""");
+        [|sb.Append("")|];
+        sb.AppendFormat("f", "");
+        sb.AppendLine("");
         sb.Clear();
-        sb.Insert(0, """");
+        sb.Insert(0, "");
         sb.Remove(0, 0);
-        sb.Replace("""", """");
+        sb.Replace("", "");
     }
 }
-", @"
+""", """
 using System.Text;
 
 class C
@@ -42,22 +42,22 @@ class C
     {
         var sb = new StringBuilder();
 
-        sb.Append("""")
-            .AppendFormat(""f"", """")
-            .AppendLine("""")
+        sb.Append("")
+            .AppendFormat("f", "")
+            .AppendLine("")
             .Clear()
-            .Insert(0, """")
+            .Insert(0, "")
             .Remove(0, 0)
-            .Replace("""", """");
+            .Replace("", "");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task Test2()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Text;
 
 class C
@@ -66,12 +66,12 @@ class C
     {
         var sb = new StringBuilder();
 
-        [|sb.Append(""1"")|];
-        sb.Append(""2"").Append(""3"");
-        sb.Append(""4"").Append(""5"").Append(""6"");
+        [|sb.Append("1")|];
+        sb.Append("2").Append("3");
+        sb.Append("4").Append("5").Append("6");
     }
 }
-", @"
+""", """
 using System.Text;
 
 class C
@@ -80,18 +80,18 @@ class C
     {
         var sb = new StringBuilder();
 
-        sb.Append(""1"")
-            .Append(""2"").Append(""3"")
-            .Append(""4"").Append(""5"").Append(""6"");
+        sb.Append("1")
+            .Append("2").Append("3")
+            .Append("4").Append("5").Append("6");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task Test_Assignment()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync("""
 using System.Collections.Generic;
 using System.Linq;
 
@@ -101,17 +101,17 @@ class C
     {
         IEnumerable<object> q = Enumerable.Empty<object>();
 
-        q = [|q.Select(f => ""1"")|];
+        q = [|q.Select(f => "1")|];
 
-        q = q.Select(f => ""2"")
-            .Select(f => ""3"");
+        q = q.Select(f => "2")
+            .Select(f => "3");
 
-        q = q.Select(f => ""4"")
-            .Select(f => ""5"")
-            .Select(f => ""6"");
+        q = q.Select(f => "4")
+            .Select(f => "5")
+            .Select(f => "6");
     }
 }
-", @"
+""", """
 using System.Collections.Generic;
 using System.Linq;
 
@@ -121,15 +121,15 @@ class C
     {
         IEnumerable<object> q = Enumerable.Empty<object>();
 
-        q = q.Select(f => ""1"")
-            .Select(f => ""2"")
-            .Select(f => ""3"")
-            .Select(f => ""4"")
-            .Select(f => ""5"")
-            .Select(f => ""6"");
+        q = q.Select(f => "1")
+            .Select(f => "2")
+            .Select(f => "3")
+            .Select(f => "4")
+            .Select(f => "5")
+            .Select(f => "6");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
@@ -155,7 +155,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]
     public async Task TestNoDiagnostic_NoAssignment()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 using System.Collections.Generic;
 using System.Linq;
 
@@ -165,11 +165,11 @@ class C
     {
         IEnumerable<object> q = Enumerable.Empty<object>();
 
-        q.Select(f => ""1"");
-        q.Select(f => ""2"");
+        q.Select(f => "1");
+        q.Select(f => "2");
     }
 }
-");
+""");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodChaining)]

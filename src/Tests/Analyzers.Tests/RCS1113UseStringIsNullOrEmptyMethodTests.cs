@@ -63,7 +63,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod)]
     public async Task TestNoDiagnostics()
     {
-        await VerifyNoDiagnosticAsync(@"
+        await VerifyNoDiagnosticAsync("""
 class C
 {
     void M()
@@ -84,19 +84,19 @@ class C
 
         if (s == null || s.Length == 1) { }
 
-        if (s == null || s == ""x"") { }
+        if (s == null || s == "x") { }
 
         if (s != null && s2 != string.Empty) { }
 
         if (s2 != null && s != string.Empty) { }
 
-        if (s != null && s2 != """") { }
+        if (s != null && s2 != "") { }
 
-        if (s2 != null && s != """") { }
+        if (s2 != null && s != "") { }
 
-        if (s != null && s != ""x"") { }
+        if (s != null && s != "x") { }
     }
 }
-");
+""");
     }
 }
