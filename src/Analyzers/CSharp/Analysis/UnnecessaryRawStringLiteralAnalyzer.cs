@@ -1,5 +1,4 @@
-﻿#if ROSLYN_4_2
-// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -26,10 +25,10 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
         }
     }
 
+#if ROSLYN_4_2
     public override void Initialize(AnalysisContext context)
     {
         base.Initialize(context);
-
         context.RegisterCompilationStartAction(startContext =>
         {
             if (((CSharpCompilation)startContext.Compilation).LanguageVersion >= LanguageVersion.CSharp11)
@@ -116,5 +115,5 @@ public sealed class UnnecessaryRawStringLiteralAnalyzer : BaseDiagnosticAnalyzer
 
         return false;
     }
-}
 #endif
+}
