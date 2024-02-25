@@ -386,29 +386,15 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
         {
             subtractionExpression = (BinaryExpressionSyntax)info.Right;
 
-            switch (kind)
+            kind = kind switch
             {
-                case SyntaxKind.GreaterThanExpression:
-                    {
-                        kind = SyntaxKind.LessThanExpression;
-                        break;
-                    }
-                case SyntaxKind.GreaterThanOrEqualExpression:
-                    {
-                        kind = SyntaxKind.LessThanOrEqualExpression;
-                        break;
-                    }
-                case SyntaxKind.LessThanExpression:
-                    {
-                        kind = SyntaxKind.GreaterThanExpression;
-                        break;
-                    }
-                case SyntaxKind.LessThanOrEqualExpression:
-                    {
-                        kind = SyntaxKind.GreaterThanOrEqualExpression;
-                        break;
-                    }
-            }
+                SyntaxKind.GreaterThanExpression => SyntaxKind.LessThanExpression,
+                SyntaxKind.GreaterThanOrEqualExpression => SyntaxKind.LessThanOrEqualExpression,
+                SyntaxKind.LessThanExpression => SyntaxKind.GreaterThanExpression,
+                SyntaxKind.LessThanOrEqualExpression => SyntaxKind.GreaterThanOrEqualExpression,
+                _ => kind
+            };
+
         }
         else
         {

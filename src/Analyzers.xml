@@ -7730,7 +7730,7 @@ string s = """
   <Analyzer>
     <Id>RCS1268</Id>
     <Identifier>SimplifyNumericComparison</Identifier>
-    <Title>Simplify numeric comparison expression</Title>
+    <Title>Simplify numeric comparison</Title>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Description>Simplifies comparisons that involve subtracting two values and comparing the result to zero.</Description>

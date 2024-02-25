@@ -2654,8 +2654,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1268</summary>
         public static readonly DiagnosticDescriptor SimplifyNumericComparison = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.SimplifyNumericComparison, 
-            title:              "Simplify numeric comparison expression", 
-            messageFormat:      "Simplify numeric comparison expression", 
+            title:              "Simplify numeric comparison", 
+            messageFormat:      "Simplify numeric comparison", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 

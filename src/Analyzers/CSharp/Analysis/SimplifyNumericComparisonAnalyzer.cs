@@ -51,8 +51,8 @@ public sealed class SimplifyNumericComparisonAnalyzer : BaseDiagnosticAnalyzer
         ExpressionSyntax leftExpression = info.Left;
         ExpressionSyntax rightExpression = info.Right;
 
-        if ((leftExpression.IsNumericLiteralExpression("0") && rightExpression.Kind() == SyntaxKind.SubtractExpression)
-            || (leftExpression.Kind() == SyntaxKind.SubtractExpression && rightExpression.IsNumericLiteralExpression("0")))
+        if ((leftExpression.IsNumericLiteralExpression("0") && rightExpression.IsKind(SyntaxKind.SubtractExpression))
+            || (leftExpression.IsKind(SyntaxKind.SubtractExpression) && rightExpression.IsNumericLiteralExpression("0")))
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
