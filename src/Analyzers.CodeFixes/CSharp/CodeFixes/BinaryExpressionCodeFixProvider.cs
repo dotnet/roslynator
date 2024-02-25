@@ -394,7 +394,6 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                 SyntaxKind.LessThanOrEqualExpression => SyntaxKind.GreaterThanOrEqualExpression,
                 _ => kind
             };
-
         }
         else
         {
