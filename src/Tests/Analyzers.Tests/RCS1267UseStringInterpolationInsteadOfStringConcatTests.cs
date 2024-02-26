@@ -171,4 +171,37 @@ class C
 """
         );
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
+    public async Task TestNoDiagnostic_ContainsBraces()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s1 = string.Concat(DateTime.Now, " { ", " ");
+        string s2 = string.Concat(DateTime.Now, " ", " } ");
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseStringInterpolationInsteadOfStringConcat)]
+    public async Task TestNoDiagnostic_LiteralExpressionsOnly()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = string.Concat("a", "b", "c");
+    }
+}
+""");
+    }
 }

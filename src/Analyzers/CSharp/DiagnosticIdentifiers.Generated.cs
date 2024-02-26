@@ -224,5 +224,6 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantCatchBlock = "RCS1265";
         public const string UseRawStringLiteral = "RCS1266";
         public const string UseStringInterpolationInsteadOfStringConcat = "RCS1267";
+        public const string SimplifyNumericComparison = "RCS1268";
     }
 }

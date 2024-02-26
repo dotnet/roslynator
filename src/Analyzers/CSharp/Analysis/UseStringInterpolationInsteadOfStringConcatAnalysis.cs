@@ -19,6 +19,7 @@ internal static class UseStringInterpolationInsteadOfStringConcatAnalysis
             && symbol.ContainingType.IsString())
         {
             bool? isVerbatim = null;
+            var containsNonLiteral = false;
 
             foreach (ArgumentSyntax argument in invocationInfo.Arguments)
             {
@@ -31,7 +32,18 @@ internal static class UseStringInterpolationInsteadOfStringConcatAnalysis
                 {
                     var literalExpression = (LiteralExpressionSyntax)expression;
 
-                    if (literalExpression.Token.Text.StartsWith("@"))
+                    string text = literalExpression.Token.Text;
+
+                    for (int i = 0; i < text.Length; i++)
+                    {
+                        if (text[i] == '{'
+                            || text[i] == '}')
+                        {
+                            return;
+                        }
+                    }
+
+                    if (text.StartsWith("@"))
                     {
                         if (isVerbatim is null)
                         {
@@ -51,9 +63,14 @@ internal static class UseStringInterpolationInsteadOfStringConcatAnalysis
                         return;
                     }
                 }
+                else
+                {
+                    containsNonLiteral = true;
+                }
             }
 
             if (isVerbatim is not null
+                && containsNonLiteral
                 && invocationInfo.ArgumentList.IsSingleLine())
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseStringInterpolationInsteadOfStringConcat, invocationInfo.InvocationExpression);

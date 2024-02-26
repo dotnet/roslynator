@@ -324,7 +324,7 @@ public static class MarkdownGenerator
     public static string CreateCodeFixMarkdown(
         CompilerDiagnosticMetadata diagnostic,
         IEnumerable<CodeFixMetadata> codeFixes,
-        ImmutableArray<CodeFixOption> options,
+        IEnumerable<CodeFixOption> options,
         IComparer<string> comparer)
     {
         MDocument document = Document(
