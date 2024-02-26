@@ -175,15 +175,9 @@ internal static class Program
             MarkdownGenerator.CreateCodeFixesMarkdown(diagnostics, StringComparer.InvariantCulture),
             sidebarLabel: "Code Fixes for Compiler Diagnostics");
 
-        ImmutableArray<CodeFixOption> codeFixOptions = typeof(CodeFixOptions).GetFields()
-            .Select(f =>
-            {
-                var key = (string)f.GetValue(null);
-                string value = f.GetCustomAttribute<CodeFixOptionAttribute>().Value;
-
-                return new CodeFixOption(key, value);
-            })
-            .ToImmutableArray();
+        List<CodeFixOption> codeFixOptions = typeof(CodeFixOptions).GetFields()
+            .Select(f => (CodeFixOption)f.GetValue(null))
+            .ToList();
 
         string fixesDirPath = Path.Combine(destinationPath, "fixes");
         Directory.CreateDirectory(fixesDirPath);
