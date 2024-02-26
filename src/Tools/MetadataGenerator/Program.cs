@@ -179,7 +179,7 @@ internal static class Program
             .Select(f =>
             {
                 var key = (string)f.GetValue(null);
-                string value = f.GetCustomAttribute<CodeFixOptionAttribute>().Value;
+                string value = f.GetCustomAttribute<CodeFixOptionAttribute>()?.Value;
 
                 return new CodeFixOption(key, value);
             })
