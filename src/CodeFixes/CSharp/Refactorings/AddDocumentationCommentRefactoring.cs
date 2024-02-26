@@ -43,7 +43,7 @@ internal static class AddDocumentationCommentRefactoring
 
         if (document.TryGetAnalyzerOptionValue(
             memberDeclaration,
-            CodeFixOptions.CS1591_MissingXmlCommentForPubliclyVisibleTypeOrMember_IgnoredTags,
+            CodeFixOptions.CS1591_MissingXmlCommentForPubliclyVisibleTypeOrMember_IgnoredTags.Key,
             out string value))
         {
             ImmutableArray<string> ignoredTags = value
