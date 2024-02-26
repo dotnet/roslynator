@@ -37,7 +37,8 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                 DiagnosticIdentifiers.UseExclusiveOrOperator,
                 DiagnosticIdentifiers.UnnecessaryNullCheck,
                 DiagnosticIdentifiers.UseShortCircuitingOperator,
-                DiagnosticIdentifiers.UnnecessaryOperator);
+                DiagnosticIdentifiers.UnnecessaryOperator,
+                DiagnosticIdentifiers.SimplifyNumericComparison);
         }
     }
 
@@ -243,6 +244,16 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
+                case DiagnosticIdentifiers.SimplifyNumericComparison:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Simplify numeric comparison",
+                            ct => SimplifyNumericComparisonAsync(document, binaryExpression, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }
@@ -359,5 +370,45 @@ public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
             .WithFormatterAnnotation();
 
         return await document.ReplaceNodeAsync(logicalAnd, newBinaryExpression, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static Task<Document> SimplifyNumericComparisonAsync(
+        Document document,
+        BinaryExpressionSyntax binaryExpression,
+        CancellationToken cancellationToken)
+    {
+        BinaryExpressionSyntax subtractionExpression;
+        SyntaxKind kind = binaryExpression.Kind();
+
+        BinaryExpressionInfo info = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
+
+        if (info.Left.IsNumericLiteralExpression("0"))
+        {
+            subtractionExpression = (BinaryExpressionSyntax)info.Right;
+
+            kind = kind switch
+            {
+                SyntaxKind.GreaterThanExpression => SyntaxKind.LessThanExpression,
+                SyntaxKind.GreaterThanOrEqualExpression => SyntaxKind.LessThanOrEqualExpression,
+                SyntaxKind.LessThanExpression => SyntaxKind.GreaterThanExpression,
+                SyntaxKind.LessThanOrEqualExpression => SyntaxKind.GreaterThanOrEqualExpression,
+                _ => kind
+            };
+        }
+        else
+        {
+            subtractionExpression = (BinaryExpressionSyntax)info.Left;
+        }
+
+        BinaryExpressionSyntax newBinaryExpression = BinaryExpression(
+            kind,
+            subtractionExpression.Left,
+            subtractionExpression.Right);
+
+        newBinaryExpression = newBinaryExpression
+            .WithTriviaFrom(binaryExpression)
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, cancellationToken);
     }
 }

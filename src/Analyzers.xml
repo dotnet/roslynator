@@ -7728,6 +7728,36 @@ string s = """
     </Samples>
   </Analyzer>
   <Analyzer>
+    <Id>RCS1268</Id>
+    <Identifier>SimplifyNumericComparison</Identifier>
+    <Title>Simplify numeric comparison</Title>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Description>Simplifies comparisons that involve subtracting two values and comparing the result to zero.</Description>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[(a - b) == 0]]></Before>
+        <After><![CDATA[a == b]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[(a - b) > 0]]></Before>
+        <After><![CDATA[a > b]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[(a - b) >= 0]]></Before>
+        <After><![CDATA[a >= b]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[(a - b) < 0]]></Before>
+        <After><![CDATA[a < b]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[(a - b) <= 0]]></Before>
+        <After><![CDATA[a <= b]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer>
     <Id>RCS9001</Id>
     <Identifier>UsePatternMatching</Identifier>
     <Title>Use pattern matching</Title>

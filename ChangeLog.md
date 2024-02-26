@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Simplify LINQ query [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/1077) ([PR](https://github.com/dotnet/roslynator/pull/1384))
   - `items.Select(selector).Average()` => `items.Average(selector)`
   - `items.Select(selector).Sum()` => `items.Sum(selector)`
+- Add analyzer "Simplify numeric comparison" [RCS1268](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1268) ([PR](https://github.com/dotnet/roslynator/pull/1405) by @jakubreznak)
 
 ### Fixed
 
