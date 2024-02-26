@@ -484,14 +484,14 @@ public static class DiagnosticsExtensions
             if (syntaxTree is not null
                 && provider?.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic) == true)
             {
-                return treeReportDiagnostic;
+                return ReportDiagnosticOrDescriptorDefaultSeverity(treeReportDiagnostic, descriptor);
             }
 
             if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out ReportDiagnostic reportDiagnostic))
-                return reportDiagnostic;
+                return ReportDiagnosticOrDescriptorDefaultSeverity(reportDiagnostic, descriptor);
 
             if (provider?.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out ReportDiagnostic globalReportDiagnostic) == true)
-                return globalReportDiagnostic;
+                return ReportDiagnosticOrDescriptorDefaultSeverity(globalReportDiagnostic, descriptor);
         }
 
         return (descriptor.IsEnabledByDefault)
@@ -512,5 +512,12 @@ public static class DiagnosticsExtensions
             Microsoft.CodeAnalysis.ReportDiagnostic.Suppress => false,
             _ => true,
         };
+    }
+
+    private static ReportDiagnostic ReportDiagnosticOrDescriptorDefaultSeverity(ReportDiagnostic reportDiagnostic, DiagnosticDescriptor descriptor)
+    {
+        return (reportDiagnostic == Microsoft.CodeAnalysis.ReportDiagnostic.Default)
+                    ? descriptor.DefaultSeverity.ToReportDiagnostic()
+                    : reportDiagnostic;
     }
 }
