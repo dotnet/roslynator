@@ -393,7 +393,7 @@ class C
 
 namespace UnityEngine
 {
-    class SerializeFieldAttribute : Attribute
+    class SerializeField : Attribute
     {
     }
 }
