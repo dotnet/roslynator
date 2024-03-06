@@ -18,7 +18,7 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
     private static readonly MetadataName Microsoft_AspNetCore_Components_CascadingParameterAttribute = MetadataName.Parse("Microsoft.AspNetCore.Components.CascadingParameterAttribute");
     private static readonly MetadataName Microsoft_AspNetCore_Components_InjectAttribute = MetadataName.Parse("Microsoft.AspNetCore.Components.InjectAttribute");
     private static readonly MetadataName Newtonsoft_Json_JsonPropertyAttribute = MetadataName.Parse("Newtonsoft.Json.JsonPropertyAttribute");
-    private static readonly MetadataName UnityEngine_SerializeFieldAttribute = MetadataName.Parse("UnityEngine.SerializeFieldAttribute");
+    private static readonly MetadataName UnityEngine_SerializeField = MetadataName.Parse("UnityEngine.SerializeField");
 
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -140,7 +140,7 @@ public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
                                 && !fieldSymbol.IsVolatile
                                 && ValidateType(fieldSymbol.Type)
                                 && (context.IsUnityCodeAnalysisEnabled() != true
-                                    || !fieldSymbol.HasAttribute(UnityEngine_SerializeFieldAttribute)))
+                                    || !fieldSymbol.HasAttribute(UnityEngine_SerializeField)))
                             {
                                 symbols[fieldSymbol.Name] = (declarator, fieldSymbol);
                             }
