@@ -184,7 +184,7 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
 
                         CodeAction codeAction = CodeAction.Create(
                             "Call 'Find' instead of 'FirstOrDefault'",
-                            ct => CallFindInsteadOfFirstOrDefaultAsync(document, invocationInfo, semanticModel, ct),
+                            ct => CallFindInsteadOfFirstOrDefaultAsync(document, invocationInfo, ct),
                             GetEquivalenceKey(diagnostic, "CallFindInsteadOfFirstOrDefault"));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -419,39 +419,11 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
     private static Task<Document> CallFindInsteadOfFirstOrDefaultAsync(
         Document document,
         in SimpleMemberInvocationExpressionInfo invocationInfo,
-        SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
+        IdentifierNameSyntax newName = IdentifierName("Find").WithTriviaFrom(invocationInfo.Name);
 
-        if (typeSymbol is IArrayTypeSymbol { Rank: 1 })
-        {
-            NameSyntax arrayName = ParseName("global::System.Array")
-                .WithLeadingTrivia(invocationInfo.InvocationExpression.GetLeadingTrivia())
-                .WithSimplifierAnnotation();
-
-            MemberAccessExpressionSyntax newMemberAccess = SimpleMemberAccessExpression(
-                arrayName,
-                invocationInfo.OperatorToken,
-                IdentifierName("Find").WithTriviaFrom(invocationInfo.Name));
-
-            ArgumentListSyntax argumentList = invocationInfo.ArgumentList;
-
-            InvocationExpressionSyntax newInvocation = InvocationExpression(
-                newMemberAccess,
-                ArgumentList(
-                    Argument(invocationInfo.Expression.WithoutTrivia()),
-                    argumentList.Arguments[0])
-                    .WithTriviaFrom(argumentList));
-
-            return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocation, cancellationToken);
-        }
-        else
-        {
-            IdentifierNameSyntax newName = IdentifierName("Find").WithTriviaFrom(invocationInfo.Name);
-
-            return document.ReplaceNodeAsync(invocationInfo.Name, newName, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(invocationInfo.Name, newName, cancellationToken);
     }
 
     public static Task<Document> UseCountOrLengthPropertyInsteadOfCountMethodAsync(
