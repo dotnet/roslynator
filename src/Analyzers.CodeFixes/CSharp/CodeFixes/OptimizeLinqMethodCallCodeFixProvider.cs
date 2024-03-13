@@ -184,7 +184,7 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
 
                         CodeAction codeAction = CodeAction.Create(
                             "Call 'Find' instead of 'FirstOrDefault'",
-                            ct => CallFindInsteadOfFirstOrDefaultAsync(document, invocationInfo, semanticModel, ct),
+                            ct => CallFindInsteadOfFirstOrDefaultAsync(document, invocationInfo, ct),
                             GetEquivalenceKey(diagnostic, "CallFindInsteadOfFirstOrDefault"));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -419,7 +419,6 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
     private static Task<Document> CallFindInsteadOfFirstOrDefaultAsync(
         Document document,
         in SimpleMemberInvocationExpressionInfo invocationInfo,
-        SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
         IdentifierNameSyntax newName = IdentifierName("Find").WithTriviaFrom(invocationInfo.Name);
