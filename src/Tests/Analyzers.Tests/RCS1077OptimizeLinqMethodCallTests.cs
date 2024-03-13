@@ -711,7 +711,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     public async Task Test_CallFindInsteadOfFirstOrDefault_Array()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq;
 
@@ -721,20 +721,7 @@ class C
     {
         var items = new object[0];
 
-        var x = items.[|FirstOrDefault|](_ => true);
-    }
-}
-", @"
-using System;
-using System.Linq;
-
-class C
-{
-    void M()
-    {
-        var items = new object[0];
-
-        var x = Array.Find(items, _ => true);
+        var x = items.FirstOrDefault(_ => true);
     }
 }
 ");

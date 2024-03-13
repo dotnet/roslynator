@@ -236,23 +236,10 @@ internal static class OptimizeLinqMethodCallAnalysis
                 {
                     ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(invocationInfo.Expression, context.CancellationToken);
 
-                    if (typeSymbol is not null)
+                    if (typeSymbol?.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_List_T) == true)
                     {
-                        if (typeSymbol.Kind == SymbolKind.ArrayType)
-                        {
-                            if (((IArrayTypeSymbol)typeSymbol).Rank == 1
-                                && !invocationInfo.Expression.IsKind(SyntaxKind.MemberBindingExpression)
-                                && context.SemanticModel.Compilation.GetTypeByMetadataName("System.Array").GetMembers("Find").Any())
-                            {
-                                Report(context, invocationInfo.Name);
-                                return;
-                            }
-                        }
-                        else if (typeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_List_T))
-                        {
-                            Report(context, invocationInfo.Name);
-                            return;
-                        }
+                        Report(context, invocationInfo.Name);
+                        return;
                     }
 
                     success = true;
