@@ -76,36 +76,6 @@ public static class CodeGenerator
         return (CompilationUnitSyntax)rewriter.Visit(compilationUnit);
     }
 
-    public static CompilationUnitSyntax GenerateLegacyConfigOptions(IEnumerable<AnalyzerMetadata> analyzers)
-    {
-        return CompilationUnit(
-            UsingDirectives(),
-            NamespaceDeclaration(
-                "Roslynator",
-                ClassDeclaration(
-                    Modifiers.Public_Static_Partial(),
-                    "LegacyConfigOptions",
-                    analyzers
-                        .SelectMany(f => f.LegacyOptions)
-                        .Where(f => f.Status != AnalyzerStatus.Disabled)
-                        .OrderBy(f => f.Identifier)
-                        .Select(f =>
-                        {
-                            return FieldDeclaration(
-                                Modifiers.Public_Static_ReadOnly(),
-                                IdentifierName("LegacyConfigOptionDescriptor"),
-                                f.Identifier,
-                                ImplicitObjectCreationExpression(
-                                    ArgumentList(
-                                        Argument(NameColon("key"), StringLiteralExpression($"roslynator.{f.ParentId}.{f.OptionKey}")),
-                                        Argument(NameColon("defaultValue"), NullLiteralExpression()),
-                                        Argument(NameColon("defaultValuePlaceholder"), StringLiteralExpression("true|false")),
-                                        Argument(NameColon("description"), StringLiteralExpression(""))),
-                                    default(InitializerExpressionSyntax)));
-                        })
-                        .ToSyntaxList<MemberDeclarationSyntax>())));
-    }
-
     public static CompilationUnitSyntax GenerateConfigOptionKeys(IEnumerable<AnalyzerOptionMetadata> options)
     {
         CompilationUnitSyntax compilationUnit = CompilationUnit(

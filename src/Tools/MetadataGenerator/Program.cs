@@ -55,7 +55,6 @@ internal static class Program
             string s = File.ReadAllText(path, _utf8NoBom);
 
             ImmutableDictionary<string, AnalyzerMetadata> dic = metadata.Analyzers
-                .Concat(metadata.Analyzers.SelectMany(f => f.LegacyOptionAnalyzers))
                 .Where(f => f.Id is not null)
                 .ToImmutableDictionary(f => f.Id, f => f);
 
@@ -101,9 +100,7 @@ internal static class Program
 
         void DeleteInvalidAnalyzerMarkdowns()
         {
-            IEnumerable<string> allIds = metadata.Analyzers
-                .Concat(metadata.Analyzers.SelectMany(f => f.LegacyOptionAnalyzers))
-                .Select(f => f.Id);
+            IEnumerable<string> allIds = metadata.Analyzers.Select(f => f.Id);
 
             foreach (string id in Directory.GetFiles(analyzersDirPath, "*.*", SearchOption.TopDirectoryOnly)
                 .Select(f => Path.GetFileNameWithoutExtension(f))
