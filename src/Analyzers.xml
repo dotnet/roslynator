@@ -3897,7 +3897,7 @@ namespace Foo
         <Title>Convert bitwise operation to 'HasFlag' call</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
-        <NewOptionKey>enum_flag_operation_style</NewOptionKey>
+        <NewOptionKey>enum_has_flag_style</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -6050,7 +6050,7 @@ int i = (x != null) ? x.Value.GetHashCode() : 0;]]></Before>
         <Title>Convert method group to anonymous function</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
-        <NewOptionKey>anonymous_function_or_method_group</NewOptionKey>
+        <NewOptionKey>use_anonymous_function_or_method_group</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -6238,7 +6238,7 @@ x = "";]]></Before>
       <Option Identifier="SuppressUnityScriptMethods">
         <Title>Suppress Unity script methods</Title>
         <OptionKey>suppress_unity_script_methods</OptionKey>
-        <NewOptionKey>supress_unity_script_methods</NewOptionKey>
+        <NewOptionKey>suppress_unity_script_methods</NewOptionKey>
         <Kind>Disable</Kind>
         <Summary>Suppress diagnostic from [Unity script methods](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html).</Summary>
       </Option>
