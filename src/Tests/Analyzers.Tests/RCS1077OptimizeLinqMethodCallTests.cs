@@ -709,6 +709,38 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallFindInsteadOfFirstOrDefault_DerivedFromList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C : List<object>
+{
+    void M()
+    {
+        var items = new C();
+
+        var x = items.[|FirstOrDefault|](_ => true);
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C : List<object>
+{
+    void M()
+    {
+        var items = new C();
+
+        var x = items.Find(_ => true);
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     public async Task Test_CallFindInsteadOfFirstOrDefault_Array()
     {
         await VerifyNoDiagnosticAsync(@"

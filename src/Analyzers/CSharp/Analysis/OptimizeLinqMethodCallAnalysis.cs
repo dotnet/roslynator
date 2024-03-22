@@ -236,7 +236,7 @@ internal static class OptimizeLinqMethodCallAnalysis
                 {
                     ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(invocationInfo.Expression, context.CancellationToken);
 
-                    if (typeSymbol?.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_List_T) == true)
+                    if (typeSymbol?.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Collections_Generic_List_T) == true)
                     {
                         Report(context, invocationInfo.Name);
                         return;
