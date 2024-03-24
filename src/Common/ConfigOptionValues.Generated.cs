@@ -43,10 +43,10 @@ namespace Roslynator
         public const string EqualsTokenNewLine_Before                                                   = "before";
         public const string InfiniteLoopStyle_For                                                       = "for";
         public const string InfiniteLoopStyle_While                                                     = "while";
-        public const string NullConditionalOperatorNewLine_After                                        = "after";
-        public const string NullConditionalOperatorNewLine_Before                                       = "before";
         public const string NullCheckStyle_EqualityOperator                                             = "equality_operator";
         public const string NullCheckStyle_PatternMatching                                              = "pattern_matching";
+        public const string NullConditionalOperatorNewLine_After                                        = "after";
+        public const string NullConditionalOperatorNewLine_Before                                       = "before";
         public const string ObjectCreationParenthesesStyle_Include                                      = "include";
         public const string ObjectCreationParenthesesStyle_Omit                                         = "omit";
         public const string ObjectCreationTypeStyle_Explicit                                            = "explicit";

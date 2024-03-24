@@ -153,17 +153,17 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Include/omit new line before 'while' in 'do' statement");
 
-        public static readonly ConfigOptionDescriptor NullConditionalOperatorNewLine = new(
-            key:                     ConfigOptionKeys.NullConditionalOperatorNewLine, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "after|before", 
-            description:             "Place new line after/before null-conditional operator");
-
         public static readonly ConfigOptionDescriptor NullCheckStyle = new(
             key:                     ConfigOptionKeys.NullCheckStyle, 
             defaultValue:            null, 
             defaultValuePlaceholder: "equality_operator|pattern_matching", 
             description:             "Use equality operator or pattern matching as a null check");
+
+        public static readonly ConfigOptionDescriptor NullConditionalOperatorNewLine = new(
+            key:                     ConfigOptionKeys.NullConditionalOperatorNewLine, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "after|before", 
+            description:             "Place new line after/before null-conditional operator");
 
         public static readonly ConfigOptionDescriptor ObjectCreationParenthesesStyle = new(
             key:                     ConfigOptionKeys.ObjectCreationParenthesesStyle, 

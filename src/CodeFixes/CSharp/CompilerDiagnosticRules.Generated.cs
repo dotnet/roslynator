@@ -2027,7 +2027,7 @@ namespace Roslynator.CSharp
         /// <summary>CS8403</summary>
         public static readonly DiagnosticDescriptor MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT, 
-            title:              "Method with an iterator block must be 'async' to return 'IAsyncEnumerable<T<'.", 
+            title:              "Method with an iterator block must be 'async' to return 'IAsyncEnumerable<T>'.", 
             messageFormat:      "Method '{0}' with an iterator block must be 'async' to return '{1}'", 
             category:           "Compiler", 
             defaultSeverity:    DiagnosticSeverity.Error, 
