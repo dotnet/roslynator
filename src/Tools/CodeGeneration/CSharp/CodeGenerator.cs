@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -25,7 +26,7 @@ public static class CodeGenerator
                     Modifiers.Public_Static_Partial(),
                     "ConfigOptions",
                     options
-                        .OrderBy(f => f.Id)
+                        .OrderBy(f => f.Id, StringComparer.InvariantCulture)
                         .Select(f =>
                         {
                             return FieldDeclaration(
@@ -51,7 +52,7 @@ public static class CodeGenerator
                                     Block(
                                         analyzers
                                             .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
-                                            .OrderBy(f => f.Id)
+                                            .OrderBy(f => f.Id, StringComparer.InvariantCulture)
                                             .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
                                             .Select(f =>
                                             {
@@ -88,7 +89,7 @@ public static class CodeGenerator
                     analyzers
                         .SelectMany(f => f.LegacyOptions)
                         .Where(f => f.Status != AnalyzerStatus.Disabled)
-                        .OrderBy(f => f.Identifier)
+                        .OrderBy(f => f.Identifier, StringComparer.InvariantCulture)
                         .Select(f =>
                         {
                             return FieldDeclaration(
@@ -116,7 +117,7 @@ public static class CodeGenerator
                     Modifiers.Internal_Static_Partial(),
                     "ConfigOptionKeys",
                     options
-                        .OrderBy(f => f.Id)
+                        .OrderBy(f => f.Id, StringComparer.InvariantCulture)
                         .Select(f =>
                         {
                             return FieldDeclaration(
@@ -144,7 +145,7 @@ public static class CodeGenerator
                     Modifiers.Internal_Static_Partial(),
                     "ConfigOptionValues",
                     options
-                        .OrderBy(option => option.Id)
+                        .OrderBy(option => option.Id, StringComparer.InvariantCulture)
                         .SelectMany(option =>
                         {
                             return option.Values.Select(v =>
