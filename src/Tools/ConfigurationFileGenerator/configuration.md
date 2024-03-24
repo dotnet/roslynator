@@ -6,12 +6,10 @@ Use EditorConfig file to configure analyzers, refactoring and compiler diagnosti
 # Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
 dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
 
-# Enable/disable all analyzers by default
-# NOTE: This option can be used only in .roslynatorconfig file
-roslynator_analyzers.enabled_by_default = true|false
-
 # Set severity for a specific analyzer
 dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
+
+# NOTE: Following options can be used both in .editorconfig file and in .roslynatorconfig file (see below):
 
 # Enable/disable all refactorings
 roslynator_refactorings.enabled = true|false
@@ -33,9 +31,7 @@ if an analyzer is enabled but required option is not set. ROS0003 is disabled by
 
 ## Default Configuration
 
-If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file (`.roslynatorconfig`).
-
-**IMPORTANT:** Default configuration file can be used only with VS extension or VS code extension.
+Default configuration file can be used to configure Visual Studio extension or VS Code extension (refactorings and code fixes).
 
 ### Format
 
@@ -44,7 +40,6 @@ Namely, file must contain top-level entry `is_global = true` and cannot contain 
 
 ```ini
 is_global = true
-roslynator_analyzers.enabled_by_default = true
 ```
 
 ### Location

@@ -2,7 +2,7 @@
   "name": "roslynator",
   "publisher": "josefpihrt-vscode",
   "displayName": "Roslynator",
-  "description": "A collection of 500+ analyzers, refactorings and fixes for C#, powered by Roslyn.",
+  "description": "A collection of refactorings and fixes for C#, powered by Roslyn.",
   "icon": "images/icon.png",
   "version": "1.0.0",
   "author": "Josef Pihrt",
@@ -52,7 +52,6 @@
     "onCommand:csharp.listRemoteProcess",
     "onCommand:csharp.listRemoteDockerProcess",
     "onCommand:omnisharp.registerLanguageMiddleware",
-    "onCommand:roslynator.openDefaultConfigurationFile",
     "workspaceContains:project.json",
     "workspaceContains:**/*.{csproj,sln,slnf,csx,cake}"
   ],

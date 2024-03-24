@@ -12,88 +12,94 @@ namespace Roslynator.CodeGeneration.EditorConfig;
 
 public static class EditorConfigGenerator
 {
-    public static string GenerateEditorConfig(RoslynatorMetadata metadata, bool commentOut)
+    public static string GenerateEditorConfig(RoslynatorMetadata metadata, bool includeAnalyzers, bool commentOut)
     {
         var optionMap = new Dictionary<string, HashSet<AnalyzerMetadata>>();
 
-        foreach (AnalyzerMetadata analyzer in metadata.Analyzers)
+        if (includeAnalyzers)
         {
-            foreach (AnalyzerConfigOption option in analyzer.ConfigOptions)
+            foreach (AnalyzerMetadata analyzer in metadata.Analyzers)
             {
-                if (!optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> optionAnalyzers))
-                    optionAnalyzers = new HashSet<AnalyzerMetadata>();
+                foreach (AnalyzerConfigOption option in analyzer.ConfigOptions)
+                {
+                    if (!optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> optionAnalyzers))
+                        optionAnalyzers = new HashSet<AnalyzerMetadata>();
 
-                optionAnalyzers.Add(analyzer);
-                optionMap[option.Key] = optionAnalyzers;
+                    optionAnalyzers.Add(analyzer);
+                    optionMap[option.Key] = optionAnalyzers;
+                }
             }
         }
 
         using (var w = new EditorConfigWriter(new StringWriter()))
         {
-            w.WriteLine();
-            w.WriteLine("# Options");
-            w.WriteLine();
-
-            var isSeparatedWithNewLine = true;
-
-            foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions
-                .Where(f => !f.IsObsolete)
-                .OrderBy(f => f.Key))
+            if (includeAnalyzers)
             {
-                if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
-                    && !isSeparatedWithNewLine)
+                w.WriteLine();
+                w.WriteLine("# Options");
+                w.WriteLine();
+
+                var isSeparatedWithNewLine = true;
+
+                foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions
+                    .Where(f => !f.IsObsolete)
+                    .OrderBy(f => f.Key))
                 {
-                    w.WriteLine();
-                }
+                    if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
+                        && !isSeparatedWithNewLine)
+                    {
+                        w.WriteLine();
+                    }
 
-                w.WriteCommentCharIf(commentOut);
-                w.WriteEntry($"{option.Key}", option.DefaultValuePlaceholder);
+                    w.WriteCommentCharIf(commentOut);
+                    w.WriteEntry($"{option.Key}", option.DefaultValuePlaceholder);
 
-                string defaultValue = option.DefaultValue;
+                    string defaultValue = option.DefaultValue;
 
-                if (defaultValue is not null)
-                    w.WriteLine($"# Default: {defaultValue}");
+                    if (defaultValue is not null)
+                        w.WriteLine($"# Default: {defaultValue}");
 
-                if (analyzers?.Count > 0)
-                {
-                    w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id.ToLowerInvariant())));
-                    w.WriteLine();
-                    isSeparatedWithNewLine = true;
-                }
-                else
-                {
-                    isSeparatedWithNewLine = false;
-                }
-            }
-
-            w.WriteLine();
-            w.WriteLine("# Analyzers");
-            w.WriteLine();
-
-            foreach (AnalyzerMetadata analyzer in metadata.Analyzers
-                .Where(f => f.Status == AnalyzerStatus.Enabled && !f.Tags.Contains("HideFromConfiguration"))
-                .OrderBy(f => f.Id))
-            {
-                w.WriteLine($"# {analyzer.Title.TrimEnd('.')}");
-                w.WriteCommentCharIf(commentOut);
-                w.WriteAnalyzer(
-                    analyzer.Id.ToLowerInvariant(),
-                    (analyzer.IsEnabledByDefault)
-                        ? ((DiagnosticSeverity)Enum.Parse(typeof(DiagnosticSeverity), analyzer.DefaultSeverity)).ToReportDiagnostic()
-                        : ReportDiagnostic.Suppress);
-
-                if (analyzer.ConfigOptions.Count > 0)
-                {
-                    w.WriteLine("# Options: "
-                        + string.Join(
-                            ", ",
-                            analyzer.ConfigOptions
-                                .Where(f => metadata.ConfigOptions.FirstOrDefault(ff => ff.Key == f.Key)?.IsObsolete != true)
-                                .OrderBy(f => f.Key)
-                                .Select(f2 => metadata.ConfigOptions.First(f => f.Key == f2.Key).Key)));
+                    if (analyzers?.Count > 0)
+                    {
+                        w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id.ToLowerInvariant())));
+                        w.WriteLine();
+                        isSeparatedWithNewLine = true;
+                    }
+                    else
+                    {
+                        isSeparatedWithNewLine = false;
+                    }
                 }
 
                 w.WriteLine();
+                w.WriteLine("# Analyzers");
+                w.WriteLine();
+
+                foreach (AnalyzerMetadata analyzer in metadata.Analyzers
+                    .Where(f => f.Status == AnalyzerStatus.Enabled && !f.Tags.Contains("HideFromConfiguration"))
+                    .OrderBy(f => f.Id))
+                {
+                    w.WriteLine($"# {analyzer.Title.TrimEnd('.')}");
+                    w.WriteCommentCharIf(commentOut);
+                    w.WriteAnalyzer(
+                        analyzer.Id.ToLowerInvariant(),
+                        (analyzer.IsEnabledByDefault)
+                            ? ((DiagnosticSeverity)Enum.Parse(typeof(DiagnosticSeverity), analyzer.DefaultSeverity)).ToReportDiagnostic()
+                            : ReportDiagnostic.Suppress);
+
+                    if (analyzer.ConfigOptions.Count > 0)
+                    {
+                        w.WriteLine("# Options: "
+                            + string.Join(
+                                ", ",
+                                analyzer.ConfigOptions
+                                    .Where(f => metadata.ConfigOptions.FirstOrDefault(ff => ff.Key == f.Key)?.IsObsolete != true)
+                                    .OrderBy(f => f.Key)
+                                    .Select(f2 => metadata.ConfigOptions.First(f => f.Key == f2.Key).Key)));
+                    }
+
+                    w.WriteLine();
+                }
             }
 
             w.WriteLine();

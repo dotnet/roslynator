@@ -101,7 +101,7 @@ internal static class Program
             @"export const configurationFileContent = {
 	roslynatorconfig: `"
                 + EditorConfigCodeAnalysisConfig.FileDefaultContent
-                + EditorConfigGenerator.GenerateEditorConfig(metadata, commentOut: true)
+                + EditorConfigGenerator.GenerateEditorConfig(metadata, includeAnalyzers: false, commentOut: true)
                 + @"`
 };",
             new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
