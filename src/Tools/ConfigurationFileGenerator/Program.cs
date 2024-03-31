@@ -35,7 +35,7 @@ internal static class Program
 
 ```editorconfig title=".editorconfig"
 """
-            + EditorConfigGenerator.GenerateEditorConfig(metadata, commentOut: false)
+            + EditorConfigGenerator.GenerateEditorConfig(metadata, includeAnalyzers: true, commentOut: false)
             + @"```
 ";
 

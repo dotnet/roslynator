@@ -259,13 +259,6 @@ public static class MarkdownGenerator
         {
             yield return Heading2("Applies to");
 
-            if (!analyzer.Id.StartsWith("RCS9"))
-            {
-                yield return BulletItem(Link("Extension for VS 2022", "https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022"));
-                yield return BulletItem(Link("Extension for VS Code", "https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator"));
-                yield return BulletItem(Link("Extension for Open VSX", "https://open-vsx.org/extension/josefpihrt-vscode/roslynator"));
-            }
-
             if (analyzer.Id.StartsWith("RCS0"))
                 yield return BulletItem(Link(new[] { "Package ", "Roslynator.Formatting.Analyzers" }, "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers"));
 

@@ -1,9 +1,6 @@
 # Roslynator for Visual Studio Code
 
-A collection of 500+ [analyzers](https://josefpihrt.github.io/docs/roslynator/analyzers), [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
-
-IMPORTANT: Analyzers will be removed from Roslynator for VS Code in the next major release.
-It's recommended to use Roslynator NuGet packages (e.g. [Roslynator.Analyzers](https://www.nuget.org/packages/roslynator.analyzers)) instead.
+A collection of [refactorings](https://josefpihrt.github.io/docs/roslynator/refactorings) and [fixes](https://josefpihrt.github.io/docs/roslynator/fixes) for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
 ## Prerequsities
 
@@ -18,6 +15,14 @@ NOTE: After each installation, Roslynator updates `omnisharp.json` to include re
 As an alternative, it's possible to use NuGet packages that provide [refactorings](https://www.nuget.org/packages/roslynator.refactorings)
  and [code fixes for compiler diagnostics](https://www.nuget.org/packages/roslynator.codefixes).
 
+## Analyzers
+
+It' recommended to also use Roslynator analyzers to improve code quality.
+To use Roslynator analyzers, install following NuGet packages to a project/solution:
+
+- [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers)
+- [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers)
+
 ## Configuration
 
 Use EditorConfig file to configure analyzers, refactorings and compiler diagnostic fixes.
@@ -26,12 +31,10 @@ Use EditorConfig file to configure analyzers, refactorings and compiler diagnost
 # Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
 dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
 
-# Enable/disable all analyzers by default.
-# NOTE: This option can be used only in .roslynatorconfig file
-roslynator_analyzers.enabled_by_default = true|false
-
 # Set severity for a specific analyzer
 dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
+
+# NOTE: Following options can be used both in .editorconfig file and in .roslynatorconfig file (see below):
 
 # Enable/disable all refactorings
 roslynator_refactorings.enabled = true|false
@@ -50,7 +53,7 @@ Full list of available options is [here](https://josefpihrt.github.io/docs/rosly
 
 ## Default Configuration
 
-If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file.
+Default configuration file can be used to configure Visual Studio extension or VS Code extension (refactorings and code fixes).
 
 How to open config file:
 
@@ -73,7 +76,7 @@ Default configuration is loaded once when IDE starts. Therefore, it may be neces
 
 ## Requirements
 
-This extension requires [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) 1.21.13 or higher.
+This extension requires [C# for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) 1.21.13 or higher.
 
 ## Donation
 

@@ -198,7 +198,75 @@ jobs:
           pattern: vs_extension_*
           delete-merged: true
 
+  build_vs_extension_with_analyzers:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    needs: pre_build
+    runs-on: windows-latest
+    env:
+      Version: ${{ needs.pre_build.outputs.version }}
+      DeployExtension: false
+      RoslynatorExtensionWithAnalyzers: true
+    defaults:
+      run:
+        working-directory: src/VisualStudio
+    steps:
+      - uses: actions/checkout@v4
+      - run: (Get-Content source.extension-with-analyzers.vsixmanifest) -replace 'Version="1.0.0"', 'Version="${{ needs.pre_build.outputs.version3 }}"' | Set-Content source.extension-with-analyzers.vsixmanifest
+      - run: dotnet restore
+      - uses: microsoft/setup-msbuild@v2
+      - run: msbuild -m
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vs_extension_with_analyzers
+          path: src/VisualStudio/bin/Release/net472/*.vsix
+
   build_vs_code_extension:
+    if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
+    needs: [ pre_build, build_analyzers ]
+    runs-on: ubuntu-22.04
+    env:
+      Version: ${{ needs.pre_build.outputs.version }}
+    defaults:
+      run:
+        working-directory: src/VisualStudioCode
+    steps:
+      - uses: actions/checkout@v4
+      - run: dotnet restore
+      - run: dotnet build --no-restore
+      - run: |
+          mkdir package/roslyn/analyzers
+          mkdir package/roslyn/refactorings
+          mkdir package/roslyn/fixes
+          cp bin/Release/netstandard2.0/Roslynator.Core.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.Common.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.Workspaces.Core.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.Workspaces.Common.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.Workspaces.dll package/roslyn/common
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.Refactorings.dll package/roslyn/refactorings
+          cp bin/Release/netstandard2.0/Roslynator.CSharp.CodeFixes.dll package/roslyn/fixes
+        name: Copy DLLs to package
+      - run: >
+          sed -i 's/"version": "1.0.0"/"version": "${{ needs.pre_build.outputs.version3 }}"/' package/package.json
+      - run: npm install
+        working-directory: src/VisualStudioCode/package
+      - run: npm install -g @vscode/vsce
+      - run: vsce package
+        working-directory: src/VisualStudioCode/package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vs_code_extension
+          path: src/VisualStudioCode/package/*.vsix
+      - run: rm package/*.vsix
+      - run: sed -i s/ms-dotnettools.csharp/muhammad-sammy.csharp/ package/package.json
+      - run: vsce package
+        working-directory: src/VisualStudioCode/package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ovsx_extension
+          path: src/VisualStudioCode/package/*.vsix
+
+  build_vs_code_extension_with_analyzers:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: [ pre_build, build_analyzers ]
     runs-on: ubuntu-22.04
@@ -223,8 +291,6 @@ jobs:
           cp bin/Release/netstandard2.0/Roslynator.CSharp.Workspaces.dll package/roslyn/common
           cp bin/Release/netstandard2.0/Roslynator.CSharp.Analyzers.dll package/roslyn/analyzers
           cp bin/Release/netstandard2.0/Roslynator.CSharp.Analyzers.CodeFixes.dll package/roslyn/analyzers
-          cp bin/Release/netstandard2.0/Roslynator.Formatting.Analyzers.dll package/roslyn/analyzers
-          cp bin/Release/netstandard2.0/Roslynator.Formatting.Analyzers.CodeFixes.dll package/roslyn/analyzers
           cp bin/Release/netstandard2.0/Roslynator.CSharp.Refactorings.dll package/roslyn/refactorings
           cp bin/Release/netstandard2.0/Roslynator.CSharp.CodeFixes.dll package/roslyn/fixes
         name: Copy DLLs to package
@@ -237,15 +303,7 @@ jobs:
         working-directory: src/VisualStudioCode/package
       - uses: actions/upload-artifact@v4
         with:
-          name: vs_code_extension
-          path: src/VisualStudioCode/package/*.vsix
-      - run: rm package/*.vsix
-      - run: sed -i s/ms-dotnettools.csharp/muhammad-sammy.csharp/ package/package.json
-      - run: vsce package
-        working-directory: src/VisualStudioCode/package
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ovsx_extension
+          name: vs_code_extension_with_analyzers
           path: src/VisualStudioCode/package/*.vsix
 
   build_core_cli:
