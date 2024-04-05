@@ -85,7 +85,6 @@ internal static class UseElementAccessInsteadOfEnumerableMethodRefactoring
     public static Task<Document> UseElementAccessInsteadOfLastAsync(
         Document document,
         InvocationExpressionSyntax invocation,
-        string propertyName,
         CancellationToken cancellationToken = default)
     {
         ArgumentListSyntax argumentList = invocation.ArgumentList;
@@ -105,11 +104,7 @@ internal static class UseElementAccessInsteadOfEnumerableMethodRefactoring
             expression = expression.WithTrailingTrivia(trivia);
         }
 
-        ExpressionSyntax argumentExpression = SubtractExpression(
-            SimpleMemberAccessExpression(
-                expression,
-                IdentifierName(propertyName)),
-            NumericLiteralExpression(1));
+        ExpressionSyntax argumentExpression = ParseExpression("^1");
 
         ElementAccessExpressionSyntax elementAccess = ElementAccessExpression(
             expression,

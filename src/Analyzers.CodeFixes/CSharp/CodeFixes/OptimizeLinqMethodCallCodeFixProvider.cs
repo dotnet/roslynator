@@ -260,6 +260,16 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
                         context.RegisterCodeFix(codeAction, diagnostic);
                         return;
                     }
+                case "Last":
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Use [] instead of calling 'Last'",
+                            ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfLastAsync(document, invocation, ct),
+                            GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfLast"));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        return;
+                    }
             }
         }
         else if (kind == SyntaxKind.ConditionalExpression)

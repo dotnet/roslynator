@@ -7286,6 +7286,10 @@ public class C
         <Before><![CDATA[list.ElementAt(1)]]></Before>
         <After><![CDATA[list[1]]]></After>
       </Sample>
+	  <Sample>
+		<Before><![CDATA[list.Last()]]></Before>
+		<After><![CDATA[list[^1]]]></After>
+	  </Sample>
     </Samples>
     <Options>
       <Option Identifier="DoNotUseElementAccessWhenExpressionIsInvocation">
