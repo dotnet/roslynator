@@ -10,12 +10,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Spelling;
 
 namespace Roslynator.CSharp.Spelling;
 
-[Export(typeof(ILanguageService))]
+[ExportLanguageService(typeof(ILanguageService), LanguageNames.CSharp)]
 [ExportMetadata("Language", LanguageNames.CSharp)]
 [ExportMetadata("ServiceType", "Roslynator.Spelling.ISpellingService")]
 internal partial class CSharpSpellingService : SpellingService

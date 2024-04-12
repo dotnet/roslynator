@@ -4,12 +4,13 @@ using System.Composition;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeMetrics;
 
 namespace Roslynator.VisualBasic.CodeMetrics;
 
-[Export(typeof(ILanguageService))]
+[ExportLanguageService(typeof(ILanguageService), LanguageNames.VisualBasic)]
 [ExportMetadata("Language", LanguageNames.VisualBasic)]
 [ExportMetadata("ServiceType", "Roslynator.CodeMetrics.ICodeMetricsService")]
 internal class VisualBasicCodeMetricsService : CodeMetricsService

@@ -4,11 +4,12 @@ using System.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Roslynator.CSharp;
 
 namespace Roslynator.CSharp;
 
-[Export(typeof(ILanguageService))]
+[ExportLanguageService(typeof(ILanguageService), LanguageNames.CSharp)]
 [ExportMetadata("Language", LanguageNames.CSharp)]
 [ExportMetadata("ServiceType", "Roslynator.ISyntaxFactsService")]
 internal sealed class CSharpSyntaxFactsService : ISyntaxFactsService

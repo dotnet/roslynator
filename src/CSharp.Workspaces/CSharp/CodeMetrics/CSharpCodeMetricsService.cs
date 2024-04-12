@@ -4,12 +4,13 @@ using System.Composition;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeMetrics;
 
 namespace Roslynator.CSharp.CodeMetrics;
 
-[Export(typeof(ILanguageService))]
+[ExportLanguageService(typeof(ILanguageService), LanguageNames.CSharp)]
 [ExportMetadata("Language", LanguageNames.CSharp)]
 [ExportMetadata("ServiceType", "Roslynator.CodeMetrics.ICodeMetricsService")]
 internal class CSharpCodeMetricsService : CodeMetricsService

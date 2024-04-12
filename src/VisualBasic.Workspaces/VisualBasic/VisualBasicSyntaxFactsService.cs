@@ -4,11 +4,12 @@ using System;
 using System.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.VisualBasic;
 
 namespace Roslynator.VisualBasic;
 
-[Export(typeof(ILanguageService))]
+[ExportLanguageService(typeof(ILanguageService), LanguageNames.VisualBasic)]
 [ExportMetadata("Language", LanguageNames.VisualBasic)]
 [ExportMetadata("ServiceType", "Roslynator.ISyntaxFactsService")]
 internal sealed class VisualBasicSyntaxFactsService : ISyntaxFactsService

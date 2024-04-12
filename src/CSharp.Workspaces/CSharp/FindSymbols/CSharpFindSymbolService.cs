@@ -6,11 +6,12 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Roslynator.FindSymbols;
 
 namespace Roslynator.CSharp.FindSymbols;
 
-[Export(typeof(ILanguageService))]
+[ExportLanguageService(typeof(ILanguageService), LanguageNames.CSharp)]
 [ExportMetadata("Language", LanguageNames.CSharp)]
 [ExportMetadata("ServiceType", "Roslynator.FindSymbols.IFindSymbolService")]
 internal class CSharpFindSymbolService : FindSymbolService
