@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Update - add Last [RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246) ([PR](https://github.com/dotnet/roslynator/pull/1436))
+- Convert `Last` to `[]` ([RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246)) ([PR](https://github.com/dotnet/roslynator/pull/1436))
 
 ## [4.12.0] - 2024-03-19
 
