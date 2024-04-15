@@ -3,22 +3,18 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Composition;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Spelling;
 
 namespace Roslynator.CSharp.Spelling;
 
-[ExportLanguageService(typeof(ILanguageService), LanguageNames.CSharp)]
-[ExportMetadata("Language", LanguageNames.CSharp)]
-[ExportMetadata("ServiceType", "Roslynator.Spelling.ISpellingService")]
+[ExportLanguageService(typeof(ISpellingService), LanguageNames.CSharp)]
 internal partial class CSharpSpellingService : SpellingService
 {
     public override ISyntaxFactsService SyntaxFacts => CSharpSyntaxFactsService.Instance;

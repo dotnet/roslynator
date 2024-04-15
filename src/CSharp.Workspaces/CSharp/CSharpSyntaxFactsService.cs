@@ -1,17 +1,13 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Roslynator.CSharp;
 
 namespace Roslynator.CSharp;
 
-[ExportLanguageService(typeof(ILanguageService), LanguageNames.CSharp)]
-[ExportMetadata("Language", LanguageNames.CSharp)]
-[ExportMetadata("ServiceType", "Roslynator.ISyntaxFactsService")]
+[ExportLanguageService(typeof(ISyntaxFactsService), LanguageNames.CSharp)]
 internal sealed class CSharpSyntaxFactsService : ISyntaxFactsService
 {
     public static CSharpSyntaxFactsService Instance { get; } = new();
