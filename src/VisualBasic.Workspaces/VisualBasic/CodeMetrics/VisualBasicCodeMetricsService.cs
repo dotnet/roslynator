@@ -1,17 +1,14 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Composition;
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeMetrics;
 
 namespace Roslynator.VisualBasic.CodeMetrics;
 
-[Export(typeof(ILanguageService))]
-[ExportMetadata("Language", LanguageNames.VisualBasic)]
-[ExportMetadata("ServiceType", "Roslynator.CodeMetrics.ICodeMetricsService")]
+[ExportLanguageService(typeof(ICodeMetricsService), LanguageNames.VisualBasic)]
 internal class VisualBasicCodeMetricsService : CodeMetricsService
 {
     public override ISyntaxFactsService SyntaxFacts => VisualBasicSyntaxFactsService.Instance;

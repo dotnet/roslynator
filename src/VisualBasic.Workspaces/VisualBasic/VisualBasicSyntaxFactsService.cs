@@ -1,16 +1,13 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Composition;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Host;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.VisualBasic;
 
 namespace Roslynator.VisualBasic;
 
-[Export(typeof(ILanguageService))]
-[ExportMetadata("Language", LanguageNames.VisualBasic)]
-[ExportMetadata("ServiceType", "Roslynator.ISyntaxFactsService")]
+[ExportLanguageService(typeof(ISyntaxFactsService), LanguageNames.VisualBasic)]
 internal sealed class VisualBasicSyntaxFactsService : ISyntaxFactsService
 {
     public static VisualBasicSyntaxFactsService Instance { get; } = new();
