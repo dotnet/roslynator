@@ -74,6 +74,9 @@ internal static class UseElementAccessAnalysis
         if (invocationInfo.InvocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
             return false;
 
+        if (((CSharpCompilation)semanticModel.Compilation).LanguageVersion < LanguageVersion.CSharp8)
+            return false;
+
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
         if (methodSymbol is null)

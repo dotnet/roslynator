@@ -94,6 +94,60 @@ class C
 ");
     }
 
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    [InlineData("((List<object>)x).[|Last()|]", "((List<object>)x)[^1]")]
+    [InlineData("((IList<object>)x).[|Last()|]", "((IList<object>)x)[^1]")]
+    [InlineData("((IReadOnlyList<object>)x).[|Last()|]", "((IReadOnlyList<object>)x)[^1]")]
+    [InlineData("((Collection<object>)x).[|Last()|]", "((Collection<object>)x)[^1]")]
+    [InlineData("((ImmutableArray<object>)x).[|Last()|]", "((ImmutableArray<object>)x)[^1]")]
+    [InlineData("((object[])x).[|Last()|]", "((object[])x)[^1]")]
+    [InlineData("((string)x).[|Last()|]", "((string)x)[^1]")]
+    public async Task Test_UseElementAccessInsteadOfLast(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+
+class C
+{
+    void M()
+    {
+        object x = null;
+        var y = [||];
+    }
+}
+", source, expected);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task TestNoDiagnostic_UseElementAccessInsteadOfLast()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+
+class C
+{
+    void M()
+    {
+        object x = null;
+
+        x = ((ICollection<object>)x).Last();
+        x = ((IReadOnlyCollection<object>)x).Last();
+        x = ((IEnumerable<object>)x).Last();
+
+        x = ((Dictionary<object, object>)x).Last();
+    }
+}
+");
+    }
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccessInsteadOfFirst()
     {

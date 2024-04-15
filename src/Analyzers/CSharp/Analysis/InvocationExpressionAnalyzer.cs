@@ -192,6 +192,23 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                                 break;
                             }
                         case "Last":
+                            {
+                                if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context))
+                                {
+                                    if (!invocationInfo.Expression.IsKind(SyntaxKind.ElementAccessExpression, SyntaxKind.InvocationExpression)
+                                        && UseElementAccessAnalysis.IsFixableLast(invocationInfo, context.SemanticModel, context.CancellationToken))
+                                    {
+                                        DiagnosticHelpers.ReportDiagnostic(
+                                            context,
+                                            DiagnosticRules.UseElementAccess,
+                                            Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
+                                    }
+
+                                    OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+                                }
+
+                                break;
+                            }
                         case "LastOrDefault":
                         case "LongCount":
                         case "Single":

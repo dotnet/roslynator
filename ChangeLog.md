@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - [CLI] Bump Roslyn to 4.9.2 ([PR](https://github.com/dotnet/roslynator/pull/1441))
+- Convert `Last()` to `[]` ([RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246)) ([PR](https://github.com/dotnet/roslynator/pull/1436))
 
 ### Fixed
 

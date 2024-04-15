@@ -50,14 +50,9 @@ internal static class UseElementAccessRefactoring
                     if (!UseElementAccessAnalysis.IsFixableLast(invocationInfo, semanticModel, context.CancellationToken))
                         break;
 
-                    string propertyName = CSharpUtility.GetCountOrLengthPropertyName(invocationInfo.Expression, semanticModel, context.CancellationToken);
-
-                    if (propertyName is null)
-                        break;
-
                     context.RegisterRefactoring(
                         "Use [] instead of calling 'Last'",
-                        ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfLastAsync(context.Document, invocation, propertyName, ct),
+                        ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfLastAsync(context.Document, invocation, ct),
                         RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
 
                     break;
