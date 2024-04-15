@@ -38,7 +38,7 @@ public static class EditorConfigGenerator
 
             foreach (AnalyzerOptionMetadata option in metadata.ConfigOptions
                 .Where(f => !f.IsObsolete)
-                .OrderBy(f => f.Key))
+                .OrderBy(f => f.Key, StringComparer.InvariantCulture))
             {
                 if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
                     && !isSeparatedWithNewLine)
@@ -56,7 +56,7 @@ public static class EditorConfigGenerator
 
                 if (analyzers?.Count > 0)
                 {
-                    w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id.ToLowerInvariant())));
+                    w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id, StringComparer.InvariantCulture).Select(f => f.Id.ToLowerInvariant())));
                     w.WriteLine();
                     isSeparatedWithNewLine = true;
                 }
@@ -72,7 +72,7 @@ public static class EditorConfigGenerator
 
             foreach (AnalyzerMetadata analyzer in metadata.Analyzers
                 .Where(f => f.Status == AnalyzerStatus.Enabled && !f.Tags.Contains("HideFromConfiguration"))
-                .OrderBy(f => f.Id))
+                .OrderBy(f => f.Id, StringComparer.InvariantCulture))
             {
                 w.WriteLine($"# {analyzer.Title.TrimEnd('.')}");
                 w.WriteCommentCharIf(commentOut);
@@ -89,7 +89,7 @@ public static class EditorConfigGenerator
                             ", ",
                             analyzer.ConfigOptions
                                 .Where(f => metadata.ConfigOptions.FirstOrDefault(ff => ff.Key == f.Key)?.IsObsolete != true)
-                                .OrderBy(f => f.Key)
+                                .OrderBy(f => f.Key, StringComparer.InvariantCulture)
                                 .Select(f2 => metadata.ConfigOptions.First(f => f.Key == f2.Key).Key)));
                 }
 
@@ -102,7 +102,7 @@ public static class EditorConfigGenerator
 
             foreach (RefactoringMetadata refactoring in metadata.Refactorings
                 .Where(f => !f.IsObsolete)
-                .OrderBy(f => f.OptionKey))
+                .OrderBy(f => f.OptionKey, StringComparer.InvariantCulture))
             {
                 w.WriteCommentCharIf(commentOut);
                 w.WriteRefactoring(refactoring.OptionKey, refactoring.IsEnabledByDefault);
@@ -113,7 +113,7 @@ public static class EditorConfigGenerator
             w.WriteLine();
 
             foreach (CompilerDiagnosticMetadata compilerDiagnostic in metadata.CompilerDiagnostics
-                .OrderBy(f => f.Id))
+                .OrderBy(f => f.Id, StringComparer.InvariantCulture))
             {
                 w.WriteCommentCharIf(commentOut);
                 w.WriteCompilerDiagnosticFix(compilerDiagnostic.Id.ToLowerInvariant(), true);
