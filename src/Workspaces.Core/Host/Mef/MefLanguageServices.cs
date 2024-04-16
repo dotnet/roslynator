@@ -53,7 +53,7 @@ internal class MefLanguageServices
                 serviceType,
                 type =>
                 {
-                    string fullName = type.FullName;
+                    string fullName = type.AssemblyQualifiedName;
 
                     return _services.SingleOrDefault(lz => lz.Metadata.ServiceType == fullName, shouldThrow: false);
                 });
