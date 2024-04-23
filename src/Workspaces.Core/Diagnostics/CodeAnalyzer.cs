@@ -203,28 +203,34 @@ internal class CodeAnalyzer
     {
         foreach (Diagnostic diagnostic in diagnostics)
         {
-            if (diagnostic.IsEffective(Options, project.CompilationOptions, cancellationToken)
-                && (Options.ReportNotConfigurable || !diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.NotConfigurable)))
+            if (diagnostic.IsEffective(Options, project.CompilationOptions, cancellationToken))
             {
-                if (diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
+                bool? isCompiler = null;
+
+                if (Options.ReportNotConfigurable
+                    || (isCompiler ??= diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
+                    || !diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.NotConfigurable))
                 {
-                    Debug.Assert(diagnostic.Id.StartsWith("CS", "VB", StringComparison.Ordinal), diagnostic.Id);
-
-                    SyntaxTree? tree = diagnostic.Location.SourceTree;
-
-                    if (tree is null
-                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
+                    if (isCompiler ??= diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
                     {
+                        Debug.Assert(diagnostic.Id.StartsWith("CS", "VB", StringComparison.Ordinal), diagnostic.Id);
+
+                        SyntaxTree? tree = diagnostic.Location.SourceTree;
+
                         if (tree is null
-                            || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language)!.IsComment(f), cancellationToken))
+                            || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
                         {
-                            yield return diagnostic;
+                            if (tree is null
+                                || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language)!.IsComment(f), cancellationToken))
+                            {
+                                yield return diagnostic;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    yield return diagnostic;
+                    else
+                    {
+                        yield return diagnostic;
+                    }
                 }
             }
         }
