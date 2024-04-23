@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.12.2] - 2024-04-23
+
+### Fixed
+
+- [CLI] Fix loading of `slnf` files ([PR](https://github.com/dotnet/roslynator/pull/1447))
+- [CLI] Fix `--severity-level` ([PR](https://github.com/dotnet/roslynator/pull/1449))
+- Fix analyzer [RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246) ([PR](https://github.com/dotnet/roslynator/pull/1451))
+
 ## [4.12.1] - 2024-04-15
 
 ### Changed
