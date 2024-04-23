@@ -72,7 +72,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                 {
                     if (path.Origin == PathOrigin.PipedInput)
                     {
-                        Matcher matcher = (string.Equals(Path.GetExtension(path.Path), ".sln", StringComparison.OrdinalIgnoreCase))
+                        Matcher matcher = (IsSolutionFile(path.Path))
                             ? ProjectFilter.SolutionMatcher
                             : ProjectFilter.Matcher;
 
@@ -225,7 +225,7 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
         IProgress<ProjectLoadProgress> progress = null,
         CancellationToken cancellationToken = default)
     {
-        bool isSolution = string.Equals(Path.GetExtension(path), ".sln", StringComparison.OrdinalIgnoreCase);
+        bool isSolution = IsSolutionFile(path);
 
         WriteLine($"Loading {((isSolution) ? "solution" : "project")} '{path}'...", Verbosity.Minimal);
 
@@ -403,6 +403,14 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
 
             return compilations.ToImmutableArray();
         }
+    }
+
+    private static bool IsSolutionFile(string path)
+    {
+        string extension = Path.GetExtension(path);
+
+        return string.Equals(extension, ".sln", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(extension, ".slnf", StringComparison.OrdinalIgnoreCase);
     }
 
     protected class ConsoleProgressReporter : IProgress<ProjectLoadProgress>

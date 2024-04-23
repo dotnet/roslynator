@@ -20,7 +20,8 @@ internal static class CommandLineHelpers
 
     public static bool IsGlobPatternForSolution(string pattern)
     {
-        return pattern.EndsWith(".sln", StringComparison.OrdinalIgnoreCase);
+        return pattern.EndsWith(".sln", StringComparison.OrdinalIgnoreCase)
+            || pattern.EndsWith(".slnf", StringComparison.OrdinalIgnoreCase);
     }
 
     public static void WaitForKeyPress(string message = null)
