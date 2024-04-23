@@ -205,32 +205,26 @@ internal class CodeAnalyzer
         {
             if (diagnostic.IsEffective(Options, project.CompilationOptions, cancellationToken))
             {
-                bool? isCompiler = null;
-
-                if (Options.ReportNotConfigurable
-                    || (isCompiler ??= diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
-                    || !diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.NotConfigurable))
+                if (diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
                 {
-                    if (isCompiler ??= diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
+                    Debug.Assert(diagnostic.Id.StartsWith("CS", "VB", StringComparison.Ordinal), diagnostic.Id);
+
+                    SyntaxTree? tree = diagnostic.Location.SourceTree;
+
+                    if (tree is null
+                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
                     {
-                        Debug.Assert(diagnostic.Id.StartsWith("CS", "VB", StringComparison.Ordinal), diagnostic.Id);
-
-                        SyntaxTree? tree = diagnostic.Location.SourceTree;
-
                         if (tree is null
-                            || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
+                            || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language)!.IsComment(f), cancellationToken))
                         {
-                            if (tree is null
-                                || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language)!.IsComment(f), cancellationToken))
-                            {
-                                yield return diagnostic;
-                            }
+                            yield return diagnostic;
                         }
                     }
-                    else
-                    {
-                        yield return diagnostic;
-                    }
+                }
+                else if (Options.ReportNotConfigurable
+                    || !diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.NotConfigurable))
+                {
+                    yield return diagnostic;
                 }
             }
         }
