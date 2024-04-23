@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - [CLI] Fix loading of `slnf` files ([PR](https://github.com/dotnet/roslynator/pull/1447))
+- [CLI] Fix `--severity-level` ([PR](https://github.com/dotnet/roslynator/pull/1449))
 
 ## [4.12.1] - 2024-04-15
 
