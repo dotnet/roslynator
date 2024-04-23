@@ -121,6 +121,9 @@ internal static class SymbolUtility
                 return hasIndexer.Value;
         }
 
+        if (originalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Collections_Generic_List_T))
+            return true;
+
         if (originalDefinition.ImplementsAny(
             SpecialType.System_Collections_Generic_IList_T,
             SpecialType.System_Collections_Generic_IReadOnlyList_T,

@@ -40,6 +40,36 @@ class C
 ", source, expected);
     }
 
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfFirst_DerivedFromList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+using System.Collections.Generic;
+
+class C : List<string>
+{
+    void M()
+    {
+        var list = new C();
+        var x = list.[|First()|];
+    }
+}
+", @"
+using System.Linq;
+using System.Collections.Generic;
+
+class C : List<string>
+{
+    void M()
+    {
+        var list = new C();
+        var x = list[0];
+    }
+}
+");
+    }
+
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     [InlineData("((List<object>)x).[|ElementAt(1)|]", "((List<object>)x)[1]")]
     [InlineData("((IList<object>)x).[|ElementAt(1)|]", "((IList<object>)x)[1]")]
@@ -66,6 +96,36 @@ class C
     }
 }
 ", source, expected);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfElementAt_DerivedFromList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+using System.Collections.Generic;
+
+class C : List<string>
+{
+    void M()
+    {
+        var list = new C();
+        var x = list.[|ElementAt(1)|];
+    }
+}
+", @"
+using System.Linq;
+using System.Collections.Generic;
+
+class C : List<string>
+{
+    void M()
+    {
+        var list = new C();
+        var x = list[1];
+    }
+}
+");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
