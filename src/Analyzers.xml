@@ -7905,7 +7905,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
     <Samples>
       <Sample>
         <Before><![CDATA[syntaxList[syntaxList.Count - 1]]]></Before>
-        <After><![CDATA[!syntaxList.Last()]]></After>
+        <After><![CDATA[syntaxList.Last()]]></After>
       </Sample>
     </Samples>
     <Remarks>This analyzer is applicable for following types:
