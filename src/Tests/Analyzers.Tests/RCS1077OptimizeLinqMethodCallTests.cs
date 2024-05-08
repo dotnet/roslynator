@@ -1505,4 +1505,26 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_CannotConvertFuncToPredicate()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var list = new List<string>();
+
+        Func<string, bool> predicate = null;
+
+        list.FirstOrDefault(predicate);
+    }
+}
+");
+    }
 }
