@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- [CLI] Fix globbing ([PR](https://github.com/dotnet/roslynator/pull/1459))
+
 ## [4.12.2] - 2024-04-23
 
 ### Fixed
