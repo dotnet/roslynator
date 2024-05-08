@@ -224,7 +224,13 @@ internal class CodeAnalyzer
                 else if (Options.ReportNotConfigurable
                     || !diagnostic.Descriptor.CustomTags.Contains(WellKnownDiagnosticTags.NotConfigurable))
                 {
-                    yield return diagnostic;
+                    SyntaxTree? tree = diagnostic.Location.SourceTree;
+
+                    if (tree is null
+                        || Options.FileSystemFilter?.IsMatch(tree.FilePath) != false)
+                    {
+                        yield return diagnostic;
+                    }
                 }
             }
         }
