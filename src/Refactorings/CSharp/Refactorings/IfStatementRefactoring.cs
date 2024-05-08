@@ -137,7 +137,8 @@ internal static class IfStatementRefactoring
                 options: ReduceIfNestingOptions.AllowNestedFix
                     | ReduceIfNestingOptions.AllowIfInsideIfElse
                     | ReduceIfNestingOptions.AllowLoop
-                    | ReduceIfNestingOptions.AllowSwitchSection,
+                    | ReduceIfNestingOptions.AllowSwitchSection
+                    | ReduceIfNestingOptions.AllowLastIf,
                 cancellationToken: context.CancellationToken);
 
             if (analysis.Success)
