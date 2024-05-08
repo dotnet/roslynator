@@ -742,4 +742,21 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReduceIfNesting)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync("""
+class C
+{
+    private void Foo(string bar, int baz)
+    {
+        if (bar == "bar" && baz == 123)
+        {
+            var foo = "baz";
+        }
+    }
+}
+""");
+    }
 }
