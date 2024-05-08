@@ -486,7 +486,7 @@ public sealed class UseAutoPropertyAnalyzer : BaseDiagnosticAnalyzer
         {
             CancellationToken.ThrowIfCancellationRequested();
 
-            if (node.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword, SyntaxKind.OutKeyword))
+            if (node.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword, SyntaxKind.OutKeyword, SyntaxKind.InKeyword))
             {
                 ExpressionSyntax expression = node.Expression?.WalkDownParentheses();
 

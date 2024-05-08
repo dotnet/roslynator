@@ -77,6 +77,9 @@ internal static class UseElementAccessAnalysis
         if (((CSharpCompilation)semanticModel.Compilation).LanguageVersion < LanguageVersion.CSharp8)
             return false;
 
+        if (semanticModel.Compilation.GetTypeByMetadataName("System.Index") is null)
+            return false;
+
         IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
         if (methodSymbol is null)
