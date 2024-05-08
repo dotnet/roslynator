@@ -253,7 +253,7 @@ class C
 {
     void M(bool? p)
     {
-        [|if|] (p??false)
+        if (p??false)
         {
             M2();
         }
