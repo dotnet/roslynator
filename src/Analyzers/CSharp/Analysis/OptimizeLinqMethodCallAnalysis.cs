@@ -233,7 +233,7 @@ internal static class OptimizeLinqMethodCallAnalysis
             {
                 if (parameters[0].Type.OriginalDefinition.IsIEnumerableOfT()
                     && SymbolUtility.IsPredicateFunc(parameters[1].Type, methodSymbol.TypeArguments[0])
-                    && invocationInfo.Arguments.First() is LambdaExpressionSyntax)
+                    && invocationInfo.Arguments.First().Expression is LambdaExpressionSyntax)
                 {
                     ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(invocationInfo.Expression, context.CancellationToken);
 
