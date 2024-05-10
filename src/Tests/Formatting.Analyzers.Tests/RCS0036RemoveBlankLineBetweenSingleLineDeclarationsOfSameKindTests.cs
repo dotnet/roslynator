@@ -99,4 +99,34 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    public async Task TestNoDiagnostic_DocCommentBetweenMembers()
+    {
+        await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string P1 { get; set; }
+    
+    /// <summary>
+    /// </summary>
+    string P2 { get; set; }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind)]
+    public async Task TestNoDiagnostic_DocCommentBetweenEnumMembers()
+    {
+        await VerifyNoDiagnosticAsync(@"
+enum C
+{
+    A,
+
+    /// <summary>
+    /// </summary>
+    B,
+}
+");
+    }
 }

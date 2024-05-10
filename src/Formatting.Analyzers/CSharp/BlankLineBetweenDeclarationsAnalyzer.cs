@@ -118,8 +118,11 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             {
                 if (block.Kind == TriviaBlockKind.BlankLine)
                 {
-                    if (MemberKindEquals(previousMember, member))
+                    if (!block.ContainsDocumentationComment
+                        && MemberKindEquals(previousMember, member))
+                    {
                         ReportDiagnostic(context, DiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, block);
+                    }
                 }
                 else
                 {
@@ -201,7 +204,8 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             if ((isSingleLine ?? (isSingleLine = tree.IsSingleLineSpan(member.Span, cancellationToken)).Value)
                 && (isPreviousSingleLine ?? tree.IsSingleLineSpan(members[i - 1].Span, cancellationToken)))
             {
-                if (block.Kind == TriviaBlockKind.BlankLine)
+                if (!block.ContainsDocumentationComment
+                    && block.Kind == TriviaBlockKind.BlankLine)
                 {
                     ReportDiagnostic(context, DiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, block);
                 }
