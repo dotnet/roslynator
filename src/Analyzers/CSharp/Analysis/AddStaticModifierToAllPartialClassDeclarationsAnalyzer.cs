@@ -54,11 +54,9 @@ public sealed class AddStaticModifierToAllPartialClassDeclarationsAnalyzer : Bas
 
         foreach (SyntaxReference syntaxReference in syntaxReferences)
         {
-            var classDeclaration = (ClassDeclarationSyntax)syntaxReference.GetSyntax(context.CancellationToken);
+            var classDeclaration = syntaxReference.GetSyntax(context.CancellationToken) as ClassDeclarationSyntax;
 
-            SyntaxTokenList modifiers = classDeclaration.Modifiers;
-
-            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
+            if (classDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == false)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
