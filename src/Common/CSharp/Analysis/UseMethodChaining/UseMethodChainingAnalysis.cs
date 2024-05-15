@@ -105,7 +105,7 @@ internal abstract class UseMethodChainingAnalysis
             StatementSyntax statement2 = statements[j + 1];
 
             if (statement2.GetLeadingTrivia().Any(f => f.IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia)))
-                return false;
+                break;
 
             if (!IsFixableStatement(statement2, name, returnType, semanticModel, cancellationToken))
                 break;
