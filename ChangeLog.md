@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix analyzer [RCS1108](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1108) ([PR](https://github.com/dotnet/roslynator/pull/1469))
+
 ## [4.12.3] - 2024-05-10
 
 ### Fixed
