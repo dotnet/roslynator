@@ -71,6 +71,9 @@ internal abstract class UseMethodChainingAnalysis
         if (statement.SpanOrTrailingTriviaContainsDirectives())
             return false;
 
+        if (statement.GetTrailingTrivia().Any(f => f.IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia)))
+            return false;
+
         StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
 
         if (!statementsInfo.Success)
@@ -99,7 +102,12 @@ internal abstract class UseMethodChainingAnalysis
         int j = i;
         while (j < statements.Count - 1)
         {
-            if (!IsFixableStatement(statements[j + 1], name, returnType, semanticModel, cancellationToken))
+            StatementSyntax statement2 = statements[j + 1];
+
+            if (statement2.GetLeadingTrivia().Any(f => f.IsKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia)))
+                return false;
+
+            if (!IsFixableStatement(statement2, name, returnType, semanticModel, cancellationToken))
                 break;
 
             j++;
