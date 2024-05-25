@@ -139,7 +139,7 @@ enum E
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations)]
-    public async Task TestNoDiagnostic_EnumMemberDeclaration_DocumentationComment()
+    public async Task TestNoDiagnostic_EnumMemberDeclarations_DocumentationComment()
     {
         await VerifyNoDiagnosticAsync(@"
 public enum C
