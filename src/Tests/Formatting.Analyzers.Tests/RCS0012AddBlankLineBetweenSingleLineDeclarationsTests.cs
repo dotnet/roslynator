@@ -137,4 +137,23 @@ enum E
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations)]
+    public async Task TestNoDiagnostic_EnumMemberDeclaration_DocumentationComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
+public enum C
+{
+    /// <summary>
+    /// a
+    /// </summary>
+    A = 0,
+
+    /// <summary>
+    /// b
+    /// </summary>
+    B = 1
+}
+");
+    }
 }
