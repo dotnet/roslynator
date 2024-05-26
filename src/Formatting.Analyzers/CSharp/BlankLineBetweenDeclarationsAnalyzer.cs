@@ -204,14 +204,16 @@ public sealed class BlankLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyze
             if ((isSingleLine ?? (isSingleLine = tree.IsSingleLineSpan(member.Span, cancellationToken)).Value)
                 && (isPreviousSingleLine ?? tree.IsSingleLineSpan(members[i - 1].Span, cancellationToken)))
             {
-                if (!block.ContainsDocumentationComment
-                    && block.Kind == TriviaBlockKind.BlankLine)
+                if (!block.ContainsDocumentationComment)
                 {
-                    ReportDiagnostic(context, DiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, block);
-                }
-                else
-                {
-                    ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenSingleLineDeclarations, block);
+                    if (block.Kind == TriviaBlockKind.BlankLine)
+                    {
+                        ReportDiagnostic(context, DiagnosticRules.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, block);
+                    }
+                    else
+                    {
+                        ReportDiagnostic(context, DiagnosticRules.AddBlankLineBetweenSingleLineDeclarations, block);
+                    }
                 }
             }
             else if (block.Kind != TriviaBlockKind.BlankLine)
