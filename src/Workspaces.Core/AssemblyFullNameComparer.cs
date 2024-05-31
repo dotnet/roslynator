@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Roslynator;
 
-internal class AssemblyFullNameComparer : EqualityComparer<Assembly>
+internal sealed class AssemblyFullNameComparer : EqualityComparer<Assembly>
 {
     public static AssemblyFullNameComparer Instance { get; } = new();
 
