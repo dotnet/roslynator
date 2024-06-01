@@ -64,7 +64,7 @@ internal class AnalyzerLoader
 
     private (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> fixers) GetAnalyzersAndFixers(
         Project project,
-        bool loadFixers = true)
+        bool loadFixers)
     {
         string language = project.Language;
 
@@ -104,6 +104,7 @@ internal class AnalyzerLoader
                 .Distinct()
                 .OfType<AnalyzerFileReference>()
                 .Select(f => f.GetAssembly())
+                .Distinct(AssemblyFullNameComparer.Instance)
                 .Where(f => !_defaultAssemblies.ContainsKey(f.FullName)))
             {
                 if (!_cache.TryGetValue(assembly.FullName, out AnalyzerAssembly analyzerAssembly))
