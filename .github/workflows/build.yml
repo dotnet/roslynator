@@ -261,6 +261,8 @@ jobs:
         working-directory: src/CommandLine
     steps:
       - uses: actions/checkout@v4
+      - run: dotnet --list-sdks
+      - run: dotnet --list-runtimes
       - run: dotnet restore
       - run: dotnet build --no-restore
       - run: dotnet pack --no-build
