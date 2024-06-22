@@ -12,4 +12,5 @@ internal enum ReduceIfNestingOptions
     AllowIfInsideIfElse = 1 << 1,
     AllowLoop = 1 << 2,
     AllowSwitchSection = 1 << 3,
+    AllowLastIf = 1 << 4,
 }
