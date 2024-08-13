@@ -60,7 +60,7 @@ public sealed class UnnecessaryInterpolatedStringAnalyzer : BaseDiagnosticAnalyz
 
         if (ConvertInterpolatedStringToStringLiteralAnalysis.IsFixable(contents))
         {
-            if (IsFormattableString(context))
+            if (CheckConvertedType(context))
                 return;
 
             ReportDiagnostic(
@@ -87,7 +87,7 @@ public sealed class UnnecessaryInterpolatedStringAnalyzer : BaseDiagnosticAnalyz
             if (!IsNonNullStringExpression(expression))
                 return;
 
-            if (IsFormattableString(context))
+            if (CheckConvertedType(context))
                 return;
 
             ReportDiagnostic(context, DiagnosticRules.UnnecessaryInterpolatedString, interpolatedString);
@@ -110,13 +110,15 @@ public sealed class UnnecessaryInterpolatedStringAnalyzer : BaseDiagnosticAnalyz
                 && value is not null;
         }
 
-        static bool IsFormattableString(SyntaxNodeAnalysisContext context)
+        static bool CheckConvertedType(SyntaxNodeAnalysisContext context)
         {
-            return context
+            ITypeSymbol convertedType = context
                 .SemanticModel
                 .GetTypeInfo(context.Node, context.CancellationToken)
-                .ConvertedType?
-                .HasMetadataName(MetadataNames.System_FormattableString) == true;
+                .ConvertedType;
+
+            return convertedType?.HasMetadataName(MetadataNames.System_FormattableString) == true
+                || convertedType?.HasMetadataName(MetadataNames.System_MemoryExtensions_TryWriteInterpolatedStringHandler) == true;
         }
     }
 

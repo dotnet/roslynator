@@ -45,6 +45,7 @@ internal static class MetadataNames
     public static readonly MetadataName System_Linq_ImmutableArrayExtensions = MetadataName.Parse("System.Linq.ImmutableArrayExtensions");
     public static readonly MetadataName System_Linq_IOrderedEnumerable_T = MetadataName.Parse("System.Linq.IOrderedEnumerable`1");
     public static readonly MetadataName System_Linq_IQueryable_T = MetadataName.Parse("System.Linq.IQueryable`1");
+    public static readonly MetadataName System_MemoryExtensions_TryWriteInterpolatedStringHandler = MetadataName.Parse("System.MemoryExtensions+TryWriteInterpolatedStringHandler");
     public static readonly MetadataName System_NonSerializedAttribute = MetadataName.Parse("System.NonSerializedAttribute");
     public static readonly MetadataName System_ObsoleteAttribute = MetadataName.Parse("System.ObsoleteAttribute");
     public static readonly MetadataName System_ReadOnlySpan_T = MetadataName.Parse("System.ReadOnlySpan`1");
