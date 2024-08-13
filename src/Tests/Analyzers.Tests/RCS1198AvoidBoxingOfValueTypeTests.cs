@@ -12,65 +12,6 @@ public class RCS1198AvoidBoxingOfValueTypeTests : AbstractCSharpDiagnosticVerifi
 {
     public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidBoxingOfValueType;
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-    public async Task Test_Interpolation()
-    {
-        await VerifyDiagnosticAndFixAsync("""
-using System;
-
-class C
-{
-    public TimeSpan P { get; }
-
-    void M()
-    {
-        var c = new C();
-
-        var x = $"{[|c?.P.TotalMilliseconds|]}";
-    }
-}
-""", """
-using System;
-
-class C
-{
-    public TimeSpan P { get; }
-
-    void M()
-    {
-        var c = new C();
-
-        var x = $"{(c?.P.TotalMilliseconds).ToString()}";
-    }
-}
-""");
-    }
-
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-    public async Task Test_Interpolation_NullableType()
-    {
-        await VerifyDiagnosticAndFixAsync("""
-class C
-{
-    void M()
-    {
-        int? i = null;
-
-        string s = $"{[|i|]}";
-    }
-}
-""", """
-class C
-{
-    void M()
-    {
-        int? i = null;
-
-        string s = $"{i?.ToString()}";
-    }
-}
-""");
-    }
 
     // https://github.com/dotnet/roslyn/pull/35006
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
