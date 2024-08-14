@@ -28,9 +28,6 @@
   "engines": {
     "vscode": "^1.42.0"
   },
-  "files": [
-    "roslyn/*"
-  ],
   "extensionDependencies": [
     "ms-dotnettools.csharp"
   ],
