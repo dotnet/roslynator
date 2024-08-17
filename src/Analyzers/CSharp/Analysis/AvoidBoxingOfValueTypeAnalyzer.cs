@@ -35,7 +35,6 @@ public sealed class AvoidBoxingOfValueTypeAnalyzer : BaseDiagnosticAnalyzer
             if (exceptionSymbol is null)
                 startContext.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
         });
-
     }
 
     private static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
