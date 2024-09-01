@@ -266,11 +266,11 @@ internal static class CSharpTypeAnalysis
     {
         switch (expression.Kind())
         {
-            case SyntaxKind.ThisExpression:
             case SyntaxKind.StringLiteralExpression:
             case SyntaxKind.CharacterLiteralExpression:
             case SyntaxKind.TrueLiteralExpression:
             case SyntaxKind.FalseLiteralExpression:
+            case SyntaxKind.ThisExpression:
             case SyntaxKind.ObjectCreationExpression:
             case SyntaxKind.ArrayCreationExpression:
             case SyntaxKind.CastExpression:
