@@ -355,4 +355,20 @@ class C
 }
 """, options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarOrExplicitType)]
+    public async Task TestNoDiagnostic_SpanWithStringLiteral()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    void M()
+    {
+        ReadOnlySpan<char> span = "";
+    }
+}
+""", options: Options.AddConfigOption(ConfigOptionKeys.UseVar, ConfigOptionValues.UseVar_WhenTypeIsObvious));
+    }
 }
