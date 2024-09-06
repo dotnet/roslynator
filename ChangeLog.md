@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Bump Roslyn to 4.12.0 ([PR](https://github.com/dotnet/roslynator/pull/1483))
+- Bump Roslyn to 4.11.0 ([PR](https://github.com/dotnet/roslynator/pull/1483))
   - Applies to CLI and testing library.
 
 ### Removed
