@@ -271,9 +271,6 @@ internal static class CSharpTypeAnalysis
             case SyntaxKind.TrueLiteralExpression:
             case SyntaxKind.FalseLiteralExpression:
             case SyntaxKind.ThisExpression:
-                {
-                    return true;
-                }
             case SyntaxKind.ObjectCreationExpression:
             case SyntaxKind.ArrayCreationExpression:
             case SyntaxKind.CastExpression:

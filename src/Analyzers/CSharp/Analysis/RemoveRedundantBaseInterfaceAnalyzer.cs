@@ -63,7 +63,6 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
 
         var isFirst = true;
         INamedTypeSymbol typeSymbol = null;
-        SymbolInterfaceInfo baseClassInfo = default;
         List<SymbolInterfaceInfo> baseInterfaceInfos = null;
 
         foreach (BaseTypeSyntax baseType in baseTypes)
@@ -78,14 +77,9 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
                 ImmutableArray<INamedTypeSymbol> allInterfaces = baseSymbol.AllInterfaces;
 
                 if (typeKind == TypeKind.Class)
-                {
-                    if (!isFirst)
-                        break;
+                    return;
 
-                    if (allInterfaces.Any())
-                        baseClassInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
-                }
-                else if (typeKind == TypeKind.Interface)
+                if (typeKind == TypeKind.Interface)
                 {
                     var baseInterfaceInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
 
@@ -101,14 +95,6 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
                             Analyze(baseInterfaceInfo, baseInterfaceInfo2);
                             Analyze(baseInterfaceInfo2, baseInterfaceInfo);
                         }
-                    }
-
-                    if (baseClassInfo.Symbol is not null)
-                    {
-                        if (typeSymbol is null)
-                            typeSymbol = context.SemanticModel.GetDeclaredSymbol((TypeDeclarationSyntax)baseList.Parent, context.CancellationToken);
-
-                        Analyze(baseInterfaceInfo, baseClassInfo);
                     }
                 }
             }

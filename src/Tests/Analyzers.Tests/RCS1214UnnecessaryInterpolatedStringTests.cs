@@ -206,4 +206,22 @@ class C
 }
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
+    public async Task TestNoDiagnostic_TryWriteInterpolatedStringHandler()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+using System.Globalization;
+
+class C
+{
+    public void M()
+    {
+        Span<char> bar = stackalloc char[1];
+        bar.TryWrite(CultureInfo.InvariantCulture, $"foo", out _);
+    }
+}
+""");
+    }
 }

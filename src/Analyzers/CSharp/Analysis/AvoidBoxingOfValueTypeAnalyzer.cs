@@ -28,7 +28,13 @@ public sealed class AvoidBoxingOfValueTypeAnalyzer : BaseDiagnosticAnalyzer
     {
         base.Initialize(context);
 
-        context.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
+        context.RegisterCompilationStartAction(startContext =>
+        {
+            INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.DefaultInterpolatedStringHandler");
+
+            if (exceptionSymbol is null)
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
+        });
     }
 
     private static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)

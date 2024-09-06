@@ -200,6 +200,11 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
             if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
 
+#if ROSLYN_4_4
+            if (declaration.Modifiers.Contains(SyntaxKind.FileKeyword))
+                return Accessibility.NotApplicable;
+#endif
+
 #if ROSLYN_4_0
             return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
 #else
@@ -353,6 +358,11 @@ internal abstract class SyntaxAccessibility<TNode> where TNode : SyntaxNode
         {
             if (declaration is null)
                 throw new ArgumentNullException(nameof(declaration));
+
+#if ROSLYN_4_4
+            if (declaration.Modifiers.Contains(SyntaxKind.FileKeyword))
+                return Accessibility.NotApplicable;
+#endif
 
             if (declaration.IsParentKind(
                 SyntaxKind.ClassDeclaration,

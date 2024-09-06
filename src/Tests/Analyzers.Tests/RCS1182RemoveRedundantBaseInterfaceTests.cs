@@ -15,16 +15,10 @@ public class RCS1182RemoveRedundantBaseInterfaceTests : AbstractCSharpDiagnostic
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
     public async Task Test_IEnumerableOfT()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
-class Foo1<T> : List<T>, [|IEnumerable<T>|] where T : class
-{
-}
-", @"
-using System.Collections.Generic;
-
-class Foo1<T> : List<T> where T : class
+class Foo1<T> : List<T>, IEnumerable<T> where T : class
 {
 }
 ");

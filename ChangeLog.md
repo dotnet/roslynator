@@ -7,9 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix analyzer [RCS1182](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1182) ([PR](https://github.com/dotnet/roslynator/pull/1502))
+- Fix analyzer [RCS1198](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1198) ([PR](https://github.com/dotnet/roslynator/pull/1501))
+- Fix analyzer [RCS1214](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1214) ([PR](https://github.com/dotnet/roslynator/pull/1500))
+- Fix analyzer [RCS1018](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1018) ([PR](https://github.com/dotnet/roslynator/pull/1510))
+- Fix analyzer [RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264) ([PR](https://github.com/dotnet/roslynator/pull/1511))
+
 ### Changed
 
-- Bump Roslyn to 4.10.0 ([PR](https://github.com/dotnet/roslynator/pull/1483))
+- Bump Roslyn to 4.12.0 ([PR](https://github.com/dotnet/roslynator/pull/1483))
   - Applies to CLI and testing library.
 
 ### Removed
