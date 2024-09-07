@@ -37,7 +37,7 @@ public sealed class InitializerCodeFixProvider : BaseCodeFixProvider
                 {
                     CodeAction codeAction = CodeAction.Create(
                         "Put initializer on a single line",
-                        ct => SyntaxFormatter.ToSingleLineAsync(document, initializer, removeTrailingComma: true, ct),
+                        ct => SyntaxFormatter.ToSingleLineAsync(document, initializer, removeTrailingComma: false, ct),
                         GetEquivalenceKey(diagnostic));
 
                     context.RegisterCodeFix(codeAction, diagnostic);

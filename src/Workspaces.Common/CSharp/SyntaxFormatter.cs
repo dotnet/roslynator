@@ -175,7 +175,7 @@ internal static class SyntaxFormatter
 
                     newParent = simpleAssignment
                         .WithRight(newInitializer)
-                        .WithOperatorToken(simpleAssignment.OperatorToken.WithTrailingTrivia(Space));
+                        .WithOperatorToken(simpleAssignment.OperatorToken.WithoutTrailingTrivia());
 
                     break;
                 }

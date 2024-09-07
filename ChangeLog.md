@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1018](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1018) ([PR](https://github.com/dotnet/roslynator/pull/1510))
 - Fix analyzer [RCS1264](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1264) ([PR](https://github.com/dotnet/roslynator/pull/1511))
 
+### Changed
+
+- Bump Roslyn to 4.11.0 ([PR](https://github.com/dotnet/roslynator/pull/1483))
+  - Applies to CLI and testing library.
+
+### Removed
+
+- [CLI] Remove support for .NET SDK 6 ([PR](https://github.com/dotnet/roslynator/pull/1483))
+
 ## [4.12.4] - 2024-06-01
 
 ### Fixed
