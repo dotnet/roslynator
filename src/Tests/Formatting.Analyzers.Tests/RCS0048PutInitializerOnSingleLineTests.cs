@@ -64,7 +64,7 @@ class C
 
     void M()
     {
-        var x = new C() { P = null };
+        var x = new C() { P = null, };
     }
 }
 ");
@@ -112,7 +112,7 @@ class C
                 P =
                 new C()
             },
-            new C { P = new C() },
+            new C { P = new C(), },
         };
     }
 }
@@ -194,7 +194,7 @@ class C
         var x = new C()
         {
             P2 = null,
-            P1 = { P2 = null }
+            P1 = { P2 = null, }
         };
     }
 }
@@ -346,7 +346,7 @@ class C
 ", @"
 class C
 {
-    string[] _f = { null };
+    string[] _f = { null, };
 }
 ");
     }
@@ -395,7 +395,7 @@ class C
 {
     void M()
     {
-        string[] x = { null };
+        string[] x = { null, };
     }
 }
 ");
