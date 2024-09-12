@@ -351,13 +351,11 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                     && trivia.Span.Length != indentationAnalysis.IndentationLength)
                 {
                     ReportDiagnostic();
-                    return;
                 }
             }
             else if (bracesBlock.LineStartIndex == token.SpanStart)
             {
                 ReportDiagnostic();
-                return;
             }
         }
     }
