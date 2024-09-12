@@ -453,7 +453,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             }
 #if ROSLYN_4_7
             return token.IsKind(SyntaxKind.OpenBracketToken)
-                   && token.IsParentKind(SyntaxKind.CollectionExpression);
+                && token.IsParentKind(SyntaxKind.CollectionExpression);
 #else
             return false;
 #endif
@@ -488,7 +488,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             }
 #if ROSLYN_4_7
             return token.IsKind(SyntaxKind.CloseBracketToken)
-                   && token.IsParentKind(SyntaxKind.CollectionExpression);
+                && token.IsParentKind(SyntaxKind.CollectionExpression);
 #else
             return false;
 #endif
