@@ -451,9 +451,12 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                     return true;
                 }
             }
-
+#if ROSLYN_4_7
             return token.IsKind(SyntaxKind.OpenBracketToken)
-                && token.IsParentKind(SyntaxKind.CollectionExpression);
+                   && token.IsParentKind(SyntaxKind.CollectionExpression);
+#else
+            return false;
+#endif
         }
 
         static bool IsCloseToken(SyntaxToken token)
@@ -483,9 +486,12 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                     return true;
                 }
             }
-
+#if ROSLYN_4_7
             return token.IsKind(SyntaxKind.CloseBracketToken)
-                && token.IsParentKind(SyntaxKind.CollectionExpression);
+                   && token.IsParentKind(SyntaxKind.CollectionExpression);
+#else
+            return false;
+#endif
         }
     }
 
