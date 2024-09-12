@@ -749,9 +749,9 @@ internal static class CodeFixHelpers
                 if (nodes.Count == 1
                     && node is ArgumentSyntax argument)
                 {
-                    LambdaBlock lambdaBlock = GetLambdaBlock(argument, lines ??= argument.SyntaxTree.GetText(cancellationToken).Lines);
+                    BracesBlock bracesBlock = GetBracesBlock(argument, lines ??= argument.SyntaxTree.GetText(cancellationToken).Lines);
 
-                    if (lambdaBlock.Block is not null)
+                    if (!bracesBlock.Token.IsKind(SyntaxKind.None))
                         increasedIndentation = indentationAnalysis.Indentation.ToString();
                 }
 
@@ -775,9 +775,9 @@ internal static class CodeFixHelpers
             if (!indentations.Any())
                 continue;
 
-            LambdaBlock lambdaBlock2 = GetLambdaBlock(node, lines ??= node.SyntaxTree.GetText(cancellationToken).Lines);
+            BracesBlock bracesBlock2 = GetBracesBlock(node, lines ??= node.SyntaxTree.GetText(cancellationToken).Lines);
 
-            bool isLambdaBlockWithOpenBraceAtEndOfLine = lambdaBlock2.Token == indentations.Last().Token;
+            bool isLambdaBlockWithOpenBraceAtEndOfLine = bracesBlock2.Token == indentations.Last().Token;
 
             int baseIndentationLength = (isLambdaBlockWithOpenBraceAtEndOfLine)
                 ? indentations.Last().Span.Length
