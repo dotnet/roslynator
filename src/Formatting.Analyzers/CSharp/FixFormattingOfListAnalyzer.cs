@@ -370,7 +370,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             return default;
 
         SyntaxToken openToken = node.FindToken(startIndex);
-        SyntaxNode block = null;
+        SyntaxNode enclosedNode = null;
         var isOpenBraceAtEndOfLine = false;
 
         if (IsOpenToken(openToken))
@@ -380,12 +380,12 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             if (trailing.Any()
                 && trailing.Span.Contains(startIndex))
             {
-                block = openToken.Parent;
+                enclosedNode = openToken.Parent;
                 isOpenBraceAtEndOfLine = true;
             }
         }
 
-        if (block is null)
+        if (enclosedNode is null)
         {
             startIndex = line.EndIncludingLineBreak;
             openToken = node.FindToken(startIndex);
@@ -397,18 +397,18 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                 if ((leading.Any() && leading.Span.Contains(startIndex))
                     || (!leading.Any() && openToken.SpanStart == startIndex))
                 {
-                    block = openToken.Parent;
+                    enclosedNode = openToken.Parent;
                 }
             }
         }
 
-        if (block is not null)
+        if (enclosedNode is not null)
         {
             int endIndex = lines.GetLineFromPosition(node.Span.End).Start;
             SyntaxToken closeToken = node.FindToken(endIndex);
 
             if (IsCloseToken(closeToken)
-                && object.ReferenceEquals(block, closeToken.Parent))
+                && object.ReferenceEquals(enclosedNode, closeToken.Parent))
             {
                 SyntaxTriviaList leading = closeToken.LeadingTrivia;
 
