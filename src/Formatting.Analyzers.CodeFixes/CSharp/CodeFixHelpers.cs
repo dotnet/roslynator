@@ -703,7 +703,6 @@ internal static class CodeFixHelpers
         }
 
         var textChanges = new List<TextChange>();
-        TextLineCollection lines = null;
         string endOfLine = DetermineEndOfLine(containingNode).ToString();
 
         for (int i = 0; i < nodes.Count; i++)
@@ -749,7 +748,7 @@ internal static class CodeFixHelpers
                 if (nodes.Count == 1
                     && node is ArgumentSyntax argument)
                 {
-                    BracesBlock bracesBlock = GetBracesBlock(argument, lines ??= argument.SyntaxTree.GetText(cancellationToken).Lines);
+                    BracesBlock bracesBlock = GetBracesBlock(argument);
 
                     if (!bracesBlock.Token.IsKind(SyntaxKind.None))
                         increasedIndentation = indentationAnalysis.Indentation.ToString();
@@ -775,7 +774,7 @@ internal static class CodeFixHelpers
             if (!indentations.Any())
                 continue;
 
-            BracesBlock bracesBlock2 = GetBracesBlock(node, lines ??= node.SyntaxTree.GetText(cancellationToken).Lines);
+            BracesBlock bracesBlock2 = GetBracesBlock(node);
 
             bool isLambdaBlockWithOpenBraceAtEndOfLine = bracesBlock2.Token == indentations.Last().Token;
 

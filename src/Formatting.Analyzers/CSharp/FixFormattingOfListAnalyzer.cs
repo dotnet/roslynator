@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
-using static Roslynator.CSharp.SyntaxTriviaAnalysis;
 
 namespace Roslynator.Formatting.CSharp;
 
@@ -166,9 +165,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
         else
         {
             TextLineCollection lines = null;
-
             IndentationAnalysis indentationAnalysis = IndentationAnalysis.Create(openNodeOrToken.Parent, context.GetConfigOptions());
-
             int indentationLength = indentationAnalysis.IncreasedIndentationLength;
 
             if (indentationLength == 0)
@@ -184,22 +181,13 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
 
                 if (TriviaBlock.FromTrailing(nodeOrToken).IsWrapped)
                 {
-                    if (nodes.Count == 1
-                        && first.IsKind(SyntaxKind.Argument))
-                    {
-                        BracesBlock block = GetBracesBlock(first, lines ??= first.SyntaxTree.GetText().Lines);
-
-                        if (block.Token.IsKind(SyntaxKind.OpenBracketToken, SyntaxKind.CloseBracketToken))
-                        {
-                            AnalyzeBlock(block, indentationAnalysis);
-                            return;
-                        }
-                    }
+                    if (AnalyzeBlock(nodes, indentationAnalysis, SyntaxKind.OpenBracketToken, SyntaxKind.CloseBracketToken))
+                        return;
 
                     if (ShouldFixIndentation(nodes[i].GetLeadingTrivia(), indentationLength))
                     {
                         ReportDiagnostic();
-                        break;
+                        return;
                     }
                 }
                 else
@@ -208,23 +196,13 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                         && ShouldWrapAndIndent(context.Node, i))
                     {
                         ReportDiagnostic();
-                        break;
+                        return;
                     }
 
-                    if (nodes.Count == 1
-                        && first.IsKind(SyntaxKind.Argument))
-                    {
-                        BracesBlock block = GetBracesBlock(first, lines ??= first.SyntaxTree.GetText().Lines);
+                    if (AnalyzeBlock(nodes, indentationAnalysis, SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken))
+                        return;
 
-                        if (block.Token.IsKind(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken))
-                        {
-                            AnalyzeBlock(block, indentationAnalysis);
-                            return;
-                        }
-                    }
-
-                    if (lines is null)
-                        lines = first.SyntaxTree.GetText().Lines;
+                    lines ??= first.SyntaxTree.GetText().Lines;
 
                     int lineIndex = lines.IndexOf(span.Start);
                     if (lineIndex < lines.Count - 1)
@@ -250,14 +228,14 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                                             && trivia.Span.Length != indentationLength)
                                         {
                                             ReportDiagnostic();
-                                            break;
+                                            return;
                                         }
                                     }
                                 }
                                 else if (lineStartIndex == token.SpanStart)
                                 {
                                     ReportDiagnostic();
-                                    break;
+                                    return;
                                 }
                             }
                         }
@@ -336,31 +314,48 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             }
         }
 
-        void AnalyzeBlock(BracesBlock block, IndentationAnalysis indentationAnalysis)
+        bool AnalyzeBlock(
+            SeparatedSyntaxList<TNode> nodes,
+            IndentationAnalysis indentationAnalysis,
+            SyntaxKind kind1,
+            SyntaxKind kind2)
         {
-            SyntaxToken token = block.Token;
-            SyntaxTriviaList leading = token.LeadingTrivia;
-
-            if (leading.Any())
+            if (nodes.Count == 1
+                && nodes[0].IsKind(SyntaxKind.Argument))
             {
-                SyntaxTrivia trivia = leading.Last();
+                BracesBlock block = GetBracesBlock(nodes[0]);
 
-                if (trivia.IsWhitespaceTrivia()
-                    && trivia.SpanStart == block.LineStartIndex
-                    && trivia.Span.Length != indentationAnalysis.IndentationLength)
+                if (block.Token.IsKind(kind1, kind2))
                 {
-                    ReportDiagnostic();
+                    SyntaxToken token = block.Token;
+                    SyntaxTriviaList leading = token.LeadingTrivia;
+
+                    if (leading.Any())
+                    {
+                        SyntaxTrivia trivia = leading.Last();
+
+                        if (trivia.IsWhitespaceTrivia()
+                            && trivia.SpanStart == block.LineStartIndex
+                            && trivia.Span.Length != indentationAnalysis.IndentationLength)
+                        {
+                            ReportDiagnostic();
+                        }
+                    }
+                    else if (block.LineStartIndex == token.SpanStart)
+                    {
+                        ReportDiagnostic();
+                    }
+                    return true;
                 }
             }
-            else if (block.LineStartIndex == token.SpanStart)
-            {
-                ReportDiagnostic();
-            }
+
+            return false;
         }
     }
 
-    internal static BracesBlock GetBracesBlock(SyntaxNode node, TextLineCollection lines)
+    internal static BracesBlock GetBracesBlock(SyntaxNode node)
     {
+        TextLineCollection lines = node.SyntaxTree.GetText().Lines;
         TextLine line = lines.GetLineFromPosition(node.SpanStart);
 
         int startIndex = line.End;
