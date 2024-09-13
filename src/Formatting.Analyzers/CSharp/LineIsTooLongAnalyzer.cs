@@ -113,6 +113,7 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
                     SyntaxKind.StringLiteralToken,
 #if ROSLYN_4_2
                     SyntaxKind.InterpolatedRawStringEndToken,
+                    SyntaxKind.MultiLineRawStringLiteralToken,
 #endif
                     SyntaxKind.InterpolatedStringEndToken))
                 {

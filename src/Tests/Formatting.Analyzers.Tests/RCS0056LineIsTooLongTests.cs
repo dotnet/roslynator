@@ -1288,4 +1288,24 @@ class C
 }
 """");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
+    public async Task TestNoDiagnostic_LongRawStringLiteral()
+    {
+        await VerifyNoDiagnosticAsync(""""
+class C
+{
+    static void M(string x, int y)
+    {
+        C.M(
+            """
+            
+               xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            """,
+            0);
+    }
+}
+"""");
+    }
+}
 }
