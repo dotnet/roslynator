@@ -1296,4 +1296,69 @@ public class Foo
 }
 ", }, options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_Multiline_ObjectInitializer()
+    {
+        await VerifyNoDiagnosticAsync("""
+class C
+{
+    public C() { }
+
+    public C(C value) { }
+
+    public string P { get; set; }
+
+    C M()
+    {
+        return new C(new C
+        {
+            P = ""
+        });
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_Multiline_CollectionExpression()
+    {
+        await VerifyNoDiagnosticAsync("""
+
+class C
+{
+    public C P { get; set; }
+
+    public string M1(string[] values)
+    {
+        string x =
+            P
+                .M1(
+                [
+                    // x
+                    null,
+                ])
+                .ToString();
+
+        return x;
+    }
+
+    public string M2(string value, string[] values)
+    {
+        string x =
+            P
+                .M2(
+                    "",
+                    [
+                        // x
+                        null,
+                    ])
+                    .ToString();
+
+        return x;
+    }
+}
+
+""");
+    }
 }
