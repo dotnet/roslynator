@@ -184,15 +184,14 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
 
                 if (TriviaBlock.FromTrailing(nodeOrToken).IsWrapped)
                 {
-                    if (i == 0
-                        && nodes.Count == 1
+                    if (nodes.Count == 1
                         && first.IsKind(SyntaxKind.Argument))
                     {
-                        BracesBlock bracesBlock = GetBracesBlock(first, lines ??= first.SyntaxTree.GetText().Lines);
+                        BracesBlock block = GetBracesBlock(first, lines ??= first.SyntaxTree.GetText().Lines);
 
-                        if (bracesBlock.Token.IsKind(SyntaxKind.CloseBracketToken))
+                        if (block.Token.IsKind(SyntaxKind.OpenBracketToken, SyntaxKind.CloseBracketToken))
                         {
-                            AnalyzeBlock(indentationAnalysis, bracesBlock);
+                            AnalyzeBlock(block, indentationAnalysis);
                             return;
                         }
                     }
@@ -215,11 +214,11 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                     if (nodes.Count == 1
                         && first.IsKind(SyntaxKind.Argument))
                     {
-                        BracesBlock bracesBlock = GetBracesBlock(first, lines ??= first.SyntaxTree.GetText().Lines);
+                        BracesBlock block = GetBracesBlock(first, lines ??= first.SyntaxTree.GetText().Lines);
 
-                        if (bracesBlock.Token.IsKind(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken))
+                        if (block.Token.IsKind(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken))
                         {
-                            AnalyzeBlock(indentationAnalysis, bracesBlock);
+                            AnalyzeBlock(block, indentationAnalysis);
                             return;
                         }
                     }
@@ -337,9 +336,9 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             }
         }
 
-        void AnalyzeBlock(IndentationAnalysis indentationAnalysis, BracesBlock bracesBlock)
+        void AnalyzeBlock(BracesBlock block, IndentationAnalysis indentationAnalysis)
         {
-            SyntaxToken token = bracesBlock.Token;
+            SyntaxToken token = block.Token;
             SyntaxTriviaList leading = token.LeadingTrivia;
 
             if (leading.Any())
@@ -347,13 +346,13 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                 SyntaxTrivia trivia = leading.Last();
 
                 if (trivia.IsWhitespaceTrivia()
-                    && trivia.SpanStart == bracesBlock.LineStartIndex
+                    && trivia.SpanStart == block.LineStartIndex
                     && trivia.Span.Length != indentationAnalysis.IndentationLength)
                 {
                     ReportDiagnostic();
                 }
             }
-            else if (bracesBlock.LineStartIndex == token.SpanStart)
+            else if (block.LineStartIndex == token.SpanStart)
             {
                 ReportDiagnostic();
             }
@@ -370,45 +369,45 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             return default;
 
         SyntaxToken openToken = node.FindToken(startIndex);
-        SyntaxNode enclosedNode = null;
+        SyntaxNode block = null;
         var isOpenBraceAtEndOfLine = false;
 
-        if (IsOpenToken(openToken))
+        if (AnalyzeToken(openToken, isOpen: true))
         {
             SyntaxTriviaList trailing = openToken.TrailingTrivia;
 
             if (trailing.Any()
                 && trailing.Span.Contains(startIndex))
             {
-                enclosedNode = openToken.Parent;
+                block = openToken.Parent;
                 isOpenBraceAtEndOfLine = true;
             }
         }
 
-        if (enclosedNode is null)
+        if (block is null)
         {
             startIndex = line.EndIncludingLineBreak;
             openToken = node.FindToken(startIndex);
 
-            if (IsOpenToken(openToken))
+            if (AnalyzeToken(openToken, isOpen: true))
             {
                 SyntaxTriviaList leading = openToken.LeadingTrivia;
 
                 if ((leading.Any() && leading.Span.Contains(startIndex))
                     || (!leading.Any() && openToken.SpanStart == startIndex))
                 {
-                    enclosedNode = openToken.Parent;
+                    block = openToken.Parent;
                 }
             }
         }
 
-        if (enclosedNode is not null)
+        if (block is not null)
         {
             int endIndex = lines.GetLineFromPosition(node.Span.End).Start;
             SyntaxToken closeToken = node.FindToken(endIndex);
 
-            if (IsCloseToken(closeToken)
-                && object.ReferenceEquals(enclosedNode, closeToken.Parent))
+            if (AnalyzeToken(closeToken, isOpen: false)
+                && object.ReferenceEquals(block, closeToken.Parent))
             {
                 SyntaxTriviaList leading = closeToken.LeadingTrivia;
 
@@ -424,9 +423,9 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
 
         return default;
 
-        static bool IsOpenToken(SyntaxToken token)
+        static bool AnalyzeToken(SyntaxToken token, bool isOpen)
         {
-            if (token.IsKind(SyntaxKind.OpenBraceToken))
+            if (token.IsKind((isOpen) ? SyntaxKind.OpenBraceToken : SyntaxKind.CloseBraceToken))
             {
                 if (token.IsParentKind(SyntaxKind.Block)
                     && (CSharpFacts.IsAnonymousFunctionExpression(token.Parent.Parent.Kind())))
@@ -452,42 +451,7 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                 }
             }
 #if ROSLYN_4_7
-            return token.IsKind(SyntaxKind.OpenBracketToken)
-                && token.IsParentKind(SyntaxKind.CollectionExpression);
-#else
-            return false;
-#endif
-        }
-
-        static bool IsCloseToken(SyntaxToken token)
-        {
-            if (token.IsKind(SyntaxKind.CloseBraceToken))
-            {
-                if (token.IsParentKind(SyntaxKind.Block)
-                    && (CSharpFacts.IsAnonymousFunctionExpression(token.Parent.Parent.Kind())))
-                {
-                    return true;
-                }
-
-                if (token.IsParentKind(SyntaxKind.ObjectInitializerExpression)
-                    && token.Parent.Parent.IsKind(
-                        SyntaxKind.ObjectCreationExpression,
-                        SyntaxKind.AnonymousObjectCreationExpression,
-                        SyntaxKind.ImplicitObjectCreationExpression))
-                {
-                    return true;
-                }
-
-                if (token.IsParentKind(SyntaxKind.ArrayInitializerExpression)
-                    && token.Parent.Parent.IsKind(
-                        SyntaxKind.ArrayCreationExpression,
-                        SyntaxKind.ImplicitArrayCreationExpression))
-                {
-                    return true;
-                }
-            }
-#if ROSLYN_4_7
-            return token.IsKind(SyntaxKind.CloseBracketToken)
+            return token.IsKind((isOpen) ? SyntaxKind.OpenBracketToken : SyntaxKind.CloseBracketToken)
                 && token.IsParentKind(SyntaxKind.CollectionExpression);
 #else
             return false;
