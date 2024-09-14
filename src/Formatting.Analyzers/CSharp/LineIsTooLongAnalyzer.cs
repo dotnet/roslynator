@@ -102,7 +102,7 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
                 && token2.Span.End >= start)
             {
                 while (token2.IsKind(
-                    SyntaxKind.CloseParenToken,
+                    SyntaxKind.CloseParenToken, 
                     SyntaxKind.CloseBraceToken,
                     SyntaxKind.CloseBracketToken))
                 {
@@ -115,6 +115,7 @@ public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
                     SyntaxKind.InterpolatedRawStringEndToken,
                     SyntaxKind.MultiLineRawStringLiteralToken,
 #endif
+                    SyntaxKind.InterpolatedStringTextToken,
                     SyntaxKind.InterpolatedStringEndToken))
                 {
                     SyntaxNode parent = token2.Parent;
