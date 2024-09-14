@@ -1314,7 +1314,7 @@ class C
         await VerifyNoDiagnosticAsync(""""
 class C
 {
-    string M()
+    void M()
     {
         string x = "x";
         var value = $$"""
