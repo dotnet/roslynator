@@ -270,6 +270,16 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
                         context.RegisterCodeFix(codeAction, diagnostic);
                         return;
                     }
+                case "OrderBy":
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call 'Order()' instead of 'OrderBy(x => x)'",
+                            ct => CallOrderInsteadOfOrderByIdentityAsync(document, invocationInfo, ct),
+                            GetEquivalenceKey(diagnostic, "CallOrderInsteadOfOrderByIdentity"));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        return;
+                    }
             }
         }
         else if (kind == SyntaxKind.ConditionalExpression)
@@ -561,6 +571,16 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         InvocationExpressionSyntax invocationExpression2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression).InvocationExpression;
 
         InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationExpression2, "OrderByDescending");
+
+        return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
+    }
+
+    private static Task<Document> CallOrderInsteadOfOrderByIdentityAsync(
+        Document document,
+        in SimpleMemberInvocationExpressionInfo invocationInfo,
+        CancellationToken cancellationToken)
+    {
+        InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationInfo.InvocationExpression, "Order");
 
         return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
     }

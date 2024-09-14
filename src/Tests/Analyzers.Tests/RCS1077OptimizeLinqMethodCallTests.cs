@@ -960,6 +960,38 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task Test_CallOrderInsteadOfOrderByIdentity()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IEnumerable<object> x = null;
+
+        x = x.[|OrderBy(f => f)|];
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IEnumerable<object> x = null;
+
+        x = x.Order();
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     public async Task Test_CallOrderByAndWhereInReverseOrder()
     {
         await VerifyDiagnosticAndFixAsync(@"

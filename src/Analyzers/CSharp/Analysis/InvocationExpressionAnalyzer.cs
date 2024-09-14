@@ -331,6 +331,9 @@ public sealed class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
                                 if (DiagnosticRules.CallThenByInsteadOfOrderBy.IsEffective(context))
                                     CallThenByInsteadOfOrderByAnalysis.Analyze(context, invocationInfo);
 
+                                if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context))
+                                    OptimizeLinqMethodCallAnalysis.AnalyzeOrderByIdentity(context, invocationInfo);
+
                                 break;
                             }
                     }
