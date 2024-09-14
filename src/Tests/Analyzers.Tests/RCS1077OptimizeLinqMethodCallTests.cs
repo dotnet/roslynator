@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Roslynator.CSharp.CodeFixes;
@@ -962,7 +963,7 @@ class C
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     public async Task Test_CallOrderInsteadOfOrderByIdentity()
     {
-        await VerifyDiagnosticAndFixAsync(@"
+        const string input = @"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -975,7 +976,11 @@ class C
         x = x.[|OrderBy(f => f)|];
     }
 }
-", @"
+";
+        // Order() is available in .NET 7 and greater
+        // https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.order?view=net-8.0&viewFallbackFrom=net-6.0
+#if NET7_0_OR_GREATER
+        const string fix = @"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -988,7 +993,11 @@ class C
         x = x.Order();
     }
 }
-");
+";
+        await VerifyDiagnosticAndFixAsync(input, fix);
+#else
+    await VerifyNoDiagnosticAsync(input);
+#endif
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]

@@ -693,6 +693,22 @@ internal static class OptimizeLinqMethodCallAnalysis
     // x.OrderBy(f => f) >>> x.Order()
     public static void AnalyzeOrderByIdentity(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
     {
+        InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+        if (context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol is IMethodSymbol methodSymbol)
+        {
+            INamedTypeSymbol containingType = methodSymbol.ContainingType;
+            IMethodSymbol orderMethod = containingType.GetMembers("Order")
+                .OfType<IMethodSymbol>()
+                .FirstOrDefault(m => m.Parameters.Length is 0);
+
+            if (orderMethod is null)
+            {
+                // "Order" method does not exist, which happens in older versions of .NET.
+                return;
+            }
+        }
+
         ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
 
         if (argument is null)
@@ -700,8 +716,6 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         if (!string.Equals(invocationInfo.NameText, "OrderBy", StringComparison.Ordinal))
             return;
-
-        InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
         if (argument.Expression is not SimpleLambdaExpressionSyntax lambdaExpression)
             return;
