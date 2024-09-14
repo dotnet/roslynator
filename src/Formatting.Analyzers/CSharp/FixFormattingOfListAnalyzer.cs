@@ -428,6 +428,9 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
                     return true;
                 }
 
+                if (token.IsParentKind(SyntaxKind.SwitchExpression))
+                    return true;
+
                 if (token.IsParentKind(SyntaxKind.ObjectInitializerExpression)
                     && token.Parent.Parent.IsKind(
                         SyntaxKind.ObjectCreationExpression,

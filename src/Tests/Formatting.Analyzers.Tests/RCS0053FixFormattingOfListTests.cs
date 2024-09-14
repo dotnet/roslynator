@@ -1361,4 +1361,23 @@ class C
 
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task TestNoDiagnostic_Multiline_SwitchExpression()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    string M(string value) =>
+        M(value switch
+        {
+            "a" => "a",
+            "b" => "b",
+            _ => throw new Exception()
+        });
+}
+""");
+    }
 }
