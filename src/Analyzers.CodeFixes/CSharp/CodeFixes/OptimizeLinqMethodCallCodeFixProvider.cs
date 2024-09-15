@@ -273,7 +273,7 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
                 case "OrderBy":
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Call 'Order()' instead of 'OrderBy(x => x)'",
+                            "Call 'Order' instead of 'OrderBy'",
                             ct => CallOrderInsteadOfOrderByIdentityAsync(document, invocationInfo, ct),
                             GetEquivalenceKey(diagnostic, "CallOrderInsteadOfOrderByIdentity"));
 
@@ -580,7 +580,8 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         in SimpleMemberInvocationExpressionInfo invocationInfo,
         CancellationToken cancellationToken)
     {
-        InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationInfo.InvocationExpression, "Order");
+        InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationInfo.InvocationExpression, "Order")
+            .AddArgumentListArguments([]);
 
         return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
     }
