@@ -700,7 +700,7 @@ internal static class OptimizeLinqMethodCallAnalysis
             INamedTypeSymbol containingType = methodSymbol.ContainingType;
             IMethodSymbol orderMethod = containingType.GetMembers("Order")
                 .OfType<IMethodSymbol>()
-                .FirstOrDefault(m => m.Parameters.Length is 1);
+                .FirstOrDefault(member => member.Parameters.Length is 1 && member.Parameters.Single().IsThis);
 
             if (orderMethod is null)
             {
