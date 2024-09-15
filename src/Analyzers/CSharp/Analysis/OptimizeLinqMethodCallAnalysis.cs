@@ -697,7 +697,8 @@ internal static class OptimizeLinqMethodCallAnalysis
 
         IMethodSymbol orderMethod = context.SemanticModel
             .GetSymbolInfo(invocationExpression)
-            .Symbol.ContainingType
+            .Symbol
+            .ContainingType
             .FindMember<IMethodSymbol>(method => method.Name == "Order" && method.Parameters.Length is 1);
 
         if (orderMethod is null)
