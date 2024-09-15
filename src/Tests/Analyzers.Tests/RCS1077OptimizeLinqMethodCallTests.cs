@@ -959,27 +959,25 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
-    public async Task Test_CallOrderInsteadOfOrderByIdentity()
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("OrderBy(f => f)")]
+    [InlineData("OrderBy(_ => _)")]
+    public async Task Test_CallOrderInsteadOfOrderByIdentity(string test)
     {
-        const string input = @"
+        await VerifyDiagnosticAndFixAsync($@"
 using System.Collections.Generic;
 using System.Linq;
 
 class C
-{
+{{
     void M()
-    {
+    {{
         IEnumerable<object> x = null;
 
-        x = x.[|OrderBy(f => f)|];
-    }
-}
-";
-        // Order() is available in .NET 7 and greater
-        // https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.order?view=net-8.0&viewFallbackFrom=net-6.0
-#if NET7_0_OR_GREATER
-        const string fix = @"
+        x = x.[|{test}|];
+    }}
+}}
+", @"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -992,11 +990,7 @@ class C
         x = x.Order();
     }
 }
-";
-        await VerifyDiagnosticAndFixAsync(input, fix);
-#else
-    await VerifyNoDiagnosticAsync(input);
-#endif
+");
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
