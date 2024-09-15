@@ -962,6 +962,7 @@ class C
     [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
     [InlineData("OrderBy(f => f)")]
     [InlineData("OrderBy(_ => _)")]
+    [InlineData("OrderBy(@int => @int)")]
     public async Task Test_CallOrderInsteadOfOrderByIdentity(string test)
     {
         await VerifyDiagnosticAndFixAsync($@"
