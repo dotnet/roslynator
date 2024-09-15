@@ -582,9 +582,9 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
     {
         InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationInfo.InvocationExpression, "Order");
 
-        InvocationExpressionSyntax newerInvocationExpression = newInvocationExpression.RemoveNodes(newInvocationExpression.ArgumentList.Arguments, SyntaxRemoveOptions.KeepExteriorTrivia);
+        newInvocationExpression = newInvocationExpression.WithArgumentList(newInvocationExpression.ArgumentList.WithArguments(SeparatedList<ArgumentSyntax>()));
 
-        return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newerInvocationExpression, cancellationToken);
+        return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
     }
 
     private static Task<Document> CallOrderByAndWhereInReverseOrderAsync(
