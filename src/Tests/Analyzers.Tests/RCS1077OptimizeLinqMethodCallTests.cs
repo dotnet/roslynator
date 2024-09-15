@@ -940,7 +940,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.[|OrderBy(f => f).Reverse()|];
+        x = x.[|OrderBy(f => { return f; }).Reverse()|];
     }
 }
 ", @"
@@ -953,7 +953,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.OrderByDescending(f => f);
+        x = x.OrderByDescending(f => { return f; });
     }
 }
 ");
@@ -1007,7 +1007,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.[|OrderBy(f => f).Where(_ => true)|];
+        x = x.[|OrderBy(f => { return f; }).Where(_ => true)|];
     }
 }
 ", @"
@@ -1020,7 +1020,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.Where(_ => true).OrderBy(f => f);
+        x = x.Where(_ => true).OrderBy(f => { return f; });
     }
 }
 ");
@@ -1071,7 +1071,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.[|OrderByDescending(f => f).Where(_ => true)|];
+        x = x.[|OrderByDescending(f => { return f; }).Where(_ => true)|];
     }
 }
 ", @"
@@ -1084,7 +1084,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.Where(_ => true).OrderByDescending(f => f);
+        x = x.Where(_ => true).OrderByDescending(f => { return f; });
     }
 }
 ");

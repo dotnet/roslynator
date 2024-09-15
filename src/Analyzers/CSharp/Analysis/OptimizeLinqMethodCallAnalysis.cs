@@ -695,19 +695,13 @@ internal static class OptimizeLinqMethodCallAnalysis
     {
         InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-        if (context.SemanticModel.GetSymbolInfo(invocationExpression).Symbol is IMethodSymbol methodSymbol)
-        {
-            INamedTypeSymbol containingType = methodSymbol.ContainingType;
-            IMethodSymbol orderMethod = containingType.GetMembers("Order")
-                .OfType<IMethodSymbol>()
-                .FirstOrDefault(member => member.Parameters.Length is 1 && member.Parameters.Single().IsThis);
+        IMethodSymbol orderMethod = context.SemanticModel
+            .GetSymbolInfo(invocationExpression)
+            .Symbol.ContainingType
+            .FindMember<IMethodSymbol>(method => method.Name == "Order" && method.Parameters.Length is 1);
 
-            if (orderMethod is null)
-            {
-                // "Order" method does not exist, which happens in older versions of .NET.
-                return;
-            }
-        }
+        if (orderMethod is null)
+            return;
 
         ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
 

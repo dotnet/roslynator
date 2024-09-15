@@ -580,10 +580,11 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         in SimpleMemberInvocationExpressionInfo invocationInfo,
         CancellationToken cancellationToken)
     {
-        InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationInfo.InvocationExpression, "Order")
-            .AddArgumentListArguments([]);
+        InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationInfo.InvocationExpression, "Order");
 
-        return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
+        InvocationExpressionSyntax newerInvocationExpression = newInvocationExpression.RemoveNodes(newInvocationExpression.ArgumentList.Arguments, SyntaxRemoveOptions.KeepExteriorTrivia);
+
+        return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newerInvocationExpression, cancellationToken);
     }
 
     private static Task<Document> CallOrderByAndWhereInReverseOrderAsync(
