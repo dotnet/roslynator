@@ -1,4 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+#nullable enable
 
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -18,7 +19,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        ExpressionSyntax expression = throwStatement.Expression;
+        ExpressionSyntax? expression = throwStatement.Expression;
 
         if (expression?.IsMissing == false)
         {
@@ -61,12 +62,15 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         if (!InheritsFromException(typeSymbol, exceptionSymbol))
             return Fail;
 
-        ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
+        if (IsExceptionTypeCaughtInMethod(node, expression))
+            return Fail;
+
+        ISymbol? declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
         if (declarationSymbol?.GetSyntax(cancellationToken) is not MemberDeclarationSyntax containingMember)
             return Fail;
 
-        DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
+        DocumentationCommentTriviaSyntax? comment = containingMember.GetSingleLineDocumentationComment();
 
         if (comment is null)
             return Fail;
@@ -184,17 +188,17 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         return false;
     }
 
-    internal static ISymbol GetDeclarationSymbol(
+    internal static ISymbol? GetDeclarationSymbol(
         int position,
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+        ISymbol? symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
         return GetDeclarationSymbol(symbol);
     }
 
-    private static ISymbol GetDeclarationSymbol(ISymbol symbol)
+    private static ISymbol? GetDeclarationSymbol(ISymbol? symbol)
     {
         if (symbol is not IMethodSymbol methodSymbol)
             return null;
@@ -215,5 +219,38 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         return typeSymbol?.TypeKind == TypeKind.Class
             && typeSymbol.BaseType?.IsObject() == false
             && typeSymbol.InheritsFrom(exceptionSymbol);
+    }
+
+    private static bool IsExceptionTypeCaughtByCatch(TryStatementSyntax tryStatementSyntax, IdentifierNameSyntax exceptionType)
+        => tryStatementSyntax.Catches.Any(x => x.Declaration?.Type is IdentifierNameSyntax ins1 && ins1.Identifier.Value == exceptionType.Identifier.Value);
+
+    /// <summary>
+    /// Walk upwards from throw statement and find all try statements in method and see if any of them catches the thrown exception type
+    /// </summary>
+    private static bool IsExceptionTypeCaughtInMethod(SyntaxNode node, ExpressionSyntax expressionSyntax)
+    {
+        if (expressionSyntax is not ObjectCreationExpressionSyntax x || x.Type is not IdentifierNameSyntax exceptionType)
+            return false;
+
+        SyntaxNode? parent = node.Parent;
+        while (parent is not null)
+        {
+            if (parent.IsKind(SyntaxKind.TryStatement) && IsExceptionTypeCaughtByCatch((TryStatementSyntax)parent, exceptionType))
+            {
+                return true;
+            }
+            if (parent.IsKind(SyntaxKind.MethodDeclaration))
+            {
+                // We don't care if it's caught outside of the current method
+                // Since the exception should be documented in this method
+                return false;
+            }
+            else
+            {
+                parent = parent.Parent;
+            }
+        }
+
+        return false;
     }
 }
