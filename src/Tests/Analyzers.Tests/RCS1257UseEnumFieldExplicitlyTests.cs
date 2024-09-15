@@ -123,15 +123,22 @@ enum Foo
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
-    public async Task TestNoDiagnostic_FileAttributes()
+    public async Task TestNoDiagnostic_ZeroNotDefined()
     {
         await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
     {
-        var x = (System.IO.FileAttributes)0;
+        var x = (E)0;
     }
+}
+
+[System.Flags]
+enum E
+{
+    A = 1,
+    B = 2,
 }
 ");
     }

@@ -249,6 +249,8 @@ class C
                 break;
             case RegexOptions.CultureInvariant:
                 break;
+            case RegexOptions.NonBacktracking:
+                break;
             default:
                 break;
         }
