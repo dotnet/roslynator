@@ -476,7 +476,7 @@ public static class MarkdownGenerator
         }
     }
 
-    private static MObject CreateFrontMatter(string title = null, int? position = null, string label = null)
+    private static DocusaurusFrontMatter CreateFrontMatter(string title = null, int? position = null, string label = null)
     {
         return DocusaurusMarkdownFactory.FrontMatter(GetLabels());
 

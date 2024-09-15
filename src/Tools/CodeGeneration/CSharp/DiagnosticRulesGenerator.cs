@@ -97,7 +97,7 @@ public class DiagnosticRulesGenerator
                     useParentProperties)));
     }
 
-    private MemberDeclarationSyntax CreateMember(
+    private FieldDeclarationSyntax CreateMember(
         AnalyzerMetadata analyzer,
         string identifiersClassName,
         string categoryName,
