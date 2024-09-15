@@ -1,4 +1,4 @@
-// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -48,6 +48,59 @@ class C
     }
 }
 
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
+    public async Task Test_No_Diagnostic_If_Exception_Is_Caught_In_Same_Method()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    /// <summary>
+    /// ...
+    /// </summary>
+    /// <param name="parameter"></param>
+    public void Foo(object parameter)
+    {
+        try 
+        {
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+        }
+        catch (ArgumentNullException) {}
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
+    public async Task Test_No_Diagnostic_If_Exception_Is_Caught_In_Same_Method_Nested()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+class C
+{
+    /// <summary>
+    /// ...
+    /// </summary>
+    /// <param name="parameter"></param>
+    public void Foo(object parameter)
+    {
+        try 
+        {
+            try {
+                if (parameter == null)
+                    throw new ArgumentNullException(nameof(parameter));
+            }
+            catch (InvalidOperationException) {}
+        }
+        catch (ArgumentNullException) {}
+    }
+}
 """);
     }
 }
