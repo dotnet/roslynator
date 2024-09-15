@@ -690,6 +690,38 @@ internal static class OptimizeLinqMethodCallAnalysis
         Report(context, invocationExpression, span, checkDirectives: true);
     }
 
+    // x.OrderBy(f => f) >>> x.Order()
+    public static void AnalyzeOrderByIdentity(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
+    {
+        InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+        IMethodSymbol orderMethod = context.SemanticModel
+            .GetSymbolInfo(invocationExpression)
+            .Symbol
+            .ContainingType
+            .FindMember<IMethodSymbol>(method => method.Name == "Order" && method.Parameters.Length is 1);
+
+        if (orderMethod is null)
+            return;
+
+        ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
+
+        if (argument is null)
+            return;
+
+        if (!string.Equals(invocationInfo.NameText, "OrderBy", StringComparison.Ordinal))
+            return;
+
+        if (argument.Expression is not SimpleLambdaExpressionSyntax lambdaExpression)
+            return;
+
+        if (lambdaExpression.Body is not IdentifierNameSyntax identifier || identifier.Identifier.Text != lambdaExpression.Parameter.Identifier.Text)
+            return;
+
+        TextSpan span = TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationExpression.Span.End);
+        Report(context, invocationExpression, span, checkDirectives: true);
+    }
+
     // x.SelectMany(f => f).Count() >>> x.Sum(f = f.Count)
     public static bool AnalyzeSelectManyAndCount(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
     {

@@ -940,7 +940,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.[|OrderBy(f => f).Reverse()|];
+        x = x.[|OrderBy(f => { return f; }).Reverse()|];
     }
 }
 ", @"
@@ -953,7 +953,42 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.OrderByDescending(f => f);
+        x = x.OrderByDescending(f => { return f; });
+    }
+}
+");
+    }
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    [InlineData("OrderBy(f => f)")]
+    [InlineData("OrderBy(_ => _)")]
+    [InlineData("OrderBy(@int => @int)")]
+    public async Task Test_CallOrderInsteadOfOrderByIdentity(string test)
+    {
+        await VerifyDiagnosticAndFixAsync($@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{{
+    void M()
+    {{
+        IEnumerable<object> x = null;
+
+        x = x.[|{test}|];
+    }}
+}}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IEnumerable<object> x = null;
+
+        x = x.Order();
     }
 }
 ");
@@ -972,7 +1007,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.[|OrderBy(f => f).Where(_ => true)|];
+        x = x.[|OrderBy(f => { return f; }).Where(_ => true)|];
     }
 }
 ", @"
@@ -985,7 +1020,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.Where(_ => true).OrderBy(f => f);
+        x = x.Where(_ => true).OrderBy(f => { return f; });
     }
 }
 ");
@@ -1036,7 +1071,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.[|OrderByDescending(f => f).Where(_ => true)|];
+        x = x.[|OrderByDescending(f => { return f; }).Where(_ => true)|];
     }
 }
 ", @"
@@ -1049,7 +1084,7 @@ class C
     {
         IEnumerable<object> x = null;
 
-        x = x.Where(_ => true).OrderByDescending(f => f);
+        x = x.Where(_ => true).OrderByDescending(f => { return f; });
     }
 }
 ");
