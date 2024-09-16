@@ -330,4 +330,16 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task TestNoDiagnostic_NamespaceDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
+namespace MyNamespace // Some comment
+{
+    public class C
+    {
+    }
+}");
+    }
 }
