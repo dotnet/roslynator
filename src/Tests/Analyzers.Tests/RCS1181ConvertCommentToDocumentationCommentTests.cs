@@ -335,9 +335,9 @@ class C
     public async Task TestNoDiagnostic_NamespaceDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
-namespace MyNamespace // Some comment
+namespace N // Some comment
 {
-    public class C
+    class C
     {
     }
 }");
