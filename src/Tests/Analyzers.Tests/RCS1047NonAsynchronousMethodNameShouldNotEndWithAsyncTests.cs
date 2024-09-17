@@ -133,6 +133,46 @@ class C
     {
         return default(ValueTask);
     }
+    DuckTyped DuckTypedAsync()
+    {
+        return default(DuckTyped);
+    }
+    DuckTyped<object> DuckTypedGenericAsync()
+    {
+        return default(DuckTyped<object>);
+    }
+    T DuckTypedAsync<T>() where T : DuckTyped
+    {
+        return default(T);
+    }
+    T DuckTypedGenericAsync<T>() where T : DuckTyped<object>
+    {
+        return default(T);
+    }
+}
+
+class DuckTyped
+{
+    public CustomAwaiter GetAwaiter() => new();
+}
+
+class DuckTyped<T>
+{
+    public CustomAwaiter<T> GetAwaiter() => new();
+}
+
+struct CustomAwaiter : System.Runtime.CompilerServices.INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(System.Action continuation) { }
+    public void GetResult() { }
+}
+
+struct CustomAwaiter<T> : System.Runtime.CompilerServices.INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(System.Action continuation) { }
+    public T GetResult() => default(T);
 }
 ");
     }
