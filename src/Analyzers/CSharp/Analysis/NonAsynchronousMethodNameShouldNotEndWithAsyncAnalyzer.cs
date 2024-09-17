@@ -74,7 +74,7 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
             if (!methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
                 return;
 
-            if (SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
+            if (methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, methodDeclaration.SpanStart)
                 || IsAsyncEnumerableLike(methodSymbol.ReturnType.OriginalDefinition))
             {
                 return;
@@ -105,7 +105,7 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
             if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                 return;
 
-            if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
+            if (!methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, methodDeclaration.SpanStart)
                 && !methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(in MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
             {
                 return;

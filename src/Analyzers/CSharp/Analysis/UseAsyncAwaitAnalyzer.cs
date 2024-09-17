@@ -57,7 +57,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-        if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
+        if (!methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, methodDeclaration.SpanStart))
             return;
 
         if (IsFixable(body, context))
@@ -81,7 +81,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
 
-        if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
+        if (!methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, localFunction.SpanStart))
             return;
 
         if (IsFixable(body, context))
@@ -101,7 +101,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (context.SemanticModel.GetSymbol(simpleLambda, context.CancellationToken) is not IMethodSymbol methodSymbol)
             return;
 
-        if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
+        if (!methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, simpleLambda.SpanStart))
             return;
 
         if (IsFixable(body, context))
@@ -121,7 +121,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (context.SemanticModel.GetSymbol(parenthesizedLambda, context.CancellationToken) is not IMethodSymbol methodSymbol)
             return;
 
-        if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
+        if (!methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, parenthesizedLambda.SpanStart))
             return;
 
         if (IsFixable(body, context))
@@ -143,7 +143,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (context.SemanticModel.GetSymbol(anonymousMethod, context.CancellationToken) is not IMethodSymbol methodSymbol)
             return;
 
-        if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
+        if (!methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, anonymousMethod.SpanStart))
             return;
 
         if (IsFixable(body, context))

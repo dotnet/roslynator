@@ -131,7 +131,7 @@ public sealed class DisposeResourceAsynchronouslyAnalyzer : BaseDiagnosticAnalyz
                 : context.SemanticModel.GetSymbol(containingMethod, context.CancellationToken)) as IMethodSymbol;
 
             if (methodSymbol?.IsErrorType() == false
-                && SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
+                && methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, context.Node.SpanStart))
             {
                 ReportDiagnostic(context, usingKeyword);
             }

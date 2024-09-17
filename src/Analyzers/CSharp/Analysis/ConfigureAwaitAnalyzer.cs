@@ -65,7 +65,7 @@ public sealed class ConfigureAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (typeSymbol is null)
             return;
 
-        if (!SymbolUtility.IsAwaitable(typeSymbol))
+        if (!typeSymbol.IsAwaitable(context.SemanticModel, expression.SpanStart))
             return;
 
         DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConfigureAwait, awaitExpression.Expression, "Add");
