@@ -705,4 +705,38 @@ internal static class SymbolUtility
 
         return typeSymbol as INamedTypeSymbol;
     }
+
+    /// <summary>
+    /// Determines if the type is a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task type</see>.
+    /// Only task types (and <see langword="void" /> can be the return type of a method marked with the <see langword="async" /> keyword.
+    /// </summary>
+    /// <remarks>
+    /// For more information, see the <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15151-general">C# language specification</see>.
+    /// </remarks>
+    /// <param name="semanticModel">Used to check if the type is awaitable. See <see cref="IsAwaitable(ISymbol?, SemanticModel, int)"/></param>
+    /// <param name="position">Used to check if the type is awaitable. See <see cref="IsAwaitable(ISymbol?, SemanticModel, int)"/></param>
+    /// <returns>A <see cref="bool"/> indicating whether the type is a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task type</see>.</returns>
+    public static bool IsTaskType(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
+    {
+        if (typeSymbol.OriginalDefinition is not INamedTypeSymbol definition)
+            return false;
+
+        if (!IsAwaitable(definition, semanticModel, position))
+            return false;
+
+        // Task (and Task<T>) are hardcoded and don't have an AsyncMethodBuilder attribute.
+        // Their descendants, however, are not, and go through the rest of the checks.
+        // (see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1778-L1806 )
+        if (definition.HasMetadataName(in MetadataNames.System_Threading_Tasks_Task)
+            || definition.HasMetadataName(in MetadataNames.System_Threading_Tasks_Task_T))
+        {
+            return true;
+        }
+
+        // Roslyn checks arity, see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1844
+        if (definition.Arity > 1)
+            return false;
+
+        return definition.HasAttribute(in MetadataNames.System_Runtime_CompilerServices_AsyncMethodBuilderAttribute);
+    }
 }

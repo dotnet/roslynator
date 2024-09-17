@@ -452,7 +452,73 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_DuckTyped_TaskType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    DuckTyped [|M|]()
+    {
+        using (default(IDisposable))
+        {
+            return GetAsync();
+        }
+    }
+
+    DuckTyped GetAsync() => default;
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => true;
+        public void OnCompleted(Action continuation) { }
+        public void GetResult() { }
+    }
+}
+", @"
+using System;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async DuckTyped M()
+    {
+        using (default(IDisposable))
+        {
+            await GetAsync();
+        }
+    }
+
+    DuckTyped GetAsync() => default;
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => true;
+        public void OnCompleted(Action continuation) { }
+        public void GetResult() { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_UsingLocalDeclaration()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -477,7 +543,7 @@ public class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskCompletedTask()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -496,7 +562,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskFromCanceled()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -515,7 +581,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskFromException()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -534,7 +600,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskOfTFromResult()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -553,7 +619,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskOfTFromCanceled()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -572,7 +638,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_TaskOfTFromException()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -591,7 +657,7 @@ class C
 ");
     }
 
-    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
     public async Task TestNoDiagnostic_IAsyncEnumerable()
     {
         await VerifyNoDiagnosticAsync(@"
@@ -613,6 +679,42 @@ class C
     {
         await System.Threading.Tasks.Task.CompletedTask;
         yield break;
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task TestNoDiagnostic_DuckTyped_NotTaskType()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    DuckTyped M()
+    {
+        using (default(IDisposable))
+        {
+            return GetAsync();
+        }
+    }
+
+    DuckTyped GetAsync() => default;
+}
+
+//[AsyncMethodBuilder(null)]
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => true;
+        public void OnCompleted(Action continuation) { }
+        public void GetResult() { }
     }
 }
 ");

@@ -51,6 +51,7 @@ internal static class MetadataNames
     public static readonly MetadataName System_ReadOnlySpan_T = MetadataName.Parse("System.ReadOnlySpan`1");
     public static readonly MetadataName System_Reflection = MetadataName.Parse("System.Reflection");
     public static readonly MetadataName System_Runtime_CompilerServices = MetadataName.Parse("System.Runtime.CompilerServices");
+    public static readonly MetadataName System_Runtime_CompilerServices_AsyncMethodBuilderAttribute = MetadataName.Parse("System.Runtime.CompilerServices.AsyncMethodBuilderAttribute");
     public static readonly MetadataName System_Runtime_CompilerServices_CollectionBuilderAttribute = MetadataName.Parse("System.Runtime.CompilerServices.CollectionBuilderAttribute");
     public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable = MetadataName.Parse("System.Runtime.CompilerServices.ConfiguredTaskAwaitable");
     public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T = MetadataName.Parse("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1");
