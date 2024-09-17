@@ -57,7 +57,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-        if (!methodSymbol.ReturnType.IsTaskType(context.SemanticModel, methodDeclaration.SpanStart))
+        if (!methodSymbol.ReturnType.IsTaskType() || !methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, body.SpanStart))
             return;
 
         if (IsFixable(body, context))
@@ -81,7 +81,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
         IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
 
-        if (!methodSymbol.ReturnType.IsTaskType(context.SemanticModel, localFunction.SpanStart))
+        if (!methodSymbol.ReturnType.IsTaskType() || !methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, body.SpanStart))
             return;
 
         if (IsFixable(body, context))
@@ -101,7 +101,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (context.SemanticModel.GetSymbol(simpleLambda, context.CancellationToken) is not IMethodSymbol methodSymbol)
             return;
 
-        if (!methodSymbol.ReturnType.IsTaskType(context.SemanticModel, simpleLambda.SpanStart))
+        if (!methodSymbol.ReturnType.IsTaskType() || !methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, body.SpanStart))
             return;
 
         if (IsFixable(body, context))
@@ -121,7 +121,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (context.SemanticModel.GetSymbol(parenthesizedLambda, context.CancellationToken) is not IMethodSymbol methodSymbol)
             return;
 
-        if (!methodSymbol.ReturnType.IsTaskType(context.SemanticModel, parenthesizedLambda.SpanStart))
+        if (!methodSymbol.ReturnType.IsTaskType() || !methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, body.SpanStart))
             return;
 
         if (IsFixable(body, context))
@@ -143,7 +143,7 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (context.SemanticModel.GetSymbol(anonymousMethod, context.CancellationToken) is not IMethodSymbol methodSymbol)
             return;
 
-        if (!methodSymbol.ReturnType.IsTaskType(context.SemanticModel, anonymousMethod.SpanStart))
+        if (!methodSymbol.ReturnType.IsTaskType() || !methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, body.SpanStart))
             return;
 
         if (IsFixable(body, context))

@@ -713,15 +713,10 @@ internal static class SymbolUtility
     /// <remarks>
     /// For more information, see the <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15151-general">C# language specification</see>.
     /// </remarks>
-    /// <param name="semanticModel">Used to check if the type is awaitable. See <see cref="IsAwaitable(ISymbol?, SemanticModel, int)"/></param>
-    /// <param name="position">Used to check if the type is awaitable. See <see cref="IsAwaitable(ISymbol?, SemanticModel, int)"/></param>
     /// <returns>A <see cref="bool"/> indicating whether the type is a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task type</see>.</returns>
-    public static bool IsTaskType(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
+    public static bool IsTaskType(this ITypeSymbol typeSymbol)
     {
         if (typeSymbol.OriginalDefinition is not INamedTypeSymbol definition)
-            return false;
-
-        if (!IsAwaitable(definition, semanticModel, position))
             return false;
 
         // Task (and Task<T>) are hardcoded and don't have an AsyncMethodBuilder attribute.
