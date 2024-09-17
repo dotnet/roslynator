@@ -246,6 +246,168 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task Test_DuckTyped()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await [|M2()|];
+    }
+    DuckTyped M2() => default(DuckTyped);
+}
+
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+
+    public ConfiguredDuckTyped ConfigureAwait(bool continueOnCapturedContext)
+    {
+        return default(ConfiguredDuckTyped);
+    }
+    public struct ConfiguredDuckTyped
+    {
+        public ConfiguredDuckAwaiter GetAwaiter() => default(ConfiguredDuckAwaiter);
+
+        public struct ConfiguredDuckAwaiter : INotifyCompletion
+        {
+            public bool IsCompleted => false;
+            public void OnCompleted(System.Action continuation) { }
+            public void GetResult() { }
+        }
+    }
+}
+", @"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await M2().ConfigureAwait(false);
+    }
+    DuckTyped M2() => default(DuckTyped);
+}
+
+class DuckTyped
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+
+    public ConfiguredDuckTyped ConfigureAwait(bool continueOnCapturedContext)
+    {
+        return default(ConfiguredDuckTyped);
+    }
+    public struct ConfiguredDuckTyped
+    {
+        public ConfiguredDuckAwaiter GetAwaiter() => default(ConfiguredDuckAwaiter);
+
+        public struct ConfiguredDuckAwaiter : INotifyCompletion
+        {
+            public bool IsCompleted => false;
+            public void OnCompleted(System.Action continuation) { }
+            public void GetResult() { }
+        }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task Test_ExtensionMethod()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await [|Task.Yield()|];
+    }
+}
+
+static class E
+{
+    public static ConfiguredYieldAwaitable ConfigureAwait(this YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+        return default(ConfiguredYieldAwaitable);
+    }
+}
+
+struct ConfiguredYieldAwaitable
+{
+    public ConfiguredYieldAwaitable(YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+    }
+
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+}
+", @"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await Task.Yield().ConfigureAwait(false);
+    }
+}
+
+static class E
+{
+    public static ConfiguredYieldAwaitable ConfigureAwait(this YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+        return default(ConfiguredYieldAwaitable);
+    }
+}
+
+struct ConfiguredYieldAwaitable
+{
+    public ConfiguredYieldAwaitable(YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+    }
+
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
     public async Task Test_Indentation()
     {
         await VerifyDiagnosticAndFixAsync(@"
@@ -342,6 +504,87 @@ class C
     }
 
     ValueTask<object> M2() => default;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task TestNoDiagnostic_ExtensionMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await Task.Yield().ConfigureAwait(false);
+    }
+}
+
+static class E
+{
+    public static ConfiguredYieldAwaitable ConfigureAwait(this YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+        return default(ConfiguredYieldAwaitable);
+    }
+}
+
+struct ConfiguredYieldAwaitable
+{
+    public ConfiguredYieldAwaitable(YieldAwaitable yieldAwaitable, bool continueOnCapturedContext)
+    {
+    }
+
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task TestNoDiagnostic_Awaitable_Lookalike()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    async Task M()
+    {
+        await M2();
+    }
+    Awaitable M2() => default;
+}
+
+struct Awaitable
+{
+    public Awaiter GetAwaiter() => default(Awaiter);
+
+    public struct Awaiter : INotifyCompletion
+    {
+        public bool IsCompleted => false;
+        public void OnCompleted(System.Action continuation) { }
+        public void GetResult() { }
+    }
+
+    public NonAwaitable ConfigureAwait(bool continueOnCapturedContext)
+    {
+        return default(NonAwaitable);
+    }
+}
+
+struct NonAwaitable
+{
+    // no awaiter
 }
 ");
     }
