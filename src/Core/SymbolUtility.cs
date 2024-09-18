@@ -637,48 +637,42 @@ internal static class SymbolUtility
     {
         ITypeSymbol? typeSymbol = (symbol as ITypeSymbol) ?? (symbol as IMethodSymbol)?.ReturnType;
 
-        if (typeSymbol is null)
+        if (typeSymbol is null or { SpecialType: SpecialType.System_Void })
             return false;
 
         // this is the same check as in Roslyn, reimplemented due to it being internal
-        // https://github.com/dotnet/roslyn/blob/7b7951aa13c50ad768538e58ed3805898b058928/src/Workspaces/SharedUtilitiesAndExtensions/Compiler/Core/Extensions/ISymbolExtensions.cs#L577-L639
+        // https://github.com/dotnet/roslyn/blob/a182892bf997a457cfcdbece5352e1a139eb2a12/src/Compilers/CSharp/Portable/Binder/Binder_Await.cs#L281-L289
 
-        return semanticModel.LookupSymbols(position, typeSymbol, WellKnownMemberNames.GetAwaiter, includeReducedExtensionMethods: true)
+        IMethodSymbol? getAwaiter = semanticModel.LookupSymbols(position, typeSymbol, WellKnownMemberNames.GetAwaiter, includeReducedExtensionMethods: true)
             .OfType<IMethodSymbol>()
-            .Any(getAwaiter => VerifyGetAwaiter(getAwaiter));
-    }
+            .FirstOrDefault();
 
-    private static bool VerifyGetAwaiter(IMethodSymbol? getAwaiter)
-    {
-        // same check as in Roslyn:
-        // https://github.com/dotnet/roslyn/blob/7b7951aa13c50ad768538e58ed3805898b058928/src/Workspaces/SharedUtilitiesAndExtensions/Compiler/Core/Extensions/ISymbolExtensions.cs#L611
-
-        if (getAwaiter is not { Name: WellKnownMemberNames.GetAwaiter, Parameters.Length: 0 })
+        if (getAwaiter is not { Parameters.Length: 0 })
             return false;
 
-        ITypeSymbol? awaiterTypeDefinition = getAwaiter.ReturnType;
-        if (awaiterTypeDefinition is null)
+        var awaiterTypeDefinition = getAwaiter.ReturnType.OriginalDefinition as INamedTypeSymbol;
+        if (awaiterTypeDefinition is null or { SpecialType: SpecialType.System_Void })
             return false;
 
         // bool IsCompleted { get; }
-        IPropertySymbol? isCompletedProp = awaiterTypeDefinition.FindMember<IPropertySymbol>(WellKnownMemberNames.IsCompleted);
-        if (isCompletedProp is not { Type.SpecialType: SpecialType.System_Boolean, GetMethod: { } })
+        IPropertySymbol? isCompletedProp = semanticModel.LookupSymbols(position, awaiterTypeDefinition, WellKnownMemberNames.IsCompleted)
+            .OfType<IPropertySymbol>()
+            .FirstOrDefault();
+        if (isCompletedProp is not { Type.SpecialType: SpecialType.System_Boolean, GetMethod: not null })
             return false;
 
-        // We match Roslyn's (current) behavior of checking the presence/shape of OnCompleted
-        // rather than the specification, which requires implementing the System.Runtime.CompilerServices.INotifyCompletion interface.
-
-        // void OnCompleted(Action)
-        IMethodSymbol? onCompletedMethod = awaiterTypeDefinition.FindMember<IMethodSymbol>(WellKnownMemberNames.OnCompleted);
-        if (onCompletedMethod is not { ReturnsVoid: true, Parameters.Length: 1 })
+        if (!semanticModel.IsAccessible(position, isCompletedProp.GetMethod))
             return false;
 
-        // check Action parameter (Actions are delegates)
-        if (onCompletedMethod.Parameters[0].Type.TypeKind != TypeKind.Delegate)
+        // implements INotifyCompletion
+        if (!awaiterTypeDefinition.Implements(MetadataNames.System_Runtime_CompilerServices_INotifyCompletion, allInterfaces: true))
             return false;
 
         // void GetResult() || T GetResult()
-        IMethodSymbol? getResultMethod = awaiterTypeDefinition.FindMember<IMethodSymbol>(WellKnownMemberNames.GetResult);
+        // must be an instance method
+        IMethodSymbol? getResultMethod = semanticModel.LookupSymbols(position, awaiterTypeDefinition, WellKnownMemberNames.GetResult)
+            .OfType<IMethodSymbol>()
+            .FirstOrDefault();
         return getResultMethod is { Parameters.Length: 0, TypeParameters.Length: 0 };
     }
 
