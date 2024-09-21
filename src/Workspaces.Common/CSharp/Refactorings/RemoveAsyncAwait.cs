@@ -109,19 +109,14 @@ internal static class RemoveAsyncAwait
         {
             ExpressionSyntax expression = awaitExpression.Expression;
 
-            if (semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol typeSymbol)
+            if (semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol typeSymbol
+                && typeSymbol.IsAwaitable(semanticModel, expression.SpanStart)
+                && expression is InvocationExpressionSyntax invocation)
             {
-                if (typeSymbol.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable)
-                    || typeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T))
-                {
-                    if (expression is InvocationExpressionSyntax invocation)
-                    {
-                        var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
+                var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
 
-                        if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
-                            expression = memberAccess.Expression;
-                    }
-                }
+                if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
+                    expression = memberAccess.Expression;
             }
 
             return expression.WithTriviaFrom(awaitExpression);

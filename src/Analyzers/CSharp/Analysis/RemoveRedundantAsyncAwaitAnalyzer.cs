@@ -175,7 +175,7 @@ public sealed class RemoveRedundantAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
 
             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-            if (typeSymbol?.OriginalDefinition.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) == true
+            if (typeSymbol?.OriginalDefinition.IsAwaitable(context.SemanticModel, expression.SpanStart) == true
                 && (expression is InvocationExpressionSyntax invocation))
             {
                 var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
