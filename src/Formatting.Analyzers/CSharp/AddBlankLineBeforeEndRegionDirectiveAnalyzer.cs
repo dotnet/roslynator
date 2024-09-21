@@ -81,7 +81,8 @@ public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosti
                     return en.Current.IsKind(
                         SyntaxKind.EndOfLineTrivia,
                         SyntaxKind.RegionDirectiveTrivia,
-                        SyntaxKind.EndRegionDirectiveTrivia);
+                        SyntaxKind.EndRegionDirectiveTrivia,
+                        SyntaxKind.PragmaWarningDirectiveTrivia);
                 }
             }
 
