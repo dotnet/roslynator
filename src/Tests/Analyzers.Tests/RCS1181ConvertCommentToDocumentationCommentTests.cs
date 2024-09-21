@@ -197,6 +197,37 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+    public async Task Test_CommentContainsXmlSpecialChars()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+namespace N
+{
+    /// <summary>
+    /// x
+    /// </summary>
+    class C
+    {
+        int P { get; set; } [|// Must be >= 0 &amp; <= 5.|]
+    }
+}
+""", """
+namespace N
+{
+    /// <summary>
+    /// x
+    /// </summary>
+    class C
+    {
+        /// <summary>
+        /// Must be &gt;= 0 &amp; &lt;= 5.
+        /// </summary>
+        int P { get; set; }
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
     public async Task TestNoDiagnostic_DocumentationComment()
     {
         await VerifyNoDiagnosticAsync(@"
