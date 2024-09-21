@@ -207,7 +207,7 @@ namespace N
     /// </summary>
     class C
     {
-        int P { get; set; } [|// Must be >= 0 &amp; <= 5.|]
+        int P { get; set; } [|// Must be >= 0 & <= 5.|]
     }
 }
 """, """
