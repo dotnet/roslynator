@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,7 +62,10 @@ internal static class ConvertCommentToDocumentationCommentRefactoring
 
             Debug.Assert(trailingTrivia.Contains(trivia));
 
-            comments = ImmutableArray.Create(_leadingSlashesRegex.Replace(trivia.ToString(), ""));
+            string commentText = _leadingSlashesRegex.Replace(trivia.ToString(), "");
+            commentText = WebUtility.HtmlEncode(commentText);
+
+            comments = ImmutableArray.Create(commentText);
 
             SyntaxToken newToken = token.WithTrailingTrivia(trailingTrivia.Skip(trailingTrivia.IndexOf(trivia) + 1));
 
