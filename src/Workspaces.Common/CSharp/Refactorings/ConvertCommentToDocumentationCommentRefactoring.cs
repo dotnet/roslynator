@@ -63,8 +63,6 @@ internal static class ConvertCommentToDocumentationCommentRefactoring
             Debug.Assert(trailingTrivia.Contains(trivia));
 
             string commentText = _leadingSlashesRegex.Replace(trivia.ToString(), "");
-
-            commentText = WebUtility.HtmlDecode(commentText);
             commentText = WebUtility.HtmlEncode(commentText);
 
             comments = ImmutableArray.Create(commentText);
