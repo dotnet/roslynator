@@ -1,5 +1,4 @@
-﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-#nullable enable
+// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -19,7 +18,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         SemanticModel semanticModel,
         CancellationToken cancellationToken)
     {
-        ExpressionSyntax? expression = throwStatement.Expression;
+        ExpressionSyntax expression = throwStatement.Expression;
 
         if (expression?.IsMissing == false)
         {
@@ -65,12 +64,12 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         if (IsExceptionTypeCaughtInMethod(node, expression))
             return Fail;
 
-        ISymbol? declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
+        ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
         if (declarationSymbol?.GetSyntax(cancellationToken) is not MemberDeclarationSyntax containingMember)
             return Fail;
 
-        DocumentationCommentTriviaSyntax? comment = containingMember.GetSingleLineDocumentationComment();
+        DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
 
         if (comment is null)
             return Fail;
@@ -188,17 +187,17 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         return false;
     }
 
-    internal static ISymbol? GetDeclarationSymbol(
+    internal static ISymbol GetDeclarationSymbol(
         int position,
         SemanticModel semanticModel,
         CancellationToken cancellationToken = default)
     {
-        ISymbol? symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+        ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
         return GetDeclarationSymbol(symbol);
     }
 
-    private static ISymbol? GetDeclarationSymbol(ISymbol? symbol)
+    private static ISymbol GetDeclarationSymbol(ISymbol symbol)
     {
         if (symbol is not IMethodSymbol methodSymbol)
             return null;
@@ -232,7 +231,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         if (expressionSyntax is not ObjectCreationExpressionSyntax x || x.Type is not IdentifierNameSyntax exceptionType)
             return false;
 
-        SyntaxNode? parent = node.Parent;
+        SyntaxNode parent = node.Parent;
         while (parent is not null)
         {
             if (parent.IsKind(SyntaxKind.TryStatement) && IsExceptionTypeCaughtByCatch((TryStatementSyntax)parent, exceptionType))
