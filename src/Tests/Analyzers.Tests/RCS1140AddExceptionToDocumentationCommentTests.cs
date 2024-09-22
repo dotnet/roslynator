@@ -52,7 +52,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
-    public async Task Test_No_Diagnostic_If_Exception_Is_Caught_In_Same_Method()
+    public async Task Test_No_Diagnostic_If_Exception_Is_Caught_In_Method()
     {
         await VerifyNoDiagnosticAsync("""
 using System;
@@ -77,7 +77,7 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
-    public async Task Test_No_Diagnostic_If_Exception_Is_Caught_In_Same_Method_Nested()
+    public async Task Test_No_Diagnostic_If_Exception_Is_Caught_In_Method_Nested()
     {
         await VerifyNoDiagnosticAsync("""
 using System;
@@ -92,7 +92,8 @@ class C
     {
         try 
         {
-            try {
+            try 
+            {
                 if (parameter == null)
                     throw new ArgumentNullException(nameof(parameter));
             }
@@ -101,6 +102,53 @@ class C
         catch (ArgumentNullException) {}
     }
 }
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
+    public async Task Test_Diagnostic_If_Not_Correct_Exception_Is_Caught_In_Method()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+using System;
+
+class C
+{
+    /// <summary>
+    /// ...
+    /// </summary>
+    /// <param name="parameter"></param>
+    public void Foo(object parameter)
+    {
+        try 
+        {
+            if (parameter == null)
+                [|throw new ArgumentNullException(nameof(parameter));|]
+        }
+        catch (InvalidOperationException) {}
+    }
+}
+
+""", """
+using System;
+
+class C
+{
+    /// <summary>
+    /// ...
+    /// </summary>
+    /// <param name="parameter"></param>
+    /// <exception cref="ArgumentNullException"><paramref name="parameter"/> is <c>null</c>.</exception>
+    public void Foo(object parameter)
+    {
+        try 
+        {
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+        }
+        catch (InvalidOperationException) {}
+    }
+}
+
 """);
     }
 }
