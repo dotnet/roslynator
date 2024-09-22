@@ -1,4 +1,4 @@
-// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -61,7 +61,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         if (!InheritsFromException(typeSymbol, exceptionSymbol))
             return Fail;
 
-        if (IsExceptionTypeCaughtInMethod(node, expression))
+        if (IsExceptionTypeCaughtInMethod(node, typeSymbol, semanticModel, cancellationToken))
             return Fail;
 
         ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
@@ -220,25 +220,20 @@ internal static class AddExceptionToDocumentationCommentAnalysis
             && typeSymbol.InheritsFrom(exceptionSymbol);
     }
 
-    private static bool IsExceptionTypeCaughtByCatch(TryStatementSyntax tryStatementSyntax, IdentifierNameSyntax exceptionType)
-        => tryStatementSyntax.Catches.Any(x => x.Declaration?.Type is IdentifierNameSyntax ins1 && ins1.Identifier.Value == exceptionType.Identifier.Value);
-
     /// <summary>
     /// Walk upwards from throw statement and find all try statements in method and see if any of them catches the thrown exception type
     /// </summary>
-    private static bool IsExceptionTypeCaughtInMethod(SyntaxNode node, ExpressionSyntax expressionSyntax)
+    private static bool IsExceptionTypeCaughtInMethod(SyntaxNode node, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        if (expressionSyntax is not ObjectCreationExpressionSyntax x || x.Type is not IdentifierNameSyntax exceptionType)
-            return false;
-
         SyntaxNode parent = node.Parent;
         while (parent is not null)
         {
-            if (parent.IsKind(SyntaxKind.TryStatement) && IsExceptionTypeCaughtByCatch((TryStatementSyntax)parent, exceptionType))
+            if (parent is TryStatementSyntax tryStatement && tryStatement.Catches.Any(catchClause => exceptionSymbol == semanticModel.GetTypeSymbol(catchClause.Declaration?.Type, cancellationToken)))
             {
                 return true;
             }
-            if (parent.IsKind(SyntaxKind.MethodDeclaration))
+
+            if (parent is MemberDeclarationSyntax or LocalFunctionStatementSyntax)
             {
                 // We don't care if it's caught outside of the current method
                 // Since the exception should be documented in this method
