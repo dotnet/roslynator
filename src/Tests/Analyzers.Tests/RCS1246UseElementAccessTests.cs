@@ -186,6 +186,7 @@ class C
     public async Task Test_UseElementAccessInsteadOfLast_CSharp7()
     {
         await VerifyNoDiagnosticAsync(@"
+using System.Linq;
 using System.Collections.Generic;
 
 class C
