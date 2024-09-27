@@ -1562,4 +1562,22 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+    public async Task TestNoDiagnostic_OrderByToOrder_IQueryable()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IQueryable<string> q = null;
+        var x = q.OrderBy(f => f);
+    }
+}
+");
+    }
+
 }
