@@ -61,6 +61,9 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         if (!InheritsFromException(typeSymbol, exceptionSymbol))
             return Fail;
 
+        if (IsExceptionTypeCaughtInMethod(node, typeSymbol, semanticModel, cancellationToken))
+            return Fail;
+
         ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
         if (declarationSymbol?.GetSyntax(cancellationToken) is not MemberDeclarationSyntax containingMember)
@@ -215,5 +218,33 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         return typeSymbol?.TypeKind == TypeKind.Class
             && typeSymbol.BaseType?.IsObject() == false
             && typeSymbol.InheritsFrom(exceptionSymbol);
+    }
+
+    /// <summary>
+    /// Walk upwards from throw statement and find all try statements in method and see if any of them catches the thrown exception type
+    /// </summary>
+    private static bool IsExceptionTypeCaughtInMethod(SyntaxNode node, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SyntaxNode parent = node.Parent;
+        while (parent is not null)
+        {
+            if (parent is TryStatementSyntax tryStatement && tryStatement.Catches.Any(catchClause => SymbolEqualityComparer.Default.Equals(exceptionSymbol, semanticModel.GetTypeSymbol(catchClause.Declaration?.Type, cancellationToken))))
+            {
+                return true;
+            }
+
+            if (parent is MemberDeclarationSyntax or LocalFunctionStatementSyntax)
+            {
+                // We don't care if it's caught outside of the current method
+                // Since the exception should be documented in this method
+                return false;
+            }
+            else
+            {
+                parent = parent.Parent;
+            }
+        }
+
+        return false;
     }
 }
