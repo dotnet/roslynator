@@ -16,12 +16,12 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter;
 public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
 {
     private static readonly MetadataNameSet _attributes = new(new[]
-        {
-            MetadataName.Parse("System.Runtime.Serialization.OnSerializedAttribute"),
-            MetadataName.Parse("System.Runtime.Serialization.OnDeserializedAttribute"),
-            MetadataName.Parse("System.Runtime.Serialization.OnSerializingAttribute"),
-            MetadataName.Parse("System.Runtime.Serialization.OnDeserializingAttribute"),
-        });
+    {
+        MetadataName.Parse("System.Runtime.Serialization.OnSerializedAttribute"),
+        MetadataName.Parse("System.Runtime.Serialization.OnDeserializedAttribute"),
+        MetadataName.Parse("System.Runtime.Serialization.OnSerializingAttribute"),
+        MetadataName.Parse("System.Runtime.Serialization.OnDeserializingAttribute"),
+    });
 
     private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

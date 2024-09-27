@@ -56,7 +56,7 @@ public static class CodeFixDescriptorsGenerator
                     BooleanLiteralExpression(true)),
             };
 
-            foreach (string diagnosticId in codeFix.FixableDiagnosticIds.OrderBy(f => f))
+            foreach (string diagnosticId in codeFix.FixableDiagnosticIds.Order())
                 arguments.Add(Argument(StringLiteralExpression(diagnosticId)));
 
             FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
@@ -68,7 +68,7 @@ public static class CodeFixDescriptorsGenerator
                     ArgumentList(arguments.ToSeparatedSyntaxList())));
 
             var settings = new DocumentationCommentGeneratorSettings(
-                summary: new string[] { $"{codeFix.Id} (fixes {string.Join(", ", codeFix.FixableDiagnosticIds.OrderBy(f => f))})" },
+                summary: new string[] { $"{codeFix.Id} (fixes {string.Join(", ", codeFix.FixableDiagnosticIds.Order())})" },
                 ignoredTags: new[] { "returns", "value" },
                 indentation: "        ",
                 singleLineSummary: true);

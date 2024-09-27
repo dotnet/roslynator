@@ -929,15 +929,15 @@ internal static class OptimizeLinqMethodCallAnalysis
         public static ImmutableDictionary<string, string> Length { get; } = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("PropertyName", "Length") });
 
         public static ImmutableDictionary<string, string> Sum_Count { get; } = ImmutableDictionary.CreateRange(new[]
-            {
-                new KeyValuePair<string, string>("PropertyName", "Count"),
-                new KeyValuePair<string, string>("MethodName", "Sum"),
-            });
+        {
+            new KeyValuePair<string, string>("PropertyName", "Count"),
+            new KeyValuePair<string, string>("MethodName", "Sum"),
+        });
 
         public static ImmutableDictionary<string, string> Sum_Length { get; } = ImmutableDictionary.CreateRange(new[]
-            {
-                new KeyValuePair<string, string>("PropertyName", "Length"),
-                new KeyValuePair<string, string>("MethodName", "Sum"),
-            });
+        {
+            new KeyValuePair<string, string>("PropertyName", "Length"),
+            new KeyValuePair<string, string>("MethodName", "Sum"),
+        });
     }
 }

@@ -77,10 +77,10 @@ internal class FixCommand : MSBuildWorkspaceCommand<FixCommandResult>
         IFormatProvider formatProvider = null,
         CancellationToken cancellationToken = default)
     {
-        foreach (string id in codeFixerOptions.IgnoredCompilerDiagnosticIds.OrderBy(f => f))
+        foreach (string id in codeFixerOptions.IgnoredCompilerDiagnosticIds.Order())
             WriteLine($"Ignore compiler diagnostic '{id}'", Verbosity.Diagnostic);
 
-        foreach (string id in codeFixerOptions.IgnoredDiagnosticIds.OrderBy(f => f))
+        foreach (string id in codeFixerOptions.IgnoredDiagnosticIds.Order())
             WriteLine($"Ignore diagnostic '{id}'", Verbosity.Diagnostic);
 
         ImmutableArray<ProjectFixResult> results;
