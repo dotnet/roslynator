@@ -183,6 +183,24 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
+    public async Task Test_UseElementAccessInsteadOfLast_CSharp7()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Linq;
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        List<string> x = null;
+        var y = x.Last();
+    }
+}
+", options: WellKnownCSharpTestOptions.Default_CSharp7);
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
     public async Task TestNoDiagnostic_UseElementAccessInsteadOfLast()
     {
         await VerifyNoDiagnosticAsync(@"
