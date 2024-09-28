@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator;
@@ -624,8 +625,8 @@ internal static class SymbolUtility
     }
 
     /// <summary>
-    /// Determines if the symbol is an awaitable type.<br/>
-    /// Any type can be <see langword="await"/>ed if it has an instance or extension <c>GetAwaiter</c> method that returns a correctly-shaped awaiter type.
+    /// Determines if the symbol is an awaitable type (i.e. the <see langword="await"/> keyword can be used on it) or a method that returns one.<br/>
+    /// A type is awaitable if it has an instance or extension <c>GetAwaiter</c> method that returns a correctly-shaped awaiter type.
     /// </summary>
     /// <remarks>
     /// For more information, see the <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#12982-awaitable-expressions">C# language specification</see>.
@@ -640,6 +641,14 @@ internal static class SymbolUtility
         if (typeSymbol is null or { SpecialType: SpecialType.System_Void })
             return false;
 
+        // shortcut well-known types
+        if (typeSymbol.ContainingNamespace.HasMetadataName(in MetadataNames.System_Threading_Tasks)
+            && (typeSymbol.EqualsOrInheritsFrom(in MetadataNames.System_Threading_Tasks_Task)
+                || typeSymbol.MetadataName is "ValueTask" or "ValueTask`1"))
+        {
+            return true;
+        }
+
         // this is the same check as in Roslyn, reimplemented due to it being internal
         // https://github.com/dotnet/roslyn/blob/a182892bf997a457cfcdbece5352e1a139eb2a12/src/Compilers/CSharp/Portable/Binder/Binder_Await.cs#L281-L289
 
@@ -651,7 +660,7 @@ internal static class SymbolUtility
             return false;
 
         var awaiterTypeDefinition = getAwaiter.ReturnType.OriginalDefinition as INamedTypeSymbol;
-        if (awaiterTypeDefinition is null or { SpecialType: SpecialType.System_Void })
+        if (awaiterTypeDefinition is not { SpecialType: SpecialType.None })
             return false;
 
         // bool IsCompleted { get; }
@@ -701,14 +710,14 @@ internal static class SymbolUtility
     }
 
     /// <summary>
-    /// Determines if the type is a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task type</see>.
-    /// Only task types (and <see langword="void" /> can be the return type of a method marked with the <see langword="async" /> keyword.
+    /// Determines if the type is a task type - that is, <see cref="Task"/>, <see cref="Task{TResult}"/>, or a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task-like type</see>.<br/>
+    /// Only task types (and <see langword="void"/>) can be the return type of a method marked with the <see langword="async"/> keyword.
     /// </summary>
     /// <remarks>
     /// For more information, see the <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15151-general">C# language specification</see>.
     /// </remarks>
-    /// <returns>A <see cref="bool"/> indicating whether the type is a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task type</see>.</returns>
-    public static bool IsTaskType(this ITypeSymbol typeSymbol)
+    /// <returns>A <see cref="bool"/> indicating whether the type is <see cref="Task"/>, <see cref="Task{TResult}"/>, or a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task-like type</see>.</returns>
+    public static bool IsTaskLikeType(this ITypeSymbol typeSymbol)
     {
         if (typeSymbol.OriginalDefinition is not INamedTypeSymbol definition)
             return false;
@@ -723,9 +732,7 @@ internal static class SymbolUtility
         }
 
         // Roslyn checks arity, see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1844
-        if (definition.Arity > 1)
-            return false;
-
-        return definition.HasAttribute(in MetadataNames.System_Runtime_CompilerServices_AsyncMethodBuilderAttribute);
+        return definition.Arity <= 1
+            && definition.HasAttribute(in MetadataNames.System_Runtime_CompilerServices_AsyncMethodBuilderAttribute);
     }
 }

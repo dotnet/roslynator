@@ -28,15 +28,10 @@ internal sealed class UseAsyncAwaitRewriter : SkipFunctionRewriter
     {
         ITypeSymbol returnType = methodSymbol.ReturnType.OriginalDefinition;
 
-        var keepReturnStatement = false;
+        bool keepReturnStatement = returnType is INamedTypeSymbol { Arity: 1 }
+            && returnType.IsAwaitable(semanticModel, position);
 
-        if (returnType is INamedTypeSymbol { Arity: 1 }
-            && returnType.IsAwaitable(semanticModel, position))
-        {
-            keepReturnStatement = true;
-        }
-
-        return new UseAsyncAwaitRewriter(keepReturnStatement: keepReturnStatement);
+        return new UseAsyncAwaitRewriter(keepReturnStatement);
     }
 
     public override SyntaxNode VisitReturnStatement(ReturnStatementSyntax node)
