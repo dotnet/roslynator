@@ -627,8 +627,7 @@ internal static class SymbolUtility
     public static bool IsWellKnownTaskType(this ITypeSymbol typeSymbol)
     {
         return typeSymbol.ContainingNamespace.HasMetadataName(in MetadataNames.System_Threading_Tasks)
-            && (typeSymbol.EqualsOrInheritsFrom(in MetadataNames.System_Threading_Tasks_Task)
-                || typeSymbol.MetadataName is "ValueTask" or "ValueTask`1");
+            && (typeSymbol.MetadataName is "Task" or "Task`1" or "ValueTask" or "ValueTask`1");
     }
 
     /// <summary>
