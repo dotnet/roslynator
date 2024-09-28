@@ -624,6 +624,13 @@ internal static class SymbolUtility
         }
     }
 
+    public static bool IsWellKnownTaskType(this ITypeSymbol typeSymbol)
+    {
+        return typeSymbol.ContainingNamespace.HasMetadataName(in MetadataNames.System_Threading_Tasks)
+            && (typeSymbol.EqualsOrInheritsFrom(in MetadataNames.System_Threading_Tasks_Task)
+                || typeSymbol.MetadataName is "ValueTask" or "ValueTask`1");
+    }
+
     /// <summary>
     /// Determines if the symbol is an awaitable type (i.e. the <see langword="await"/> keyword can be used on it) or a method that returns one.<br/>
     /// A type is awaitable if it has an instance or extension <c>GetAwaiter</c> method that returns a correctly-shaped awaiter type.
@@ -641,13 +648,8 @@ internal static class SymbolUtility
         if (typeSymbol is null or { SpecialType: SpecialType.System_Void })
             return false;
 
-        // shortcut well-known types
-        if (typeSymbol.ContainingNamespace.HasMetadataName(in MetadataNames.System_Threading_Tasks)
-            && (typeSymbol.EqualsOrInheritsFrom(in MetadataNames.System_Threading_Tasks_Task)
-                || typeSymbol.MetadataName is "ValueTask" or "ValueTask`1"))
-        {
+        if (typeSymbol.IsWellKnownTaskType())
             return true;
-        }
 
         // this is the same check as in Roslyn, reimplemented due to it being internal
         // https://github.com/dotnet/roslyn/blob/a182892bf997a457cfcdbece5352e1a139eb2a12/src/Compilers/CSharp/Portable/Binder/Binder_Await.cs#L281-L289
@@ -734,5 +736,26 @@ internal static class SymbolUtility
         // Roslyn checks arity, see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1844
         return definition.Arity <= 1
             && definition.HasAttribute(in MetadataNames.System_Runtime_CompilerServices_AsyncMethodBuilderAttribute);
+    }
+
+    /// <summary>
+    /// <para>
+    /// Combines <see cref="IsTaskLikeType"/> and <see cref="IsAwaitable"/>.
+    /// </para>
+    /// In short, this determines if a type:
+    /// <list type="bullet">
+    /// <item>Can be the return type of an <see langword="async"/> method;</item>
+    /// <item>Can be awaited with the <see langword="await"/> keyword.</item>
+    /// </list>
+    /// </summary>
+    public static bool IsAwaitableTaskType(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
+    {
+        if (typeSymbol.OriginalDefinition is not INamedTypeSymbol definition)
+            return false;
+
+        if (definition.IsWellKnownTaskType())
+            return true;
+
+        return IsTaskLikeType(definition) && IsAwaitable(definition, semanticModel, position);
     }
 }
