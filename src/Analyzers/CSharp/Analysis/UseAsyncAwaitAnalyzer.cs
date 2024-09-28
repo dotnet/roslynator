@@ -55,7 +55,8 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (!body.Statements.Any())
             return;
 
-        IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+        if (context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken) is not IMethodSymbol methodSymbol)
+            return;
 
         if (!methodSymbol.ReturnType.IsAwaitableTaskType(context.SemanticModel, body.SpanStart))
             return;
@@ -79,7 +80,8 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
         if (!body.Statements.Any())
             return;
 
-        IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
+        if (context.SemanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken) is not IMethodSymbol methodSymbol)
+            return;
 
         if (!methodSymbol.ReturnType.IsAwaitableTaskType(context.SemanticModel, body.SpanStart))
             return;

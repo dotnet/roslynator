@@ -650,6 +650,11 @@ internal static class SymbolUtility
         if (typeSymbol.IsWellKnownTaskType())
             return true;
 
+        return HasAwaitableShape(typeSymbol, semanticModel, position);
+    }
+
+    private static bool HasAwaitableShape(ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
+    {
         // this is the same check as in Roslyn, reimplemented due to it being internal
         // https://github.com/dotnet/roslyn/blob/a182892bf997a457cfcdbece5352e1a139eb2a12/src/Compilers/CSharp/Portable/Binder/Binder_Await.cs#L281-L289
 
@@ -711,42 +716,18 @@ internal static class SymbolUtility
     }
 
     /// <summary>
-    /// Determines if the type is a task type - that is, <see cref="Task"/>, <see cref="Task{TResult}"/>, or a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task-like type</see>.<br/>
-    /// Only task types (and <see langword="void"/>) can be the return type of a method marked with the <see langword="async"/> keyword.
-    /// </summary>
-    /// <remarks>
-    /// For more information, see the <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15151-general">C# language specification</see>.
-    /// </remarks>
-    /// <returns>A <see cref="bool"/> indicating whether the type is <see cref="Task"/>, <see cref="Task{TResult}"/>, or a <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task-like type</see>.</returns>
-    public static bool IsTaskLikeType(this ITypeSymbol typeSymbol)
-    {
-        if (typeSymbol.OriginalDefinition is not INamedTypeSymbol definition)
-            return false;
-
-        // Task (and Task<T>) are hardcoded and don't have an AsyncMethodBuilder attribute.
-        // Their descendants, however, are not, and go through the rest of the checks.
-        // (see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1778-L1806 )
-        if (definition.HasMetadataName(in MetadataNames.System_Threading_Tasks_Task)
-            || definition.HasMetadataName(in MetadataNames.System_Threading_Tasks_Task_T))
-        {
-            return true;
-        }
-
-        // Roslyn checks arity, see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1844
-        return definition.Arity <= 1
-            && definition.HasAttribute(in MetadataNames.System_Runtime_CompilerServices_AsyncMethodBuilderAttribute);
-    }
-
-    /// <summary>
-    /// <para>
-    /// Combines <see cref="IsTaskLikeType"/> and <see cref="IsAwaitable"/>.
-    /// </para>
-    /// In short, this determines if a type:
+    /// Determines if a type:
     /// <list type="bullet">
-    /// <item>Can be the return type of an <see langword="async"/> method;</item>
-    /// <item>Can be awaited with the <see langword="await"/> keyword.</item>
+    /// <item>
+    /// Is a task type - that is, <see cref="Task"/>, <see cref="Task{TResult}"/>, <see cref="ValueTask"/>, <see cref="ValueTask{TResult}"/>, or a user-implemented <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task-like type</see>.<br/>
+    /// Only task types (and <see langword="void"/>) can be the return type of an <see langword="async"/> method.
+    /// </item>
+    /// <item>Can be awaited with the <see langword="await"/> keyword (see <see cref="IsAwaitable"/>).</item>
     /// </list>
     /// </summary>
+    /// <remarks>
+    /// For more information on task types, see the <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15151-general">C# language specification</see>.
+    /// </remarks>
     public static bool IsAwaitableTaskType(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
     {
         if (typeSymbol.OriginalDefinition is not INamedTypeSymbol definition)
@@ -755,6 +736,14 @@ internal static class SymbolUtility
         if (definition.IsWellKnownTaskType())
             return true;
 
-        return IsTaskLikeType(definition) && IsAwaitable(definition, semanticModel, position);
+        // Roslyn checks arity, see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1844
+        if (definition.Arity > 1)
+            return false;
+
+        // Task (and Task<T>) are hardcoded and don't have an AsyncMethodBuilder attribute.
+        // see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1778-L1806
+        bool isTaskLike = definition.HasAttribute(in MetadataNames.System_Runtime_CompilerServices_AsyncMethodBuilderAttribute);
+
+        return isTaskLike && HasAwaitableShape(definition, semanticModel, position);
     }
 }
