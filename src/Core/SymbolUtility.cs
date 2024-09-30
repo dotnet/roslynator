@@ -689,6 +689,7 @@ internal static class SymbolUtility
         IMethodSymbol? getResultMethod = semanticModel.LookupSymbols(position, awaiterTypeDefinition, WellKnownMemberNames.GetResult)
             .OfType<IMethodSymbol>()
             .FirstOrDefault();
+
         return getResultMethod is { Parameters.Length: 0, TypeParameters.Length: 0 };
     }
 
