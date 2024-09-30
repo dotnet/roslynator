@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator;
@@ -623,53 +624,73 @@ internal static class SymbolUtility
         }
     }
 
-    public static bool IsAwaitable(ITypeSymbol typeSymbol, bool shouldCheckWindowsRuntimeTypes = false)
+    public static bool IsWellKnownTaskType(this ITypeSymbol typeSymbol)
     {
-        INamedTypeSymbol? namedTypeSymbol = GetPossiblyAwaitableType(typeSymbol);
+        return typeSymbol.ContainingNamespace.HasMetadataName(in MetadataNames.System_Threading_Tasks)
+            && (typeSymbol.MetadataName is "Task" or "Task`1" or "ValueTask" or "ValueTask`1");
+    }
 
-        if (namedTypeSymbol is null)
+    /// <summary>
+    /// Determines if the symbol is an awaitable type (i.e. the <see langword="await"/> keyword can be used on it) or a method that returns one.<br/>
+    /// A type is awaitable if it has an instance or extension <c>GetAwaiter</c> method that returns a correctly-shaped awaiter type.
+    /// </summary>
+    /// <remarks>
+    /// For more information, see the <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#12982-awaitable-expressions">C# language specification</see>.
+    /// </remarks>
+    /// <param name="semanticModel">Used to determine whether a candidate <c>GetAwaiter</c> method is accessible at the given <paramref name="position"/>.</param>
+    /// <param name="position">The position of the token at which the <paramref name="symbol"/> is used.</param>
+    /// <returns>A <see cref="bool"/> indicating whether the symbol is an awaitable type or a method that returns one.</returns>
+    public static bool IsAwaitable(this ISymbol? symbol, SemanticModel semanticModel, int position)
+    {
+        ITypeSymbol? typeSymbol = (symbol as ITypeSymbol) ?? (symbol as IMethodSymbol)?.ReturnType;
+
+        if (typeSymbol is null or { SpecialType: SpecialType.System_Void })
             return false;
 
-        INamedTypeSymbol originalDefinition = namedTypeSymbol.OriginalDefinition;
-        TypeKind typeKind = originalDefinition.TypeKind;
-
-        if (typeKind == TypeKind.Struct
-            && originalDefinition.ContainingNamespace.HasMetadataName(MetadataNames.System_Threading_Tasks))
-        {
-            switch (originalDefinition.MetadataName)
-            {
-                case "ValueTask":
-                case "ValueTask`1":
-                    return true;
-            }
-        }
-
-        if (typeKind == TypeKind.Class
-            && namedTypeSymbol.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task))
-        {
+        if (typeSymbol.IsWellKnownTaskType())
             return true;
-        }
 
-        if (shouldCheckWindowsRuntimeTypes)
-        {
-            if (typeKind == TypeKind.Interface
-                && originalDefinition.ContainingNamespace.HasMetadataName(MetadataNames.WinRT.Windows_Foundation))
-            {
-                switch (originalDefinition.MetadataName)
-                {
-                    case "IAsyncAction":
-                    case "IAsyncActionWithProgress`1":
-                    case "IAsyncOperation`1":
-                    case "IAsyncOperationWithProgress`2":
-                        return true;
-                }
-            }
+        return HasAwaitableShape(typeSymbol, semanticModel, position);
+    }
 
-            if (namedTypeSymbol.Implements(MetadataNames.WinRT.Windows_Foundation_IAsyncAction, allInterfaces: true))
-                return true;
-        }
+    private static bool HasAwaitableShape(ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
+    {
+        // this is the same check as in Roslyn, reimplemented due to it being internal
+        // https://github.com/dotnet/roslyn/blob/a182892bf997a457cfcdbece5352e1a139eb2a12/src/Compilers/CSharp/Portable/Binder/Binder_Await.cs#L281-L289
 
-        return false;
+        IMethodSymbol? getAwaiter = semanticModel.LookupSymbols(position, typeSymbol, WellKnownMemberNames.GetAwaiter, includeReducedExtensionMethods: true)
+            .OfType<IMethodSymbol>()
+            .FirstOrDefault();
+
+        if (getAwaiter is not { Parameters.Length: 0 })
+            return false;
+
+        var awaiterTypeDefinition = getAwaiter.ReturnType.OriginalDefinition as INamedTypeSymbol;
+        if (awaiterTypeDefinition is not { SpecialType: SpecialType.None })
+            return false;
+
+        // bool IsCompleted { get; }
+        IPropertySymbol? isCompletedProp = semanticModel.LookupSymbols(position, awaiterTypeDefinition, WellKnownMemberNames.IsCompleted)
+            .OfType<IPropertySymbol>()
+            .FirstOrDefault();
+
+        if (isCompletedProp is not { Type.SpecialType: SpecialType.System_Boolean, GetMethod: not null })
+            return false;
+
+        if (!semanticModel.IsAccessible(position, isCompletedProp.GetMethod))
+            return false;
+
+        // implements INotifyCompletion
+        if (!awaiterTypeDefinition.Implements(MetadataNames.System_Runtime_CompilerServices_INotifyCompletion, allInterfaces: true))
+            return false;
+
+        // void GetResult() || T GetResult()
+        // must be an instance method
+        IMethodSymbol? getResultMethod = semanticModel.LookupSymbols(position, awaiterTypeDefinition, WellKnownMemberNames.GetResult)
+            .OfType<IMethodSymbol>()
+            .FirstOrDefault();
+
+        return getResultMethod is { Parameters.Length: 0, TypeParameters.Length: 0 };
     }
 
     internal static INamedTypeSymbol? GetPossiblyAwaitableType(ITypeSymbol typeSymbol)
@@ -694,5 +715,37 @@ internal static class SymbolUtility
             return null;
 
         return typeSymbol as INamedTypeSymbol;
+    }
+
+    /// <summary>
+    /// Determines if a type:
+    /// <list type="bullet">
+    /// <item>
+    /// Is a task type - that is, <see cref="Task"/>, <see cref="Task{TResult}"/>, <see cref="ValueTask"/>, <see cref="ValueTask{TResult}"/>, or a user-implemented <see href="https://github.com/dotnet/roslyn/blob/main/docs/features/task-types.md">task-like type</see>.<br/>
+    /// Only task types (and <see langword="void"/>) can be the return type of an <see langword="async"/> method.
+    /// </item>
+    /// <item>Can be awaited with the <see langword="await"/> keyword (see <see cref="IsAwaitable"/>).</item>
+    /// </list>
+    /// </summary>
+    /// <remarks>
+    /// For more information on task types, see the <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#15151-general">C# language specification</see>.
+    /// </remarks>
+    public static bool IsAwaitableTaskType(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
+    {
+        if (typeSymbol.OriginalDefinition is not INamedTypeSymbol definition)
+            return false;
+
+        if (definition.IsWellKnownTaskType())
+            return true;
+
+        // Roslyn checks arity, see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1844
+        if (definition.Arity > 1)
+            return false;
+
+        // Task (and Task<T>) are hardcoded and don't have an AsyncMethodBuilder attribute.
+        // see https://github.com/dotnet/roslyn/blob/c4203b867e9c0287cabb0a0674bfca096c08fd3e/src/Compilers/CSharp/Portable/Symbols/TypeSymbolExtensions.cs#L1778-L1806
+        bool isTaskLike = definition.HasAttribute(in MetadataNames.System_Runtime_CompilerServices_AsyncMethodBuilderAttribute);
+
+        return isTaskLike && HasAwaitableShape(definition, semanticModel, position);
     }
 }

@@ -24,19 +24,14 @@ internal sealed class UseAsyncAwaitRewriter : SkipFunctionRewriter
 
     public bool KeepReturnStatement { get; }
 
-    public static UseAsyncAwaitRewriter Create(IMethodSymbol methodSymbol)
+    public static UseAsyncAwaitRewriter Create(IMethodSymbol methodSymbol, SemanticModel semanticModel, int position)
     {
         ITypeSymbol returnType = methodSymbol.ReturnType.OriginalDefinition;
 
-        var keepReturnStatement = false;
+        bool keepReturnStatement = returnType is INamedTypeSymbol { Arity: 1 }
+            && returnType.IsAwaitable(semanticModel, position);
 
-        if (returnType.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_ValueTask_T)
-            || returnType.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T))
-        {
-            keepReturnStatement = true;
-        }
-
-        return new UseAsyncAwaitRewriter(keepReturnStatement: keepReturnStatement);
+        return new UseAsyncAwaitRewriter(keepReturnStatement);
     }
 
     public override SyntaxNode VisitReturnStatement(ReturnStatementSyntax node)

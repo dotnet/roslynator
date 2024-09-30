@@ -525,4 +525,66 @@ class C
 }
 """, equivalenceKey: EquivalenceKey.Create(RefactoringId));
     }
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_DuckTyped_TaskType()
+    {
+        await VerifyRefactoringAsync(@"
+using System;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    [||]async DuckTyped<T> M<T>()
+    {
+        return await M<T>().ConfigureAwait(false);
+    }
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+static class ConfigureAwaitExtensions
+{
+    public static DuckTyped<T> ConfigureAwait<T>(this DuckTyped<T> instance, bool __) => instance;
+}
+", @"
+using System;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    DuckTyped<T> M<T>()
+    {
+        return M<T>();
+    }
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+static class ConfigureAwaitExtensions
+{
+    public static DuckTyped<T> ConfigureAwait<T>(this DuckTyped<T> instance, bool __) => instance;
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+    }
 }

@@ -38,10 +38,6 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
 
         context.RegisterCompilationStartAction(startContext =>
         {
-            INamedTypeSymbol asyncAction = startContext.Compilation.GetTypeByMetadataName("Windows.Foundation.IAsyncAction");
-
-            bool shouldCheckWindowsRuntimeTypes = asyncAction is not null;
-
             startContext.RegisterSyntaxNodeAction(
                 c =>
                 {
@@ -50,14 +46,14 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
                         DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
                         DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync))
                     {
-                        AnalyzeMethodDeclaration(c, shouldCheckWindowsRuntimeTypes);
+                        AnalyzeMethodDeclaration(c);
                     }
                 },
                 SyntaxKind.MethodDeclaration);
         });
     }
 
-    private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, bool shouldCheckWindowsRuntimeTypes)
+    private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
     {
         var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
@@ -74,7 +70,7 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
             if (!methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
                 return;
 
-            if (SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
+            if (methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, methodDeclaration.SpanStart)
                 || IsAsyncEnumerableLike(methodSymbol.ReturnType.OriginalDefinition))
             {
                 return;
@@ -105,7 +101,7 @@ public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
             if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                 return;
 
-            if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
+            if (!methodSymbol.ReturnType.IsAwaitable(context.SemanticModel, methodDeclaration.SpanStart)
                 && !methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(in MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
             {
                 return;

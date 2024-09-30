@@ -101,6 +101,42 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+    public async Task Test_DuckTyped()
+    {
+        await VerifyDiagnosticAsync(@"
+class C
+{
+    DuckTyped [|Foo|]() => new();
+    DuckTyped<object> [|Foo2|]() => new();
+}
+
+class DuckTyped
+{
+    public CustomAwaiter GetAwaiter() => new();
+}
+
+class DuckTyped<T>
+{
+    public CustomAwaiter<T> GetAwaiter() => new();
+}
+
+struct CustomAwaiter : System.Runtime.CompilerServices.INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(System.Action continuation) { }
+    public void GetResult() { }
+}
+
+struct CustomAwaiter<T> : System.Runtime.CompilerServices.INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(System.Action continuation) { }
+    public T GetResult() => default(T);
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
     public async Task TestNoDiagnostic_EntryPointMethod()
     {
         await VerifyNoDiagnosticAsync(@"

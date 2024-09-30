@@ -364,7 +364,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
 
         ITypeSymbol returnType = methodSymbol.ReturnType;
 
-        if (returnType?.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T) != true)
+        if (returnType?.OriginalDefinition.IsAwaitable(semanticModel, node.SpanStart) != true)
             return false;
 
         ITypeSymbol typeArgument = ((INamedTypeSymbol)returnType).TypeArguments.SingleOrDefault(shouldThrow: false);
@@ -394,7 +394,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
 
         ITypeSymbol returnType = methodSymbol.ReturnType;
 
-        if (returnType?.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T) != true)
+        if (returnType?.OriginalDefinition.IsAwaitable(semanticModel, node.SpanStart) != true)
             return false;
 
         ITypeSymbol typeArgument = ((INamedTypeSymbol)returnType).TypeArguments.SingleOrDefault(shouldThrow: false);
@@ -417,7 +417,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
         if (expressionTypeSymbol is null)
             return false;
 
-        if (expressionTypeSymbol.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T))
+        if (expressionTypeSymbol.OriginalDefinition.IsAwaitable(semanticModel, expression.SpanStart))
             return true;
 
         SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
@@ -425,7 +425,7 @@ internal readonly struct RemoveAsyncAwaitAnalysis : IDisposable
         return invocationInfo.Success
             && invocationInfo.Arguments.Count == 1
             && invocationInfo.NameText == "ConfigureAwait"
-            && expressionTypeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T);
+            && expressionTypeSymbol.OriginalDefinition.IsAwaitable(semanticModel, expression.SpanStart);
     }
 
     private static IMethodSymbol GetMethodSymbol(
