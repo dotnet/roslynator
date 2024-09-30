@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- - Add support for duck-typed awaitables and task-like types for Task/Async-related analyzers ([PR](https://github.com/dotnet/roslynator/pull/1535))
+- Add support for duck-typed awaitables and task-like types for Task/Async-related analyzers ([PR](https://github.com/dotnet/roslynator/pull/1535))
   - Affects the following analyzers:
     - [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046)
     - [RCS1047](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1047)
