@@ -534,6 +534,78 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+    public async Task Test_DuckTyped_TaskType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    [|async|] DuckTyped<T> M2<T>()
+    {
+        return await M2<T>();
+    }
+
+    [|async|] DuckTyped<T> MC2<T>()
+    {
+        return await MC2<T>().ConfigureAwait(false);
+    }
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+static class ConfigureAwaitExtensions
+{
+    public static DuckTyped<T> ConfigureAwait<T>(this DuckTyped<T> instance, bool __) => instance;
+}
+", @"
+using System;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+class C
+{
+    DuckTyped<T> M2<T>()
+    {
+        return M2<T>();
+    }
+
+    DuckTyped<T> MC2<T>()
+    {
+        return MC2<T>();
+    }
+}
+
+[AsyncMethodBuilder(null)]
+class DuckTyped<T>
+{
+    public Awaiter<T> GetAwaiter() => default(Awaiter<T>);
+}
+public struct Awaiter<T> : INotifyCompletion
+{
+    public bool IsCompleted => true;
+    public void OnCompleted(Action continuation) { }
+    public T GetResult() => default(T);
+}
+static class ConfigureAwaitExtensions
+{
+    public static DuckTyped<T> ConfigureAwait<T>(this DuckTyped<T> instance, bool __) => instance;
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
     public async Task TestNoDiagnostic_IfElse_ReturnWithoutAwait()
     {
         await VerifyNoDiagnosticAsync(@"

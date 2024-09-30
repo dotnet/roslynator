@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix analyzer [RCS1202](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1202) ([PR](https://github.com/dotnet/roslynator/pull/1542))
+- Fix analyzer [RCS1246](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1246) ([PR](https://github.com/dotnet/roslynator/pull/1543))
+- Fix analyzer [RCS1140](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1140) ([PR](https://github.com/dotnet/roslynator/pull/1524))
+- Fix analyzer [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1077) ([PR](https://github.com/dotnet/roslynator/pull/1544))
+
+### Changed
+- Add support for duck-typed awaitables and task-like types for Task/Async-related analyzers ([PR](https://github.com/dotnet/roslynator/pull/1535))
+  - Affects the following analyzers:
+    - [RCS1046](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1046)
+    - [RCS1047](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1047)
+    - [RCS1090](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1090)
+    - [RCS1174](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1174)
+    - [RCS1229](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1229)
+    - [RCS1261](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1261)
+  - Affects refactoring [RR0209](https://josefpihrt.github.io/docs/roslynator/refactorings/RR0209)
+
 ## [4.12.6] - 2024-09-23
 
 ### Added

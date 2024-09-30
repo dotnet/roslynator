@@ -66,7 +66,7 @@ public sealed class UseAsyncAwaitCodeFixProvider : BaseCodeFixProvider
                 {
                     IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
 
                     var newNode = (MethodDeclarationSyntax)rewriter.VisitMethodDeclaration(methodDeclaration);
 
@@ -78,7 +78,7 @@ public sealed class UseAsyncAwaitCodeFixProvider : BaseCodeFixProvider
                 {
                     IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, cancellationToken);
 
-                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
 
                     var newBody = (BlockSyntax)rewriter.VisitBlock(localFunction.Body);
 
@@ -92,7 +92,7 @@ public sealed class UseAsyncAwaitCodeFixProvider : BaseCodeFixProvider
                 {
                     var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(lambda, cancellationToken);
 
-                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
 
                     var newBody = (BlockSyntax)rewriter.VisitBlock((BlockSyntax)lambda.Body);
 
@@ -106,7 +106,7 @@ public sealed class UseAsyncAwaitCodeFixProvider : BaseCodeFixProvider
                 {
                     var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(lambda, cancellationToken);
 
-                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
 
                     var newBody = (BlockSyntax)rewriter.VisitBlock((BlockSyntax)lambda.Body);
 
@@ -120,7 +120,7 @@ public sealed class UseAsyncAwaitCodeFixProvider : BaseCodeFixProvider
                 {
                     var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(anonymousMethod, cancellationToken);
 
-                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
+                    UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol, semanticModel, node.SpanStart);
 
                     var newBody = (BlockSyntax)rewriter.VisitBlock((BlockSyntax)anonymousMethod.Body);
 

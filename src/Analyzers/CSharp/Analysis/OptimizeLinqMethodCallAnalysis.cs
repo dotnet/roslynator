@@ -718,6 +718,14 @@ internal static class OptimizeLinqMethodCallAnalysis
         if (lambdaExpression.Body is not IdentifierNameSyntax identifier || identifier.Identifier.Text != lambdaExpression.Parameter.Identifier.Text)
             return;
 
+        if (context.SemanticModel
+            .GetTypeSymbol(invocationInfo.Expression, context.CancellationToken)?
+            .OriginalDefinition
+            .HasMetadataName(MetadataNames.System_Linq_IQueryable_T) == true)
+        {
+            return;
+        }
+
         TextSpan span = TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationExpression.Span.End);
         Report(context, invocationExpression, span, checkDirectives: true);
     }

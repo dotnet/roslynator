@@ -198,6 +198,9 @@ public sealed class AvoidNullReferenceExceptionAnalyzer : BaseDiagnosticAnalyzer
         if (topExpression is null)
             return;
 
+        if (semanticModel.GetTypeInfo(expression, cancellationToken).Nullability.FlowState == NullableFlowState.NotNull)
+            return;
+
         if (semanticModel
             .GetTypeSymbol(asExpression, cancellationToken)?
             .IsReferenceType != true)
