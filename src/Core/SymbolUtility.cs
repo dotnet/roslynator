@@ -673,6 +673,7 @@ internal static class SymbolUtility
         IPropertySymbol? isCompletedProp = semanticModel.LookupSymbols(position, awaiterTypeDefinition, WellKnownMemberNames.IsCompleted)
             .OfType<IPropertySymbol>()
             .FirstOrDefault();
+
         if (isCompletedProp is not { Type.SpecialType: SpecialType.System_Boolean, GetMethod: not null })
             return false;
 
