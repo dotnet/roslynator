@@ -181,7 +181,11 @@ internal abstract class MSBuildWorkspaceCommand<TCommandResult> where TCommandRe
                 foreach (string moniker in grouping
                     .Select(f => f.Moniker)
                     .Where(f => f is not null)
+#if NETFRAMEWORK
                     .OrderBy(f => f))
+#else
+                    .Order())
+#endif
                 {
                     WriteLine($"    {moniker}", Verbosity.Detailed);
                 }

@@ -80,18 +80,18 @@ internal class SpellingAnalysisContext
             if (match.Parent is not null)
             {
                 properties = ImmutableDictionary.CreateRange(new[]
-                    {
-                        new KeyValuePair<string, string?>("Value", match.Value),
-                        new KeyValuePair<string, string?>("Parent", match.Parent),
-                        new KeyValuePair<string, string?>("ParentIndex", (span.Start + match.ParentIndex).ToString(CultureInfo.InvariantCulture)),
-                    });
+                {
+                    new KeyValuePair<string, string?>("Value", match.Value),
+                    new KeyValuePair<string, string?>("Parent", match.Parent),
+                    new KeyValuePair<string, string?>("ParentIndex", (span.Start + match.ParentIndex).ToString(CultureInfo.InvariantCulture)),
+                });
             }
             else
             {
                 properties = ImmutableDictionary.CreateRange(new[]
-                    {
-                        new KeyValuePair<string, string?>("Value", match.Value)
-                    });
+                {
+                    new KeyValuePair<string, string?>("Value", match.Value)
+                });
             }
 
             Diagnostic diagnostic = Diagnostic.Create(
@@ -109,10 +109,10 @@ internal class SpellingAnalysisContext
         foreach (SpellingMatch match in matches)
         {
             ImmutableDictionary<string, string?> properties = ImmutableDictionary.CreateRange(new[]
-                {
-                    new KeyValuePair<string, string?>("Value", match.Value),
-                    new KeyValuePair<string, string?>("FilePath", syntaxTree.FilePath),
-                });
+            {
+                new KeyValuePair<string, string?>("Value", match.Value),
+                new KeyValuePair<string, string?>("FilePath", syntaxTree.FilePath),
+            });
 
             Diagnostic diagnostic = Diagnostic.Create(
                 SpellcheckAnalyzer.DiagnosticDescriptor,

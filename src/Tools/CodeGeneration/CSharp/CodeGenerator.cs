@@ -43,31 +43,31 @@ public static class CodeGenerator
                                 .AddObsoleteAttributeIf(f.IsObsolete);
                         })
                         .Concat(new MemberDeclarationSyntax[]
-                            {
-                                MethodDeclaration(
-                                    Modifiers.Private_Static(),
-                                    ParseTypeName("IEnumerable<KeyValuePair<string, string>>"),
-                                    Identifier("GetRequiredOptions"),
-                                    ParameterList(),
-                                    Block(
-                                        analyzers
-                                            .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
-                                            .OrderBy(f => f.Id, StringComparer.InvariantCulture)
-                                            .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
-                                            .Select(f =>
-                                            {
-                                                AnalyzerConfigOption mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
+                        {
+                            MethodDeclaration(
+                                Modifiers.Private_Static(),
+                                ParseTypeName("IEnumerable<KeyValuePair<string, string>>"),
+                                Identifier("GetRequiredOptions"),
+                                ParameterList(),
+                                Block(
+                                    analyzers
+                                        .Where(f => f.ConfigOptions.Any(f => f.IsRequired))
+                                        .OrderBy(f => f.Id, StringComparer.InvariantCulture)
+                                        .Select(f => (id: f.Id, keys: f.ConfigOptions.Where(f => f.IsRequired)))
+                                        .Select(f =>
+                                        {
+                                            AnalyzerConfigOption mismatch = f.keys.FirstOrDefault(f => !options.Any(o => o.Key == f.Key));
 
-                                                Debug.Assert(mismatch.Key is null, mismatch.Key);
+                                            Debug.Assert(mismatch.Key is null, mismatch.Key);
 
-                                                IEnumerable<string> optionKeys = f.keys
-                                                    .Join(options, f => f.Key, f => f.Key, (_, g) => g)
-                                                    .Select(f => $"ConfigOptionKeys.{f.Id}");
+                                            IEnumerable<string> optionKeys = f.keys
+                                                .Join(options, f => f.Key, f => f.Key, (_, g) => g)
+                                                .Select(f => $"ConfigOptionKeys.{f.Id}");
 
-                                                return YieldReturnStatement(
-                                                    ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionKeys)}))"));
-                                            }))),
-                            })
+                                            return YieldReturnStatement(
+                                                ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionKeys)}))"));
+                                        }))),
+                        })
                         .ToSyntaxList())));
 
         compilationUnit = compilationUnit.NormalizeWhitespace();

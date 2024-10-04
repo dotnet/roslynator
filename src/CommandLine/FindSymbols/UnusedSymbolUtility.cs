@@ -14,18 +14,18 @@ namespace Roslynator;
 internal static class UnusedSymbolUtility
 {
     private static readonly MetadataNameSet _classAttributeSymbols = new(new[]
-        {
-            MetadataName.Parse("Microsoft.CodeAnalysis.CodeFixes.ExportCodeFixProviderAttribute"),
-            MetadataName.Parse("Microsoft.CodeAnalysis.CodeRefactorings.ExportCodeRefactoringProviderAttribute"),
-            MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute"),
-            MetadataName.Parse("System.Composition.ExportAttribute"),
-        });
+    {
+        MetadataName.Parse("Microsoft.CodeAnalysis.CodeFixes.ExportCodeFixProviderAttribute"),
+        MetadataName.Parse("Microsoft.CodeAnalysis.CodeRefactorings.ExportCodeRefactoringProviderAttribute"),
+        MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute"),
+        MetadataName.Parse("System.Composition.ExportAttribute"),
+    });
 
     private static readonly MetadataNameSet _methodAttributeSymbols = new(new[]
-        {
-            MetadataName.Parse("Xunit.FactAttribute"),
-            MetadataName.Parse("Xunit.TheoryAttribute"),
-        });
+    {
+        MetadataName.Parse("Xunit.FactAttribute"),
+        MetadataName.Parse("Xunit.TheoryAttribute"),
+    });
 
     public static bool CanBeUnusedSymbol(ISymbol symbol)
     {

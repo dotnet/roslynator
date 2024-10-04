@@ -197,6 +197,7 @@ dotnet_diagnostic.IDE0074.severity = none
 dotnet_diagnostic.IDE0074WithoutSuggestion.severity = none
 dotnet_diagnostic.IDE0079.severity = none
 dotnet_diagnostic.IDE0090.severity = none
+dotnet_diagnostic.IDE0130.severity = none
 dotnet_diagnostic.IDE0220.severity = none
 dotnet_diagnostic.IDE0270.severity = silent
 dotnet_diagnostic.IDE0290.severity = none # Use primary constructor

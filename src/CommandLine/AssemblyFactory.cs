@@ -34,19 +34,19 @@ internal static class AssemblyFactory
                     ParseName("Roslynator.Runtime"),
                     default,
                     List(new UsingDirectiveSyntax[]
-                        {
-                            UsingDirective(ParseName("System")),
-                            UsingDirective(ParseName("System.Collections.Generic")),
-                            UsingDirective(ParseName("System.Linq")),
-                            UsingDirective(ParseName("System.Text")),
-                            UsingDirective(ParseName("System.Text.RegularExpressions")),
-                            UsingDirective(ParseName("Microsoft.CodeAnalysis")),
-                            UsingDirective(ParseName("Microsoft.CodeAnalysis.CSharp")),
+                    {
+                        UsingDirective(ParseName("System")),
+                        UsingDirective(ParseName("System.Collections.Generic")),
+                        UsingDirective(ParseName("System.Linq")),
+                        UsingDirective(ParseName("System.Text")),
+                        UsingDirective(ParseName("System.Text.RegularExpressions")),
+                        UsingDirective(ParseName("Microsoft.CodeAnalysis")),
+                        UsingDirective(ParseName("Microsoft.CodeAnalysis.CSharp")),
 #if DEBUG
-                            UsingDirective(ParseName("Roslynator")),
-                            UsingDirective(ParseName("Roslynator.CSharp")),
+                        UsingDirective(ParseName("Roslynator")),
+                        UsingDirective(ParseName("Roslynator.CSharp")),
 #endif
-                        }),
+                    }),
                     SingletonList<MemberDeclarationSyntax>(
                         ClassDeclaration(
                             default,

@@ -15,24 +15,24 @@ namespace Roslynator.CSharp.Analysis;
 internal abstract class ImplicitOrExplicitCreationAnalysis
 {
     protected static readonly ImmutableDictionary<string, string> _implicitToCollectionExpression = ImmutableDictionary.CreateRange(new[]
-        {
-            new KeyValuePair<string, string>(DiagnosticPropertyKeys.ImplicitToCollectionExpression, null)
-        });
+    {
+        new KeyValuePair<string, string>(DiagnosticPropertyKeys.ImplicitToCollectionExpression, null)
+    });
 
     protected static readonly ImmutableDictionary<string, string> _collectionExpressionToImplicit = ImmutableDictionary.CreateRange(new[]
-        {
-            new KeyValuePair<string, string>(DiagnosticPropertyKeys.CollectionExpressionToImplicit, null)
-        });
+    {
+        new KeyValuePair<string, string>(DiagnosticPropertyKeys.CollectionExpressionToImplicit, null)
+    });
 
     protected static readonly ImmutableDictionary<string, string> _explicitToCollectionExpression = ImmutableDictionary.CreateRange(new[]
-        {
-            new KeyValuePair<string, string>(DiagnosticPropertyKeys.ExplicitToCollectionExpression, null)
-        });
+    {
+        new KeyValuePair<string, string>(DiagnosticPropertyKeys.ExplicitToCollectionExpression, null)
+    });
 
     protected static readonly ImmutableDictionary<string, string> _varToExplicit = ImmutableDictionary.CreateRange(new[]
-        {
-            new KeyValuePair<string, string>(DiagnosticPropertyKeys.VarToExplicit, null)
-        });
+    {
+        new KeyValuePair<string, string>(DiagnosticPropertyKeys.VarToExplicit, null)
+    });
 
     public abstract TypeStyle GetTypeStyle(ref SyntaxNodeAnalysisContext context);
 
