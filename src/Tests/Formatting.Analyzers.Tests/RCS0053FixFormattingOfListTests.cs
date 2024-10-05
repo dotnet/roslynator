@@ -1112,6 +1112,48 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+    public async Task Test_Multiline_PreprocessorDirectives()
+    {
+        await VerifyDiagnosticAndFixAsync("""
+#define FOO
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var x = new List<string>([|new string[]
+            {
+                "",
+                "",
+#if FOO
+                "",
+#endif
+            }|]);
+    }
+}
+""", """
+#define FOO
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var x = new List<string>(new string[]
+        {
+            "",
+            "",
+#if FOO
+            "",
+#endif
+        });
+    }
+}
+""");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
     public async Task TestNoDiagnostic_Singleline()
     {
         await VerifyNoDiagnosticAsync(@"
