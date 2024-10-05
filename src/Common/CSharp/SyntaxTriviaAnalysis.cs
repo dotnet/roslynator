@@ -226,9 +226,12 @@ internal static class SyntaxTriviaAnalysis
     {
         foreach (SyntaxTrivia trivia in node.DescendantTrivia(span))
         {
-            if (trivia.IsKind(SyntaxKind.EndOfLineTrivia, SyntaxKind.SingleLineDocumentationCommentTrivia))
+            if (trivia.IsKind(SyntaxKind.EndOfLineTrivia, SyntaxKind.SingleLineDocumentationCommentTrivia)
+                || SyntaxFacts.IsPreprocessorDirective(trivia.Kind()))
             {
-                int position = trivia.Span.End;
+                int position = (SyntaxFacts.IsPreprocessorDirective(trivia.Kind()))
+                    ? trivia.FullSpan.End
+                    : trivia.Span.End;
 
                 if (span.Contains(position))
                 {
