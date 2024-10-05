@@ -178,6 +178,10 @@ internal class FindSymbolCommand : MSBuildWorkspaceCommand<CommandResult>
             foreach (SyntaxReference reference in grouping.OrderByDescending(f => f.Span.Start))
             {
                 Document document = project.GetDocument(grouping.Key);
+
+                if (document is null)
+                    continue;
+
                 SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
                 SyntaxNode node = root.FindNode(reference.Span);
 
