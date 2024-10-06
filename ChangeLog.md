@@ -10,8 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) ([PR](https://github.com/dotnet/roslynator/pull/1547))
-- [CLI] Fix attempt remove symbol declaration that does not physically exist on a disk ([PR](https://github.com/dotnet/roslynator/pull/1550))
-  - `roslynator find-symbol --unused --remove`
+- [CLI] Exclude symbol that do not have reference but should not be removed ([PR](https://github.com/dotnet/roslynator/pull/1550))
 
 ## [4.12.7] - 2024-10-01
 
