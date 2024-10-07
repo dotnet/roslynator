@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -16,7 +17,16 @@ internal static class MarkTypeWithDebuggerDisplayAttributeRefactoring
         TypeDeclarationSyntax typeDeclaration,
         CancellationToken cancellationToken)
     {
-        int position = typeDeclaration.OpenBraceToken.Span.End;
+        TypeDeclarationSyntax newTypeDeclaration = typeDeclaration;
+
+        if (typeDeclaration.OpenBraceToken.IsKind(SyntaxKind.None))
+        {
+            newTypeDeclaration = typeDeclaration.WithSemicolonToken(default)
+                .WithOpenBraceToken(OpenBraceToken())
+                .WithCloseBraceToken(CloseBraceToken());
+        }
+
+        int position = newTypeDeclaration.Identifier.Span.End;
 
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
@@ -27,9 +37,15 @@ internal static class MarkTypeWithDebuggerDisplayAttributeRefactoring
                 ParseName("System.Diagnostics.DebuggerDisplayAttribute").WithSimplifierAnnotation(),
                 AttributeArgument(LiteralExpression($"{{{propertyName},nq}}"))));
 
-        PropertyDeclarationSyntax propertyDeclaration = DebuggerDisplayPropertyDeclaration(propertyName, InvocationExpression(IdentifierName("ToString")));
+        INamedTypeSymbol typeSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken)!;
 
-        TypeDeclarationSyntax newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(typeDeclaration, keepDocumentationCommentOnTop: true, attributeList);
+        ExpressionSyntax returnExpression = (typeSymbol.TypeKind == TypeKind.Struct && typeSymbol.IsRefLikeType)
+            ? StringLiteralExpression("")
+            : InvocationExpression(IdentifierName("ToString"));
+
+        PropertyDeclarationSyntax propertyDeclaration = DebuggerDisplayPropertyDeclaration(propertyName, returnExpression);
+
+        newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(newTypeDeclaration, keepDocumentationCommentOnTop: true, attributeList);
 
         newTypeDeclaration = MemberDeclarationInserter.Default.Insert(newTypeDeclaration, propertyDeclaration);
 
