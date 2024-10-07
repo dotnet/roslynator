@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix analyzer [RCS0053](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS0053) ([PR](https://github.com/dotnet/roslynator/pull/1547))
 - Fix analyzer [RCS1223](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1223) ([PR](https://github.com/dotnet/roslynator/pull/1552))
-- [CLI] Exclude symbol that do not have reference but should not be removed ([PR](https://github.com/dotnet/roslynator/pull/1550))
+- [CLI] Improve removing of unused symbols ([PR](https://github.com/dotnet/roslynator/pull/1550))
 
 ## [4.12.7] - 2024-10-01
 
