@@ -233,10 +233,10 @@ internal static class AddExceptionToDocumentationCommentAnalysis
             {
                 TypeSyntax exceptionType = catchClause.Declaration?.Type;
 
-                    return exceptionType is null
-                        || SymbolEqualityComparer.Default.Equals(
-                            exceptionSymbol,
-                            semanticModel.GetTypeSymbol(exceptionType, cancellationToken));
+                return exceptionType is null
+                    || SymbolEqualityComparer.Default.Equals(
+                        exceptionSymbol,
+                        semanticModel.GetTypeSymbol(exceptionType, cancellationToken));
                 }))
             {
                 return true;
