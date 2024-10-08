@@ -117,13 +117,11 @@ internal static class AddExceptionToDocumentationCommentAnalysis
                             {
                                 if (info.IsEmptyElement)
                                 {
-                                    containsException = ContainsException((XmlEmptyElementSyntax)info.Element,
-                                        exceptionSymbol, semanticModel, cancellationToken);
+                                    containsException = ContainsException((XmlEmptyElementSyntax)info.Element, exceptionSymbol, semanticModel, cancellationToken);
                                 }
                                 else
                                 {
-                                    containsException = ContainsException((XmlElementSyntax)info.Element, exceptionSymbol,
-                                        semanticModel, cancellationToken);
+                                    containsException = ContainsException((XmlElementSyntax)info.Element, exceptionSymbol, semanticModel, cancellationToken);
                                 }
                             }
 
@@ -143,26 +141,23 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         }
 
         return !containsIncludeOrExclude
-               && !containsException;
+            && !containsException;
     }
 
-    private static bool ContainsException(XmlElementSyntax xmlElement, INamedTypeSymbol exceptionSymbol,
-        SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static bool ContainsException(XmlElementSyntax xmlElement, INamedTypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         XmlElementStartTagSyntax startTag = xmlElement.StartTag;
 
         return startTag is not null
-               && ContainsException(startTag.Attributes, exceptionSymbol, semanticModel, cancellationToken);
+            && ContainsException(startTag.Attributes, exceptionSymbol, semanticModel, cancellationToken);
     }
 
-    private static bool ContainsException(XmlEmptyElementSyntax xmlEmptyElement, INamedTypeSymbol exceptionSymbol,
-        SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static bool ContainsException(XmlEmptyElementSyntax xmlEmptyElement, INamedTypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         return ContainsException(xmlEmptyElement.Attributes, exceptionSymbol, semanticModel, cancellationToken);
     }
 
-    private static bool ContainsException(SyntaxList<XmlAttributeSyntax> attributes, INamedTypeSymbol exceptionSymbol,
-        SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static bool ContainsException(SyntaxList<XmlAttributeSyntax> attributes, INamedTypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         foreach (XmlAttributeSyntax xmlAttribute in attributes)
         {
@@ -181,8 +176,7 @@ internal static class AddExceptionToDocumentationCommentAnalysis
                     // https://github.com/dotnet/roslyn/issues/22923
                     if (exceptionSymbol.IsGenericType
                         && symbol.IsGenericType
-                        && SymbolEqualityComparer.Default.Equals(exceptionSymbol.ConstructedFrom,
-                            symbol.ConstructedFrom))
+                        && SymbolEqualityComparer.Default.Equals(exceptionSymbol.ConstructedFrom, symbol.ConstructedFrom))
                     {
                         return true;
                     }
@@ -222,15 +216,14 @@ internal static class AddExceptionToDocumentationCommentAnalysis
     private static bool InheritsFromException(ITypeSymbol typeSymbol, INamedTypeSymbol exceptionSymbol)
     {
         return typeSymbol?.TypeKind == TypeKind.Class
-               && typeSymbol.BaseType?.IsObject() == false
-               && typeSymbol.InheritsFrom(exceptionSymbol);
+            && typeSymbol.BaseType?.IsObject() == false
+            && typeSymbol.InheritsFrom(exceptionSymbol);
     }
 
     /// <summary>
     /// Walk upwards from throw statement and find all try statements in method and see if any of them catches the thrown exception type
     /// </summary>
-    private static bool IsExceptionTypeCaughtInMethod(SyntaxNode node, ITypeSymbol exceptionSymbol,
-        SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static bool IsExceptionTypeCaughtInMethod(SyntaxNode node, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         SyntaxNode parent = node.Parent;
         while (parent is not null)
