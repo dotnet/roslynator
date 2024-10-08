@@ -230,8 +230,8 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         {
             if (parent is TryStatementSyntax tryStatement
                 && tryStatement.Catches.Any(catchClause =>
-                {
-                    var exceptionType = catchClause.Declaration?.Type;
+            {
+                TypeSyntax exceptionType = catchClause.Declaration?.Type;
 
                     return exceptionType is null
                         || SymbolEqualityComparer.Default.Equals(
