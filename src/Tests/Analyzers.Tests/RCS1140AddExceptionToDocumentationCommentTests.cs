@@ -151,4 +151,30 @@ class C
 
 """);
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddExceptionToDocumentationComment)]
+    public async Task TestNoDiagnostic_CatchWithoutDeclaration()
+    {
+        await VerifyNoDiagnosticAsync("""
+using System;
+
+public class C
+{
+    /// <summary>
+    /// Bla
+    /// </summary>
+    public void M()
+    {
+        try
+        {
+            M();
+        }
+        catch
+        {
+            throw new InvalidOperationException("MyCustomException");
+        }
+    }
+}
+""");
+    }
 }

@@ -228,9 +228,20 @@ internal static class AddExceptionToDocumentationCommentAnalysis
         SyntaxNode parent = node.Parent;
         while (parent is not null)
         {
-            if (parent is TryStatementSyntax tryStatement && tryStatement.Catches.Any(catchClause => SymbolEqualityComparer.Default.Equals(exceptionSymbol, semanticModel.GetTypeSymbol(catchClause.Declaration?.Type, cancellationToken))))
+            if (parent is TryStatementSyntax tryStatement)
             {
-                return true;
+                foreach (CatchClauseSyntax catchClause in tryStatement.Catches)
+                {
+                    TypeSyntax exceptionType = catchClause.Declaration?.Type;
+
+                    if (exceptionType is null
+                        || SymbolEqualityComparer.Default.Equals(
+                            exceptionSymbol,
+                            semanticModel.GetTypeSymbol(exceptionType, cancellationToken)))
+                    {
+                        return true;
+                    }
+                }
             }
 
             if (parent is MemberDeclarationSyntax or LocalFunctionStatementSyntax)
