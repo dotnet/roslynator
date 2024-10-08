@@ -1,6 +1,5 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -171,13 +170,20 @@ internal class FindSymbolCommand : MSBuildWorkspaceCommand<CommandResult>
         Project project,
         CancellationToken cancellationToken)
     {
-        foreach (IGrouping<DocumentId, SyntaxReference> grouping in symbols
-            .SelectMany(f => f.DeclaringSyntaxReferences)
-            .GroupBy(f => project.GetDocument(f.SyntaxTree).Id))
+        foreach (IGrouping<DocumentId, (ISymbol Symbol, SyntaxReference Reference)> grouping in symbols
+            .SelectMany(s => s.DeclaringSyntaxReferences.Select(r => (Symbol: s, Reference: r)))
+            .GroupBy(f => project.GetDocument(f.Reference.SyntaxTree)!.Id))
         {
-            foreach (SyntaxReference reference in grouping.OrderByDescending(f => f.Span.Start))
+            foreach ((ISymbol symbol, SyntaxReference reference) in grouping.OrderByDescending(f => f.Reference.Span.Start))
             {
                 Document document = project.GetDocument(grouping.Key);
+
+                if (document is null)
+                {
+                    Debug.Fail($"Document not found for a symbol declaration '{symbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    continue;
+                }
+
                 SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
                 SyntaxNode node = root.FindNode(reference.Span);
 

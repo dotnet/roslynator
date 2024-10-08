@@ -19,6 +19,7 @@ internal static class UnusedSymbolUtility
         MetadataName.Parse("Microsoft.CodeAnalysis.CodeRefactorings.ExportCodeRefactoringProviderAttribute"),
         MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute"),
         MetadataName.Parse("System.Composition.ExportAttribute"),
+        MetadataName.Parse("Microsoft.Extensions.Options.OptionsValidatorAttribute"),
     });
 
     private static readonly MetadataNameSet _methodAttributeSymbols = new(new[]
