@@ -271,25 +271,24 @@ class C
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
-    public async Task TestNoDiagnostic_NotEnumType2()
+    public async Task TestNoDiagnostic_NotConstant()
     {
         await VerifyNoDiagnosticAsync(@"
 using System.IO;
 
 class P
 {
-    private  FileAttributes _skipMask = FileAttributes.Device | FileAttributes.Offline;
+    private  FileAttributes _flags = FileAttributes.Device | FileAttributes.Offline;
 
     void M()
     {
-        var fileAttr = FileAttributes.Device;
+        var flag = FileAttributes.Device;
 
-        if ((fileAttr & _skipMask) != 0)
+        if ((flag & _flags) != 0)
         {
         }
     }
 }
 ");
     }
-
 }

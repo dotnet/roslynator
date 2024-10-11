@@ -183,26 +183,4 @@ public sealed class UseHasFlagMethodOrBitwiseOperatorAnalyzer : BaseDiagnosticAn
             invocation,
             "bitwise operator");
     }
-
-    private static bool IsConstantAndCompositeEnumValue(
-        SyntaxNode node,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken = default)
-    {
-        var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(node, cancellationToken);
-
-        if (enumTypeSymbol?.EnumUnderlyingType is not null)
-        {
-            Optional<object> constantValue = semanticModel.GetConstantValue(node, cancellationToken);
-
-            if (constantValue.HasValue)
-            {
-                ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value!, enumTypeSymbol);
-
-                return FlagsUtility<ulong>.Instance.IsComposite(value);
-            }
-        }
-
-        return false;
-    }
 }
