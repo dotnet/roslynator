@@ -269,4 +269,27 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    public async Task TestNoDiagnostic_NotEnumType2()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.IO;
+
+class P
+{
+    private  FileAttributes _skipMask = FileAttributes.Device | FileAttributes.Offline;
+
+    void M()
+    {
+        var fileAttr = FileAttributes.Device;
+
+        if ((fileAttr & _skipMask) != 0)
+        {
+        }
+    }
+}
+");
+    }
+
 }

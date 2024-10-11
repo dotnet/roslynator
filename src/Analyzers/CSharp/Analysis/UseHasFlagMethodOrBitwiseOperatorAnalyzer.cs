@@ -79,8 +79,20 @@ public sealed class UseHasFlagMethodOrBitwiseOperatorAnalyzer : BaseDiagnosticAn
 
         if (otherExpression.IsNumericLiteralExpression("0"))
         {
-            if (SyntaxUtility.IsCompositeEnumValue(right, semanticModel, cancellationToken))
-                return;
+            var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(right, cancellationToken);
+
+            if (enumTypeSymbol?.EnumUnderlyingType is not null)
+            {
+                Optional<object> constantValue = semanticModel.GetConstantValue(right, cancellationToken);
+
+                if (!constantValue.HasValue)
+                    return;
+
+                ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value!, enumTypeSymbol);
+
+                if (FlagsUtility<ulong>.Instance.IsComposite(value))
+                    return;
+            }
         }
         else if (!CSharpFactory.AreEquivalent(right, otherExpression))
         {
@@ -170,5 +182,27 @@ public sealed class UseHasFlagMethodOrBitwiseOperatorAnalyzer : BaseDiagnosticAn
             DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
             invocation,
             "bitwise operator");
+    }
+
+    private static bool IsConstantAndCompositeEnumValue(
+        SyntaxNode node,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
+    {
+        var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(node, cancellationToken);
+
+        if (enumTypeSymbol?.EnumUnderlyingType is not null)
+        {
+            Optional<object> constantValue = semanticModel.GetConstantValue(node, cancellationToken);
+
+            if (constantValue.HasValue)
+            {
+                ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value!, enumTypeSymbol);
+
+                return FlagsUtility<ulong>.Instance.IsComposite(value);
+            }
+        }
+
+        return false;
     }
 }
