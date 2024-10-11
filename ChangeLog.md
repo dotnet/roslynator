@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix analyzer [RCS1140](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1140) ([PR](https://github.com/dotnet/roslynator/pull/1554))
 - Fix analyzer [RCS1096](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1096) ([PR](https://github.com/dotnet/roslynator/pull/1558))
 - [CLI] Improve removing of unused symbols ([PR](https://github.com/dotnet/roslynator/pull/1550))
+- [CLI] Fix command `generate-doc` ([PR](https://github.com/dotnet/roslynator/pull/1559))
 
 ## [4.12.7] - 2024-10-01
 

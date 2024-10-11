@@ -1423,11 +1423,11 @@ public abstract class DocumentationWriter : IDisposable
 
                     if (symbol.Kind == SymbolKind.Parameter)
                     {
-                        GetXmlDocumentation(symbol.ContainingSymbol)?.GetElement(WellKnownXmlTags.Param, "name", symbol.Name)?.WriteContentTo(this);
+                        GetXmlDocumentation(symbol.ContainingSymbol)?.GetElement(WellKnownXmlTags.Param, "name", symbol.Name)?.WriteContentTo(this, inlineOnly: true);
                     }
                     else if (symbol.Kind == SymbolKind.TypeParameter)
                     {
-                        GetXmlDocumentation(symbol.ContainingSymbol)?.GetElement(WellKnownXmlTags.TypeParam, "name", symbol.Name)?.WriteContentTo(this);
+                        GetXmlDocumentation(symbol.ContainingSymbol)?.GetElement(WellKnownXmlTags.TypeParam, "name", symbol.Name)?.WriteContentTo(this, inlineOnly: true);
                     }
                     else
                     {
