@@ -269,4 +269,26 @@ class C
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+    public async Task TestNoDiagnostic_NotConstant()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.IO;
+
+class P
+{
+    private  FileAttributes _flags = FileAttributes.Device | FileAttributes.Offline;
+
+    void M()
+    {
+        var flag = FileAttributes.Device;
+
+        if ((flag & _flags) != 0)
+        {
+        }
+    }
+}
+");
+    }
 }
