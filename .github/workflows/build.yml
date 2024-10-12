@@ -16,7 +16,7 @@ env:
 
 jobs:
   pre_build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.version.outputs.version }}
       version3: ${{ steps.version.outputs.version3 }}
@@ -73,7 +73,7 @@ jobs:
   build_core_and_testing:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: pre_build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
     defaults:
@@ -92,7 +92,7 @@ jobs:
   build_analyzers:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: pre_build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
     strategy:
@@ -125,7 +125,7 @@ jobs:
   build_refactorings:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: pre_build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
     defaults:
@@ -146,7 +146,7 @@ jobs:
   build_code_fixes:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: pre_build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
     defaults:
@@ -201,7 +201,7 @@ jobs:
   build_vs_code_extension:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'v') 
     needs: [ pre_build, build_analyzers ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       Version: ${{ needs.pre_build.outputs.version }}
     defaults:
@@ -251,7 +251,7 @@ jobs:
   build_core_cli:
     if: github.ref_type != 'tag' || startsWith(github.ref_name, 'cli-v')
     needs: pre_build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       RoslynatorDotNetCli: true
       RoslynatorCliVersion: ${{ needs.pre_build.outputs.cliVersion }}
@@ -293,7 +293,7 @@ jobs:
 
   publish_nuget_packages:
     needs: [ build_core_and_testing, build_analyzers, build_refactorings, build_code_fixes ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
       - uses: actions/download-artifact@v4
@@ -306,7 +306,7 @@ jobs:
 
   publish_cli_nuget_packages:
     needs: [ build_core_cli, build_framework_cli ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'cli-v')
     steps:
       - uses: actions/download-artifact@v4
@@ -319,7 +319,7 @@ jobs:
 
   publish_vs_code_extension:
     needs: [ pre_build, build_vs_extension ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
       - uses: actions/download-artifact@v4
@@ -332,7 +332,7 @@ jobs:
 
   publish_ovsx_extension:
     needs: [ pre_build, build_vs_code_extension ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     steps:
       - uses: actions/download-artifact@v4
