@@ -424,16 +424,6 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         return document.ReplaceNodeAsync(invocationExpression, newInvocationExpression, cancellationToken);
     }
 
-    private static Task<Document> CallFindInsteadOfFirstOrDefaultAsync(
-        Document document,
-        in SimpleMemberInvocationExpressionInfo invocationInfo,
-        CancellationToken cancellationToken)
-    {
-        IdentifierNameSyntax newName = IdentifierName("Find").WithTriviaFrom(invocationInfo.Name);
-
-        return document.ReplaceNodeAsync(invocationInfo.Name, newName, cancellationToken);
-    }
-
     public static Task<Document> UseCountOrLengthPropertyInsteadOfCountMethodAsync(
         Document document,
         InvocationExpressionSyntax invocation,
