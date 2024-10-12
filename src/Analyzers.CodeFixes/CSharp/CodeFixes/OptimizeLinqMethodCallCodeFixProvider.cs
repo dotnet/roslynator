@@ -178,18 +178,6 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
                         context.RegisterCodeFix(codeAction, diagnostic);
                         return;
                     }
-                case "FirstOrDefault":
-                    {
-                        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Call 'Find' instead of 'FirstOrDefault'",
-                            ct => CallFindInsteadOfFirstOrDefaultAsync(document, invocationInfo, ct),
-                            GetEquivalenceKey(diagnostic, "CallFindInsteadOfFirstOrDefault"));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
                 case "First":
                     {
                         if (diagnostic.Properties.TryGetValue("MethodName", out string methodName)
