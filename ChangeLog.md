@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Change
 
-- Do not suggest to change `list.FirstOrDefault(predicate)` to `list.Find(predicate)` [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1077) ([PR](https://github.com/dotnet/roslynator/pull/1653))
-  - Performance gain is negligible or `FirstOrDefault` can be even faster on .NET 9 (see related [issue](https://github.com/dotnet/roslynator/pull/1531) for more details).
+- Update analyzer [RCS1077](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1077) ([PR](https://github.com/dotnet/roslynator/pull/1653))
+  - Do not suggest to change `list.FirstOrDefault(predicate)` to `list.Find(predicate)`.
+    Performance gain is negligible and actually `FirstOrDefault` can be even faster on .NET 9 (see related [issue](https://github.com/dotnet/roslynator/pull/1531) for more details).
 
 ## [4.12.8] - 2024-10-11
 
