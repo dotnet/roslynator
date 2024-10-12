@@ -235,14 +235,6 @@ internal static class OptimizeLinqMethodCallAnalysis
                     && SymbolUtility.IsPredicateFunc(parameters[1].Type, methodSymbol.TypeArguments[0])
                     && invocationInfo.Arguments[0].Expression is LambdaExpressionSyntax)
                 {
-                    ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(invocationInfo.Expression, context.CancellationToken);
-
-                    if (typeSymbol?.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Collections_Generic_List_T) == true)
-                    {
-                        Report(context, invocationInfo.Name);
-                        return;
-                    }
-
                     success = true;
                 }
             }

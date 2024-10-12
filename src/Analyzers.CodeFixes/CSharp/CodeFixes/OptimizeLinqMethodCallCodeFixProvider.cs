@@ -178,18 +178,6 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
                         context.RegisterCodeFix(codeAction, diagnostic);
                         return;
                     }
-                case "FirstOrDefault":
-                    {
-                        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Call 'Find' instead of 'FirstOrDefault'",
-                            ct => CallFindInsteadOfFirstOrDefaultAsync(document, invocationInfo, ct),
-                            GetEquivalenceKey(diagnostic, "CallFindInsteadOfFirstOrDefault"));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
                 case "First":
                     {
                         if (diagnostic.Properties.TryGetValue("MethodName", out string methodName)
@@ -434,16 +422,6 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
             .WithExpression(memberAccessExpression.WithName(newName));
 
         return document.ReplaceNodeAsync(invocationExpression, newInvocationExpression, cancellationToken);
-    }
-
-    private static Task<Document> CallFindInsteadOfFirstOrDefaultAsync(
-        Document document,
-        in SimpleMemberInvocationExpressionInfo invocationInfo,
-        CancellationToken cancellationToken)
-    {
-        IdentifierNameSyntax newName = IdentifierName("Find").WithTriviaFrom(invocationInfo.Name);
-
-        return document.ReplaceNodeAsync(invocationInfo.Name, newName, cancellationToken);
     }
 
     public static Task<Document> UseCountOrLengthPropertyInsteadOfCountMethodAsync(
