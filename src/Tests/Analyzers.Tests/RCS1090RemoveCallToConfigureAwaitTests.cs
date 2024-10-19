@@ -555,4 +555,21 @@ struct NonAwaitable
 }
 ");
     }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConfigureAwait)]
+    public async Task TestNoDiagnostic_ConfigureAwaitTrue()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task M()
+    {
+        Task task = default;
+        await task.ConfigureAwait(true);
+    }
+}
+");
+    }
 }
