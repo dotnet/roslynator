@@ -98,6 +98,9 @@ internal static class XmlExtensions
                                 }
                             case XmlTag.Para:
                                 {
+                                    if (inlineOnly)
+                                        break;
+
                                     writer.WriteLine();
                                     writer.WriteLine();
                                     WriteContentTo(e, writer);
