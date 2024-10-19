@@ -567,7 +567,7 @@ class C
     async Task M()
     {
         Task task = default;
-        await task.ConfigureAwait();
+        await task.ConfigureAwait(true);
     }
 }
 ");
