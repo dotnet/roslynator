@@ -67,7 +67,7 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
 
         SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-        ExpressionSyntax value = GetExpressionToInline(localDeclaration, semanticModel, cancellationToken);
+        ExpressionSyntax value = GetExpressionToInline(localDeclaration, nextStatement, semanticModel, cancellationToken);
 
         StatementSyntax newStatement = GetStatementWithInlinedExpression(nextStatement, value);
 
@@ -93,7 +93,11 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
         return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
     }
 
-    private static ExpressionSyntax GetExpressionToInline(LocalDeclarationStatementSyntax localDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static ExpressionSyntax GetExpressionToInline(
+        LocalDeclarationStatementSyntax localDeclaration,
+        StatementSyntax statement,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
     {
         VariableDeclarationSyntax variableDeclaration = localDeclaration.Declaration;
 
@@ -114,20 +118,41 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
         {
             expression = expression.Parenthesize();
 
-            ExpressionSyntax typeExpression = (variableDeclaration.Type.IsVar)
-                ? variableDeclaration.Variables[0].Initializer.Value
-                : variableDeclaration.Type;
+            TypeSyntax type = variableDeclaration.Type;
+            ITypeSymbol typeSymbol;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(typeExpression, cancellationToken);
-
-            if (typeSymbol.SupportsExplicitDeclaration())
+            if (type.IsVar)
             {
-                TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, localDeclaration.SpanStart);
-
-                expression = SyntaxFactory.CastExpression(type, expression).WithSimplifierAnnotation();
+                typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables[0].Initializer.Value, cancellationToken)!;
+                type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
+            }
+            else
+            {
+                typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken)!;
             }
 
-            return expression;
+            bool ShouldAddCast()
+            {
+                if (!typeSymbol.SupportsExplicitDeclaration())
+                    return false;
+
+                if (statement.IsKind(SyntaxKind.ReturnStatement))
+                {
+                    IMethodSymbol enclosingSymbol = semanticModel.GetEnclosingSymbol<IMethodSymbol>(variableDeclaration.Type.SpanStart, cancellationToken);
+
+                    if (enclosingSymbol is not null
+                        && SymbolEqualityComparer.Default.Equals(typeSymbol, enclosingSymbol.ReturnType))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return (ShouldAddCast())
+                ? SyntaxFactory.CastExpression(type.WithoutTrivia(), expression).WithSimplifierAnnotation()
+                : expression;
         }
     }
 
