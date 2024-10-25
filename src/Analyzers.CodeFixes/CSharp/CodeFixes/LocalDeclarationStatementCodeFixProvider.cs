@@ -151,7 +151,7 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
             }
 
             return (ShouldAddCast())
-                ? SyntaxFactory.CastExpression(type, expression).WithSimplifierAnnotation()
+                ? SyntaxFactory.CastExpression(type.WithoutTrivia(), expression).WithSimplifierAnnotation()
                 : expression;
         }
     }
