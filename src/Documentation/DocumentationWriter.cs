@@ -1530,7 +1530,7 @@ public abstract class DocumentationWriter : IDisposable
 
             if (fieldSymbol.Type.TypeKind == TypeKind.Enum)
             {
-                OneOrMany<EnumFieldSymbolInfo>.Enumerator en = EnumUtility.GetConstituentFields(fieldSymbol.ConstantValue, fieldSymbol.ContainingType).GetEnumerator();
+                OneOrMany<EnumFieldSymbolInfo>.Enumerator en = EnumUtility.GetConstituentFields(fieldSymbol.ConstantValue, (INamedTypeSymbol)fieldSymbol.Type).GetEnumerator();
 
                 if (en.MoveNext())
                 {
