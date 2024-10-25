@@ -150,7 +150,7 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
                 return true;
             }
 
-            return ShouldAddCast()
+            return (ShouldAddCast())
                 ? SyntaxFactory.CastExpression(type, expression).WithSimplifierAnnotation()
                 : expression;
         }
