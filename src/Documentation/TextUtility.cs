@@ -35,6 +35,7 @@ internal static class TextUtility
         }
 
         if (trailingNewLine
+            && length > startIndex
             && s[length - 1] == '\n')
         {
             length--;

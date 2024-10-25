@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -87,7 +88,7 @@ public sealed class ConfigureAwaitAnalyzer : BaseDiagnosticAnalyzer
         //             ^^^^^^^^^^^^^^^^^^^^^^
         SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
 
-        if (!IsConfigureAwait(invocationInfo))
+        if (!IsConfigureAwaitFalse(invocationInfo, context.SemanticModel, context.CancellationToken))
             return;
 
         ITypeSymbol awaitedType = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
@@ -131,6 +132,13 @@ public sealed class ConfigureAwaitAnalyzer : BaseDiagnosticAnalyzer
             && invocationInfo.Name.IsKind(SyntaxKind.IdentifierName)
             && string.Equals(invocationInfo.NameText, "ConfigureAwait")
             && invocationInfo.Arguments.Count == 1;
+    }
+
+    private static bool IsConfigureAwaitFalse(SimpleMemberInvocationExpressionInfo invocationInfo, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        return IsConfigureAwait(invocationInfo)
+            && semanticModel.GetConstantValue(invocationInfo.Arguments[0].Expression, cancellationToken).Value is bool boolValue
+            && !boolValue;
     }
 
     private static bool IsConfigureAwaitable(ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
