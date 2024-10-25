@@ -124,7 +124,7 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
             if (type.IsVar)
             {
                 typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables[0].Initializer.Value, cancellationToken)!;
-                type = typeSymbol.ToTypeSyntax();
+                type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
             }
             else
             {
