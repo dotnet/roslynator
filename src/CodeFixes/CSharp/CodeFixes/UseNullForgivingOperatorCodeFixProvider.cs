@@ -52,25 +52,25 @@ public sealed class UseNullForgivingOperatorCodeFixProvider : CompilerDiagnostic
         switch (diagnostic.Id)
         {
             case CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType:
-                {
-                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator, context.Document, root.SyntaxTree))
-                        break;
-
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use null-forgiving operator",
-                        ct =>
-                        {
-                            PostfixUnaryExpressionSyntax newExpression = SuppressNullableWarningExpression(expression.WithoutTrivia())
-                                .WithTriviaFrom(expression);
-
-                            return document.ReplaceNodeAsync(expression, newExpression, ct);
-                        },
-                        GetEquivalenceKey(diagnostic));
-
-                    context.RegisterCodeFix(codeAction, diagnostic);
-
+            {
+                if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator, context.Document, root.SyntaxTree))
                     break;
-                }
+
+                CodeAction codeAction = CodeAction.Create(
+                    "Use null-forgiving operator",
+                    ct =>
+                    {
+                        PostfixUnaryExpressionSyntax newExpression = SuppressNullableWarningExpression(expression.WithoutTrivia())
+                            .WithTriviaFrom(expression);
+
+                        return document.ReplaceNodeAsync(expression, newExpression, ct);
+                    },
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+
+                break;
+            }
         }
     }
 }

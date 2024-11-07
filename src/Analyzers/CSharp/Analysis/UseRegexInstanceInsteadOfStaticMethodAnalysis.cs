@@ -70,25 +70,25 @@ internal static class UseRegexInstanceInsteadOfStaticMethodAnalysis
             switch (symbol.Kind)
             {
                 case SymbolKind.Field:
-                    {
-                        return ((IFieldSymbol)symbol).HasConstantValue;
-                    }
+                {
+                    return ((IFieldSymbol)symbol).HasConstantValue;
+                }
                 case SymbolKind.Method:
-                    {
-                        if (((IMethodSymbol)symbol).MethodKind != MethodKind.BuiltinOperator)
-                            return false;
-
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
-
-                        if (typeSymbol is null)
-                            return false;
-
-                        return typeSymbol.HasMetadataName(MetadataNames.System_Text_RegularExpressions_RegexOptions);
-                    }
-                default:
-                    {
+                {
+                    if (((IMethodSymbol)symbol).MethodKind != MethodKind.BuiltinOperator)
                         return false;
-                    }
+
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+                    if (typeSymbol is null)
+                        return false;
+
+                    return typeSymbol.HasMetadataName(MetadataNames.System_Text_RegularExpressions_RegexOptions);
+                }
+                default:
+                {
+                    return false;
+                }
             }
         }
     }

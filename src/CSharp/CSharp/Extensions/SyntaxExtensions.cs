@@ -473,55 +473,55 @@ public static class SyntaxExtensions
         {
             case SyntaxKind.IfDirectiveTrivia:
             case SyntaxKind.ElifDirectiveTrivia:
+            {
+                while (true)
                 {
-                    while (true)
+                    d = d.GetNextPossiblyRelatedDirective();
+
+                    if (d is null)
+                        break;
+
+                    if (d.IsKind(
+                        SyntaxKind.ElifDirectiveTrivia,
+                        SyntaxKind.ElseDirectiveTrivia,
+                        SyntaxKind.EndIfDirectiveTrivia))
                     {
-                        d = d.GetNextPossiblyRelatedDirective();
-
-                        if (d is null)
-                            break;
-
-                        if (d.IsKind(
-                            SyntaxKind.ElifDirectiveTrivia,
-                            SyntaxKind.ElseDirectiveTrivia,
-                            SyntaxKind.EndIfDirectiveTrivia))
-                        {
-                            return d;
-                        }
+                        return d;
                     }
-
-                    break;
                 }
+
+                break;
+            }
             case SyntaxKind.ElseDirectiveTrivia:
+            {
+                while (true)
                 {
-                    while (true)
-                    {
-                        d = d.GetNextPossiblyRelatedDirective();
+                    d = d.GetNextPossiblyRelatedDirective();
 
-                        if (d is null)
-                            break;
+                    if (d is null)
+                        break;
 
-                        if (d.Kind() == SyntaxKind.EndIfDirectiveTrivia)
-                            return d;
-                    }
-
-                    break;
+                    if (d.Kind() == SyntaxKind.EndIfDirectiveTrivia)
+                        return d;
                 }
+
+                break;
+            }
             case SyntaxKind.RegionDirectiveTrivia:
+            {
+                while (true)
                 {
-                    while (true)
-                    {
-                        d = d.GetNextPossiblyRelatedDirective();
+                    d = d.GetNextPossiblyRelatedDirective();
 
-                        if (d is null)
-                            break;
+                    if (d is null)
+                        break;
 
-                        if (d.Kind() == SyntaxKind.EndRegionDirectiveTrivia)
-                            return d;
-                    }
-
-                    break;
+                    if (d.Kind() == SyntaxKind.EndRegionDirectiveTrivia)
+                        return d;
                 }
+
+                break;
+            }
         }
 
         return null;
@@ -540,25 +540,25 @@ public static class SyntaxExtensions
                 switch (d.Kind())
                 {
                     case SyntaxKind.IfDirectiveTrivia:
+                    {
+                        do
                         {
-                            do
-                            {
-                                d = d.GetNextRelatedDirective();
-                            }
-                            while (d is not null && d.Kind() != SyntaxKind.EndIfDirectiveTrivia);
-
-                            continue;
+                            d = d.GetNextRelatedDirective();
                         }
+                        while (d is not null && d.Kind() != SyntaxKind.EndIfDirectiveTrivia);
+
+                        continue;
+                    }
                     case SyntaxKind.RegionDirectiveTrivia:
+                    {
+                        do
                         {
-                            do
-                            {
-                                d = d.GetNextRelatedDirective();
-                            }
-                            while (d is not null && d.Kind() != SyntaxKind.EndRegionDirectiveTrivia);
-
-                            continue;
+                            d = d.GetNextRelatedDirective();
                         }
+                        while (d is not null && d.Kind() != SyntaxKind.EndRegionDirectiveTrivia);
+
+                        continue;
+                    }
                 }
             }
 
@@ -2903,47 +2903,47 @@ public static class SyntaxExtensions
             {
                 case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.ParenthesizedLambdaExpression:
+                {
+                    if (semanticModel
+                        .GetTypeInfo(current, cancellationToken)
+                        .ConvertedType?
+                        .OriginalDefinition
+                        .HasMetadataName(MetadataNames.System_Linq_Expressions_Expression_T) == true)
                     {
-                        if (semanticModel
-                            .GetTypeInfo(current, cancellationToken)
-                            .ConvertedType?
-                            .OriginalDefinition
-                            .HasMetadataName(MetadataNames.System_Linq_Expressions_Expression_T) == true)
-                        {
-                            return true;
-                        }
-
-                        break;
+                        return true;
                     }
+
+                    break;
+                }
                 case SyntaxKind.AscendingOrdering:
                 case SyntaxKind.DescendingOrdering:
                 case SyntaxKind.GroupClause:
                 case SyntaxKind.SelectClause:
-                    {
-                        SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(current, cancellationToken);
+                {
+                    SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(current, cancellationToken);
 
-                        if (IsMethodThatAcceptsExpressionAsFirstParameter(symbolInfo))
-                            return true;
+                    if (IsMethodThatAcceptsExpressionAsFirstParameter(symbolInfo))
+                        return true;
 
-                        break;
-                    }
+                    break;
+                }
                 case SyntaxKind.FromClause:
                 case SyntaxKind.JoinClause:
                 case SyntaxKind.JoinIntoClause:
                 case SyntaxKind.LetClause:
                 case SyntaxKind.OrderByClause:
                 case SyntaxKind.WhereClause:
+                {
+                    QueryClauseInfo clauseInfo = semanticModel.GetQueryClauseInfo((QueryClauseSyntax)current, cancellationToken);
+
+                    if (IsMethodThatAcceptsExpressionAsFirstParameter(clauseInfo.CastInfo)
+                        || IsMethodThatAcceptsExpressionAsFirstParameter(clauseInfo.OperationInfo))
                     {
-                        QueryClauseInfo clauseInfo = semanticModel.GetQueryClauseInfo((QueryClauseSyntax)current, cancellationToken);
-
-                        if (IsMethodThatAcceptsExpressionAsFirstParameter(clauseInfo.CastInfo)
-                            || IsMethodThatAcceptsExpressionAsFirstParameter(clauseInfo.OperationInfo))
-                        {
-                            return true;
-                        }
-
-                        break;
+                        return true;
                     }
+
+                    break;
+                }
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.ArrowExpressionClause:
                 case SyntaxKind.Block:
@@ -3008,9 +3008,9 @@ public static class SyntaxExtensions
                 case SyntaxKind.WhenClause:
                 case SyntaxKind.BaseConstructorInitializer:
                 case SyntaxKind.ThisConstructorInitializer:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
 #if DEBUG
                 case SyntaxKind.Argument:
                 case SyntaxKind.ArgumentList:
@@ -3023,14 +3023,14 @@ public static class SyntaxExtensions
                 case SyntaxKind.VariableDeclarator:
                 case SyntaxKind.QueryBody:
                 case SyntaxKind.AnonymousObjectMemberDeclarator:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 default:
-                    {
-                        SyntaxDebug.Assert(current is ExpressionSyntax, current);
-                        break;
-                    }
+                {
+                    SyntaxDebug.Assert(current is ExpressionSyntax, current);
+                    break;
+                }
 #endif
             }
         }
@@ -3846,10 +3846,10 @@ public static class SyntaxExtensions
             case SyntaxKind.InterfaceDeclaration:
                 return ((InterfaceDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
             default:
-                {
-                    SyntaxDebug.Fail(typeDeclaration);
-                    return typeDeclaration;
-                }
+            {
+                SyntaxDebug.Fail(typeDeclaration);
+                return typeDeclaration;
+            }
         }
     }
     #endregion TypeDeclarationSyntax

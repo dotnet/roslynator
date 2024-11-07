@@ -40,15 +40,15 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.InlineLocalVariable:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Inline local variable",
-                        ct => RefactorAsync(document, localDeclaration, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Inline local variable",
+                    ct => RefactorAsync(document, localDeclaration, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 
@@ -161,55 +161,55 @@ public sealed class LocalDeclarationStatementCodeFixProvider : BaseCodeFixProvid
         switch (statement.Kind())
         {
             case SyntaxKind.ExpressionStatement:
-                {
-                    var expressionStatement = (ExpressionStatementSyntax)statement;
+            {
+                var expressionStatement = (ExpressionStatementSyntax)statement;
 
-                    var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+                var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-                    AssignmentExpressionSyntax newAssignment = assignment.WithRight(expression.WithTriviaFrom(assignment.Right));
+                AssignmentExpressionSyntax newAssignment = assignment.WithRight(expression.WithTriviaFrom(assignment.Right));
 
-                    return expressionStatement.WithExpression(newAssignment);
-                }
+                return expressionStatement.WithExpression(newAssignment);
+            }
             case SyntaxKind.LocalDeclarationStatement:
-                {
-                    var localDeclaration = (LocalDeclarationStatementSyntax)statement;
+            {
+                var localDeclaration = (LocalDeclarationStatementSyntax)statement;
 
-                    ExpressionSyntax value = localDeclaration
-                        .Declaration
-                        .Variables[0]
-                        .Initializer
-                        .Value;
+                ExpressionSyntax value = localDeclaration
+                    .Declaration
+                    .Variables[0]
+                    .Initializer
+                    .Value;
 
-                    return statement.ReplaceNode(value, expression.WithTriviaFrom(value));
-                }
+                return statement.ReplaceNode(value, expression.WithTriviaFrom(value));
+            }
             case SyntaxKind.ReturnStatement:
-                {
-                    var returnStatement = (ReturnStatementSyntax)statement;
+            {
+                var returnStatement = (ReturnStatementSyntax)statement;
 
-                    return returnStatement.WithExpression(expression.WithTriviaFrom(returnStatement.Expression));
-                }
+                return returnStatement.WithExpression(expression.WithTriviaFrom(returnStatement.Expression));
+            }
             case SyntaxKind.YieldReturnStatement:
-                {
-                    var yieldStatement = (YieldStatementSyntax)statement;
+            {
+                var yieldStatement = (YieldStatementSyntax)statement;
 
-                    return yieldStatement.WithExpression(expression.WithTriviaFrom(yieldStatement.Expression));
-                }
+                return yieldStatement.WithExpression(expression.WithTriviaFrom(yieldStatement.Expression));
+            }
             case SyntaxKind.ForEachStatement:
-                {
-                    var forEachStatement = (ForEachStatementSyntax)statement;
+            {
+                var forEachStatement = (ForEachStatementSyntax)statement;
 
-                    return forEachStatement.WithExpression(expression.WithTriviaFrom(forEachStatement.Expression));
-                }
+                return forEachStatement.WithExpression(expression.WithTriviaFrom(forEachStatement.Expression));
+            }
             case SyntaxKind.SwitchStatement:
-                {
-                    var switchStatement = (SwitchStatementSyntax)statement;
+            {
+                var switchStatement = (SwitchStatementSyntax)statement;
 
-                    return switchStatement.WithExpression(expression.WithTriviaFrom(switchStatement.Expression));
-                }
+                return switchStatement.WithExpression(expression.WithTriviaFrom(switchStatement.Expression));
+            }
             default:
-                {
-                    throw new InvalidOperationException();
-                }
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 }

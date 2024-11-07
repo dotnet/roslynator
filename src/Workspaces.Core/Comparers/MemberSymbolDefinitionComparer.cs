@@ -60,50 +60,50 @@ internal sealed class MemberSymbolDefinitionComparer : IComparer<ISymbol>
         {
             case MemberDeclarationKind.Constructor:
             case MemberDeclarationKind.Method:
-                {
-                    return CompareMethods((IMethodSymbol)x, (IMethodSymbol)y);
-                }
+            {
+                return CompareMethods((IMethodSymbol)x, (IMethodSymbol)y);
+            }
             case MemberDeclarationKind.Indexer:
             case MemberDeclarationKind.Property:
-                {
-                    return CompareProperties((IPropertySymbol)x, (IPropertySymbol)y);
-                }
+            {
+                return CompareProperties((IPropertySymbol)x, (IPropertySymbol)y);
+            }
             case MemberDeclarationKind.ExplicitlyImplementedEvent:
-                {
-                    var e1 = (IEventSymbol)x;
-                    var e2 = (IEventSymbol)y;
+            {
+                var e1 = (IEventSymbol)x;
+                var e2 = (IEventSymbol)y;
 
-                    diff = CompareExplicitImplementations(e1.ExplicitInterfaceImplementations, e2.ExplicitInterfaceImplementations);
+                diff = CompareExplicitImplementations(e1.ExplicitInterfaceImplementations, e2.ExplicitInterfaceImplementations);
 
-                    if (diff != 0)
-                        return diff;
+                if (diff != 0)
+                    return diff;
 
-                    break;
-                }
+                break;
+            }
             case MemberDeclarationKind.ExplicitlyImplementedMethod:
-                {
-                    var m1 = (IMethodSymbol)x;
-                    var m2 = (IMethodSymbol)y;
+            {
+                var m1 = (IMethodSymbol)x;
+                var m2 = (IMethodSymbol)y;
 
-                    diff = CompareExplicitImplementations(m1.ExplicitInterfaceImplementations, m2.ExplicitInterfaceImplementations);
+                diff = CompareExplicitImplementations(m1.ExplicitInterfaceImplementations, m2.ExplicitInterfaceImplementations);
 
-                    if (diff != 0)
-                        return diff;
+                if (diff != 0)
+                    return diff;
 
-                    return CompareMethods(m1, m2);
-                }
+                return CompareMethods(m1, m2);
+            }
             case MemberDeclarationKind.ExplicitlyImplementedProperty:
-                {
-                    var p1 = (IPropertySymbol)x;
-                    var p2 = (IPropertySymbol)y;
+            {
+                var p1 = (IPropertySymbol)x;
+                var p2 = (IPropertySymbol)y;
 
-                    diff = CompareExplicitImplementations(p1.ExplicitInterfaceImplementations, p2.ExplicitInterfaceImplementations);
+                diff = CompareExplicitImplementations(p1.ExplicitInterfaceImplementations, p2.ExplicitInterfaceImplementations);
 
-                    if (diff != 0)
-                        return diff;
+                if (diff != 0)
+                    return diff;
 
-                    return CompareProperties(p1, p2);
-                }
+                return CompareProperties(p1, p2);
+            }
         }
 
         diff = SymbolDefinitionComparer.CompareName(x, y);

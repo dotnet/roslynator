@@ -84,190 +84,190 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
             switch (invocationInfo.NameText)
             {
                 case "Cast":
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Call 'OfType' instead of 'Where' and 'Cast'",
-                            ct => CallOfTypeInsteadOfWhereAndCastAsync(document, invocationInfo, ct),
-                            GetEquivalenceKey(diagnostic, "CallOfTypeInsteadOfWhereAndCast"));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Call 'OfType' instead of 'Where' and 'Cast'",
+                        ct => CallOfTypeInsteadOfWhereAndCastAsync(document, invocationInfo, ct),
+                        GetEquivalenceKey(diagnostic, "CallOfTypeInsteadOfWhereAndCast"));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
                 case "Any":
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Combine 'Where' and 'Any'",
-                            ct => CombineWhereAndAnyAsync(document, invocationInfo, ct),
-                            GetEquivalenceKey(diagnostic, "CombineWhereAndAny"));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Combine 'Where' and 'Any'",
+                        ct => CombineWhereAndAnyAsync(document, invocationInfo, ct),
+                        GetEquivalenceKey(diagnostic, "CombineWhereAndAny"));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
                 case "ToList":
                 case "ToImmutableArray":
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Call 'ConvertAll'",
-                            ct => CallConvertAllInsteadOfSelectAsync(document, invocationInfo, ct),
-                            GetEquivalenceKey(diagnostic, "CallConvertAllInsteadOfSelect"));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Call 'ConvertAll'",
+                        ct => CallConvertAllInsteadOfSelectAsync(document, invocationInfo, ct),
+                        GetEquivalenceKey(diagnostic, "CallConvertAllInsteadOfSelect"));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
                 case "OfType":
+                {
+                    TypeSyntax typeArgument = ((GenericNameSyntax)invocationInfo.Name).TypeArgumentList.Arguments.Single();
+
+                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                    if (semanticModel.GetTypeSymbol(typeArgument, cancellationToken).IsValueType)
                     {
-                        TypeSyntax typeArgument = ((GenericNameSyntax)invocationInfo.Name).TypeArgumentList.Arguments.Single();
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove redundant 'OfType' call",
+                            ct =>
+                            {
+                                ExpressionSyntax newNode = invocationInfo.Expression.WithTrailingTrivia(invocation.GetTrailingTrivia());
+                                return document.ReplaceNodeAsync(invocation, newNode, ct);
+                            },
+                            GetEquivalenceKey(diagnostic, "RemoveRedundantOfTypeCall"));
 
-                        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                        if (semanticModel.GetTypeSymbol(typeArgument, cancellationToken).IsValueType)
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant 'OfType' call",
-                                ct =>
-                                {
-                                    ExpressionSyntax newNode = invocationInfo.Expression.WithTrailingTrivia(invocation.GetTrailingTrivia());
-                                    return document.ReplaceNodeAsync(invocation, newNode, ct);
-                                },
-                                GetEquivalenceKey(diagnostic, "RemoveRedundantOfTypeCall"));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-                        else
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Call 'Where' instead of 'OfType'",
-                                ct => CallWhereInsteadOfOfTypeAsync(document, invocationInfo, ct),
-                                GetEquivalenceKey(diagnostic, "CallWhereInsteadOfOfType"));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        return;
+                        context.RegisterCodeFix(codeAction, diagnostic);
                     }
+                    else
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call 'Where' instead of 'OfType'",
+                            ct => CallWhereInsteadOfOfTypeAsync(document, invocationInfo, ct),
+                            GetEquivalenceKey(diagnostic, "CallWhereInsteadOfOfType"));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+
+                    return;
+                }
                 case "Reverse":
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Call 'OrderByDescending'",
-                            ct => CallOrderByDescendingInsteadOfOrderByAndReverseAsync(document, invocationInfo, ct),
-                            GetEquivalenceKey(diagnostic, "CallOrderByDescendingInsteadOfOrderByAndReverse"));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Call 'OrderByDescending'",
+                        ct => CallOrderByDescendingInsteadOfOrderByAndReverseAsync(document, invocationInfo, ct),
+                        GetEquivalenceKey(diagnostic, "CallOrderByDescendingInsteadOfOrderByAndReverse"));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
                 case "Where":
-                    {
-                        SimpleMemberInvocationExpressionInfo invocationInfo2 = SimpleMemberInvocationExpressionInfo(
-                            invocationInfo.Expression);
+                {
+                    SimpleMemberInvocationExpressionInfo invocationInfo2 = SimpleMemberInvocationExpressionInfo(
+                        invocationInfo.Expression);
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Call '{invocationInfo2.NameText}' and 'Where' in reverse order",
-                            ct => CallOrderByAndWhereInReverseOrderAsync(document, invocationInfo, invocationInfo2, ct),
-                            GetEquivalenceKey(diagnostic, "CallOrderByAndWhereInReverseOrder"));
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Call '{invocationInfo2.NameText}' and 'Where' in reverse order",
+                        ct => CallOrderByAndWhereInReverseOrderAsync(document, invocationInfo, invocationInfo2, ct),
+                        GetEquivalenceKey(diagnostic, "CallOrderByAndWhereInReverseOrder"));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
                 case "Select":
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Call 'Cast' instead of 'Select'",
+                        ct => CallCastInsteadOfSelectAsync(document, invocation, ct),
+                        GetEquivalenceKey(diagnostic, "CallCastInsteadOfSelect"));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
+                case "First":
+                {
+                    if (diagnostic.Properties.TryGetValue("MethodName", out string methodName)
+                        && methodName == "Peek")
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            "Call 'Cast' instead of 'Select'",
-                            ct => CallCastInsteadOfSelectAsync(document, invocation, ct),
-                            GetEquivalenceKey(diagnostic, "CallCastInsteadOfSelect"));
+                            "Call 'Peek' instead of 'First'",
+                            ct => document.ReplaceNodeAsync(invocation, ChangeInvokedMethodName(invocation, "Peek"), ct),
+                            GetEquivalenceKey(diagnostic, "CallPeekInsteadOfFirst"));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
                     }
-                case "First":
+                    else
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Use [] instead of calling 'First'",
+                            ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfFirstAsync(context.Document, invocation, ct),
+                            GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfFirst"));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+
+                    return;
+                }
+                case "Count":
+                {
+                    if (diagnostic.Properties.TryGetValue("PropertyName", out string propertyName))
                     {
                         if (diagnostic.Properties.TryGetValue("MethodName", out string methodName)
-                            && methodName == "Peek")
+                            && methodName == "Sum")
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Call 'Peek' instead of 'First'",
-                                ct => document.ReplaceNodeAsync(invocation, ChangeInvokedMethodName(invocation, "Peek"), ct),
-                                GetEquivalenceKey(diagnostic, "CallPeekInsteadOfFirst"));
+                                "Call 'Sum'",
+                                ct => CallSumInsteadOfSelectManyAndCountAsync(document, invocationInfo, propertyName, ct),
+                                GetEquivalenceKey(diagnostic, "CallSumInsteadOfSelectManyAndCount"));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                         }
                         else
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Use [] instead of calling 'First'",
-                                ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfFirstAsync(context.Document, invocation, ct),
-                                GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfFirst"));
+                                $"Use '{propertyName}' property instead of calling 'Count'",
+                                ct => UseCountOrLengthPropertyInsteadOfCountMethodAsync(document, invocation, diagnostic.Properties["PropertyName"], ct),
+                                GetEquivalenceKey(diagnostic, "UseCountOrLengthPropertyInsteadOfCountMethod"));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                         }
-
-                        return;
                     }
-                case "Count":
+                    else if (invocation.Parent is BinaryExpressionSyntax binaryExpression)
                     {
-                        if (diagnostic.Properties.TryGetValue("PropertyName", out string propertyName))
-                        {
-                            if (diagnostic.Properties.TryGetValue("MethodName", out string methodName)
-                                && methodName == "Sum")
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Call 'Sum'",
-                                    ct => CallSumInsteadOfSelectManyAndCountAsync(document, invocationInfo, propertyName, ct),
-                                    GetEquivalenceKey(diagnostic, "CallSumInsteadOfSelectManyAndCount"));
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call 'Any' instead of 'Count'",
+                            ct => CallAnyInsteadOfCountAsync(document, invocation, binaryExpression, ct),
+                            GetEquivalenceKey(diagnostic, "CallAnyInsteadOfCount"));
 
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-                            else
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    $"Use '{propertyName}' property instead of calling 'Count'",
-                                    ct => UseCountOrLengthPropertyInsteadOfCountMethodAsync(document, invocation, diagnostic.Properties["PropertyName"], ct),
-                                    GetEquivalenceKey(diagnostic, "UseCountOrLengthPropertyInsteadOfCountMethod"));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-                        }
-                        else if (invocation.Parent is BinaryExpressionSyntax binaryExpression)
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Call 'Any' instead of 'Count'",
-                                ct => CallAnyInsteadOfCountAsync(document, invocation, binaryExpression, ct),
-                                GetEquivalenceKey(diagnostic, "CallAnyInsteadOfCount"));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        return;
+                        context.RegisterCodeFix(codeAction, diagnostic);
                     }
+
+                    return;
+                }
                 case "ElementAt":
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use [] instead of calling 'ElementAt'",
-                            ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfElementAtAsync(document, invocation, ct),
-                            GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfElementAt"));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use [] instead of calling 'ElementAt'",
+                        ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfElementAtAsync(document, invocation, ct),
+                        GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfElementAt"));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
                 case "Last":
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use [] instead of calling 'Last'",
-                            ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfLastAsync(document, invocation, ct),
-                            GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfLast"));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use [] instead of calling 'Last'",
+                        ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfLastAsync(document, invocation, ct),
+                        GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfLast"));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
                 case "OrderBy":
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Call 'Order' instead of 'OrderBy'",
-                            ct => CallOrderInsteadOfOrderByIdentityAsync(document, invocationInfo, ct),
-                            GetEquivalenceKey(diagnostic, "CallOrderInsteadOfOrderByIdentity"));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Call 'Order' instead of 'OrderBy'",
+                        ct => CallOrderInsteadOfOrderByIdentityAsync(document, invocationInfo, ct),
+                        GetEquivalenceKey(diagnostic, "CallOrderInsteadOfOrderByIdentity"));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        return;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    return;
+                }
             }
         }
         else if (kind == SyntaxKind.ConditionalExpression)
@@ -458,56 +458,56 @@ public sealed class OptimizeLinqMethodCallCodeFixProvider : BaseCodeFixProvider
         switch (binaryExpression.Kind())
         {
             case SyntaxKind.EqualsExpression:
-                {
-                    // Count() == 0 >>> !Any()
-                    newNode = ChangeInvokedMethodName(invocationExpression, "Any");
-                    newNode = LogicalNotExpression(newNode.Parenthesize());
-                    break;
-                }
+            {
+                // Count() == 0 >>> !Any()
+                newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                newNode = LogicalNotExpression(newNode.Parenthesize());
+                break;
+            }
             case SyntaxKind.NotEqualsExpression:
-                {
-                    // Count() != 0 >>> Any()
-                    newNode = ChangeInvokedMethodName(invocationExpression, "Any");
-                    break;
-                }
+            {
+                // Count() != 0 >>> Any()
+                newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                break;
+            }
             case SyntaxKind.LessThanExpression:
             case SyntaxKind.LessThanOrEqualExpression:
+            {
+                if (invocationExpression == left)
                 {
-                    if (invocationExpression == left)
-                    {
-                        // Count() < 1 >>> !Any()
-                        // Count() <= 0 >>> !Any()
-                        newNode = ChangeInvokedMethodName(invocationExpression, "Any");
-                        newNode = LogicalNotExpression(newNode.Parenthesize());
-                    }
-                    else
-                    {
-                        // 0 < Count() >>> Any()
-                        // 1 <= Count() >>> Any()
-                        newNode = ChangeInvokedMethodName(invocationExpression, "Any");
-                    }
-
-                    break;
+                    // Count() < 1 >>> !Any()
+                    // Count() <= 0 >>> !Any()
+                    newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                    newNode = LogicalNotExpression(newNode.Parenthesize());
                 }
+                else
+                {
+                    // 0 < Count() >>> Any()
+                    // 1 <= Count() >>> Any()
+                    newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                }
+
+                break;
+            }
             case SyntaxKind.GreaterThanExpression:
             case SyntaxKind.GreaterThanOrEqualExpression:
+            {
+                if (invocationExpression == left)
                 {
-                    if (invocationExpression == left)
-                    {
-                        // Count() > 0 >>> Any()
-                        // Count() >= 1 >>> Any()
-                        newNode = ChangeInvokedMethodName(invocationExpression, "Any");
-                    }
-                    else
-                    {
-                        // 1 > Count() >>> !Any()
-                        // 0 >= Count() >>> !Any()
-                        newNode = ChangeInvokedMethodName(invocationExpression, "Any");
-                        newNode = LogicalNotExpression(newNode.Parenthesize());
-                    }
-
-                    break;
+                    // Count() > 0 >>> Any()
+                    // Count() >= 1 >>> Any()
+                    newNode = ChangeInvokedMethodName(invocationExpression, "Any");
                 }
+                else
+                {
+                    // 1 > Count() >>> !Any()
+                    // 0 >= Count() >>> !Any()
+                    newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                    newNode = LogicalNotExpression(newNode.Parenthesize());
+                }
+
+                break;
+            }
         }
 
         newNode = newNode

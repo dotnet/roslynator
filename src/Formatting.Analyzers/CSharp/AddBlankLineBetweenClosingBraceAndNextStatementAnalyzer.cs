@@ -45,10 +45,10 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
         switch (block.Parent.Kind())
         {
             case SyntaxKind.Block:
-                {
-                    blockOrStatement = block;
-                    break;
-                }
+            {
+                blockOrStatement = block;
+                break;
+            }
             case SyntaxKind.FixedStatement:
             case SyntaxKind.ForEachStatement:
             case SyntaxKind.ForEachVariableStatement:
@@ -59,35 +59,35 @@ public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : Ba
             case SyntaxKind.UnsafeStatement:
             case SyntaxKind.UsingStatement:
             case SyntaxKind.WhileStatement:
-                {
-                    blockOrStatement = (StatementSyntax)block.Parent;
-                    break;
-                }
+            {
+                blockOrStatement = (StatementSyntax)block.Parent;
+                break;
+            }
             case SyntaxKind.IfStatement:
-                {
-                    var ifStatement = (IfStatementSyntax)block.Parent;
+            {
+                var ifStatement = (IfStatementSyntax)block.Parent;
 
-                    if (ifStatement.Else is null)
-                    {
-                        blockOrStatement = ifStatement;
-                        break;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-            case SyntaxKind.ElseClause:
+                if (ifStatement.Else is null)
                 {
-                    var elseClause = (ElseClauseSyntax)block.Parent;
-
-                    blockOrStatement = elseClause.GetTopmostIf();
+                    blockOrStatement = ifStatement;
                     break;
                 }
-            default:
+                else
                 {
                     return;
                 }
+            }
+            case SyntaxKind.ElseClause:
+            {
+                var elseClause = (ElseClauseSyntax)block.Parent;
+
+                blockOrStatement = elseClause.GetTopmostIf();
+                break;
+            }
+            default:
+            {
+                return;
+            }
         }
 
         Analyze(context, block.CloseBraceToken, blockOrStatement);

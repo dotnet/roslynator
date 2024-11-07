@@ -51,31 +51,31 @@ internal static class ConvertHasFlagCallToBitwiseOperationRefactoring
             switch (parent.Kind())
             {
                 case SyntaxKind.LogicalNotExpression:
-                    {
-                        binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
-                        nodeToReplace = parent;
-                        break;
-                    }
+                {
+                    binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
+                    nodeToReplace = parent;
+                    break;
+                }
                 case SyntaxKind.EqualsExpression:
+                {
+                    switch (((BinaryExpressionSyntax)parent).Right?.Kind())
                     {
-                        switch (((BinaryExpressionSyntax)parent).Right?.Kind())
+                        case SyntaxKind.TrueLiteralExpression:
                         {
-                            case SyntaxKind.TrueLiteralExpression:
-                                {
-                                    binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
-                                    nodeToReplace = parent;
-                                    break;
-                                }
-                            case SyntaxKind.FalseLiteralExpression:
-                                {
-                                    binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
-                                    nodeToReplace = parent;
-                                    break;
-                                }
+                            binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
+                            nodeToReplace = parent;
+                            break;
                         }
-
-                        break;
+                        case SyntaxKind.FalseLiteralExpression:
+                        {
+                            binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
+                            nodeToReplace = parent;
+                            break;
+                        }
                     }
+
+                    break;
+                }
             }
         }
 

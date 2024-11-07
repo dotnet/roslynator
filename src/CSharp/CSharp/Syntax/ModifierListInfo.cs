@@ -452,30 +452,30 @@ public readonly struct ModifierListInfo
             switch (Modifiers[i].Kind())
             {
                 case SyntaxKind.PublicKeyword:
-                    {
-                        return (i, -1);
-                    }
+                {
+                    return (i, -1);
+                }
                 case SyntaxKind.PrivateKeyword:
                 case SyntaxKind.InternalKeyword:
+                {
+                    for (int j = i + 1; j < count; j++)
                     {
-                        for (int j = i + 1; j < count; j++)
-                        {
-                            if (Modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
-                                return (i, j);
-                        }
-
-                        return (i, -1);
+                        if (Modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
+                            return (i, j);
                     }
+
+                    return (i, -1);
+                }
                 case SyntaxKind.ProtectedKeyword:
+                {
+                    for (int j = i + 1; j < count; j++)
                     {
-                        for (int j = i + 1; j < count; j++)
-                        {
-                            if (Modifiers[j].IsKind(SyntaxKind.InternalKeyword, SyntaxKind.PrivateKeyword))
-                                return (i, j);
-                        }
-
-                        return (i, -1);
+                        if (Modifiers[j].IsKind(SyntaxKind.InternalKeyword, SyntaxKind.PrivateKeyword))
+                            return (i, j);
                     }
+
+                    return (i, -1);
+                }
             }
         }
 
@@ -494,9 +494,9 @@ public readonly struct ModifierListInfo
                 case SyntaxKind.PrivateKeyword:
                 case SyntaxKind.InternalKeyword:
                 case SyntaxKind.ProtectedKeyword:
-                    {
-                        return i;
-                    }
+                {
+                    return i;
+                }
             }
         }
 
@@ -513,138 +513,138 @@ public readonly struct ModifierListInfo
         switch (Parent.Kind())
         {
             case SyntaxKind.ClassDeclaration:
-                {
-                    var classDeclaration = (ClassDeclarationSyntax)Parent;
-                    ClassDeclarationSyntax newNode = classDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var classDeclaration = (ClassDeclarationSyntax)Parent;
+                ClassDeclarationSyntax newNode = classDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.ConstructorDeclaration:
-                {
-                    var constructorDeclaration = (ConstructorDeclarationSyntax)Parent;
-                    ConstructorDeclarationSyntax newNode = constructorDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var constructorDeclaration = (ConstructorDeclarationSyntax)Parent;
+                ConstructorDeclarationSyntax newNode = constructorDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.OperatorDeclaration:
-                {
-                    var operatorDeclaration = (OperatorDeclarationSyntax)Parent;
-                    OperatorDeclarationSyntax newNode = operatorDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var operatorDeclaration = (OperatorDeclarationSyntax)Parent;
+                OperatorDeclarationSyntax newNode = operatorDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.ConversionOperatorDeclaration:
-                {
-                    var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)Parent;
-                    ConversionOperatorDeclarationSyntax newNode = conversionOperatorDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)Parent;
+                ConversionOperatorDeclarationSyntax newNode = conversionOperatorDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.DelegateDeclaration:
-                {
-                    var delegateDeclaration = (DelegateDeclarationSyntax)Parent;
-                    DelegateDeclarationSyntax newNode = delegateDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var delegateDeclaration = (DelegateDeclarationSyntax)Parent;
+                DelegateDeclarationSyntax newNode = delegateDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.DestructorDeclaration:
-                {
-                    var destructorDeclaration = (DestructorDeclarationSyntax)Parent;
-                    DestructorDeclarationSyntax newNode = destructorDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var destructorDeclaration = (DestructorDeclarationSyntax)Parent;
+                DestructorDeclarationSyntax newNode = destructorDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.EnumDeclaration:
-                {
-                    var enumDeclaration = (EnumDeclarationSyntax)Parent;
-                    EnumDeclarationSyntax newNode = enumDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var enumDeclaration = (EnumDeclarationSyntax)Parent;
+                EnumDeclarationSyntax newNode = enumDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.EventDeclaration:
-                {
-                    var eventDeclaration = (EventDeclarationSyntax)Parent;
-                    EventDeclarationSyntax newNode = eventDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var eventDeclaration = (EventDeclarationSyntax)Parent;
+                EventDeclarationSyntax newNode = eventDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.EventFieldDeclaration:
-                {
-                    var eventFieldDeclaration = (EventFieldDeclarationSyntax)Parent;
-                    EventFieldDeclarationSyntax newNode = eventFieldDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var eventFieldDeclaration = (EventFieldDeclarationSyntax)Parent;
+                EventFieldDeclarationSyntax newNode = eventFieldDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.FieldDeclaration:
-                {
-                    var fieldDeclaration = (FieldDeclarationSyntax)Parent;
-                    FieldDeclarationSyntax newNode = fieldDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var fieldDeclaration = (FieldDeclarationSyntax)Parent;
+                FieldDeclarationSyntax newNode = fieldDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.IndexerDeclaration:
-                {
-                    var indexerDeclaration = (IndexerDeclarationSyntax)Parent;
-                    IndexerDeclarationSyntax newNode = indexerDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var indexerDeclaration = (IndexerDeclarationSyntax)Parent;
+                IndexerDeclarationSyntax newNode = indexerDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.InterfaceDeclaration:
-                {
-                    var interfaceDeclaration = (InterfaceDeclarationSyntax)Parent;
-                    InterfaceDeclarationSyntax newNode = interfaceDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var interfaceDeclaration = (InterfaceDeclarationSyntax)Parent;
+                InterfaceDeclarationSyntax newNode = interfaceDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.MethodDeclaration:
-                {
-                    var methodDeclaration = (MethodDeclarationSyntax)Parent;
-                    MethodDeclarationSyntax newNode = methodDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)Parent;
+                MethodDeclarationSyntax newNode = methodDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.PropertyDeclaration:
-                {
-                    var propertyDeclaration = (PropertyDeclarationSyntax)Parent;
-                    PropertyDeclarationSyntax newNode = propertyDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var propertyDeclaration = (PropertyDeclarationSyntax)Parent;
+                PropertyDeclarationSyntax newNode = propertyDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.RecordDeclaration:
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    var recordDeclaration = (RecordDeclarationSyntax)Parent;
-                    RecordDeclarationSyntax newNode = recordDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var recordDeclaration = (RecordDeclarationSyntax)Parent;
+                RecordDeclarationSyntax newNode = recordDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.StructDeclaration:
-                {
-                    var structDeclaration = (StructDeclarationSyntax)Parent;
-                    StructDeclarationSyntax newNode = structDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var structDeclaration = (StructDeclarationSyntax)Parent;
+                StructDeclarationSyntax newNode = structDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.IncompleteMember:
-                {
-                    var incompleteMember = (IncompleteMemberSyntax)Parent;
-                    IncompleteMemberSyntax newNode = incompleteMember.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var incompleteMember = (IncompleteMemberSyntax)Parent;
+                IncompleteMemberSyntax newNode = incompleteMember.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
             case SyntaxKind.RemoveAccessorDeclaration:
             case SyntaxKind.UnknownAccessorDeclaration:
-                {
-                    var accessorDeclaration = (AccessorDeclarationSyntax)Parent;
-                    AccessorDeclarationSyntax newNode = accessorDeclaration.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var accessorDeclaration = (AccessorDeclarationSyntax)Parent;
+                AccessorDeclarationSyntax newNode = accessorDeclaration.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.LocalDeclarationStatement:
-                {
-                    var localDeclarationStatement = (LocalDeclarationStatementSyntax)Parent;
-                    LocalDeclarationStatementSyntax newNode = localDeclarationStatement.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var localDeclarationStatement = (LocalDeclarationStatementSyntax)Parent;
+                LocalDeclarationStatementSyntax newNode = localDeclarationStatement.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.LocalFunctionStatement:
-                {
-                    var localFunctionStatement = (LocalFunctionStatementSyntax)Parent;
-                    LocalFunctionStatementSyntax newNode = localFunctionStatement.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var localFunctionStatement = (LocalFunctionStatementSyntax)Parent;
+                LocalFunctionStatementSyntax newNode = localFunctionStatement.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
             case SyntaxKind.Parameter:
-                {
-                    var parameter = (ParameterSyntax)Parent;
-                    ParameterSyntax newNode = parameter.WithModifiers(modifiers);
-                    return new ModifierListInfo(newNode, newNode.Modifiers);
-                }
+            {
+                var parameter = (ParameterSyntax)Parent;
+                ParameterSyntax newNode = parameter.WithModifiers(modifiers);
+                return new ModifierListInfo(newNode, newNode.Modifiers);
+            }
         }
 
         throw new InvalidOperationException();
@@ -662,115 +662,115 @@ public readonly struct ModifierListInfo
             switch (Modifiers[i].Kind())
             {
                 case SyntaxKind.PublicKeyword:
-                    {
-                        filter |= ModifierFilter.Public;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Public;
+                    break;
+                }
                 case SyntaxKind.PrivateKeyword:
-                    {
-                        filter |= ModifierFilter.Private;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Private;
+                    break;
+                }
                 case SyntaxKind.InternalKeyword:
-                    {
-                        filter |= ModifierFilter.Internal;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Internal;
+                    break;
+                }
                 case SyntaxKind.ProtectedKeyword:
-                    {
-                        filter |= ModifierFilter.Protected;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Protected;
+                    break;
+                }
                 case SyntaxKind.StaticKeyword:
-                    {
-                        filter |= ModifierFilter.Static;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Static;
+                    break;
+                }
                 case SyntaxKind.ReadOnlyKeyword:
-                    {
-                        filter |= ModifierFilter.ReadOnly;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.ReadOnly;
+                    break;
+                }
                 case SyntaxKind.SealedKeyword:
-                    {
-                        filter |= ModifierFilter.Sealed;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Sealed;
+                    break;
+                }
                 case SyntaxKind.ConstKeyword:
-                    {
-                        filter |= ModifierFilter.Const;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Const;
+                    break;
+                }
                 case SyntaxKind.VolatileKeyword:
-                    {
-                        filter |= ModifierFilter.Volatile;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Volatile;
+                    break;
+                }
                 case SyntaxKind.NewKeyword:
-                    {
-                        filter |= ModifierFilter.New;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.New;
+                    break;
+                }
                 case SyntaxKind.OverrideKeyword:
-                    {
-                        filter |= ModifierFilter.Override;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Override;
+                    break;
+                }
                 case SyntaxKind.AbstractKeyword:
-                    {
-                        filter |= ModifierFilter.Abstract;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Abstract;
+                    break;
+                }
                 case SyntaxKind.VirtualKeyword:
-                    {
-                        filter |= ModifierFilter.Virtual;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Virtual;
+                    break;
+                }
                 case SyntaxKind.RefKeyword:
-                    {
-                        filter |= ModifierFilter.Ref;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Ref;
+                    break;
+                }
                 case SyntaxKind.OutKeyword:
-                    {
-                        filter |= ModifierFilter.Out;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Out;
+                    break;
+                }
                 case SyntaxKind.InKeyword:
-                    {
-                        filter |= ModifierFilter.In;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.In;
+                    break;
+                }
                 case SyntaxKind.ParamsKeyword:
-                    {
-                        filter |= ModifierFilter.Params;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Params;
+                    break;
+                }
                 case SyntaxKind.UnsafeKeyword:
-                    {
-                        filter |= ModifierFilter.Unsafe;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Unsafe;
+                    break;
+                }
                 case SyntaxKind.PartialKeyword:
-                    {
-                        filter |= ModifierFilter.Partial;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Partial;
+                    break;
+                }
                 case SyntaxKind.AsyncKeyword:
-                    {
-                        filter |= ModifierFilter.Async;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Async;
+                    break;
+                }
                 case SyntaxKind.ExternKeyword:
-                    {
-                        filter |= ModifierFilter.Extern;
-                        break;
-                    }
+                {
+                    filter |= ModifierFilter.Extern;
+                    break;
+                }
                 default:
-                    {
-                        Debug.Fail(Modifiers[i].Kind().ToString());
-                        break;
-                    }
+                {
+                    Debug.Fail(Modifiers[i].Kind().ToString());
+                    break;
+                }
             }
         }
 

@@ -38,29 +38,29 @@ public sealed class NamespaceDeclarationCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove empty namespace declaration",
-                            ct => context.Document.RemoveNodeAsync(namespaceDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove empty namespace declaration",
+                        ct => context.Document.RemoveNodeAsync(namespaceDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel:
-                    {
-                        string title = (namespaceDeclaration.Usings.Count == 1)
-                            ? "Move using to top level"
-                            : "Move usings to top level";
+                {
+                    string title = (namespaceDeclaration.Usings.Count == 1)
+                        ? "Move using to top level"
+                        : "Move usings to top level";
 
-                        CodeAction codeAction = CodeAction.Create(
-                            title,
-                            ct => DeclareUsingDirectiveOnTopLevelRefactoring.RefactorAsync(context.Document, namespaceDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        title,
+                        ct => DeclareUsingDirectiveOnTopLevelRefactoring.RefactorAsync(context.Document, namespaceDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

@@ -37,15 +37,15 @@ public sealed class RemoveUnnecessaryElseCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveUnnecessaryElse:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove 'else'",
-                            ct => RefactorAsync(context.Document, elseClause, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove 'else'",
+                        ct => RefactorAsync(context.Document, elseClause, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

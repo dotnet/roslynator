@@ -47,66 +47,66 @@ public sealed class SimplifyLogicalNegationAnalyzer : BaseDiagnosticAnalyzer
             case SyntaxKind.TrueLiteralExpression:
             case SyntaxKind.FalseLiteralExpression:
             case SyntaxKind.LogicalNotExpression:
-                {
-                    ReportDiagnostic();
-                    break;
-                }
+            {
+                ReportDiagnostic();
+                break;
+            }
             case SyntaxKind.EqualsExpression:
+            {
+                MemberDeclarationSyntax memberDeclaration = logicalNot.FirstAncestor<MemberDeclarationSyntax>();
+
+                if (memberDeclaration is OperatorDeclarationSyntax operatorDeclaration
+                    && operatorDeclaration.OperatorToken.IsKind(SyntaxKind.ExclamationEqualsToken))
                 {
-                    MemberDeclarationSyntax memberDeclaration = logicalNot.FirstAncestor<MemberDeclarationSyntax>();
-
-                    if (memberDeclaration is OperatorDeclarationSyntax operatorDeclaration
-                        && operatorDeclaration.OperatorToken.IsKind(SyntaxKind.ExclamationEqualsToken))
-                    {
-                        return;
-                    }
-
-                    ReportDiagnostic();
-                    break;
+                    return;
                 }
+
+                ReportDiagnostic();
+                break;
+            }
             case SyntaxKind.NotEqualsExpression:
+            {
+                MemberDeclarationSyntax memberDeclaration = logicalNot.FirstAncestor<MemberDeclarationSyntax>();
+
+                if (memberDeclaration is OperatorDeclarationSyntax operatorDeclaration
+                    && operatorDeclaration.OperatorToken.IsKind(SyntaxKind.EqualsEqualsToken))
                 {
-                    MemberDeclarationSyntax memberDeclaration = logicalNot.FirstAncestor<MemberDeclarationSyntax>();
-
-                    if (memberDeclaration is OperatorDeclarationSyntax operatorDeclaration
-                        && operatorDeclaration.OperatorToken.IsKind(SyntaxKind.EqualsEqualsToken))
-                    {
-                        return;
-                    }
-
-                    ReportDiagnostic();
-                    break;
+                    return;
                 }
+
+                ReportDiagnostic();
+                break;
+            }
             case SyntaxKind.LessThanExpression:
             case SyntaxKind.LessThanOrEqualExpression:
             case SyntaxKind.GreaterThanExpression:
             case SyntaxKind.GreaterThanOrEqualExpression:
-                {
-                    var binaryExpression = (BinaryExpressionSyntax)expression;
+            {
+                var binaryExpression = (BinaryExpressionSyntax)expression;
 
-                    if (IsNumericType(binaryExpression.Left, context.SemanticModel, context.CancellationToken)
-                        && IsNumericType(binaryExpression.Right, context.SemanticModel, context.CancellationToken))
+                if (IsNumericType(binaryExpression.Left, context.SemanticModel, context.CancellationToken)
+                    && IsNumericType(binaryExpression.Right, context.SemanticModel, context.CancellationToken))
+                {
+                    ReportDiagnostic();
+                }
+
+                break;
+            }
+            case SyntaxKind.IsPatternExpression:
+            {
+                if (((CSharpParseOptions)expression.SyntaxTree.Options).LanguageVersion >= LanguageVersion.CSharp9)
+                {
+                    var isPatternExpression = (IsPatternExpressionSyntax)expression;
+
+                    if (isPatternExpression.Pattern is ConstantPatternSyntax constantPattern
+                        && constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
                     {
                         ReportDiagnostic();
                     }
-
-                    break;
                 }
-            case SyntaxKind.IsPatternExpression:
-                {
-                    if (((CSharpParseOptions)expression.SyntaxTree.Options).LanguageVersion >= LanguageVersion.CSharp9)
-                    {
-                        var isPatternExpression = (IsPatternExpressionSyntax)expression;
 
-                        if (isPatternExpression.Pattern is ConstantPatternSyntax constantPattern
-                            && constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
-                        {
-                            ReportDiagnostic();
-                        }
-                    }
-
-                    break;
-                }
+                break;
+            }
         }
 
         void ReportDiagnostic()
@@ -136,25 +136,25 @@ public sealed class SimplifyLogicalNegationAnalyzer : BaseDiagnosticAnalyzer
                 case SpecialType.System_Int64:
                 case SpecialType.System_UInt64:
                 case SpecialType.System_Decimal:
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
                 case SpecialType.System_Single:
-                    {
-                        Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is float value
-                            && !float.IsNaN(value);
-                    }
+                    return optional.HasValue
+                        && optional.Value is float value
+                        && !float.IsNaN(value);
+                }
                 case SpecialType.System_Double:
-                    {
-                        Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+                {
+                    Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                        return optional.HasValue
-                            && optional.Value is double value
-                            && !double.IsNaN(value);
-                    }
+                    return optional.HasValue
+                        && optional.Value is double value
+                        && !double.IsNaN(value);
+                }
             }
         }
 

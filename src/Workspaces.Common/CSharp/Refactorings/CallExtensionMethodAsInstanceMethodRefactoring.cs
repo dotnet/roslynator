@@ -43,25 +43,25 @@ public static class CallExtensionMethodAsInstanceMethodRefactoring
             {
                 case SyntaxKind.IdentifierName:
                 case SyntaxKind.GenericName:
-                    {
-                        ExpressionSyntax newExpression = argument.Expression
-                            .WithLeadingTrivia(expression.GetLeadingTrivia())
-                            .Parenthesize();
+                {
+                    ExpressionSyntax newExpression = argument.Expression
+                        .WithLeadingTrivia(expression.GetLeadingTrivia())
+                        .Parenthesize();
 
-                        return SimpleMemberAccessExpression(
-                            newExpression,
-                            (SimpleNameSyntax)expression.WithoutLeadingTrivia());
-                    }
+                    return SimpleMemberAccessExpression(
+                        newExpression,
+                        (SimpleNameSyntax)expression.WithoutLeadingTrivia());
+                }
                 case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        var memberAccess = (MemberAccessExpressionSyntax)expression;
+                {
+                    var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                        ExpressionSyntax newExpression = argument.Expression
-                            .WithTriviaFrom(memberAccess.Expression)
-                            .Parenthesize();
+                    ExpressionSyntax newExpression = argument.Expression
+                        .WithTriviaFrom(memberAccess.Expression)
+                        .Parenthesize();
 
-                        return memberAccess.WithExpression(newExpression);
-                    }
+                    return memberAccess.WithExpression(newExpression);
+                }
             }
 
             throw new InvalidOperationException();

@@ -20,17 +20,17 @@ internal static class PostfixUnaryExpressionRefactoring
         switch (postfixUnaryExpression.Kind())
         {
             case SyntaxKind.PostIncrementExpression:
-                {
-                    InvertPostIncrement(context, postfixUnaryExpression);
-                    ReplacePostIncrementWithPreIncrement(context, postfixUnaryExpression);
-                    break;
-                }
+            {
+                InvertPostIncrement(context, postfixUnaryExpression);
+                ReplacePostIncrementWithPreIncrement(context, postfixUnaryExpression);
+                break;
+            }
             case SyntaxKind.PostDecrementExpression:
-                {
-                    InvertPostDecrement(context, postfixUnaryExpression);
-                    ReplacePostDecrementWithPreDecrement(context, postfixUnaryExpression);
-                    break;
-                }
+            {
+                InvertPostDecrement(context, postfixUnaryExpression);
+                ReplacePostDecrementWithPreDecrement(context, postfixUnaryExpression);
+                break;
+            }
         }
     }
 

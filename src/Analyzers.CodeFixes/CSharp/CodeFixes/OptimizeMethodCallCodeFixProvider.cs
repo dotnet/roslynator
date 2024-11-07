@@ -39,82 +39,82 @@ public sealed class OptimizeMethodCallCodeFixProvider : BaseCodeFixProvider
         switch (node.Kind())
         {
             case SyntaxKind.InvocationExpression:
+            {
+                var invocationExpression = (InvocationExpressionSyntax)node;
+
+                SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
+
+                switch (invocationInfo.NameText)
                 {
-                    var invocationExpression = (InvocationExpressionSyntax)node;
-
-                    SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
-
-                    switch (invocationInfo.NameText)
+                    case "Add":
                     {
-                        case "Add":
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Call 'AddRange' instead of 'Add'",
-                                    ct => CallAddRangeInsteadOfAddAsync(document, invocationExpression, ct),
-                                    GetEquivalenceKey(diagnostic, "CallAddRangeInsteadOfAdd"));
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call 'AddRange' instead of 'Add'",
+                            ct => CallAddRangeInsteadOfAddAsync(document, invocationExpression, ct),
+                            GetEquivalenceKey(diagnostic, "CallAddRangeInsteadOfAdd"));
 
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                                break;
-                            }
-                        case "Compare":
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Call 'CompareOrdinal' instead of 'Compare'",
-                                    ct => CallCompareOrdinalInsteadOfCompareAsync(document, invocationInfo, ct),
-                                    GetEquivalenceKey(diagnostic, "CallCompareOrdinalInsteadOfCompare"));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                                break;
-                            }
-                        case "Join":
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Call 'Concat' instead of 'Join'",
-                                    ct => CallStringConcatInsteadOfStringJoinAsync(document, invocationExpression, ct),
-                                    GetEquivalenceKey(diagnostic, "CallConcatInsteadOfJoin"));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                                break;
-                            }
-                        case "Assert":
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Call 'Fail' instead of 'Assert'",
-                                    ct => CallDebugFailInsteadOfDebugAssertAsync(context.Document, invocationExpression, ct),
-                                    GetEquivalenceKey(diagnostic, "CallFailInsteadOfAssert"));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                                break;
-                            }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
                     }
+                    case "Compare":
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call 'CompareOrdinal' instead of 'Compare'",
+                            ct => CallCompareOrdinalInsteadOfCompareAsync(document, invocationInfo, ct),
+                            GetEquivalenceKey(diagnostic, "CallCompareOrdinalInsteadOfCompare"));
 
-                    break;
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                    case "Join":
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call 'Concat' instead of 'Join'",
+                            ct => CallStringConcatInsteadOfStringJoinAsync(document, invocationExpression, ct),
+                            GetEquivalenceKey(diagnostic, "CallConcatInsteadOfJoin"));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                    case "Assert":
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Call 'Fail' instead of 'Assert'",
+                            ct => CallDebugFailInsteadOfDebugAssertAsync(context.Document, invocationExpression, ct),
+                            GetEquivalenceKey(diagnostic, "CallFailInsteadOfAssert"));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
                 }
+
+                break;
+            }
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
-                {
-                    var equalityExpression = (BinaryExpressionSyntax)node;
+            {
+                var equalityExpression = (BinaryExpressionSyntax)node;
 
-                    CodeAction codeAction = CodeAction.Create(
-                        "Call 'Equals' instead of 'Compare'",
-                        ct => CallEqualsInsteadOfCompareAsync(document, equalityExpression, ct),
-                        GetEquivalenceKey(diagnostic, "CallEqualsInsteadOfCompare"));
+                CodeAction codeAction = CodeAction.Create(
+                    "Call 'Equals' instead of 'Compare'",
+                    ct => CallEqualsInsteadOfCompareAsync(document, equalityExpression, ct),
+                    GetEquivalenceKey(diagnostic, "CallEqualsInsteadOfCompare"));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             case SyntaxKind.IfStatement:
-                {
-                    var ifStatement = (IfStatementSyntax)node;
+            {
+                var ifStatement = (IfStatementSyntax)node;
 
-                    CodeAction codeAction = CodeAction.Create(
-                        "Use [] instead of 'ContainsKey'",
-                        ct => UseElementAccessInsteadOfContainsKeyAsync(document, ifStatement, ct),
-                        GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfContainsKey"));
+                CodeAction codeAction = CodeAction.Create(
+                    "Use [] instead of 'ContainsKey'",
+                    ct => UseElementAccessInsteadOfContainsKeyAsync(document, ifStatement, ct),
+                    GetEquivalenceKey(diagnostic, "UseElementAccessInsteadOfContainsKey"));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 

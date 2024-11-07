@@ -98,20 +98,20 @@ public readonly struct RegionInfo
             {
                 case SyntaxKind.WhitespaceTrivia:
                 case SyntaxKind.EndOfLineTrivia:
-                    {
-                        continue;
-                    }
+                {
+                    continue;
+                }
                 case SyntaxKind.EndRegionDirectiveTrivia:
-                    {
-                        if (trivia.HasStructure)
-                            return (EndRegionDirectiveTriviaSyntax)trivia.GetStructure()!;
+                {
+                    if (trivia.HasStructure)
+                        return (EndRegionDirectiveTriviaSyntax)trivia.GetStructure()!;
 
-                        return null;
-                    }
+                    return null;
+                }
                 default:
-                    {
-                        return null;
-                    }
+                {
+                    return null;
+                }
             }
         }
 

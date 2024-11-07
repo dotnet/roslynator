@@ -76,17 +76,17 @@ internal static class CallCastInsteadOfSelectAnalysis
         switch (node.Kind())
         {
             case SyntaxKind.CastExpression:
-                {
-                    return (CastExpressionSyntax)node;
-                }
+            {
+                return (CastExpressionSyntax)node;
+            }
             case SyntaxKind.Block:
-                {
-                    var block = (BlockSyntax)node;
+            {
+                var block = (BlockSyntax)node;
 
-                    var returnStatement = block.Statements.SingleOrDefault(shouldThrow: false) as ReturnStatementSyntax;
+                var returnStatement = block.Statements.SingleOrDefault(shouldThrow: false) as ReturnStatementSyntax;
 
-                    return returnStatement?.Expression as CastExpressionSyntax;
-                }
+                return returnStatement?.Expression as CastExpressionSyntax;
+            }
         }
 
         return null;

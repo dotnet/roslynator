@@ -147,59 +147,59 @@ public sealed class SimplifyCodeBranchingCodeFixProvider : BaseCodeFixProvider
             switch (block.Parent)
             {
                 case WhileStatementSyntax whileStatement:
+                {
+                    if (statements.IsFirst(ifStatement))
                     {
-                        if (statements.IsFirst(ifStatement))
-                        {
-                            newNode = whileStatement.Update(
-                                whileStatement.WhileKeyword,
-                                whileStatement.OpenParenToken,
-                                newCondition,
-                                whileStatement.CloseParenToken,
-                                newBlock);
-                        }
-                        else
-                        {
-                            newNode = DoStatement(
-                                Token(whileStatement.WhileKeyword.LeadingTrivia, SyntaxKind.DoKeyword, whileStatement.CloseParenToken.TrailingTrivia),
-                                newBlock.WithoutTrailingTrivia(),
-                                Token(SyntaxKind.WhileKeyword),
-                                OpenParenToken(),
-                                newCondition,
-                                CloseParenToken(),
-                                SemicolonToken().WithTrailingTrivia(newBlock.GetTrailingTrivia()));
-                        }
-
-                        break;
+                        newNode = whileStatement.Update(
+                            whileStatement.WhileKeyword,
+                            whileStatement.OpenParenToken,
+                            newCondition,
+                            whileStatement.CloseParenToken,
+                            newBlock);
                     }
+                    else
+                    {
+                        newNode = DoStatement(
+                            Token(whileStatement.WhileKeyword.LeadingTrivia, SyntaxKind.DoKeyword, whileStatement.CloseParenToken.TrailingTrivia),
+                            newBlock.WithoutTrailingTrivia(),
+                            Token(SyntaxKind.WhileKeyword),
+                            OpenParenToken(),
+                            newCondition,
+                            CloseParenToken(),
+                            SemicolonToken().WithTrailingTrivia(newBlock.GetTrailingTrivia()));
+                    }
+
+                    break;
+                }
                 case DoStatementSyntax doStatement:
+                {
+                    if (statements.IsLast(ifStatement))
                     {
-                        if (statements.IsLast(ifStatement))
-                        {
-                            newNode = doStatement.Update(
-                                doStatement.DoKeyword,
-                                newBlock,
-                                doStatement.WhileKeyword,
-                                doStatement.OpenParenToken,
-                                newCondition,
-                                doStatement.CloseParenToken,
-                                doStatement.SemicolonToken);
-                        }
-                        else
-                        {
-                            newNode = WhileStatement(
-                                Token(doStatement.DoKeyword.LeadingTrivia, SyntaxKind.WhileKeyword, SyntaxTriviaList.Empty),
-                                OpenParenToken(),
-                                newCondition,
-                                Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, doStatement.DoKeyword.TrailingTrivia),
-                                newBlock.WithTrailingTrivia(doStatement.GetTrailingTrivia()));
-                        }
+                        newNode = doStatement.Update(
+                            doStatement.DoKeyword,
+                            newBlock,
+                            doStatement.WhileKeyword,
+                            doStatement.OpenParenToken,
+                            newCondition,
+                            doStatement.CloseParenToken,
+                            doStatement.SemicolonToken);
+                    }
+                    else
+                    {
+                        newNode = WhileStatement(
+                            Token(doStatement.DoKeyword.LeadingTrivia, SyntaxKind.WhileKeyword, SyntaxTriviaList.Empty),
+                            OpenParenToken(),
+                            newCondition,
+                            Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, doStatement.DoKeyword.TrailingTrivia),
+                            newBlock.WithTrailingTrivia(doStatement.GetTrailingTrivia()));
+                    }
 
-                        break;
-                    }
+                    break;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
 
             newNode = newNode.WithFormatterAnnotation();

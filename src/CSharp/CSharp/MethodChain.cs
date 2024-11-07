@@ -111,23 +111,23 @@ internal readonly struct MethodChain : IEnumerable<SyntaxNode>
             switch (parent?.Kind())
             {
                 case SyntaxKind.ConditionalAccessExpression:
-                    {
-                        var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
+                {
+                    var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
 
-                        if (conditionalAccess.WhenNotNull == node)
-                            return conditionalAccess.Expression;
+                    if (conditionalAccess.WhenNotNull == node)
+                        return conditionalAccess.Expression;
 
-                        break;
-                    }
+                    break;
+                }
                 case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        var memberAccess = (MemberAccessExpressionSyntax)parent;
+                {
+                    var memberAccess = (MemberAccessExpressionSyntax)parent;
 
-                        if (memberAccess.Name == node)
-                            return memberAccess.Expression;
+                    if (memberAccess.Name == node)
+                        return memberAccess.Expression;
 
-                        break;
-                    }
+                    break;
+                }
             }
 
             return null;

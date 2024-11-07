@@ -232,23 +232,23 @@ public sealed class AvoidNullReferenceExceptionAnalyzer : BaseDiagnosticAnalyzer
         switch (parent?.Kind())
         {
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    var memberAccessExpression = (MemberAccessExpressionSyntax)parent;
+            {
+                var memberAccessExpression = (MemberAccessExpressionSyntax)parent;
 
-                    if (expression == memberAccessExpression.Expression)
-                        return memberAccessExpression;
+                if (expression == memberAccessExpression.Expression)
+                    return memberAccessExpression;
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.ElementAccessExpression:
-                {
-                    var elementAccess = (ElementAccessExpressionSyntax)parent;
+            {
+                var elementAccess = (ElementAccessExpressionSyntax)parent;
 
-                    if (expression == elementAccess.Expression)
-                        return elementAccess;
+                if (expression == elementAccess.Expression)
+                    return elementAccess;
 
-                    break;
-                }
+                break;
+            }
         }
 
         return null;

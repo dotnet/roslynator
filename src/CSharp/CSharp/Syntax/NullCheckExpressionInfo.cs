@@ -124,140 +124,140 @@ public readonly struct NullCheckExpressionInfo
         {
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
+            {
+                var binaryExpression = (BinaryExpressionSyntax)expression;
+
+                ExpressionSyntax? left = WalkAndCheck(binaryExpression.Left, walkDownParentheses, allowMissing);
+
+                if (left is null)
+                    break;
+
+                ExpressionSyntax? right = WalkAndCheck(binaryExpression.Right, walkDownParentheses, allowMissing);
+
+                if (right is null)
+                    break;
+
+                NullCheckExpressionInfo info = Create(binaryExpression, kind, left, right, allowedStyles, allowMissing, semanticModel, cancellationToken);
+
+                if (info.Success)
                 {
-                    var binaryExpression = (BinaryExpressionSyntax)expression;
-
-                    ExpressionSyntax? left = WalkAndCheck(binaryExpression.Left, walkDownParentheses, allowMissing);
-
-                    if (left is null)
-                        break;
-
-                    ExpressionSyntax? right = WalkAndCheck(binaryExpression.Right, walkDownParentheses, allowMissing);
-
-                    if (right is null)
-                        break;
-
-                    NullCheckExpressionInfo info = Create(binaryExpression, kind, left, right, allowedStyles, allowMissing, semanticModel, cancellationToken);
-
-                    if (info.Success)
-                    {
-                        return info;
-                    }
-                    else
-                    {
-                        return Create(binaryExpression, kind, right, left, allowedStyles, allowMissing, semanticModel, cancellationToken);
-                    }
+                    return info;
                 }
+                else
+                {
+                    return Create(binaryExpression, kind, right, left, allowedStyles, allowMissing, semanticModel, cancellationToken);
+                }
+            }
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    if ((allowedStyles & NullCheckStyles.HasValue) == 0)
-                        break;
+            {
+                if ((allowedStyles & NullCheckStyles.HasValue) == 0)
+                    break;
 
-                    if (semanticModel is null)
-                        break;
+                if (semanticModel is null)
+                    break;
 
-                    var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
+                var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
 
-                    if (!IsPropertyOfNullableOfT(memberAccessExpression.Name, "HasValue", semanticModel, cancellationToken))
-                        break;
+                if (!IsPropertyOfNullableOfT(memberAccessExpression.Name, "HasValue", semanticModel, cancellationToken))
+                    break;
 
-                    return new NullCheckExpressionInfo(expression, memberAccessExpression.Expression, NullCheckStyles.HasValue);
-                }
+                return new NullCheckExpressionInfo(expression, memberAccessExpression.Expression, NullCheckStyles.HasValue);
+            }
             case SyntaxKind.IsPatternExpression:
+            {
+                if ((allowedStyles & (NullCheckStyles.IsNull | NullCheckStyles.IsNotNull)) == 0)
+                    break;
+
+                var isPatternExpression = (IsPatternExpressionSyntax)expression;
+
+                PatternSyntax pattern = isPatternExpression.Pattern;
+
+                bool isNotPattern = pattern.IsKind(SyntaxKind.NotPattern);
+
+                if (isNotPattern)
                 {
-                    if ((allowedStyles & (NullCheckStyles.IsNull | NullCheckStyles.IsNotNull)) == 0)
+                    if ((allowedStyles & NullCheckStyles.IsNotNull) == 0)
                         break;
 
-                    var isPatternExpression = (IsPatternExpressionSyntax)expression;
-
-                    PatternSyntax pattern = isPatternExpression.Pattern;
-
-                    bool isNotPattern = pattern.IsKind(SyntaxKind.NotPattern);
-
-                    if (isNotPattern)
-                    {
-                        if ((allowedStyles & NullCheckStyles.IsNotNull) == 0)
-                            break;
-
-                        pattern = ((UnaryPatternSyntax)pattern).Pattern;
-                    }
-                    else if ((allowedStyles & NullCheckStyles.IsNull) == 0)
-                    {
-                        break;
-                    }
-
-                    if (pattern is not ConstantPatternSyntax constantPattern)
-                        break;
-
-                    if (!constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
-                        break;
-
-                    ExpressionSyntax? e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
-
-                    if (e is null)
-                        break;
-
-                    return new NullCheckExpressionInfo(
-                        expression,
-                        e,
-                        (isNotPattern) ? NullCheckStyles.IsNotNull : NullCheckStyles.IsNull);
+                    pattern = ((UnaryPatternSyntax)pattern).Pattern;
                 }
-            case SyntaxKind.LogicalNotExpression:
+                else if ((allowedStyles & NullCheckStyles.IsNull) == 0)
                 {
-                    bool isNotHasValueAllowed = (allowedStyles & (NullCheckStyles.NotHasValue)) != 0;
-                    bool isNotIsNullAllowed = (allowedStyles & (NullCheckStyles.NotIsNull)) != 0;
-
-                    if (!isNotHasValueAllowed && !isNotIsNullAllowed)
-                        break;
-
-                    var logicalNotExpression = (PrefixUnaryExpressionSyntax)expression;
-
-                    ExpressionSyntax? operand = WalkAndCheck(logicalNotExpression.Operand, walkDownParentheses, allowMissing);
-
-                    if (operand is null)
-                        break;
-
-                    switch (operand.Kind())
-                    {
-                        case SyntaxKind.SimpleMemberAccessExpression:
-                            {
-                                if (!isNotHasValueAllowed)
-                                    break;
-
-                                if (semanticModel is null)
-                                    break;
-
-                                var memberAccessExpression = (MemberAccessExpressionSyntax)operand;
-
-                                if (!IsPropertyOfNullableOfT(memberAccessExpression.Name, "HasValue", semanticModel, cancellationToken))
-                                    break;
-
-                                return new NullCheckExpressionInfo(expression, memberAccessExpression.Expression, NullCheckStyles.NotHasValue);
-                            }
-                        case SyntaxKind.IsPatternExpression:
-                            {
-                                if (!isNotIsNullAllowed)
-                                    break;
-
-                                var isPatternExpression = (IsPatternExpressionSyntax)operand;
-
-                                if (isPatternExpression.Pattern is not ConstantPatternSyntax constantPattern)
-                                    break;
-
-                                if (!constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
-                                    break;
-
-                                ExpressionSyntax? e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
-
-                                if (e is null)
-                                    break;
-
-                                return new NullCheckExpressionInfo(expression, e, NullCheckStyles.NotIsNull);
-                            }
-                    }
-
                     break;
                 }
+
+                if (pattern is not ConstantPatternSyntax constantPattern)
+                    break;
+
+                if (!constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
+                    break;
+
+                ExpressionSyntax? e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
+
+                if (e is null)
+                    break;
+
+                return new NullCheckExpressionInfo(
+                    expression,
+                    e,
+                    (isNotPattern) ? NullCheckStyles.IsNotNull : NullCheckStyles.IsNull);
+            }
+            case SyntaxKind.LogicalNotExpression:
+            {
+                bool isNotHasValueAllowed = (allowedStyles & (NullCheckStyles.NotHasValue)) != 0;
+                bool isNotIsNullAllowed = (allowedStyles & (NullCheckStyles.NotIsNull)) != 0;
+
+                if (!isNotHasValueAllowed && !isNotIsNullAllowed)
+                    break;
+
+                var logicalNotExpression = (PrefixUnaryExpressionSyntax)expression;
+
+                ExpressionSyntax? operand = WalkAndCheck(logicalNotExpression.Operand, walkDownParentheses, allowMissing);
+
+                if (operand is null)
+                    break;
+
+                switch (operand.Kind())
+                {
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                    {
+                        if (!isNotHasValueAllowed)
+                            break;
+
+                        if (semanticModel is null)
+                            break;
+
+                        var memberAccessExpression = (MemberAccessExpressionSyntax)operand;
+
+                        if (!IsPropertyOfNullableOfT(memberAccessExpression.Name, "HasValue", semanticModel, cancellationToken))
+                            break;
+
+                        return new NullCheckExpressionInfo(expression, memberAccessExpression.Expression, NullCheckStyles.NotHasValue);
+                    }
+                    case SyntaxKind.IsPatternExpression:
+                    {
+                        if (!isNotIsNullAllowed)
+                            break;
+
+                        var isPatternExpression = (IsPatternExpressionSyntax)operand;
+
+                        if (isPatternExpression.Pattern is not ConstantPatternSyntax constantPattern)
+                            break;
+
+                        if (!constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
+                            break;
+
+                        ExpressionSyntax? e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
+
+                        if (e is null)
+                            break;
+
+                        return new NullCheckExpressionInfo(expression, e, NullCheckStyles.NotIsNull);
+                    }
+                }
+
+                break;
+            }
         }
 
         return default;
@@ -278,46 +278,46 @@ public readonly struct NullCheckExpressionInfo
             case SyntaxKind.NullLiteralExpression:
             case SyntaxKind.DefaultLiteralExpression:
             case SyntaxKind.DefaultExpression:
-                {
-                    NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression) ? NullCheckStyles.EqualsToNull : NullCheckStyles.NotEqualsToNull;
+            {
+                NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression) ? NullCheckStyles.EqualsToNull : NullCheckStyles.NotEqualsToNull;
 
-                    if ((allowedStyles & style) == 0)
-                        break;
+                if ((allowedStyles & style) == 0)
+                    break;
 
-                    if (!IsNullOrDefault(expression2, expression1, semanticModel, cancellationToken))
-                        break;
+                if (!IsNullOrDefault(expression2, expression1, semanticModel, cancellationToken))
+                    break;
 
-                    return new NullCheckExpressionInfo(
-                        binaryExpression,
-                        expression2,
-                        style);
-                }
+                return new NullCheckExpressionInfo(
+                    binaryExpression,
+                    expression2,
+                    style);
+            }
             case SyntaxKind.TrueLiteralExpression:
-                {
-                    NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression) ? NullCheckStyles.HasValue : NullCheckStyles.NotHasValue;
+            {
+                NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression) ? NullCheckStyles.HasValue : NullCheckStyles.NotHasValue;
 
-                    return Create(
-                        binaryExpression,
-                        expression2,
-                        style,
-                        allowedStyles,
-                        allowMissing,
-                        semanticModel,
-                        cancellationToken);
-                }
+                return Create(
+                    binaryExpression,
+                    expression2,
+                    style,
+                    allowedStyles,
+                    allowMissing,
+                    semanticModel,
+                    cancellationToken);
+            }
             case SyntaxKind.FalseLiteralExpression:
-                {
-                    NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression) ? NullCheckStyles.NotHasValue : NullCheckStyles.HasValue;
+            {
+                NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression) ? NullCheckStyles.NotHasValue : NullCheckStyles.HasValue;
 
-                    return Create(
-                        binaryExpression,
-                        expression2,
-                        style,
-                        allowedStyles,
-                        allowMissing,
-                        semanticModel,
-                        cancellationToken);
-                }
+                return Create(
+                    binaryExpression,
+                    expression2,
+                    style,
+                    allowedStyles,
+                    allowMissing,
+                    semanticModel,
+                    cancellationToken);
+            }
         }
 
         return default;
@@ -378,33 +378,33 @@ public readonly struct NullCheckExpressionInfo
         switch (right?.Kind())
         {
             case SyntaxKind.NullLiteralExpression:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case SyntaxKind.DefaultExpression:
-                {
-                    if (semanticModel is null)
-                        return false;
-
-                    ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);
-
-                    if (typeSymbol?.IsReferenceType != true)
-                        return false;
-
-                    ITypeSymbol? typeSymbol2 = semanticModel.GetTypeSymbol(right, cancellationToken);
-
-                    return SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2);
-                }
-            case SyntaxKind.DefaultLiteralExpression:
-                {
-                    return semanticModel?
-                        .GetTypeSymbol(left, cancellationToken)?
-                        .IsReferenceType == true;
-                }
-            default:
-                {
+            {
+                if (semanticModel is null)
                     return false;
-                }
+
+                ITypeSymbol? typeSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);
+
+                if (typeSymbol?.IsReferenceType != true)
+                    return false;
+
+                ITypeSymbol? typeSymbol2 = semanticModel.GetTypeSymbol(right, cancellationToken);
+
+                return SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2);
+            }
+            case SyntaxKind.DefaultLiteralExpression:
+            {
+                return semanticModel?
+                    .GetTypeSymbol(left, cancellationToken)?
+                    .IsReferenceType == true;
+            }
+            default:
+            {
+                return false;
+            }
         }
     }
 }

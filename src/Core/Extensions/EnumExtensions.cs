@@ -61,34 +61,34 @@ public static class EnumExtensions
         switch (other)
         {
             case Accessibility.Public:
-                {
-                    return accessibility == Accessibility.Internal
-                        || accessibility == Accessibility.ProtectedOrInternal
-                        || accessibility == Accessibility.ProtectedAndInternal
-                        || accessibility == Accessibility.Protected
-                        || accessibility == Accessibility.Private;
-                }
+            {
+                return accessibility == Accessibility.Internal
+                    || accessibility == Accessibility.ProtectedOrInternal
+                    || accessibility == Accessibility.ProtectedAndInternal
+                    || accessibility == Accessibility.Protected
+                    || accessibility == Accessibility.Private;
+            }
             case Accessibility.Internal:
-                {
-                    return accessibility == Accessibility.ProtectedAndInternal
-                        || accessibility == Accessibility.Private;
-                }
+            {
+                return accessibility == Accessibility.ProtectedAndInternal
+                    || accessibility == Accessibility.Private;
+            }
             case Accessibility.ProtectedOrInternal:
-                {
-                    return accessibility == Accessibility.Internal
-                        || accessibility == Accessibility.Protected
-                        || accessibility == Accessibility.ProtectedAndInternal
-                        || accessibility == Accessibility.Private;
-                }
+            {
+                return accessibility == Accessibility.Internal
+                    || accessibility == Accessibility.Protected
+                    || accessibility == Accessibility.ProtectedAndInternal
+                    || accessibility == Accessibility.Private;
+            }
             case Accessibility.ProtectedAndInternal:
             case Accessibility.Protected:
-                {
-                    return accessibility == Accessibility.Private;
-                }
+            {
+                return accessibility == Accessibility.Private;
+            }
             case Accessibility.Private:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
         }
 
         return false;

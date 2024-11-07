@@ -207,30 +207,30 @@ internal static class ParseHelpers
         switch (value)
         {
             case "q":
-                {
-                    verbosity = Verbosity.Quiet;
-                    return true;
-                }
+            {
+                verbosity = Verbosity.Quiet;
+                return true;
+            }
             case "m":
-                {
-                    verbosity = Verbosity.Minimal;
-                    return true;
-                }
+            {
+                verbosity = Verbosity.Minimal;
+                return true;
+            }
             case "n":
-                {
-                    verbosity = Verbosity.Normal;
-                    return true;
-                }
+            {
+                verbosity = Verbosity.Normal;
+                return true;
+            }
             case "d":
-                {
-                    verbosity = Verbosity.Detailed;
-                    return true;
-                }
+            {
+                verbosity = Verbosity.Detailed;
+                return true;
+            }
             case "diag":
-                {
-                    verbosity = Verbosity.Diagnostic;
-                    return true;
-                }
+            {
+                verbosity = Verbosity.Diagnostic;
+                return true;
+            }
         }
 
         if (Enum.TryParse(value, ignoreCase: true, out verbosity))
@@ -246,16 +246,16 @@ internal static class ParseHelpers
         {
             case "cs":
             case "csharp":
-                {
-                    language = LanguageNames.CSharp;
-                    return true;
-                }
+            {
+                language = LanguageNames.CSharp;
+                return true;
+            }
             case "vb":
             case "visual-basic":
-                {
-                    language = LanguageNames.VisualBasic;
-                    return true;
-                }
+            {
+                language = LanguageNames.VisualBasic;
+                return true;
+            }
         }
 
         WriteLine($"Unknown language '{value}'.", Verbosity.Quiet);

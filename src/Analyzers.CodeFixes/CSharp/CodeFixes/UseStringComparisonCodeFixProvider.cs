@@ -50,62 +50,62 @@ public sealed class UseStringComparisonCodeFixProvider : BaseCodeFixProvider
         {
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
+            {
+                var binaryExpression = (BinaryExpressionSyntax)node;
+
+                SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(binaryExpression.Left.WalkDownParentheses());
+
+                if (!invocationInfo.Success)
+                    invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo((InvocationExpressionSyntax)binaryExpression.Right.WalkDownParentheses());
+
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison");
+
+                if (!invocationInfo.NameText.EndsWith("Invariant", StringComparison.Ordinal)
+                    || !RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "InvariantCultureIgnoreCase"))
                 {
-                    var binaryExpression = (BinaryExpressionSyntax)node;
-
-                    SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(binaryExpression.Left.WalkDownParentheses());
-
-                    if (!invocationInfo.Success)
-                        invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo((InvocationExpressionSyntax)binaryExpression.Right.WalkDownParentheses());
-
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison");
-
-                    if (!invocationInfo.NameText.EndsWith("Invariant", StringComparison.Ordinal)
-                        || !RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "InvariantCultureIgnoreCase"))
-                    {
-                        RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "OrdinalIgnoreCase");
-                        RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "CurrentCultureIgnoreCase");
-                    }
-
-                    break;
+                    RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "OrdinalIgnoreCase");
+                    RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "CurrentCultureIgnoreCase");
                 }
+
+                break;
+            }
             case SyntaxKind.InvocationExpression:
+            {
+                var invocationExpression = (InvocationExpressionSyntax)node;
+
+                SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
+
+                SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
+
+                InvocationExpressionSyntax invocationExpression2;
+
+                if (arguments.Count == 1)
                 {
-                    var invocationExpression = (InvocationExpressionSyntax)node;
-
-                    SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
-
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
-
-                    InvocationExpressionSyntax invocationExpression2;
-
-                    if (arguments.Count == 1)
-                    {
-                        invocationExpression2 = (InvocationExpressionSyntax)invocationInfo.Expression;
-                    }
-                    else
-                    {
-                        invocationExpression2 = (arguments[0].Expression.WalkDownParentheses() as InvocationExpressionSyntax)
-                            ?? (InvocationExpressionSyntax)arguments[1].Expression.WalkDownParentheses();
-                    }
-
-                    SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression2);
-
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison");
-
-                    if (!invocationInfo2.NameText.EndsWith("Invariant", StringComparison.Ordinal)
-                        || !RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "InvariantCultureIgnoreCase", semanticModel))
-                    {
-                        RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "OrdinalIgnoreCase", semanticModel);
-                        RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "CurrentCultureIgnoreCase", semanticModel);
-                    }
-
-                    break;
+                    invocationExpression2 = (InvocationExpressionSyntax)invocationInfo.Expression;
                 }
+                else
+                {
+                    invocationExpression2 = (arguments[0].Expression.WalkDownParentheses() as InvocationExpressionSyntax)
+                        ?? (InvocationExpressionSyntax)arguments[1].Expression.WalkDownParentheses();
+                }
+
+                SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression2);
+
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison");
+
+                if (!invocationInfo2.NameText.EndsWith("Invariant", StringComparison.Ordinal)
+                    || !RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "InvariantCultureIgnoreCase", semanticModel))
+                {
+                    RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "OrdinalIgnoreCase", semanticModel);
+                    RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "CurrentCultureIgnoreCase", semanticModel);
+                }
+
+                break;
+            }
         }
     }
 
@@ -268,22 +268,22 @@ public sealed class UseStringComparisonCodeFixProvider : BaseCodeFixProvider
         switch (expression.Kind())
         {
             case SyntaxKind.StringLiteralExpression:
-                {
-                    return Argument(expression);
-                }
+            {
+                return Argument(expression);
+            }
             case SyntaxKind.InvocationExpression:
-                {
-                    var invocation = (InvocationExpressionSyntax)expression;
+            {
+                var invocation = (InvocationExpressionSyntax)expression;
 
-                    var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                    return Argument(memberAccess.Expression).WithTriviaFrom(expression);
-                }
+                return Argument(memberAccess.Expression).WithTriviaFrom(expression);
+            }
             default:
-                {
-                    SyntaxDebug.Fail(expression);
-                    return Argument(expression);
-                }
+            {
+                SyntaxDebug.Fail(expression);
+                return Argument(expression);
+            }
         }
     }
 
@@ -294,22 +294,22 @@ public sealed class UseStringComparisonCodeFixProvider : BaseCodeFixProvider
         switch (expression.Kind())
         {
             case SyntaxKind.StringLiteralExpression:
-                {
-                    return argument;
-                }
+            {
+                return argument;
+            }
             case SyntaxKind.InvocationExpression:
-                {
-                    var invocation = (InvocationExpressionSyntax)expression;
+            {
+                var invocation = (InvocationExpressionSyntax)expression;
 
-                    var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                    return Argument(memberAccess.Expression).WithTriviaFrom(argument);
-                }
+                return Argument(memberAccess.Expression).WithTriviaFrom(argument);
+            }
             default:
-                {
-                    SyntaxDebug.Fail(expression);
-                    return argument;
-                }
+            {
+                SyntaxDebug.Fail(expression);
+                return argument;
+            }
         }
     }
 }

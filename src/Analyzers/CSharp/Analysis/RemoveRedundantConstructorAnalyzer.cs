@@ -100,19 +100,19 @@ public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
                 switch (member)
                 {
                     case PropertyDeclarationSyntax property:
-                        {
-                            return property.Initializer is null;
-                        }
+                    {
+                        return property.Initializer is null;
+                    }
                     case FieldDeclarationSyntax field:
+                    {
+                        foreach (VariableDeclaratorSyntax declarator in field.Declaration.Variables)
                         {
-                            foreach (VariableDeclaratorSyntax declarator in field.Declaration.Variables)
-                            {
-                                if (declarator.Initializer is not null)
-                                    return false;
-                            }
-
-                            break;
+                            if (declarator.Initializer is not null)
+                                return false;
                         }
+
+                        break;
+                    }
                 }
             }
         }

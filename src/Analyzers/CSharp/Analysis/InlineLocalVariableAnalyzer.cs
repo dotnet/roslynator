@@ -89,137 +89,137 @@ public sealed class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
         switch (nextStatement.Kind())
         {
             case SyntaxKind.ExpressionStatement:
-                {
-                    Analyze(context, statements, localDeclarationInfo, index, (ExpressionStatementSyntax)nextStatement);
-                    break;
-                }
+            {
+                Analyze(context, statements, localDeclarationInfo, index, (ExpressionStatementSyntax)nextStatement);
+                break;
+            }
             case SyntaxKind.LocalDeclarationStatement:
-                {
-                    Analyze(context, statements, localDeclarationInfo, index, (LocalDeclarationStatementSyntax)nextStatement);
-                    break;
-                }
+            {
+                Analyze(context, statements, localDeclarationInfo, index, (LocalDeclarationStatementSyntax)nextStatement);
+                break;
+            }
             case SyntaxKind.ReturnStatement:
+            {
+                var returnStatement = (ReturnStatementSyntax)nextStatement;
+
+                if (!returnStatement.SpanOrLeadingTriviaContainsDirectives())
                 {
-                    var returnStatement = (ReturnStatementSyntax)nextStatement;
+                    ExpressionSyntax expression = returnStatement.Expression;
 
-                    if (!returnStatement.SpanOrLeadingTriviaContainsDirectives())
+                    if (expression?.Kind() == SyntaxKind.IdentifierName)
                     {
-                        ExpressionSyntax expression = returnStatement.Expression;
+                        var identifierName = (IdentifierNameSyntax)expression;
 
-                        if (expression?.Kind() == SyntaxKind.IdentifierName)
-                        {
-                            var identifierName = (IdentifierNameSyntax)expression;
-
-                            if (string.Equals(localDeclarationInfo.IdentifierText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
-                                ReportDiagnostic(context, localDeclarationInfo, expression);
-                        }
+                        if (string.Equals(localDeclarationInfo.IdentifierText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
+                            ReportDiagnostic(context, localDeclarationInfo, expression);
                     }
-
-                    break;
                 }
+
+                break;
+            }
             case SyntaxKind.YieldReturnStatement:
+            {
+                var yieldStatement = (YieldStatementSyntax)nextStatement;
+
+                if (index == statements.Count - 2
+                    && !yieldStatement.SpanOrLeadingTriviaContainsDirectives())
                 {
-                    var yieldStatement = (YieldStatementSyntax)nextStatement;
+                    ExpressionSyntax expression = yieldStatement.Expression;
 
-                    if (index == statements.Count - 2
-                        && !yieldStatement.SpanOrLeadingTriviaContainsDirectives())
+                    if (expression?.Kind() == SyntaxKind.IdentifierName)
                     {
-                        ExpressionSyntax expression = yieldStatement.Expression;
+                        var identifierName = (IdentifierNameSyntax)expression;
 
-                        if (expression?.Kind() == SyntaxKind.IdentifierName)
-                        {
-                            var identifierName = (IdentifierNameSyntax)expression;
-
-                            if (string.Equals(localDeclarationInfo.IdentifierText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
-                                ReportDiagnostic(context, localDeclarationInfo, expression);
-                        }
+                        if (string.Equals(localDeclarationInfo.IdentifierText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
+                            ReportDiagnostic(context, localDeclarationInfo, expression);
                     }
-
-                    break;
                 }
+
+                break;
+            }
             case SyntaxKind.ForEachStatement:
+            {
+                if (value.WalkDownParentheses().IsKind(SyntaxKind.AwaitExpression))
+                    return;
+
+                if (!value.IsSingleLine())
+                    return;
+
+                if (value.IsKind(SyntaxKind.ArrayInitializerExpression))
+                    return;
+
+                var forEachStatement = (ForEachStatementSyntax)nextStatement;
+
+                ISymbol localSymbol = GetLocalSymbol(localDeclarationInfo, forEachStatement.Expression, context.SemanticModel, context.CancellationToken);
+
+                if (localSymbol?.IsErrorType() != false)
+                    return;
+
+                ContainsLocalOrParameterReferenceWalker walker = null;
+
+                try
                 {
-                    if (value.WalkDownParentheses().IsKind(SyntaxKind.AwaitExpression))
-                        return;
+                    walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
 
-                    if (!value.IsSingleLine())
-                        return;
+                    walker.Visit(forEachStatement.Statement);
 
-                    if (value.IsKind(SyntaxKind.ArrayInitializerExpression))
-                        return;
-
-                    var forEachStatement = (ForEachStatementSyntax)nextStatement;
-
-                    ISymbol localSymbol = GetLocalSymbol(localDeclarationInfo, forEachStatement.Expression, context.SemanticModel, context.CancellationToken);
-
-                    if (localSymbol?.IsErrorType() != false)
-                        return;
-
-                    ContainsLocalOrParameterReferenceWalker walker = null;
-
-                    try
+                    if (!walker.Result
+                        && index < statements.Count - 2)
                     {
-                        walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
-
-                        walker.Visit(forEachStatement.Statement);
-
-                        if (!walker.Result
-                            && index < statements.Count - 2)
-                        {
-                            walker.VisitList(statements, index + 2);
-                        }
-
-                        if (!walker.Result)
-                            ReportDiagnostic(context, localDeclarationInfo, forEachStatement.Expression);
-                    }
-                    finally
-                    {
-                        if (walker is not null)
-                            ContainsLocalOrParameterReferenceWalker.Free(walker);
+                        walker.VisitList(statements, index + 2);
                     }
 
-                    break;
+                    if (!walker.Result)
+                        ReportDiagnostic(context, localDeclarationInfo, forEachStatement.Expression);
                 }
+                finally
+                {
+                    if (walker is not null)
+                        ContainsLocalOrParameterReferenceWalker.Free(walker);
+                }
+
+                break;
+            }
             case SyntaxKind.SwitchStatement:
+            {
+                if (value.WalkDownParentheses().IsKind(SyntaxKind.AwaitExpression))
+                    return;
+
+                if (!value.IsSingleLine())
+                    return;
+
+                var switchStatement = (SwitchStatementSyntax)nextStatement;
+
+                ISymbol localSymbol = GetLocalSymbol(localDeclarationInfo, switchStatement.Expression, context.SemanticModel, context.CancellationToken);
+
+                if (localSymbol?.IsErrorType() != false)
+                    return;
+
+                ContainsLocalOrParameterReferenceWalker walker = null;
+
+                try
                 {
-                    if (value.WalkDownParentheses().IsKind(SyntaxKind.AwaitExpression))
-                        return;
+                    walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
 
-                    if (!value.IsSingleLine())
-                        return;
+                    walker.VisitList(switchStatement.Sections);
 
-                    var switchStatement = (SwitchStatementSyntax)nextStatement;
-
-                    ISymbol localSymbol = GetLocalSymbol(localDeclarationInfo, switchStatement.Expression, context.SemanticModel, context.CancellationToken);
-
-                    if (localSymbol?.IsErrorType() != false)
-                        return;
-
-                    ContainsLocalOrParameterReferenceWalker walker = null;
-
-                    try
+                    if (!walker.Result
+                        && index < statements.Count - 2)
                     {
-                        walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
-
-                        walker.VisitList(switchStatement.Sections);
-
-                        if (!walker.Result
-                            && index < statements.Count - 2)
-                        {
-                            walker.VisitList(statements, index + 2);
-                        }
-
-                        if (!walker.Result)
-                            ReportDiagnostic(context, localDeclarationInfo, switchStatement.Expression);
-                    }
-                    finally
-                    {
-                        if (walker is not null)
-                            ContainsLocalOrParameterReferenceWalker.Free(walker);
+                        walker.VisitList(statements, index + 2);
                     }
 
-                    break;
+                    if (!walker.Result)
+                        ReportDiagnostic(context, localDeclarationInfo, switchStatement.Expression);
                 }
+                finally
+                {
+                    if (walker is not null)
+                        ContainsLocalOrParameterReferenceWalker.Free(walker);
+                }
+
+                break;
+            }
         }
     }
 

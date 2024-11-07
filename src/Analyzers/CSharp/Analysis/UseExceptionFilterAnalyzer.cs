@@ -111,25 +111,25 @@ public sealed class UseExceptionFilterAnalyzer : BaseDiagnosticAnalyzer
             switch (node.Expression)
             {
                 case SimpleNameSyntax simpleName:
-                    {
-                        AnalyzeSimpleName(simpleName);
-                        break;
-                    }
+                {
+                    AnalyzeSimpleName(simpleName);
+                    break;
+                }
                 case MemberBindingExpressionSyntax memberBindingExpression:
-                    {
-                        AnalyzeSimpleName(memberBindingExpression.Name);
-                        break;
-                    }
+                {
+                    AnalyzeSimpleName(memberBindingExpression.Name);
+                    break;
+                }
                 case MemberAccessExpressionSyntax memberAccessExpression:
-                    {
-                        AnalyzeSimpleName(memberAccessExpression.Name);
-                        break;
-                    }
+                {
+                    AnalyzeSimpleName(memberAccessExpression.Name);
+                    break;
+                }
                 default:
-                    {
-                        SyntaxDebug.Fail(node);
-                        break;
-                    }
+                {
+                    SyntaxDebug.Fail(node);
+                    break;
+                }
             }
 
             base.VisitInvocationExpression(node);

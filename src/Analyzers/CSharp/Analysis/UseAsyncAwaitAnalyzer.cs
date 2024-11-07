@@ -289,17 +289,17 @@ public sealed class UseAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
                         case "FromCanceled":
                         case "FromException":
                         case "FromResult":
+                        {
+                            if (SemanticModel.GetSymbol(expression, CancellationToken) is IMethodSymbol methodSymbol
+                                && (methodSymbol.Arity == 0 || methodSymbol.Arity == 1)
+                                && methodSymbol.Parameters.Length == 1
+                                && IsTaskOrTaskOrT(methodSymbol.ContainingType))
                             {
-                                if (SemanticModel.GetSymbol(expression, CancellationToken) is IMethodSymbol methodSymbol
-                                    && (methodSymbol.Arity == 0 || methodSymbol.Arity == 1)
-                                    && methodSymbol.Parameters.Length == 1
-                                    && IsTaskOrTaskOrT(methodSymbol.ContainingType))
-                                {
-                                    return true;
-                                }
-
-                                break;
+                                return true;
                             }
+
+                            break;
+                        }
                     }
                 }
             }

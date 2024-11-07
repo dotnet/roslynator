@@ -45,33 +45,33 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
             {
                 case DiagnosticIdentifiers.UnusedElementInDocumentationComment:
                 case DiagnosticIdentifiers.InvalidReferenceInDocumentationComment:
-                    {
-                        XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNode);
+                {
+                    XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNode);
 
-                        string name = elementInfo.LocalName;
+                    string name = elementInfo.LocalName;
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Remove '{name}' element",
-                            ct => RemoveUnusedElementInDocumentationCommentAsync(document, elementInfo, ct),
-                            GetEquivalenceKey(diagnostic, name));
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Remove '{name}' element",
+                        ct => RemoveUnusedElementInDocumentationCommentAsync(document, elementInfo, ct),
+                        GetEquivalenceKey(diagnostic, name));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.FixDocumentationCommentTag:
-                    {
-                        XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNode);
+                {
+                    XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNode);
 
-                        CodeAction codeAction = CodeAction.Create(
-                            (elementInfo.GetTag() == XmlTag.C)
-                                ? "Rename tag to 'code'"
-                                : "Rename tag to 'c'",
-                            ct => FixDocumentationCommentTagAsync(document, elementInfo, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        (elementInfo.GetTag() == XmlTag.C)
+                            ? "Rename tag to 'code'"
+                            : "Rename tag to 'c'",
+                        ct => FixDocumentationCommentTagAsync(document, elementInfo, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

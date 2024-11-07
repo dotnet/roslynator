@@ -102,29 +102,29 @@ public abstract class DocumentationResources
             case SymbolKind.Field:
                 return FieldTitle;
             case SymbolKind.Method:
+            {
+                var methodSymbol = (IMethodSymbol)symbol;
+
+                switch (methodSymbol.MethodKind)
                 {
-                    var methodSymbol = (IMethodSymbol)symbol;
-
-                    switch (methodSymbol.MethodKind)
-                    {
-                        case MethodKind.Constructor:
-                            return ConstructorTitle;
-                        case MethodKind.Conversion:
-                        case MethodKind.UserDefinedOperator:
-                            return OperatorTitle;
-                        case MethodKind.ExplicitInterfaceImplementation:
-                        case MethodKind.Ordinary:
-                            return MethodTitle;
-                    }
-
-                    throw new InvalidOperationException();
+                    case MethodKind.Constructor:
+                        return ConstructorTitle;
+                    case MethodKind.Conversion:
+                    case MethodKind.UserDefinedOperator:
+                        return OperatorTitle;
+                    case MethodKind.ExplicitInterfaceImplementation:
+                    case MethodKind.Ordinary:
+                        return MethodTitle;
                 }
+
+                throw new InvalidOperationException();
+            }
             case SymbolKind.Namespace:
                 return NamespaceTitle;
             case SymbolKind.Property:
-                {
-                    return (((IPropertySymbol)symbol).IsIndexer) ? IndexerTitle : PropertyTitle;
-                }
+            {
+                return (((IPropertySymbol)symbol).IsIndexer) ? IndexerTitle : PropertyTitle;
+            }
             case SymbolKind.NamedType:
                 return GetName(((ITypeSymbol)symbol).TypeKind);
         }
@@ -141,23 +141,23 @@ public abstract class DocumentationResources
             case SymbolKind.Field:
                 return FieldsTitle;
             case SymbolKind.Method:
+            {
+                var methodSymbol = (IMethodSymbol)symbol;
+
+                switch (methodSymbol.MethodKind)
                 {
-                    var methodSymbol = (IMethodSymbol)symbol;
-
-                    switch (methodSymbol.MethodKind)
-                    {
-                        case MethodKind.Constructor:
-                            return ConstructorsTitle;
-                        case MethodKind.Conversion:
-                        case MethodKind.UserDefinedOperator:
-                            return OperatorsTitle;
-                        case MethodKind.ExplicitInterfaceImplementation:
-                        case MethodKind.Ordinary:
-                            return MethodsTitle;
-                    }
-
-                    throw new InvalidOperationException();
+                    case MethodKind.Constructor:
+                        return ConstructorsTitle;
+                    case MethodKind.Conversion:
+                    case MethodKind.UserDefinedOperator:
+                        return OperatorsTitle;
+                    case MethodKind.ExplicitInterfaceImplementation:
+                    case MethodKind.Ordinary:
+                        return MethodsTitle;
                 }
+
+                throw new InvalidOperationException();
+            }
             case SymbolKind.Namespace:
                 return NamespacesTitle;
             case SymbolKind.Property:

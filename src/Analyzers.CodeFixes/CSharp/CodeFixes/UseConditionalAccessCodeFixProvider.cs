@@ -50,25 +50,25 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
         {
             case SyntaxKind.LogicalAndExpression:
             case SyntaxKind.LogicalOrExpression:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        Title,
-                        ct => UseConditionalAccessAsync(context.Document, (BinaryExpressionSyntax)node, ct),
-                        GetEquivalenceKey(DiagnosticIdentifiers.UseConditionalAccess));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => UseConditionalAccessAsync(context.Document, (BinaryExpressionSyntax)node, ct),
+                    GetEquivalenceKey(DiagnosticIdentifiers.UseConditionalAccess));
 
-                    context.RegisterCodeFix(codeAction, context.Diagnostics);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
+                break;
+            }
             case SyntaxKind.IfStatement:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        Title,
-                        ct => UseConditionalAccessAsync(context.Document, (IfStatementSyntax)node, ct),
-                        GetEquivalenceKey(DiagnosticIdentifiers.UseConditionalAccess));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => UseConditionalAccessAsync(context.Document, (IfStatementSyntax)node, ct),
+                    GetEquivalenceKey(DiagnosticIdentifiers.UseConditionalAccess));
 
-                    context.RegisterCodeFix(codeAction, context.Diagnostics);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
+                break;
+            }
         }
     }
 
@@ -129,19 +129,19 @@ public sealed class UseConditionalAccessCodeFixProvider : BaseCodeFixProvider
             case SyntaxKind.IsExpression:
             case SyntaxKind.AsExpression:
             case SyntaxKind.IsPatternExpression:
-                {
-                    break;
-                }
+            {
+                break;
+            }
             case SyntaxKind.LogicalNotExpression:
-                {
-                    builder.Append((kind == SyntaxKind.LogicalAndExpression) ? " == false" : " != true");
-                    break;
-                }
+            {
+                builder.Append((kind == SyntaxKind.LogicalAndExpression) ? " == false" : " != true");
+                break;
+            }
             default:
-                {
-                    builder.Append((kind == SyntaxKind.LogicalAndExpression) ? " == true" : " != false");
-                    break;
-                }
+            {
+                builder.Append((kind == SyntaxKind.LogicalAndExpression) ? " == true" : " != false");
+                break;
+            }
         }
 
         if (parenDiff < 0)

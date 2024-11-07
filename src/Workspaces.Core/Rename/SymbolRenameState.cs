@@ -839,17 +839,43 @@ internal class SymbolRenameState
         switch (symbol.Kind)
         {
             case SymbolKind.Local:
-                {
-                    return null;
-                }
+            {
+                return null;
+            }
             case SymbolKind.Method:
+            {
+                var methodSymbol = (IMethodSymbol)symbol;
+
+                if (methodSymbol.MethodKind == MethodKind.LocalFunction)
                 {
-                    var methodSymbol = (IMethodSymbol)symbol;
+                    id = symbol.Name;
+                    ISymbol cs = symbol.ContainingSymbol;
+
+                    while (cs is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
+                    {
+                        id = cs.Name + "." + id;
+                        cs = cs.ContainingSymbol;
+                    }
+
+                    return id;
+                }
+
+                break;
+            }
+            case SymbolKind.Parameter:
+            case SymbolKind.TypeParameter:
+            {
+                ISymbol cs = symbol.ContainingSymbol;
+
+                if (cs is IMethodSymbol methodSymbol)
+                {
+                    if (methodSymbol.MethodKind == MethodKind.AnonymousFunction)
+                        return null;
 
                     if (methodSymbol.MethodKind == MethodKind.LocalFunction)
                     {
-                        id = symbol.Name;
-                        ISymbol cs = symbol.ContainingSymbol;
+                        id = cs.Name + " " + symbol.Name;
+                        cs = cs.ContainingSymbol;
 
                         while (cs is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
                         {
@@ -859,36 +885,10 @@ internal class SymbolRenameState
 
                         return id;
                     }
-
-                    break;
                 }
-            case SymbolKind.Parameter:
-            case SymbolKind.TypeParameter:
-                {
-                    ISymbol cs = symbol.ContainingSymbol;
 
-                    if (cs is IMethodSymbol methodSymbol)
-                    {
-                        if (methodSymbol.MethodKind == MethodKind.AnonymousFunction)
-                            return null;
-
-                        if (methodSymbol.MethodKind == MethodKind.LocalFunction)
-                        {
-                            id = cs.Name + " " + symbol.Name;
-                            cs = cs.ContainingSymbol;
-
-                            while (cs is IMethodSymbol { MethodKind: MethodKind.LocalFunction })
-                            {
-                                id = cs.Name + "." + id;
-                                cs = cs.ContainingSymbol;
-                            }
-
-                            return id;
-                        }
-                    }
-
-                    return symbol.ContainingSymbol.GetDocumentationCommentId() + " " + (symbol.GetDocumentationCommentId() ?? symbol.Name);
-                }
+                return symbol.ContainingSymbol.GetDocumentationCommentId() + " " + (symbol.GetDocumentationCommentId() ?? symbol.Name);
+            }
         }
 
         return symbol.GetDocumentationCommentId();

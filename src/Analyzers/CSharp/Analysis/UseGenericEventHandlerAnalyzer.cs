@@ -93,22 +93,22 @@ public sealed class UseGenericEventHandlerAnalyzer : BaseDiagnosticAnalyzer
         switch (node)
         {
             case EventDeclarationSyntax eventDeclaration:
-                {
-                    return eventDeclaration.Type;
-                }
+            {
+                return eventDeclaration.Type;
+            }
             case VariableDeclaratorSyntax declarator:
-                {
-                    if (declarator.Parent is VariableDeclarationSyntax declaration)
-                        return declaration.Type;
+            {
+                if (declarator.Parent is VariableDeclarationSyntax declaration)
+                    return declaration.Type;
 
-                    SyntaxDebug.Fail(declarator.Parent);
-                    break;
-                }
+                SyntaxDebug.Fail(declarator.Parent);
+                break;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(node);
-                    break;
-                }
+            {
+                SyntaxDebug.Fail(node);
+                break;
+            }
         }
 
         return null;

@@ -46,33 +46,33 @@ public sealed class AssignmentExpressionCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment:
-                    {
-                        string operatorText = UseUnaryOperatorInsteadOfAssignmentAnalyzer.GetOperatorText(assignment);
+                {
+                    string operatorText = UseUnaryOperatorInsteadOfAssignmentAnalyzer.GetOperatorText(assignment);
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Use {operatorText} operator",
-                            ct => UseUnaryOperatorInsteadOfAssignmentAsync(document, assignment, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Use {operatorText} operator",
+                        ct => UseUnaryOperatorInsteadOfAssignmentAsync(document, assignment, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.RemoveRedundantDelegateCreation:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant delegate creation",
-                            ct =>
-                            {
-                                return RemoveRedundantDelegateCreationRefactoring.RefactorAsync(
-                                    document,
-                                    (ObjectCreationExpressionSyntax)assignment.Right,
-                                    ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant delegate creation",
+                        ct =>
+                        {
+                            return RemoveRedundantDelegateCreationRefactoring.RefactorAsync(
+                                document,
+                                (ObjectCreationExpressionSyntax)assignment.Right,
+                                ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }
@@ -116,32 +116,32 @@ public sealed class AssignmentExpressionCodeFixProvider : BaseCodeFixProvider
             {
                 case SyntaxKind.AddAssignmentExpression:
                 case SyntaxKind.SubtractAssignmentExpression:
-                    {
-                        trivia.AddRange(assignment.OperatorToken.GetAllTrivia());
+                {
+                    trivia.AddRange(assignment.OperatorToken.GetAllTrivia());
 
-                        if (right?.IsMissing == false)
-                            trivia.AddRange(right.GetLeadingAndTrailingTrivia());
+                    if (right?.IsMissing == false)
+                        trivia.AddRange(right.GetLeadingAndTrailingTrivia());
 
-                        return trivia;
-                    }
+                    return trivia;
+                }
             }
 
             switch (right?.Kind())
             {
                 case SyntaxKind.AddExpression:
                 case SyntaxKind.SubtractExpression:
+                {
+                    trivia.AddRange(assignment.OperatorToken.GetAllTrivia());
+
+                    if (right?.IsMissing == false)
                     {
-                        trivia.AddRange(assignment.OperatorToken.GetAllTrivia());
+                        var binaryExpression = (BinaryExpressionSyntax)right;
 
-                        if (right?.IsMissing == false)
-                        {
-                            var binaryExpression = (BinaryExpressionSyntax)right;
-
-                            trivia.AddRange(binaryExpression.DescendantTrivia());
-                        }
-
-                        return trivia;
+                        trivia.AddRange(binaryExpression.DescendantTrivia());
                     }
+
+                    return trivia;
+                }
             }
 
             throw new InvalidOperationException();

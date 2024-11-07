@@ -83,35 +83,35 @@ internal static class TestExtensions
                         switch (s[i])
                         {
                             case '\n':
+                            {
+                                if (i == startIndex
+                                    && i > 0
+                                    && s[i - 1] == '\r')
                                 {
-                                    if (i == startIndex
-                                        && i > 0
-                                        && s[i - 1] == '\r')
-                                    {
-                                        throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
-                                    }
-
-                                    if (i > startIndex
-                                        && s[i - 1] == '\r')
-                                    {
-                                        i--;
-                                    }
-
-                                    line++;
-                                    break;
+                                    throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
                                 }
+
+                                if (i > startIndex
+                                    && s[i - 1] == '\r')
+                                {
+                                    i--;
+                                }
+
+                                line++;
+                                break;
+                            }
                             case '\r':
+                            {
+                                if (i == endIndex - 1
+                                    && i < length - 1
+                                    && s[i + 1] == '\n')
                                 {
-                                    if (i == endIndex - 1
-                                        && i < length - 1
-                                        && s[i + 1] == '\n')
-                                    {
-                                        throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
-                                    }
-
-                                    line++;
-                                    break;
+                                    throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
                                 }
+
+                                line++;
+                                break;
+                            }
                         }
 
                         i--;

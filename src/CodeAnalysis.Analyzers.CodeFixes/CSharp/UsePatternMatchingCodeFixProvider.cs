@@ -42,25 +42,25 @@ public sealed class UsePatternMatchingCodeFixProvider : BaseCodeFixProvider
         switch (node)
         {
             case SwitchStatementSyntax switchStatement:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        Title,
-                        ct => UsePatternMatchingAsync(document, switchStatement, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => UsePatternMatchingAsync(document, switchStatement, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             case IfStatementSyntax ifStatement:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        Title,
-                        ct => UsePatternMatchingAsync(document, ifStatement, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => UsePatternMatchingAsync(document, ifStatement, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 
@@ -159,50 +159,50 @@ public sealed class UsePatternMatchingCodeFixProvider : BaseCodeFixProvider
             case IsKindExpressionStyle.IsKindConditional:
             case IsKindExpressionStyle.Kind:
             case IsKindExpressionStyle.KindConditional:
-                {
-                    var block = (BlockSyntax)ifStatement.Statement;
+            {
+                var block = (BlockSyntax)ifStatement.Statement;
 
-                    IsPatternExpressionSyntax isPatternExpression = CreateIsPatternExpression(block.Statements[0]);
+                IsPatternExpressionSyntax isPatternExpression = CreateIsPatternExpression(block.Statements[0]);
 
-                    BlockSyntax newBlock = block.WithStatements(block.Statements.RemoveAt(0));
+                BlockSyntax newBlock = block.WithStatements(block.Statements.RemoveAt(0));
 
-                    IfStatementSyntax newIfStatement = ifStatement.Update(
-                        ifStatement.IfKeyword,
-                        ifStatement.OpenParenToken,
-                        isPatternExpression,
-                        ifStatement.CloseParenToken,
-                        newBlock,
-                        ifStatement.Else);
+                IfStatementSyntax newIfStatement = ifStatement.Update(
+                    ifStatement.IfKeyword,
+                    ifStatement.OpenParenToken,
+                    isPatternExpression,
+                    ifStatement.CloseParenToken,
+                    newBlock,
+                    ifStatement.Else);
 
-                    newIfStatement = newIfStatement.WithFormatterAnnotation();
+                newIfStatement = newIfStatement.WithFormatterAnnotation();
 
-                    return await document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken).ConfigureAwait(false);
-                }
+                return await document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken).ConfigureAwait(false);
+            }
             case IsKindExpressionStyle.NotIsKind:
             case IsKindExpressionStyle.NotIsKindConditional:
             case IsKindExpressionStyle.NotKind:
             case IsKindExpressionStyle.NotKindConditional:
-                {
-                    StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(ifStatement);
+            {
+                StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(ifStatement);
 
-                    SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
+                SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
-                    int index = statements.IndexOf(ifStatement);
+                int index = statements.IndexOf(ifStatement);
 
-                    IsPatternExpressionSyntax isPatternExpression = CreateIsPatternExpression(statements[index + 1]);
+                IsPatternExpressionSyntax isPatternExpression = CreateIsPatternExpression(statements[index + 1]);
 
-                    IfStatementSyntax newIfStatement = ifStatement.WithCondition(LogicalNotExpression(isPatternExpression.Parenthesize()).WithTriviaFrom(ifStatement.Condition));
+                IfStatementSyntax newIfStatement = ifStatement.WithCondition(LogicalNotExpression(isPatternExpression.Parenthesize()).WithTriviaFrom(ifStatement.Condition));
 
-                    SyntaxList<StatementSyntax> newStatements = statements
-                        .ReplaceAt(index, newIfStatement)
-                        .RemoveAt(index + 1);
+                SyntaxList<StatementSyntax> newStatements = statements
+                    .ReplaceAt(index, newIfStatement)
+                    .RemoveAt(index + 1);
 
-                    return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
-                }
+                return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
+            }
             default:
-                {
-                    throw new InvalidOperationException();
-                }
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         IsPatternExpressionSyntax CreateIsPatternExpression(StatementSyntax statement)

@@ -22,89 +22,89 @@ internal static class IfRefactoring
         switch (ifAnalysis.Kind)
         {
             case IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression:
-                {
-                    return IfElseToAssignmentWithCoalesceExpressionAsync(document, (IfElseToAssignmentWithCoalesceExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfElseToAssignmentWithCoalesceExpressionAsync(document, (IfElseToAssignmentWithCoalesceExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToAssignmentWithConditionalExpression:
-                {
-                    return IfElseToAssignmentWithConditionalExpressionAsync(document, (IfElseToAssignmentWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfElseToAssignmentWithConditionalExpressionAsync(document, (IfElseToAssignmentWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.AssignmentAndIfToAssignmentWithConditionalExpression:
-                {
-                    var analysis = (AssignmentAndIfToAssignmentWithConditionalExpressionAnalysis)ifAnalysis;
+            {
+                var analysis = (AssignmentAndIfToAssignmentWithConditionalExpressionAnalysis)ifAnalysis;
 
-                    ConditionalExpressionSyntax conditionalExpression = CreateConditionalExpression(analysis.IfStatement.Condition, analysis.WhenTrue, analysis.WhenFalse);
+                ConditionalExpressionSyntax conditionalExpression = CreateConditionalExpression(analysis.IfStatement.Condition, analysis.WhenTrue, analysis.WhenFalse);
 
-                    ExpressionStatementSyntax newStatement = analysis.Statement.ReplaceNode(analysis.Right, conditionalExpression);
+                ExpressionStatementSyntax newStatement = analysis.Statement.ReplaceNode(analysis.Right, conditionalExpression);
 
-                    return ToAssignmentWithConditionalExpressionAsync(document, analysis, newStatement, cancellationToken);
-                }
+                return ToAssignmentWithConditionalExpressionAsync(document, analysis, newStatement, cancellationToken);
+            }
             case IfAnalysisKind.LocalDeclarationAndIfElseAssignmentWithConditionalExpression:
-                {
-                    var analysis = (LocalDeclarationAndIfElseToAssignmentWithConditionalExpressionAnalysis)ifAnalysis;
+            {
+                var analysis = (LocalDeclarationAndIfElseToAssignmentWithConditionalExpressionAnalysis)ifAnalysis;
 
-                    ConditionalExpressionSyntax conditionalExpression = CreateConditionalExpression(analysis.IfStatement.Condition, analysis.WhenTrue, analysis.WhenFalse);
+                ConditionalExpressionSyntax conditionalExpression = CreateConditionalExpression(analysis.IfStatement.Condition, analysis.WhenTrue, analysis.WhenFalse);
 
-                    VariableDeclaratorSyntax declarator = analysis.Statement.Declaration.Variables[0];
+                VariableDeclaratorSyntax declarator = analysis.Statement.Declaration.Variables[0];
 
-                    EqualsValueClauseSyntax initializer = declarator.Initializer;
+                EqualsValueClauseSyntax initializer = declarator.Initializer;
 
-                    EqualsValueClauseSyntax newInitializer = (initializer is not null)
-                        ? initializer.WithValue(conditionalExpression)
-                        : EqualsValueClause(conditionalExpression);
+                EqualsValueClauseSyntax newInitializer = (initializer is not null)
+                    ? initializer.WithValue(conditionalExpression)
+                    : EqualsValueClause(conditionalExpression);
 
-                    LocalDeclarationStatementSyntax newStatement = analysis.Statement.ReplaceNode(declarator, declarator.WithInitializer(newInitializer));
+                LocalDeclarationStatementSyntax newStatement = analysis.Statement.ReplaceNode(declarator, declarator.WithInitializer(newInitializer));
 
-                    return ToAssignmentWithConditionalExpressionAsync(document, analysis, newStatement, cancellationToken);
-                }
+                return ToAssignmentWithConditionalExpressionAsync(document, analysis, newStatement, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToAssignmentWithExpression:
-                {
-                    return IfElseToAssignmentWithExpressionAsync(document, (IfElseToAssignmentWithExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfElseToAssignmentWithExpressionAsync(document, (IfElseToAssignmentWithExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToAssignmentWithCondition:
-                {
-                    return IfElseToAssignmentWithConditionAsync(document, (IfElseToAssignmentWithConditionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfElseToAssignmentWithConditionAsync(document, (IfElseToAssignmentWithConditionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToReturnWithCoalesceExpression:
             case IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression:
             case IfAnalysisKind.IfReturnToReturnWithCoalesceExpression:
-                {
-                    return IfToReturnWithCoalesceExpressionAsync(document, (IfToReturnWithCoalesceExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfToReturnWithCoalesceExpressionAsync(document, (IfToReturnWithCoalesceExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToReturnWithConditionalExpression:
-                {
-                    return IfElseToReturnWithConditionalExpressionAsync(document, (IfElseToReturnWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfElseToReturnWithConditionalExpressionAsync(document, (IfElseToReturnWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToReturnWithBooleanExpression:
-                {
-                    return IfElseToReturnWithBooleanExpressionAsync(document, (IfElseToReturnWithBooleanExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfElseToReturnWithBooleanExpressionAsync(document, (IfElseToReturnWithBooleanExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToReturnWithExpression:
             case IfAnalysisKind.IfElseToYieldReturnWithExpression:
             case IfAnalysisKind.IfReturnToReturnWithExpression:
-                {
-                    return IfToReturnWithExpressionAsync(document, (IfToReturnWithExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfToReturnWithExpressionAsync(document, (IfToReturnWithExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToYieldReturnWithConditionalExpression:
-                {
-                    return IfElseToYieldReturnWithConditionalExpressionAsync(document, (IfElseToYieldReturnWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfElseToYieldReturnWithConditionalExpressionAsync(document, (IfElseToYieldReturnWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfElseToYieldReturnWithBooleanExpression:
-                {
-                    return IfElseToYieldReturnWithBooleanExpressionAsync(document, (IfElseToYieldReturnWithBooleanExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfElseToYieldReturnWithBooleanExpressionAsync(document, (IfElseToYieldReturnWithBooleanExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfReturnToReturnWithConditionalExpression:
-                {
-                    return IfReturnToReturnWithConditionalExpressionAsync(document, (IfReturnToReturnWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfReturnToReturnWithConditionalExpressionAsync(document, (IfReturnToReturnWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             case IfAnalysisKind.IfReturnToReturnWithBooleanExpression:
-                {
-                    return IfReturnToReturnWithBooleanExpressionAsync(document, (IfReturnToReturnWithBooleanExpressionAnalysis)ifAnalysis, cancellationToken);
-                }
+            {
+                return IfReturnToReturnWithBooleanExpressionAsync(document, (IfReturnToReturnWithBooleanExpressionAnalysis)ifAnalysis, cancellationToken);
+            }
             default:
-                {
-                    throw new InvalidOperationException();
-                }
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 
@@ -478,41 +478,41 @@ internal static class IfRefactoring
         switch (expression1.Kind())
         {
             case SyntaxKind.TrueLiteralExpression:
+            {
+                switch (expression2.Kind())
                 {
-                    switch (expression2.Kind())
-                    {
-                        case SyntaxKind.TrueLiteralExpression:
-                            return expression2;
-                        case SyntaxKind.FalseLiteralExpression:
-                            return condition;
-                        default:
-                            return LogicalOrExpression(condition, expression2);
-                    }
+                    case SyntaxKind.TrueLiteralExpression:
+                        return expression2;
+                    case SyntaxKind.FalseLiteralExpression:
+                        return condition;
+                    default:
+                        return LogicalOrExpression(condition, expression2);
                 }
+            }
             case SyntaxKind.FalseLiteralExpression:
+            {
+                switch (expression2.Kind())
                 {
-                    switch (expression2.Kind())
-                    {
-                        case SyntaxKind.TrueLiteralExpression:
-                            return SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken);
-                        case SyntaxKind.FalseLiteralExpression:
-                            return expression2;
-                        default:
-                            return LogicalAndExpression(SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken), expression2);
-                    }
+                    case SyntaxKind.TrueLiteralExpression:
+                        return SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken);
+                    case SyntaxKind.FalseLiteralExpression:
+                        return expression2;
+                    default:
+                        return LogicalAndExpression(SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken), expression2);
                 }
+            }
             default:
+            {
+                switch (expression2.Kind())
                 {
-                    switch (expression2.Kind())
-                    {
-                        case SyntaxKind.TrueLiteralExpression:
-                            return LogicalOrExpression(SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken), expression1);
-                        case SyntaxKind.FalseLiteralExpression:
-                            return LogicalAndExpression(condition, expression1);
-                        default:
-                            throw new InvalidOperationException();
-                    }
+                    case SyntaxKind.TrueLiteralExpression:
+                        return LogicalOrExpression(SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken), expression1);
+                    case SyntaxKind.FalseLiteralExpression:
+                        return LogicalAndExpression(condition, expression1);
+                    default:
+                        throw new InvalidOperationException();
                 }
+            }
         }
 
         static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)

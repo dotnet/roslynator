@@ -38,32 +38,32 @@ public sealed class ParameterCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier:
+                {
+                    if (parameter.IsParams())
                     {
-                        if (parameter.IsParams())
-                        {
-                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
-                        }
-                        else
-                        {
-                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
-                        }
-
-                        break;
+                        ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
                     }
+                    else
+                    {
+                        ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
+                    }
+
+                    break;
+                }
                 case DiagnosticIdentifiers.MakeParameterRefReadOnly:
                 case DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference:
+                {
+                    if (parameter.Modifiers.Contains(SyntaxKind.InKeyword))
                     {
-                        if (parameter.Modifiers.Contains(SyntaxKind.InKeyword))
-                        {
-                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
-                        }
-                        else
-                        {
-                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
-                        }
-
-                        break;
+                        ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
                     }
+                    else
+                    {
+                        ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
+                    }
+
+                    break;
+                }
             }
         }
     }

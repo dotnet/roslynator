@@ -81,22 +81,22 @@ public sealed class UsePredefinedTypeAnalyzer : BaseDiagnosticAnalyzer
         switch (cref?.Kind())
         {
             case SyntaxKind.NameMemberCref:
-                {
-                    Analyze(context, cref, (NameMemberCrefSyntax)cref);
-                    break;
-                }
+            {
+                Analyze(context, cref, (NameMemberCrefSyntax)cref);
+                break;
+            }
             case SyntaxKind.QualifiedCref:
-                {
-                    var qualifiedCref = (QualifiedCrefSyntax)cref;
+            {
+                var qualifiedCref = (QualifiedCrefSyntax)cref;
 
-                    MemberCrefSyntax memberCref = qualifiedCref.Member;
+                MemberCrefSyntax memberCref = qualifiedCref.Member;
 
-                    if (memberCref?.IsKind(SyntaxKind.NameMemberCref) != true)
-                        break;
-
-                    Analyze(context, cref, (NameMemberCrefSyntax)memberCref);
+                if (memberCref?.IsKind(SyntaxKind.NameMemberCref) != true)
                     break;
-                }
+
+                Analyze(context, cref, (NameMemberCrefSyntax)memberCref);
+                break;
+            }
         }
     }
 

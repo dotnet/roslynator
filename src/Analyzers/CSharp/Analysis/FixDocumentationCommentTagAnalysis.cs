@@ -26,28 +26,28 @@ public static class FixDocumentationCommentTagAnalysis
                 switch (elementInfo2.GetTag())
                 {
                     case XmlTag.C:
-                        {
-                            AnalyzeCElement(context, elementInfo2);
-                            break;
-                        }
+                    {
+                        AnalyzeCElement(context, elementInfo2);
+                        break;
+                    }
                     case XmlTag.Code:
-                        {
-                            AnalyzeCodeElement(context, elementInfo2);
-                            break;
-                        }
+                    {
+                        AnalyzeCodeElement(context, elementInfo2);
+                        break;
+                    }
                     case XmlTag.List:
-                        {
-                            AnalyzeList(context, elementInfo2);
-                            break;
-                        }
+                    {
+                        AnalyzeList(context, elementInfo2);
+                        break;
+                    }
                     case XmlTag.Para:
                     case XmlTag.ParamRef:
                     case XmlTag.See:
                     case XmlTag.TypeParamRef:
-                        {
-                            Analyze(context, elementInfo2);
-                            break;
-                        }
+                    {
+                        Analyze(context, elementInfo2);
+                        break;
+                    }
                 }
             }
         }

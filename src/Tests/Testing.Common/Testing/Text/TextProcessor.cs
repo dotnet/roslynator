@@ -96,80 +96,80 @@ internal static class TextProcessor
             switch (text[i])
             {
                 case '\r':
+                {
+                    if (PeekNextChar() == '\n')
                     {
-                        if (PeekNextChar() == '\n')
-                        {
-                            i++;
-                        }
-
-                        line++;
-                        column = 0;
                         i++;
-                        continue;
                     }
+
+                    line++;
+                    column = 0;
+                    i++;
+                    continue;
+                }
                 case '\n':
+                {
+                    line++;
+                    column = 0;
+                    i++;
+                    continue;
+                }
+                case '[':
+                {
+                    char nextChar = PeekNextChar();
+                    if (nextChar == '|')
                     {
-                        line++;
-                        column = 0;
-                        i++;
+                        sb.Append(text, lastPos, i - lastPos);
+
+                        var start2 = new LinePositionInfo(sb.Length, line, column);
+
+                        if (stack is not null)
+                        {
+                            stack.Push(start2);
+                        }
+                        else if (!startPending)
+                        {
+                            start = start2;
+                            startPending = true;
+                        }
+                        else
+                        {
+                            stack = new Stack<LinePositionInfo>();
+                            stack.Push(start);
+                            stack.Push(start2);
+                            startPending = false;
+                        }
+
+                        i += 2;
+                        lastPos = i;
                         continue;
                     }
-                case '[':
+                    else if (nextChar == '['
+                        && PeekChar(2) == '|'
+                        && PeekChar(3) == ']')
                     {
-                        char nextChar = PeekNextChar();
-                        if (nextChar == '|')
-                        {
-                            sb.Append(text, lastPos, i - lastPos);
-
-                            var start2 = new LinePositionInfo(sb.Length, line, column);
-
-                            if (stack is not null)
-                            {
-                                stack.Push(start2);
-                            }
-                            else if (!startPending)
-                            {
-                                start = start2;
-                                startPending = true;
-                            }
-                            else
-                            {
-                                stack = new Stack<LinePositionInfo>();
-                                stack.Push(start);
-                                stack.Push(start2);
-                                startPending = false;
-                            }
-
-                            i += 2;
-                            lastPos = i;
-                            continue;
-                        }
-                        else if (nextChar == '['
-                            && PeekChar(2) == '|'
-                            && PeekChar(3) == ']')
-                        {
-                            i++;
-                            column++;
-                            CloseSpan();
-                            i += 3;
-                            lastPos = i;
-                            continue;
-                        }
-
-                        break;
+                        i++;
+                        column++;
+                        CloseSpan();
+                        i += 3;
+                        lastPos = i;
+                        continue;
                     }
+
+                    break;
+                }
                 case '|':
+                {
+                    if (PeekNextChar() == ']')
                     {
-                        if (PeekNextChar() == ']')
-                        {
-                            CloseSpan();
-                            i += 2;
-                            lastPos = i;
-                            continue;
-                        }
-
-                        break;
+                        CloseSpan();
+                        i += 2;
+                        lastPos = i;
+                        continue;
                     }
+
+                    break;
+                }
             }
 
             column++;

@@ -118,38 +118,38 @@ public readonly struct MetadataName : IEquatable<MetadataName>
         switch (typeQualificationStyle)
         {
             case SymbolDisplayTypeQualificationStyle.NameOnly:
-                {
-                    return Name;
-                }
+            {
+                return Name;
+            }
             case SymbolDisplayTypeQualificationStyle.NameAndContainingTypes:
-                {
-                    if (ContainingTypes.Any())
-                        return string.Join("+", ContainingTypes) + "+" + Name;
+            {
+                if (ContainingTypes.Any())
+                    return string.Join("+", ContainingTypes) + "+" + Name;
 
-                    return Name;
-                }
+                return Name;
+            }
             case SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces:
+            {
+                if (ContainingNamespaces.Any())
                 {
-                    if (ContainingNamespaces.Any())
-                    {
-                        string @namespace = string.Join(".", ContainingNamespaces);
+                    string @namespace = string.Join(".", ContainingNamespaces);
 
-                        if (ContainingTypes.Any())
-                        {
-                            return @namespace + "." + string.Join("+", ContainingTypes) + "+" + Name;
-                        }
-                        else
-                        {
-                            return @namespace + "." + Name;
-                        }
-                    }
-                    else if (ContainingTypes.Any())
+                    if (ContainingTypes.Any())
                     {
-                        return string.Join("+", ContainingTypes) + "+" + Name;
+                        return @namespace + "." + string.Join("+", ContainingTypes) + "+" + Name;
                     }
-
-                    return Name;
+                    else
+                    {
+                        return @namespace + "." + Name;
+                    }
                 }
+                else if (ContainingTypes.Any())
+                {
+                    return string.Join("+", ContainingTypes) + "+" + Name;
+                }
+
+                return Name;
+            }
         }
 
         throw new ArgumentException($"Unknown enum value '{typeQualificationStyle}'.", nameof(typeQualificationStyle));

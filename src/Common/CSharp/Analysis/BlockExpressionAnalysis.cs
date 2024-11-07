@@ -53,27 +53,27 @@ internal readonly struct BlockExpressionAnalysis
         switch (statement.Kind())
         {
             case SyntaxKind.ReturnStatement:
-                {
-                    var returnStatement = (ReturnStatementSyntax)statement;
-                    return new BlockExpressionAnalysis(returnStatement, returnStatement.Expression, returnStatement.SemicolonToken, returnStatement.ReturnKeyword);
-                }
+            {
+                var returnStatement = (ReturnStatementSyntax)statement;
+                return new BlockExpressionAnalysis(returnStatement, returnStatement.Expression, returnStatement.SemicolonToken, returnStatement.ReturnKeyword);
+            }
             case SyntaxKind.ExpressionStatement:
-                {
-                    if (!allowExpressionStatement)
-                        return default;
-
-                    var expressionStatement = (ExpressionStatementSyntax)statement;
-                    return new BlockExpressionAnalysis(expressionStatement, expressionStatement.Expression, expressionStatement.SemicolonToken, default);
-                }
-            case SyntaxKind.ThrowStatement:
-                {
-                    var throwStatement = (ThrowStatementSyntax)statement;
-                    return new BlockExpressionAnalysis(throwStatement, throwStatement.Expression, throwStatement.SemicolonToken, throwStatement.ThrowKeyword);
-                }
-            default:
-                {
+            {
+                if (!allowExpressionStatement)
                     return default;
-                }
+
+                var expressionStatement = (ExpressionStatementSyntax)statement;
+                return new BlockExpressionAnalysis(expressionStatement, expressionStatement.Expression, expressionStatement.SemicolonToken, default);
+            }
+            case SyntaxKind.ThrowStatement:
+            {
+                var throwStatement = (ThrowStatementSyntax)statement;
+                return new BlockExpressionAnalysis(throwStatement, throwStatement.Expression, throwStatement.SemicolonToken, throwStatement.ThrowKeyword);
+            }
+            default:
+            {
+                return default;
+            }
         }
     }
 }

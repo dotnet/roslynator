@@ -45,32 +45,32 @@ public sealed class DisposeResourceAsynchronouslyCodeFixProvider : BaseCodeFixPr
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.DisposeResourceAsynchronously:
+            {
+                if (node is LocalDeclarationStatementSyntax localDeclaration)
                 {
-                    if (node is LocalDeclarationStatementSyntax localDeclaration)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            Title,
-                            ct => RefactorAsync(document, localDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        Title,
+                        ct => RefactorAsync(document, localDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else if (node is UsingStatementSyntax usingStatement)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            Title,
-                            ct => RefactorAsync(document, usingStatement, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException();
-                    }
-
-                    break;
+                    context.RegisterCodeFix(codeAction, diagnostic);
                 }
+                else if (node is UsingStatementSyntax usingStatement)
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        Title,
+                        ct => RefactorAsync(document, usingStatement, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+
+                break;
+            }
         }
     }
 

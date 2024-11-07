@@ -42,16 +42,16 @@ public sealed class SyntaxTriviaCodeFixProvider : BaseCodeFixProvider
             case DiagnosticIdentifiers.BlankLineBetweenUsingDirectives:
             case DiagnosticIdentifiers.AddBlankLineAfterTopComment:
             case DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace:
-                {
-                    await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
-                    return;
-                }
+            {
+                await CodeActionFactory.RegisterCodeActionForBlankLineAsync(context).ConfigureAwait(false);
+                return;
+            }
             case DiagnosticIdentifiers.RemoveNewLineBeforeBaseList:
             case DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword:
-                {
-                    await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await CodeActionFactory.RegisterCodeActionForNewLineAsync(context).ConfigureAwait(false);
+                break;
+            }
         }
     }
 }

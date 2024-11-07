@@ -36,17 +36,17 @@ public sealed class AvoidBoxingOfValueTypeCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.AvoidBoxingOfValueType:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
-                                ? "Use string literal instead of character literal"
-                                : "Call 'ToString'",
-                            ct => RefactorAsync(context.Document, expression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
+                            ? "Use string literal instead of character literal"
+                            : "Call 'ToString'",
+                        ct => RefactorAsync(context.Document, expression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

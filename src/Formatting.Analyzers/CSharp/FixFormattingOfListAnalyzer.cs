@@ -263,22 +263,22 @@ public sealed class FixFormattingOfListAnalyzer : BaseDiagnosticAnalyzer
             switch (en.Current.Kind())
             {
                 case SyntaxKind.WhitespaceTrivia:
+                {
+                    if (en.Current.Span.Length != indentationLength)
                     {
-                        if (en.Current.Span.Length != indentationLength)
+                        if (!en.MoveNext()
+                            || en.Current.IsEndOfLineTrivia())
                         {
-                            if (!en.MoveNext()
-                                || en.Current.IsEndOfLineTrivia())
-                            {
-                                return true;
-                            }
+                            return true;
                         }
+                    }
 
-                        break;
-                    }
+                    break;
+                }
                 case SyntaxKind.EndOfLineTrivia:
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
             }
 
             return false;

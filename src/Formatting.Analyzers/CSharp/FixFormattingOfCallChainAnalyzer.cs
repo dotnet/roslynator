@@ -134,46 +134,46 @@ public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
             switch (en.Current.Kind())
             {
                 case SyntaxKind.WhitespaceTrivia:
+                {
+                    if (indentationAnalysis is null)
                     {
-                        if (indentationAnalysis is null)
-                        {
-                            indentationAnalysis = AnalyzeIndentation(expression, context.GetConfigOptions());
+                        indentationAnalysis = AnalyzeIndentation(expression, context.GetConfigOptions());
 
-                            if (indentationAnalysis.IndentSize == 0)
-                                return true;
-                        }
-
-                        if (en.Current.Span.Length != indentationAnalysis.IncreasedIndentationLength)
-                        {
-                            if (!en.MoveNext()
-                                || en.Current.IsEndOfLineTrivia())
-                            {
-                                if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
-                                {
-                                    ReportDiagnostic();
-                                    return true;
-                                }
-                            }
-
-                            break;
-                        }
-
-                        break;
+                        if (indentationAnalysis.IndentSize == 0)
+                            return true;
                     }
-                case SyntaxKind.EndOfLineTrivia:
+
+                    if (en.Current.Span.Length != indentationAnalysis.IncreasedIndentationLength)
                     {
-                        if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
+                        if (!en.MoveNext()
+                            || en.Current.IsEndOfLineTrivia())
                         {
-                            if ((indentationAnalysis ?? AnalyzeIndentation(expression, context.GetConfigOptions())).IndentSize > 0)
+                            if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
                             {
                                 ReportDiagnostic();
+                                return true;
                             }
-
-                            return true;
                         }
 
                         break;
                     }
+
+                    break;
+                }
+                case SyntaxKind.EndOfLineTrivia:
+                {
+                    if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
+                    {
+                        if ((indentationAnalysis ?? AnalyzeIndentation(expression, context.GetConfigOptions())).IndentSize > 0)
+                        {
+                            ReportDiagnostic();
+                        }
+
+                        return true;
+                    }
+
+                    break;
+                }
             }
 
             return false;

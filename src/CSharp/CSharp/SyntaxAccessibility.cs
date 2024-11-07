@@ -298,44 +298,44 @@ public static class SyntaxAccessibility
             switch (modifiers[i].Kind())
             {
                 case SyntaxKind.PublicKeyword:
-                    {
-                        return Accessibility.Public;
-                    }
+                {
+                    return Accessibility.Public;
+                }
                 case SyntaxKind.PrivateKeyword:
+                {
+                    for (int j = i + 1; j < count; j++)
                     {
-                        for (int j = i + 1; j < count; j++)
+                        if (modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
+                            return Accessibility.ProtectedAndInternal;
+                    }
+
+                    return Accessibility.Private;
+                }
+                case SyntaxKind.InternalKeyword:
+                {
+                    for (int j = i + 1; j < count; j++)
+                    {
+                        if (modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
+                            return Accessibility.ProtectedOrInternal;
+                    }
+
+                    return Accessibility.Internal;
+                }
+                case SyntaxKind.ProtectedKeyword:
+                {
+                    for (int j = i + 1; j < count; j++)
+                    {
+                        switch (modifiers[j].Kind())
                         {
-                            if (modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
+                            case SyntaxKind.InternalKeyword:
+                                return Accessibility.ProtectedOrInternal;
+                            case SyntaxKind.PrivateKeyword:
                                 return Accessibility.ProtectedAndInternal;
                         }
-
-                        return Accessibility.Private;
                     }
-                case SyntaxKind.InternalKeyword:
-                    {
-                        for (int j = i + 1; j < count; j++)
-                        {
-                            if (modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
-                                return Accessibility.ProtectedOrInternal;
-                        }
 
-                        return Accessibility.Internal;
-                    }
-                case SyntaxKind.ProtectedKeyword:
-                    {
-                        for (int j = i + 1; j < count; j++)
-                        {
-                            switch (modifiers[j].Kind())
-                            {
-                                case SyntaxKind.InternalKeyword:
-                                    return Accessibility.ProtectedOrInternal;
-                                case SyntaxKind.PrivateKeyword:
-                                    return Accessibility.ProtectedAndInternal;
-                            }
-                        }
-
-                        return Accessibility.Protected;
-                    }
+                    return Accessibility.Protected;
+                }
             }
         }
 
@@ -430,19 +430,19 @@ public static class SyntaxAccessibility
             case SyntaxKind.FileScopedNamespaceDeclaration:
 #endif
             case SyntaxKind.CompilationUnit:
-                {
-                    return accessibility.Is(Accessibility.Public, Accessibility.Internal);
-                }
+            {
+                return accessibility.Is(Accessibility.Public, Accessibility.Internal);
+            }
             case SyntaxKind.StructDeclaration:
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    if (accessibility.ContainsProtected())
-                        return false;
+            {
+                if (accessibility.ContainsProtected())
+                    return false;
 
-                    break;
-                }
+                break;
+            }
         }
 
         switch (node.Kind())
@@ -455,104 +455,104 @@ public static class SyntaxAccessibility
             case SyntaxKind.RecordStructDeclaration:
 #endif
             case SyntaxKind.EnumDeclaration:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case SyntaxKind.EventDeclaration:
-                {
-                    var eventDeclaration = (EventDeclarationSyntax)node;
+            {
+                var eventDeclaration = (EventDeclarationSyntax)node;
 
-                    ModifierFilter filter = SyntaxInfo.ModifierListInfo(eventDeclaration).GetFilter();
+                ModifierFilter filter = SyntaxInfo.ModifierListInfo(eventDeclaration).GetFilter();
 
-                    return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
-                        && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
-                        && CheckProtectedInStaticOrSealedClass(node)
-                        && CheckAccessorAccessibility(eventDeclaration.AccessorList);
-                }
+                return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                    && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
+                    && CheckProtectedInStaticOrSealedClass(node)
+                    && CheckAccessorAccessibility(eventDeclaration.AccessorList);
+            }
             case SyntaxKind.IndexerDeclaration:
-                {
-                    var indexerDeclaration = (IndexerDeclarationSyntax)node;
+            {
+                var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
-                    ModifierFilter filter = SyntaxInfo.ModifierListInfo(indexerDeclaration).GetFilter();
+                ModifierFilter filter = SyntaxInfo.ModifierListInfo(indexerDeclaration).GetFilter();
 
-                    return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
-                        && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
-                        && CheckProtectedInStaticOrSealedClass(node)
-                        && CheckAccessorAccessibility(indexerDeclaration.AccessorList);
-                }
+                return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                    && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
+                    && CheckProtectedInStaticOrSealedClass(node)
+                    && CheckAccessorAccessibility(indexerDeclaration.AccessorList);
+            }
             case SyntaxKind.PropertyDeclaration:
-                {
-                    var propertyDeclaration = (PropertyDeclarationSyntax)node;
+            {
+                var propertyDeclaration = (PropertyDeclarationSyntax)node;
 
-                    ModifierFilter filter = SyntaxInfo.ModifierListInfo(propertyDeclaration).GetFilter();
+                ModifierFilter filter = SyntaxInfo.ModifierListInfo(propertyDeclaration).GetFilter();
 
-                    return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
-                        && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
-                        && CheckProtectedInStaticOrSealedClass(node)
-                        && CheckAccessorAccessibility(propertyDeclaration.AccessorList);
-                }
+                return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                    && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
+                    && CheckProtectedInStaticOrSealedClass(node)
+                    && CheckAccessorAccessibility(propertyDeclaration.AccessorList);
+            }
             case SyntaxKind.MethodDeclaration:
-                {
-                    var methodDeclaration = (MethodDeclarationSyntax)node;
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                    ModifierFilter filter = SyntaxInfo.ModifierListInfo(methodDeclaration).GetFilter();
+                ModifierFilter filter = SyntaxInfo.ModifierListInfo(methodDeclaration).GetFilter();
 
-                    return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
-                        && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
-                        && CheckProtectedInStaticOrSealedClass(node);
-                }
+                return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                    && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
+                    && CheckProtectedInStaticOrSealedClass(node);
+            }
             case SyntaxKind.EventFieldDeclaration:
-                {
-                    var eventFieldDeclaration = (EventFieldDeclarationSyntax)node;
+            {
+                var eventFieldDeclaration = (EventFieldDeclarationSyntax)node;
 
-                    ModifierFilter filter = SyntaxInfo.ModifierListInfo(eventFieldDeclaration).GetFilter();
+                ModifierFilter filter = SyntaxInfo.ModifierListInfo(eventFieldDeclaration).GetFilter();
 
-                    return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
-                        && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
-                        && CheckProtectedInStaticOrSealedClass(node);
-                }
+                return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                    && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
+                    && CheckProtectedInStaticOrSealedClass(node);
+            }
             case SyntaxKind.ConstructorDeclaration:
             case SyntaxKind.DelegateDeclaration:
             case SyntaxKind.FieldDeclaration:
             case SyntaxKind.IncompleteMember:
-                {
-                    return CheckProtectedInStaticOrSealedClass(node);
-                }
+            {
+                return CheckProtectedInStaticOrSealedClass(node);
+            }
             case SyntaxKind.OperatorDeclaration:
             case SyntaxKind.ConversionOperatorDeclaration:
-                {
-                    return accessibility == Accessibility.Public;
-                }
+            {
+                return accessibility == Accessibility.Public;
+            }
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
             case SyntaxKind.RemoveAccessorDeclaration:
             case SyntaxKind.InitAccessorDeclaration:
             case SyntaxKind.UnknownAccessorDeclaration:
+            {
+                var memberDeclaration = node.Parent?.Parent as MemberDeclarationSyntax;
+
+                SyntaxDebug.Assert(memberDeclaration is not null, node);
+
+                if (memberDeclaration is not null)
                 {
-                    var memberDeclaration = node.Parent?.Parent as MemberDeclarationSyntax;
+                    if (!CheckProtectedInStaticOrSealedClass(memberDeclaration))
+                        return false;
 
-                    SyntaxDebug.Assert(memberDeclaration is not null, node);
-
-                    if (memberDeclaration is not null)
-                    {
-                        if (!CheckProtectedInStaticOrSealedClass(memberDeclaration))
-                            return false;
-
-                        return accessibility.IsMoreRestrictiveThan(GetAccessibility(memberDeclaration));
-                    }
-
-                    return false;
+                    return accessibility.IsMoreRestrictiveThan(GetAccessibility(memberDeclaration));
                 }
+
+                return false;
+            }
             case SyntaxKind.LocalFunctionStatement:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(node);
-                    return false;
-                }
+            {
+                SyntaxDebug.Fail(node);
+                return false;
+            }
         }
 
         bool CheckProtectedInStaticOrSealedClass(SyntaxNode declaration)

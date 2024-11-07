@@ -44,24 +44,24 @@ internal static class SwapBinaryOperandsRefactoring
                 case SyntaxKind.ExclusiveOrExpression:
                 case SyntaxKind.AddExpression:
                 case SyntaxKind.MultiplyExpression:
-                    {
-                        return !info.Left.IsKind(kind);
-                    }
+                {
+                    return !info.Left.IsKind(kind);
+                }
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.NotEqualsExpression:
-                    {
-                        return !info.Right.IsKind(
-                            SyntaxKind.NullLiteralExpression,
-                            SyntaxKind.TrueLiteralExpression,
-                            SyntaxKind.FalseLiteralExpression);
-                    }
+                {
+                    return !info.Right.IsKind(
+                        SyntaxKind.NullLiteralExpression,
+                        SyntaxKind.TrueLiteralExpression,
+                        SyntaxKind.FalseLiteralExpression);
+                }
                 case SyntaxKind.GreaterThanExpression:
                 case SyntaxKind.GreaterThanOrEqualExpression:
                 case SyntaxKind.LessThanExpression:
                 case SyntaxKind.LessThanOrEqualExpression:
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
             }
 
             return false;

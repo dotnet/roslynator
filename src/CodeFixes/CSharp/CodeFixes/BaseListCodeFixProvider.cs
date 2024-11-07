@@ -43,79 +43,79 @@ public sealed class BaseListCodeFixProvider : CompilerDiagnosticCodeFixProvider
             switch (diagnostic.Id)
             {
                 case CompilerDiagnosticIdentifiers.CS1722_BaseClassMustComeBeforeAnyInterface:
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveBaseClassBeforeAnyInterface, context.Document, root.SyntaxTree))
+                        return;
+
+                    SeparatedSyntaxList<BaseTypeSyntax> types = baseList.Types;
+
+                    if (types.Count > 1)
                     {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveBaseClassBeforeAnyInterface, context.Document, root.SyntaxTree))
-                            return;
+                        BaseTypeSyntax baseType = types.First(f => context.Span.Contains(f.Span));
 
-                        SeparatedSyntaxList<BaseTypeSyntax> types = baseList.Types;
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Move '{baseType.Type}' before any interface",
+                            ct =>
+                            {
+                                BaseTypeSyntax firstType = types[0];
 
-                        if (types.Count > 1)
-                        {
-                            BaseTypeSyntax baseType = types.First(f => context.Span.Contains(f.Span));
+                                SeparatedSyntaxList<BaseTypeSyntax> newTypes = types
+                                    .Replace(baseType, firstType.WithTriviaFrom(baseType))
+                                    .ReplaceAt(0, baseType.WithTriviaFrom(firstType));
 
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Move '{baseType.Type}' before any interface",
-                                ct =>
-                                {
-                                    BaseTypeSyntax firstType = types[0];
+                                BaseListSyntax newBaseList = baseList.WithTypes(newTypes);
 
-                                    SeparatedSyntaxList<BaseTypeSyntax> newTypes = types
-                                        .Replace(baseType, firstType.WithTriviaFrom(baseType))
-                                        .ReplaceAt(0, baseType.WithTriviaFrom(firstType));
+                                return context.Document.ReplaceNodeAsync(baseList, newBaseList, ct);
+                            },
+                            GetEquivalenceKey(diagnostic));
 
-                                    BaseListSyntax newBaseList = baseList.WithTypes(newTypes);
-
-                                    return context.Document.ReplaceNodeAsync(baseList, newBaseList, ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        break;
+                        context.RegisterCodeFix(codeAction, diagnostic);
                     }
+
+                    break;
+                }
                 case CompilerDiagnosticIdentifiers.CS0713_StaticClassCannotDeriveFromType:
                 case CompilerDiagnosticIdentifiers.CS0714_StaticClassCannotImplementInterfaces:
-                    {
-                        if (baseList.Parent is not ClassDeclarationSyntax classDeclaration)
-                            break;
-
-                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeClassNonStatic, context.Document, root.SyntaxTree))
-                        {
-                            ModifiersCodeFixRegistrator.RemoveModifier(
-                                context,
-                                diagnostic,
-                                classDeclaration,
-                                SyntaxKind.StaticKeyword,
-                                title: "Make class non-static",
-                                additionalKey: CodeFixIdentifiers.MakeClassNonStatic);
-                        }
-
-                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveBaseList, context.Document, root.SyntaxTree))
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove base list",
-                                ct =>
-                                {
-                                    SyntaxToken token = baseList.GetFirstToken().GetPreviousToken();
-
-                                    SyntaxTriviaList trivia = token.TrailingTrivia.EmptyIfWhitespace()
-                                        .AddRange(baseList.GetLeadingTrivia().EmptyIfWhitespace())
-                                        .AddRange(baseList.GetTrailingTrivia());
-
-                                    ClassDeclarationSyntax newNode = classDeclaration
-                                        .ReplaceToken(token, token.WithTrailingTrivia(trivia))
-                                        .WithBaseList(null);
-
-                                    return context.Document.ReplaceNodeAsync(classDeclaration, newNode, ct);
-                                },
-                                GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveBaseList));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
+                {
+                    if (baseList.Parent is not ClassDeclarationSyntax classDeclaration)
                         break;
+
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeClassNonStatic, context.Document, root.SyntaxTree))
+                    {
+                        ModifiersCodeFixRegistrator.RemoveModifier(
+                            context,
+                            diagnostic,
+                            classDeclaration,
+                            SyntaxKind.StaticKeyword,
+                            title: "Make class non-static",
+                            additionalKey: CodeFixIdentifiers.MakeClassNonStatic);
                     }
+
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveBaseList, context.Document, root.SyntaxTree))
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove base list",
+                            ct =>
+                            {
+                                SyntaxToken token = baseList.GetFirstToken().GetPreviousToken();
+
+                                SyntaxTriviaList trivia = token.TrailingTrivia.EmptyIfWhitespace()
+                                    .AddRange(baseList.GetLeadingTrivia().EmptyIfWhitespace())
+                                    .AddRange(baseList.GetTrailingTrivia());
+
+                                ClassDeclarationSyntax newNode = classDeclaration
+                                    .ReplaceToken(token, token.WithTrailingTrivia(trivia))
+                                    .WithBaseList(null);
+
+                                return context.Document.ReplaceNodeAsync(classDeclaration, newNode, ct);
+                            },
+                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveBaseList));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+
+                    break;
+                }
             }
         }
     }

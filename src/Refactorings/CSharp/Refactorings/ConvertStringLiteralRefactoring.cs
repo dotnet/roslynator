@@ -142,30 +142,30 @@ internal static class ConvertStringLiteralRefactoring
             switch (text[i])
             {
                 case '"':
-                    {
-                        sb.Append("\\\"");
-                        break;
-                    }
+                {
+                    sb.Append("\\\"");
+                    break;
+                }
                 case '\\':
-                    {
-                        sb.Append(@"\\");
-                        break;
-                    }
+                {
+                    sb.Append(@"\\");
+                    break;
+                }
                 case '\r':
-                    {
-                        sb.Append(@"\r");
-                        break;
-                    }
+                {
+                    sb.Append(@"\r");
+                    break;
+                }
                 case '\n':
-                    {
-                        sb.Append(@"\n");
-                        break;
-                    }
+                {
+                    sb.Append(@"\n");
+                    break;
+                }
                 default:
-                    {
-                        sb.Append(text[i]);
-                        break;
-                    }
+                {
+                    sb.Append(text[i]);
+                    break;
+                }
             }
         }
 
@@ -183,38 +183,38 @@ internal static class ConvertStringLiteralRefactoring
             switch (text[i])
             {
                 case '"':
-                    {
-                        sb.Append("\\\"");
-                        break;
-                    }
+                {
+                    sb.Append("\\\"");
+                    break;
+                }
                 case '\\':
-                    {
-                        sb.Append(@"\\");
-                        break;
-                    }
+                {
+                    sb.Append(@"\\");
+                    break;
+                }
                 case '\r':
+                {
+                    if (i < text.Length - 1
+                        && text[i + 1] == '\n')
                     {
-                        if (i < text.Length - 1
-                            && text[i + 1] == '\n')
-                        {
-                            i++;
-                        }
+                        i++;
+                    }
 
-                        values.Add(sb.ToString());
-                        sb.Clear();
-                        break;
-                    }
+                    values.Add(sb.ToString());
+                    sb.Clear();
+                    break;
+                }
                 case '\n':
-                    {
-                        values.Add(sb.ToString());
-                        sb.Clear();
-                        break;
-                    }
+                {
+                    values.Add(sb.ToString());
+                    sb.Clear();
+                    break;
+                }
                 default:
-                    {
-                        sb.Append(text[i]);
-                        break;
-                    }
+                {
+                    sb.Append(text[i]);
+                    break;
+                }
             }
         }
 

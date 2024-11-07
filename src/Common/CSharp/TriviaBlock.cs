@@ -133,122 +133,122 @@ internal readonly struct TriviaBlock
             switch (trivia.Kind())
             {
                 case SyntaxKind.MultiLineCommentTrivia:
-                    {
-                        return default;
-                    }
+                {
+                    return default;
+                }
                 case SyntaxKind.EndOfLineTrivia:
+                {
+                    if (firstEolEnd == -1)
                     {
-                        if (firstEolEnd == -1)
-                        {
-                            position = reader.Current.Span.Start;
-                            firstEolEnd = reader.Current.Span.End;
-                        }
-                        else if (firstEolEnd >= 0)
-                        {
-                            position = firstEolEnd;
-                            firstEolEnd = -2;
-                        }
-
-                        if (state == State.Start)
-                        {
-                            state = State.NewLine;
-                        }
-                        else if (state == State.NewLine)
-                        {
-                            state = State.Blank;
-                        }
-                        else if (state == State.Comment)
-                        {
-                            state = State.Blank;
-
-                            if (commentState == CommentState.Comment)
-                                commentState = CommentState.AfterComment;
-                        }
-
-                        break;
+                        position = reader.Current.Span.Start;
+                        firstEolEnd = reader.Current.Span.End;
                     }
+                    else if (firstEolEnd >= 0)
+                    {
+                        position = firstEolEnd;
+                        firstEolEnd = -2;
+                    }
+
+                    if (state == State.Start)
+                    {
+                        state = State.NewLine;
+                    }
+                    else if (state == State.NewLine)
+                    {
+                        state = State.Blank;
+                    }
+                    else if (state == State.Comment)
+                    {
+                        state = State.Blank;
+
+                        if (commentState == CommentState.Comment)
+                            commentState = CommentState.AfterComment;
+                    }
+
+                    break;
+                }
                 case SyntaxKind.SingleLineCommentTrivia:
+                {
+                    if (!reader.Read(SyntaxKind.EndOfLineTrivia))
+                        return default;
+
+                    if (first.IsKind(SyntaxKind.None))
                     {
-                        if (!reader.Read(SyntaxKind.EndOfLineTrivia))
-                            return default;
-
-                        if (first.IsKind(SyntaxKind.None))
-                        {
-                            position = reader.Current.Span.Start;
-                            firstEolEnd = reader.Current.Span.End;
-                        }
-                        else if (firstEolEnd == -1)
-                        {
-                            position = reader.Current.Span.Start;
-                            firstEolEnd = reader.Current.Span.End;
-                        }
-                        else if (firstEolEnd >= 0)
-                        {
-                            firstEolEnd = -2;
-                        }
-
-                        if (state == State.Start)
-                        {
-                            state = State.NewLine;
-                        }
-                        else if (state == State.NewLine)
-                        {
-                            stateBeforeComment = State.NewLine;
-                        }
-                        else if (state == State.Blank)
-                        {
-                            stateBeforeComment = State.Blank;
-
-                            if (commentState == CommentState.AfterComment)
-                                return default;
-                        }
-
-                        commentState = CommentState.Comment;
-                        break;
+                        position = reader.Current.Span.Start;
+                        firstEolEnd = reader.Current.Span.End;
                     }
+                    else if (firstEolEnd == -1)
+                    {
+                        position = reader.Current.Span.Start;
+                        firstEolEnd = reader.Current.Span.End;
+                    }
+                    else if (firstEolEnd >= 0)
+                    {
+                        firstEolEnd = -2;
+                    }
+
+                    if (state == State.Start)
+                    {
+                        state = State.NewLine;
+                    }
+                    else if (state == State.NewLine)
+                    {
+                        stateBeforeComment = State.NewLine;
+                    }
+                    else if (state == State.Blank)
+                    {
+                        stateBeforeComment = State.Blank;
+
+                        if (commentState == CommentState.AfterComment)
+                            return default;
+                    }
+
+                    commentState = CommentState.Comment;
+                    break;
+                }
                 case SyntaxKind.None:
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                    {
-                        return new TriviaBlock(
-                            first,
-                            second,
-                            GetKind(state, stateBeforeComment),
-                            position,
-                            singleLineComment: commentState == CommentState.Comment || commentState == CommentState.AfterComment,
-                            documentationComment: SyntaxFacts.IsDocumentationCommentTrivia(trivia.Kind()));
+                {
+                    return new TriviaBlock(
+                        first,
+                        second,
+                        GetKind(state, stateBeforeComment),
+                        position,
+                        singleLineComment: commentState == CommentState.Comment || commentState == CommentState.AfterComment,
+                        documentationComment: SyntaxFacts.IsDocumentationCommentTrivia(trivia.Kind()));
 
-                        static TriviaBlockKind GetKind(State state, State triviaBeforeComment)
+                    static TriviaBlockKind GetKind(State state, State triviaBeforeComment)
+                    {
+                        switch (state)
                         {
-                            switch (state)
-                            {
-                                case State.Start:
-                                    return TriviaBlockKind.NoNewLine;
-                                case State.NewLine:
-                                    return TriviaBlockKind.NewLine;
-                                case State.Blank:
-                                    return TriviaBlockKind.BlankLine;
-                                case State.Comment:
-                                    switch (triviaBeforeComment)
-                                    {
-                                        case State.Start:
-                                        case State.NewLine:
-                                            return TriviaBlockKind.NewLine;
-                                        case State.Blank:
-                                            return TriviaBlockKind.BlankLine;
-                                        default:
-                                            throw new InvalidOperationException();
-                                    }
-                                default:
-                                    throw new InvalidOperationException();
-                            }
+                            case State.Start:
+                                return TriviaBlockKind.NoNewLine;
+                            case State.NewLine:
+                                return TriviaBlockKind.NewLine;
+                            case State.Blank:
+                                return TriviaBlockKind.BlankLine;
+                            case State.Comment:
+                                switch (triviaBeforeComment)
+                                {
+                                    case State.Start:
+                                    case State.NewLine:
+                                        return TriviaBlockKind.NewLine;
+                                    case State.Blank:
+                                        return TriviaBlockKind.BlankLine;
+                                    default:
+                                        throw new InvalidOperationException();
+                                }
+                            default:
+                                throw new InvalidOperationException();
                         }
                     }
+                }
                 default:
-                    {
-                        Debug.Fail(trivia.Kind().ToString());
-                        return default;
-                    }
+                {
+                    Debug.Fail(trivia.Kind().ToString());
+                    return default;
+                }
             }
         }
     }

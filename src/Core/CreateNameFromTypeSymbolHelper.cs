@@ -79,25 +79,25 @@ internal static class CreateNameFromTypeSymbolHelper
         switch (typeSymbol.Kind)
         {
             case SymbolKind.ArrayType:
-                {
-                    return ((IArrayTypeSymbol)typeSymbol).ElementType;
-                }
+            {
+                return ((IArrayTypeSymbol)typeSymbol).ElementType;
+            }
             case SymbolKind.NamedType:
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+                ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
+
+                if (typeArguments.Length == 1
+                    && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable, allInterfaces: true))
                 {
-                    var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
-                    ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
+                    ITypeSymbol typeArgument = typeArguments[0];
 
-                    if (typeArguments.Length == 1
-                        && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable, allInterfaces: true))
-                    {
-                        ITypeSymbol typeArgument = typeArguments[0];
-
-                        if (ValidateTypeArgumentName(typeArgument.Name))
-                            return typeArgument;
-                    }
-
-                    break;
+                    if (ValidateTypeArgumentName(typeArgument.Name))
+                        return typeArgument;
                 }
+
+                break;
+            }
         }
 
         return typeSymbol;
@@ -122,24 +122,24 @@ internal static class CreateNameFromTypeSymbolHelper
         switch (typeSymbol.Kind)
         {
             case SymbolKind.ArrayType:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case SymbolKind.NamedType:
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                if (namedTypeSymbol.TypeArguments.Length <= 1
+                    && !namedTypeSymbol.HasMetadataName(MetadataNames.System_Dynamic_ExpandoObject))
                 {
-                    var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+                    ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
 
-                    if (namedTypeSymbol.TypeArguments.Length <= 1
-                        && !namedTypeSymbol.HasMetadataName(MetadataNames.System_Dynamic_ExpandoObject))
-                    {
-                        ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
-
-                        return allInterfaces.Any(f => f.SpecialType == SpecialType.System_Collections_IEnumerable)
-                            && !allInterfaces.Any(f => f.HasMetadataName(MetadataNames.System_Collections_IDictionary));
-                    }
-
-                    break;
+                    return allInterfaces.Any(f => f.SpecialType == SpecialType.System_Collections_IEnumerable)
+                        && !allInterfaces.Any(f => f.HasMetadataName(MetadataNames.System_Collections_IDictionary));
                 }
+
+                break;
+            }
         }
 
         return false;

@@ -78,22 +78,55 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
             switch (parent?.Kind())
             {
                 case SyntaxKind.PropertyDeclaration:
+                {
+                    if (accessors.All(f => !f.AttributeLists.Any())
+                        && !accessorList.IsSingleLine(includeExteriorTrivia: false))
                     {
-                        if (accessors.All(f => !f.AttributeLists.Any())
-                            && !accessorList.IsSingleLine(includeExteriorTrivia: false))
-                        {
-                            var propertyDeclaration = (PropertyDeclarationSyntax)parent;
-                            SyntaxToken identifier = propertyDeclaration.Identifier;
+                        var propertyDeclaration = (PropertyDeclarationSyntax)parent;
+                        SyntaxToken identifier = propertyDeclaration.Identifier;
 
-                            if (!identifier.IsMissing)
+                        if (!identifier.IsMissing)
+                        {
+                            SyntaxToken closeBrace = accessorList.CloseBraceToken;
+
+                            if (!closeBrace.IsMissing)
+                            {
+                                TextSpan span = TextSpan.FromBounds(identifier.Span.End, closeBrace.SpanStart);
+
+                                if (propertyDeclaration
+                                    .DescendantTrivia(span)
+                                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                {
+                                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                case SyntaxKind.IndexerDeclaration:
+                {
+                    if (accessors.All(f => !f.AttributeLists.Any())
+                        && !accessorList.IsSingleLine(includeExteriorTrivia: false))
+                    {
+                        var indexerDeclaration = (IndexerDeclarationSyntax)parent;
+
+                        BracketedParameterListSyntax parameterList = indexerDeclaration.ParameterList;
+
+                        if (parameterList is not null)
+                        {
+                            SyntaxToken closeBracket = parameterList.CloseBracketToken;
+
+                            if (!closeBracket.IsMissing)
                             {
                                 SyntaxToken closeBrace = accessorList.CloseBraceToken;
 
                                 if (!closeBrace.IsMissing)
                                 {
-                                    TextSpan span = TextSpan.FromBounds(identifier.Span.End, closeBrace.SpanStart);
+                                    TextSpan span = TextSpan.FromBounds(closeBracket.Span.End, closeBrace.SpanStart);
 
-                                    if (propertyDeclaration
+                                    if (indexerDeclaration
                                         .DescendantTrivia(span)
                                         .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                     {
@@ -102,43 +135,10 @@ public sealed class AccessorListAnalyzer : BaseDiagnosticAnalyzer
                                 }
                             }
                         }
-
-                        break;
                     }
-                case SyntaxKind.IndexerDeclaration:
-                    {
-                        if (accessors.All(f => !f.AttributeLists.Any())
-                            && !accessorList.IsSingleLine(includeExteriorTrivia: false))
-                        {
-                            var indexerDeclaration = (IndexerDeclarationSyntax)parent;
 
-                            BracketedParameterListSyntax parameterList = indexerDeclaration.ParameterList;
-
-                            if (parameterList is not null)
-                            {
-                                SyntaxToken closeBracket = parameterList.CloseBracketToken;
-
-                                if (!closeBracket.IsMissing)
-                                {
-                                    SyntaxToken closeBrace = accessorList.CloseBraceToken;
-
-                                    if (!closeBrace.IsMissing)
-                                    {
-                                        TextSpan span = TextSpan.FromBounds(closeBracket.Span.End, closeBrace.SpanStart);
-
-                                        if (indexerDeclaration
-                                            .DescendantTrivia(span)
-                                            .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                                        {
-                                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        break;
-                    }
+                    break;
+                }
             }
         }
     }

@@ -78,40 +78,40 @@ internal abstract class IfAnalysis
                     switch (kind1)
                     {
                         case SyntaxKind.ExpressionStatement:
-                            {
-                                return Analyze(
-                                    ifStatement,
-                                    condition,
-                                    (ExpressionStatementSyntax)statement1,
-                                    (ExpressionStatementSyntax)statement2,
-                                    options,
-                                    semanticModel,
-                                    cancellationToken);
-                            }
+                        {
+                            return Analyze(
+                                ifStatement,
+                                condition,
+                                (ExpressionStatementSyntax)statement1,
+                                (ExpressionStatementSyntax)statement2,
+                                options,
+                                semanticModel,
+                                cancellationToken);
+                        }
                         case SyntaxKind.ReturnStatement:
-                            {
-                                return Analyze(
-                                    ifStatement,
-                                    condition,
-                                    ((ReturnStatementSyntax)statement1).Expression?.WalkDownParentheses(),
-                                    ((ReturnStatementSyntax)statement2).Expression?.WalkDownParentheses(),
-                                    options,
-                                    isYield: false,
-                                    semanticModel: semanticModel,
-                                    cancellationToken: cancellationToken);
-                            }
+                        {
+                            return Analyze(
+                                ifStatement,
+                                condition,
+                                ((ReturnStatementSyntax)statement1).Expression?.WalkDownParentheses(),
+                                ((ReturnStatementSyntax)statement2).Expression?.WalkDownParentheses(),
+                                options,
+                                isYield: false,
+                                semanticModel: semanticModel,
+                                cancellationToken: cancellationToken);
+                        }
                         case SyntaxKind.YieldReturnStatement:
-                            {
-                                return Analyze(
-                                    ifStatement,
-                                    condition,
-                                    ((YieldStatementSyntax)statement1).Expression?.WalkDownParentheses(),
-                                    ((YieldStatementSyntax)statement2).Expression?.WalkDownParentheses(),
-                                    options,
-                                    isYield: true,
-                                    semanticModel: semanticModel,
-                                    cancellationToken: cancellationToken);
-                            }
+                        {
+                            return Analyze(
+                                ifStatement,
+                                condition,
+                                ((YieldStatementSyntax)statement1).Expression?.WalkDownParentheses(),
+                                ((YieldStatementSyntax)statement2).Expression?.WalkDownParentheses(),
+                                options,
+                                isYield: true,
+                                semanticModel: semanticModel,
+                                cancellationToken: cancellationToken);
+                        }
                     }
                 }
             }

@@ -63,76 +63,76 @@ public sealed class RemoveImplementationFromAbstractMemberCodeFixProvider : Comp
         switch (node.Kind())
         {
             case SyntaxKind.MethodDeclaration:
-                {
-                    var methodDeclaration = (MethodDeclarationSyntax)node;
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                    MethodDeclarationSyntax newNode = methodDeclaration
-                        .WithBody(null)
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(SemicolonToken())
-                        .WithFormatterAnnotation();
+                MethodDeclarationSyntax newNode = methodDeclaration
+                    .WithBody(null)
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(SemicolonToken())
+                    .WithFormatterAnnotation();
 
-                    return document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken);
-                }
+                return document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken);
+            }
             case SyntaxKind.PropertyDeclaration:
-                {
-                    var propertyDeclaration = (PropertyDeclarationSyntax)node;
-                    ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
+            {
+                var propertyDeclaration = (PropertyDeclarationSyntax)node;
+                ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-                    PropertyDeclarationSyntax newNode = propertyDeclaration
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default(SyntaxToken))
-                        .WithAccessorList(AccessorList(AutoGetAccessorDeclaration()).WithTriviaFrom(expressionBody))
-                        .WithFormatterAnnotation();
+                PropertyDeclarationSyntax newNode = propertyDeclaration
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default(SyntaxToken))
+                    .WithAccessorList(AccessorList(AutoGetAccessorDeclaration()).WithTriviaFrom(expressionBody))
+                    .WithFormatterAnnotation();
 
-                    return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
-                }
+                return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
+            }
             case SyntaxKind.IndexerDeclaration:
-                {
-                    var indexerDeclaration = (IndexerDeclarationSyntax)node;
-                    ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
+            {
+                var indexerDeclaration = (IndexerDeclarationSyntax)node;
+                ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
 
-                    IndexerDeclarationSyntax newNode = indexerDeclaration
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(default(SyntaxToken))
-                        .WithAccessorList(AccessorList(AutoGetAccessorDeclaration()).WithTriviaFrom(expressionBody))
-                        .WithFormatterAnnotation();
+                IndexerDeclarationSyntax newNode = indexerDeclaration
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(default(SyntaxToken))
+                    .WithAccessorList(AccessorList(AutoGetAccessorDeclaration()).WithTriviaFrom(expressionBody))
+                    .WithFormatterAnnotation();
 
-                    return document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken);
-                }
+                return document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken);
+            }
             case SyntaxKind.EventDeclaration:
-                {
-                    var eventDeclaration = (EventDeclarationSyntax)node;
+            {
+                var eventDeclaration = (EventDeclarationSyntax)node;
 
-                    EventFieldDeclarationSyntax eventFieldDeclaration = EventFieldDeclaration(
-                        eventDeclaration.AttributeLists,
-                        eventDeclaration.Modifiers,
-                        eventDeclaration.EventKeyword,
-                        VariableDeclaration(eventDeclaration.Type, VariableDeclarator(eventDeclaration.Identifier)),
-                        SemicolonToken());
+                EventFieldDeclarationSyntax eventFieldDeclaration = EventFieldDeclaration(
+                    eventDeclaration.AttributeLists,
+                    eventDeclaration.Modifiers,
+                    eventDeclaration.EventKeyword,
+                    VariableDeclaration(eventDeclaration.Type, VariableDeclarator(eventDeclaration.Identifier)),
+                    SemicolonToken());
 
-                    eventFieldDeclaration = eventFieldDeclaration.WithFormatterAnnotation();
+                eventFieldDeclaration = eventFieldDeclaration.WithFormatterAnnotation();
 
-                    return document.ReplaceNodeAsync(eventDeclaration, eventFieldDeclaration, cancellationToken);
-                }
+                return document.ReplaceNodeAsync(eventDeclaration, eventFieldDeclaration, cancellationToken);
+            }
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
-                {
-                    var accessor = (AccessorDeclarationSyntax)node;
+            {
+                var accessor = (AccessorDeclarationSyntax)node;
 
-                    AccessorDeclarationSyntax newAccessor = accessor
-                        .WithBody(null)
-                        .WithExpressionBody(null)
-                        .WithSemicolonToken(SemicolonToken())
-                        .WithTrailingTrivia(
-                            accessor.DescendantTrivia(
-                                TextSpan.FromBounds(
-                                    accessor.BodyOrExpressionBody().SpanStart,
-                                    accessor.Span.End)))
-                        .WithFormatterAnnotation();
+                AccessorDeclarationSyntax newAccessor = accessor
+                    .WithBody(null)
+                    .WithExpressionBody(null)
+                    .WithSemicolonToken(SemicolonToken())
+                    .WithTrailingTrivia(
+                        accessor.DescendantTrivia(
+                            TextSpan.FromBounds(
+                                accessor.BodyOrExpressionBody().SpanStart,
+                                accessor.Span.End)))
+                    .WithFormatterAnnotation();
 
-                    return document.ReplaceNodeAsync(accessor, newAccessor, cancellationToken);
-                }
+                return document.ReplaceNodeAsync(accessor, newAccessor, cancellationToken);
+            }
         }
 
         Debug.Fail("");

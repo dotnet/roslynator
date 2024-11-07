@@ -41,23 +41,23 @@ internal static class ConvertInterpolatedStringToStringFormatRefactoring
                 switch (content.Kind())
                 {
                     case SyntaxKind.Interpolation:
-                        {
-                            containsInterpolation = true;
+                    {
+                        containsInterpolation = true;
 
-                            if (containsInterpolatedText)
-                                return;
+                        if (containsInterpolatedText)
+                            return;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.InterpolatedStringText:
-                        {
-                            containsInterpolatedText = true;
+                    {
+                        containsInterpolatedText = true;
 
-                            if (containsInterpolation)
-                                return;
+                        if (containsInterpolation)
+                            return;
 
-                            break;
-                        }
+                        break;
+                    }
                 }
             }
         }
@@ -86,37 +86,37 @@ internal static class ConvertInterpolatedStringToStringFormatRefactoring
             switch (content.Kind())
             {
                 case SyntaxKind.Interpolation:
+                {
+                    var interpolation = (InterpolationSyntax)content;
+
+                    b.Append("{");
+                    b.Append(index.ToString(CultureInfo.InvariantCulture));
+                    index++;
+
+                    InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
+                    if (alignmentClause is not null)
                     {
-                        var interpolation = (InterpolationSyntax)content;
-
-                        b.Append("{");
-                        b.Append(index.ToString(CultureInfo.InvariantCulture));
-                        index++;
-
-                        InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
-                        if (alignmentClause is not null)
-                        {
-                            b.Append(",");
-                            b.AppendSpan(alignmentClause.Value);
-                        }
-
-                        InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
-                        if (formatClause is not null)
-                        {
-                            b.Append(":");
-                            b.AppendSpan(formatClause.FormatStringToken);
-                        }
-
-                        b.Append("}");
-
-                        arguments.Add(Argument(interpolation.Expression));
-                        break;
+                        b.Append(",");
+                        b.AppendSpan(alignmentClause.Value);
                     }
+
+                    InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
+                    if (formatClause is not null)
+                    {
+                        b.Append(":");
+                        b.AppendSpan(formatClause.FormatStringToken);
+                    }
+
+                    b.Append("}");
+
+                    arguments.Add(Argument(interpolation.Expression));
+                    break;
+                }
                 case SyntaxKind.InterpolatedStringText:
-                    {
-                        b.AppendSpan(content);
-                        break;
-                    }
+                {
+                    b.AppendSpan(content);
+                    break;
+                }
             }
         }
 

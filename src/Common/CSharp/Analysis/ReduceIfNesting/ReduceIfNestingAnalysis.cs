@@ -123,159 +123,159 @@ internal static class ReduceIfNestingAnalysis
             case SyntaxKind.SetAccessorDeclaration:
             case SyntaxKind.AddAccessorDeclaration:
             case SyntaxKind.RemoveAccessorDeclaration:
+            {
+                if (jumpKind == SyntaxKind.None)
                 {
-                    if (jumpKind == SyntaxKind.None)
-                    {
-                        jumpKind = SyntaxKind.ReturnStatement;
-                    }
-                    else if (jumpKind != SyntaxKind.ReturnStatement)
-                    {
-                        return Fail(parent);
-                    }
-
-                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
-                        return Fail(parent);
-
-                    return Success(jumpKind, parent);
+                    jumpKind = SyntaxKind.ReturnStatement;
                 }
+                else if (jumpKind != SyntaxKind.ReturnStatement)
+                {
+                    return Fail(parent);
+                }
+
+                if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
+                    return Fail(parent);
+
+                return Success(jumpKind, parent);
+            }
             case SyntaxKind.OperatorDeclaration:
             case SyntaxKind.ConversionOperatorDeclaration:
             case SyntaxKind.GetAccessorDeclaration:
-                {
-                    if (jumpKind == SyntaxKind.None)
-                        return Fail(parent);
+            {
+                if (jumpKind == SyntaxKind.None)
+                    return Fail(parent);
 
-                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
-                        return Fail(parent);
+                if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
+                    return Fail(parent);
 
-                    return Success(jumpKind, parent);
-                }
+                return Success(jumpKind, parent);
+            }
             case SyntaxKind.MethodDeclaration:
-                {
-                    var methodDeclaration = (MethodDeclarationSyntax)parent;
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)parent;
 
-                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
-                        return Fail(parent);
+                if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
+                    return Fail(parent);
 
-                    if (jumpKind != SyntaxKind.None)
-                        return Success(jumpKind, parent);
+                if (jumpKind != SyntaxKind.None)
+                    return Success(jumpKind, parent);
 
-                    if (methodDeclaration.ReturnsVoid())
-                        return Success(SyntaxKind.ReturnStatement, parent);
+                if (methodDeclaration.ReturnsVoid())
+                    return Success(SyntaxKind.ReturnStatement, parent);
 
-                    if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword)
-                        && semanticModel
-                            .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
-                            .ReturnType
-                            .HasMetadataName(MetadataNames.System_Threading_Tasks_Task) == true)
-                    {
-                        return Success(SyntaxKind.ReturnStatement, parent);
-                    }
-
-                    if (semanticModel
+                if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword)
+                    && semanticModel
                         .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
                         .ReturnType
-                        .OriginalDefinition
-                        .IsIEnumerableOrIEnumerableOfT() == true
-                        && methodDeclaration.ContainsYield())
-                    {
-                        return Success(SyntaxKind.YieldBreakStatement, parent);
-                    }
-
-                    break;
-                }
-            case SyntaxKind.LocalFunctionStatement:
+                        .HasMetadataName(MetadataNames.System_Threading_Tasks_Task) == true)
                 {
-                    var localFunction = (LocalFunctionStatementSyntax)parent;
-
-                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
-                        return Fail(parent);
-
-                    if (jumpKind != SyntaxKind.None)
-                        return Success(jumpKind, parent);
-
-                    if (localFunction.ReturnsVoid())
-                        return Success(SyntaxKind.ReturnStatement, parent);
-
-                    if (localFunction.Modifiers.Contains(SyntaxKind.AsyncKeyword)
-                        && semanticModel.GetDeclaredSymbol(localFunction, cancellationToken)?
-                            .ReturnType
-                            .HasMetadataName(MetadataNames.System_Threading_Tasks_Task) == true)
-                    {
-                        return Success(SyntaxKind.ReturnStatement, parent);
-                    }
-
-                    if (semanticModel.GetDeclaredSymbol(localFunction, cancellationToken)?
-                        .ReturnType
-                        .OriginalDefinition
-                        .IsIEnumerableOrIEnumerableOfT() == true
-                        && localFunction.ContainsYield())
-                    {
-                        return Success(SyntaxKind.YieldBreakStatement, parent);
-                    }
-
-                    break;
+                    return Success(SyntaxKind.ReturnStatement, parent);
                 }
+
+                if (semanticModel
+                    .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
+                    .ReturnType
+                    .OriginalDefinition
+                    .IsIEnumerableOrIEnumerableOfT() == true
+                    && methodDeclaration.ContainsYield())
+                {
+                    return Success(SyntaxKind.YieldBreakStatement, parent);
+                }
+
+                break;
+            }
+            case SyntaxKind.LocalFunctionStatement:
+            {
+                var localFunction = (LocalFunctionStatementSyntax)parent;
+
+                if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
+                    return Fail(parent);
+
+                if (jumpKind != SyntaxKind.None)
+                    return Success(jumpKind, parent);
+
+                if (localFunction.ReturnsVoid())
+                    return Success(SyntaxKind.ReturnStatement, parent);
+
+                if (localFunction.Modifiers.Contains(SyntaxKind.AsyncKeyword)
+                    && semanticModel.GetDeclaredSymbol(localFunction, cancellationToken)?
+                        .ReturnType
+                        .HasMetadataName(MetadataNames.System_Threading_Tasks_Task) == true)
+                {
+                    return Success(SyntaxKind.ReturnStatement, parent);
+                }
+
+                if (semanticModel.GetDeclaredSymbol(localFunction, cancellationToken)?
+                    .ReturnType
+                    .OriginalDefinition
+                    .IsIEnumerableOrIEnumerableOfT() == true
+                    && localFunction.ContainsYield())
+                {
+                    return Success(SyntaxKind.YieldBreakStatement, parent);
+                }
+
+                break;
+            }
             case SyntaxKind.AnonymousMethodExpression:
             case SyntaxKind.SimpleLambdaExpression:
             case SyntaxKind.ParenthesizedLambdaExpression:
+            {
+                var anonymousFunction = (AnonymousFunctionExpressionSyntax)parent;
+
+                if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
+                    return Fail(parent);
+
+                if (jumpKind != SyntaxKind.None)
+                    return Success(jumpKind, parent);
+
+                if (semanticModel.GetSymbol(anonymousFunction, cancellationToken) is not IMethodSymbol methodSymbol)
+                    return Fail(parent);
+
+                if (methodSymbol.ReturnsVoid)
+                    return Success(SyntaxKind.ReturnStatement, parent);
+
+                if (anonymousFunction.AsyncKeyword.IsKind(SyntaxKind.AsyncKeyword)
+                    && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
                 {
-                    var anonymousFunction = (AnonymousFunctionExpressionSyntax)parent;
-
-                    if (IfStatementLocalVariableAnalysis.DoDeclaredVariablesOverlapWithOuterScope(ifStatement, semanticModel))
-                        return Fail(parent);
-
-                    if (jumpKind != SyntaxKind.None)
-                        return Success(jumpKind, parent);
-
-                    if (semanticModel.GetSymbol(anonymousFunction, cancellationToken) is not IMethodSymbol methodSymbol)
-                        return Fail(parent);
-
-                    if (methodSymbol.ReturnsVoid)
-                        return Success(SyntaxKind.ReturnStatement, parent);
-
-                    if (anonymousFunction.AsyncKeyword.IsKind(SyntaxKind.AsyncKeyword)
-                        && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
-                    {
-                        return Success(SyntaxKind.ReturnStatement, parent);
-                    }
-
-                    break;
+                    return Success(SyntaxKind.ReturnStatement, parent);
                 }
+
+                break;
+            }
             case SyntaxKind.IfStatement:
+            {
+                ifStatement = (IfStatementSyntax)parent;
+
+                if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
                 {
-                    ifStatement = (IfStatementSyntax)parent;
+                    if (ifStatement.Else is not null)
+                        return Fail(parent);
 
-                    if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
-                    {
-                        if (ifStatement.Else is not null)
-                            return Fail(parent);
-
-                        if (!options.AllowIfInsideIfElse())
-                            return Fail(parent);
-
-                        return AnalyzeCore(ifStatement.GetTopmostIf(), semanticModel, jumpKind, options, cancellationToken);
-                    }
-                    else
-                    {
-                        if (!IsFixable(ifStatement))
-                            return Fail(parent);
-
-                        if (!options.AllowNestedFix())
-                            return Fail(parent);
-
-                        return AnalyzeCore(ifStatement, semanticModel, jumpKind, options, cancellationToken);
-                    }
-                }
-            case SyntaxKind.ElseClause:
-                {
                     if (!options.AllowIfInsideIfElse())
                         return Fail(parent);
 
-                    var elseClause = (ElseClauseSyntax)parent;
-
-                    return AnalyzeCore(elseClause.GetTopmostIf(), semanticModel, jumpKind, options, cancellationToken);
+                    return AnalyzeCore(ifStatement.GetTopmostIf(), semanticModel, jumpKind, options, cancellationToken);
                 }
+                else
+                {
+                    if (!IsFixable(ifStatement))
+                        return Fail(parent);
+
+                    if (!options.AllowNestedFix())
+                        return Fail(parent);
+
+                    return AnalyzeCore(ifStatement, semanticModel, jumpKind, options, cancellationToken);
+                }
+            }
+            case SyntaxKind.ElseClause:
+            {
+                if (!options.AllowIfInsideIfElse())
+                    return Fail(parent);
+
+                var elseClause = (ElseClauseSyntax)parent;
+
+                return AnalyzeCore(elseClause.GetTopmostIf(), semanticModel, jumpKind, options, cancellationToken);
+            }
         }
 
         return Fail(parent);
@@ -367,46 +367,46 @@ internal static class ReduceIfNestingAnalysis
         switch (statement)
         {
             case BreakStatementSyntax _:
-                {
-                    return SyntaxKind.BreakStatement;
-                }
+            {
+                return SyntaxKind.BreakStatement;
+            }
             case ContinueStatementSyntax _:
-                {
-                    return SyntaxKind.ContinueStatement;
-                }
+            {
+                return SyntaxKind.ContinueStatement;
+            }
             case ReturnStatementSyntax returnStatement:
+            {
+                ExpressionSyntax expression = returnStatement.Expression;
+
+                if (expression is null)
+                    return SyntaxKind.ReturnStatement;
+
+                SyntaxKind kind = expression.Kind();
+
+                if (kind.Is(
+                    SyntaxKind.NullLiteralExpression,
+                    SyntaxKind.DefaultLiteralExpression,
+                    SyntaxKind.TrueLiteralExpression,
+                    SyntaxKind.FalseLiteralExpression))
                 {
-                    ExpressionSyntax expression = returnStatement.Expression;
-
-                    if (expression is null)
-                        return SyntaxKind.ReturnStatement;
-
-                    SyntaxKind kind = expression.Kind();
-
-                    if (kind.Is(
-                        SyntaxKind.NullLiteralExpression,
-                        SyntaxKind.DefaultLiteralExpression,
-                        SyntaxKind.TrueLiteralExpression,
-                        SyntaxKind.FalseLiteralExpression))
-                    {
-                        return kind;
-                    }
-
-                    return SyntaxKind.None;
+                    return kind;
                 }
+
+                return SyntaxKind.None;
+            }
             case ThrowStatementSyntax throwStatement:
-                {
-                    ExpressionSyntax expression = throwStatement.Expression;
+            {
+                ExpressionSyntax expression = throwStatement.Expression;
 
-                    if (expression is null)
-                        return SyntaxKind.ThrowStatement;
+                if (expression is null)
+                    return SyntaxKind.ThrowStatement;
 
-                    return SyntaxKind.None;
-                }
+                return SyntaxKind.None;
+            }
             default:
-                {
-                    return SyntaxKind.None;
-                }
+            {
+                return SyntaxKind.None;
+            }
         }
     }
 

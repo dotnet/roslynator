@@ -31,19 +31,19 @@ public sealed class DocumentCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.FileContainsNoCode:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove file with no code",
-                            ct =>
-                            {
-                                ct.ThrowIfCancellationRequested();
-                                return RemoveFromSolutionAsync(context.Document);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove file with no code",
+                        ct =>
+                        {
+                            ct.ThrowIfCancellationRequested();
+                            return RemoveFromSolutionAsync(context.Document);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
 

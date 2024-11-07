@@ -108,21 +108,21 @@ public sealed class MergeSwitchSectionsAnalyzer : BaseDiagnosticAnalyzer
         switch (statement1)
         {
             case BreakStatementSyntax _:
-                {
-                    return statement2.Kind() == SyntaxKind.BreakStatement;
-                }
+            {
+                return statement2.Kind() == SyntaxKind.BreakStatement;
+            }
             case ReturnStatementSyntax returnStatement:
-                {
-                    return returnStatement.Expression is null
-                        && (statement2 is ReturnStatementSyntax returnStatement2)
-                        && returnStatement2.Expression is null;
-                }
+            {
+                return returnStatement.Expression is null
+                    && (statement2 is ReturnStatementSyntax returnStatement2)
+                    && returnStatement2.Expression is null;
+            }
             case ThrowStatementSyntax throwStatement:
-                {
-                    return throwStatement.Expression is null
-                        && (statement2 is ThrowStatementSyntax throwStatement2)
-                        && throwStatement2.Expression is null;
-                }
+            {
+                return throwStatement.Expression is null
+                    && (statement2 is ThrowStatementSyntax throwStatement2)
+                    && throwStatement2.Expression is null;
+            }
         }
 
         return false;

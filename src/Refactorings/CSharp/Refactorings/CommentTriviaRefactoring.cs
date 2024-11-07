@@ -54,16 +54,16 @@ internal static class CommentTriviaRefactoring
                     {
                         case SyntaxKind.SingleLineCommentTrivia:
                         case SyntaxKind.MultiLineCommentTrivia:
-                            {
-                                fComment = true;
-                                break;
-                            }
+                        {
+                            fComment = true;
+                            break;
+                        }
                         case SyntaxKind.SingleLineDocumentationCommentTrivia:
                         case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                            {
-                                fDocComment = true;
-                                break;
-                            }
+                        {
+                            fDocComment = true;
+                            break;
+                        }
                     }
                 }
             }

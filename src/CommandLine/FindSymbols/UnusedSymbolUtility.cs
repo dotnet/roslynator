@@ -33,68 +33,68 @@ internal static class UnusedSymbolUtility
         switch (symbol.Kind)
         {
             case SymbolKind.Namespace:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
             case SymbolKind.NamedType:
-                {
-                    return true;
-                }
+            {
+                return true;
+            }
             case SymbolKind.Event:
-                {
-                    if (symbol.IsOverride)
-                        return false;
+            {
+                if (symbol.IsOverride)
+                    return false;
 
-                    var eventSymbol = (IEventSymbol)symbol;
+                var eventSymbol = (IEventSymbol)symbol;
 
-                    return eventSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
-                        && !eventSymbol.ImplementsInterfaceMember(allInterfaces: true);
-                }
+                return eventSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
+                    && !eventSymbol.ImplementsInterfaceMember(allInterfaces: true);
+            }
             case SymbolKind.Field:
-                {
-                    var fieldSymbol = (IFieldSymbol)symbol;
+            {
+                var fieldSymbol = (IFieldSymbol)symbol;
 
-                    return !fieldSymbol.ImplementsInterfaceMember(allInterfaces: true);
-                }
+                return !fieldSymbol.ImplementsInterfaceMember(allInterfaces: true);
+            }
             case SymbolKind.Property:
-                {
-                    if (symbol.IsOverride)
-                        return false;
+            {
+                if (symbol.IsOverride)
+                    return false;
 
-                    var propertySymbol = (IPropertySymbol)symbol;
+                var propertySymbol = (IPropertySymbol)symbol;
 
-                    return propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
-                        && !propertySymbol.ImplementsInterfaceMember(allInterfaces: true);
-                }
+                return propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
+                    && !propertySymbol.ImplementsInterfaceMember(allInterfaces: true);
+            }
             case SymbolKind.Method:
+            {
+                if (symbol.IsOverride)
+                    return false;
+
+                var methodSymbol = (IMethodSymbol)symbol;
+
+                switch (methodSymbol.MethodKind)
                 {
-                    if (symbol.IsOverride)
-                        return false;
-
-                    var methodSymbol = (IMethodSymbol)symbol;
-
-                    switch (methodSymbol.MethodKind)
+                    case MethodKind.Ordinary:
                     {
-                        case MethodKind.Ordinary:
-                            {
-                                return methodSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
-                                    && !SymbolUtility.CanBeEntryPoint(methodSymbol)
-                                    && !methodSymbol.ImplementsInterfaceMember(allInterfaces: true);
-                            }
-                        case MethodKind.Constructor:
-                            {
-                                return methodSymbol.Parameters.Any()
-                                    || !methodSymbol.ContainingType.IsAbstract;
-                            }
+                        return methodSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
+                            && !SymbolUtility.CanBeEntryPoint(methodSymbol)
+                            && !methodSymbol.ImplementsInterfaceMember(allInterfaces: true);
                     }
+                    case MethodKind.Constructor:
+                    {
+                        return methodSymbol.Parameters.Any()
+                            || !methodSymbol.ContainingType.IsAbstract;
+                    }
+                }
 
-                    return false;
-                }
+                return false;
+            }
             default:
-                {
-                    Debug.Fail(symbol.Kind.ToString());
-                    return false;
-                }
+            {
+                Debug.Fail(symbol.Kind.ToString());
+                return false;
+            }
         }
     }
 
@@ -207,17 +207,17 @@ internal static class UnusedSymbolUtility
             switch (symbol.Kind)
             {
                 case SymbolKind.Field:
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
                 case SymbolKind.Method:
-                    {
-                        return !((IMethodSymbol)symbol).Parameters.Any();
-                    }
+                {
+                    return !((IMethodSymbol)symbol).Parameters.Any();
+                }
                 case SymbolKind.Property:
-                    {
-                        return !((IPropertySymbol)symbol).IsIndexer;
-                    }
+                {
+                    return !((IPropertySymbol)symbol).IsIndexer;
+                }
             }
 
             return false;
@@ -232,55 +232,55 @@ internal static class UnusedSymbolUtility
                 switch (value[i])
                 {
                     case '{':
+                    {
+                        i++;
+
+                        int startIndex = i;
+
+                        while (i < length)
                         {
-                            i++;
+                            char ch = value[i];
 
-                            int startIndex = i;
-
-                            while (i < length)
+                            if (ch == '}'
+                                || ch == ','
+                                || ch == '(')
                             {
-                                char ch = value[i];
+                                int nameLength = i - startIndex;
 
-                                if (ch == '}'
-                                    || ch == ','
-                                    || ch == '(')
+                                if (nameLength > 0
+                                    && string.CompareOrdinal(symbol.Name, 0, value, startIndex, nameLength) == 0)
                                 {
-                                    int nameLength = i - startIndex;
-
-                                    if (nameLength > 0
-                                        && string.CompareOrdinal(symbol.Name, 0, value, startIndex, nameLength) == 0)
-                                    {
-                                        return true;
-                                    }
-
-                                    if (ch != '}')
-                                    {
-                                        i++;
-
-                                        while (i < length
-                                            && value[i] != '}')
-                                        {
-                                            i++;
-                                        }
-                                    }
-
-                                    break;
+                                    return true;
                                 }
 
-                                i++;
+                                if (ch != '}')
+                                {
+                                    i++;
+
+                                    while (i < length
+                                        && value[i] != '}')
+                                    {
+                                        i++;
+                                    }
+                                }
+
+                                break;
                             }
 
-                            break;
-                        }
-                    case '}':
-                        {
-                            return false;
-                        }
-                    case '\\':
-                        {
                             i++;
-                            break;
                         }
+
+                        break;
+                    }
+                    case '}':
+                    {
+                        return false;
+                    }
+                    case '\\':
+                    {
+                        i++;
+                        break;
+                    }
                 }
             }
 

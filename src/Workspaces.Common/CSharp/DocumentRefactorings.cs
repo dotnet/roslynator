@@ -36,22 +36,22 @@ internal static class DocumentRefactorings
             switch (parent.Kind())
             {
                 case SyntaxKind.SimpleAssignmentExpression:
-                    {
-                        var assignmentExpression = (AssignmentExpressionSyntax)parent;
-                        Debug.Assert(object.ReferenceEquals(assignmentExpression.Left, declarationExpression));
-                        break;
-                    }
+                {
+                    var assignmentExpression = (AssignmentExpressionSyntax)parent;
+                    Debug.Assert(object.ReferenceEquals(assignmentExpression.Left, declarationExpression));
+                    break;
+                }
                 case SyntaxKind.ForEachVariableStatement:
-                    {
-                        var forEachStatement = (ForEachVariableStatementSyntax)parent;
-                        Debug.Assert(object.ReferenceEquals(forEachStatement.Variable, declarationExpression));
-                        break;
-                    }
+                {
+                    var forEachStatement = (ForEachVariableStatementSyntax)parent;
+                    Debug.Assert(object.ReferenceEquals(forEachStatement.Variable, declarationExpression));
+                    break;
+                }
                 default:
-                    {
-                        SyntaxDebug.Fail(parent);
-                        break;
-                    }
+                {
+                    SyntaxDebug.Fail(parent);
+                    break;
+                }
             }
 #endif
             TupleExpressionSyntax tupleExpression = CreateTupleExpression(typeSymbol, designation, GetSymbolDisplayFormat(semanticModel, type.SpanStart))
@@ -360,50 +360,50 @@ internal static class DocumentRefactorings
             switch (parent.Kind())
             {
                 case SyntaxKind.ReturnStatement:
+                {
+                    var returnStatement = (ReturnStatementSyntax)parent;
+
+                    SyntaxToken returnKeyword = returnStatement.ReturnKeyword;
+
+                    if (!returnKeyword.TrailingTrivia.Any())
                     {
-                        var returnStatement = (ReturnStatementSyntax)parent;
+                        ReturnStatementSyntax newNode = returnStatement.Update(returnKeyword.WithTrailingTrivia(Space), newExpression, returnStatement.SemicolonToken);
 
-                        SyntaxToken returnKeyword = returnStatement.ReturnKeyword;
-
-                        if (!returnKeyword.TrailingTrivia.Any())
-                        {
-                            ReturnStatementSyntax newNode = returnStatement.Update(returnKeyword.WithTrailingTrivia(Space), newExpression, returnStatement.SemicolonToken);
-
-                            return document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
-                        }
-
-                        break;
+                        return document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
                     }
+
+                    break;
+                }
                 case SyntaxKind.YieldReturnStatement:
+                {
+                    var yieldReturn = (YieldStatementSyntax)parent;
+
+                    SyntaxToken returnKeyword = yieldReturn.ReturnOrBreakKeyword;
+
+                    if (!returnKeyword.TrailingTrivia.Any())
                     {
-                        var yieldReturn = (YieldStatementSyntax)parent;
+                        YieldStatementSyntax newNode = yieldReturn.Update(yieldReturn.YieldKeyword, returnKeyword.WithTrailingTrivia(Space), newExpression, yieldReturn.SemicolonToken);
 
-                        SyntaxToken returnKeyword = yieldReturn.ReturnOrBreakKeyword;
-
-                        if (!returnKeyword.TrailingTrivia.Any())
-                        {
-                            YieldStatementSyntax newNode = yieldReturn.Update(yieldReturn.YieldKeyword, returnKeyword.WithTrailingTrivia(Space), newExpression, yieldReturn.SemicolonToken);
-
-                            return document.ReplaceNodeAsync(yieldReturn, newNode, cancellationToken);
-                        }
-
-                        break;
+                        return document.ReplaceNodeAsync(yieldReturn, newNode, cancellationToken);
                     }
+
+                    break;
+                }
                 case SyntaxKind.AwaitExpression:
+                {
+                    var awaitExpression = (AwaitExpressionSyntax)parent;
+
+                    SyntaxToken awaitKeyword = awaitExpression.AwaitKeyword;
+
+                    if (!awaitKeyword.TrailingTrivia.Any())
                     {
-                        var awaitExpression = (AwaitExpressionSyntax)parent;
+                        AwaitExpressionSyntax newNode = awaitExpression.Update(awaitKeyword.WithTrailingTrivia(Space), newExpression);
 
-                        SyntaxToken awaitKeyword = awaitExpression.AwaitKeyword;
-
-                        if (!awaitKeyword.TrailingTrivia.Any())
-                        {
-                            AwaitExpressionSyntax newNode = awaitExpression.Update(awaitKeyword.WithTrailingTrivia(Space), newExpression);
-
-                            return document.ReplaceNodeAsync(awaitExpression, newNode, cancellationToken);
-                        }
-
-                        break;
+                        return document.ReplaceNodeAsync(awaitExpression, newNode, cancellationToken);
                     }
+
+                    break;
+                }
             }
         }
 

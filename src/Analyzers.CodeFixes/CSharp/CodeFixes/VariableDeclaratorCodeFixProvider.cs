@@ -33,15 +33,15 @@ public sealed class VariableDeclaratorCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveRedundantFieldInitialization:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant initialization",
-                            ct => RemoveRedundantFieldInitializationAsync(context.Document, declarator, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant initialization",
+                        ct => RemoveRedundantFieldInitializationAsync(context.Document, declarator, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

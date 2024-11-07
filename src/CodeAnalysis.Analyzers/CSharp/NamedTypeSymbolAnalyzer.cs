@@ -52,35 +52,35 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
             switch (baseType.Name)
             {
                 case "DiagnosticAnalyzer":
+                {
+                    if (baseType.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_Diagnostics))
                     {
-                        if (baseType.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_Diagnostics))
-                        {
-                            AnalyzeDiagnosticAnalyzer(context, symbol);
-                            return;
-                        }
-
-                        break;
+                        AnalyzeDiagnosticAnalyzer(context, symbol);
+                        return;
                     }
+
+                    break;
+                }
                 case "CodeFixProvider":
+                {
+                    if (baseType.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CodeFixes))
                     {
-                        if (baseType.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CodeFixes))
-                        {
-                            AnalyzeCodeFixProvider(context, symbol);
-                            return;
-                        }
-
-                        break;
+                        AnalyzeCodeFixProvider(context, symbol);
+                        return;
                     }
+
+                    break;
+                }
                 case "CodeRefactoringProvider":
+                {
+                    if (baseType.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CodeRefactorings))
                     {
-                        if (baseType.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CodeRefactorings))
-                        {
-                            AnalyzeCodeRefactoringProvider(context, symbol);
-                            return;
-                        }
-
-                        break;
+                        AnalyzeCodeRefactoringProvider(context, symbol);
+                        return;
                     }
+
+                    break;
+                }
             }
 
             baseType = baseType.BaseType;
@@ -141,36 +141,36 @@ public sealed class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
             switch (constructorArgument.Kind)
             {
                 case TypedConstantKind.Primitive:
+                {
+                    if (constructorArgument.Type.SpecialType == SpecialType.System_String
+                        && !RoslynUtility.WellKnownLanguageNames.Contains((string)constructorArgument.Value))
                     {
-                        if (constructorArgument.Type.SpecialType == SpecialType.System_String
-                            && !RoslynUtility.WellKnownLanguageNames.Contains((string)constructorArgument.Value))
+                        ReportUnknownLanguageName(context, attribute, argumentIndex);
+                    }
+
+                    argumentIndex++;
+                    break;
+                }
+                case TypedConstantKind.Array:
+                {
+                    foreach (TypedConstant typedConstant in constructorArgument.Values)
+                    {
+                        if (typedConstant.Kind == TypedConstantKind.Primitive
+                            && typedConstant.Type.SpecialType == SpecialType.System_String
+                            && !RoslynUtility.WellKnownLanguageNames.Contains((string)typedConstant.Value))
                         {
                             ReportUnknownLanguageName(context, attribute, argumentIndex);
                         }
 
                         argumentIndex++;
-                        break;
                     }
-                case TypedConstantKind.Array:
-                    {
-                        foreach (TypedConstant typedConstant in constructorArgument.Values)
-                        {
-                            if (typedConstant.Kind == TypedConstantKind.Primitive
-                                && typedConstant.Type.SpecialType == SpecialType.System_String
-                                && !RoslynUtility.WellKnownLanguageNames.Contains((string)typedConstant.Value))
-                            {
-                                ReportUnknownLanguageName(context, attribute, argumentIndex);
-                            }
 
-                            argumentIndex++;
-                        }
-
-                        break;
-                    }
+                    break;
+                }
                 default:
-                    {
-                        return;
-                    }
+                {
+                    return;
+                }
             }
         }
     }

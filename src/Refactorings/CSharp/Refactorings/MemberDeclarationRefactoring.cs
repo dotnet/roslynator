@@ -31,47 +31,47 @@ internal static class MemberDeclarationRefactoring
 #endif
             case SyntaxKind.InterfaceDeclaration:
             case SyntaxKind.EnumDeclaration:
+            {
+                if (context.IsAnyRefactoringEnabled(
+                    RefactoringDescriptors.RemoveMemberDeclaration,
+                    RefactoringDescriptors.CopyMemberDeclaration,
+                    RefactoringDescriptors.CommentOutMemberDeclaration))
                 {
-                    if (context.IsAnyRefactoringEnabled(
-                        RefactoringDescriptors.RemoveMemberDeclaration,
-                        RefactoringDescriptors.CopyMemberDeclaration,
-                        RefactoringDescriptors.CommentOutMemberDeclaration))
+                    (SyntaxToken openBrace, SyntaxToken closeBrace) = GetBraces(member);
+
+                    if ((!openBrace.IsKind(SyntaxKind.None)
+                        && openBrace.Span.Contains(context.Span))
+                        || (!closeBrace.IsKind(SyntaxKind.None)
+                            && closeBrace.Span.Contains(context.Span)))
                     {
-                        (SyntaxToken openBrace, SyntaxToken closeBrace) = GetBraces(member);
-
-                        if ((!openBrace.IsKind(SyntaxKind.None)
-                            && openBrace.Span.Contains(context.Span))
-                            || (!closeBrace.IsKind(SyntaxKind.None)
-                                && closeBrace.Span.Contains(context.Span)))
+                        if (member.Parent is not null
+                            && CSharpFacts.CanHaveMembers(member.Parent.Kind()))
                         {
-                            if (member.Parent is not null
-                                && CSharpFacts.CanHaveMembers(member.Parent.Kind()))
+                            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclaration))
                             {
-                                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclaration))
-                                {
-                                    context.RegisterRefactoring(CodeActionFactory.RemoveMemberDeclaration(context.Document, member, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveMemberDeclaration)));
-                                }
-
-                                if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyMemberDeclaration))
-                                {
-                                    context.RegisterRefactoring(
-                                        $"Copy {CSharpFacts.GetTitle(member)}",
-                                        ct => CopyMemberDeclarationRefactoring.RefactorAsync(
-                                            context.Document,
-                                            member,
-                                            copyAfter: closeBrace.Span.Contains(context.Span),
-                                            ct),
-                                        RefactoringDescriptors.CopyMemberDeclaration);
-                                }
+                                context.RegisterRefactoring(CodeActionFactory.RemoveMemberDeclaration(context.Document, member, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveMemberDeclaration)));
                             }
 
-                            if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutMemberDeclaration))
-                                CommentOutRefactoring.RegisterRefactoring(context, member);
+                            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyMemberDeclaration))
+                            {
+                                context.RegisterRefactoring(
+                                    $"Copy {CSharpFacts.GetTitle(member)}",
+                                    ct => CopyMemberDeclarationRefactoring.RefactorAsync(
+                                        context.Document,
+                                        member,
+                                        copyAfter: closeBrace.Span.Contains(context.Span),
+                                        ct),
+                                    RefactoringDescriptors.CopyMemberDeclaration);
+                            }
                         }
-                    }
 
-                    break;
+                        if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutMemberDeclaration))
+                            CommentOutRefactoring.RegisterRefactoring(context, member);
+                    }
                 }
+
+                break;
+            }
         }
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveAllStatements))
@@ -91,123 +91,123 @@ internal static class MemberDeclarationRefactoring
         switch (kind)
         {
             case SyntaxKind.NamespaceDeclaration:
-                {
-                    var namespaceDeclaration = (NamespaceDeclarationSyntax)member;
-                    NamespaceDeclarationRefactoring.ComputeRefactorings(context, namespaceDeclaration);
+            {
+                var namespaceDeclaration = (NamespaceDeclarationSyntax)member;
+                NamespaceDeclarationRefactoring.ComputeRefactorings(context, namespaceDeclaration);
 
-                    if (MemberDeclarationListSelection.TryCreate(namespaceDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                        await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
+                if (MemberDeclarationListSelection.TryCreate(namespaceDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
+                    await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.ClassDeclaration:
-                {
-                    var classDeclaration = (ClassDeclarationSyntax)member;
-                    await ClassDeclarationRefactoring.ComputeRefactoringsAsync(context, classDeclaration).ConfigureAwait(false);
+            {
+                var classDeclaration = (ClassDeclarationSyntax)member;
+                await ClassDeclarationRefactoring.ComputeRefactoringsAsync(context, classDeclaration).ConfigureAwait(false);
 
-                    if (MemberDeclarationListSelection.TryCreate(classDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                        await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
+                if (MemberDeclarationListSelection.TryCreate(classDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
+                    await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.RecordDeclaration:
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    var recordDeclaration = (RecordDeclarationSyntax)member;
-                    await RecordDeclarationRefactoring.ComputeRefactoringsAsync(context, recordDeclaration).ConfigureAwait(false);
+            {
+                var recordDeclaration = (RecordDeclarationSyntax)member;
+                await RecordDeclarationRefactoring.ComputeRefactoringsAsync(context, recordDeclaration).ConfigureAwait(false);
 
-                    if (MemberDeclarationListSelection.TryCreate(recordDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                        await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
+                if (MemberDeclarationListSelection.TryCreate(recordDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
+                    await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.StructDeclaration:
-                {
-                    var structDeclaration = (StructDeclarationSyntax)member;
-                    await StructDeclarationRefactoring.ComputeRefactoringsAsync(context, structDeclaration).ConfigureAwait(false);
+            {
+                var structDeclaration = (StructDeclarationSyntax)member;
+                await StructDeclarationRefactoring.ComputeRefactoringsAsync(context, structDeclaration).ConfigureAwait(false);
 
-                    if (MemberDeclarationListSelection.TryCreate(structDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                        await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
+                if (MemberDeclarationListSelection.TryCreate(structDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
+                    await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.InterfaceDeclaration:
-                {
-                    var interfaceDeclaration = (InterfaceDeclarationSyntax)member;
-                    InterfaceDeclarationRefactoring.ComputeRefactorings(context, interfaceDeclaration);
+            {
+                var interfaceDeclaration = (InterfaceDeclarationSyntax)member;
+                InterfaceDeclarationRefactoring.ComputeRefactorings(context, interfaceDeclaration);
 
-                    if (MemberDeclarationListSelection.TryCreate(interfaceDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                        await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
+                if (MemberDeclarationListSelection.TryCreate(interfaceDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
+                    await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.EnumDeclaration:
-                {
-                    await EnumDeclarationRefactoring.ComputeRefactoringAsync(context, (EnumDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await EnumDeclarationRefactoring.ComputeRefactoringAsync(context, (EnumDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.EnumMemberDeclaration:
-                {
-                    await EnumMemberDeclarationRefactoring.ComputeRefactoringAsync(context, (EnumMemberDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await EnumMemberDeclarationRefactoring.ComputeRefactoringAsync(context, (EnumMemberDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.DelegateDeclaration:
-                {
-                    DelegateDeclarationRefactoring.ComputeRefactorings(context, (DelegateDeclarationSyntax)member);
-                    break;
-                }
+            {
+                DelegateDeclarationRefactoring.ComputeRefactorings(context, (DelegateDeclarationSyntax)member);
+                break;
+            }
             case SyntaxKind.MethodDeclaration:
-                {
-                    await MethodDeclarationRefactoring.ComputeRefactoringsAsync(context, (MethodDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await MethodDeclarationRefactoring.ComputeRefactoringsAsync(context, (MethodDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.ConstructorDeclaration:
-                {
-                    await ConstructorDeclarationRefactoring.ComputeRefactoringsAsync(context, (ConstructorDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await ConstructorDeclarationRefactoring.ComputeRefactoringsAsync(context, (ConstructorDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.DestructorDeclaration:
-                {
-                    DestructorDeclarationRefactoring.ComputeRefactorings(context, (DestructorDeclarationSyntax)member);
-                    break;
-                }
+            {
+                DestructorDeclarationRefactoring.ComputeRefactorings(context, (DestructorDeclarationSyntax)member);
+                break;
+            }
             case SyntaxKind.IndexerDeclaration:
-                {
-                    await IndexerDeclarationRefactoring.ComputeRefactoringsAsync(context, (IndexerDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await IndexerDeclarationRefactoring.ComputeRefactoringsAsync(context, (IndexerDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.PropertyDeclaration:
-                {
-                    await PropertyDeclarationRefactoring.ComputeRefactoringsAsync(context, (PropertyDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await PropertyDeclarationRefactoring.ComputeRefactoringsAsync(context, (PropertyDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.OperatorDeclaration:
-                {
-                    ComputeRefactorings(context, (OperatorDeclarationSyntax)member);
-                    break;
-                }
+            {
+                ComputeRefactorings(context, (OperatorDeclarationSyntax)member);
+                break;
+            }
             case SyntaxKind.ConversionOperatorDeclaration:
-                {
-                    ComputeRefactorings(context, (ConversionOperatorDeclarationSyntax)member);
-                    break;
-                }
+            {
+                ComputeRefactorings(context, (ConversionOperatorDeclarationSyntax)member);
+                break;
+            }
             case SyntaxKind.FieldDeclaration:
-                {
-                    await FieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (FieldDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await FieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (FieldDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.EventDeclaration:
-                {
-                    await EventDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await EventDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.EventFieldDeclaration:
-                {
-                    await EventFieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)member).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await EventFieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)member).ConfigureAwait(false);
+                break;
+            }
         }
 
         if (context.IsRefactoringEnabled(RefactoringDescriptors.MoveUnsafeContextToContainingDeclaration))
@@ -245,66 +245,66 @@ internal static class MemberDeclarationRefactoring
         switch (member.Kind())
         {
             case SyntaxKind.MethodDeclaration:
-                {
-                    return FromBody(((MethodDeclarationSyntax)member).Body);
-                }
+            {
+                return FromBody(((MethodDeclarationSyntax)member).Body);
+            }
             case SyntaxKind.IndexerDeclaration:
-                {
-                    return FromAccessorList(((IndexerDeclarationSyntax)member).AccessorList);
-                }
+            {
+                return FromAccessorList(((IndexerDeclarationSyntax)member).AccessorList);
+            }
             case SyntaxKind.OperatorDeclaration:
-                {
-                    return FromBody(((OperatorDeclarationSyntax)member).Body);
-                }
+            {
+                return FromBody(((OperatorDeclarationSyntax)member).Body);
+            }
             case SyntaxKind.ConversionOperatorDeclaration:
-                {
-                    return FromBody(((ConversionOperatorDeclarationSyntax)member).Body);
-                }
+            {
+                return FromBody(((ConversionOperatorDeclarationSyntax)member).Body);
+            }
             case SyntaxKind.ConstructorDeclaration:
-                {
-                    return FromBody(((ConstructorDeclarationSyntax)member).Body);
-                }
+            {
+                return FromBody(((ConstructorDeclarationSyntax)member).Body);
+            }
             case SyntaxKind.PropertyDeclaration:
-                {
-                    return FromAccessorList(((PropertyDeclarationSyntax)member).AccessorList);
-                }
+            {
+                return FromAccessorList(((PropertyDeclarationSyntax)member).AccessorList);
+            }
             case SyntaxKind.EventDeclaration:
-                {
-                    return FromAccessorList(((EventDeclarationSyntax)member).AccessorList);
-                }
+            {
+                return FromAccessorList(((EventDeclarationSyntax)member).AccessorList);
+            }
             case SyntaxKind.NamespaceDeclaration:
-                {
-                    var member1 = ((NamespaceDeclarationSyntax)member);
-                    return (member1.OpenBraceToken, member1.CloseBraceToken);
-                }
+            {
+                var member1 = ((NamespaceDeclarationSyntax)member);
+                return (member1.OpenBraceToken, member1.CloseBraceToken);
+            }
             case SyntaxKind.ClassDeclaration:
-                {
-                    var member2 = ((ClassDeclarationSyntax)member);
-                    return (member2.OpenBraceToken, member2.CloseBraceToken);
-                }
+            {
+                var member2 = ((ClassDeclarationSyntax)member);
+                return (member2.OpenBraceToken, member2.CloseBraceToken);
+            }
             case SyntaxKind.RecordDeclaration:
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    var member3 = ((RecordDeclarationSyntax)member);
-                    return (member3.OpenBraceToken, member3.CloseBraceToken);
-                }
+            {
+                var member3 = ((RecordDeclarationSyntax)member);
+                return (member3.OpenBraceToken, member3.CloseBraceToken);
+            }
             case SyntaxKind.StructDeclaration:
-                {
-                    var member4 = ((StructDeclarationSyntax)member);
-                    return (member4.OpenBraceToken, member4.CloseBraceToken);
-                }
+            {
+                var member4 = ((StructDeclarationSyntax)member);
+                return (member4.OpenBraceToken, member4.CloseBraceToken);
+            }
             case SyntaxKind.InterfaceDeclaration:
-                {
-                    var member5 = ((InterfaceDeclarationSyntax)member);
-                    return (member5.OpenBraceToken, member5.CloseBraceToken);
-                }
+            {
+                var member5 = ((InterfaceDeclarationSyntax)member);
+                return (member5.OpenBraceToken, member5.CloseBraceToken);
+            }
             case SyntaxKind.EnumDeclaration:
-                {
-                    var member6 = ((EnumDeclarationSyntax)member);
-                    return (member6.OpenBraceToken, member6.CloseBraceToken);
-                }
+            {
+                var member6 = ((EnumDeclarationSyntax)member);
+                return (member6.OpenBraceToken, member6.CloseBraceToken);
+            }
         }
 
         return default;

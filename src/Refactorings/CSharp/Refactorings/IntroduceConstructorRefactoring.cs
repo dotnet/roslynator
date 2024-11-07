@@ -290,12 +290,12 @@ internal static class IntroduceConstructorRefactoring
         switch (expression.Kind())
         {
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    var memberAccess = (MemberAccessExpressionSyntax)expression;
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                    return memberAccess.Expression.IsKind(SyntaxKind.ThisExpression)
-                        && memberAccess.Name.IsKind(SyntaxKind.IdentifierName);
-                }
+                return memberAccess.Expression.IsKind(SyntaxKind.ThisExpression)
+                    && memberAccess.Name.IsKind(SyntaxKind.IdentifierName);
+            }
             case SyntaxKind.IdentifierName:
                 return true;
             default:
@@ -348,10 +348,10 @@ internal static class IntroduceConstructorRefactoring
 #endif
                 return declaration;
             default:
-                {
-                    Debug.Assert(declaration.Parent is MemberDeclarationSyntax);
-                    return declaration.Parent as MemberDeclarationSyntax;
-                }
+            {
+                Debug.Assert(declaration.Parent is MemberDeclarationSyntax);
+                return declaration.Parent as MemberDeclarationSyntax;
+            }
         }
     }
 
@@ -457,13 +457,13 @@ internal static class IntroduceConstructorRefactoring
             case SyntaxKind.IdentifierName:
                 return ((IdentifierNameSyntax)expression).Identifier;
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    var memberAccess = (MemberAccessExpressionSyntax)expression;
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                    var identifierName = (IdentifierNameSyntax)memberAccess.Name;
+                var identifierName = (IdentifierNameSyntax)memberAccess.Name;
 
-                    return identifierName.Identifier;
-                }
+                return identifierName.Identifier;
+            }
         }
 
         SyntaxDebug.Fail(expression);

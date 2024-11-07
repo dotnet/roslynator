@@ -14,35 +14,35 @@ internal static class LiteralExpressionRefactoring
         {
             case SyntaxKind.TrueLiteralExpression:
             case SyntaxKind.FalseLiteralExpression:
+            {
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertBooleanLiteral)
+                    && literalExpression.Span.Contains(context.Span))
                 {
-                    if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertBooleanLiteral)
-                        && literalExpression.Span.Contains(context.Span))
-                    {
-                        context.RegisterRefactoring(
-                            "Invert boolean literal",
-                            ct => InvertBooleanLiteralRefactoring.RefactorAsync(context.Document, literalExpression, ct),
-                            RefactoringDescriptors.InvertBooleanLiteral);
-                    }
-
-                    break;
+                    context.RegisterRefactoring(
+                        "Invert boolean literal",
+                        ct => InvertBooleanLiteralRefactoring.RefactorAsync(context.Document, literalExpression, ct),
+                        RefactoringDescriptors.InvertBooleanLiteral);
                 }
+
+                break;
+            }
             case SyntaxKind.StringLiteralExpression:
-                {
-                    if (context.Span.IsContainedInSpanOrBetweenSpans(literalExpression))
-                        await StringLiteralExpressionRefactoring.ComputeRefactoringsAsync(context, literalExpression).ConfigureAwait(false);
+            {
+                if (context.Span.IsContainedInSpanOrBetweenSpans(literalExpression))
+                    await StringLiteralExpressionRefactoring.ComputeRefactoringsAsync(context, literalExpression).ConfigureAwait(false);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.NumericLiteralExpression:
+            {
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertHexadecimalLiteralToDecimalLiteral)
+                    && context.Span.IsBetweenSpans(literalExpression))
                 {
-                    if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertHexadecimalLiteralToDecimalLiteral)
-                        && context.Span.IsBetweenSpans(literalExpression))
-                    {
-                        ConvertHexadecimalLiteralToDecimalLiteralRefactoring.ComputeRefactoring(context, literalExpression);
-                    }
-
-                    break;
+                    ConvertHexadecimalLiteralToDecimalLiteralRefactoring.ComputeRefactoring(context, literalExpression);
                 }
+
+                break;
+            }
         }
     }
 }

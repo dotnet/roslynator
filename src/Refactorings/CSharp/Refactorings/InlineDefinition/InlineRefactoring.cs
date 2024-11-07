@@ -281,19 +281,19 @@ internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
                     case SyntaxKind.TypeParameter:
                     case SyntaxKind.ForEachStatement:
                     case SyntaxKind.ForEachVariableStatement:
+                    {
+                        ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, cancellationToken);
+
+                        Debug.Assert(symbol is not null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
+
+                        if (symbol is not null
+                            && symbolMap.TryGetValue(symbol, out string name))
                         {
-                            ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, cancellationToken);
-
-                            Debug.Assert(symbol is not null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
-
-                            if (symbol is not null
-                                && symbolMap.TryGetValue(symbol, out string name))
-                            {
-                                replacementMap.Add(descendant, name);
-                            }
-
-                            break;
+                            replacementMap.Add(descendant, name);
                         }
+
+                        break;
+                    }
                 }
             }
         }

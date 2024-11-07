@@ -46,48 +46,48 @@ internal static class ParenthesizeExpressionRefactoring
             case SyntaxKind.AttributeArgument:
             case SyntaxKind.ThrowExpression:
             case SyntaxKind.PredefinedType:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
             case SyntaxKind.QualifiedName:
+            {
+                switch (node.Parent?.Kind())
                 {
-                    switch (node.Parent?.Kind())
+                    case SyntaxKind.NamespaceDeclaration:
+                    case SyntaxKind.UsingDirective:
+                    case SyntaxKind.QualifiedName:
+                    case SyntaxKind.VariableDeclaration:
+                    case SyntaxKind.TupleElement:
                     {
-                        case SyntaxKind.NamespaceDeclaration:
-                        case SyntaxKind.UsingDirective:
-                        case SyntaxKind.QualifiedName:
-                        case SyntaxKind.VariableDeclaration:
-                        case SyntaxKind.TupleElement:
-                            {
-                                return false;
-                            }
-                        default:
-                            {
-                                return true;
-                            }
+                        return false;
+                    }
+                    default:
+                    {
+                        return true;
                     }
                 }
+            }
             case SyntaxKind.TupleType:
             case SyntaxKind.GenericName:
+            {
+                switch (node.Parent.Kind())
                 {
-                    switch (node.Parent.Kind())
-                    {
-                        case SyntaxKind.LocalFunctionStatement:
-                        case SyntaxKind.DelegateDeclaration:
-                        case SyntaxKind.FieldDeclaration:
-                        case SyntaxKind.EventFieldDeclaration:
-                        case SyntaxKind.MethodDeclaration:
-                        case SyntaxKind.OperatorDeclaration:
-                        case SyntaxKind.ConversionOperatorDeclaration:
-                        case SyntaxKind.PropertyDeclaration:
-                        case SyntaxKind.EventDeclaration:
-                        case SyntaxKind.IndexerDeclaration:
-                        case SyntaxKind.Parameter:
-                            return false;
-                    }
-
-                    break;
+                    case SyntaxKind.LocalFunctionStatement:
+                    case SyntaxKind.DelegateDeclaration:
+                    case SyntaxKind.FieldDeclaration:
+                    case SyntaxKind.EventFieldDeclaration:
+                    case SyntaxKind.MethodDeclaration:
+                    case SyntaxKind.OperatorDeclaration:
+                    case SyntaxKind.ConversionOperatorDeclaration:
+                    case SyntaxKind.PropertyDeclaration:
+                    case SyntaxKind.EventDeclaration:
+                    case SyntaxKind.IndexerDeclaration:
+                    case SyntaxKind.Parameter:
+                        return false;
                 }
+
+                break;
+            }
         }
 
         SyntaxNode parent = node.Parent;
@@ -113,25 +113,25 @@ internal static class ParenthesizeExpressionRefactoring
             case SyntaxKind.EqualsValueClause:
                 return false;
             case SyntaxKind.ConditionalAccessExpression:
-                {
-                    var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
+            {
+                var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
 
-                    return node != conditionalAccess.WhenNotNull;
-                }
+                return node != conditionalAccess.WhenNotNull;
+            }
             case SyntaxKind.ForEachStatement:
-                {
-                    var forEachStatement = (ForEachStatementSyntax)parent;
+            {
+                var forEachStatement = (ForEachStatementSyntax)parent;
 
-                    return node != forEachStatement.Expression
-                        && node != forEachStatement.Type;
-                }
+                return node != forEachStatement.Expression
+                    && node != forEachStatement.Type;
+            }
             case SyntaxKind.ForEachVariableStatement:
-                {
-                    var forEachStatement = (ForEachVariableStatementSyntax)parent;
+            {
+                var forEachStatement = (ForEachVariableStatementSyntax)parent;
 
-                    return node != forEachStatement.Expression
-                        && node != forEachStatement.Variable;
-                }
+                return node != forEachStatement.Expression
+                    && node != forEachStatement.Variable;
+            }
             case SyntaxKind.WhileStatement:
                 return node != ((WhileStatementSyntax)parent).Condition;
             case SyntaxKind.DoStatement:
@@ -143,19 +143,19 @@ internal static class ParenthesizeExpressionRefactoring
             case SyntaxKind.SwitchStatement:
                 return node != ((SwitchStatementSyntax)parent).Expression;
             case SyntaxKind.UsingStatement:
-                {
-                    var usingStatement = (UsingStatementSyntax)parent;
+            {
+                var usingStatement = (UsingStatementSyntax)parent;
 
-                    return node != usingStatement.Expression
-                        && node != usingStatement.Declaration;
-                }
+                return node != usingStatement.Expression
+                    && node != usingStatement.Declaration;
+            }
             case SyntaxKind.ConditionalExpression:
-                {
-                    var conditionalExpression = (ConditionalExpressionSyntax)parent;
+            {
+                var conditionalExpression = (ConditionalExpressionSyntax)parent;
 
-                    return node != conditionalExpression.WhenTrue
-                        && node != conditionalExpression.WhenFalse;
-                }
+                return node != conditionalExpression.WhenTrue
+                    && node != conditionalExpression.WhenFalse;
+            }
         }
 
         return parent is not AssignmentExpressionSyntax;

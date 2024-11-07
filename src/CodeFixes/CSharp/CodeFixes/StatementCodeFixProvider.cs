@@ -38,87 +38,87 @@ public sealed class StatementCodeFixProvider : CompilerDiagnosticCodeFixProvider
             switch (diagnostic.Id)
             {
                 case CompilerDiagnosticIdentifiers.CS1522_EmptySwitchBlock:
-                    {
-                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveEmptySwitchStatement, context.Document, root.SyntaxTree))
-                            break;
-
-                        if (statement is not SwitchStatementSyntax switchStatement)
-                            break;
-
-                        CodeFixRegistrator.RemoveStatement(context, diagnostic, switchStatement);
+                {
+                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveEmptySwitchStatement, context.Document, root.SyntaxTree))
                         break;
-                    }
+
+                    if (statement is not SwitchStatementSyntax switchStatement)
+                        break;
+
+                    CodeFixRegistrator.RemoveStatement(context, diagnostic, switchStatement);
+                    break;
+                }
                 case CompilerDiagnosticIdentifiers.CS0139_NoEnclosingLoopOutOfWhichToBreakOrContinue:
+                {
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveJumpStatement, context.Document, root.SyntaxTree))
+                        CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
+
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceBreakWithContinue, context.Document, root.SyntaxTree)
+                        && statement.Kind() == SyntaxKind.BreakStatement)
                     {
-                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveJumpStatement, context.Document, root.SyntaxTree))
-                            CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceBreakWithContinue, context.Document, root.SyntaxTree)
-                            && statement.Kind() == SyntaxKind.BreakStatement)
+                        if (semanticModel.GetEnclosingSymbol(statement.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol)
                         {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            if (semanticModel.GetEnclosingSymbol(statement.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol)
+                            if (methodSymbol.ReturnsVoid
+                                || (methodSymbol.IsAsync && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)))
                             {
-                                if (methodSymbol.ReturnsVoid
-                                    || (methodSymbol.IsAsync && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)))
-                                {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        "Replace 'break' with 'return'",
-                                        ct =>
-                                        {
-                                            var breakStatement = (BreakStatementSyntax)statement;
-                                            SyntaxToken breakKeyword = breakStatement.BreakKeyword;
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Replace 'break' with 'return'",
+                                    ct =>
+                                    {
+                                        var breakStatement = (BreakStatementSyntax)statement;
+                                        SyntaxToken breakKeyword = breakStatement.BreakKeyword;
 
-                                            ReturnStatementSyntax newStatement = SyntaxFactory.ReturnStatement(
-                                                SyntaxFactory.Token(breakKeyword.LeadingTrivia, SyntaxKind.ReturnKeyword, breakKeyword.TrailingTrivia),
-                                                null,
-                                                breakStatement.SemicolonToken);
+                                        ReturnStatementSyntax newStatement = SyntaxFactory.ReturnStatement(
+                                            SyntaxFactory.Token(breakKeyword.LeadingTrivia, SyntaxKind.ReturnKeyword, breakKeyword.TrailingTrivia),
+                                            null,
+                                            breakStatement.SemicolonToken);
 
-                                            return context.Document.ReplaceNodeAsync(statement, newStatement, ct);
-                                        },
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
+                                        return context.Document.ReplaceNodeAsync(statement, newStatement, ct);
+                                    },
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
 
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                }
+                                context.RegisterCodeFix(codeAction, diagnostic);
                             }
                         }
-
-                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveJumpStatement, context.Document, root.SyntaxTree))
-                            CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
-
-                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceBreakWithContinue, context.Document, root.SyntaxTree)
-                            && statement.Kind() == SyntaxKind.BreakStatement)
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-                            if (semanticModel.GetEnclosingSymbol(statement.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol)
-                            {
-                                if (methodSymbol.ReturnsVoid
-                                    || (methodSymbol.IsAsync && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)))
-                                {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        "Replace 'break' with 'return'",
-                                        ct =>
-                                        {
-                                            var breakStatement = (BreakStatementSyntax)statement;
-                                            SyntaxToken breakKeyword = breakStatement.BreakKeyword;
-
-                                            ReturnStatementSyntax newStatement = SyntaxFactory.ReturnStatement(
-                                                SyntaxFactory.Token(breakKeyword.LeadingTrivia, SyntaxKind.ReturnKeyword, breakKeyword.TrailingTrivia),
-                                                null,
-                                                breakStatement.SemicolonToken);
-
-                                            return context.Document.ReplaceNodeAsync(statement, newStatement, ct);
-                                        },
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                }
-                            }
-                        }
-
-                        break;
                     }
+
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveJumpStatement, context.Document, root.SyntaxTree))
+                        CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
+
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceBreakWithContinue, context.Document, root.SyntaxTree)
+                        && statement.Kind() == SyntaxKind.BreakStatement)
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        if (semanticModel.GetEnclosingSymbol(statement.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol)
+                        {
+                            if (methodSymbol.ReturnsVoid
+                                || (methodSymbol.IsAsync && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)))
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Replace 'break' with 'return'",
+                                    ct =>
+                                    {
+                                        var breakStatement = (BreakStatementSyntax)statement;
+                                        SyntaxToken breakKeyword = breakStatement.BreakKeyword;
+
+                                        ReturnStatementSyntax newStatement = SyntaxFactory.ReturnStatement(
+                                            SyntaxFactory.Token(breakKeyword.LeadingTrivia, SyntaxKind.ReturnKeyword, breakKeyword.TrailingTrivia),
+                                            null,
+                                            breakStatement.SemicolonToken);
+
+                                        return context.Document.ReplaceNodeAsync(statement, newStatement, ct);
+                                    },
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+                        }
+                    }
+
+                    break;
+                }
             }
         }
     }

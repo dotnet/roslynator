@@ -27,29 +27,29 @@ internal static class RemoveAllMemberDeclarationsRefactoring
         switch (member)
         {
             case NamespaceDeclarationSyntax declaration:
-                {
-                    return declaration.Members.Any()
-                        && (declaration.OpenBraceToken.Span.Contains(span)
-                            || declaration.CloseBraceToken.Span.Contains(span));
-                }
+            {
+                return declaration.Members.Any()
+                    && (declaration.OpenBraceToken.Span.Contains(span)
+                        || declaration.CloseBraceToken.Span.Contains(span));
+            }
             case ClassDeclarationSyntax declaration:
-                {
-                    return declaration.Members.Any()
-                        && (declaration.OpenBraceToken.Span.Contains(span)
-                            || declaration.CloseBraceToken.Span.Contains(span));
-                }
+            {
+                return declaration.Members.Any()
+                    && (declaration.OpenBraceToken.Span.Contains(span)
+                        || declaration.CloseBraceToken.Span.Contains(span));
+            }
             case StructDeclarationSyntax declaration:
-                {
-                    return declaration.Members.Any()
-                        && (declaration.OpenBraceToken.Span.Contains(span)
-                            || declaration.CloseBraceToken.Span.Contains(span));
-                }
+            {
+                return declaration.Members.Any()
+                    && (declaration.OpenBraceToken.Span.Contains(span)
+                        || declaration.CloseBraceToken.Span.Contains(span));
+            }
             case InterfaceDeclarationSyntax declaration:
-                {
-                    return declaration.Members.Any()
-                        && (declaration.OpenBraceToken.Span.Contains(span)
-                            || declaration.CloseBraceToken.Span.Contains(span));
-                }
+            {
+                return declaration.Members.Any()
+                    && (declaration.OpenBraceToken.Span.Contains(span)
+                        || declaration.CloseBraceToken.Span.Contains(span));
+            }
         }
 
         return false;

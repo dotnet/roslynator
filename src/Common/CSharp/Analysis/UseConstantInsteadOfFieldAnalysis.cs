@@ -27,28 +27,28 @@ internal static class UseConstantInsteadOfFieldAnalysis
             {
                 case SyntaxKind.ConstKeyword:
                 case SyntaxKind.NewKeyword:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
                 case SyntaxKind.PublicKeyword:
                 case SyntaxKind.InternalKeyword:
                 case SyntaxKind.ProtectedKeyword:
-                    {
-                        if (onlyPrivate)
-                            return false;
+                {
+                    if (onlyPrivate)
+                        return false;
 
-                        break;
-                    }
+                    break;
+                }
                 case SyntaxKind.StaticKeyword:
-                    {
-                        isStatic = true;
-                        break;
-                    }
+                {
+                    isStatic = true;
+                    break;
+                }
                 case SyntaxKind.ReadOnlyKeyword:
-                    {
-                        isReadOnly = true;
-                        break;
-                    }
+                {
+                    isReadOnly = true;
+                    break;
+                }
             }
         }
 
@@ -180,26 +180,26 @@ internal static class UseConstantInsteadOfFieldAnalysis
             switch (node.RefOrOutKeyword.Kind())
             {
                 case SyntaxKind.RefKeyword:
-                    {
-                        VisitAssignedExpression(node.Expression);
-                        break;
-                    }
+                {
+                    VisitAssignedExpression(node.Expression);
+                    break;
+                }
                 case SyntaxKind.OutKeyword:
-                    {
-                        ExpressionSyntax expression = node.Expression;
+                {
+                    ExpressionSyntax expression = node.Expression;
 
-                        if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
-                            VisitAssignedExpression(expression);
+                    if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
+                        VisitAssignedExpression(expression);
 
-                        break;
-                    }
+                    break;
+                }
                 case SyntaxKind.InKeyword:
-                    {
-                        if (IsFieldIdentifier(node.Expression))
-                            CanBeConvertedToConstant = false;
+                {
+                    if (IsFieldIdentifier(node.Expression))
+                        CanBeConvertedToConstant = false;
 
-                        break;
-                    }
+                    break;
+                }
             }
 
             base.VisitArgument(node);

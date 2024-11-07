@@ -39,61 +39,61 @@ public sealed class ParameterNameDiffersFromBaseCodeFixProvider : BaseCodeFixPro
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.ParameterNameDiffersFromBase:
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    var parameterSymbol = (IParameterSymbol)semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+
+                    ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
+
+                    ISymbol baseParameterSymbol = null;
+
+                    switch (containingSymbol.Kind)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        var parameterSymbol = (IParameterSymbol)semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
-
-                        ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
-
-                        ISymbol baseParameterSymbol = null;
-
-                        switch (containingSymbol.Kind)
+                        case SymbolKind.Method:
                         {
-                            case SymbolKind.Method:
-                                {
-                                    var methodSymbol = (IMethodSymbol)containingSymbol;
+                            var methodSymbol = (IMethodSymbol)containingSymbol;
 
-                                    IMethodSymbol baseSymbol = methodSymbol.OverriddenMethod ?? methodSymbol.FindFirstImplementedInterfaceMember<IMethodSymbol>();
+                            IMethodSymbol baseSymbol = methodSymbol.OverriddenMethod ?? methodSymbol.FindFirstImplementedInterfaceMember<IMethodSymbol>();
 
-                                    baseParameterSymbol = baseSymbol.Parameters[parameterSymbol.Ordinal];
-                                    break;
-                                }
-                            case SymbolKind.Property:
-                                {
-                                    var propertySymbol = (IPropertySymbol)containingSymbol;
-
-                                    IPropertySymbol baseSymbol = propertySymbol.OverriddenProperty ?? propertySymbol.FindFirstImplementedInterfaceMember<IPropertySymbol>();
-
-                                    baseParameterSymbol = baseSymbol.Parameters[parameterSymbol.Ordinal];
-                                    break;
-                                }
-                        }
-
-                        string oldName = parameterSymbol.Name;
-
-                        string newName = NameGenerator.Default.EnsureUniqueParameterName(
-                            baseParameterSymbol.Name,
-                            containingSymbol,
-                            semanticModel,
-                            cancellationToken: context.CancellationToken);
-
-                        if (!string.Equals(newName, baseParameterSymbol.Name, StringComparison.Ordinal))
+                            baseParameterSymbol = baseSymbol.Parameters[parameterSymbol.Ordinal];
                             break;
+                        }
+                        case SymbolKind.Property:
+                        {
+                            var propertySymbol = (IPropertySymbol)containingSymbol;
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Rename '{oldName}' to '{newName}'",
-                            ct =>
+                            IPropertySymbol baseSymbol = propertySymbol.OverriddenProperty ?? propertySymbol.FindFirstImplementedInterfaceMember<IPropertySymbol>();
+
+                            baseParameterSymbol = baseSymbol.Parameters[parameterSymbol.Ordinal];
+                            break;
+                        }
+                    }
+
+                    string oldName = parameterSymbol.Name;
+
+                    string newName = NameGenerator.Default.EnsureUniqueParameterName(
+                        baseParameterSymbol.Name,
+                        containingSymbol,
+                        semanticModel,
+                        cancellationToken: context.CancellationToken);
+
+                    if (!string.Equals(newName, baseParameterSymbol.Name, StringComparison.Ordinal))
+                        break;
+
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Rename '{oldName}' to '{newName}'",
+                        ct =>
 #if ROSLYN_4_4
-                            Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, default(SymbolRenameOptions), newName, ct),
+                        Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, default(SymbolRenameOptions), newName, ct),
 #else
                             Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, newName, default(Microsoft.CodeAnalysis.Options.OptionSet), ct),
 #endif
-                            GetEquivalenceKey(diagnostic));
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

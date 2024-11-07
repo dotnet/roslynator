@@ -61,31 +61,31 @@ internal static class WrapCallChainRefactoring
             switch (node.Kind())
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
+                {
+                    var memberAccess = (MemberAccessExpressionSyntax)node;
+
+                    if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
+                        return levels == 2;
+
+                    if (semanticModel
+                        .GetSymbol(memberAccess.Expression, cancellationToken)?
+                        .Kind == SymbolKind.Namespace)
                     {
-                        var memberAccess = (MemberAccessExpressionSyntax)node;
-
-                        if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
-                            return levels == 2;
-
-                        if (semanticModel
-                            .GetSymbol(memberAccess.Expression, cancellationToken)?
-                            .Kind == SymbolKind.Namespace)
-                        {
-                            return levels == 2;
-                        }
-
-                        if (++levels == 2)
-                            return true;
-
-                        break;
+                        return levels == 2;
                     }
+
+                    if (++levels == 2)
+                        return true;
+
+                    break;
+                }
                 case SyntaxKind.MemberBindingExpression:
-                    {
-                        if (++levels == 2)
-                            return true;
+                {
+                    if (++levels == 2)
+                        return true;
 
-                        break;
-                    }
+                    break;
+                }
             }
         }
 
