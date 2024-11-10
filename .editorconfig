@@ -235,7 +235,6 @@ dotnet_diagnostic.IDE0046WithoutSuggestion.severity = none
 dotnet_diagnostic.IDE0047.severity = none
 dotnet_diagnostic.IDE0047WithoutSuggestion.severity = none
 dotnet_diagnostic.IDE0054.severity = none
-dotnet_diagnostic.IDE0055.severity = error
 dotnet_diagnostic.IDE0054WithoutSuggestion.severity = none
 dotnet_diagnostic.IDE0056.severity = none
 dotnet_diagnostic.IDE0057.severity = none
