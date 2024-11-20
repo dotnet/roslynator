@@ -36,6 +36,13 @@ Contributions are welcome! If you are interested please see:
 
 TIP: Bugfixes or small improvements can be implemented right away. Larger task like adding new analyzer or refactoring should be discussed first.
 
+## Donations
+
+Special thanks to:
+  - [AWS Open Source Software Fund](https://github.com/aws/dotnet-foss) for donating $6000.00 USD ($500.00 for 12 months starting November 2024).
+  - Microsoft for donating $1000.00 USD.
+  - Ian Kemp for donating $13.00 USD / month starting July 2021.
+
 ## .NET Foundation
 
 This project is supported by the [.NET Foundation](https://www.dotnetfoundation.org/projects).

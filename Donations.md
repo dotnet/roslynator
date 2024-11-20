@@ -1,10 +1,12 @@
 # List of Donations
 
-### Recurring Donations
+### Special Donations
 
 | Amount | Name
 | ---:| ---
-| $13.00 USD / month | Ian Kemp
+| $6000.00 USD ($500.00 for 12 months starting November 2024) | [AWS Open Source Software Fund](https://github.com/aws/dotnet-foss)
+| $1000.00 USD | Microsoft
+| $13.00 USD / month starting July 2021 | Ian Kemp
 
 ### Donations
 
