@@ -4,7 +4,7 @@
 
 | Amount | Name | Comment
 | ---:| --- | ---
-| $6000.00 USD | [AWS Open Source Software Fund](https://github.com/aws/dotnet-foss) | $500.00 for 12 months starting November 2024
+| $6000.00 USD | [.NET on AWS Open Source Software Fund](https://github.com/aws/dotnet-foss) | $500.00 for 12 months starting November 2024
 | $1000.00 USD | Microsoft | -
 | $13.00 USD / month | Ian Kemp | starting July 2021 
 
