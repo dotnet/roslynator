@@ -16,7 +16,9 @@ internal static class EncodingHelpers
 
         var buffer = new byte[4];
 
+#pragma warning disable CA2022
         stream.Read(buffer, 0, 4);
+#pragma warning restore CA2022
 
         if (buffer[0] == 0xFE
             && buffer[1] == 0xFF)
