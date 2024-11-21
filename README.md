@@ -41,7 +41,8 @@ TIP: Bugfixes or small improvements can be implemented right away. Larger task l
 Special thanks to:
   - [.NET on AWS Open Source Software Fund](https://github.com/aws/dotnet-foss) for donating $6000.00 USD ($500.00 for 12 months starting November 2024).
   - Microsoft for donating $1000.00 USD.
-  - Ian Kemp for donating $13.00 USD / month starting July 2021.
+  - @IanKemp for donating $13.00 USD / month starting July 2021.
+  - @Genbox for donating $5.00 USD / month starting October 2024.
 
 ## .NET Foundation
 
