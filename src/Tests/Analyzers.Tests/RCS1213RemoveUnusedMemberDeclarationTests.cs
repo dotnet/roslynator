@@ -390,6 +390,30 @@ namespace UnityEngine
     }
 
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+    public async Task TestNoDiagnostic_UnityScriptMethods_Start()
+    {
+        await VerifyNoDiagnosticAsync(@"
+using System.Collections;
+using UnityEngine;
+
+class C : MonoBehaviour
+{
+    private IEnumerator Start()
+    {
+        yield break;
+    }
+}
+
+namespace UnityEngine
+{
+    class MonoBehaviour
+    {
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UnityCodeAnalysisEnabled, true));
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
     public async Task TestNoDiagnostic_PrimaryConstructor()
     {
         await VerifyNoDiagnosticAsync("""
