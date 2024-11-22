@@ -172,14 +172,15 @@ class C
 class C
 {
     /// <summary></summary>
-    /// [|<param name="p"></param>|]
-    void M(object p) => M(p);
+    /// [|<param name="p1"></param>|]
+    /// [|<param name="p2"></param>|]
+    void M(object p1, object p2) => M(p1, p2);
 }
 """, """
 class C
 {
     /// <summary></summary>
-    void M(object p) => M(p);
+    void M(object p1, object p2) => M(p1, p2);
 }
 """);
     }

@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Syntax;
 
@@ -104,7 +105,7 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
             if (content[index + 1] is XmlTextSyntax xmlText2
                 && IsXmlTextBetweenLines(xmlText2))
             {
-                return document.RemoveNodesAsync(new XmlNodeSyntax[] { element, xmlText2 }, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
+                return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(element.FullSpan.Start, xmlText2.FullSpan.End), ""), cancellationToken);
             }
         }
         else if (index == 1)
@@ -121,13 +122,13 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
             if (content[2] is XmlTextSyntax xmlText3
                 && IsXmlTextBetweenLines(xmlText3))
             {
-                return document.RemoveNodesAsync(new XmlNodeSyntax[] { element, xmlText3 }, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
+                return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(element.FullSpan.Start, xmlText3.FullSpan.End), ""), cancellationToken);
             }
         }
         else if (content[index - 1] is XmlTextSyntax xmlText
             && IsXmlTextBetweenLines(xmlText))
         {
-            return document.RemoveNodesAsync(new XmlNodeSyntax[] { xmlText, element }, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
+            return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(xmlText.FullSpan.Start, element.FullSpan.End), ""), cancellationToken);
         }
 
         return document.RemoveNodeAsync(element, cancellationToken);
