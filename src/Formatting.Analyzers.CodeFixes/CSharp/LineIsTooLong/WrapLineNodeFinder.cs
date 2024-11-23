@@ -130,209 +130,209 @@ internal class WrapLineNodeFinder
         switch (node.Kind())
         {
             case SyntaxKind.ArrowExpressionClause:
-                {
-                    var expressionBody = (ArrowExpressionClauseSyntax)node;
+            {
+                var expressionBody = (ArrowExpressionClauseSyntax)node;
 
-                    SyntaxToken arrowToken = expressionBody.ArrowToken;
-                    SyntaxToken previousToken = arrowToken.GetPreviousToken();
+                SyntaxToken arrowToken = expressionBody.ArrowToken;
+                SyntaxToken previousToken = arrowToken.GetPreviousToken();
 
-                    if (previousToken.SpanStart < Span.Start)
-                        return null;
+                if (previousToken.SpanStart < Span.Start)
+                    return null;
 
-                    bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetArrowTokenNewLinePosition() == NewLinePosition.After;
-                    int wrapPosition = (addNewLineAfter) ? arrowToken.Span.End : previousToken.Span.End;
-                    int start = (addNewLineAfter) ? expressionBody.Expression.SpanStart : arrowToken.SpanStart;
-                    int longestLength = expressionBody.GetLastToken().GetNextToken().Span.End - start;
+                bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetArrowTokenNewLinePosition() == NewLinePosition.After;
+                int wrapPosition = (addNewLineAfter) ? arrowToken.Span.End : previousToken.Span.End;
+                int start = (addNewLineAfter) ? expressionBody.Expression.SpanStart : arrowToken.SpanStart;
+                int longestLength = expressionBody.GetLastToken().GetNextToken().Span.End - start;
 
-                    if (!CanWrap(expressionBody, wrapPosition, longestLength))
-                        return null;
+                if (!CanWrap(expressionBody, wrapPosition, longestLength))
+                    return null;
 
-                    return expressionBody;
-                }
+                return expressionBody;
+            }
             case SyntaxKind.EqualsValueClause:
-                {
-                    var equalsValueClause = (EqualsValueClauseSyntax)node;
+            {
+                var equalsValueClause = (EqualsValueClauseSyntax)node;
 
-                    SyntaxToken equalsToken = equalsValueClause.EqualsToken;
-                    SyntaxToken previousToken = equalsToken.GetPreviousToken();
+                SyntaxToken equalsToken = equalsValueClause.EqualsToken;
+                SyntaxToken previousToken = equalsToken.GetPreviousToken();
 
-                    if (previousToken.SpanStart < Span.Start)
-                        return null;
+                if (previousToken.SpanStart < Span.Start)
+                    return null;
 
-                    bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After;
+                bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After;
 
-                    int wrapPosition = (addNewLineAfter) ? equalsToken.Span.End : previousToken.Span.End;
-                    int start = (addNewLineAfter) ? equalsValueClause.Value.SpanStart : equalsToken.SpanStart;
-                    int longestLength = Span.End - start;
+                int wrapPosition = (addNewLineAfter) ? equalsToken.Span.End : previousToken.Span.End;
+                int start = (addNewLineAfter) ? equalsValueClause.Value.SpanStart : equalsToken.SpanStart;
+                int longestLength = Span.End - start;
 
-                    if (!CanWrap(equalsValueClause, wrapPosition, longestLength))
-                        return null;
+                if (!CanWrap(equalsValueClause, wrapPosition, longestLength))
+                    return null;
 
-                    return equalsValueClause;
-                }
+                return equalsValueClause;
+            }
             case SyntaxKind.AttributeList:
-                {
-                    var attributeList = (AttributeListSyntax)node;
+            {
+                var attributeList = (AttributeListSyntax)node;
 
-                    if (!CanWrap(attributeList.Attributes, attributeList.OpenBracketToken.Span.End, 2))
-                        return null;
+                if (!CanWrap(attributeList.Attributes, attributeList.OpenBracketToken.Span.End, 2))
+                    return null;
 
-                    return attributeList;
-                }
+                return attributeList;
+            }
             case SyntaxKind.BaseList:
-                {
-                    var baseList = (BaseListSyntax)node;
+            {
+                var baseList = (BaseListSyntax)node;
 
-                    if (!CanWrap(baseList.Types, baseList.ColonToken.Span.End, 2))
-                        return null;
+                if (!CanWrap(baseList.Types, baseList.ColonToken.Span.End, 2))
+                    return null;
 
-                    return baseList;
-                }
+                return baseList;
+            }
             case SyntaxKind.ParameterList:
-                {
-                    if (node.Parent is AnonymousFunctionExpressionSyntax)
-                        return null;
+            {
+                if (node.Parent is AnonymousFunctionExpressionSyntax)
+                    return null;
 
-                    var parameterList = (ParameterListSyntax)node;
+                var parameterList = (ParameterListSyntax)node;
 
-                    if (!CanWrap(parameterList.Parameters, parameterList.OpenParenToken.Span.End))
-                        return null;
+                if (!CanWrap(parameterList.Parameters, parameterList.OpenParenToken.Span.End))
+                    return null;
 
-                    return parameterList;
-                }
+                return parameterList;
+            }
             case SyntaxKind.BracketedParameterList:
-                {
-                    var parameterList = (BracketedParameterListSyntax)node;
+            {
+                var parameterList = (BracketedParameterListSyntax)node;
 
-                    if (!CanWrap(parameterList.Parameters, parameterList.OpenBracketToken.Span.End))
-                        return null;
+                if (!CanWrap(parameterList.Parameters, parameterList.OpenBracketToken.Span.End))
+                    return null;
 
-                    return parameterList;
-                }
+                return parameterList;
+            }
             case SyntaxKind.ForStatement:
-                {
-                    var forStatement = (ForStatementSyntax)node;
+            {
+                var forStatement = (ForStatementSyntax)node;
 
-                    if (forStatement.CloseParenToken.Span.End > Span.End)
-                        return null;
+                if (forStatement.CloseParenToken.Span.End > Span.End)
+                    return null;
 
-                    if (forStatement.OpenParenToken.Span.End - Span.Start > MaxLineLength)
-                        return null;
+                if (forStatement.OpenParenToken.Span.End - Span.Start > MaxLineLength)
+                    return null;
 
-                    int longestLength = Math.Max(
-                        forStatement.FirstSemicolonToken.Span.End - forStatement.Declaration.SpanStart,
-                        Math.Max(
-                            forStatement.SecondSemicolonToken.Span.End - forStatement.Condition.SpanStart,
-                            forStatement.CloseParenToken.Span.End - forStatement.Incrementors.Span.Start));
+                int longestLength = Math.Max(
+                    forStatement.FirstSemicolonToken.Span.End - forStatement.Declaration.SpanStart,
+                    Math.Max(
+                        forStatement.SecondSemicolonToken.Span.End - forStatement.Condition.SpanStart,
+                        forStatement.CloseParenToken.Span.End - forStatement.Incrementors.Span.Start));
 
-                    IndentationAnalysis indentationAnalysis = IndentationAnalysis.Create(node, Document.GetConfigOptions(node.SyntaxTree));
-                    int indentationLength = indentationAnalysis.IncreasedIndentationLength;
+                IndentationAnalysis indentationAnalysis = IndentationAnalysis.Create(node, Document.GetConfigOptions(node.SyntaxTree));
+                int indentationLength = indentationAnalysis.IncreasedIndentationLength;
 
-                    if (indentationAnalysis.IndentStyle == IndentStyle.Tab)
-                        indentationLength *= indentationAnalysis.IndentSize;
+                if (indentationAnalysis.IndentStyle == IndentStyle.Tab)
+                    indentationLength *= indentationAnalysis.IndentSize;
 
-                    if (indentationLength + longestLength > MaxLineLength)
-                        return null;
+                if (indentationLength + longestLength > MaxLineLength)
+                    return null;
 
-                    return forStatement;
-                }
+                return forStatement;
+            }
             case SyntaxKind.ArgumentList:
+            {
+                var argumentList = (ArgumentListSyntax)node;
+
+                if (argumentList.Arguments.Count == 1
+                    && argumentList.Parent is InvocationExpressionSyntax invocationExpression
+                    && invocationExpression.Expression is IdentifierNameSyntax identifierName
+                    && identifierName.Identifier.ValueText == "nameof")
                 {
-                    var argumentList = (ArgumentListSyntax)node;
-
-                    if (argumentList.Arguments.Count == 1
-                        && argumentList.Parent is InvocationExpressionSyntax invocationExpression
-                        && invocationExpression.Expression is IdentifierNameSyntax identifierName
-                        && identifierName.Identifier.ValueText == "nameof")
-                    {
-                        return null;
-                    }
-
-                    if (!CanWrap(argumentList.Arguments, argumentList.OpenParenToken.Span.End))
-                        return null;
-
-                    return argumentList;
+                    return null;
                 }
+
+                if (!CanWrap(argumentList.Arguments, argumentList.OpenParenToken.Span.End))
+                    return null;
+
+                return argumentList;
+            }
             case SyntaxKind.BracketedArgumentList:
-                {
-                    var argumentList = (BracketedArgumentListSyntax)node;
+            {
+                var argumentList = (BracketedArgumentListSyntax)node;
 
-                    if (!CanWrap(argumentList.Arguments, argumentList.OpenBracketToken.Span.End))
-                        return null;
+                if (!CanWrap(argumentList.Arguments, argumentList.OpenBracketToken.Span.End))
+                    return null;
 
-                    return argumentList;
-                }
+                return argumentList;
+            }
             case SyntaxKind.AttributeArgumentList:
-                {
-                    var argumentList = (AttributeArgumentListSyntax)node;
+            {
+                var argumentList = (AttributeArgumentListSyntax)node;
 
-                    if (!CanWrap(argumentList.Arguments, argumentList.OpenParenToken.Span.End))
-                        return null;
+                if (!CanWrap(argumentList.Arguments, argumentList.OpenParenToken.Span.End))
+                    return null;
 
-                    return argumentList;
-                }
+                return argumentList;
+            }
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    var memberAccessExpression = (MemberAccessExpressionSyntax)node;
+            {
+                var memberAccessExpression = (MemberAccessExpressionSyntax)node;
 
-                    if (!CanWrap(memberAccessExpression))
-                        return null;
+                if (!CanWrap(memberAccessExpression))
+                    return null;
 
-                    SyntaxToken dotToken = memberAccessExpression.OperatorToken;
+                SyntaxToken dotToken = memberAccessExpression.OperatorToken;
 
-                    if (!CanWrap(memberAccessExpression, dotToken.SpanStart, Span.End - dotToken.SpanStart))
-                        return null;
+                if (!CanWrap(memberAccessExpression, dotToken.SpanStart, Span.End - dotToken.SpanStart))
+                    return null;
 
-                    return memberAccessExpression;
-                }
+                return memberAccessExpression;
+            }
             case SyntaxKind.MemberBindingExpression:
-                {
-                    var memberBindingExpression = (MemberBindingExpressionSyntax)node;
+            {
+                var memberBindingExpression = (MemberBindingExpressionSyntax)node;
 
-                    SyntaxToken dotToken = memberBindingExpression.OperatorToken;
+                SyntaxToken dotToken = memberBindingExpression.OperatorToken;
 
-                    if (!CanWrap(memberBindingExpression, dotToken.SpanStart, Span.End - dotToken.SpanStart))
-                        return null;
+                if (!CanWrap(memberBindingExpression, dotToken.SpanStart, Span.End - dotToken.SpanStart))
+                    return null;
 
-                    return memberBindingExpression;
-                }
+                return memberBindingExpression;
+            }
             case SyntaxKind.ConditionalExpression:
-                {
-                    var conditionalExpression = (ConditionalExpressionSyntax)node;
+            {
+                var conditionalExpression = (ConditionalExpressionSyntax)node;
 
-                    SyntaxToken questionToken = conditionalExpression.QuestionToken;
-                    SyntaxToken colonToken = conditionalExpression.ColonToken;
+                SyntaxToken questionToken = conditionalExpression.QuestionToken;
+                SyntaxToken colonToken = conditionalExpression.ColonToken;
 
-                    bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetConditionalOperatorNewLinePosition() == NewLinePosition.After;
+                bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetConditionalOperatorNewLinePosition() == NewLinePosition.After;
 
-                    int wrapPosition = (addNewLineAfter)
-                        ? questionToken.Span.End
-                        : conditionalExpression.Condition.Span.End;
+                int wrapPosition = (addNewLineAfter)
+                    ? questionToken.Span.End
+                    : conditionalExpression.Condition.Span.End;
 
-                    int start = (addNewLineAfter) ? conditionalExpression.WhenTrue.SpanStart : questionToken.SpanStart;
-                    int end = (addNewLineAfter) ? colonToken.Span.End : conditionalExpression.WhenTrue.Span.End;
-                    int longestLength = end - start;
+                int start = (addNewLineAfter) ? conditionalExpression.WhenTrue.SpanStart : questionToken.SpanStart;
+                int end = (addNewLineAfter) ? colonToken.Span.End : conditionalExpression.WhenTrue.Span.End;
+                int longestLength = end - start;
 
-                    start = (addNewLineAfter) ? conditionalExpression.WhenFalse.SpanStart : colonToken.SpanStart;
-                    int longestLength2 = Span.End - start;
+                start = (addNewLineAfter) ? conditionalExpression.WhenFalse.SpanStart : colonToken.SpanStart;
+                int longestLength2 = Span.End - start;
 
-                    if (!CanWrap(conditionalExpression, wrapPosition, Math.Max(longestLength, longestLength2)))
-                        return null;
+                if (!CanWrap(conditionalExpression, wrapPosition, Math.Max(longestLength, longestLength2)))
+                    return null;
 
-                    return conditionalExpression;
-                }
+                return conditionalExpression;
+            }
             case SyntaxKind.ArrayInitializerExpression:
             case SyntaxKind.CollectionInitializerExpression:
             case SyntaxKind.ComplexElementInitializerExpression:
             case SyntaxKind.ObjectInitializerExpression:
-                {
-                    var initializer = (InitializerExpressionSyntax)node;
+            {
+                var initializer = (InitializerExpressionSyntax)node;
 
-                    if (!CanWrap(initializer.Expressions, initializer.OpenBraceToken.Span.End))
-                        return null;
+                if (!CanWrap(initializer.Expressions, initializer.OpenBraceToken.Span.End))
+                    return null;
 
-                    return initializer;
-                }
+                return initializer;
+            }
             case SyntaxKind.AddExpression:
             case SyntaxKind.SubtractExpression:
             case SyntaxKind.MultiplyExpression:
@@ -354,56 +354,56 @@ internal class WrapLineNodeFinder
             case SyntaxKind.LessThanOrEqualExpression:
             case SyntaxKind.GreaterThanExpression:
             case SyntaxKind.GreaterThanOrEqualExpression:
+            {
+                var binaryExpression = (BinaryExpressionSyntax)node;
+
+                SyntaxToken operatorToken = binaryExpression.OperatorToken;
+
+                bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetBinaryOperatorNewLinePosition() == NewLinePosition.After;
+
+                int wrapPosition = (addNewLineAfter)
+                    ? operatorToken.Span.End
+                    : binaryExpression.Left.Span.End;
+
+                int longestLength = 0;
+
+                while (true)
                 {
-                    var binaryExpression = (BinaryExpressionSyntax)node;
-
-                    SyntaxToken operatorToken = binaryExpression.OperatorToken;
-
-                    bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetBinaryOperatorNewLinePosition() == NewLinePosition.After;
-
-                    int wrapPosition = (addNewLineAfter)
-                        ? operatorToken.Span.End
-                        : binaryExpression.Left.Span.End;
-
-                    int longestLength = 0;
-
-                    while (true)
+                    BinaryExpressionSyntax parentBinaryExpression = null;
+                    if (binaryExpression.IsParentKind(binaryExpression.Kind()))
                     {
-                        BinaryExpressionSyntax parentBinaryExpression = null;
-                        if (binaryExpression.IsParentKind(binaryExpression.Kind()))
-                        {
-                            parentBinaryExpression = (BinaryExpressionSyntax)binaryExpression.Parent;
-                        }
-
-                        int end;
-                        if (parentBinaryExpression is not null)
-                        {
-                            end = (addNewLineAfter)
-                                ? parentBinaryExpression.OperatorToken.Span.End
-                                : binaryExpression.Right.Span.End;
-                        }
-                        else
-                        {
-                            end = Span.End;
-                        }
-
-                        int start = (addNewLineAfter)
-                            ? binaryExpression.Right.SpanStart
-                            : binaryExpression.OperatorToken.SpanStart;
-
-                        longestLength = Math.Max(longestLength, end - start);
-
-                        if (parentBinaryExpression is null)
-                            break;
-
-                        binaryExpression = parentBinaryExpression;
+                        parentBinaryExpression = (BinaryExpressionSyntax)binaryExpression.Parent;
                     }
 
-                    if (!CanWrap(node, wrapPosition, longestLength))
-                        return null;
+                    int end;
+                    if (parentBinaryExpression is not null)
+                    {
+                        end = (addNewLineAfter)
+                            ? parentBinaryExpression.OperatorToken.Span.End
+                            : binaryExpression.Right.Span.End;
+                    }
+                    else
+                    {
+                        end = Span.End;
+                    }
 
-                    return node;
+                    int start = (addNewLineAfter)
+                        ? binaryExpression.Right.SpanStart
+                        : binaryExpression.OperatorToken.SpanStart;
+
+                    longestLength = Math.Max(longestLength, end - start);
+
+                    if (parentBinaryExpression is null)
+                        break;
+
+                    binaryExpression = parentBinaryExpression;
                 }
+
+                if (!CanWrap(node, wrapPosition, longestLength))
+                    return null;
+
+                return node;
+            }
             case SyntaxKind.AddAssignmentExpression:
             case SyntaxKind.AndAssignmentExpression:
             case SyntaxKind.CoalesceAssignmentExpression:
@@ -416,25 +416,25 @@ internal class WrapLineNodeFinder
             case SyntaxKind.RightShiftAssignmentExpression:
             case SyntaxKind.SimpleAssignmentExpression:
             case SyntaxKind.SubtractAssignmentExpression:
-                {
-                    var assignment = (AssignmentExpressionSyntax)node;
+            {
+                var assignment = (AssignmentExpressionSyntax)node;
 
-                    SyntaxToken operatorToken = assignment.OperatorToken;
-                    SyntaxNode left = assignment.Left;
+                SyntaxToken operatorToken = assignment.OperatorToken;
+                SyntaxNode left = assignment.Left;
 
-                    if (left.SpanStart < Span.Start)
-                        return null;
+                if (left.SpanStart < Span.Start)
+                    return null;
 
-                    bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After;
-                    int wrapPosition = (addNewLineAfter) ? operatorToken.Span.End : left.Span.End;
-                    int start = (addNewLineAfter) ? assignment.Right.SpanStart : operatorToken.SpanStart;
-                    int longestLength = Span.End - start;
+                bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After;
+                int wrapPosition = (addNewLineAfter) ? operatorToken.Span.End : left.Span.End;
+                int start = (addNewLineAfter) ? assignment.Right.SpanStart : operatorToken.SpanStart;
+                int longestLength = Span.End - start;
 
-                    if (!CanWrap(assignment, wrapPosition, longestLength))
-                        return null;
+                if (!CanWrap(assignment, wrapPosition, longestLength))
+                    return null;
 
-                    return assignment;
-                }
+                return assignment;
+            }
         }
 
         return null;
@@ -508,12 +508,12 @@ internal class WrapLineNodeFinder
             case SyntaxGroup.BinaryExpression:
             case SyntaxGroup.Is_As_EqualityExpression:
             case SyntaxGroup.ConditionalExpression:
-                {
-                    if (IsInsideInterpolation(node.Parent))
-                        return false;
+            {
+                if (IsInsideInterpolation(node.Parent))
+                    return false;
 
-                    break;
-                }
+                break;
+            }
         }
 
         if (_nodes is null)
@@ -528,12 +528,12 @@ internal class WrapLineNodeFinder
                 case SyntaxGroup.BinaryExpression:
                 case SyntaxGroup.MemberExpression:
                 case SyntaxGroup.ArgumentList:
-                    {
-                        if (kvp.Value.FullSpan.Contains(node.FullSpan))
-                            return false;
+                {
+                    if (kvp.Value.FullSpan.Contains(node.FullSpan))
+                        return false;
 
-                        break;
-                    }
+                    break;
+                }
             }
         }
 
@@ -596,34 +596,34 @@ internal class WrapLineNodeFinder
         {
             case SyntaxKind.ThisExpression:
             case SyntaxKind.BaseExpression:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
             case SyntaxKind.IdentifierName:
             case SyntaxKind.SimpleMemberAccessExpression:
             case SyntaxKind.AliasQualifiedName:
+            {
+                ISymbol symbol = SemanticModel.GetSymbol(memberAccessExpression);
+
+                if (symbol is not null)
                 {
-                    ISymbol symbol = SemanticModel.GetSymbol(memberAccessExpression);
-
-                    if (symbol is not null)
-                    {
-                        if (symbol.IsKind(SymbolKind.Namespace))
-                            return false;
-
-                        if (symbol.IsKind(SymbolKind.Field)
-                            && symbol.ContainingType?.TypeKind == TypeKind.Enum)
-                        {
-                            return false;
-                        }
-                    }
-
-                    symbol = SemanticModel.GetSymbol(memberAccessExpression.Expression);
-
                     if (symbol.IsKind(SymbolKind.Namespace))
                         return false;
 
-                    break;
+                    if (symbol.IsKind(SymbolKind.Field)
+                        && symbol.ContainingType?.TypeKind == TypeKind.Enum)
+                    {
+                        return false;
+                    }
                 }
+
+                symbol = SemanticModel.GetSymbol(memberAccessExpression.Expression);
+
+                if (symbol.IsKind(SymbolKind.Namespace))
+                    return false;
+
+                break;
+            }
         }
 
         return true;

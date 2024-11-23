@@ -33,26 +33,26 @@ public sealed class UnnecessaryEnumFlagCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.UnnecessaryEnumFlag:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Remove unnecessary flag",
-                        ct =>
-                        {
-                            var bitwiseOr = (BinaryExpressionSyntax)memberAccessExpression.Parent;
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove unnecessary flag",
+                    ct =>
+                    {
+                        var bitwiseOr = (BinaryExpressionSyntax)memberAccessExpression.Parent;
 
-                            ExpressionSyntax newExpression = (bitwiseOr.Left == memberAccessExpression)
-                                ? bitwiseOr.Right
-                                : bitwiseOr.Left;
+                        ExpressionSyntax newExpression = (bitwiseOr.Left == memberAccessExpression)
+                            ? bitwiseOr.Right
+                            : bitwiseOr.Left;
 
-                            newExpression = newExpression.WithTriviaFrom(bitwiseOr);
+                        newExpression = newExpression.WithTriviaFrom(bitwiseOr);
 
-                            return document.ReplaceNodeAsync(bitwiseOr, newExpression, ct);
-                        },
-                        GetEquivalenceKey(diagnostic));
+                        return document.ReplaceNodeAsync(bitwiseOr, newExpression, ct);
+                    },
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 }

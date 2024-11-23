@@ -96,19 +96,19 @@ public sealed class ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvi
             switch (descendant)
             {
                 case ReturnStatementSyntax returnStatement:
-                    {
-                        if (returnStatement.Expression?.WalkDownParentheses().Kind() == SyntaxKind.AwaitExpression)
-                            containsReturnAwait = true;
+                {
+                    if (returnStatement.Expression?.WalkDownParentheses().Kind() == SyntaxKind.AwaitExpression)
+                        containsReturnAwait = true;
 
-                        break;
-                    }
+                    break;
+                }
                 case ExpressionStatementSyntax expressionStatement:
-                    {
-                        if (expressionStatement.Expression?.Kind() == SyntaxKind.AwaitExpression)
-                            containsAwaitStatement = true;
+                {
+                    if (expressionStatement.Expression?.Kind() == SyntaxKind.AwaitExpression)
+                        containsAwaitStatement = true;
 
-                        break;
-                    }
+                    break;
+                }
             }
         }
 

@@ -39,25 +39,25 @@ public sealed class ElseClauseCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.RemoveEmptyElseClause:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove empty 'else' clause",
-                            ct => RemoveEmptyElseClauseAsync(context.Document, elseClause, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove empty 'else' clause",
+                        ct => RemoveEmptyElseClauseAsync(context.Document, elseClause, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.MergeElseWithNestedIf:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove braces",
-                            ct => MergeElseWithNestedIfAsync(context.Document, elseClause, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove braces",
+                        ct => MergeElseWithNestedIfAsync(context.Document, elseClause, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

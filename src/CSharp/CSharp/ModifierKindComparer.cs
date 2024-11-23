@@ -68,10 +68,10 @@ internal class ModifierKindComparer : IComparer<SyntaxKind>
             case SyntaxKind.InKeyword:
                 return 220;
             default:
-                {
-                    Debug.Fail($"unknown modifier '{kind}'");
-                    return ModifierComparer.MaxRank;
-                }
+            {
+                Debug.Fail($"unknown modifier '{kind}'");
+                return ModifierComparer.MaxRank;
+            }
         }
     }
 }

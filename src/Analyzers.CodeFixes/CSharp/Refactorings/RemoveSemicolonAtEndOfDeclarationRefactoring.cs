@@ -25,40 +25,40 @@ internal static class RemoveSemicolonAtEndOfDeclarationRefactoring
         switch (memberDeclaration)
         {
             case NamespaceDeclarationSyntax declaration:
-                {
-                    return declaration
-                        .WithSemicolonToken(default(SyntaxToken))
-                        .WithCloseBraceToken(declaration.CloseBraceToken
-                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                }
+            {
+                return declaration
+                    .WithSemicolonToken(default(SyntaxToken))
+                    .WithCloseBraceToken(declaration.CloseBraceToken
+                        .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+            }
             case ClassDeclarationSyntax declaration:
-                {
-                    return declaration
-                        .WithSemicolonToken(default(SyntaxToken))
-                        .WithCloseBraceToken(declaration.CloseBraceToken
-                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                }
+            {
+                return declaration
+                    .WithSemicolonToken(default(SyntaxToken))
+                    .WithCloseBraceToken(declaration.CloseBraceToken
+                        .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+            }
             case InterfaceDeclarationSyntax declaration:
-                {
-                    return declaration
-                        .WithSemicolonToken(default(SyntaxToken))
-                        .WithCloseBraceToken(declaration.CloseBraceToken
-                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                }
+            {
+                return declaration
+                    .WithSemicolonToken(default(SyntaxToken))
+                    .WithCloseBraceToken(declaration.CloseBraceToken
+                        .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+            }
             case StructDeclarationSyntax declaration:
-                {
-                    return declaration
-                        .WithSemicolonToken(default(SyntaxToken))
-                        .WithCloseBraceToken(declaration.CloseBraceToken
-                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                }
+            {
+                return declaration
+                    .WithSemicolonToken(default(SyntaxToken))
+                    .WithCloseBraceToken(declaration.CloseBraceToken
+                        .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+            }
             case EnumDeclarationSyntax declaration:
-                {
-                    return declaration
-                        .WithSemicolonToken(default(SyntaxToken))
-                        .WithCloseBraceToken(declaration.CloseBraceToken
-                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                }
+            {
+                return declaration
+                    .WithSemicolonToken(default(SyntaxToken))
+                    .WithCloseBraceToken(declaration.CloseBraceToken
+                        .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+            }
         }
 
         return null;

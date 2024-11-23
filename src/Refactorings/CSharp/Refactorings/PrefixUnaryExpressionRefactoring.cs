@@ -20,17 +20,17 @@ internal static class PrefixUnaryExpressionRefactoring
         switch (prefixUnaryExpression.Kind())
         {
             case SyntaxKind.PreIncrementExpression:
-                {
-                    InvertPreIncrement(context, prefixUnaryExpression);
-                    ReplacePreIncrementWithPostIncrement(context, prefixUnaryExpression);
-                    break;
-                }
+            {
+                InvertPreIncrement(context, prefixUnaryExpression);
+                ReplacePreIncrementWithPostIncrement(context, prefixUnaryExpression);
+                break;
+            }
             case SyntaxKind.PreDecrementExpression:
-                {
-                    InvertPreDecrement(context, prefixUnaryExpression);
-                    ReplacePreDecrementWithPostDecrement(context, prefixUnaryExpression);
-                    break;
-                }
+            {
+                InvertPreDecrement(context, prefixUnaryExpression);
+                ReplacePreDecrementWithPostDecrement(context, prefixUnaryExpression);
+                break;
+            }
         }
     }
 

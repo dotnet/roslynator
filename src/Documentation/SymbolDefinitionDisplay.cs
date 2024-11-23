@@ -487,106 +487,106 @@ internal static class SymbolDefinitionDisplay
             switch (typedConstant.Kind)
             {
                 case TypedConstantKind.Primitive:
-                    {
-                        parts.Add(new SymbolDisplayPart(
-                            GetSymbolDisplayPart(typedConstant.Type.SpecialType),
-                            null,
-                            SymbolDisplay.FormatPrimitive(typedConstant.Value, quoteStrings: true, useHexadecimalNumbers: false)));
+                {
+                    parts.Add(new SymbolDisplayPart(
+                        GetSymbolDisplayPart(typedConstant.Type.SpecialType),
+                        null,
+                        SymbolDisplay.FormatPrimitive(typedConstant.Value, quoteStrings: true, useHexadecimalNumbers: false)));
 
-                        break;
-                    }
+                    break;
+                }
                 case TypedConstantKind.Enum:
+                {
+                    OneOrMany<EnumFieldSymbolInfo> oneOrMany = EnumUtility.GetConstituentFields(typedConstant.Value, (INamedTypeSymbol)typedConstant.Type);
+
+                    OneOrMany<EnumFieldSymbolInfo>.Enumerator en = oneOrMany.GetEnumerator();
+
+                    if (en.MoveNext())
                     {
-                        OneOrMany<EnumFieldSymbolInfo> oneOrMany = EnumUtility.GetConstituentFields(typedConstant.Value, (INamedTypeSymbol)typedConstant.Type);
-
-                        OneOrMany<EnumFieldSymbolInfo>.Enumerator en = oneOrMany.GetEnumerator();
-
-                        if (en.MoveNext())
+                        while (true)
                         {
-                            while (true)
-                            {
-                                AddDisplayParts(parts, en.Current.Symbol, format, additionalOptions);
+                            AddDisplayParts(parts, en.Current.Symbol, format, additionalOptions);
 
-                                if (en.MoveNext())
-                                {
-                                    parts.AddSpace();
-                                    parts.AddPunctuation("|");
-                                    parts.AddSpace();
-                                }
-                                else
-                                {
-                                    break;
-                                }
+                            if (en.MoveNext())
+                            {
+                                parts.AddSpace();
+                                parts.AddPunctuation("|");
+                                parts.AddSpace();
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
-                        else
-                        {
-                            parts.AddPunctuation("(");
-                            AddDisplayParts(parts, (INamedTypeSymbol)typedConstant.Type, format, additionalOptions);
-                            parts.AddPunctuation(")");
-                            parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.NumericLiteral, null, typedConstant.Value.ToString()));
-                        }
-
-                        break;
                     }
+                    else
+                    {
+                        parts.AddPunctuation("(");
+                        AddDisplayParts(parts, (INamedTypeSymbol)typedConstant.Type, format, additionalOptions);
+                        parts.AddPunctuation(")");
+                        parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.NumericLiteral, null, typedConstant.Value.ToString()));
+                    }
+
+                    break;
+                }
                 case TypedConstantKind.Type:
+                {
+                    if (typedConstant.Value is null)
                     {
-                        if (typedConstant.Value is null)
-                        {
-                            parts.AddKeyword("null");
-                        }
-                        else
-                        {
-                            parts.AddKeyword("typeof");
-                            parts.AddPunctuation("(");
-                            AddDisplayParts(parts, (ISymbol)typedConstant.Value, format, additionalOptions);
-                            parts.AddPunctuation(")");
-                        }
-
-                        break;
+                        parts.AddKeyword("null");
                     }
-                case TypedConstantKind.Array:
+                    else
                     {
-                        var arrayType = (IArrayTypeSymbol)typedConstant.Type;
+                        parts.AddKeyword("typeof");
+                        parts.AddPunctuation("(");
+                        AddDisplayParts(parts, (ISymbol)typedConstant.Value, format, additionalOptions);
+                        parts.AddPunctuation(")");
+                    }
 
-                        parts.AddKeyword("new");
-                        parts.AddSpace();
-                        AddDisplayParts(parts, arrayType.ElementType, format, additionalOptions);
+                    break;
+                }
+                case TypedConstantKind.Array:
+                {
+                    var arrayType = (IArrayTypeSymbol)typedConstant.Type;
 
-                        parts.AddPunctuation("[");
-                        parts.AddPunctuation("]");
-                        parts.AddSpace();
-                        parts.AddPunctuation("{");
-                        parts.AddSpace();
+                    parts.AddKeyword("new");
+                    parts.AddSpace();
+                    AddDisplayParts(parts, arrayType.ElementType, format, additionalOptions);
 
-                        ImmutableArray<TypedConstant>.Enumerator en = typedConstant.Values.GetEnumerator();
+                    parts.AddPunctuation("[");
+                    parts.AddPunctuation("]");
+                    parts.AddSpace();
+                    parts.AddPunctuation("{");
+                    parts.AddSpace();
 
-                        if (en.MoveNext())
+                    ImmutableArray<TypedConstant>.Enumerator en = typedConstant.Values.GetEnumerator();
+
+                    if (en.MoveNext())
+                    {
+                        while (true)
                         {
-                            while (true)
-                            {
-                                AddConstantValue(en.Current);
+                            AddConstantValue(en.Current);
 
-                                if (en.MoveNext())
-                                {
-                                    parts.AddPunctuation(",");
-                                    parts.AddSpace();
-                                }
-                                else
-                                {
-                                    break;
-                                }
+                            if (en.MoveNext())
+                            {
+                                parts.AddPunctuation(",");
+                                parts.AddSpace();
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
+                    }
 
-                        parts.AddSpace();
-                        parts.AddPunctuation("}");
-                        break;
-                    }
+                    parts.AddSpace();
+                    parts.AddPunctuation("}");
+                    break;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
 
             static SymbolDisplayPartKind GetSymbolDisplayPart(SpecialType specialType)
@@ -650,83 +650,83 @@ internal static class SymbolDefinitionDisplay
                 switch (part.ToString())
                 {
                     case ",":
+                    {
+                        if (((angleBracketsDepth == 0 && parenthesesDepth == 1 && bracesDepth == 0 && bracketsDepth == 0)
+                            || (angleBracketsDepth == 0 && parenthesesDepth == 0 && bracesDepth == 0 && bracketsDepth == 1))
+                            && i < parts.Count - 1)
                         {
-                            if (((angleBracketsDepth == 0 && parenthesesDepth == 1 && bracesDepth == 0 && bracketsDepth == 0)
-                                || (angleBracketsDepth == 0 && parenthesesDepth == 0 && bracesDepth == 0 && bracketsDepth == 1))
-                                && i < parts.Count - 1)
+                            SymbolDisplayPart nextPart = parts[i + 1];
+
+                            if (nextPart.Kind == SymbolDisplayPartKind.Space)
                             {
-                                SymbolDisplayPart nextPart = parts[i + 1];
+                                i += 2;
+                                parameterIndex++;
 
-                                if (nextPart.Kind == SymbolDisplayPartKind.Space)
-                                {
-                                    i += 2;
-                                    parameterIndex++;
-
-                                    AddParameterAttributes();
-                                    continue;
-                                }
+                                AddParameterAttributes();
+                                continue;
                             }
-
-                            break;
                         }
+
+                        break;
+                    }
                     case "(":
-                        {
-                            parenthesesDepth++;
-                            break;
-                        }
+                    {
+                        parenthesesDepth++;
+                        break;
+                    }
                     case ")":
+                    {
+                        Debug.Assert(parenthesesDepth >= 0);
+                        parenthesesDepth--;
+
+                        if (parenthesesDepth == 0
+                            && symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType))
                         {
-                            Debug.Assert(parenthesesDepth >= 0);
-                            parenthesesDepth--;
-
-                            if (parenthesesDepth == 0
-                                && symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType))
-                            {
-                                return;
-                            }
-
-                            break;
+                            return;
                         }
+
+                        break;
+                    }
                     case "[":
-                        {
-                            bracketsDepth++;
-                            break;
-                        }
+                    {
+                        bracketsDepth++;
+                        break;
+                    }
                     case "]":
+                    {
+                        Debug.Assert(bracketsDepth >= 0);
+                        bracketsDepth--;
+
+                        if (bracketsDepth == 0
+                            && symbol.Kind == SymbolKind.Property)
                         {
-                            Debug.Assert(bracketsDepth >= 0);
-                            bracketsDepth--;
-
-                            if (bracketsDepth == 0
-                                && symbol.Kind == SymbolKind.Property)
-                            {
-                                return;
-                            }
-
-                            break;
+                            return;
                         }
+
+                        break;
+                    }
                     case "{":
-                        {
-                            bracesDepth++;
-                            break;
-                        }
+                    {
+                        bracesDepth++;
+                        break;
+                    }
                     case "}":
-                        {
-                            Debug.Assert(bracesDepth >= 0);
-                            bracesDepth--;
-                            break;
-                        }
+                    {
+                        Debug.Assert(bracesDepth >= 0);
+                        bracesDepth--;
+                        break;
+                    }
                     case "<":
-                        {
-                            angleBracketsDepth++;
-                            break;
-                        }
+                    {
+                        angleBracketsDepth++;
+                        break;
+                    }
                     case ">":
-                        {
-                            Debug.Assert(angleBracketsDepth >= 0);
-                            angleBracketsDepth--;
-                            break;
-                        }
+                    {
+                        Debug.Assert(angleBracketsDepth >= 0);
+                        angleBracketsDepth--;
+                        break;
+                    }
                 }
             }
 
@@ -872,80 +872,80 @@ internal static class SymbolDefinitionDisplay
                 switch (part.ToString())
                 {
                     case ",":
+                    {
+                        if (((angleBracketsDepth == 0 && parenthesesDepth == 1 && bracesDepth == 0 && bracketsDepth == 0)
+                            || (angleBracketsDepth == 0 && parenthesesDepth == 0 && bracesDepth == 0 && bracketsDepth == 1))
+                            && i < parts.Count - 1)
                         {
-                            if (((angleBracketsDepth == 0 && parenthesesDepth == 1 && bracesDepth == 0 && bracketsDepth == 0)
-                                || (angleBracketsDepth == 0 && parenthesesDepth == 0 && bracesDepth == 0 && bracketsDepth == 1))
-                                && i < parts.Count - 1)
+                            SymbolDisplayPart nextPart = parts[i + 1];
+
+                            if (nextPart.Kind == SymbolDisplayPartKind.Space)
                             {
-                                SymbolDisplayPart nextPart = parts[i + 1];
-
-                                if (nextPart.Kind == SymbolDisplayPartKind.Space)
-                                {
-                                    parts[i + 1] = SymbolDisplayPartFactory.LineBreak();
-                                    parts.Insert(i + 2, SymbolDisplayPartFactory.Indentation(indentChars));
-                                }
+                                parts[i + 1] = SymbolDisplayPartFactory.LineBreak();
+                                parts.Insert(i + 2, SymbolDisplayPartFactory.Indentation(indentChars));
                             }
-
-                            break;
                         }
+
+                        break;
+                    }
                     case "(":
-                        {
-                            parenthesesDepth++;
-                            break;
-                        }
+                    {
+                        parenthesesDepth++;
+                        break;
+                    }
                     case ")":
+                    {
+                        Debug.Assert(parenthesesDepth >= 0);
+                        parenthesesDepth--;
+
+                        if (parenthesesDepth == 0
+                            && symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType))
                         {
-                            Debug.Assert(parenthesesDepth >= 0);
-                            parenthesesDepth--;
-
-                            if (parenthesesDepth == 0
-                                && symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType))
-                            {
-                                return;
-                            }
-
-                            break;
+                            return;
                         }
+
+                        break;
+                    }
                     case "[":
-                        {
-                            bracketsDepth++;
-                            break;
-                        }
+                    {
+                        bracketsDepth++;
+                        break;
+                    }
                     case "]":
+                    {
+                        Debug.Assert(bracketsDepth >= 0);
+                        bracketsDepth--;
+
+                        if (bracketsDepth == 0
+                            && symbol.Kind == SymbolKind.Property)
                         {
-                            Debug.Assert(bracketsDepth >= 0);
-                            bracketsDepth--;
-
-                            if (bracketsDepth == 0
-                                && symbol.Kind == SymbolKind.Property)
-                            {
-                                return;
-                            }
-
-                            break;
+                            return;
                         }
+
+                        break;
+                    }
                     case "{":
-                        {
-                            bracesDepth++;
-                            break;
-                        }
+                    {
+                        bracesDepth++;
+                        break;
+                    }
                     case "}":
-                        {
-                            Debug.Assert(bracesDepth >= 0);
-                            bracesDepth--;
-                            break;
-                        }
+                    {
+                        Debug.Assert(bracesDepth >= 0);
+                        bracesDepth--;
+                        break;
+                    }
                     case "<":
-                        {
-                            angleBracketsDepth++;
-                            break;
-                        }
+                    {
+                        angleBracketsDepth++;
+                        break;
+                    }
                     case ">":
-                        {
-                            Debug.Assert(angleBracketsDepth >= 0);
-                            angleBracketsDepth--;
-                            break;
-                        }
+                    {
+                        Debug.Assert(angleBracketsDepth >= 0);
+                        angleBracketsDepth--;
+                        break;
+                    }
                 }
             }
 
@@ -971,69 +971,69 @@ internal static class SymbolDefinitionDisplay
                 switch (part.ToString())
                 {
                     case "(":
+                    {
+                        parenthesesDepth++;
+
+                        if (symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType)
+                            && parenthesesDepth == 1
+                            && bracesDepth == 0
+                            && bracketsDepth == 0
+                            && angleBracketsDepth == 0)
                         {
-                            parenthesesDepth++;
-
-                            if (symbol.IsKind(SymbolKind.Method, SymbolKind.NamedType)
-                                && parenthesesDepth == 1
-                                && bracesDepth == 0
-                                && bracketsDepth == 0
-                                && angleBracketsDepth == 0)
-                            {
-                                return i;
-                            }
-
-                            break;
+                            return i;
                         }
+
+                        break;
+                    }
                     case ")":
-                        {
-                            Debug.Assert(parenthesesDepth >= 0);
-                            parenthesesDepth--;
-                            break;
-                        }
+                    {
+                        Debug.Assert(parenthesesDepth >= 0);
+                        parenthesesDepth--;
+                        break;
+                    }
                     case "[":
+                    {
+                        bracketsDepth++;
+
+                        if (symbol.Kind == SymbolKind.Property
+                            && parenthesesDepth == 0
+                            && bracesDepth == 0
+                            && bracketsDepth == 1
+                            && angleBracketsDepth == 0)
                         {
-                            bracketsDepth++;
-
-                            if (symbol.Kind == SymbolKind.Property
-                                && parenthesesDepth == 0
-                                && bracesDepth == 0
-                                && bracketsDepth == 1
-                                && angleBracketsDepth == 0)
-                            {
-                                return i;
-                            }
-
-                            break;
+                            return i;
                         }
+
+                        break;
+                    }
                     case "]":
-                        {
-                            Debug.Assert(bracketsDepth >= 0);
-                            bracketsDepth--;
-                            break;
-                        }
+                    {
+                        Debug.Assert(bracketsDepth >= 0);
+                        bracketsDepth--;
+                        break;
+                    }
                     case "{":
-                        {
-                            bracesDepth++;
-                            break;
-                        }
+                    {
+                        bracesDepth++;
+                        break;
+                    }
                     case "}":
-                        {
-                            Debug.Assert(bracesDepth >= 0);
-                            bracesDepth--;
-                            break;
-                        }
+                    {
+                        Debug.Assert(bracesDepth >= 0);
+                        bracesDepth--;
+                        break;
+                    }
                     case "<":
-                        {
-                            angleBracketsDepth++;
-                            break;
-                        }
+                    {
+                        angleBracketsDepth++;
+                        break;
+                    }
                     case ">":
-                        {
-                            Debug.Assert(angleBracketsDepth >= 0);
-                            angleBracketsDepth--;
-                            break;
-                        }
+                    {
+                        Debug.Assert(angleBracketsDepth >= 0);
+                        angleBracketsDepth--;
+                        break;
+                    }
                 }
             }
         }

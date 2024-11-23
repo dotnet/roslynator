@@ -50,120 +50,120 @@ public sealed class DefaultExpressionAnalyzer : BaseDiagnosticAnalyzer
         switch (parent.Kind())
         {
             case SyntaxKind.EqualsValueClause:
-                {
-                    parent = parent.Parent;
+            {
+                parent = parent.Parent;
 
-                    switch (parent.Kind())
+                switch (parent.Kind())
+                {
+                    case SyntaxKind.Parameter:
                     {
-                        case SyntaxKind.Parameter:
-                            {
-                                ReportDiagnostic();
-                                return;
-                            }
-                        case SyntaxKind.VariableDeclarator:
-                            {
-                                return;
-                            }
-                        default:
-                            {
-                                Debug.WriteLine($"{parent.Kind()} {parent}");
-                                return;
-                            }
+                        ReportDiagnostic();
+                        return;
+                    }
+                    case SyntaxKind.VariableDeclarator:
+                    {
+                        return;
+                    }
+                    default:
+                    {
+                        Debug.WriteLine($"{parent.Kind()} {parent}");
+                        return;
                     }
                 }
+            }
             case SyntaxKind.ConditionalExpression:
-                {
-                    var conditionalExpression = (ConditionalExpressionSyntax)parent;
+            {
+                var conditionalExpression = (ConditionalExpressionSyntax)parent;
 
-                    ExpressionSyntax expression2 = (conditionalExpression.WhenTrue == expression)
-                        ? conditionalExpression.WhenFalse
-                        : conditionalExpression.WhenTrue;
+                ExpressionSyntax expression2 = (conditionalExpression.WhenTrue == expression)
+                    ? conditionalExpression.WhenFalse
+                    : conditionalExpression.WhenTrue;
 
-                    if (expression2.IsKind(SyntaxKind.ThrowExpression))
-                        return;
-
-                    TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
-
-                    ITypeSymbol type = typeInfo.Type;
-                    ITypeSymbol convertedType = typeInfo.ConvertedType;
-
-                    if (!SymbolEqualityComparer.Default.Equals(type, convertedType))
-                        return;
-
-                    ITypeSymbol type2 = context.SemanticModel.GetTypeSymbol(expression2, context.CancellationToken);
-
-                    if (!SymbolEqualityComparer.Default.Equals(type, type2))
-                        return;
-
-                    ReportDiagnostic();
+                if (expression2.IsKind(SyntaxKind.ThrowExpression))
                     return;
-                }
+
+                TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
+
+                ITypeSymbol type = typeInfo.Type;
+                ITypeSymbol convertedType = typeInfo.ConvertedType;
+
+                if (!SymbolEqualityComparer.Default.Equals(type, convertedType))
+                    return;
+
+                ITypeSymbol type2 = context.SemanticModel.GetTypeSymbol(expression2, context.CancellationToken);
+
+                if (!SymbolEqualityComparer.Default.Equals(type, type2))
+                    return;
+
+                ReportDiagnostic();
+                return;
+            }
             case SyntaxKind.ArrowExpressionClause:
             case SyntaxKind.CoalesceExpression:
             case SyntaxKind.ReturnStatement:
             case SyntaxKind.YieldReturnStatement:
             case SyntaxKind.SimpleAssignmentExpression:
+            {
+                if (parent.IsParentKind(SyntaxKind.ObjectInitializerExpression))
+                    return;
+
+                if (parent is BinaryExpressionSyntax coalesceExpression
+                    && coalesceExpression.Left == defaultExpression)
                 {
-                    if (parent.IsParentKind(SyntaxKind.ObjectInitializerExpression))
-                        return;
-
-                    if (parent is BinaryExpressionSyntax coalesceExpression
-                        && coalesceExpression.Left == defaultExpression)
-                    {
-                        return;
-                    }
-
-                    TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
-
-                    if (!SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType))
-                        return;
-
-                    if (parent.IsKind(SyntaxKind.ReturnStatement)
-                        && IsTypeInferredFromDefaultExpression(context, parent))
-                    {
-                        return;
-                    }
-
-                    ReportDiagnostic();
                     return;
                 }
+
+                TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
+
+                if (!SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType))
+                    return;
+
+                if (parent.IsKind(SyntaxKind.ReturnStatement)
+                    && IsTypeInferredFromDefaultExpression(context, parent))
+                {
+                    return;
+                }
+
+                ReportDiagnostic();
+                return;
+            }
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
-                {
-                    SemanticModel semanticModel = context.SemanticModel;
-                    CancellationToken cancellationToken = context.CancellationToken;
+            {
+                SemanticModel semanticModel = context.SemanticModel;
+                CancellationToken cancellationToken = context.CancellationToken;
 
-                    TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
+                TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
-                    if (!SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType))
-                        return;
-
-                    IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol((ExpressionSyntax)parent, cancellationToken);
-
-                    if (methodSymbol is null)
-                        return;
-
-                    SyntaxNode newNode = parent.ReplaceNode(defaultExpression, CSharpFactory.DefaultLiteralExpression());
-
-                    IMethodSymbol newMethodSymbol = semanticModel.GetSpeculativeMethodSymbol(parent.SpanStart, newNode);
-
-                    if (!SymbolEqualityComparer.Default.Equals(methodSymbol, newMethodSymbol))
-                        return;
-
-                    ReportDiagnostic();
+                if (!SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType))
                     return;
-                }
+
+                IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol((ExpressionSyntax)parent, cancellationToken);
+
+                if (methodSymbol is null)
+                    return;
+
+                SyntaxNode newNode = parent.ReplaceNode(defaultExpression, CSharpFactory.DefaultLiteralExpression());
+
+                IMethodSymbol newMethodSymbol = semanticModel.GetSpeculativeMethodSymbol(parent.SpanStart, newNode);
+
+                if (!SymbolEqualityComparer.Default.Equals(methodSymbol, newMethodSymbol))
+                    return;
+
+                ReportDiagnostic();
+                return;
+            }
             case SyntaxKind.Argument:
             case SyntaxKind.ConstantPattern:
             case SyntaxKind.CaseSwitchLabel:
-                {
-                    return;
-                }
+            {
+                return;
+            }
             default:
-                {
-                    Debug.WriteLine($"{parent.Kind()} {parent}");
-                    return;
-                }
+            {
+                Debug.WriteLine($"{parent.Kind()} {parent}");
+                return;
+            }
         }
 
         void ReportDiagnostic()

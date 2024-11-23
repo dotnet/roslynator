@@ -76,56 +76,56 @@ public sealed class UsePatternMatchingInsteadOfIsAndCastAnalyzer : BaseDiagnosti
         switch (node.Kind())
         {
             case SyntaxKind.LogicalAndExpression:
-                {
-                    var logicalAnd = (BinaryExpressionSyntax)node;
+            {
+                var logicalAnd = (BinaryExpressionSyntax)node;
 
-                    if (left != logicalAnd.Left)
-                        return;
+                if (left != logicalAnd.Left)
+                    return;
 
-                    ExpressionSyntax right = logicalAnd.Right;
+                ExpressionSyntax right = logicalAnd.Right;
 
-                    if (right is null)
-                        return;
+                if (right is null)
+                    return;
 
-                    SemanticModel semanticModel = context.SemanticModel;
-                    CancellationToken cancellationToken = context.CancellationToken;
+                SemanticModel semanticModel = context.SemanticModel;
+                CancellationToken cancellationToken = context.CancellationToken;
 
-                    if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
-                        return;
+                if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
+                    return;
 
-                    if (logicalAnd.Parent.IsInExpressionTree(semanticModel, cancellationToken))
-                        return;
+                if (logicalAnd.Parent.IsInExpressionTree(semanticModel, cancellationToken))
+                    return;
 
-                    if (!IsFixable(right, identifierName, semanticModel, cancellationToken))
-                        return;
+                if (!IsFixable(right, identifierName, semanticModel, cancellationToken))
+                    return;
 
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
-                    break;
-                }
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
+                break;
+            }
             case SyntaxKind.IfStatement:
-                {
-                    var ifStatement = (IfStatementSyntax)node;
+            {
+                var ifStatement = (IfStatementSyntax)node;
 
-                    if (left != ifStatement.Condition)
-                        return;
+                if (left != ifStatement.Condition)
+                    return;
 
-                    StatementSyntax statement = ifStatement.Statement;
+                StatementSyntax statement = ifStatement.Statement;
 
-                    if (statement is null)
-                        return;
+                if (statement is null)
+                    return;
 
-                    SemanticModel semanticModel = context.SemanticModel;
-                    CancellationToken cancellationToken = context.CancellationToken;
+                SemanticModel semanticModel = context.SemanticModel;
+                CancellationToken cancellationToken = context.CancellationToken;
 
-                    if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
-                        return;
+                if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
+                    return;
 
-                    if (!IsFixable(statement, identifierName, semanticModel, cancellationToken))
-                        return;
+                if (!IsFixable(statement, identifierName, semanticModel, cancellationToken))
+                    return;
 
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
-                    break;
-                }
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
+                break;
+            }
         }
     }
 

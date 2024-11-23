@@ -24,56 +24,56 @@ internal static class UseElementAccessRefactoring
         switch (invocationInfo.NameText)
         {
             case "First":
-                {
-                    if (invocationInfo.Arguments.Any())
-                        break;
-
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    if (!UseElementAccessAnalysis.IsFixableFirst(invocationInfo, semanticModel, context.CancellationToken))
-                        break;
-
-                    context.RegisterRefactoring(
-                        "Use [] instead of calling 'First'",
-                        ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfFirstAsync(context.Document, invocation, ct),
-                        RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
-
+            {
+                if (invocationInfo.Arguments.Any())
                     break;
-                }
+
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (!UseElementAccessAnalysis.IsFixableFirst(invocationInfo, semanticModel, context.CancellationToken))
+                    break;
+
+                context.RegisterRefactoring(
+                    "Use [] instead of calling 'First'",
+                    ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfFirstAsync(context.Document, invocation, ct),
+                    RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
+
+                break;
+            }
             case "Last":
-                {
-                    if (invocationInfo.Arguments.Any())
-                        break;
-
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    if (!UseElementAccessAnalysis.IsFixableLast(invocationInfo, semanticModel, context.CancellationToken))
-                        break;
-
-                    context.RegisterRefactoring(
-                        "Use [] instead of calling 'Last'",
-                        ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfLastAsync(context.Document, invocation, ct),
-                        RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
-
+            {
+                if (invocationInfo.Arguments.Any())
                     break;
-                }
+
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (!UseElementAccessAnalysis.IsFixableLast(invocationInfo, semanticModel, context.CancellationToken))
+                    break;
+
+                context.RegisterRefactoring(
+                    "Use [] instead of calling 'Last'",
+                    ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfLastAsync(context.Document, invocation, ct),
+                    RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
+
+                break;
+            }
             case "ElementAt":
-                {
-                    if (invocationInfo.Arguments.SingleOrDefault(shouldThrow: false)?.Expression?.IsMissing != false)
-                        break;
-
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    if (!UseElementAccessAnalysis.IsFixableElementAt(invocationInfo, semanticModel, context.CancellationToken))
-                        break;
-
-                    context.RegisterRefactoring(
-                        "Use [] instead of calling 'ElementAt'",
-                        ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfElementAtAsync(context.Document, invocation, ct),
-                        RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
-
+            {
+                if (invocationInfo.Arguments.SingleOrDefault(shouldThrow: false)?.Expression?.IsMissing != false)
                     break;
-                }
+
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (!UseElementAccessAnalysis.IsFixableElementAt(invocationInfo, semanticModel, context.CancellationToken))
+                    break;
+
+                context.RegisterRefactoring(
+                    "Use [] instead of calling 'ElementAt'",
+                    ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfElementAtAsync(context.Document, invocation, ct),
+                    RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
+
+                break;
+            }
         }
     }
 }

@@ -66,61 +66,61 @@ internal static class ConvertIfToSwitchRefactoring
         switch (condition.Kind())
         {
             case SyntaxKind.LogicalOrExpression:
+            {
+                var logicalOrExpression = (BinaryExpressionSyntax)condition;
+
+                foreach (ExpressionSyntax expression in logicalOrExpression.AsChain())
                 {
-                    var logicalOrExpression = (BinaryExpressionSyntax)condition;
+                    ExpressionSyntax expression2 = expression.WalkDownParentheses();
 
-                    foreach (ExpressionSyntax expression in logicalOrExpression.AsChain())
-                    {
-                        ExpressionSyntax expression2 = expression.WalkDownParentheses();
+                    if (!expression2.IsKind(SyntaxKind.EqualsExpression))
+                        return default;
 
-                        if (!expression2.IsKind(SyntaxKind.EqualsExpression))
-                            return default;
-
-                        var equalsExpression = (BinaryExpressionSyntax)expression2;
-
-                        if (!IsFixableEqualsExpression(equalsExpression))
-                            return default;
-                    }
-
-                    break;
-                }
-            case SyntaxKind.EqualsExpression:
-                {
-                    var equalsExpression = (BinaryExpressionSyntax)condition;
+                    var equalsExpression = (BinaryExpressionSyntax)expression2;
 
                     if (!IsFixableEqualsExpression(equalsExpression))
                         return default;
-
-                    break;
                 }
+
+                break;
+            }
+            case SyntaxKind.EqualsExpression:
+            {
+                var equalsExpression = (BinaryExpressionSyntax)condition;
+
+                if (!IsFixableEqualsExpression(equalsExpression))
+                    return default;
+
+                break;
+            }
             case SyntaxKind.IsPatternExpression:
+            {
+                var isPatternExpression = (IsPatternExpressionSyntax)condition;
+
+                PatternSyntax pattern = isPatternExpression.Pattern;
+
+                SyntaxDebug.Assert(pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern, SyntaxKind.NotPattern), pattern);
+
+                if (!pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern, SyntaxKind.NotPattern))
+                    return default;
+
+                ExpressionSyntax expression = isPatternExpression.Expression.WalkDownParentheses();
+
+                if (switchExpression is null)
                 {
-                    var isPatternExpression = (IsPatternExpressionSyntax)condition;
-
-                    PatternSyntax pattern = isPatternExpression.Pattern;
-
-                    SyntaxDebug.Assert(pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern, SyntaxKind.NotPattern), pattern);
-
-                    if (!pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern, SyntaxKind.NotPattern))
-                        return default;
-
-                    ExpressionSyntax expression = isPatternExpression.Expression.WalkDownParentheses();
-
-                    if (switchExpression is null)
-                    {
-                        switchExpression = expression;
-                    }
-                    else if (!CSharpFactory.AreEquivalent(expression, switchExpression))
-                    {
-                        return default;
-                    }
-
-                    break;
+                    switchExpression = expression;
                 }
-            default:
+                else if (!CSharpFactory.AreEquivalent(expression, switchExpression))
                 {
                     return default;
                 }
+
+                break;
+            }
+            default:
+            {
+                return default;
+            }
         }
 
         return (true, switchExpression);
@@ -186,29 +186,29 @@ internal static class ConvertIfToSwitchRefactoring
         switch (expression.Kind())
         {
             case SyntaxKind.LogicalOrExpression:
-                {
-                    var logicalOrExpression = (BinaryExpressionSyntax)expression;
+            {
+                var logicalOrExpression = (BinaryExpressionSyntax)expression;
 
-                    var right = (BinaryExpressionSyntax)logicalOrExpression.Right.WalkDownParentheses();
+                var right = (BinaryExpressionSyntax)logicalOrExpression.Right.WalkDownParentheses();
 
-                    return right.Left;
-                }
+                return right.Left;
+            }
             case SyntaxKind.EqualsExpression:
-                {
-                    var equalsExpression = (BinaryExpressionSyntax)expression;
+            {
+                var equalsExpression = (BinaryExpressionSyntax)expression;
 
-                    return equalsExpression.Left;
-                }
+                return equalsExpression.Left;
+            }
             case SyntaxKind.IsPatternExpression:
-                {
-                    var isPatternExpression = (IsPatternExpressionSyntax)expression;
+            {
+                var isPatternExpression = (IsPatternExpressionSyntax)expression;
 
-                    return isPatternExpression.Expression;
-                }
+                return isPatternExpression.Expression;
+            }
             default:
-                {
-                    throw new InvalidOperationException();
-                }
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 
@@ -238,52 +238,52 @@ internal static class ConvertIfToSwitchRefactoring
         switch (expression.Kind())
         {
             case SyntaxKind.LogicalOrExpression:
-                {
-                    var logicalOrExpression = (BinaryExpressionSyntax)expression;
+            {
+                var logicalOrExpression = (BinaryExpressionSyntax)expression;
 
-                    return logicalOrExpression.AsChain()
-                        .Select(exp =>
-                        {
-                            var binaryExpression = (BinaryExpressionSyntax)exp.WalkDownParentheses();
-                            return CreateCaseSwitchLabel(binaryExpression.Right.WalkDownParentheses());
-                        })
-                        .ToSyntaxList();
-                }
+                return logicalOrExpression.AsChain()
+                    .Select(exp =>
+                    {
+                        var binaryExpression = (BinaryExpressionSyntax)exp.WalkDownParentheses();
+                        return CreateCaseSwitchLabel(binaryExpression.Right.WalkDownParentheses());
+                    })
+                    .ToSyntaxList();
+            }
             case SyntaxKind.EqualsExpression:
-                {
-                    var equalsExpression = (BinaryExpressionSyntax)expression;
+            {
+                var equalsExpression = (BinaryExpressionSyntax)expression;
 
-                    return SingletonList(CreateCaseSwitchLabel(equalsExpression.Right.WalkDownParentheses()));
-                }
+                return SingletonList(CreateCaseSwitchLabel(equalsExpression.Right.WalkDownParentheses()));
+            }
             case SyntaxKind.IsPatternExpression:
+            {
+                var isPatternExpression = (IsPatternExpressionSyntax)expression;
+
+                PatternSyntax pattern = isPatternExpression.Pattern;
+
+                if (pattern is ConstantPatternSyntax constantPattern)
                 {
-                    var isPatternExpression = (IsPatternExpressionSyntax)expression;
-
-                    PatternSyntax pattern = isPatternExpression.Pattern;
-
-                    if (pattern is ConstantPatternSyntax constantPattern)
-                    {
-                        return SingletonList(CreateCaseSwitchLabel(constantPattern.Expression));
-                    }
-                    else if (pattern is DeclarationPatternSyntax)
-                    {
-                        return SingletonList<SwitchLabelSyntax>(CasePatternSwitchLabel(pattern, Token(SyntaxKind.ColonToken)));
-                    }
-                    else if (pattern.IsKind(SyntaxKind.NotPattern))
-                    {
-                        var notPattern = (UnaryPatternSyntax)pattern;
-
-                        return SingletonList<SwitchLabelSyntax>(CasePatternSwitchLabel(notPattern, Token(SyntaxKind.ColonToken)));
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    return SingletonList(CreateCaseSwitchLabel(constantPattern.Expression));
                 }
-            default:
+                else if (pattern is DeclarationPatternSyntax)
+                {
+                    return SingletonList<SwitchLabelSyntax>(CasePatternSwitchLabel(pattern, Token(SyntaxKind.ColonToken)));
+                }
+                else if (pattern.IsKind(SyntaxKind.NotPattern))
+                {
+                    var notPattern = (UnaryPatternSyntax)pattern;
+
+                    return SingletonList<SwitchLabelSyntax>(CasePatternSwitchLabel(notPattern, Token(SyntaxKind.ColonToken)));
+                }
+                else
                 {
                     throw new InvalidOperationException();
                 }
+            }
+            default:
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         static SwitchLabelSyntax CreateCaseSwitchLabel(ExpressionSyntax expression)

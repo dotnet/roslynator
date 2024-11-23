@@ -21,99 +21,99 @@ internal static class LocalSymbolFinder
         switch (node.Kind())
         {
             case SyntaxKind.ConstructorDeclaration:
-                {
-                    var constructor = (ConstructorDeclarationSyntax)node;
-                    walker.Visit(constructor.BodyOrExpressionBody());
+            {
+                var constructor = (ConstructorDeclarationSyntax)node;
+                walker.Visit(constructor.BodyOrExpressionBody());
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.EventDeclaration:
+            {
+                var eventDeclaration = (EventDeclarationSyntax)node;
+
+                if (eventDeclaration.AccessorList is not null)
                 {
-                    var eventDeclaration = (EventDeclarationSyntax)node;
-
-                    if (eventDeclaration.AccessorList is not null)
-                    {
-                        foreach (AccessorDeclarationSyntax accessor in eventDeclaration.AccessorList.Accessors)
-                            walker.Visit(accessor.BodyOrExpressionBody());
-                    }
-
-                    break;
+                    foreach (AccessorDeclarationSyntax accessor in eventDeclaration.AccessorList.Accessors)
+                        walker.Visit(accessor.BodyOrExpressionBody());
                 }
+
+                break;
+            }
             case SyntaxKind.IndexerDeclaration:
+            {
+                var indexerDeclaration = (IndexerDeclarationSyntax)node;
+
+                if (indexerDeclaration.AccessorList is not null)
                 {
-                    var indexerDeclaration = (IndexerDeclarationSyntax)node;
-
-                    if (indexerDeclaration.AccessorList is not null)
-                    {
-                        foreach (AccessorDeclarationSyntax accessor in indexerDeclaration.AccessorList.Accessors)
-                            walker.Visit(accessor.BodyOrExpressionBody());
-                    }
-
-                    break;
+                    foreach (AccessorDeclarationSyntax accessor in indexerDeclaration.AccessorList.Accessors)
+                        walker.Visit(accessor.BodyOrExpressionBody());
                 }
+
+                break;
+            }
             case SyntaxKind.MethodDeclaration:
-                {
-                    var methodDeclaration = (MethodDeclarationSyntax)node;
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                    walker.Visit(methodDeclaration.BodyOrExpressionBody());
+                walker.Visit(methodDeclaration.BodyOrExpressionBody());
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.PropertyDeclaration:
+            {
+                var propertyDeclaration = (PropertyDeclarationSyntax)node;
+
+                ArrowExpressionClauseSyntax? expressionBody = propertyDeclaration.ExpressionBody;
+
+                if (expressionBody is not null)
                 {
-                    var propertyDeclaration = (PropertyDeclarationSyntax)node;
-
-                    ArrowExpressionClauseSyntax? expressionBody = propertyDeclaration.ExpressionBody;
-
-                    if (expressionBody is not null)
-                    {
-                        walker.Visit(expressionBody);
-                    }
-                    else if (propertyDeclaration.AccessorList is not null)
-                    {
-                        foreach (AccessorDeclarationSyntax accessor in propertyDeclaration.AccessorList.Accessors)
-                            walker.Visit(accessor.BodyOrExpressionBody());
-                    }
-
-                    break;
+                    walker.Visit(expressionBody);
                 }
+                else if (propertyDeclaration.AccessorList is not null)
+                {
+                    foreach (AccessorDeclarationSyntax accessor in propertyDeclaration.AccessorList.Accessors)
+                        walker.Visit(accessor.BodyOrExpressionBody());
+                }
+
+                break;
+            }
             case SyntaxKind.VariableDeclarator:
-                {
-                    var declarator = (VariableDeclaratorSyntax)node;
+            {
+                var declarator = (VariableDeclaratorSyntax)node;
 
-                    ExpressionSyntax? expression = declarator.Initializer?.Value;
+                ExpressionSyntax? expression = declarator.Initializer?.Value;
 
-                    if (expression is not null)
-                        walker.Visit(expression);
+                if (expression is not null)
+                    walker.Visit(expression);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.OperatorDeclaration:
-                {
-                    var declaration = (OperatorDeclarationSyntax)node;
+            {
+                var declaration = (OperatorDeclarationSyntax)node;
 
-                    walker.Visit(declaration.BodyOrExpressionBody());
-                    break;
-                }
+                walker.Visit(declaration.BodyOrExpressionBody());
+                break;
+            }
             case SyntaxKind.ConversionOperatorDeclaration:
-                {
-                    var declaration = (ConversionOperatorDeclarationSyntax)node;
+            {
+                var declaration = (ConversionOperatorDeclarationSyntax)node;
 
-                    walker.Visit(declaration.BodyOrExpressionBody());
-                    break;
-                }
+                walker.Visit(declaration.BodyOrExpressionBody());
+                break;
+            }
             case SyntaxKind.Parameter:
             case SyntaxKind.RecordDeclaration:
-                {
-                    break;
-                }
+            {
+                break;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(node);
+            {
+                SyntaxDebug.Fail(node);
 
-                    walker.Visit(node);
-                    break;
-                }
+                walker.Visit(node);
+                break;
+            }
         }
 
         return walker.Definitions.ToImmutableArray();

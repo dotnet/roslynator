@@ -15,65 +15,65 @@ internal static class RemoveAsyncAwaitRefactoring
         switch (token.Parent)
         {
             case MethodDeclarationSyntax methodDeclaration:
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, semanticModel, context.CancellationToken))
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, semanticModel, context.CancellationToken))
-                    {
-                        if (analysis.Success)
-                            RegisterRefactoring();
-                    }
-
-                    return;
+                    if (analysis.Success)
+                        RegisterRefactoring();
                 }
+
+                return;
+            }
             case LocalFunctionStatementSyntax localFunction:
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, semanticModel, context.CancellationToken))
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, semanticModel, context.CancellationToken))
-                    {
-                        if (analysis.Success)
-                            RegisterRefactoring();
-                    }
-
-                    return;
+                    if (analysis.Success)
+                        RegisterRefactoring();
                 }
+
+                return;
+            }
             case ParenthesizedLambdaExpressionSyntax parenthesizedLambda:
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(parenthesizedLambda, semanticModel, context.CancellationToken))
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(parenthesizedLambda, semanticModel, context.CancellationToken))
-                    {
-                        if (analysis.Success)
-                            RegisterRefactoring();
-                    }
-
-                    return;
+                    if (analysis.Success)
+                        RegisterRefactoring();
                 }
+
+                return;
+            }
             case SimpleLambdaExpressionSyntax simpleLambda:
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(simpleLambda, semanticModel, context.CancellationToken))
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(simpleLambda, semanticModel, context.CancellationToken))
-                    {
-                        if (analysis.Success)
-                            RegisterRefactoring();
-                    }
-
-                    return;
+                    if (analysis.Success)
+                        RegisterRefactoring();
                 }
+
+                return;
+            }
             case AnonymousMethodExpressionSyntax anonymousMethod:
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, semanticModel, context.CancellationToken))
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, semanticModel, context.CancellationToken))
-                    {
-                        if (analysis.Success)
-                            RegisterRefactoring();
-                    }
-
-                    return;
+                    if (analysis.Success)
+                        RegisterRefactoring();
                 }
+
+                return;
+            }
         }
 
         void RegisterRefactoring()

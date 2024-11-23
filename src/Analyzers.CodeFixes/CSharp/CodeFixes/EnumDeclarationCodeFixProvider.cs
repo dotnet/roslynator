@@ -47,68 +47,68 @@ public sealed class EnumDeclarationCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.SortEnumMembers:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Sort '{enumDeclaration.Identifier}' members",
-                            ct => SortEnumMembersAsync(document, enumDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Sort '{enumDeclaration.Identifier}' members",
+                        ct => SortEnumMembersAsync(document, enumDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.EnumShouldDeclareExplicitValues:
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
+
+                    EnumSymbolInfo enumInfo = EnumSymbolInfo.Create(enumSymbol);
+
+                    ImmutableArray<ulong> values = enumInfo
+                        .Fields
+                        .Where(f => f.HasValue && ((EnumMemberDeclarationSyntax)f.Symbol.GetSyntax(context.CancellationToken)).EqualsValue is not null)
+                        .Select(f => f.Value)
+                        .ToImmutableArray();
+
+                    Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values);
+
+                    if (!optional.HasValue
+                        || !ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
-
-                        EnumSymbolInfo enumInfo = EnumSymbolInfo.Create(enumSymbol);
-
-                        ImmutableArray<ulong> values = enumInfo
-                            .Fields
-                            .Where(f => f.HasValue && ((EnumMemberDeclarationSyntax)f.Symbol.GetSyntax(context.CancellationToken)).EqualsValue is not null)
-                            .Select(f => f.Value)
-                            .ToImmutableArray();
-
-                        Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values);
-
-                        if (!optional.HasValue
-                            || !ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
-                        {
-                            return;
-                        }
-
-                        bool isFlags = enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
-
-                        CodeAction codeAction = CodeAction.Create(
-                            "Declare explicit values",
-                            ct => DeclareExplicitValueAsync(document, enumDeclaration, enumSymbol, isFlags, useBitShift: false, values, semanticModel, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-
-                        if (isFlags)
-                        {
-                            CodeAction codeAction2 = CodeAction.Create(
-                                "Declare explicit values (and use '<<' operator)",
-                                ct => DeclareExplicitValueAsync(document, enumDeclaration, enumSymbol, isFlags, useBitShift: true, values, semanticModel, ct),
-                                GetEquivalenceKey(diagnostic, "BitShift"));
-
-                            context.RegisterCodeFix(codeAction2, diagnostic);
-                        }
-
-                        break;
+                        return;
                     }
+
+                    bool isFlags = enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
+
+                    CodeAction codeAction = CodeAction.Create(
+                        "Declare explicit values",
+                        ct => DeclareExplicitValueAsync(document, enumDeclaration, enumSymbol, isFlags, useBitShift: false, values, semanticModel, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+
+                    if (isFlags)
+                    {
+                        CodeAction codeAction2 = CodeAction.Create(
+                            "Declare explicit values (and use '<<' operator)",
+                            ct => DeclareExplicitValueAsync(document, enumDeclaration, enumSymbol, isFlags, useBitShift: true, values, semanticModel, ct),
+                            GetEquivalenceKey(diagnostic, "BitShift"));
+
+                        context.RegisterCodeFix(codeAction2, diagnostic);
+                    }
+
+                    break;
+                }
                 case DiagnosticIdentifiers.UseBitShiftOperator:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use '<<' operator",
-                            ct => UseBitShiftOperatorAsync(document, enumDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use '<<' operator",
+                        ct => UseBitShiftOperatorAsync(document, enumDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

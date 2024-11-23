@@ -75,61 +75,61 @@ public sealed class UseCoalesceExpressionCodeFixProvider : BaseCodeFixProvider
         switch (statement)
         {
             case IfStatementSyntax ifStatement:
+            {
+                var expressionStatement = (ExpressionStatementSyntax)ifStatement.SingleNonBlockStatementOrDefault();
+
+                var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+
+                ExpressionSyntax left = assignment.Left;
+                ExpressionSyntax right = assignment.Right;
+
+                BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(
+                    left.WithoutLeadingTrivia().WithTrailingTrivia(Space),
+                    right.WithLeadingTrivia(Space),
+                    semanticModel.GetTypeSymbol(left, cancellationToken),
+                    semanticModel.GetTypeSymbol(right, cancellationToken));
+
+                AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
+
+                ExpressionStatementSyntax newNode = expressionStatement.WithExpression(newAssignment);
+
+                IEnumerable<SyntaxTrivia> trivia = ifStatement.DescendantTrivia(TextSpan.FromBounds(ifStatement.SpanStart, expressionStatement.SpanStart));
+
+                if (trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
-                    var expressionStatement = (ExpressionStatementSyntax)ifStatement.SingleNonBlockStatementOrDefault();
-
-                    var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
-
-                    ExpressionSyntax left = assignment.Left;
-                    ExpressionSyntax right = assignment.Right;
-
-                    BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(
-                        left.WithoutLeadingTrivia().WithTrailingTrivia(Space),
-                        right.WithLeadingTrivia(Space),
-                        semanticModel.GetTypeSymbol(left, cancellationToken),
-                        semanticModel.GetTypeSymbol(right, cancellationToken));
-
-                    AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
-
-                    ExpressionStatementSyntax newNode = expressionStatement.WithExpression(newAssignment);
-
-                    IEnumerable<SyntaxTrivia> trivia = ifStatement.DescendantTrivia(TextSpan.FromBounds(ifStatement.SpanStart, expressionStatement.SpanStart));
-
-                    if (trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                    {
-                        newNode = newNode.WithLeadingTrivia(ifStatement.GetLeadingTrivia());
-                    }
-                    else
-                    {
-                        newNode = newNode
-                            .WithLeadingTrivia(ifStatement.GetLeadingTrivia().Concat(trivia))
-                            .WithFormatterAnnotation();
-                    }
-
-                    return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
+                    newNode = newNode.WithLeadingTrivia(ifStatement.GetLeadingTrivia());
                 }
+                else
+                {
+                    newNode = newNode
+                        .WithLeadingTrivia(ifStatement.GetLeadingTrivia().Concat(trivia))
+                        .WithFormatterAnnotation();
+                }
+
+                return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
+            }
             case ExpressionStatementSyntax expressionStatement:
-                {
-                    var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+            {
+                var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-                    return await RefactorAsync(document, expressionStatement, (IfStatementSyntax)statements[index + 1], index, statementsInfo, assignment.Right, semanticModel, cancellationToken).ConfigureAwait(false);
-                }
+                return await RefactorAsync(document, expressionStatement, (IfStatementSyntax)statements[index + 1], index, statementsInfo, assignment.Right, semanticModel, cancellationToken).ConfigureAwait(false);
+            }
             case LocalDeclarationStatementSyntax localDeclaration:
-                {
-                    ExpressionSyntax value = localDeclaration
-                        .Declaration
-                        .Variables[0]
-                        .Initializer
-                        .Value;
+            {
+                ExpressionSyntax value = localDeclaration
+                    .Declaration
+                    .Variables[0]
+                    .Initializer
+                    .Value;
 
-                    return await RefactorAsync(document, localDeclaration, (IfStatementSyntax)statements[index + 1], index, statementsInfo, value, semanticModel, cancellationToken).ConfigureAwait(false);
-                }
+                return await RefactorAsync(document, localDeclaration, (IfStatementSyntax)statements[index + 1], index, statementsInfo, value, semanticModel, cancellationToken).ConfigureAwait(false);
+            }
             default:
-                {
-                    SyntaxDebug.Fail(statement);
+            {
+                SyntaxDebug.Fail(statement);
 
-                    return document;
-                }
+                return document;
+            }
         }
     }
 

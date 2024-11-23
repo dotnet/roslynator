@@ -122,15 +122,15 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
             switch (modifier.Kind())
             {
                 case SyntaxKind.OverrideKeyword:
-                    {
-                        isOverride = true;
-                        break;
-                    }
+                {
+                    isOverride = true;
+                    break;
+                }
                 case SyntaxKind.SealedKeyword:
                 case SyntaxKind.PartialKeyword:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
             }
         }
 
@@ -302,86 +302,86 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
         switch (accessor.Kind())
         {
             case SyntaxKind.GetAccessorDeclaration:
-                {
-                    ExpressionSyntax expression = GetGetAccessorExpression(accessor);
+            {
+                ExpressionSyntax expression = GetGetAccessorExpression(accessor);
 
-                    if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true)
-                        return false;
+                if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true)
+                    return false;
 
-                    var memberAccess = (MemberAccessExpressionSyntax)expression;
+                var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                    if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
-                        return false;
+                if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
+                    return false;
 
-                    SimpleNameSyntax simpleName = memberAccess.Name;
+                SimpleNameSyntax simpleName = memberAccess.Name;
 
-                    IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
+                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-                    if (propertySymbol is null)
-                        return false;
+                if (propertySymbol is null)
+                    return false;
 
-                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                    if (overriddenProperty is null)
-                        return false;
+                if (overriddenProperty is null)
+                    return false;
 
-                    ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
+                ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
 
-                    return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol);
-                }
+                return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol);
+            }
             case SyntaxKind.SetAccessorDeclaration:
-                {
-                    ExpressionSyntax expression = GetSetAccessorExpression(accessor);
+            {
+                ExpressionSyntax expression = GetSetAccessorExpression(accessor);
 
-                    SimpleAssignmentExpressionInfo assignment = SyntaxInfo.SimpleAssignmentExpressionInfo(expression);
+                SimpleAssignmentExpressionInfo assignment = SyntaxInfo.SimpleAssignmentExpressionInfo(expression);
 
-                    if (!assignment.Success)
-                        return false;
+                if (!assignment.Success)
+                    return false;
 
-                    if (assignment.Left.Kind() != SyntaxKind.SimpleMemberAccessExpression)
-                        return false;
+                if (assignment.Left.Kind() != SyntaxKind.SimpleMemberAccessExpression)
+                    return false;
 
-                    var memberAccess = (MemberAccessExpressionSyntax)assignment.Left;
+                var memberAccess = (MemberAccessExpressionSyntax)assignment.Left;
 
-                    if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
-                        return false;
+                if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
+                    return false;
 
-                    if (assignment.Right.Kind() != SyntaxKind.IdentifierName)
-                        return false;
+                if (assignment.Right.Kind() != SyntaxKind.IdentifierName)
+                    return false;
 
-                    var identifierName = (IdentifierNameSyntax)assignment.Right;
+                var identifierName = (IdentifierNameSyntax)assignment.Right;
 
-                    if (identifierName.Identifier.ValueText != "value")
-                        return false;
+                if (identifierName.Identifier.ValueText != "value")
+                    return false;
 
-                    SimpleNameSyntax simpleName = memberAccess.Name;
+                SimpleNameSyntax simpleName = memberAccess.Name;
 
-                    if (simpleName is null)
-                        return false;
+                if (simpleName is null)
+                    return false;
 
-                    IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
+                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-                    if (propertySymbol is null)
-                        return false;
+                if (propertySymbol is null)
+                    return false;
 
-                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                    if (overriddenProperty is null)
-                        return false;
+                if (overriddenProperty is null)
+                    return false;
 
-                    ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
+                ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
 
-                    return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol);
-                }
+                return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol);
+            }
             case SyntaxKind.UnknownAccessorDeclaration:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(accessor);
-                    return false;
-                }
+            {
+                SyntaxDebug.Fail(accessor);
+                return false;
+            }
         }
     }
 
@@ -434,87 +434,87 @@ public sealed class RemoveRedundantOverridingMemberAnalyzer : BaseDiagnosticAnal
         switch (accessor.Kind())
         {
             case SyntaxKind.GetAccessorDeclaration:
-                {
-                    ExpressionSyntax expression = GetGetAccessorExpression(accessor);
+            {
+                ExpressionSyntax expression = GetGetAccessorExpression(accessor);
 
-                    if (expression is not ElementAccessExpressionSyntax elementAccess)
-                        return false;
+                if (expression is not ElementAccessExpressionSyntax elementAccess)
+                    return false;
 
-                    if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
-                        return false;
+                if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
+                    return false;
 
-                    if (elementAccess.ArgumentList is null)
-                        return false;
+                if (elementAccess.ArgumentList is null)
+                    return false;
 
-                    IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
+                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
 
-                    if (propertySymbol is null)
-                        return false;
+                if (propertySymbol is null)
+                    return false;
 
-                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                    if (overriddenProperty is null)
-                        return false;
+                if (overriddenProperty is null)
+                    return false;
 
-                    ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
+                ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
 
-                    return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol)
-                        && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
-                        && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters);
-                }
+                return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol)
+                    && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
+                    && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters);
+            }
             case SyntaxKind.SetAccessorDeclaration:
-                {
-                    ExpressionSyntax expression = GetSetAccessorExpression(accessor);
+            {
+                ExpressionSyntax expression = GetSetAccessorExpression(accessor);
 
-                    SimpleAssignmentExpressionInfo assignment = SyntaxInfo.SimpleAssignmentExpressionInfo(expression);
+                SimpleAssignmentExpressionInfo assignment = SyntaxInfo.SimpleAssignmentExpressionInfo(expression);
 
-                    if (!assignment.Success)
-                        return false;
+                if (!assignment.Success)
+                    return false;
 
-                    if (assignment.Left.Kind() != SyntaxKind.ElementAccessExpression)
-                        return false;
+                if (assignment.Left.Kind() != SyntaxKind.ElementAccessExpression)
+                    return false;
 
-                    var elementAccess = (ElementAccessExpressionSyntax)assignment.Left;
+                var elementAccess = (ElementAccessExpressionSyntax)assignment.Left;
 
-                    if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
-                        return false;
+                if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
+                    return false;
 
-                    if (elementAccess.ArgumentList is null)
-                        return false;
+                if (elementAccess.ArgumentList is null)
+                    return false;
 
-                    if (assignment.Right.Kind() != SyntaxKind.IdentifierName)
-                        return false;
+                if (assignment.Right.Kind() != SyntaxKind.IdentifierName)
+                    return false;
 
-                    var identifierName = (IdentifierNameSyntax)assignment.Right;
+                var identifierName = (IdentifierNameSyntax)assignment.Right;
 
-                    if (identifierName.Identifier.ValueText != "value")
-                        return false;
+                if (identifierName.Identifier.ValueText != "value")
+                    return false;
 
-                    IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
+                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
 
-                    if (propertySymbol is null)
-                        return false;
+                if (propertySymbol is null)
+                    return false;
 
-                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                    if (overriddenProperty is null)
-                        return false;
+                if (overriddenProperty is null)
+                    return false;
 
-                    ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
+                ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
 
-                    return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol)
-                        && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
-                        && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters);
-                }
+                return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol)
+                    && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
+                    && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters);
+            }
             case SyntaxKind.UnknownAccessorDeclaration:
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(accessor);
-                    return false;
-                }
+            {
+                SyntaxDebug.Fail(accessor);
+                return false;
+            }
         }
     }
 

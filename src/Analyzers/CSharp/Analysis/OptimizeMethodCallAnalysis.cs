@@ -267,30 +267,30 @@ internal static class OptimizeMethodCallAnalysis
             switch (parent.Kind())
             {
                 case SyntaxKind.LogicalNotExpression:
+                {
+                    var logicalNot = (PrefixUnaryExpressionSyntax)parent;
+
+                    isNegation = true;
+
+                    if (logicalNot.IsParentKind(SyntaxKind.IfStatement))
                     {
-                        var logicalNot = (PrefixUnaryExpressionSyntax)parent;
+                        var ifStatement2 = (IfStatementSyntax)logicalNot.Parent;
 
-                        isNegation = true;
-
-                        if (logicalNot.IsParentKind(SyntaxKind.IfStatement))
-                        {
-                            var ifStatement2 = (IfStatementSyntax)logicalNot.Parent;
-
-                            if (ifStatement2.Condition == logicalNot)
-                                return ifStatement2;
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.IfStatement:
-                    {
-                        var ifStatement2 = (IfStatementSyntax)parent;
-
-                        if (ifStatement2.Condition == invocationExpression)
+                        if (ifStatement2.Condition == logicalNot)
                             return ifStatement2;
-
-                        break;
                     }
+
+                    break;
+                }
+                case SyntaxKind.IfStatement:
+                {
+                    var ifStatement2 = (IfStatementSyntax)parent;
+
+                    if (ifStatement2.Condition == invocationExpression)
+                        return ifStatement2;
+
+                    break;
+                }
             }
 
             return null;

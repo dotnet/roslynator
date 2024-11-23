@@ -48,66 +48,66 @@ public sealed class ClassDeclarationCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.MakeClassStatic:
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        ISymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
+                    ISymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 
-                        ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
+                    ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
 
-                        if (!syntaxReferences.Any())
-                            break;
-
-                        ModifiersCodeFixRegistrator.AddModifier(
-                            context,
-                            diagnostic,
-                            ImmutableArray.CreateRange(syntaxReferences, f => f.GetSyntax()),
-                            SyntaxKind.StaticKeyword,
-                            title: "Make class static");
-
+                    if (!syntaxReferences.Any())
                         break;
-                    }
+
+                    ModifiersCodeFixRegistrator.AddModifier(
+                        context,
+                        diagnostic,
+                        ImmutableArray.CreateRange(syntaxReferences, f => f.GetSyntax()),
+                        SyntaxKind.StaticKeyword,
+                        title: "Make class static");
+
+                    break;
+                }
                 case DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations:
-                    {
-                        ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, classDeclaration, SyntaxKind.StaticKeyword);
-                        break;
-                    }
+                {
+                    ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, classDeclaration, SyntaxKind.StaticKeyword);
+                    break;
+                }
                 case DiagnosticIdentifiers.ImplementExceptionConstructors:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Generate exception constructors",
-                            ct =>
-                            {
-                                return ImplementExceptionConstructorsAsync(
-                                    context.Document,
-                                    classDeclaration,
-                                    ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Generate exception constructors",
+                        ct =>
+                        {
+                            return ImplementExceptionConstructorsAsync(
+                                context.Document,
+                                classDeclaration,
+                                ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseAttributeUsageAttribute:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use AttributeUsageAttribute",
-                            ct => UseAttributeUsageAttributeAsync(context.Document, classDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use AttributeUsageAttribute",
+                        ct => UseAttributeUsageAttributeAsync(context.Document, classDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.MakeClassSealed:
-                    {
-                        ModifiersCodeFixRegistrator.AddModifier(
-                            context,
-                            diagnostic,
-                            classDeclaration,
-                            SyntaxKind.SealedKeyword);
+                {
+                    ModifiersCodeFixRegistrator.AddModifier(
+                        context,
+                        diagnostic,
+                        classDeclaration,
+                        SyntaxKind.SealedKeyword);
 
-                        break;
-                    }
+                    break;
+                }
             }
         }
     }

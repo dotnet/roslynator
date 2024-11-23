@@ -602,22 +602,22 @@ internal static class DocumentationCommentGenerator
                     {
                         case "member":
                         case "doc":
+                        {
+                            try
                             {
-                                try
-                                {
-                                    return reader.ReadInnerXml();
-                                }
-                                catch (XmlException ex)
-                                {
-                                    Debug.Fail(symbol.ToDisplayString() + "\r\n\r\n" + ex.Message + "\r\n\r\n" + xml);
-                                    return null;
-                                }
+                                return reader.ReadInnerXml();
                             }
-                        default:
+                            catch (XmlException ex)
                             {
-                                Debug.Fail(reader.Name);
+                                Debug.Fail(symbol.ToDisplayString() + "\r\n\r\n" + ex.Message + "\r\n\r\n" + xml);
                                 return null;
                             }
+                        }
+                        default:
+                        {
+                            Debug.Fail(reader.Name);
+                            return null;
+                        }
                     }
                 }
             }

@@ -26,49 +26,49 @@ internal static class UseYieldReturnInsteadOfReturnRefactoring
         switch (replacementKind)
         {
             case SyntaxKind.YieldReturnStatement:
-                {
-                    YieldStatementSyntax yieldReturnStatement = YieldStatement(
-                        SyntaxKind.YieldReturnStatement,
-                        Token(returnKeyword.LeadingTrivia, SyntaxKind.YieldKeyword, TriviaList(Space)),
-                        returnKeyword.WithoutLeadingTrivia(),
-                        expression,
-                        returnStatement.SemicolonToken);
+            {
+                YieldStatementSyntax yieldReturnStatement = YieldStatement(
+                    SyntaxKind.YieldReturnStatement,
+                    Token(returnKeyword.LeadingTrivia, SyntaxKind.YieldKeyword, TriviaList(Space)),
+                    returnKeyword.WithoutLeadingTrivia(),
+                    expression,
+                    returnStatement.SemicolonToken);
 
-                    return document.ReplaceNodeAsync(returnStatement, yieldReturnStatement, cancellationToken);
-                }
+                return document.ReplaceNodeAsync(returnStatement, yieldReturnStatement, cancellationToken);
+            }
             case SyntaxKind.ForEachStatement:
-                {
-                    string name = NameGenerator.Default.EnsureUniqueLocalName(
-                        DefaultNames.ForEachVariable,
-                        semanticModel,
-                        returnStatement.SpanStart,
-                        cancellationToken: cancellationToken);
+            {
+                string name = NameGenerator.Default.EnsureUniqueLocalName(
+                    DefaultNames.ForEachVariable,
+                    semanticModel,
+                    returnStatement.SpanStart,
+                    cancellationToken: cancellationToken);
 
-                    YieldStatementSyntax yieldReturnStatement = YieldStatement(
-                        SyntaxKind.YieldReturnStatement,
-                        Token(default(SyntaxTriviaList), SyntaxKind.YieldKeyword, TriviaList(Space)),
-                        returnKeyword.WithoutLeadingTrivia(),
-                        IdentifierName(name),
-                        returnStatement.SemicolonToken.WithoutTrailingTrivia());
+                YieldStatementSyntax yieldReturnStatement = YieldStatement(
+                    SyntaxKind.YieldReturnStatement,
+                    Token(default(SyntaxTriviaList), SyntaxKind.YieldKeyword, TriviaList(Space)),
+                    returnKeyword.WithoutLeadingTrivia(),
+                    IdentifierName(name),
+                    returnStatement.SemicolonToken.WithoutTrailingTrivia());
 
-                    StatementSyntax newNode = ForEachStatement(
-                        VarType(),
-                        name,
-                        expression,
-                        Block(yieldReturnStatement));
+                StatementSyntax newNode = ForEachStatement(
+                    VarType(),
+                    name,
+                    expression,
+                    Block(yieldReturnStatement));
 
-                    if (returnStatement.IsEmbedded())
-                        newNode = Block(newNode);
+                if (returnStatement.IsEmbedded())
+                    newNode = Block(newNode);
 
-                    newNode = newNode.WithTriviaFrom(returnStatement);
+                newNode = newNode.WithTriviaFrom(returnStatement);
 
-                    return document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
-                }
+                return document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
+            }
             default:
-                {
-                    Debug.Fail("");
-                    return Task.FromResult(document);
-                }
+            {
+                Debug.Fail("");
+                return Task.FromResult(document);
+            }
         }
     }
 }

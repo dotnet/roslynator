@@ -100,35 +100,35 @@ internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
                 switch (value[i])
                 {
                     case '{':
-                        {
-                            return;
-                        }
+                    {
+                        return;
+                    }
                     case '}':
+                    {
+                        i = -1;
+                        return;
+                    }
+                    case '\\':
+                    {
+                        i++;
+
+                        if (i < length)
                         {
-                            i = -1;
+                            char ch = value[i];
+
+                            if (ch == '{'
+                                || ch == '}')
+                            {
+                                i++;
+                            }
+
+                            continue;
+                        }
+                        else
+                        {
                             return;
                         }
-                    case '\\':
-                        {
-                            i++;
-
-                            if (i < length)
-                            {
-                                char ch = value[i];
-
-                                if (ch == '{'
-                                    || ch == '}')
-                                {
-                                    i++;
-                                }
-
-                                continue;
-                            }
-                            else
-                            {
-                                return;
-                            }
-                        }
+                    }
                 }
 
                 i++;
@@ -142,49 +142,49 @@ internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
                 switch (value[i])
                 {
                     case '{':
-                        {
-                            i = -1;
-                            return;
-                        }
+                    {
+                        i = -1;
+                        return;
+                    }
                     case '}':
-                        {
-                            return;
-                        }
+                    {
+                        return;
+                    }
                     case '(':
+                    {
+                        i++;
+
+                        if (i < length
+                            && value[i] == ')')
                         {
-                            i++;
-
-                            if (i < length
-                                && value[i] == ')')
-                            {
-                                break;
-                            }
-
-                            i = -1;
-                            return;
+                            break;
                         }
+
+                        i = -1;
+                        return;
+                    }
                     case ',':
+                    {
+                        i++;
+                        if (i < length
+                            && value[i] == 'n')
                         {
                             i++;
                             if (i < length
-                                && value[i] == 'n')
+                                && value[i] == 'q')
                             {
                                 i++;
                                 if (i < length
-                                    && value[i] == 'q')
+                                    && value[i] == '}')
                                 {
-                                    i++;
-                                    if (i < length
-                                        && value[i] == '}')
-                                    {
-                                        return;
-                                    }
+                                    return;
                                 }
                             }
-
-                            i = -1;
-                            return;
                         }
+
+                        i = -1;
+                        return;
+                    }
                 }
 
                 i++;
@@ -279,43 +279,43 @@ internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
                 switch (value[i])
                 {
                     case '{':
-                        {
-                            sb.Append(value, lastPos, i - lastPos);
-                            return;
-                        }
+                    {
+                        sb.Append(value, lastPos, i - lastPos);
+                        return;
+                    }
                     case '\\':
+                    {
+                        sb.Append(value, lastPos, i - lastPos);
+
+                        i++;
+
+                        if (i < length)
                         {
-                            sb.Append(value, lastPos, i - lastPos);
+                            char ch = value[i];
 
-                            i++;
-
-                            if (i < length)
+                            if (ch == '{'
+                                || ch == '}')
                             {
-                                char ch = value[i];
-
-                                if (ch == '{'
-                                    || ch == '}')
-                                {
-                                    sb.Append(ch);
-                                    sb.Append(ch);
-                                    i++;
-                                    lastPos = i;
-                                    continue;
-                                }
+                                sb.Append(ch);
+                                sb.Append(ch);
+                                i++;
+                                lastPos = i;
+                                continue;
                             }
+                        }
 
-                            sb.Append((isVerbatim) ? "\\" : "\\\\");
-                            lastPos = i;
-                            continue;
-                        }
+                        sb.Append((isVerbatim) ? "\\" : "\\\\");
+                        lastPos = i;
+                        continue;
+                    }
                     case '"':
-                        {
-                            sb.Append(value, lastPos, i - lastPos);
-                            sb.Append((isVerbatim) ? "\"\"" : "\\\"");
-                            i++;
-                            lastPos = i;
-                            continue;
-                        }
+                    {
+                        sb.Append(value, lastPos, i - lastPos);
+                        sb.Append((isVerbatim) ? "\"\"" : "\\\"");
+                        i++;
+                        lastPos = i;
+                        continue;
+                    }
                 }
 
                 i++;
@@ -329,26 +329,26 @@ internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
                 switch (value[i])
                 {
                     case '}':
-                        {
-                            sb.Append('{');
-                            sb.Append(value, lastPos, i - lastPos);
-                            sb.Append('}');
-                            return;
-                        }
+                    {
+                        sb.Append('{');
+                        sb.Append(value, lastPos, i - lastPos);
+                        sb.Append('}');
+                        return;
+                    }
                     case '(':
-                        {
-                            i++;
-                            break;
-                        }
+                    {
+                        i++;
+                        break;
+                    }
                     case ',':
-                        {
-                            sb.Append('{');
-                            sb.Append(value, lastPos, i - lastPos);
-                            sb.Append('}');
+                    {
+                        sb.Append('{');
+                        sb.Append(value, lastPos, i - lastPos);
+                        sb.Append('}');
 
-                            i += 3;
-                            return;
-                        }
+                        i += 3;
+                        return;
+                    }
                 }
 
                 i++;

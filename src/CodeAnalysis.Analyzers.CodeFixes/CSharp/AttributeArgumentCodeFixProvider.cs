@@ -40,19 +40,19 @@ public sealed class AttributeArgumentCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.UnknownLanguageName:
+            {
+                foreach (string languageName in RoslynUtility.WellKnownLanguageNames)
                 {
-                    foreach (string languageName in RoslynUtility.WellKnownLanguageNames)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Change language name to '{languageName}'",
-                            ct => ChangeLanguageNameAsync(document, attributeArgument, languageName, ct),
-                            GetEquivalenceKey(diagnostic, languageName));
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Change language name to '{languageName}'",
+                        ct => ChangeLanguageNameAsync(document, attributeArgument, languageName, ct),
+                        GetEquivalenceKey(diagnostic, languageName));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-
-                    break;
+                    context.RegisterCodeFix(codeAction, diagnostic);
                 }
+
+                break;
+            }
         }
     }
 

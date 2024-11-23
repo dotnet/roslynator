@@ -69,43 +69,12 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.FormatDocumentationCommentSummary:
-                    {
-                        XmlElementSyntax summaryElement = documentationComment.SummaryElement();
+                {
+                    XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
-                        if (summaryElement?.StartTag?.IsMissing == false
-                            && summaryElement.EndTag?.IsMissing == false
-                            && summaryElement.IsSingleLine(includeExteriorTrivia: false, trim: false))
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Format summary on multiple lines",
-                                ct => FormatSummaryOnMultipleLinesAsync(context.Document, documentationComment, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-                        else
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Format summary on a single line",
-                                ct => FormatSummaryOnSingleLineAsync(context.Document, documentationComment, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        break;
-                    }
-                case DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Format summary on a single line",
-                            ct => FormatSummaryOnSingleLineAsync(context.Document, documentationComment, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines:
+                    if (summaryElement?.StartTag?.IsMissing == false
+                        && summaryElement.EndTag?.IsMissing == false
+                        && summaryElement.IsSingleLine(includeExteriorTrivia: false, trim: false))
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Format summary on multiple lines",
@@ -113,32 +82,63 @@ public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCo
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
                     }
+                    else
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Format summary on a single line",
+                            ct => FormatSummaryOnSingleLineAsync(context.Document, documentationComment, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
+
+                    break;
+                }
+                case DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Format summary on a single line",
+                        ct => FormatSummaryOnSingleLineAsync(context.Document, documentationComment, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+                case DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Format summary on multiple lines",
+                        ct => FormatSummaryOnMultipleLinesAsync(context.Document, documentationComment, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.AddParamElementToDocumentationComment:
-                    {
-                        var refactoring = new AddParamElementToDocumentationCommentRefactoring();
+                {
+                    var refactoring = new AddParamElementToDocumentationCommentRefactoring();
 
-                        CodeAction codeAction = CodeAction.Create(
-                            "Add 'param' element",
-                            ct => refactoring.RefactorAsync(context.Document, documentationComment, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        "Add 'param' element",
+                        ct => refactoring.RefactorAsync(context.Document, documentationComment, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment:
-                    {
-                        var refactoring = new AddTypeParamElementToDocumentationCommentRefactoring();
+                {
+                    var refactoring = new AddTypeParamElementToDocumentationCommentRefactoring();
 
-                        CodeAction codeAction = CodeAction.Create(
-                            "Add 'typeparam' element",
-                            ct => refactoring.RefactorAsync(context.Document, documentationComment, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        "Add 'typeparam' element",
+                        ct => refactoring.RefactorAsync(context.Document, documentationComment, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

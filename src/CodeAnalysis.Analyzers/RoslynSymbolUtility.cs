@@ -16,9 +16,9 @@ internal static class RoslynSymbolUtility
             case "SyntaxNodeOrTokenList":
             case "SyntaxTokenList":
             case "SyntaxTriviaList":
-                {
-                    return typeSymbol.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis);
-                }
+            {
+                return typeSymbol.ContainingNamespace.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis);
+            }
         }
 
         return false;

@@ -63,19 +63,19 @@ internal static class RemoveRedundantToStringCallAnalysis
                 switch (expression.Parent.Kind())
                 {
                     case SyntaxKind.Interpolation:
-                        {
-                            return IsNotHidden(methodSymbol, containingType);
-                        }
+                    {
+                        return IsNotHidden(methodSymbol, containingType);
+                    }
                     case SyntaxKind.AddExpression:
-                        {
-                            var addExpression = (BinaryExpressionSyntax)expression.Parent;
-                            if (addExpression.Right == expression)
-                                return semanticModel.GetTypeInfo(addExpression.Left, cancellationToken).Type?.SpecialType == SpecialType.System_String;
+                    {
+                        var addExpression = (BinaryExpressionSyntax)expression.Parent;
+                        if (addExpression.Right == expression)
+                            return semanticModel.GetTypeInfo(addExpression.Left, cancellationToken).Type?.SpecialType == SpecialType.System_String;
 
-                            return semanticModel.GetTypeInfo(addExpression.Right, cancellationToken).Type?.SpecialType == SpecialType.System_String
-                                && (addExpression.Right.WalkDownParentheses() is not InvocationExpressionSyntax invocationExpression2
-                                    || !IsToString(semanticModel.GetMethodSymbol(invocationExpression2, cancellationToken)));
-                        }
+                        return semanticModel.GetTypeInfo(addExpression.Right, cancellationToken).Type?.SpecialType == SpecialType.System_String
+                            && (addExpression.Right.WalkDownParentheses() is not InvocationExpressionSyntax invocationExpression2
+                                || !IsToString(semanticModel.GetMethodSymbol(invocationExpression2, cancellationToken)));
+                    }
                 }
             }
         }

@@ -49,24 +49,24 @@ public sealed class FileContainsNoCodeAnalyzer : BaseDiagnosticAnalyzer
                     case SyntaxKind.ElseDirectiveTrivia:
                     case SyntaxKind.ElifDirectiveTrivia:
                     case SyntaxKind.EndIfDirectiveTrivia:
-                        {
-                            return true;
-                        }
+                    {
+                        return true;
+                    }
                     case SyntaxKind.PragmaWarningDirectiveTrivia:
+                    {
+                        var pragma = (PragmaWarningDirectiveTriviaSyntax)trivia.GetStructure();
+
+                        foreach (ExpressionSyntax errorCode in pragma.ErrorCodes)
                         {
-                            var pragma = (PragmaWarningDirectiveTriviaSyntax)trivia.GetStructure();
-
-                            foreach (ExpressionSyntax errorCode in pragma.ErrorCodes)
+                            if (errorCode is IdentifierNameSyntax identifierName
+                                && string.Equals(identifierName.Identifier.ValueText, DiagnosticRules.FileContainsNoCode.Id, StringComparison.OrdinalIgnoreCase))
                             {
-                                if (errorCode is IdentifierNameSyntax identifierName
-                                    && string.Equals(identifierName.Identifier.ValueText, DiagnosticRules.FileContainsNoCode.Id, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    return true;
-                                }
+                                return true;
                             }
-
-                            break;
                         }
+
+                        break;
+                    }
                 }
 
                 return false;

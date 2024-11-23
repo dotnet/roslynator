@@ -44,105 +44,105 @@ public sealed class ObjectCreationExpressionCodeFixProvider : CompilerDiagnostic
         switch (diagnostic.Id)
         {
             case CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter:
+            {
+                if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor, context.Document, root.SyntaxTree))
+                    break;
+
+                if (!objectCreationExpression.Type.Span.Contains(diagnostic.Location.SourceSpan))
+                    return;
+
+                ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
+
+                if (argumentList?.Arguments.Any() == true)
+                    return;
+
+                InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
+
+                if (initializer is null)
+                    return;
+
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                List<ExpressionSyntax> expressions = null;
+
+                foreach (ExpressionSyntax expression in initializer.Expressions)
                 {
-                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor, context.Document, root.SyntaxTree))
-                        break;
-
-                    if (!objectCreationExpression.Type.Span.Contains(diagnostic.Location.SourceSpan))
-                        return;
-
-                    ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
-
-                    if (argumentList?.Arguments.Any() == true)
-                        return;
-
-                    InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
-
-                    if (initializer is null)
-                        return;
-
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    List<ExpressionSyntax> expressions = null;
-
-                    foreach (ExpressionSyntax expression in initializer.Expressions)
+                    if (expression is AssignmentExpressionSyntax assignment
+                        && semanticModel.GetDiagnostic(
+                            CompilerDiagnosticIdentifiers.CS0272_PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible,
+                            assignment.Left.Span,
+                            context.CancellationToken) is not null)
                     {
-                        if (expression is AssignmentExpressionSyntax assignment
-                            && semanticModel.GetDiagnostic(
-                                CompilerDiagnosticIdentifiers.CS0272_PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible,
-                                assignment.Left.Span,
-                                context.CancellationToken) is not null)
+                        (expressions ??= new List<ExpressionSyntax>()).Add(expression);
+                    }
+                }
+
+                if (expressions is null)
+                    return;
+
+                TypeSyntax type = objectCreationExpression.Type;
+
+                if (argumentList is null)
+                {
+                    argumentList = ArgumentList().WithTrailingTrivia(type.GetTrailingTrivia());
+                    type = type.WithoutTrailingTrivia();
+                }
+
+                SeparatedSyntaxList<ArgumentSyntax> arguments = expressions
+                    .Select(f => Argument(((AssignmentExpressionSyntax)f).Right))
+                    .ToSeparatedSyntaxList();
+
+                argumentList = argumentList.WithArguments(arguments);
+
+                ObjectCreationExpressionSyntax newObjectCreationExpression = objectCreationExpression.Update(
+                    objectCreationExpression.NewKeyword,
+                    type,
+                    argumentList,
+                    initializer);
+
+                SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(
+                    objectCreationExpression.SpanStart,
+                    newObjectCreationExpression,
+                    SpeculativeBindingOption.BindAsExpression);
+
+                if (symbolInfo.Symbol is IMethodSymbol methodSymbol
+                    && methodSymbol.MethodKind == MethodKind.Constructor)
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Move initializer expressions to constructor",
+                        ct =>
                         {
-                            (expressions ??= new List<ExpressionSyntax>()).Add(expression);
-                        }
-                    }
+                            InitializerExpressionSyntax newInitializer = initializer.RemoveNodes(expressions, SyntaxRefactorings.DefaultRemoveOptions);
 
-                    if (expressions is null)
-                        return;
-
-                    TypeSyntax type = objectCreationExpression.Type;
-
-                    if (argumentList is null)
-                    {
-                        argumentList = ArgumentList().WithTrailingTrivia(type.GetTrailingTrivia());
-                        type = type.WithoutTrailingTrivia();
-                    }
-
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = expressions
-                        .Select(f => Argument(((AssignmentExpressionSyntax)f).Right))
-                        .ToSeparatedSyntaxList();
-
-                    argumentList = argumentList.WithArguments(arguments);
-
-                    ObjectCreationExpressionSyntax newObjectCreationExpression = objectCreationExpression.Update(
-                        objectCreationExpression.NewKeyword,
-                        type,
-                        argumentList,
-                        initializer);
-
-                    SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(
-                        objectCreationExpression.SpanStart,
-                        newObjectCreationExpression,
-                        SpeculativeBindingOption.BindAsExpression);
-
-                    if (symbolInfo.Symbol is IMethodSymbol methodSymbol
-                        && methodSymbol.MethodKind == MethodKind.Constructor)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Move initializer expressions to constructor",
-                            ct =>
+                            if (!newInitializer.Expressions.Any()
+                                && newInitializer
+                                    .DescendantTrivia(TextSpan.FromBounds(newInitializer.OpenBraceToken.SpanStart, newInitializer.CloseBraceToken.SpanStart))
+                                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                             {
-                                InitializerExpressionSyntax newInitializer = initializer.RemoveNodes(expressions, SyntaxRefactorings.DefaultRemoveOptions);
+                                newInitializer = null;
 
-                                if (!newInitializer.Expressions.Any()
-                                    && newInitializer
-                                        .DescendantTrivia(TextSpan.FromBounds(newInitializer.OpenBraceToken.SpanStart, newInitializer.CloseBraceToken.SpanStart))
-                                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                                {
-                                    newInitializer = null;
-
-                                    ArgumentListSyntax newArgumentList = newObjectCreationExpression
-                                        .ArgumentList
-                                        .TrimTrailingTrivia()
-                                        .AppendToTrailingTrivia(initializer.GetTrailingTrivia());
-
-                                    newObjectCreationExpression = newObjectCreationExpression
-                                        .WithArgumentList(newArgumentList);
-                                }
+                                ArgumentListSyntax newArgumentList = newObjectCreationExpression
+                                    .ArgumentList
+                                    .TrimTrailingTrivia()
+                                    .AppendToTrailingTrivia(initializer.GetTrailingTrivia());
 
                                 newObjectCreationExpression = newObjectCreationExpression
-                                    .WithInitializer(newInitializer)
-                                    .WithFormatterAnnotation();
+                                    .WithArgumentList(newArgumentList);
+                            }
 
-                                return context.Document.ReplaceNodeAsync(objectCreationExpression, newObjectCreationExpression, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                            newObjectCreationExpression = newObjectCreationExpression
+                                .WithInitializer(newInitializer)
+                                .WithFormatterAnnotation();
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
+                            return context.Document.ReplaceNodeAsync(objectCreationExpression, newObjectCreationExpression, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                    break;
+                    context.RegisterCodeFix(codeAction, diagnostic);
                 }
+
+                break;
+            }
         }
     }
 }

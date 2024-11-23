@@ -44,25 +44,25 @@ public sealed class UnnecessaryAssignmentCodeFixProvider : BaseCodeFixProvider
         switch (statement)
         {
             case IfStatementSyntax ifStatement:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        Title,
-                        ct => RefactorAsync(document, ifStatement, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => RefactorAsync(document, ifStatement, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             case SwitchStatementSyntax switchStatement:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        Title,
-                        ct => RefactorAsync(document, switchStatement, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => RefactorAsync(document, switchStatement, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 

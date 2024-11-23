@@ -45,62 +45,62 @@ internal abstract class SymbolDefinitionComparer : IComparer<ISymbol>
         switch (x.Kind)
         {
             case SymbolKind.Namespace:
+            {
+                var namespaceSymbol = (INamespaceSymbol)x;
+
+                switch (y.Kind)
                 {
-                    var namespaceSymbol = (INamespaceSymbol)x;
-
-                    switch (y.Kind)
-                    {
-                        case SymbolKind.Namespace:
-                            return NamespaceComparer.Compare(namespaceSymbol, (INamespaceSymbol)y);
-                        case SymbolKind.NamedType:
-                        case SymbolKind.Event:
-                        case SymbolKind.Field:
-                        case SymbolKind.Method:
-                        case SymbolKind.Property:
-                            return -CompareSymbolAndNamespaceSymbol(y, namespaceSymbol);
-                    }
-
-                    break;
+                    case SymbolKind.Namespace:
+                        return NamespaceComparer.Compare(namespaceSymbol, (INamespaceSymbol)y);
+                    case SymbolKind.NamedType:
+                    case SymbolKind.Event:
+                    case SymbolKind.Field:
+                    case SymbolKind.Method:
+                    case SymbolKind.Property:
+                        return -CompareSymbolAndNamespaceSymbol(y, namespaceSymbol);
                 }
+
+                break;
+            }
             case SymbolKind.NamedType:
+            {
+                var typeSymbol = (INamedTypeSymbol)x;
+
+                switch (y.Kind)
                 {
-                    var typeSymbol = (INamedTypeSymbol)x;
-
-                    switch (y.Kind)
-                    {
-                        case SymbolKind.Namespace:
-                            return CompareSymbolAndNamespaceSymbol(typeSymbol, (INamespaceSymbol)y);
-                        case SymbolKind.NamedType:
-                            return CompareNamedTypeSymbol(typeSymbol, (INamedTypeSymbol)y);
-                        case SymbolKind.Event:
-                        case SymbolKind.Field:
-                        case SymbolKind.Method:
-                        case SymbolKind.Property:
-                            return -CompareSymbolAndNamedTypeSymbol(y, typeSymbol);
-                    }
-
-                    break;
+                    case SymbolKind.Namespace:
+                        return CompareSymbolAndNamespaceSymbol(typeSymbol, (INamespaceSymbol)y);
+                    case SymbolKind.NamedType:
+                        return CompareNamedTypeSymbol(typeSymbol, (INamedTypeSymbol)y);
+                    case SymbolKind.Event:
+                    case SymbolKind.Field:
+                    case SymbolKind.Method:
+                    case SymbolKind.Property:
+                        return -CompareSymbolAndNamedTypeSymbol(y, typeSymbol);
                 }
+
+                break;
+            }
             case SymbolKind.Event:
             case SymbolKind.Field:
             case SymbolKind.Method:
             case SymbolKind.Property:
+            {
+                switch (y.Kind)
                 {
-                    switch (y.Kind)
-                    {
-                        case SymbolKind.Namespace:
-                            return CompareSymbolAndNamespaceSymbol(x, (INamespaceSymbol)y);
-                        case SymbolKind.NamedType:
-                            return CompareSymbolAndNamedTypeSymbol(x, (INamedTypeSymbol)y);
-                        case SymbolKind.Event:
-                        case SymbolKind.Field:
-                        case SymbolKind.Method:
-                        case SymbolKind.Property:
-                            return CompareMemberSymbol(x, y);
-                    }
-
-                    break;
+                    case SymbolKind.Namespace:
+                        return CompareSymbolAndNamespaceSymbol(x, (INamespaceSymbol)y);
+                    case SymbolKind.NamedType:
+                        return CompareSymbolAndNamedTypeSymbol(x, (INamedTypeSymbol)y);
+                    case SymbolKind.Event:
+                    case SymbolKind.Field:
+                    case SymbolKind.Method:
+                    case SymbolKind.Property:
+                        return CompareMemberSymbol(x, y);
                 }
+
+                break;
+            }
         }
 
         throw new InvalidOperationException();

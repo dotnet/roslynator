@@ -53,86 +53,86 @@ public sealed class IfStatementCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.MergeIfWithNestedIf:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Merge 'if' with nested 'if'",
-                            ct => MergeIfWithNestedIfAsync(context.Document, ifStatement, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Merge 'if' with nested 'if'",
+                        ct => MergeIfWithNestedIfAsync(context.Document, ifStatement, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf:
                 case DiagnosticIdentifiers.ConvertIfToReturnStatement:
                 case DiagnosticIdentifiers.ConvertIfToAssignment:
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        IfAnalysis analysis = IfAnalysis.Analyze(
-                            ifStatement,
-                            IfStatementAnalyzer.AnalysisOptions,
-                            semanticModel,
-                            context.CancellationToken)
-                            .First();
+                    IfAnalysis analysis = IfAnalysis.Analyze(
+                        ifStatement,
+                        IfStatementAnalyzer.AnalysisOptions,
+                        semanticModel,
+                        context.CancellationToken)
+                        .First();
 
-                        CodeAction codeAction = CodeAction.Create(
-                            analysis.Title,
-                            ct => IfRefactoring.RefactorAsync(context.Document, analysis, ct),
-                            GetEquivalenceKey(diagnostic));
+                    CodeAction codeAction = CodeAction.Create(
+                        analysis.Title,
+                        ct => IfRefactoring.RefactorAsync(context.Document, analysis, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.ReduceIfNesting:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Invert if",
-                            ct =>
-                            {
-                                return ReduceIfNestingRefactoring.RefactorAsync(
-                                    context.Document,
-                                    ifStatement,
-                                    (SyntaxKind)Enum.Parse(typeof(SyntaxKind), diagnostic.Properties["JumpKind"]),
-                                    recursive: false,
-                                    cancellationToken: ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Invert if",
+                        ct =>
+                        {
+                            return ReduceIfNestingRefactoring.RefactorAsync(
+                                context.Document,
+                                ifStatement,
+                                (SyntaxKind)Enum.Parse(typeof(SyntaxKind), diagnostic.Properties["JumpKind"]),
+                                recursive: false,
+                                cancellationToken: ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.UseExceptionFilter:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use exception filter",
-                            ct =>
-                            {
-                                return UseExceptionFilterAsync(
-                                    context.Document,
-                                    ifStatement,
-                                    cancellationToken: ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use exception filter",
+                        ct =>
+                        {
+                            return UseExceptionFilterAsync(
+                                context.Document,
+                                ifStatement,
+                                cancellationToken: ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
                 case DiagnosticIdentifiers.SimplifyArgumentNullCheck:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Call ArgumentNullException.ThrowIfNull",
-                            ct =>
-                            {
-                                return CallArgumentNullExceptionThrowIfNullAsync(
-                                    context.Document,
-                                    ifStatement,
-                                    cancellationToken: ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Call ArgumentNullException.ThrowIfNull",
+                        ct =>
+                        {
+                            return CallArgumentNullExceptionThrowIfNullAsync(
+                                context.Document,
+                                ifStatement,
+                                cancellationToken: ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

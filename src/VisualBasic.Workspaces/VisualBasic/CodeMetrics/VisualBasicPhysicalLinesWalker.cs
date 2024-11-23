@@ -54,17 +54,17 @@ internal class VisualBasicPhysicalLinesWalker : VisualBasicLinesWalker
                 {
                     case SyntaxKind.EndOfLineTrivia:
                     case SyntaxKind.CommentTrivia:
-                        {
-                            return true;
-                        }
+                    {
+                        return true;
+                    }
                     case SyntaxKind.WhitespaceTrivia:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                     default:
-                        {
-                            return false;
-                        }
+                    {
+                        return false;
+                    }
                 }
             }
 

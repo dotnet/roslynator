@@ -153,10 +153,10 @@ internal static class AttributeListRefactoring
             case SyntaxKind.RemoveAccessorDeclaration:
                 return ((AccessorDeclarationSyntax)node).AttributeLists;
             default:
-                {
-                    SyntaxDebug.Assert(node.IsKind(SyntaxKind.GlobalStatement), node);
-                    return default;
-                }
+            {
+                SyntaxDebug.Assert(node.IsKind(SyntaxKind.GlobalStatement), node);
+                return default;
+            }
         }
     }
 
@@ -216,10 +216,10 @@ internal static class AttributeListRefactoring
             case SyntaxKind.RemoveAccessorDeclaration:
                 return ((AccessorDeclarationSyntax)node).WithAttributeLists(attributeLists);
             default:
-                {
-                    SyntaxDebug.Fail(node);
-                    return node;
-                }
+            {
+                SyntaxDebug.Fail(node);
+                return node;
+            }
         }
     }
 }

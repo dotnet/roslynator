@@ -143,19 +143,19 @@ public sealed class LocalDeclarationStatementAnalyzer : BaseDiagnosticAnalyzer
         switch (typeSymbol.SpecialType)
         {
             case SpecialType.System_Boolean:
-                {
-                    if (CSharpFacts.IsBooleanLiteralExpression(expression.Kind()))
-                        return true;
+            {
+                if (CSharpFacts.IsBooleanLiteralExpression(expression.Kind()))
+                    return true;
 
-                    break;
-                }
+                break;
+            }
             case SpecialType.System_Char:
-                {
-                    if (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
-                        return true;
+            {
+                if (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
+                    return true;
 
-                    break;
-                }
+                break;
+            }
             case SpecialType.System_SByte:
             case SpecialType.System_Byte:
             case SpecialType.System_Int16:
@@ -167,24 +167,24 @@ public sealed class LocalDeclarationStatementAnalyzer : BaseDiagnosticAnalyzer
             case SpecialType.System_Decimal:
             case SpecialType.System_Single:
             case SpecialType.System_Double:
-                {
-                    if (expression.IsKind(SyntaxKind.NumericLiteralExpression))
-                        return true;
+            {
+                if (expression.IsKind(SyntaxKind.NumericLiteralExpression))
+                    return true;
 
-                    break;
-                }
+                break;
+            }
             case SpecialType.System_String:
+            {
+                switch (expression.Kind())
                 {
-                    switch (expression.Kind())
-                    {
-                        case SyntaxKind.StringLiteralExpression:
-                            return true;
-                        case SyntaxKind.InterpolatedStringExpression:
-                            return false;
-                    }
-
-                    break;
+                    case SyntaxKind.StringLiteralExpression:
+                        return true;
+                    case SyntaxKind.InterpolatedStringExpression:
+                        return false;
                 }
+
+                break;
+            }
         }
 
         return semanticModel.HasConstantValue(expression, cancellationToken);

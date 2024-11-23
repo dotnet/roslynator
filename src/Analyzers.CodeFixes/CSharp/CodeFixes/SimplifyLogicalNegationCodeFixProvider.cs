@@ -65,56 +65,56 @@ public sealed class SimplifyLogicalNegationCodeFixProvider : BaseCodeFixProvider
         {
             case SyntaxKind.TrueLiteralExpression:
             case SyntaxKind.FalseLiteralExpression:
-                {
-                    LiteralExpressionSyntax newNode = BooleanLiteralExpression(expression.Kind() == SyntaxKind.FalseLiteralExpression);
+            {
+                LiteralExpressionSyntax newNode = BooleanLiteralExpression(expression.Kind() == SyntaxKind.FalseLiteralExpression);
 
-                    newNode = newNode.WithTriviaFrom(expression);
+                newNode = newNode.WithTriviaFrom(expression);
 
-                    return operand.ReplaceNode(expression, newNode);
-                }
+                return operand.ReplaceNode(expression, newNode);
+            }
             case SyntaxKind.LogicalNotExpression:
-                {
-                    return ((PrefixUnaryExpressionSyntax)expression).Operand;
-                }
+            {
+                return ((PrefixUnaryExpressionSyntax)expression).Operand;
+            }
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
             case SyntaxKind.LessThanExpression:
             case SyntaxKind.LessThanOrEqualExpression:
             case SyntaxKind.GreaterThanExpression:
             case SyntaxKind.GreaterThanOrEqualExpression:
-                {
-                    BinaryExpressionSyntax newExpression = SyntaxLogicalInverter.GetInstance(document).InvertBinaryExpression((BinaryExpressionSyntax)expression);
+            {
+                BinaryExpressionSyntax newExpression = SyntaxLogicalInverter.GetInstance(document).InvertBinaryExpression((BinaryExpressionSyntax)expression);
 
-                    return operand.ReplaceNode(expression, newExpression);
-                }
+                return operand.ReplaceNode(expression, newExpression);
+            }
             case SyntaxKind.InvocationExpression:
-                {
-                    var invocationExpression = (InvocationExpressionSyntax)expression;
+            {
+                var invocationExpression = (InvocationExpressionSyntax)expression;
 
-                    var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
+                var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
 
-                    ExpressionSyntax lambdaExpression = invocationExpression.ArgumentList.Arguments[0].Expression.WalkDownParentheses();
+                ExpressionSyntax lambdaExpression = invocationExpression.ArgumentList.Arguments[0].Expression.WalkDownParentheses();
 
-                    SingleParameterLambdaExpressionInfo lambdaInfo = SyntaxInfo.SingleParameterLambdaExpressionInfo(lambdaExpression);
+                SingleParameterLambdaExpressionInfo lambdaInfo = SyntaxInfo.SingleParameterLambdaExpressionInfo(lambdaExpression);
 
-                    var logicalNot2 = (PrefixUnaryExpressionSyntax)SimplifyLogicalNegationAnalyzer.GetReturnExpression(lambdaInfo.Body).WalkDownParentheses();
+                var logicalNot2 = (PrefixUnaryExpressionSyntax)SimplifyLogicalNegationAnalyzer.GetReturnExpression(lambdaInfo.Body).WalkDownParentheses();
 
-                    InvocationExpressionSyntax newNode = invocationExpression.ReplaceNode(logicalNot2, logicalNot2.Operand.WithTriviaFrom(logicalNot2));
+                InvocationExpressionSyntax newNode = invocationExpression.ReplaceNode(logicalNot2, logicalNot2.Operand.WithTriviaFrom(logicalNot2));
 
-                    return SyntaxRefactorings.ChangeInvokedMethodName(newNode, (memberAccessExpression.Name.Identifier.ValueText == "All") ? "Any" : "All");
-                }
+                return SyntaxRefactorings.ChangeInvokedMethodName(newNode, (memberAccessExpression.Name.Identifier.ValueText == "All") ? "Any" : "All");
+            }
             case SyntaxKind.IsPatternExpression:
-                {
-                    var isPatternExpression = (IsPatternExpressionSyntax)expression;
+            {
+                var isPatternExpression = (IsPatternExpressionSyntax)expression;
 
-                    var pattern = (ConstantPatternSyntax)isPatternExpression.Pattern;
+                var pattern = (ConstantPatternSyntax)isPatternExpression.Pattern;
 
-                    UnaryPatternSyntax newPattern = NotPattern(pattern.WithoutTrivia()).WithTriviaFrom(pattern);
+                UnaryPatternSyntax newPattern = NotPattern(pattern.WithoutTrivia()).WithTriviaFrom(pattern);
 
-                    return isPatternExpression.WithPattern(newPattern)
-                        .PrependToLeadingTrivia(logicalNot.GetLeadingTrivia())
-                        .AppendToTrailingTrivia(logicalNot.GetTrailingTrivia());
-                }
+                return isPatternExpression.WithPattern(newPattern)
+                    .PrependToLeadingTrivia(logicalNot.GetLeadingTrivia())
+                    .AppendToTrailingTrivia(logicalNot.GetTrailingTrivia());
+            }
         }
 
         return null;

@@ -232,14 +232,14 @@ internal static class CheckParameterForNullRefactoring
 #if ROSLYN_4_0
             case SyntaxKind.RecordStructDeclaration:
 #endif
-                {
-                    break;
-                }
+            {
+                break;
+            }
             default:
-                {
-                    SyntaxDebug.Fail(parent);
-                    break;
-                }
+            {
+                SyntaxDebug.Fail(parent);
+                break;
+            }
         }
 #endif
         return null;

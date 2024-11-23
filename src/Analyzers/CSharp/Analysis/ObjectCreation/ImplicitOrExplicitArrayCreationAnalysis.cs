@@ -49,104 +49,104 @@ internal class ImplicitOrExplicitArrayCreationAnalysis : ImplicitOrExplicitCreat
         switch (parent.Kind())
         {
             case SyntaxKind.EqualsValueClause:
+            {
+                parent = parent.Parent;
+
+                SyntaxDebug.Assert(parent.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.PropertyDeclaration), parent);
+
+                if (parent.IsKind(SyntaxKind.VariableDeclarator))
                 {
                     parent = parent.Parent;
 
-                    SyntaxDebug.Assert(parent.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.PropertyDeclaration), parent);
-
-                    if (parent.IsKind(SyntaxKind.VariableDeclarator))
+                    if (parent is VariableDeclarationSyntax variableDeclaration)
                     {
-                        parent = parent.Parent;
+                        SyntaxDebug.Assert(variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), variableDeclaration.Parent);
 
-                        if (parent is VariableDeclarationSyntax variableDeclaration)
+                        if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration))
                         {
-                            SyntaxDebug.Assert(variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), variableDeclaration.Parent);
-
-                            if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration))
+                            AnalyzeExplicitObvious(ref context);
+                        }
+                        else if (variableDeclaration.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement))
+                        {
+                            if (context.UseVarInsteadOfImplicitObjectCreation() != true)
                             {
-                                AnalyzeExplicitObvious(ref context);
-                            }
-                            else if (variableDeclaration.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement))
-                            {
-                                if (context.UseVarInsteadOfImplicitObjectCreation() != true)
-                                {
-                                    bool isVar = variableDeclaration.Type.IsVar;
-                                    AnalyzeExplicit(ref context, isObvious: !isVar, allowCollectionExpression: !isVar);
-                                }
+                                bool isVar = variableDeclaration.Type.IsVar;
+                                AnalyzeExplicit(ref context, isObvious: !isVar, allowCollectionExpression: !isVar);
                             }
                         }
                     }
-                    else if (parent.IsKind(SyntaxKind.PropertyDeclaration))
-                    {
-                        AnalyzeExplicitObvious(ref context);
-                    }
-
-                    break;
                 }
+                else if (parent.IsKind(SyntaxKind.PropertyDeclaration))
+                {
+                    AnalyzeExplicitObvious(ref context);
+                }
+
+                break;
+            }
             case SyntaxKind.ArrowExpressionClause:
-                {
-                    TypeSyntax type = DetermineReturnType(parent.Parent);
+            {
+                TypeSyntax type = DetermineReturnType(parent.Parent);
 
-                    if (type is not null)
-                        AnalyzeExplicitObvious(ref context);
+                if (type is not null)
+                    AnalyzeExplicitObvious(ref context);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.ReturnStatement:
+            {
+                if (style == TypeStyle.Implicit
+                    || IsSingleReturnStatement(parent))
                 {
-                    if (style == TypeStyle.Implicit
-                        || IsSingleReturnStatement(parent))
+                    for (SyntaxNode node = parent.Parent; node is not null; node = node.Parent)
                     {
-                        for (SyntaxNode node = parent.Parent; node is not null; node = node.Parent)
+                        if (CSharpFacts.IsAnonymousFunctionExpression(node.Kind()))
+                            return;
+
+                        TypeSyntax type = DetermineReturnType(node);
+
+                        if (type is not null)
                         {
-                            if (CSharpFacts.IsAnonymousFunctionExpression(node.Kind()))
-                                return;
-
-                            TypeSyntax type = DetermineReturnType(node);
-
-                            if (type is not null)
-                            {
-                                AnalyzeExplicit(ref context, isObvious: IsSingleReturnStatement(parent));
-                                return;
-                            }
+                            AnalyzeExplicit(ref context, isObvious: IsSingleReturnStatement(parent));
+                            return;
                         }
                     }
-
-                    break;
                 }
+
+                break;
+            }
             case SyntaxKind.SimpleAssignmentExpression:
             case SyntaxKind.CoalesceAssignmentExpression:
             case SyntaxKind.AddAssignmentExpression:
             case SyntaxKind.SubtractAssignmentExpression:
+            {
+                AnalyzeExplicitNotObvious(ref context);
+                break;
+            }
+            case SyntaxKind.CoalesceExpression:
+            {
+                if (style == TypeStyle.Implicit)
                 {
                     AnalyzeExplicitNotObvious(ref context);
-                    break;
                 }
-            case SyntaxKind.CoalesceExpression:
+                else if (style == TypeStyle.ImplicitWhenTypeIsObvious
+                    && parent.IsParentKind(SyntaxKind.EqualsValueClause))
                 {
-                    if (style == TypeStyle.Implicit)
+                    if (parent.Parent.Parent is VariableDeclaratorSyntax variableDeclarator)
                     {
-                        AnalyzeExplicitNotObvious(ref context);
-                    }
-                    else if (style == TypeStyle.ImplicitWhenTypeIsObvious
-                        && parent.IsParentKind(SyntaxKind.EqualsValueClause))
-                    {
-                        if (parent.Parent.Parent is VariableDeclaratorSyntax variableDeclarator)
-                        {
-                            if (variableDeclarator.Parent is VariableDeclarationSyntax variableDeclaration
-                                && variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration))
-                            {
-                                AnalyzeExplicitObvious(ref context);
-                            }
-                        }
-                        else if (parent.Parent.Parent is PropertyDeclarationSyntax)
+                        if (variableDeclarator.Parent is VariableDeclarationSyntax variableDeclaration
+                            && variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration))
                         {
                             AnalyzeExplicitObvious(ref context);
                         }
                     }
-
-                    break;
+                    else if (parent.Parent.Parent is PropertyDeclarationSyntax)
+                    {
+                        AnalyzeExplicitObvious(ref context);
+                    }
                 }
+
+                break;
+            }
         }
     }
 

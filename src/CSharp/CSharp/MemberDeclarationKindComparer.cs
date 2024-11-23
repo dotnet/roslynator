@@ -60,10 +60,10 @@ internal class MemberDeclarationKindComparer : IComparer<SyntaxKind>
             case SyntaxKind.IncompleteMember:
                 return 19;
             default:
-                {
-                    Debug.Fail($"unknown member '{kind}'");
-                    return MemberDeclarationComparer.MaxRank;
-                }
+            {
+                Debug.Fail($"unknown member '{kind}'");
+                return MemberDeclarationComparer.MaxRank;
+            }
         }
     }
 }

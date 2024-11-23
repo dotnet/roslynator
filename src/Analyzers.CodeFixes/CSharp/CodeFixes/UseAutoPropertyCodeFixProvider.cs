@@ -90,46 +90,46 @@ public sealed class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
                 switch (node.Kind())
                 {
                     case SyntaxKind.IdentifierName:
+                    {
+                        SyntaxNode newNode = null;
+
+                        if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                            && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
                         {
-                            SyntaxNode newNode = null;
-
-                            if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
-                                && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
-                            {
-                                newNode = IdentifierName(propertyIdentifier);
-                            }
-                            else if (node.IsParentKind(SyntaxKind.NameMemberCref))
-                            {
-                                newNode = IdentifierName(propertyIdentifier);
-                            }
-                            else if (propertySymbol.IsStatic)
-                            {
-                                newNode = SimpleMemberAccessExpression(
-                                    propertySymbol.ContainingType.ToTypeSyntax(),
-                                    (SimpleNameSyntax)ParseName(propertySymbol.ToDisplayString(SymbolDisplayFormats.DisplayName)))
-                                    .WithSimplifierAnnotation();
-                            }
-                            else
-                            {
-                                newNode = IdentifierName(propertyIdentifier).QualifyWithThis();
-                            }
-
-                            return newNode.WithTriviaFrom(node);
+                            newNode = IdentifierName(propertyIdentifier);
                         }
+                        else if (node.IsParentKind(SyntaxKind.NameMemberCref))
+                        {
+                            newNode = IdentifierName(propertyIdentifier);
+                        }
+                        else if (propertySymbol.IsStatic)
+                        {
+                            newNode = SimpleMemberAccessExpression(
+                                propertySymbol.ContainingType.ToTypeSyntax(),
+                                (SimpleNameSyntax)ParseName(propertySymbol.ToDisplayString(SymbolDisplayFormats.DisplayName)))
+                                .WithSimplifierAnnotation();
+                        }
+                        else
+                        {
+                            newNode = IdentifierName(propertyIdentifier).QualifyWithThis();
+                        }
+
+                        return newNode.WithTriviaFrom(node);
+                    }
                     case SyntaxKind.PropertyDeclaration:
-                        {
-                            return CreateAutoProperty(propertyDeclaration, variableDeclarator.Initializer);
-                        }
+                    {
+                        return CreateAutoProperty(propertyDeclaration, variableDeclarator.Initializer);
+                    }
                     case SyntaxKind.VariableDeclarator:
                     case SyntaxKind.FieldDeclaration:
-                        {
-                            return node.WithAdditionalAnnotations(_removeAnnotation);
-                        }
+                    {
+                        return node.WithAdditionalAnnotations(_removeAnnotation);
+                    }
                     default:
-                        {
-                            SyntaxDebug.Fail(node);
-                            return node;
-                        }
+                    {
+                        SyntaxDebug.Fail(node);
+                        return node;
+                    }
                 }
             });
 

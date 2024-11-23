@@ -53,31 +53,31 @@ internal static class DiagnosticFormatter
             case LocationKind.SourceFile:
             case LocationKind.XmlFile:
             case LocationKind.ExternalFile:
+            {
+                FileLinePositionSpan span = location.GetMappedLineSpan();
+
+                if (span.IsValid)
                 {
-                    FileLinePositionSpan span = location.GetMappedLineSpan();
+                    sb.Append(PathUtilities.TrimStart(span.Path, baseDirectoryPath));
 
-                    if (span.IsValid)
+                    if (omitSpan)
                     {
-                        sb.Append(PathUtilities.TrimStart(span.Path, baseDirectoryPath));
-
-                        if (omitSpan)
-                        {
-                            sb.Append(": ");
-                        }
-                        else
-                        {
-                            LinePosition linePosition = span.StartLinePosition;
-
-                            sb.Append('(');
-                            sb.Append(linePosition.Line + 1);
-                            sb.Append(',');
-                            sb.Append(linePosition.Character + 1);
-                            sb.Append("): ");
-                        }
+                        sb.Append(": ");
                     }
+                    else
+                    {
+                        LinePosition linePosition = span.StartLinePosition;
 
-                    break;
+                        sb.Append('(');
+                        sb.Append(linePosition.Line + 1);
+                        sb.Append(',');
+                        sb.Append(linePosition.Character + 1);
+                        sb.Append("): ");
+                    }
                 }
+
+                break;
+            }
         }
     }
 
@@ -125,65 +125,65 @@ internal static class DiagnosticFormatter
             switch (symbol.Kind)
             {
                 case SymbolKind.Event:
-                    {
-                        return "event";
-                    }
+                {
+                    return "event";
+                }
                 case SymbolKind.Field:
-                    {
-                        return (symbol.ContainingType.TypeKind == TypeKind.Enum) ? "enum field" : "field";
-                    }
+                {
+                    return (symbol.ContainingType.TypeKind == TypeKind.Enum) ? "enum field" : "field";
+                }
                 case SymbolKind.Local:
-                    {
-                        return "local";
-                    }
+                {
+                    return "local";
+                }
                 case SymbolKind.Method:
+                {
+                    var methodSymbol = (IMethodSymbol)symbol;
+
+                    switch (methodSymbol.MethodKind)
                     {
-                        var methodSymbol = (IMethodSymbol)symbol;
-
-                        switch (methodSymbol.MethodKind)
-                        {
-                            case MethodKind.Ordinary:
-                                return "method";
-                            case MethodKind.LocalFunction:
-                                return "local function";
-                        }
-
-                        Debug.Fail(methodSymbol.MethodKind.ToString());
-                        break;
+                        case MethodKind.Ordinary:
+                            return "method";
+                        case MethodKind.LocalFunction:
+                            return "local function";
                     }
+
+                    Debug.Fail(methodSymbol.MethodKind.ToString());
+                    break;
+                }
                 case SymbolKind.NamedType:
+                {
+                    var typeSymbol = (INamedTypeSymbol)symbol;
+
+                    switch (typeSymbol.TypeKind)
                     {
-                        var typeSymbol = (INamedTypeSymbol)symbol;
-
-                        switch (typeSymbol.TypeKind)
-                        {
-                            case TypeKind.Class:
-                                return "class";
-                            case TypeKind.Delegate:
-                                return "delegate";
-                            case TypeKind.Enum:
-                                return "enum";
-                            case TypeKind.Interface:
-                                return "interface";
-                            case TypeKind.Struct:
-                                return "struct";
-                        }
-
-                        Debug.Fail(typeSymbol.TypeKind.ToString());
-                        break;
+                        case TypeKind.Class:
+                            return "class";
+                        case TypeKind.Delegate:
+                            return "delegate";
+                        case TypeKind.Enum:
+                            return "enum";
+                        case TypeKind.Interface:
+                            return "interface";
+                        case TypeKind.Struct:
+                            return "struct";
                     }
+
+                    Debug.Fail(typeSymbol.TypeKind.ToString());
+                    break;
+                }
                 case SymbolKind.Parameter:
-                    {
-                        return "parameter";
-                    }
+                {
+                    return "parameter";
+                }
                 case SymbolKind.Property:
-                    {
-                        return (((IPropertySymbol)symbol).IsIndexer) ? "indexer" : "property";
-                    }
+                {
+                    return (((IPropertySymbol)symbol).IsIndexer) ? "indexer" : "property";
+                }
                 case SymbolKind.TypeParameter:
-                    {
-                        return "type parameter";
-                    }
+                {
+                    return "type parameter";
+                }
             }
 
             Debug.Fail(symbol.Kind.ToString());

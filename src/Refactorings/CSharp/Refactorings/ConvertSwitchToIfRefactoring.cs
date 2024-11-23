@@ -31,24 +31,24 @@ internal static class ConvertSwitchToIfRefactoring
                 switch (label.Kind())
                 {
                     case SyntaxKind.CasePatternSwitchLabel:
-                        {
-                            containsPattern = true;
-                            break;
-                        }
+                    {
+                        containsPattern = true;
+                        break;
+                    }
                     case SyntaxKind.CaseSwitchLabel:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                     case SyntaxKind.DefaultSwitchLabel:
-                        {
-                            containsDefault = true;
-                            break;
-                        }
+                    {
+                        containsDefault = true;
+                        break;
+                    }
                     default:
-                        {
-                            SyntaxDebug.Fail(label);
-                            return;
-                        }
+                    {
+                        SyntaxDebug.Fail(label);
+                        return;
+                    }
                 }
 
                 if (containsDefault)
@@ -147,41 +147,41 @@ internal static class ConvertSwitchToIfRefactoring
             switch (labels[i])
             {
                 case CaseSwitchLabelSyntax constantLabel:
+                {
+                    BinaryExpressionSyntax equalsExpression = EqualsExpression(switchExpression, constantLabel.Value);
+
+                    if (semanticModel.GetSpeculativeMethodSymbol(switchSection.SpanStart, equalsExpression) is not null)
                     {
-                        BinaryExpressionSyntax equalsExpression = EqualsExpression(switchExpression, constantLabel.Value);
-
-                        if (semanticModel.GetSpeculativeMethodSymbol(switchSection.SpanStart, equalsExpression) is not null)
-                        {
-                            expression = equalsExpression;
-                        }
-                        else
-                        {
-                            expression = SimpleMemberInvocationExpression(
-                                ObjectType(),
-                                IdentifierName("Equals"),
-                                ArgumentList(Argument(switchExpression), Argument(constantLabel.Value)));
-                        }
-
-                        break;
+                        expression = equalsExpression;
                     }
+                    else
+                    {
+                        expression = SimpleMemberInvocationExpression(
+                            ObjectType(),
+                            IdentifierName("Equals"),
+                            ArgumentList(Argument(switchExpression), Argument(constantLabel.Value)));
+                    }
+
+                    break;
+                }
                 case CasePatternSwitchLabelSyntax patternLabel:
+                {
+                    expression = IsPatternExpression(switchExpression.Parenthesize(), patternLabel.Pattern).Parenthesize();
+
+                    if (patternLabel.WhenClause is not null)
                     {
-                        expression = IsPatternExpression(switchExpression.Parenthesize(), patternLabel.Pattern).Parenthesize();
-
-                        if (patternLabel.WhenClause is not null)
-                        {
-                            expression = LogicalAndExpression(
-                                expression,
-                                patternLabel.WhenClause.Condition.Parenthesize())
-                                .Parenthesize();
-                        }
-
-                        break;
+                        expression = LogicalAndExpression(
+                            expression,
+                            patternLabel.WhenClause.Condition.Parenthesize())
+                            .Parenthesize();
                     }
+
+                    break;
+                }
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                {
+                    throw new InvalidOperationException();
+                }
             }
 
             if (condition is not null)

@@ -157,31 +157,31 @@ internal static class CodeActionFactory
         switch (block.Kind)
         {
             case TriviaBlockKind.NoNewLine:
-                {
-                    TriviaBlockReader reader = block.CreateReader();
+            {
+                TriviaBlockReader reader = block.CreateReader();
 
-                    if (reader.ReadWhiteSpaceTrivia())
-                        position = reader.Current.Span.End;
+                if (reader.ReadWhiteSpaceTrivia())
+                    position = reader.Current.Span.End;
 
-                    return new TextChange(new TextSpan(position, 0), endOfLine + endOfLine);
-                }
+                return new TextChange(new TextSpan(position, 0), endOfLine + endOfLine);
+            }
             case TriviaBlockKind.NewLine:
-                {
-                    return new TextChange(new TextSpan(position, 0), endOfLine);
-                }
+            {
+                return new TextChange(new TextSpan(position, 0), endOfLine);
+            }
             case TriviaBlockKind.BlankLine:
-                {
-                    TriviaBlockReader reader = block.CreateReader();
+            {
+                TriviaBlockReader reader = block.CreateReader();
 
-                    reader.ReadTo(position);
-                    reader.ReadBlankLines();
+                reader.ReadTo(position);
+                reader.ReadBlankLines();
 
-                    return new TextChange(TextSpan.FromBounds(position, reader.Current.Span.End), "");
-                }
+                return new TextChange(TextSpan.FromBounds(position, reader.Current.Span.End), "");
+            }
             default:
-                {
-                    throw new InvalidOperationException();
-                }
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 
@@ -200,34 +200,34 @@ internal static class CodeActionFactory
         switch (block.Kind)
         {
             case TriviaBlockKind.NoNewLine:
-                {
-                    int end = (reader.ReadWhiteSpaceTrivia()) ? reader.Current.Span.End : position;
+            {
+                int end = (reader.ReadWhiteSpaceTrivia()) ? reader.Current.Span.End : position;
 
-                    string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node).ToString();
+                string endOfLine = SyntaxTriviaAnalysis.DetermineEndOfLine(node).ToString();
 
-                    indentation ??= (increaseIndentation)
-                        ? GetIncreasedIndentation(node, configOptions, cancellationToken)
-                        : SyntaxTriviaAnalysis.DetermineIndentation(node, cancellationToken).ToString();
+                indentation ??= (increaseIndentation)
+                    ? GetIncreasedIndentation(node, configOptions, cancellationToken)
+                    : SyntaxTriviaAnalysis.DetermineIndentation(node, cancellationToken).ToString();
 
-                    return new TextChange(TextSpan.FromBounds(position, end), endOfLine + indentation);
-                }
+                return new TextChange(TextSpan.FromBounds(position, end), endOfLine + indentation);
+            }
             case TriviaBlockKind.NewLine:
-                {
-                    reader.ReadWhiteSpace();
+            {
+                reader.ReadWhiteSpace();
 
-                    return new TextChange(TextSpan.FromBounds(position, reader.Current.Span.End), newLineReplacement);
-                }
+                return new TextChange(TextSpan.FromBounds(position, reader.Current.Span.End), newLineReplacement);
+            }
             case TriviaBlockKind.BlankLine:
-                {
-                    reader.ReadTo(position);
-                    reader.ReadWhiteSpace();
+            {
+                reader.ReadTo(position);
+                reader.ReadWhiteSpace();
 
-                    return new TextChange(TextSpan.FromBounds(node.Span.End, reader.Current.Span.End), newLineReplacement);
-                }
+                return new TextChange(TextSpan.FromBounds(node.Span.End, reader.Current.Span.End), newLineReplacement);
+            }
             default:
-                {
-                    throw new InvalidOperationException();
-                }
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 

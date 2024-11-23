@@ -593,14 +593,14 @@ public static class SyntaxKindTests
                 case SyntaxKind.AllowsKeyword:
                 case SyntaxKind.RazorContentToken:
                 case SyntaxKind.RefStructConstraint:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
                 default:
-                    {
-                        (unknownKinds ??= new List<SyntaxKind>()).Add(value);
-                        break;
-                    }
+                {
+                    (unknownKinds ??= new List<SyntaxKind>()).Add(value);
+                    break;
+                }
             }
         }
 

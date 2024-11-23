@@ -46,64 +46,64 @@ public sealed class EnumMemberDeclarationCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Declare value as combination of names",
-                        ct => DeclareEnumValueAsCombinationOfNamesAsync(document, enumMemberDeclaration, ct),
-                        GetEquivalenceKey(diagnostic));
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Declare value as combination of names",
+                    ct => DeclareEnumValueAsCombinationOfNamesAsync(document, enumMemberDeclaration, ct),
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
             case DiagnosticIdentifiers.DuplicateEnumValue:
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
+
+                IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMemberDeclaration, context.CancellationToken);
+
+                EnumFieldSymbolInfo enumFieldSymbolInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
+
+                string valueText = FindMemberByValue(enumDeclaration, enumFieldSymbolInfo, semanticModel, context.CancellationToken).Identifier.ValueText;
+
+                CodeAction codeAction = CodeAction.Create(
+                    $"Change enum value to '{valueText}'",
+                    ct => ChangeEnumValueAsync(document, enumMemberDeclaration, valueText, ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
+            case DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue:
+            {
+                EnumFlagValueStyle style = document.GetConfigOptions(enumMemberDeclaration.SyntaxTree).GetEnumFlagValueStyle();
+
+                if (style == EnumFlagValueStyle.ShiftOperator)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
-
-                    IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMemberDeclaration, context.CancellationToken);
-
-                    EnumFieldSymbolInfo enumFieldSymbolInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
-
-                    string valueText = FindMemberByValue(enumDeclaration, enumFieldSymbolInfo, semanticModel, context.CancellationToken).Identifier.ValueText;
-
                     CodeAction codeAction = CodeAction.Create(
-                        $"Change enum value to '{valueText}'",
-                        ct => ChangeEnumValueAsync(document, enumMemberDeclaration, valueText, ct),
+                        "Use '<<' operator",
+                        ct => UseBitShiftOperatorAsync(document, enumMemberDeclaration, ct),
                         GetEquivalenceKey(diagnostic));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
                 }
-            case DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue:
+                else if (style == EnumFlagValueStyle.DecimalNumber)
                 {
-                    EnumFlagValueStyle style = document.GetConfigOptions(enumMemberDeclaration.SyntaxTree).GetEnumFlagValueStyle();
+                    CodeAction codeAction = CodeAction.Create(
+                        "Convert to decimal",
+                        ct => ConvertToDecimalNumberAsync(document, enumMemberDeclaration, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                    if (style == EnumFlagValueStyle.ShiftOperator)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use '<<' operator",
-                            ct => UseBitShiftOperatorAsync(document, enumMemberDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else if (style == EnumFlagValueStyle.DecimalNumber)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Convert to decimal",
-                            ct => ConvertToDecimalNumberAsync(document, enumMemberDeclaration, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException();
-                    }
-
-                    break;
+                    context.RegisterCodeFix(codeAction, diagnostic);
                 }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+
+                break;
+            }
         }
     }
 

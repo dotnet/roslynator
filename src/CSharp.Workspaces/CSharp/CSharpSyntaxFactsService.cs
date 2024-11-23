@@ -89,31 +89,31 @@ internal sealed class CSharpSyntaxFactsService : ISyntaxFactsService
             case SyntaxKind.EventDeclaration:
             case SyntaxKind.Parameter:
             case SyntaxKind.ForEachStatement:
-                {
-                    return parent;
-                }
+            {
+                return parent;
+            }
             case SyntaxKind.IdentifierName:
+            {
+                parent = parent.Parent;
+
+                if (parent.IsKind(SyntaxKind.NameEquals))
                 {
                     parent = parent.Parent;
 
-                    if (parent.IsKind(SyntaxKind.NameEquals))
+                    if (parent.IsKind(
+                        SyntaxKind.UsingDirective,
+                        SyntaxKind.AnonymousObjectMemberDeclarator))
                     {
-                        parent = parent.Parent;
-
-                        if (parent.IsKind(
-                            SyntaxKind.UsingDirective,
-                            SyntaxKind.AnonymousObjectMemberDeclarator))
-                        {
-                            return parent;
-                        }
-
-                        SyntaxDebug.Fail(parent);
-
-                        return null;
+                        return parent;
                     }
 
-                    return parent;
+                    SyntaxDebug.Fail(parent);
+
+                    return null;
                 }
+
+                return parent;
+            }
         }
 
         SyntaxDebug.Fail(parent);

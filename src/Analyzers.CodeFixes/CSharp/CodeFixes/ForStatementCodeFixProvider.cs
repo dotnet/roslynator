@@ -33,21 +33,21 @@ public sealed class ForStatementCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use while to create an infinite loop",
-                            ct =>
-                            {
-                                return AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring.RefactorAsync(
-                                    context.Document,
-                                    forStatement,
-                                    ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use while to create an infinite loop",
+                        ct =>
+                        {
+                            return AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring.RefactorAsync(
+                                context.Document,
+                                forStatement,
+                                ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

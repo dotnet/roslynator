@@ -37,15 +37,15 @@ internal readonly struct NodeSymbolInfo
             {
                 case SyntaxKind.PropertyDeclaration:
                 case SyntaxKind.FieldDeclaration:
-                    {
-                        return true;
-                    }
+                {
+                    return true;
+                }
                 case SyntaxKind.MethodDeclaration:
-                    {
-                        var methodDeclaration = (MethodDeclarationSyntax)Node;
+                {
+                    var methodDeclaration = (MethodDeclarationSyntax)Node;
 
-                        return methodDeclaration.ParameterList?.Parameters.Count == 0;
-                    }
+                    return methodDeclaration.ParameterList?.Parameters.Count == 0;
+                }
             }
 
             return false;

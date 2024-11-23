@@ -596,24 +596,24 @@ public sealed class UseBlockBodyOrExpressionBodyAnalyzer : BaseDiagnosticAnalyze
                 switch (accessorList.Parent.Kind())
                 {
                     case SyntaxKind.PropertyDeclaration:
-                        {
-                            if (accessor.SyntaxTree.IsMultiLineSpan(((PropertyDeclarationSyntax)accessorList.Parent).HeaderSpan()))
-                                return;
+                    {
+                        if (accessor.SyntaxTree.IsMultiLineSpan(((PropertyDeclarationSyntax)accessorList.Parent).HeaderSpan()))
+                            return;
 
-                            break;
-                        }
+                        break;
+                    }
                     case SyntaxKind.IndexerDeclaration:
-                        {
-                            if (accessor.SyntaxTree.IsMultiLineSpan(((IndexerDeclarationSyntax)accessorList.Parent).HeaderSpan()))
-                                return;
+                    {
+                        if (accessor.SyntaxTree.IsMultiLineSpan(((IndexerDeclarationSyntax)accessorList.Parent).HeaderSpan()))
+                            return;
 
-                            break;
-                        }
+                        break;
+                    }
                     default:
-                        {
-                            SyntaxDebug.Fail(accessorList.Parent);
-                            break;
-                        }
+                    {
+                        SyntaxDebug.Fail(accessorList.Parent);
+                        break;
+                    }
                 }
 
                 return;

@@ -160,35 +160,35 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
                 switch (member.Kind)
                 {
                     case SymbolKind.Event:
+                    {
+                        foreach (IEventSymbol eventSymbol in ((IEventSymbol)member).ExplicitInterfaceImplementations)
                         {
-                            foreach (IEventSymbol eventSymbol in ((IEventSymbol)member).ExplicitInterfaceImplementations)
-                            {
-                                if (SymbolEqualityComparer.Default.Equals(eventSymbol.ContainingType, interfaceSymbol))
-                                    return true;
-                            }
-
-                            break;
+                            if (SymbolEqualityComparer.Default.Equals(eventSymbol.ContainingType, interfaceSymbol))
+                                return true;
                         }
+
+                        break;
+                    }
                     case SymbolKind.Method:
+                    {
+                        foreach (IMethodSymbol methodSymbol in ((IMethodSymbol)member).ExplicitInterfaceImplementations)
                         {
-                            foreach (IMethodSymbol methodSymbol in ((IMethodSymbol)member).ExplicitInterfaceImplementations)
-                            {
-                                if (SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, interfaceSymbol))
-                                    return true;
-                            }
-
-                            break;
+                            if (SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, interfaceSymbol))
+                                return true;
                         }
+
+                        break;
+                    }
                     case SymbolKind.Property:
+                    {
+                        foreach (IPropertySymbol propertySymbol in ((IPropertySymbol)member).ExplicitInterfaceImplementations)
                         {
-                            foreach (IPropertySymbol propertySymbol in ((IPropertySymbol)member).ExplicitInterfaceImplementations)
-                            {
-                                if (SymbolEqualityComparer.Default.Equals(propertySymbol.ContainingType, interfaceSymbol))
-                                    return true;
-                            }
-
-                            break;
+                            if (SymbolEqualityComparer.Default.Equals(propertySymbol.ContainingType, interfaceSymbol))
+                                return true;
                         }
+
+                        break;
+                    }
                 }
             }
 
@@ -224,59 +224,59 @@ public sealed class RemoveRedundantBaseInterfaceAnalyzer : BaseDiagnosticAnalyze
                     switch (node.Kind())
                     {
                         case SyntaxKind.MethodDeclaration:
-                            {
-                                var methodDeclaration = (MethodDeclarationSyntax)node;
+                        {
+                            var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                                if (methodDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
-                                    return true;
-
-                                break;
-                            }
-                        case SyntaxKind.PropertyDeclaration:
-                            {
-                                var propertyDeclaration = (PropertyDeclarationSyntax)node;
-
-                                if (propertyDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
-                                    return true;
-
-                                break;
-                            }
-                        case SyntaxKind.IndexerDeclaration:
-                            {
-                                var indexerDeclaration = (IndexerDeclarationSyntax)node;
-
-                                if (indexerDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
-                                    return true;
-
-                                break;
-                            }
-                        case SyntaxKind.EventDeclaration:
-                            {
-                                var eventDeclaration = (EventDeclarationSyntax)node;
-
-                                if (eventDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
-                                    return true;
-
-                                break;
-                            }
-                        case SyntaxKind.VariableDeclarator:
-                            {
-                                if (node.IsParentKind(SyntaxKind.VariableDeclaration)
-                                    && node.Parent.IsParentKind(SyntaxKind.EventFieldDeclaration))
-                                {
-                                    var eventFieldDeclaration = (EventFieldDeclarationSyntax)node.Parent.Parent;
-
-                                    if (eventFieldDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
-                                        return true;
-                                }
-
-                                break;
-                            }
-                        default:
-                            {
-                                SyntaxDebug.Fail(node);
+                            if (methodDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
                                 return true;
+
+                            break;
+                        }
+                        case SyntaxKind.PropertyDeclaration:
+                        {
+                            var propertyDeclaration = (PropertyDeclarationSyntax)node;
+
+                            if (propertyDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
+                                return true;
+
+                            break;
+                        }
+                        case SyntaxKind.IndexerDeclaration:
+                        {
+                            var indexerDeclaration = (IndexerDeclarationSyntax)node;
+
+                            if (indexerDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
+                                return true;
+
+                            break;
+                        }
+                        case SyntaxKind.EventDeclaration:
+                        {
+                            var eventDeclaration = (EventDeclarationSyntax)node;
+
+                            if (eventDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
+                                return true;
+
+                            break;
+                        }
+                        case SyntaxKind.VariableDeclarator:
+                        {
+                            if (node.IsParentKind(SyntaxKind.VariableDeclaration)
+                                && node.Parent.IsParentKind(SyntaxKind.EventFieldDeclaration))
+                            {
+                                var eventFieldDeclaration = (EventFieldDeclarationSyntax)node.Parent.Parent;
+
+                                if (eventFieldDeclaration.Modifiers.Contains(SyntaxKind.NewKeyword))
+                                    return true;
                             }
+
+                            break;
+                        }
+                        default:
+                        {
+                            SyntaxDebug.Fail(node);
+                            return true;
+                        }
                     }
                 }
             }

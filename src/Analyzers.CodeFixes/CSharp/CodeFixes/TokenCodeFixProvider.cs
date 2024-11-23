@@ -40,61 +40,61 @@ public sealed class TokenCodeFixProvider : BaseCodeFixProvider
         switch (diagnostic.Id)
         {
             case DiagnosticIdentifiers.UnnecessaryNullForgivingOperator:
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        "Remove null-forgiving operator",
-                        ct =>
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove null-forgiving operator",
+                    ct =>
+                    {
+                        if (node.Parent is PropertyDeclarationSyntax propertyDeclaration)
                         {
-                            if (node.Parent is PropertyDeclarationSyntax propertyDeclaration)
-                            {
-                                SyntaxToken semicolonToken = propertyDeclaration.SemicolonToken;
+                            SyntaxToken semicolonToken = propertyDeclaration.SemicolonToken;
 
-                                SyntaxToken token = propertyDeclaration.Initializer.GetFirstToken().GetPreviousToken();
+                            SyntaxToken token = propertyDeclaration.Initializer.GetFirstToken().GetPreviousToken();
 
-                                SyntaxTriviaList newTrivia = token.TrailingTrivia
-                                    .AddRange(node.GetLeadingAndTrailingTrivia())
-                                    .AddRange(semicolonToken.LeadingTrivia)
-                                    .EmptyIfWhitespace()
-                                    .AddRange(semicolonToken.TrailingTrivia);
+                            SyntaxTriviaList newTrivia = token.TrailingTrivia
+                                .AddRange(node.GetLeadingAndTrailingTrivia())
+                                .AddRange(semicolonToken.LeadingTrivia)
+                                .EmptyIfWhitespace()
+                                .AddRange(semicolonToken.TrailingTrivia);
 
-                                PropertyDeclarationSyntax newNode = propertyDeclaration
-                                    .ReplaceToken(token, token.WithTrailingTrivia(newTrivia))
-                                    .WithInitializer(null)
-                                    .WithSemicolonToken(default);
+                            PropertyDeclarationSyntax newNode = propertyDeclaration
+                                .ReplaceToken(token, token.WithTrailingTrivia(newTrivia))
+                                .WithInitializer(null)
+                                .WithSemicolonToken(default);
 
-                                return document.ReplaceNodeAsync(propertyDeclaration, newNode, ct);
-                            }
-                            else if (node.Parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
-                            {
-                                var variableDeclarator = (VariableDeclaratorSyntax)node.Parent;
+                            return document.ReplaceNodeAsync(propertyDeclaration, newNode, ct);
+                        }
+                        else if (node.Parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
+                        {
+                            var variableDeclarator = (VariableDeclaratorSyntax)node.Parent;
 
-                                SyntaxToken token = variableDeclarator.Initializer.GetFirstToken().GetPreviousToken();
+                            SyntaxToken token = variableDeclarator.Initializer.GetFirstToken().GetPreviousToken();
 
-                                SyntaxTriviaList newTrivia = token.TrailingTrivia
-                                    .AddRange(node.GetLeadingAndTrailingTrivia())
-                                    .EmptyIfWhitespace();
+                            SyntaxTriviaList newTrivia = token.TrailingTrivia
+                                .AddRange(node.GetLeadingAndTrailingTrivia())
+                                .EmptyIfWhitespace();
 
-                                VariableDeclaratorSyntax newNode = variableDeclarator
-                                    .ReplaceToken(token, token.WithTrailingTrivia(newTrivia))
-                                    .WithInitializer(null);
+                            VariableDeclaratorSyntax newNode = variableDeclarator
+                                .ReplaceToken(token, token.WithTrailingTrivia(newTrivia))
+                                .WithInitializer(null);
 
-                                return document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
-                            }
-                            else
-                            {
-                                var expression = (PostfixUnaryExpressionSyntax)node;
+                            return document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
+                        }
+                        else
+                        {
+                            var expression = (PostfixUnaryExpressionSyntax)node;
 
-                                ExpressionSyntax newExpression = expression.Operand
-                                    .AppendToTrailingTrivia(expression.OperatorToken.LeadingAndTrailingTrivia());
+                            ExpressionSyntax newExpression = expression.Operand
+                                .AppendToTrailingTrivia(expression.OperatorToken.LeadingAndTrailingTrivia());
 
-                                return document.ReplaceNodeAsync(expression, newExpression, ct);
-                            }
-                        },
-                        GetEquivalenceKey(diagnostic));
+                            return document.ReplaceNodeAsync(expression, newExpression, ct);
+                        }
+                    },
+                    GetEquivalenceKey(diagnostic));
 
-                    context.RegisterCodeFix(codeAction, diagnostic);
-                    break;
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
+                break;
+            }
         }
     }
 }

@@ -250,35 +250,35 @@ internal class RefactoringContext
         switch (token.Kind())
         {
             case SyntaxKind.XmlTextLiteralToken:
+            {
+                if (IsRefactoringEnabled(RefactoringDescriptors.AddTagToDocumentationComment)
+                    && !Span.IsEmpty)
                 {
-                    if (IsRefactoringEnabled(RefactoringDescriptors.AddTagToDocumentationComment)
-                        && !Span.IsEmpty)
+                    TextSpan span = token.Span;
+
+                    if (span.Contains(Span))
                     {
-                        TextSpan span = token.Span;
+                        string text = token.Text;
 
-                        if (span.Contains(Span))
+                        if (span.Start == Span.Start
+                            || (!char.IsLetterOrDigit(text[Span.Start - span.Start - 1])
+                                && char.IsLetterOrDigit(text[Span.Start - span.Start])))
                         {
-                            string text = token.Text;
-
-                            if (span.Start == Span.Start
-                                || (!char.IsLetterOrDigit(text[Span.Start - span.Start - 1])
-                                    && char.IsLetterOrDigit(text[Span.Start - span.Start])))
+                            if (span.End == Span.End
+                                || (char.IsLetterOrDigit(text[Span.End - span.Start - 1])
+                                    && !char.IsLetterOrDigit(text[Span.End - span.Start])))
                             {
-                                if (span.End == Span.End
-                                    || (char.IsLetterOrDigit(text[Span.End - span.Start - 1])
-                                        && !char.IsLetterOrDigit(text[Span.End - span.Start])))
-                                {
-                                    RegisterRefactoring(
-                                        "Add tag 'c'",
-                                        ct => Document.WithTextChangeAsync(Span, $"<c>{token.ToString(Span)}</c>", ct),
-                                        RefactoringDescriptors.AddTagToDocumentationComment);
-                                }
+                                RegisterRefactoring(
+                                    "Add tag 'c'",
+                                    ct => Document.WithTextChangeAsync(Span, $"<c>{token.ToString(Span)}</c>", ct),
+                                    RefactoringDescriptors.AddTagToDocumentationComment);
                             }
                         }
                     }
-
-                    break;
                 }
+
+                break;
+            }
         }
     }
 
@@ -326,45 +326,45 @@ internal class RefactoringContext
         switch (token.Kind())
         {
             case SyntaxKind.CloseParenToken:
-                {
-                    await CloseParenTokenRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await CloseParenTokenRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.CommaToken:
-                {
-                    await CommaTokenRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await CommaTokenRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.SemicolonToken:
-                {
-                    SemicolonTokenRefactoring.ComputeRefactorings(this, token);
-                    break;
-                }
+            {
+                SemicolonTokenRefactoring.ComputeRefactorings(this, token);
+                break;
+            }
             case SyntaxKind.PlusToken:
-                {
-                    await PlusTokenRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
-                    break;
-                }
+            {
+                await PlusTokenRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
+                break;
+            }
             case SyntaxKind.PublicKeyword:
             case SyntaxKind.InternalKeyword:
             case SyntaxKind.ProtectedKeyword:
             case SyntaxKind.PrivateKeyword:
-                {
-                    if (IsRefactoringEnabled(RefactoringDescriptors.ChangeAccessibility))
-                        await AccessModifierRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
+            {
+                if (IsRefactoringEnabled(RefactoringDescriptors.ChangeAccessibility))
+                    await AccessModifierRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.AsyncKeyword:
+            {
+                if (IsRefactoringEnabled(RefactoringDescriptors.RemoveAsyncAwait)
+                    && Span.IsEmptyAndContainedInSpan(token))
                 {
-                    if (IsRefactoringEnabled(RefactoringDescriptors.RemoveAsyncAwait)
-                        && Span.IsEmptyAndContainedInSpan(token))
-                    {
-                        await RemoveAsyncAwaitRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
-                    }
-
-                    break;
+                    await RemoveAsyncAwaitRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
                 }
+
+                break;
+            }
         }
     }
 
@@ -447,166 +447,166 @@ internal class RefactoringContext
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.InitAccessorDeclaration:
                 case SyntaxKind.UnknownAccessorDeclaration:
-                    {
-                        if (flags.IsSet(Flag.Accessor))
-                            continue;
-
-                        AccessorDeclarationRefactoring.ComputeRefactorings(this, (AccessorDeclarationSyntax)node);
-                        flags.Set(Flag.Accessor);
+                {
+                    if (flags.IsSet(Flag.Accessor))
                         continue;
-                    }
+
+                    AccessorDeclarationRefactoring.ComputeRefactorings(this, (AccessorDeclarationSyntax)node);
+                    flags.Set(Flag.Accessor);
+                    continue;
+                }
                 case SyntaxKind.Argument:
-                    {
-                        if (flags.IsSet(Flag.Argument))
-                            continue;
-
-                        ArgumentRefactoring.ComputeRefactorings(this, (ArgumentSyntax)node);
-                        flags.Set(Flag.Argument);
+                {
+                    if (flags.IsSet(Flag.Argument))
                         continue;
-                    }
+
+                    ArgumentRefactoring.ComputeRefactorings(this, (ArgumentSyntax)node);
+                    flags.Set(Flag.Argument);
+                    continue;
+                }
                 case SyntaxKind.ArgumentList:
-                    {
-                        if (flags.IsSet(Flag.ArgumentList))
-                            continue;
-
-                        await ArgumentListRefactoring.ComputeRefactoringsAsync(this, (ArgumentListSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.ArgumentList);
+                {
+                    if (flags.IsSet(Flag.ArgumentList))
                         continue;
-                    }
+
+                    await ArgumentListRefactoring.ComputeRefactoringsAsync(this, (ArgumentListSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.ArgumentList);
+                    continue;
+                }
                 case SyntaxKind.AttributeArgumentList:
-                    {
-                        if (flags.IsSet(Flag.AttributeArgumentList))
-                            continue;
-
-                        await AttributeArgumentListRefactoring.ComputeRefactoringsAsync(this, (AttributeArgumentListSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.AttributeArgumentList);
+                {
+                    if (flags.IsSet(Flag.AttributeArgumentList))
                         continue;
-                    }
+
+                    await AttributeArgumentListRefactoring.ComputeRefactoringsAsync(this, (AttributeArgumentListSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.AttributeArgumentList);
+                    continue;
+                }
                 case SyntaxKind.ArrowExpressionClause:
-                    {
-                        if (flags.IsSet(Flag.ArrowExpressionClause))
-                            continue;
-
-                        ArrowExpressionClauseRefactoring.ComputeRefactorings(this, (ArrowExpressionClauseSyntax)node);
-                        flags.Set(Flag.ArrowExpressionClause);
+                {
+                    if (flags.IsSet(Flag.ArrowExpressionClause))
                         continue;
-                    }
+
+                    ArrowExpressionClauseRefactoring.ComputeRefactorings(this, (ArrowExpressionClauseSyntax)node);
+                    flags.Set(Flag.ArrowExpressionClause);
+                    continue;
+                }
                 case SyntaxKind.Parameter:
-                    {
-                        if (flags.IsSet(Flag.Parameter))
-                            continue;
-
-                        await ParameterRefactoring.ComputeRefactoringsAsync(this, (ParameterSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.Parameter);
+                {
+                    if (flags.IsSet(Flag.Parameter))
                         continue;
-                    }
+
+                    await ParameterRefactoring.ComputeRefactoringsAsync(this, (ParameterSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.Parameter);
+                    continue;
+                }
                 case SyntaxKind.ParameterList:
-                    {
-                        if (flags.IsSet(Flag.ParameterList))
-                            continue;
-
-                        await ParameterListRefactoring.ComputeRefactoringsAsync(this, (ParameterListSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.ParameterList);
+                {
+                    if (flags.IsSet(Flag.ParameterList))
                         continue;
-                    }
+
+                    await ParameterListRefactoring.ComputeRefactoringsAsync(this, (ParameterListSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.ParameterList);
+                    continue;
+                }
                 case SyntaxKind.SwitchSection:
-                    {
-                        if (flags.IsSet(Flag.SwitchSection))
-                            continue;
-
-                        await SwitchSectionRefactoring.ComputeRefactoringsAsync(this, (SwitchSectionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.SwitchSection);
+                {
+                    if (flags.IsSet(Flag.SwitchSection))
                         continue;
-                    }
+
+                    await SwitchSectionRefactoring.ComputeRefactoringsAsync(this, (SwitchSectionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.SwitchSection);
+                    continue;
+                }
                 case SyntaxKind.VariableDeclaration:
-                    {
-                        if (flags.IsSet(Flag.VariableDeclaration))
-                            continue;
-
-                        await VariableDeclarationRefactoring.ComputeRefactoringsAsync(this, (VariableDeclarationSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.VariableDeclaration);
+                {
+                    if (flags.IsSet(Flag.VariableDeclaration))
                         continue;
-                    }
+
+                    await VariableDeclarationRefactoring.ComputeRefactoringsAsync(this, (VariableDeclarationSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.VariableDeclaration);
+                    continue;
+                }
                 case SyntaxKind.VariableDeclarator:
-                    {
-                        if (flags.IsSet(Flag.VariableDeclarator))
-                            continue;
-
-                        VariableDeclaratorRefactoring.ComputeRefactorings(this, (VariableDeclaratorSyntax)node);
-                        flags.Set(Flag.VariableDeclarator);
+                {
+                    if (flags.IsSet(Flag.VariableDeclarator))
                         continue;
-                    }
+
+                    VariableDeclaratorRefactoring.ComputeRefactorings(this, (VariableDeclaratorSyntax)node);
+                    flags.Set(Flag.VariableDeclarator);
+                    continue;
+                }
                 case SyntaxKind.InterpolatedStringText:
-                    {
-                        if (flags.IsSet(Flag.InterpolatedStringText))
-                            continue;
-
-                        await InterpolatedStringTextRefactoring.ComputeRefactoringsAsync(this, (InterpolatedStringTextSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.InterpolatedStringText);
+                {
+                    if (flags.IsSet(Flag.InterpolatedStringText))
                         continue;
-                    }
+
+                    await InterpolatedStringTextRefactoring.ComputeRefactoringsAsync(this, (InterpolatedStringTextSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.InterpolatedStringText);
+                    continue;
+                }
                 case SyntaxKind.Interpolation:
-                    {
-                        if (flags.IsSet(Flag.Interpolation))
-                            continue;
-
-                        InterpolationRefactoring.ComputeRefactorings(this, (InterpolationSyntax)node);
-                        flags.Set(Flag.Interpolation);
+                {
+                    if (flags.IsSet(Flag.Interpolation))
                         continue;
-                    }
+
+                    InterpolationRefactoring.ComputeRefactorings(this, (InterpolationSyntax)node);
+                    flags.Set(Flag.Interpolation);
+                    continue;
+                }
                 case SyntaxKind.ElseClause:
-                    {
-                        if (flags.IsSet(Flag.ElseClause))
-                            continue;
-
-                        ElseClauseRefactoring.ComputeRefactorings(this, (ElseClauseSyntax)node);
-                        flags.Set(Flag.ElseClause);
+                {
+                    if (flags.IsSet(Flag.ElseClause))
                         continue;
-                    }
+
+                    ElseClauseRefactoring.ComputeRefactorings(this, (ElseClauseSyntax)node);
+                    flags.Set(Flag.ElseClause);
+                    continue;
+                }
                 case SyntaxKind.CaseSwitchLabel:
-                    {
-                        if (flags.IsSet(Flag.CaseSwitchLabel))
-                            continue;
-
-                        flags.Set(Flag.CaseSwitchLabel);
+                {
+                    if (flags.IsSet(Flag.CaseSwitchLabel))
                         continue;
-                    }
+
+                    flags.Set(Flag.CaseSwitchLabel);
+                    continue;
+                }
                 case SyntaxKind.UsingDirective:
-                    {
-                        if (flags.IsSet(Flag.UsingDirective))
-                            continue;
-
-                        UsingDirectiveRefactoring.ComputeRefactoring(this, (UsingDirectiveSyntax)node);
-                        flags.Set(Flag.UsingDirective);
+                {
+                    if (flags.IsSet(Flag.UsingDirective))
                         continue;
-                    }
+
+                    UsingDirectiveRefactoring.ComputeRefactoring(this, (UsingDirectiveSyntax)node);
+                    flags.Set(Flag.UsingDirective);
+                    continue;
+                }
                 case SyntaxKind.DeclarationPattern:
-                    {
-                        if (flags.IsSet(Flag.DeclarationPattern))
-                            continue;
-
-                        await DeclarationPatternRefactoring.ComputeRefactoringAsync(this, (DeclarationPatternSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.DeclarationPattern);
+                {
+                    if (flags.IsSet(Flag.DeclarationPattern))
                         continue;
-                    }
+
+                    await DeclarationPatternRefactoring.ComputeRefactoringAsync(this, (DeclarationPatternSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.DeclarationPattern);
+                    continue;
+                }
                 case SyntaxKind.TypeParameterConstraintClause:
-                    {
-                        if (flags.IsSet(Flag.TypeParameterConstraintClause))
-                            continue;
-
-                        TypeParameterConstraintClauseRefactoring.ComputeRefactoring(this, (TypeParameterConstraintClauseSyntax)node);
-                        flags.Set(Flag.TypeParameterConstraintClause);
+                {
+                    if (flags.IsSet(Flag.TypeParameterConstraintClause))
                         continue;
-                    }
+
+                    TypeParameterConstraintClauseRefactoring.ComputeRefactoring(this, (TypeParameterConstraintClauseSyntax)node);
+                    flags.Set(Flag.TypeParameterConstraintClause);
+                    continue;
+                }
                 case SyntaxKind.Attribute:
-                    {
-                        if (flags.IsSet(Flag.Attribute))
-                            continue;
-
-                        await AttributeRefactoring.ComputeRefactoringAsync(this, (AttributeSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.Attribute);
+                {
+                    if (flags.IsSet(Flag.Attribute))
                         continue;
-                    }
+
+                    await AttributeRefactoring.ComputeRefactoringAsync(this, (AttributeSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.Attribute);
+                    continue;
+                }
                 case SyntaxKind.SimpleAssignmentExpression:
                 case SyntaxKind.AddAssignmentExpression:
                 case SyntaxKind.SubtractAssignmentExpression:
@@ -618,23 +618,23 @@ internal class RefactoringContext
                 case SyntaxKind.OrAssignmentExpression:
                 case SyntaxKind.LeftShiftAssignmentExpression:
                 case SyntaxKind.RightShiftAssignmentExpression:
-                    {
-                        if (flags.IsSet(Flag.AssignmentExpression))
-                            continue;
-
-                        AssignmentExpressionRefactoring.ComputeRefactorings(this, (AssignmentExpressionSyntax)node);
-                        flags.Set(Flag.AssignmentExpression);
+                {
+                    if (flags.IsSet(Flag.AssignmentExpression))
                         continue;
-                    }
+
+                    AssignmentExpressionRefactoring.ComputeRefactorings(this, (AssignmentExpressionSyntax)node);
+                    flags.Set(Flag.AssignmentExpression);
+                    continue;
+                }
                 case SyntaxKind.AnonymousMethodExpression:
-                    {
-                        if (flags.IsSet(Flag.AnonymousMethod))
-                            continue;
-
-                        AnonymousMethodExpressionRefactoring.ComputeRefactorings(this, (AnonymousMethodExpressionSyntax)node);
-                        flags.Set(Flag.AnonymousMethod);
+                {
+                    if (flags.IsSet(Flag.AnonymousMethod))
                         continue;
-                    }
+
+                    AnonymousMethodExpressionRefactoring.ComputeRefactorings(this, (AnonymousMethodExpressionSyntax)node);
+                    flags.Set(Flag.AnonymousMethod);
+                    continue;
+                }
                 case SyntaxKind.AddExpression:
                 case SyntaxKind.SubtractExpression:
                 case SyntaxKind.MultiplyExpression:
@@ -656,90 +656,90 @@ internal class RefactoringContext
                 case SyntaxKind.IsExpression:
                 case SyntaxKind.AsExpression:
                 case SyntaxKind.CoalesceExpression:
-                    {
-                        if (flags.IsSet(Flag.BinaryExpression))
-                            continue;
-
-                        await BinaryExpressionRefactoring.ComputeRefactoringsAsync(this, (BinaryExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.BinaryExpression);
+                {
+                    if (flags.IsSet(Flag.BinaryExpression))
                         continue;
-                    }
+
+                    await BinaryExpressionRefactoring.ComputeRefactoringsAsync(this, (BinaryExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.BinaryExpression);
+                    continue;
+                }
                 case SyntaxKind.ConditionalExpression:
-                    {
-                        if (flags.IsSet(Flag.ConditionalExpression))
-                            continue;
-
-                        await ConditionalExpressionRefactoring.ComputeRefactoringsAsync(this, (ConditionalExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.ConditionalExpression);
+                {
+                    if (flags.IsSet(Flag.ConditionalExpression))
                         continue;
-                    }
+
+                    await ConditionalExpressionRefactoring.ComputeRefactoringsAsync(this, (ConditionalExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.ConditionalExpression);
+                    continue;
+                }
                 case SyntaxKind.QualifiedName:
-                    {
-                        if (flags.IsSet(Flag.QualifiedName))
-                            continue;
-
-                        await QualifiedNameRefactoring.ComputeRefactoringsAsync(this, (QualifiedNameSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.QualifiedName);
+                {
+                    if (flags.IsSet(Flag.QualifiedName))
                         continue;
-                    }
+
+                    await QualifiedNameRefactoring.ComputeRefactoringsAsync(this, (QualifiedNameSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.QualifiedName);
+                    continue;
+                }
                 case SyntaxKind.GenericName:
-                    {
-                        if (flags.IsSet(Flag.GenericName))
-                            continue;
-
-                        flags.Set(Flag.GenericName);
+                {
+                    if (flags.IsSet(Flag.GenericName))
                         continue;
-                    }
+
+                    flags.Set(Flag.GenericName);
+                    continue;
+                }
                 case SyntaxKind.IdentifierName:
-                    {
-                        if (flags.IsSet(Flag.IdentifierName))
-                            continue;
-
-                        await IdentifierNameRefactoring.ComputeRefactoringsAsync(this, (IdentifierNameSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.IdentifierName);
+                {
+                    if (flags.IsSet(Flag.IdentifierName))
                         continue;
-                    }
+
+                    await IdentifierNameRefactoring.ComputeRefactoringsAsync(this, (IdentifierNameSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.IdentifierName);
+                    continue;
+                }
                 case SyntaxKind.ArrayInitializerExpression:
                 case SyntaxKind.CollectionInitializerExpression:
                 case SyntaxKind.ComplexElementInitializerExpression:
                 case SyntaxKind.ObjectInitializerExpression:
                 case SyntaxKind.WithInitializerExpression:
-                    {
-                        if (flags.IsSet(Flag.InitializerExpression))
-                            continue;
-
-                        await InitializerExpressionRefactoring.ComputeRefactoringsAsync(this, (InitializerExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.InitializerExpression);
+                {
+                    if (flags.IsSet(Flag.InitializerExpression))
                         continue;
-                    }
+
+                    await InitializerExpressionRefactoring.ComputeRefactoringsAsync(this, (InitializerExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.InitializerExpression);
+                    continue;
+                }
                 case SyntaxKind.InterpolatedStringExpression:
-                    {
-                        if (flags.IsSet(Flag.InterpolatedStringExpression))
-                            continue;
-
-                        InterpolatedStringRefactoring.ComputeRefactorings(this, (InterpolatedStringExpressionSyntax)node);
-                        flags.Set(Flag.InterpolatedStringExpression);
+                {
+                    if (flags.IsSet(Flag.InterpolatedStringExpression))
                         continue;
-                    }
+
+                    InterpolatedStringRefactoring.ComputeRefactorings(this, (InterpolatedStringExpressionSyntax)node);
+                    flags.Set(Flag.InterpolatedStringExpression);
+                    continue;
+                }
                 case SyntaxKind.InvocationExpression:
-                    {
-                        if (flags.IsSet(Flag.InvocationExpression))
-                            continue;
-
-                        await InvocationExpressionRefactoring.ComputeRefactoringsAsync(this, (InvocationExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.InvocationExpression);
+                {
+                    if (flags.IsSet(Flag.InvocationExpression))
                         continue;
-                    }
+
+                    await InvocationExpressionRefactoring.ComputeRefactoringsAsync(this, (InvocationExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.InvocationExpression);
+                    continue;
+                }
                 case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.ParenthesizedLambdaExpression:
-                    {
-                        if (flags.IsSet(Flag.LambdaExpression))
-                            continue;
-
-                        await LambdaExpressionRefactoring.ComputeRefactoringsAsync(this, (LambdaExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.LambdaExpression);
+                {
+                    if (flags.IsSet(Flag.LambdaExpression))
                         continue;
-                    }
+
+                    await LambdaExpressionRefactoring.ComputeRefactoringsAsync(this, (LambdaExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.LambdaExpression);
+                    continue;
+                }
                 case SyntaxKind.CharacterLiteralExpression:
                 case SyntaxKind.DefaultLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
@@ -747,51 +747,51 @@ internal class RefactoringContext
                 case SyntaxKind.NumericLiteralExpression:
                 case SyntaxKind.StringLiteralExpression:
                 case SyntaxKind.TrueLiteralExpression:
-                    {
-                        if (flags.IsSet(Flag.LiteralExpression))
-                            continue;
-
-                        await LiteralExpressionRefactoring.ComputeRefactoringsAsync(this, (LiteralExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.LiteralExpression);
+                {
+                    if (flags.IsSet(Flag.LiteralExpression))
                         continue;
-                    }
+
+                    await LiteralExpressionRefactoring.ComputeRefactoringsAsync(this, (LiteralExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.LiteralExpression);
+                    continue;
+                }
                 case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        if (flags.IsSet(Flag.SimpleMemberAccessExpression))
-                            continue;
-
-                        await SimpleMemberAccessExpressionRefactoring.ComputeRefactoringAsync(this, (MemberAccessExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.SimpleMemberAccessExpression);
+                {
+                    if (flags.IsSet(Flag.SimpleMemberAccessExpression))
                         continue;
-                    }
+
+                    await SimpleMemberAccessExpressionRefactoring.ComputeRefactoringAsync(this, (MemberAccessExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.SimpleMemberAccessExpression);
+                    continue;
+                }
                 case SyntaxKind.ConditionalAccessExpression:
-                    {
-                        if (flags.IsSet(Flag.ConditionalAccessExpression))
-                            continue;
-
-                        await ConditionalAccessExpressionRefactoring.ComputeRefactoringAsync(this, (ConditionalAccessExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.ConditionalAccessExpression);
+                {
+                    if (flags.IsSet(Flag.ConditionalAccessExpression))
                         continue;
-                    }
+
+                    await ConditionalAccessExpressionRefactoring.ComputeRefactoringAsync(this, (ConditionalAccessExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.ConditionalAccessExpression);
+                    continue;
+                }
                 case SyntaxKind.ParenthesizedExpression:
-                    {
-                        if (flags.IsSet(Flag.ParenthesizedExpression))
-                            continue;
-
-                        ParenthesizedExpressionRefactoring.ComputeRefactorings(this, (ParenthesizedExpressionSyntax)node);
-                        flags.Set(Flag.ParenthesizedExpression);
+                {
+                    if (flags.IsSet(Flag.ParenthesizedExpression))
                         continue;
-                    }
+
+                    ParenthesizedExpressionRefactoring.ComputeRefactorings(this, (ParenthesizedExpressionSyntax)node);
+                    flags.Set(Flag.ParenthesizedExpression);
+                    continue;
+                }
                 case SyntaxKind.PostDecrementExpression:
                 case SyntaxKind.PostIncrementExpression:
-                    {
-                        if (flags.IsSet(Flag.PostfixUnaryExpression))
-                            continue;
-
-                        PostfixUnaryExpressionRefactoring.ComputeRefactorings(this, (PostfixUnaryExpressionSyntax)node);
-                        flags.Set(Flag.PostfixUnaryExpression);
+                {
+                    if (flags.IsSet(Flag.PostfixUnaryExpression))
                         continue;
-                    }
+
+                    PostfixUnaryExpressionRefactoring.ComputeRefactorings(this, (PostfixUnaryExpressionSyntax)node);
+                    flags.Set(Flag.PostfixUnaryExpression);
+                    continue;
+                }
                 case SyntaxKind.UnaryPlusExpression:
                 case SyntaxKind.UnaryMinusExpression:
                 case SyntaxKind.BitwiseNotExpression:
@@ -800,212 +800,212 @@ internal class RefactoringContext
                 case SyntaxKind.PreDecrementExpression:
                 case SyntaxKind.AddressOfExpression:
                 case SyntaxKind.PointerIndirectionExpression:
-                    {
-                        if (flags.IsSet(Flag.PrefixUnaryExpression))
-                            continue;
-
-                        PrefixUnaryExpressionRefactoring.ComputeRefactorings(this, (PrefixUnaryExpressionSyntax)node);
-                        flags.Set(Flag.PrefixUnaryExpression);
+                {
+                    if (flags.IsSet(Flag.PrefixUnaryExpression))
                         continue;
-                    }
+
+                    PrefixUnaryExpressionRefactoring.ComputeRefactorings(this, (PrefixUnaryExpressionSyntax)node);
+                    flags.Set(Flag.PrefixUnaryExpression);
+                    continue;
+                }
                 case SyntaxKind.AwaitExpression:
-                    {
-                        if (flags.IsSet(Flag.AwaitExpression))
-                            continue;
-
-                        flags.Set(Flag.AwaitExpression);
+                {
+                    if (flags.IsSet(Flag.AwaitExpression))
                         continue;
-                    }
+
+                    flags.Set(Flag.AwaitExpression);
+                    continue;
+                }
                 case SyntaxKind.CastExpression:
-                    {
-                        if (flags.IsSet(Flag.CastExpression))
-                            continue;
-
-                        await CastExpressionRefactoring.ComputeRefactoringsAsync(this, (CastExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.CastExpression);
+                {
+                    if (flags.IsSet(Flag.CastExpression))
                         continue;
-                    }
+
+                    await CastExpressionRefactoring.ComputeRefactoringsAsync(this, (CastExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.CastExpression);
+                    continue;
+                }
                 case SyntaxKind.ThrowExpression:
-                    {
-                        if (flags.IsSet(Flag.ThrowExpression))
-                            continue;
-
-                        await ThrowExpressionRefactoring.ComputeRefactoringsAsync(this, (ThrowExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.ThrowExpression);
+                {
+                    if (flags.IsSet(Flag.ThrowExpression))
                         continue;
-                    }
+
+                    await ThrowExpressionRefactoring.ComputeRefactoringsAsync(this, (ThrowExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.ThrowExpression);
+                    continue;
+                }
                 case SyntaxKind.DeclarationExpression:
-                    {
-                        if (flags.IsSet(Flag.DeclarationExpression))
-                            continue;
-
-                        await DeclarationExpressionRefactoring.ComputeRefactoringsAsync(this, (DeclarationExpressionSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.DeclarationExpression);
+                {
+                    if (flags.IsSet(Flag.DeclarationExpression))
                         continue;
-                    }
+
+                    await DeclarationExpressionRefactoring.ComputeRefactoringsAsync(this, (DeclarationExpressionSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.DeclarationExpression);
+                    continue;
+                }
                 case SyntaxKind.IsPatternExpression:
-                    {
-                        if (flags.IsSet(Flag.IsPatternExpression))
-                            continue;
-
-                        InvertIsExpressionRefactoring.ComputeRefactoring(this, (IsPatternExpressionSyntax)node);
-                        flags.Set(Flag.IsPatternExpression);
+                {
+                    if (flags.IsSet(Flag.IsPatternExpression))
                         continue;
-                    }
+
+                    InvertIsExpressionRefactoring.ComputeRefactoring(this, (IsPatternExpressionSyntax)node);
+                    flags.Set(Flag.IsPatternExpression);
+                    continue;
+                }
                 case SyntaxKind.SwitchExpression:
-                    {
-                        if (flags.IsSet(Flag.SwitchExpression))
-                            continue;
-
-                        SwitchExpressionRefactoring.ComputeRefactorings(this, (SwitchExpressionSyntax)node);
-                        flags.Set(Flag.SwitchExpression);
+                {
+                    if (flags.IsSet(Flag.SwitchExpression))
                         continue;
-                    }
+
+                    SwitchExpressionRefactoring.ComputeRefactorings(this, (SwitchExpressionSyntax)node);
+                    flags.Set(Flag.SwitchExpression);
+                    continue;
+                }
                 case SyntaxKind.DoStatement:
-                    {
-                        if (flags.IsSet(Flag.LoopStatement))
-                            break;
-
-                        DoStatementRefactoring.ComputeRefactorings(this, (DoStatementSyntax)node);
-                        flags.Set(Flag.LoopStatement);
+                {
+                    if (flags.IsSet(Flag.LoopStatement))
                         break;
-                    }
+
+                    DoStatementRefactoring.ComputeRefactorings(this, (DoStatementSyntax)node);
+                    flags.Set(Flag.LoopStatement);
+                    break;
+                }
                 case SyntaxKind.ExpressionStatement:
-                    {
-                        if (flags.IsSet(Flag.ExpressionStatement))
-                            break;
-
-                        await ExpressionStatementRefactoring.ComputeRefactoringsAsync(this, (ExpressionStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.ExpressionStatement);
+                {
+                    if (flags.IsSet(Flag.ExpressionStatement))
                         break;
-                    }
+
+                    await ExpressionStatementRefactoring.ComputeRefactoringsAsync(this, (ExpressionStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.ExpressionStatement);
+                    break;
+                }
                 case SyntaxKind.ForEachStatement:
-                    {
-                        if (flags.IsSet(Flag.LoopStatement))
-                            break;
-
-                        await ForEachStatementRefactoring.ComputeRefactoringsAsync(this, (ForEachStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.LoopStatement);
+                {
+                    if (flags.IsSet(Flag.LoopStatement))
                         break;
-                    }
+
+                    await ForEachStatementRefactoring.ComputeRefactoringsAsync(this, (ForEachStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.LoopStatement);
+                    break;
+                }
                 case SyntaxKind.ForStatement:
-                    {
-                        if (flags.IsSet(Flag.LoopStatement))
-                            break;
-
-                        await ForStatementRefactoring.ComputeRefactoringsAsync(this, (ForStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.LoopStatement);
+                {
+                    if (flags.IsSet(Flag.LoopStatement))
                         break;
-                    }
+
+                    await ForStatementRefactoring.ComputeRefactoringsAsync(this, (ForStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.LoopStatement);
+                    break;
+                }
                 case SyntaxKind.IfStatement:
-                    {
-                        if (flags.IsSet(Flag.IfStatement))
-                            break;
-
-                        await IfStatementRefactoring.ComputeRefactoringsAsync(this, (IfStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.IfStatement);
+                {
+                    if (flags.IsSet(Flag.IfStatement))
                         break;
-                    }
+
+                    await IfStatementRefactoring.ComputeRefactoringsAsync(this, (IfStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.IfStatement);
+                    break;
+                }
                 case SyntaxKind.LocalDeclarationStatement:
-                    {
-                        if (flags.IsSet(Flag.LocalDeclarationStatement))
-                            break;
-
-                        await LocalDeclarationStatementRefactoring.ComputeRefactoringsAsync(this, (LocalDeclarationStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.LocalDeclarationStatement);
+                {
+                    if (flags.IsSet(Flag.LocalDeclarationStatement))
                         break;
-                    }
+
+                    await LocalDeclarationStatementRefactoring.ComputeRefactoringsAsync(this, (LocalDeclarationStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.LocalDeclarationStatement);
+                    break;
+                }
                 case SyntaxKind.ReturnStatement:
-                    {
-                        if (flags.IsSet(Flag.ReturnStatement))
-                            break;
-
-                        await ReturnStatementRefactoring.ComputeRefactoringsAsync(this, (ReturnStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.ReturnStatement);
+                {
+                    if (flags.IsSet(Flag.ReturnStatement))
                         break;
-                    }
+
+                    await ReturnStatementRefactoring.ComputeRefactoringsAsync(this, (ReturnStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.ReturnStatement);
+                    break;
+                }
                 case SyntaxKind.SwitchStatement:
-                    {
-                        if (flags.IsSet(Flag.SwitchStatement))
-                            break;
-
-                        await SwitchStatementRefactoring.ComputeRefactoringsAsync(this, (SwitchStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.SwitchStatement);
+                {
+                    if (flags.IsSet(Flag.SwitchStatement))
                         break;
-                    }
+
+                    await SwitchStatementRefactoring.ComputeRefactoringsAsync(this, (SwitchStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.SwitchStatement);
+                    break;
+                }
                 case SyntaxKind.UsingStatement:
-                    {
-                        if (flags.IsSet(Flag.UsingStatement))
-                            break;
-
-                        UsingStatementRefactoring.ComputeRefactorings(this, (UsingStatementSyntax)node);
-                        flags.Set(Flag.UsingStatement);
+                {
+                    if (flags.IsSet(Flag.UsingStatement))
                         break;
-                    }
+
+                    UsingStatementRefactoring.ComputeRefactorings(this, (UsingStatementSyntax)node);
+                    flags.Set(Flag.UsingStatement);
+                    break;
+                }
                 case SyntaxKind.WhileStatement:
-                    {
-                        if (flags.IsSet(Flag.LoopStatement))
-                            break;
-
-                        WhileStatementRefactoring.ComputeRefactorings(this, (WhileStatementSyntax)node);
-                        flags.Set(Flag.LoopStatement);
+                {
+                    if (flags.IsSet(Flag.LoopStatement))
                         break;
-                    }
+
+                    WhileStatementRefactoring.ComputeRefactorings(this, (WhileStatementSyntax)node);
+                    flags.Set(Flag.LoopStatement);
+                    break;
+                }
                 case SyntaxKind.YieldBreakStatement:
                 case SyntaxKind.YieldReturnStatement:
-                    {
-                        if (flags.IsSet(Flag.YieldStatement))
-                            break;
-
-                        await YieldStatementRefactoring.ComputeRefactoringsAsync(this, (YieldStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.YieldStatement);
+                {
+                    if (flags.IsSet(Flag.YieldStatement))
                         break;
-                    }
+
+                    await YieldStatementRefactoring.ComputeRefactoringsAsync(this, (YieldStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.YieldStatement);
+                    break;
+                }
                 case SyntaxKind.LockStatement:
-                    {
-                        if (flags.IsSet(Flag.LockStatement))
-                            break;
-
-                        LockStatementRefactoring.ComputeRefactorings(this, (LockStatementSyntax)node);
-                        flags.Set(Flag.LockStatement);
+                {
+                    if (flags.IsSet(Flag.LockStatement))
                         break;
-                    }
+
+                    LockStatementRefactoring.ComputeRefactorings(this, (LockStatementSyntax)node);
+                    flags.Set(Flag.LockStatement);
+                    break;
+                }
                 case SyntaxKind.Block:
-                    {
-                        if (flags.IsSet(Flag.Block))
-                            break;
-
-                        await BlockRefactoring.ComputeRefactoringAsync(this, (BlockSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.Block);
+                {
+                    if (flags.IsSet(Flag.Block))
                         break;
-                    }
+
+                    await BlockRefactoring.ComputeRefactoringAsync(this, (BlockSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.Block);
+                    break;
+                }
                 case SyntaxKind.ThrowStatement:
-                    {
-                        if (flags.IsSet(Flag.ThrowStatement))
-                            break;
-
-                        await ThrowStatementRefactoring.ComputeRefactoringAsync(this, (ThrowStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.ThrowStatement);
+                {
+                    if (flags.IsSet(Flag.ThrowStatement))
                         break;
-                    }
+
+                    await ThrowStatementRefactoring.ComputeRefactoringAsync(this, (ThrowStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.ThrowStatement);
+                    break;
+                }
                 case SyntaxKind.LocalFunctionStatement:
-                    {
-                        if (flags.IsSet(Flag.LocalFunctionStatement))
-                            break;
-
-                        await LocalFunctionStatementRefactoring.ComputeRefactoringsAsync(this, (LocalFunctionStatementSyntax)node).ConfigureAwait(false);
-                        flags.Set(Flag.LocalFunctionStatement);
+                {
+                    if (flags.IsSet(Flag.LocalFunctionStatement))
                         break;
-                    }
+
+                    await LocalFunctionStatementRefactoring.ComputeRefactoringsAsync(this, (LocalFunctionStatementSyntax)node).ConfigureAwait(false);
+                    flags.Set(Flag.LocalFunctionStatement);
+                    break;
+                }
                 case SyntaxKind.UnsafeStatement:
-                    {
-                        if (flags.IsSet(Flag.UnsafeStatement))
-                            break;
-
-                        UnsafeStatementRefactoring.ComputeRefactorings(this, (UnsafeStatementSyntax)node);
-                        flags.Set(Flag.UnsafeStatement);
+                {
+                    if (flags.IsSet(Flag.UnsafeStatement))
                         break;
-                    }
+
+                    UnsafeStatementRefactoring.ComputeRefactorings(this, (UnsafeStatementSyntax)node);
+                    flags.Set(Flag.UnsafeStatement);
+                    break;
+                }
             }
 
             if (!flags.IsSet(Flag.Statement)

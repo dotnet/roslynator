@@ -101,17 +101,17 @@ internal static class AddUsingDirectiveRefactoring
         switch (node.Parent.Kind())
         {
             case SyntaxKind.QualifiedName:
-                {
-                    var qualifiedName = (QualifiedNameSyntax)node.Parent;
+            {
+                var qualifiedName = (QualifiedNameSyntax)node.Parent;
 
-                    return qualifiedName.Right.WithLeadingTrivia(node.GetLeadingTrivia());
-                }
+                return qualifiedName.Right.WithLeadingTrivia(node.GetLeadingTrivia());
+            }
             case SyntaxKind.SimpleMemberAccessExpression:
-                {
-                    var memberAccess = (MemberAccessExpressionSyntax)node.Parent;
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)node.Parent;
 
-                    return memberAccess.Name.WithLeadingTrivia(node.GetLeadingTrivia());
-                }
+                return memberAccess.Name.WithLeadingTrivia(node.GetLeadingTrivia());
+            }
         }
 
         Debug.Fail(node.Parent?.Kind().ToString());

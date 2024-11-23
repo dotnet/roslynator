@@ -33,15 +33,15 @@ public sealed class DocumentationCommentCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.AddSummaryElementToDocumentationComment:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Add summary element",
-                            ct => AddSummaryToDocumentationCommentRefactoring.RefactorAsync(context.Document, documentationComment, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Add summary element",
+                        ct => AddSummaryToDocumentationCommentRefactoring.RefactorAsync(context.Document, documentationComment, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

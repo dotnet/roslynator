@@ -86,90 +86,90 @@ internal static class StatementRefactoring
             case SyntaxKind.UnsafeStatement:
             case SyntaxKind.UsingStatement:
             case SyntaxKind.LockStatement:
+            {
+                if (block.OpenBraceToken.Span.Contains(context.Span)
+                    || block.CloseBraceToken.Span.Contains(context.Span))
                 {
-                    if (block.OpenBraceToken.Span.Contains(context.Span)
-                        || block.CloseBraceToken.Span.Contains(context.Span))
+                    if (parent is UsingStatementSyntax usingStatement)
                     {
-                        if (parent is UsingStatementSyntax usingStatement)
-                        {
-                            while (usingStatement.IsParentKind(SyntaxKind.UsingStatement))
-                                usingStatement = (UsingStatementSyntax)usingStatement.Parent;
+                        while (usingStatement.IsParentKind(SyntaxKind.UsingStatement))
+                            usingStatement = (UsingStatementSyntax)usingStatement.Parent;
 
-                            return usingStatement;
-                        }
-
-                        return (StatementSyntax)parent;
+                        return usingStatement;
                     }
 
-                    break;
+                    return (StatementSyntax)parent;
                 }
+
+                break;
+            }
             case SyntaxKind.TryStatement:
-                {
-                    var tryStatement = (TryStatementSyntax)parent;
+            {
+                var tryStatement = (TryStatementSyntax)parent;
 
-                    if (tryStatement.Block?.OpenBraceToken.Span.Contains(context.Span) == true)
-                        return (StatementSyntax)parent;
+                if (tryStatement.Block?.OpenBraceToken.Span.Contains(context.Span) == true)
+                    return (StatementSyntax)parent;
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.IfStatement:
+            {
+                var ifStatement = (IfStatementSyntax)parent;
+
+                if (ifStatement.IsTopmostIf()
+                    && block.OpenBraceToken.Span.Contains(context.Span))
                 {
-                    var ifStatement = (IfStatementSyntax)parent;
-
-                    if (ifStatement.IsTopmostIf()
-                        && block.OpenBraceToken.Span.Contains(context.Span))
-                    {
-                        return ifStatement;
-                    }
-
-                    if (ifStatement.Else is null
-                        && block.CloseBraceToken.Span.Contains(context.Span))
-                    {
-                        return ifStatement.GetTopmostIf();
-                    }
-
-                    break;
+                    return ifStatement;
                 }
+
+                if (ifStatement.Else is null
+                    && block.CloseBraceToken.Span.Contains(context.Span))
+                {
+                    return ifStatement.GetTopmostIf();
+                }
+
+                break;
+            }
             case SyntaxKind.ElseClause:
-                {
-                    var elseClause = (ElseClauseSyntax)parent;
+            {
+                var elseClause = (ElseClauseSyntax)parent;
 
-                    if (block.CloseBraceToken.Span.Contains(context.Span))
-                        return elseClause.GetTopmostIf();
+                if (block.CloseBraceToken.Span.Contains(context.Span))
+                    return elseClause.GetTopmostIf();
 
-                    break;
-                }
+                break;
+            }
             case SyntaxKind.CatchClause:
+            {
+                var catchClause = (CatchClauseSyntax)parent;
+
+                if (catchClause.IsParentKind(SyntaxKind.TryStatement))
                 {
-                    var catchClause = (CatchClauseSyntax)parent;
+                    var tryStatement = (TryStatementSyntax)catchClause.Parent;
 
-                    if (catchClause.IsParentKind(SyntaxKind.TryStatement))
+                    if (tryStatement.Finally is null
+                        && catchClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
                     {
-                        var tryStatement = (TryStatementSyntax)catchClause.Parent;
-
-                        if (tryStatement.Finally is null
-                            && catchClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
-                        {
-                            return tryStatement;
-                        }
+                        return tryStatement;
                     }
-
-                    break;
                 }
+
+                break;
+            }
             case SyntaxKind.FinallyClause:
+            {
+                var finallyClause = (FinallyClauseSyntax)parent;
+
+                if (finallyClause.IsParentKind(SyntaxKind.TryStatement))
                 {
-                    var finallyClause = (FinallyClauseSyntax)parent;
+                    var tryStatement = (TryStatementSyntax)finallyClause.Parent;
 
-                    if (finallyClause.IsParentKind(SyntaxKind.TryStatement))
-                    {
-                        var tryStatement = (TryStatementSyntax)finallyClause.Parent;
-
-                        if (finallyClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
-                            return tryStatement;
-                    }
-
-                    break;
+                    if (finallyClause.Block?.CloseBraceToken.Span.Contains(context.Span) == true)
+                        return tryStatement;
                 }
+
+                break;
+            }
         }
 
         return null;

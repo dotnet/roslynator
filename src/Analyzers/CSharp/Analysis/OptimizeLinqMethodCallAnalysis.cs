@@ -168,33 +168,33 @@ internal static class OptimizeLinqMethodCallAnalysis
         switch (methodName)
         {
             case "Where":
-                {
-                    if (!SymbolUtility.IsLinqWhere(methodSymbol2, allowImmutableArrayExtension: true))
-                        return;
+            {
+                if (!SymbolUtility.IsLinqWhere(methodSymbol2, allowImmutableArrayExtension: true))
+                    return;
 
-                    break;
-                }
+                break;
+            }
             case "Select":
-                {
-                    if (!SymbolUtility.IsLinqSelect(methodSymbol2, allowImmutableArrayExtension: true))
-                        return;
+            {
+                if (!SymbolUtility.IsLinqSelect(methodSymbol2, allowImmutableArrayExtension: true))
+                    return;
 
-                    if (invocationInfo.NameText == "ToList"
-                        && semanticModel
-                            .GetTypeSymbol(invocationInfo2.Expression, cancellationToken)?
-                            .OriginalDefinition
-                            .HasMetadataName(MetadataNames.System_Collections_Generic_List_T) != true)
-                    {
-                        return;
-                    }
-
-                    break;
-                }
-            default:
+                if (invocationInfo.NameText == "ToList"
+                    && semanticModel
+                        .GetTypeSymbol(invocationInfo2.Expression, cancellationToken)?
+                        .OriginalDefinition
+                        .HasMetadataName(MetadataNames.System_Collections_Generic_List_T) != true)
                 {
-                    Debug.Fail(methodName);
                     return;
                 }
+
+                break;
+            }
+            default:
+            {
+                Debug.Fail(methodName);
+                return;
+            }
         }
 
         TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocation.Span.End);
@@ -519,55 +519,55 @@ internal static class OptimizeLinqMethodCallAnalysis
         {
             case SyntaxKind.EqualsExpression:
             case SyntaxKind.NotEqualsExpression:
+            {
+                var equalsExpression = (BinaryExpressionSyntax)parent;
+
+                if (equalsExpression.Left == invocationExpression)
                 {
-                    var equalsExpression = (BinaryExpressionSyntax)parent;
-
-                    if (equalsExpression.Left == invocationExpression)
-                    {
-                        if (equalsExpression.Right.IsNumericLiteralExpression("0"))
-                            ReportNameWithArgumentList(context, invocationInfo);
-                    }
-                    else if (equalsExpression.Left.IsNumericLiteralExpression("0"))
-                    {
+                    if (equalsExpression.Right.IsNumericLiteralExpression("0"))
                         ReportNameWithArgumentList(context, invocationInfo);
-                    }
-
-                    break;
                 }
+                else if (equalsExpression.Left.IsNumericLiteralExpression("0"))
+                {
+                    ReportNameWithArgumentList(context, invocationInfo);
+                }
+
+                break;
+            }
             case SyntaxKind.GreaterThanExpression:
             case SyntaxKind.LessThanOrEqualExpression:
+            {
+                var binaryExpression = (BinaryExpressionSyntax)parent;
+
+                if (binaryExpression.Left == invocationExpression)
                 {
-                    var binaryExpression = (BinaryExpressionSyntax)parent;
-
-                    if (binaryExpression.Left == invocationExpression)
-                    {
-                        if (binaryExpression.Right.IsNumericLiteralExpression("0"))
-                            ReportNameWithArgumentList(context, invocationInfo);
-                    }
-                    else if (binaryExpression.Left.IsNumericLiteralExpression("1"))
-                    {
+                    if (binaryExpression.Right.IsNumericLiteralExpression("0"))
                         ReportNameWithArgumentList(context, invocationInfo);
-                    }
-
-                    break;
                 }
+                else if (binaryExpression.Left.IsNumericLiteralExpression("1"))
+                {
+                    ReportNameWithArgumentList(context, invocationInfo);
+                }
+
+                break;
+            }
             case SyntaxKind.GreaterThanOrEqualExpression:
             case SyntaxKind.LessThanExpression:
+            {
+                var binaryExpression = (BinaryExpressionSyntax)parent;
+
+                if (binaryExpression.Left == invocationExpression)
                 {
-                    var binaryExpression = (BinaryExpressionSyntax)parent;
-
-                    if (binaryExpression.Left == invocationExpression)
-                    {
-                        if (binaryExpression.Right.IsNumericLiteralExpression("1"))
-                            ReportNameWithArgumentList(context, invocationInfo);
-                    }
-                    else if (binaryExpression.Left.IsNumericLiteralExpression("0"))
-                    {
+                    if (binaryExpression.Right.IsNumericLiteralExpression("1"))
                         ReportNameWithArgumentList(context, invocationInfo);
-                    }
-
-                    break;
                 }
+                else if (binaryExpression.Left.IsNumericLiteralExpression("0"))
+                {
+                    ReportNameWithArgumentList(context, invocationInfo);
+                }
+
+                break;
+            }
         }
 
         bool CanBeReplacedWithMemberAccessExpression(ExpressionSyntax e)
@@ -577,14 +577,14 @@ internal static class OptimizeLinqMethodCallAnalysis
             switch (p.Kind())
             {
                 case SyntaxKind.ExpressionStatement:
-                    {
-                        return false;
-                    }
+                {
+                    return false;
+                }
                 case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.ParenthesizedLambdaExpression:
-                    {
-                        return semanticModel.GetMethodSymbol((LambdaExpressionSyntax)p, cancellationToken)?.ReturnType.IsVoid() == false;
-                    }
+                {
+                    return semanticModel.GetMethodSymbol((LambdaExpressionSyntax)p, cancellationToken)?.ReturnType.IsVoid() == false;
+                }
             }
 
             return true;

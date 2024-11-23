@@ -66,182 +66,182 @@ public sealed class AddBodyCodeFixProvider : CompilerDiagnosticCodeFixProvider
         switch (node.Kind())
         {
             case SyntaxKind.MethodDeclaration:
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)node;
+
+                SyntaxToken semicolonToken = methodDeclaration.SemicolonToken;
+
+                if (semicolonToken.IsKind(SyntaxKind.None))
+                    break;
+
+                ParameterListSyntax parameterList = methodDeclaration.ParameterList;
+
+                if (parameterList is null)
+                    break;
+
+                return ct =>
                 {
-                    var methodDeclaration = (MethodDeclarationSyntax)node;
+                    MethodDeclarationSyntax newNode = methodDeclaration
+                        .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithBody(Block())
+                        .WithFormatterAnnotation();
 
-                    SyntaxToken semicolonToken = methodDeclaration.SemicolonToken;
-
-                    if (semicolonToken.IsKind(SyntaxKind.None))
-                        break;
-
-                    ParameterListSyntax parameterList = methodDeclaration.ParameterList;
-
-                    if (parameterList is null)
-                        break;
-
-                    return ct =>
-                    {
-                        MethodDeclarationSyntax newNode = methodDeclaration
-                            .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block())
-                            .WithFormatterAnnotation();
-
-                        return context.Document.ReplaceNodeAsync(node, newNode, ct);
-                    };
-                }
+                    return context.Document.ReplaceNodeAsync(node, newNode, ct);
+                };
+            }
             case SyntaxKind.ConstructorDeclaration:
+            {
+                var constructorDeclaration = (ConstructorDeclarationSyntax)node;
+
+                SyntaxToken semicolonToken = constructorDeclaration.SemicolonToken;
+
+                if (semicolonToken.IsKind(SyntaxKind.None))
+                    break;
+
+                ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
+
+                if (parameterList is null)
+                    break;
+
+                return ct =>
                 {
-                    var constructorDeclaration = (ConstructorDeclarationSyntax)node;
+                    ConstructorDeclarationSyntax newNode = constructorDeclaration
+                        .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithBody(Block())
+                        .WithFormatterAnnotation();
 
-                    SyntaxToken semicolonToken = constructorDeclaration.SemicolonToken;
-
-                    if (semicolonToken.IsKind(SyntaxKind.None))
-                        break;
-
-                    ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
-
-                    if (parameterList is null)
-                        break;
-
-                    return ct =>
-                    {
-                        ConstructorDeclarationSyntax newNode = constructorDeclaration
-                            .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block())
-                            .WithFormatterAnnotation();
-
-                        return context.Document.ReplaceNodeAsync(node, newNode, ct);
-                    };
-                }
+                    return context.Document.ReplaceNodeAsync(node, newNode, ct);
+                };
+            }
             case SyntaxKind.DestructorDeclaration:
+            {
+                var destructorDeclaration = (DestructorDeclarationSyntax)node;
+
+                SyntaxToken semicolonToken = destructorDeclaration.SemicolonToken;
+
+                if (semicolonToken.IsKind(SyntaxKind.None))
+                    break;
+
+                ParameterListSyntax parameterList = destructorDeclaration.ParameterList;
+
+                if (parameterList is null)
+                    break;
+
+                return ct =>
                 {
-                    var destructorDeclaration = (DestructorDeclarationSyntax)node;
+                    DestructorDeclarationSyntax newNode = destructorDeclaration
+                        .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithBody(Block())
+                        .WithFormatterAnnotation();
 
-                    SyntaxToken semicolonToken = destructorDeclaration.SemicolonToken;
-
-                    if (semicolonToken.IsKind(SyntaxKind.None))
-                        break;
-
-                    ParameterListSyntax parameterList = destructorDeclaration.ParameterList;
-
-                    if (parameterList is null)
-                        break;
-
-                    return ct =>
-                    {
-                        DestructorDeclarationSyntax newNode = destructorDeclaration
-                            .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block())
-                            .WithFormatterAnnotation();
-
-                        return context.Document.ReplaceNodeAsync(node, newNode, ct);
-                    };
-                }
+                    return context.Document.ReplaceNodeAsync(node, newNode, ct);
+                };
+            }
             case SyntaxKind.OperatorDeclaration:
+            {
+                var operatorDeclaration = (OperatorDeclarationSyntax)node;
+
+                SyntaxToken semicolonToken = operatorDeclaration.SemicolonToken;
+
+                if (semicolonToken.IsKind(SyntaxKind.None))
+                    break;
+
+                ParameterListSyntax parameterList = operatorDeclaration.ParameterList;
+
+                if (parameterList is null)
+                    break;
+
+                return ct =>
                 {
-                    var operatorDeclaration = (OperatorDeclarationSyntax)node;
+                    OperatorDeclarationSyntax newNode = operatorDeclaration
+                        .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithBody(Block())
+                        .WithFormatterAnnotation();
 
-                    SyntaxToken semicolonToken = operatorDeclaration.SemicolonToken;
-
-                    if (semicolonToken.IsKind(SyntaxKind.None))
-                        break;
-
-                    ParameterListSyntax parameterList = operatorDeclaration.ParameterList;
-
-                    if (parameterList is null)
-                        break;
-
-                    return ct =>
-                    {
-                        OperatorDeclarationSyntax newNode = operatorDeclaration
-                            .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block())
-                            .WithFormatterAnnotation();
-
-                        return context.Document.ReplaceNodeAsync(node, newNode, ct);
-                    };
-                }
+                    return context.Document.ReplaceNodeAsync(node, newNode, ct);
+                };
+            }
             case SyntaxKind.ConversionOperatorDeclaration:
+            {
+                var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
+
+                SyntaxToken semicolonToken = conversionOperatorDeclaration.SemicolonToken;
+
+                if (semicolonToken.IsKind(SyntaxKind.None))
+                    break;
+
+                ParameterListSyntax parameterList = conversionOperatorDeclaration.ParameterList;
+
+                if (parameterList is null)
+                    break;
+
+                return ct =>
                 {
-                    var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
+                    ConversionOperatorDeclarationSyntax newNode = conversionOperatorDeclaration
+                        .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithBody(Block())
+                        .WithFormatterAnnotation();
 
-                    SyntaxToken semicolonToken = conversionOperatorDeclaration.SemicolonToken;
-
-                    if (semicolonToken.IsKind(SyntaxKind.None))
-                        break;
-
-                    ParameterListSyntax parameterList = conversionOperatorDeclaration.ParameterList;
-
-                    if (parameterList is null)
-                        break;
-
-                    return ct =>
-                    {
-                        ConversionOperatorDeclarationSyntax newNode = conversionOperatorDeclaration
-                            .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block())
-                            .WithFormatterAnnotation();
-
-                        return context.Document.ReplaceNodeAsync(node, newNode, ct);
-                    };
-                }
+                    return context.Document.ReplaceNodeAsync(node, newNode, ct);
+                };
+            }
             case SyntaxKind.GetAccessorDeclaration:
             case SyntaxKind.SetAccessorDeclaration:
+            {
+                var accessorDeclaration = (AccessorDeclarationSyntax)node;
+
+                SyntaxToken semicolonToken = accessorDeclaration.SemicolonToken;
+
+                if (semicolonToken.IsKind(SyntaxKind.None))
+                    break;
+
+                return ct =>
                 {
-                    var accessorDeclaration = (AccessorDeclarationSyntax)node;
+                    AccessorDeclarationSyntax newNode = accessorDeclaration
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithBody(Block(
+                            Token(default(SyntaxTriviaList), SyntaxKind.OpenBraceToken, TriviaList(ElasticSpace)),
+                            default(SyntaxList<StatementSyntax>),
+                            Token(default(SyntaxTriviaList), SyntaxKind.CloseBraceToken, semicolonToken.LeadingAndTrailingTrivia())));
 
-                    SyntaxToken semicolonToken = accessorDeclaration.SemicolonToken;
+                    SyntaxToken keyword = newNode.Keyword;
 
-                    if (semicolonToken.IsKind(SyntaxKind.None))
-                        break;
+                    if (!keyword.HasTrailingTrivia)
+                        newNode = newNode.WithKeyword(keyword.WithTrailingTrivia(ElasticSpace));
 
-                    return ct =>
-                    {
-                        AccessorDeclarationSyntax newNode = accessorDeclaration
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block(
-                                Token(default(SyntaxTriviaList), SyntaxKind.OpenBraceToken, TriviaList(ElasticSpace)),
-                                default(SyntaxList<StatementSyntax>),
-                                Token(default(SyntaxTriviaList), SyntaxKind.CloseBraceToken, semicolonToken.LeadingAndTrailingTrivia())));
-
-                        SyntaxToken keyword = newNode.Keyword;
-
-                        if (!keyword.HasTrailingTrivia)
-                            newNode = newNode.WithKeyword(keyword.WithTrailingTrivia(ElasticSpace));
-
-                        return context.Document.ReplaceNodeAsync(node, newNode, ct);
-                    };
-                }
+                    return context.Document.ReplaceNodeAsync(node, newNode, ct);
+                };
+            }
             case SyntaxKind.LocalFunctionStatement:
+            {
+                var localFunction = (LocalFunctionStatementSyntax)node;
+
+                SyntaxToken semicolonToken = localFunction.SemicolonToken;
+
+                if (semicolonToken.IsKind(SyntaxKind.None))
+                    break;
+
+                ParameterListSyntax parameterList = localFunction.ParameterList;
+
+                if (parameterList is null)
+                    break;
+
+                return ct =>
                 {
-                    var localFunction = (LocalFunctionStatementSyntax)node;
+                    LocalFunctionStatementSyntax newNode = localFunction
+                        .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithBody(Block())
+                        .WithFormatterAnnotation();
 
-                    SyntaxToken semicolonToken = localFunction.SemicolonToken;
-
-                    if (semicolonToken.IsKind(SyntaxKind.None))
-                        break;
-
-                    ParameterListSyntax parameterList = localFunction.ParameterList;
-
-                    if (parameterList is null)
-                        break;
-
-                    return ct =>
-                    {
-                        LocalFunctionStatementSyntax newNode = localFunction
-                            .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetAllTrivia()))
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block())
-                            .WithFormatterAnnotation();
-
-                        return context.Document.ReplaceNodeAsync(node, newNode, ct);
-                    };
-                }
+                    return context.Document.ReplaceNodeAsync(node, newNode, ct);
+                };
+            }
         }
 
         SyntaxDebug.Fail(node);

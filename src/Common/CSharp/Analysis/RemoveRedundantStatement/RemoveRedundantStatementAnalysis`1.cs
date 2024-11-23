@@ -30,49 +30,49 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
             switch (kind)
             {
                 case SyntaxKind.IfStatement:
-                    {
-                        containingStatement = (StatementSyntax)parent;
+                {
+                    containingStatement = (StatementSyntax)parent;
 
-                        block = containingStatement.Parent as BlockSyntax;
+                    block = containingStatement.Parent as BlockSyntax;
 
-                        if (block is null)
-                            return false;
+                    if (block is null)
+                        return false;
 
-                        if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
-                            return false;
+                    if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
+                        return false;
 
-                        parent = block.Parent;
-                        break;
-                    }
+                    parent = block.Parent;
+                    break;
+                }
                 case SyntaxKind.ElseClause:
-                    {
-                        parent = ((ElseClauseSyntax)parent).GetTopmostIf();
-                        break;
-                    }
+                {
+                    parent = ((ElseClauseSyntax)parent).GetTopmostIf();
+                    break;
+                }
                 case SyntaxKind.TryStatement:
-                    {
-                        containingStatement = (TryStatementSyntax)parent;
+                {
+                    containingStatement = (TryStatementSyntax)parent;
 
-                        block = containingStatement.Parent as BlockSyntax;
+                    block = containingStatement.Parent as BlockSyntax;
 
-                        if (block is null)
-                            return false;
+                    if (block is null)
+                        return false;
 
-                        if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
-                            return false;
+                    if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
+                        return false;
 
-                        parent = block.Parent;
-                        break;
-                    }
+                    parent = block.Parent;
+                    break;
+                }
                 case SyntaxKind.CatchClause:
-                    {
-                        parent = parent.Parent as TryStatementSyntax;
-                        break;
-                    }
+                {
+                    parent = parent.Parent as TryStatementSyntax;
+                    break;
+                }
                 default:
-                    {
-                        return IsFixable(statement, containingStatement, block, kind);
-                    }
+                {
+                    return IsFixable(statement, containingStatement, block, kind);
+                }
             }
         }
     }
@@ -93,49 +93,49 @@ internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStat
             switch (kind)
             {
                 case SyntaxKind.IfStatement:
-                    {
-                        containingStatement = (StatementSyntax)parent;
+                {
+                    containingStatement = (StatementSyntax)parent;
 
-                        block = containingStatement.Parent as BlockSyntax;
+                    block = containingStatement.Parent as BlockSyntax;
 
-                        if (block is null)
-                            return false;
+                    if (block is null)
+                        return false;
 
-                        if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
-                            return false;
+                    if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
+                        return false;
 
-                        parent = block.Parent;
-                        break;
-                    }
+                    parent = block.Parent;
+                    break;
+                }
                 case SyntaxKind.ElseClause:
-                    {
-                        parent = ((ElseClauseSyntax)parent).GetTopmostIf();
-                        break;
-                    }
+                {
+                    parent = ((ElseClauseSyntax)parent).GetTopmostIf();
+                    break;
+                }
                 case SyntaxKind.TryStatement:
-                    {
-                        containingStatement = (TryStatementSyntax)parent;
+                {
+                    containingStatement = (TryStatementSyntax)parent;
 
-                        block = containingStatement.Parent as BlockSyntax;
+                    block = containingStatement.Parent as BlockSyntax;
 
-                        if (block is null)
-                            return false;
+                    if (block is null)
+                        return false;
 
-                        if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
-                            return false;
+                    if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
+                        return false;
 
-                        parent = block.Parent;
-                        break;
-                    }
+                    parent = block.Parent;
+                    break;
+                }
                 case SyntaxKind.CatchClause:
-                    {
-                        parent = parent.Parent as TryStatementSyntax;
-                        break;
-                    }
+                {
+                    parent = parent.Parent as TryStatementSyntax;
+                    break;
+                }
                 default:
-                    {
-                        return IsFixable(statement, containingStatement, block, kind);
-                    }
+                {
+                    return IsFixable(statement, containingStatement, block, kind);
+                }
             }
         }
     }

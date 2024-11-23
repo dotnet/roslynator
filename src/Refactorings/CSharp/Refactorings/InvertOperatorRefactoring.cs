@@ -62,10 +62,10 @@ internal static class InvertOperatorRefactoring
             case SyntaxKind.LessThanEqualsToken:
                 return SyntaxKind.GreaterThanToken;
             default:
-                {
-                    SyntaxDebug.Fail(operatorToken);
-                    return operatorToken.Kind();
-                }
+            {
+                SyntaxDebug.Fail(operatorToken);
+                return operatorToken.Kind();
+            }
         }
     }
 }

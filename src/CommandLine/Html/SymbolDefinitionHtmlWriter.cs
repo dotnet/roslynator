@@ -630,23 +630,23 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                     case XmlTag.See:
                     case XmlTag.ParamRef:
                     case XmlTag.TypeParamRef:
+                    {
+                        int lineNumber = ((IXmlLineInfo)e).LineNumber;
+
+                        if (elementsByLine is null)
+                            elementsByLine = new Dictionary<int, List<XElement>>();
+
+                        if (elementsByLine.TryGetValue(lineNumber, out List<XElement> elements))
                         {
-                            int lineNumber = ((IXmlLineInfo)e).LineNumber;
-
-                            if (elementsByLine is null)
-                                elementsByLine = new Dictionary<int, List<XElement>>();
-
-                            if (elementsByLine.TryGetValue(lineNumber, out List<XElement> elements))
-                            {
-                                elements.Add(e);
-                            }
-                            else
-                            {
-                                elementsByLine.Add(lineNumber, new List<XElement>() { e });
-                            }
-
-                            break;
+                            elements.Add(e);
                         }
+                        else
+                        {
+                            elementsByLine.Add(lineNumber, new List<XElement>() { e });
+                        }
+
+                        break;
+                    }
                 }
             }
 
@@ -673,63 +673,63 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                             {
                                 case XmlTag.ParamRef:
                                 case XmlTag.TypeParamRef:
+                                {
+                                    string name = e.Attribute("name")?.Value;
+
+                                    if (name is not null)
                                     {
-                                        string name = e.Attribute("name")?.Value;
-
-                                        if (name is not null)
-                                        {
-                                            Write(line.Substring(lastPos, linePos - lastPos));
-                                            Write(name);
-                                        }
-
-                                        lastPos = linePos + e.ToString().Length;
-                                        break;
+                                        Write(line.Substring(lastPos, linePos - lastPos));
+                                        Write(name);
                                     }
+
+                                    lastPos = linePos + e.ToString().Length;
+                                    break;
+                                }
                                 case XmlTag.See:
+                                {
+                                    string commentId = e.Attribute("cref")?.Value;
+
+                                    if (commentId is not null)
                                     {
-                                        string commentId = e.Attribute("cref")?.Value;
+                                        Write(line.Substring(lastPos, linePos - lastPos));
 
-                                        if (commentId is not null)
+                                        ISymbol s = DocumentationProvider.GetFirstSymbolForDeclarationId(commentId)?.OriginalDefinition;
+
+                                        if (s is not null)
                                         {
-                                            Write(line.Substring(lastPos, linePos - lastPos));
-
-                                            ISymbol s = DocumentationProvider.GetFirstSymbolForDeclarationId(commentId)?.OriginalDefinition;
-
-                                            if (s is not null)
+                                            if (s.Kind == SymbolKind.Field
+                                                && s.ContainingType.TypeKind == TypeKind.Enum)
                                             {
-                                                if (s.Kind == SymbolKind.Field
-                                                    && s.ContainingType.TypeKind == TypeKind.Enum)
-                                                {
-                                                    WriteSymbol(s.ContainingType);
-                                                    Write(".");
-                                                    Write(s.Name);
-                                                }
-                                                else
-                                                {
-                                                    WriteParts(s, s.ToDisplayParts(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_TypeParameters));
-                                                    WriteSymbol(s);
-                                                }
+                                                WriteSymbol(s.ContainingType);
+                                                Write(".");
+                                                Write(s.Name);
                                             }
                                             else
                                             {
-                                                Debug.Fail(commentId);
-                                                Write(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
+                                                WriteParts(s, s.ToDisplayParts(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_TypeParameters));
+                                                WriteSymbol(s);
                                             }
                                         }
                                         else
                                         {
-                                            string langword = e.Attribute("langword")?.Value;
-
-                                            if (langword is not null)
-                                            {
-                                                Write(line.Substring(lastPos, linePos - lastPos));
-                                                Write(langword);
-                                            }
+                                            Debug.Fail(commentId);
+                                            Write(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
                                         }
-
-                                        lastPos = linePos + e.ToString().Length;
-                                        break;
                                     }
+                                    else
+                                    {
+                                        string langword = e.Attribute("langword")?.Value;
+
+                                        if (langword is not null)
+                                        {
+                                            Write(line.Substring(lastPos, linePos - lastPos));
+                                            Write(langword);
+                                        }
+                                    }
+
+                                    lastPos = linePos + e.ToString().Length;
+                                    break;
+                                }
                             }
                         }
 
@@ -842,59 +842,59 @@ internal class SymbolDefinitionHtmlWriter : SymbolDefinitionWriter
                         switch (XmlTagMapper.GetTagOrDefault(e.Name.LocalName))
                         {
                             case XmlTag.C:
-                                {
-                                    string value = e.Value;
-                                    value = TextUtility.ToSingleLine(value);
-                                    Write(value);
-                                    break;
-                                }
+                            {
+                                string value = e.Value;
+                                value = TextUtility.ToSingleLine(value);
+                                Write(value);
+                                break;
+                            }
                             case XmlTag.Para:
-                                {
-                                    WriteLine();
-                                    WriteLine();
-                                    WriteDocumentationCommentToolTip(e);
-                                    WriteLine();
-                                    WriteLine();
-                                    break;
-                                }
+                            {
+                                WriteLine();
+                                WriteLine();
+                                WriteDocumentationCommentToolTip(e);
+                                WriteLine();
+                                WriteLine();
+                                break;
+                            }
                             case XmlTag.ParamRef:
-                                {
-                                    string parameterName = e.Attribute("name")?.Value;
+                            {
+                                string parameterName = e.Attribute("name")?.Value;
 
-                                    if (parameterName is not null)
-                                        Write(parameterName);
+                                if (parameterName is not null)
+                                    Write(parameterName);
 
-                                    break;
-                                }
+                                break;
+                            }
                             case XmlTag.See:
-                                {
-                                    string commentId = e.Attribute("cref")?.Value;
+                            {
+                                string commentId = e.Attribute("cref")?.Value;
 
-                                    if (commentId is not null)
+                                if (commentId is not null)
+                                {
+                                    ISymbol symbol = DocumentationProvider.GetFirstSymbolForDeclarationId(commentId);
+
+                                    if (symbol is not null)
                                     {
-                                        ISymbol symbol = DocumentationProvider.GetFirstSymbolForDeclarationId(commentId);
-
-                                        if (symbol is not null)
-                                        {
-                                            Write(symbol.ToDisplayParts(Format.GetFormat()));
-                                        }
-                                        else
-                                        {
-                                            Write(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
-                                        }
+                                        Write(symbol.ToDisplayParts(Format.GetFormat()));
                                     }
-
-                                    break;
+                                    else
+                                    {
+                                        Write(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
+                                    }
                                 }
+
+                                break;
+                            }
                             case XmlTag.TypeParamRef:
-                                {
-                                    string typeParameterName = e.Attribute("name")?.Value;
+                            {
+                                string typeParameterName = e.Attribute("name")?.Value;
 
-                                    if (typeParameterName is not null)
-                                        Write(typeParameterName);
+                                if (typeParameterName is not null)
+                                    Write(typeParameterName);
 
-                                    break;
-                                }
+                                break;
+                            }
                         }
                     }
                     else

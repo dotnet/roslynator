@@ -68,155 +68,155 @@ internal static class StringLiteralParser
                 switch (text[pos])
                 {
                     case '\'':
-                        {
-                            ch = '\'';
-                            break;
-                        }
+                    {
+                        ch = '\'';
+                        break;
+                    }
                     case '\"':
-                        {
-                            ch = '\"';
-                            break;
-                        }
+                    {
+                        ch = '\"';
+                        break;
+                    }
                     case '\\':
-                        {
-                            ch = '\\';
-                            break;
-                        }
+                    {
+                        ch = '\\';
+                        break;
+                    }
                     case '0':
-                        {
-                            ch = '\0';
-                            break;
-                        }
+                    {
+                        ch = '\0';
+                        break;
+                    }
                     case 'a':
-                        {
-                            ch = '\a';
-                            break;
-                        }
+                    {
+                        ch = '\a';
+                        break;
+                    }
                     case 'b':
-                        {
-                            ch = '\b';
-                            break;
-                        }
+                    {
+                        ch = '\b';
+                        break;
+                    }
                     case 'f':
-                        {
-                            ch = '\f';
-                            break;
-                        }
+                    {
+                        ch = '\f';
+                        break;
+                    }
                     case 'n':
-                        {
-                            ch = '\n';
-                            break;
-                        }
+                    {
+                        ch = '\n';
+                        break;
+                    }
                     case 'r':
-                        {
-                            ch = '\r';
-                            break;
-                        }
+                    {
+                        ch = '\r';
+                        break;
+                    }
                     case 't':
-                        {
-                            ch = '\t';
-                            break;
-                        }
+                    {
+                        ch = '\t';
+                        break;
+                    }
                     case 'u':
+                    {
+                        pos++;
+
+                        if (pos + 3 >= text.Length)
+                            return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
+
+                        if (uint.TryParse(text.Substring(pos, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
                         {
-                            pos++;
-
-                            if (pos + 3 >= text.Length)
-                                return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
-
-                            if (uint.TryParse(text.Substring(pos, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
-                            {
-                                ch = (char)result;
-                                pos += 3;
-                            }
-                            else
-                            {
-                                return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
-                            }
-
-                            break;
+                            ch = (char)result;
+                            pos += 3;
                         }
+                        else
+                        {
+                            return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
+                        }
+
+                        break;
+                    }
                     case 'U':
+                    {
+                        pos++;
+
+                        if (pos + 7 >= text.Length)
+                            return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
+
+                        if (uint.TryParse(text.Substring(pos, 8), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
                         {
-                            pos++;
-
-                            if (pos + 7 >= text.Length)
+                            if (result > 0xffff)
                                 return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
 
-                            if (uint.TryParse(text.Substring(pos, 8), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
-                            {
-                                if (result > 0xffff)
-                                    return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
-
-                                ch = (char)result;
-                                pos += 7;
-                            }
-                            else
-                            {
-                                return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
-                            }
-
-                            break;
+                            ch = (char)result;
+                            pos += 7;
                         }
+                        else
+                        {
+                            return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
+                        }
+
+                        break;
+                    }
                     case 'v':
-                        {
-                            ch = '\v';
-                            break;
-                        }
+                    {
+                        ch = '\v';
+                        break;
+                    }
                     case 'x':
+                    {
+                        var sb2 = new StringBuilder(10);
+                        pos++;
+
+                        if (pos >= text.Length)
+                            return Fail(throwOnError, MissingEscapeSequenceMessage);
+
+                        ch = text[pos];
+                        if (IsHexadecimalDigit(ch))
                         {
-                            var sb2 = new StringBuilder(10);
+                            sb2.Append(ch);
                             pos++;
-
-                            if (pos >= text.Length)
-                                return Fail(throwOnError, MissingEscapeSequenceMessage);
-
-                            ch = text[pos];
-                            if (IsHexadecimalDigit(ch))
+                            if (pos < text.Length)
                             {
-                                sb2.Append(ch);
-                                pos++;
-                                if (pos < text.Length)
+                                ch = text[pos];
+                                if (IsHexadecimalDigit(ch))
                                 {
-                                    ch = text[pos];
-                                    if (IsHexadecimalDigit(ch))
+                                    sb2.Append(ch);
+                                    pos++;
+                                    if (pos < text.Length)
                                     {
-                                        sb2.Append(ch);
-                                        pos++;
-                                        if (pos < text.Length)
+                                        ch = text[pos];
+                                        if (IsHexadecimalDigit(ch))
                                         {
-                                            ch = text[pos];
-                                            if (IsHexadecimalDigit(ch))
+                                            sb2.Append(ch);
+                                            pos++;
+                                            if (pos < text.Length)
                                             {
-                                                sb2.Append(ch);
-                                                pos++;
-                                                if (pos < text.Length)
+                                                ch = text[pos];
+                                                if (IsHexadecimalDigit(ch))
                                                 {
-                                                    ch = text[pos];
-                                                    if (IsHexadecimalDigit(ch))
-                                                    {
-                                                        sb2.Append(ch);
-                                                        pos++;
-                                                    }
+                                                    sb2.Append(ch);
+                                                    pos++;
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                            else
-                            {
-                                return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
-                            }
-
-                            ch = (char)int.Parse(sb2.ToString(), NumberStyles.HexNumber);
-                            pos--;
-                            break;
                         }
-                    default:
+                        else
                         {
                             return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
                         }
+
+                        ch = (char)int.Parse(sb2.ToString(), NumberStyles.HexNumber);
+                        pos--;
+                        break;
+                    }
+                    default:
+                    {
+                        return Fail(throwOnError, UnrecognizedEscapeSequenceMessage);
+                    }
                 }
             }
             else if (isInterpolatedText)
@@ -346,55 +346,59 @@ internal static class StringLiteralParser
                     case 'r':
                     case 't':
                     case 'v':
-                        {
-                            if (IsOverlap(span, pos))
-                                return false;
+                    {
+                        if (IsOverlap(span, pos))
+                            return false;
 
-                            break;
-                        }
+                        break;
+                    }
                     case 'u':
-                        {
-                            if (pos + 4 >= text.Length)
-                                return false;
+                    {
+                        if (pos + 4 >= text.Length)
+                            return false;
 
-                            if (!uint.TryParse(text.Substring(pos + 1, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint _))
-                                return false;
+                        if (!uint.TryParse(text.Substring(pos + 1, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint _))
+                            return false;
 
-                            if (IsOverlap(span, startPos, 6))
-                                return false;
+                        if (IsOverlap(span, startPos, 6))
+                            return false;
 
-                            pos += 4;
+                        pos += 4;
 
-                            break;
-                        }
+                        break;
+                    }
                     case 'U':
-                        {
-                            if (pos + 8 >= text.Length)
-                                return false;
+                    {
+                        if (pos + 8 >= text.Length)
+                            return false;
 
-                            if (!uint.TryParse(text.Substring(pos + 1, 8), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
-                                return false;
+                        if (!uint.TryParse(text.Substring(pos + 1, 8), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
+                            return false;
 
-                            if (result > 0xffff)
-                                return false;
+                        if (result > 0xffff)
+                            return false;
 
-                            if (IsOverlap(span, startPos, 10))
-                                return false;
+                        if (IsOverlap(span, startPos, 10))
+                            return false;
 
-                            pos += 8;
+                        pos += 8;
 
-                            break;
-                        }
+                        break;
+                    }
                     case 'x':
+                    {
+                        pos++;
+
+                        if (pos >= text.Length)
+                            return false;
+
+                        if (!IsHexadecimalDigit(text[pos]))
+                            return false;
+
+                        pos++;
+                        if (pos < text.Length
+                            && IsHexadecimalDigit(text[pos]))
                         {
-                            pos++;
-
-                            if (pos >= text.Length)
-                                return false;
-
-                            if (!IsHexadecimalDigit(text[pos]))
-                                return false;
-
                             pos++;
                             if (pos < text.Length
                                 && IsHexadecimalDigit(text[pos]))
@@ -404,24 +408,20 @@ internal static class StringLiteralParser
                                     && IsHexadecimalDigit(text[pos]))
                                 {
                                     pos++;
-                                    if (pos < text.Length
-                                        && IsHexadecimalDigit(text[pos]))
-                                    {
-                                        pos++;
-                                    }
                                 }
                             }
-
-                            if (IsOverlap(span, startPos, pos - startPos))
-                                return false;
-
-                            pos--;
-                            break;
                         }
-                    default:
-                        {
+
+                        if (IsOverlap(span, startPos, pos - startPos))
                             return false;
-                        }
+
+                        pos--;
+                        break;
+                    }
+                    default:
+                    {
+                        return false;
+                    }
                 }
             }
             else if (isInterpolatedText)

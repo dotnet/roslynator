@@ -33,15 +33,15 @@ public sealed class ObjectCreationExpressionCodeFixProvider : BaseCodeFixProvide
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.UseEventArgsEmpty:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use EventArgs.Empty",
-                            ct => UseEventArgsEmptyRefactoring.RefactorAsync(context.Document, objectCreationExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use EventArgs.Empty",
+                        ct => UseEventArgsEmptyRefactoring.RefactorAsync(context.Document, objectCreationExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }

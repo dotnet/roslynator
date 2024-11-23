@@ -26,18 +26,18 @@ internal static class ChangeTypeAccordingToInitializerRefactoring
         switch (equalsValueClause.Parent)
         {
             case VariableDeclaratorSyntax variableDeclarator:
-                {
-                    return ComputeCodeFix(context, diagnostic, expression, variableDeclarator, semanticModel);
-                }
+            {
+                return ComputeCodeFix(context, diagnostic, expression, variableDeclarator, semanticModel);
+            }
             case PropertyDeclarationSyntax propertyDeclaration:
-                {
-                    return ComputeCodeFix(context, diagnostic, expression, propertyDeclaration, semanticModel);
-                }
+            {
+                return ComputeCodeFix(context, diagnostic, expression, propertyDeclaration, semanticModel);
+            }
             default:
-                {
-                    SyntaxDebug.Fail(equalsValueClause.Parent);
-                    break;
-                }
+            {
+                SyntaxDebug.Fail(equalsValueClause.Parent);
+                break;
+            }
         }
 
         return default;

@@ -37,16 +37,16 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
             switch (_state)
             {
                 case State.One:
-                    {
-                        if (index == 0)
-                            return _value!;
+                {
+                    if (index == 0)
+                        return _value!;
 
-                        break;
-                    }
+                    break;
+                }
                 case State.Many:
-                    {
-                        return _values[index];
-                    }
+                {
+                    return _values[index];
+                }
             }
 
             throw new ArgumentOutOfRangeException(nameof(index), index, "");
@@ -102,19 +102,19 @@ internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T
         switch (_state)
         {
             case State.Default:
-                {
-                    return other._state == State.Default;
-                }
+            {
+                return other._state == State.Default;
+            }
             case State.One:
-                {
-                    return other._state == State.One
-                        && EqualityComparer<T>.Default.Equals(_value!, other._value!);
-                }
+            {
+                return other._state == State.One
+                    && EqualityComparer<T>.Default.Equals(_value!, other._value!);
+            }
             case State.Many:
-                {
-                    return other._state == State.Many
-                        && _values.Equals(other._values);
-                }
+            {
+                return other._state == State.Many
+                    && _values.Equals(other._values);
+            }
         }
 
         throw new InvalidOperationException();

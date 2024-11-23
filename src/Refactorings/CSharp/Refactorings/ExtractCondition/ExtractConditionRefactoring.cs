@@ -28,47 +28,47 @@ internal static class ExtractConditionRefactoring
         switch (parent?.Kind())
         {
             case SyntaxKind.IfStatement:
+            {
+                if (kind == SyntaxKind.LogicalAndExpression)
                 {
-                    if (kind == SyntaxKind.LogicalAndExpression)
+                    ExtractConditionFromIfToNestedIfRefactoring refactoring = ExtractConditionFromIfToNestedIfRefactoring.Instance;
+
+                    context.RegisterRefactoring(
+                        refactoring.Title,
+                        ct => refactoring.RefactorAsync(context.Document, (IfStatementSyntax)parent, condition, expressionChain, ct),
+                        RefactoringDescriptors.ExtractExpressionFromCondition);
+                }
+                else if (kind == SyntaxKind.LogicalOrExpression)
+                {
+                    StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo((StatementSyntax)parent);
+
+                    if (statementsInfo.Success)
                     {
-                        ExtractConditionFromIfToNestedIfRefactoring refactoring = ExtractConditionFromIfToNestedIfRefactoring.Instance;
+                        ExtractConditionFromIfToIfRefactoring refactoring = ExtractConditionFromIfToIfRefactoring.Instance;
 
                         context.RegisterRefactoring(
                             refactoring.Title,
-                            ct => refactoring.RefactorAsync(context.Document, (IfStatementSyntax)parent, condition, expressionChain, ct),
+                            ct => refactoring.RefactorAsync(context.Document, statementsInfo, condition, expressionChain, ct),
                             RefactoringDescriptors.ExtractExpressionFromCondition);
                     }
-                    else if (kind == SyntaxKind.LogicalOrExpression)
-                    {
-                        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo((StatementSyntax)parent);
-
-                        if (statementsInfo.Success)
-                        {
-                            ExtractConditionFromIfToIfRefactoring refactoring = ExtractConditionFromIfToIfRefactoring.Instance;
-
-                            context.RegisterRefactoring(
-                                refactoring.Title,
-                                ct => refactoring.RefactorAsync(context.Document, statementsInfo, condition, expressionChain, ct),
-                                RefactoringDescriptors.ExtractExpressionFromCondition);
-                        }
-                    }
-
-                    break;
                 }
+
+                break;
+            }
             case SyntaxKind.WhileStatement:
+            {
+                if (kind == SyntaxKind.LogicalAndExpression)
                 {
-                    if (kind == SyntaxKind.LogicalAndExpression)
-                    {
-                        ExtractConditionFromWhileToNestedIfRefactoring refactoring = ExtractConditionFromWhileToNestedIfRefactoring.Instance;
+                    ExtractConditionFromWhileToNestedIfRefactoring refactoring = ExtractConditionFromWhileToNestedIfRefactoring.Instance;
 
-                        context.RegisterRefactoring(
-                            refactoring.Title,
-                            ct => refactoring.RefactorAsync(context.Document, (WhileStatementSyntax)parent, condition, expressionChain, ct),
-                            RefactoringDescriptors.ExtractExpressionFromCondition);
-                    }
-
-                    break;
+                    context.RegisterRefactoring(
+                        refactoring.Title,
+                        ct => refactoring.RefactorAsync(context.Document, (WhileStatementSyntax)parent, condition, expressionChain, ct),
+                        RefactoringDescriptors.ExtractExpressionFromCondition);
                 }
+
+                break;
+            }
         }
     }
 
@@ -94,52 +94,52 @@ internal static class ExtractConditionRefactoring
         switch (parent?.Kind())
         {
             case SyntaxKind.IfStatement:
+            {
+                if (kind == SyntaxKind.LogicalAndExpression)
                 {
-                    if (kind == SyntaxKind.LogicalAndExpression)
+                    ExtractConditionFromIfToNestedIfRefactoring refactoring = ExtractConditionFromIfToNestedIfRefactoring.Instance;
+
+                    context.RegisterRefactoring(
+                        refactoring.Title,
+                        ct => refactoring.RefactorAsync(context.Document, binaryExpression, expression, ct),
+                        RefactoringDescriptors.ExtractExpressionFromCondition);
+                }
+                else if (kind == SyntaxKind.LogicalOrExpression)
+                {
+                    StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo((StatementSyntax)parent);
+
+                    if (statementsInfo.Success)
                     {
-                        ExtractConditionFromIfToNestedIfRefactoring refactoring = ExtractConditionFromIfToNestedIfRefactoring.Instance;
+                        ExtractConditionFromIfToIfRefactoring refactoring = ExtractConditionFromIfToIfRefactoring.Instance;
 
                         context.RegisterRefactoring(
                             refactoring.Title,
-                            ct => refactoring.RefactorAsync(context.Document, binaryExpression, expression, ct),
+                            ct => refactoring.RefactorAsync(context.Document, statementsInfo, binaryExpression, expression, ct),
                             RefactoringDescriptors.ExtractExpressionFromCondition);
                     }
-                    else if (kind == SyntaxKind.LogicalOrExpression)
-                    {
-                        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo((StatementSyntax)parent);
-
-                        if (statementsInfo.Success)
-                        {
-                            ExtractConditionFromIfToIfRefactoring refactoring = ExtractConditionFromIfToIfRefactoring.Instance;
-
-                            context.RegisterRefactoring(
-                                refactoring.Title,
-                                ct => refactoring.RefactorAsync(context.Document, statementsInfo, binaryExpression, expression, ct),
-                                RefactoringDescriptors.ExtractExpressionFromCondition);
-                        }
-                    }
-
-                    break;
                 }
+
+                break;
+            }
             case SyntaxKind.WhileStatement:
+            {
+                if (kind == SyntaxKind.LogicalAndExpression)
                 {
-                    if (kind == SyntaxKind.LogicalAndExpression)
+                    StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo((StatementSyntax)parent);
+
+                    if (statementsInfo.Success)
                     {
-                        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo((StatementSyntax)parent);
+                        ExtractConditionFromWhileToNestedIfRefactoring refactoring = ExtractConditionFromWhileToNestedIfRefactoring.Instance;
 
-                        if (statementsInfo.Success)
-                        {
-                            ExtractConditionFromWhileToNestedIfRefactoring refactoring = ExtractConditionFromWhileToNestedIfRefactoring.Instance;
-
-                            context.RegisterRefactoring(
-                                refactoring.Title,
-                                ct => refactoring.RefactorAsync(context.Document, (WhileStatementSyntax)parent, binaryExpression, expression, ct),
-                                RefactoringDescriptors.ExtractExpressionFromCondition);
-                        }
+                        context.RegisterRefactoring(
+                            refactoring.Title,
+                            ct => refactoring.RefactorAsync(context.Document, (WhileStatementSyntax)parent, binaryExpression, expression, ct),
+                            RefactoringDescriptors.ExtractExpressionFromCondition);
                     }
-
-                    break;
                 }
+
+                break;
+            }
         }
     }
 

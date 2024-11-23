@@ -273,40 +273,40 @@ public sealed class BinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
                 {
                     case "Count":
                     case "Length":
+                    {
+                        if (semanticModel.GetSymbol(expression, cancellationToken) is IPropertySymbol propertySymbol
+                            && propertySymbol.Type.SpecialType == SpecialType.System_Int32)
                         {
-                            if (semanticModel.GetSymbol(expression, cancellationToken) is IPropertySymbol propertySymbol
-                                && propertySymbol.Type.SpecialType == SpecialType.System_Int32)
+                            INamedTypeSymbol containingType = propertySymbol.ContainingType?.OriginalDefinition;
+
+                            switch (containingType?.SpecialType)
                             {
-                                INamedTypeSymbol containingType = propertySymbol.ContainingType?.OriginalDefinition;
-
-                                switch (containingType?.SpecialType)
+                                case SpecialType.System_String:
+                                case SpecialType.System_Array:
+                                case SpecialType.System_Collections_Generic_ICollection_T:
+                                case SpecialType.System_Collections_Generic_IList_T:
+                                case SpecialType.System_Collections_Generic_IReadOnlyCollection_T:
+                                case SpecialType.System_Collections_Generic_IReadOnlyList_T:
                                 {
-                                    case SpecialType.System_String:
-                                    case SpecialType.System_Array:
-                                    case SpecialType.System_Collections_Generic_ICollection_T:
-                                    case SpecialType.System_Collections_Generic_IList_T:
-                                    case SpecialType.System_Collections_Generic_IReadOnlyCollection_T:
-                                    case SpecialType.System_Collections_Generic_IReadOnlyList_T:
-                                        {
-                                            return true;
-                                        }
-                                    default:
-                                        {
-                                            if (containingType?.ImplementsAny(
-                                                SpecialType.System_Collections_Generic_ICollection_T,
-                                                SpecialType.System_Collections_Generic_IReadOnlyCollection_T,
-                                                allInterfaces: true) == true)
-                                            {
-                                                return true;
-                                            }
+                                    return true;
+                                }
+                                default:
+                                {
+                                    if (containingType?.ImplementsAny(
+                                        SpecialType.System_Collections_Generic_ICollection_T,
+                                        SpecialType.System_Collections_Generic_IReadOnlyCollection_T,
+                                        allInterfaces: true) == true)
+                                    {
+                                        return true;
+                                    }
 
-                                            break;
-                                        }
+                                    break;
                                 }
                             }
-
-                            break;
                         }
+
+                        break;
+                    }
                 }
             }
         }

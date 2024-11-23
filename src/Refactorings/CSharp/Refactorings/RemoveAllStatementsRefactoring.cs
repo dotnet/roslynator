@@ -27,33 +27,33 @@ internal static class RemoveAllStatementsRefactoring
         switch (member)
         {
             case MethodDeclarationSyntax methodDeclaration:
-                {
-                    BlockSyntax body = methodDeclaration.Body;
+            {
+                BlockSyntax body = methodDeclaration.Body;
 
-                    return body?.Statements.Any() == true
-                        && BraceContainsSpan(body, span);
-                }
+                return body?.Statements.Any() == true
+                    && BraceContainsSpan(body, span);
+            }
             case OperatorDeclarationSyntax operatorDeclaration:
-                {
-                    BlockSyntax body = operatorDeclaration.Body;
+            {
+                BlockSyntax body = operatorDeclaration.Body;
 
-                    return body?.Statements.Any() == true
-                        && BraceContainsSpan(body, span);
-                }
+                return body?.Statements.Any() == true
+                    && BraceContainsSpan(body, span);
+            }
             case ConversionOperatorDeclarationSyntax conversionOperatorDeclaration:
-                {
-                    BlockSyntax body = conversionOperatorDeclaration.Body;
+            {
+                BlockSyntax body = conversionOperatorDeclaration.Body;
 
-                    return body?.Statements.Any() == true
-                        && BraceContainsSpan(body, span);
-                }
+                return body?.Statements.Any() == true
+                    && BraceContainsSpan(body, span);
+            }
             case ConstructorDeclarationSyntax constructorDeclaration:
-                {
-                    BlockSyntax body = constructorDeclaration.Body;
+            {
+                BlockSyntax body = constructorDeclaration.Body;
 
-                    return body?.Statements.Any() == true
-                        && BraceContainsSpan(body, span);
-                }
+                return body?.Statements.Any() == true
+                    && BraceContainsSpan(body, span);
+            }
         }
 
         return false;

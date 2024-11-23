@@ -89,112 +89,112 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
             switch (member)
             {
                 case DelegateDeclarationSyntax declaration:
+                {
+                    if (SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
                     {
-                        if (SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker is null)
-                                walker = UnusedMemberWalker.GetInstance();
-
-                            walker.AddDelegate(declaration.Identifier.ValueText, declaration);
-                        }
-
-                        break;
-                    }
-                case EventDeclarationSyntax declaration:
-                    {
-                        if (declaration.ExplicitInterfaceSpecifier is null
-                            && SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker is null)
-                                walker = UnusedMemberWalker.GetInstance();
-
-                            walker.AddNode(declaration.Identifier.ValueText, declaration);
-                        }
-
-                        break;
-                    }
-                case EventFieldDeclarationSyntax declaration:
-                    {
-                        if (SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker is null)
-                                walker = UnusedMemberWalker.GetInstance();
-
-                            walker.AddNodes(declaration.Declaration);
-                        }
-
-                        break;
-                    }
-                case FieldDeclarationSyntax declaration:
-                    {
-                        SyntaxTokenList modifiers = declaration.Modifiers;
-
-                        if (SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker is null)
-                                walker = UnusedMemberWalker.GetInstance();
-
-                            walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
-                        }
-
-                        break;
-                    }
-                case MethodDeclarationSyntax declaration:
-                    {
-                        SyntaxTokenList modifiers = declaration.Modifiers;
-
-                        if (declaration.ExplicitInterfaceSpecifier is not null
-                            || declaration.AttributeLists.Any()
-                            || SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility(declaration) != Accessibility.Private)
-                        {
-                            break;
-                        }
-
-                        string methodName = declaration.Identifier.ValueText;
-
-                        if (IsMainMethod(declaration, modifiers, methodName))
-                            break;
-
-                        if ((declaration.ReturnsVoid()
-                            || (methodName == "Start"
-                                && semanticModel.GetDeclaredSymbol(declaration, cancellationToken)?.ReturnType.SpecialType == SpecialType.System_Collections_IEnumerator))
-                            && context.IsUnityCodeAnalysisEnabled() == true)
-                        {
-                            if (canContainUnityScriptMethods is null)
-                            {
-                                if (declarationSymbol is null)
-                                    declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
-
-                                canContainUnityScriptMethods = declarationSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
-                            }
-
-                            if (canContainUnityScriptMethods == true
-                                && UnityScriptMethods.MethodNames.Contains(methodName))
-                            {
-                                break;
-                            }
-                        }
-
                         if (walker is null)
                             walker = UnusedMemberWalker.GetInstance();
 
-                        walker.AddNode(methodName, declaration);
+                        walker.AddDelegate(declaration.Identifier.ValueText, declaration);
+                    }
 
+                    break;
+                }
+                case EventDeclarationSyntax declaration:
+                {
+                    if (declaration.ExplicitInterfaceSpecifier is null
+                        && SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                    {
+                        if (walker is null)
+                            walker = UnusedMemberWalker.GetInstance();
+
+                        walker.AddNode(declaration.Identifier.ValueText, declaration);
+                    }
+
+                    break;
+                }
+                case EventFieldDeclarationSyntax declaration:
+                {
+                    if (SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                    {
+                        if (walker is null)
+                            walker = UnusedMemberWalker.GetInstance();
+
+                        walker.AddNodes(declaration.Declaration);
+                    }
+
+                    break;
+                }
+                case FieldDeclarationSyntax declaration:
+                {
+                    SyntaxTokenList modifiers = declaration.Modifiers;
+
+                    if (SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                    {
+                        if (walker is null)
+                            walker = UnusedMemberWalker.GetInstance();
+
+                        walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
+                    }
+
+                    break;
+                }
+                case MethodDeclarationSyntax declaration:
+                {
+                    SyntaxTokenList modifiers = declaration.Modifiers;
+
+                    if (declaration.ExplicitInterfaceSpecifier is not null
+                        || declaration.AttributeLists.Any()
+                        || SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility(declaration) != Accessibility.Private)
+                    {
                         break;
                     }
-                case PropertyDeclarationSyntax declaration:
-                    {
-                        if (declaration.ExplicitInterfaceSpecifier is null
-                            && SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
-                        {
-                            if (walker is null)
-                                walker = UnusedMemberWalker.GetInstance();
 
-                            walker.AddNode(declaration.Identifier.ValueText, declaration);
+                    string methodName = declaration.Identifier.ValueText;
+
+                    if (IsMainMethod(declaration, modifiers, methodName))
+                        break;
+
+                    if ((declaration.ReturnsVoid()
+                        || (methodName == "Start"
+                            && semanticModel.GetDeclaredSymbol(declaration, cancellationToken)?.ReturnType.SpecialType == SpecialType.System_Collections_IEnumerator))
+                        && context.IsUnityCodeAnalysisEnabled() == true)
+                    {
+                        if (canContainUnityScriptMethods is null)
+                        {
+                            if (declarationSymbol is null)
+                                declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
+
+                            canContainUnityScriptMethods = declarationSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
                         }
 
-                        break;
+                        if (canContainUnityScriptMethods == true
+                            && UnityScriptMethods.MethodNames.Contains(methodName))
+                        {
+                            break;
+                        }
                     }
+
+                    if (walker is null)
+                        walker = UnusedMemberWalker.GetInstance();
+
+                    walker.AddNode(methodName, declaration);
+
+                    break;
+                }
+                case PropertyDeclarationSyntax declaration:
+                {
+                    if (declaration.ExplicitInterfaceSpecifier is null
+                        && SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                    {
+                        if (walker is null)
+                            walker = UnusedMemberWalker.GetInstance();
+
+                        walker.AddNode(declaration.Identifier.ValueText, declaration);
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -275,66 +275,66 @@ public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
             switch (value[i])
             {
                 case '{':
+                {
+                    i++;
+
+                    int startIndex = i;
+
+                    while (i < length)
                     {
-                        i++;
+                        char ch = value[i];
 
-                        int startIndex = i;
-
-                        while (i < length)
+                        if (ch == '}'
+                            || ch == ','
+                            || ch == '(')
                         {
-                            char ch = value[i];
+                            int nameLength = i - startIndex;
 
-                            if (ch == '}'
-                                || ch == ','
-                                || ch == '(')
+                            if (nameLength > 0)
                             {
-                                int nameLength = i - startIndex;
-
-                                if (nameLength > 0)
+                                for (int j = nodes.Count - 1; j >= 0; j--)
                                 {
-                                    for (int j = nodes.Count - 1; j >= 0; j--)
+                                    NodeSymbolInfo nodeSymbolInfo = nodes[j];
+
+                                    if (nodeSymbolInfo.CanBeInDebuggerDisplayAttribute
+                                        && string.CompareOrdinal(nodeSymbolInfo.Name, 0, value, startIndex, nameLength) == 0)
                                     {
-                                        NodeSymbolInfo nodeSymbolInfo = nodes[j];
+                                        nodes.RemoveAt(j);
 
-                                        if (nodeSymbolInfo.CanBeInDebuggerDisplayAttribute
-                                            && string.CompareOrdinal(nodeSymbolInfo.Name, 0, value, startIndex, nameLength) == 0)
-                                        {
-                                            nodes.RemoveAt(j);
-
-                                            if (nodes.Count == 0)
-                                                return;
-                                        }
+                                        if (nodes.Count == 0)
+                                            return;
                                     }
                                 }
-
-                                if (ch != '}')
-                                {
-                                    i++;
-
-                                    while (i < length
-                                        && value[i] != '}')
-                                    {
-                                        i++;
-                                    }
-                                }
-
-                                break;
                             }
 
-                            i++;
+                            if (ch != '}')
+                            {
+                                i++;
+
+                                while (i < length
+                                    && value[i] != '}')
+                                {
+                                    i++;
+                                }
+                            }
+
+                            break;
                         }
 
-                        break;
-                    }
-                case '}':
-                    {
-                        return;
-                    }
-                case '\\':
-                    {
                         i++;
-                        break;
                     }
+
+                    break;
+                }
+                case '}':
+                {
+                    return;
+                }
+                case '\\':
+                {
+                    i++;
+                    break;
+                }
             }
         }
     }

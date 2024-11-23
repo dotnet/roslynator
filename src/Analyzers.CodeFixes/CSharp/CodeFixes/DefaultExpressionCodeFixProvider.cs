@@ -35,15 +35,15 @@ public sealed class DefaultExpressionCodeFixProvider : BaseCodeFixProvider
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.SimplifyDefaultExpression:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Simplify 'default' expression",
-                            ct => SimplifyDefaultExpressionAsync(document, defaultExpression, ct),
-                            GetEquivalenceKey(diagnostic));
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Simplify 'default' expression",
+                        ct => SimplifyDefaultExpressionAsync(document, defaultExpression, ct),
+                        GetEquivalenceKey(diagnostic));
 
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
             }
         }
     }
