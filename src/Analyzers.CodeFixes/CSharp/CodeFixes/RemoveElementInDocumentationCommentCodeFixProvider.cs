@@ -29,6 +29,7 @@ public sealed class RemoveElementInDocumentationCommentCodeFixProvider : BaseCod
         }
     }
 
+#if ROSLYN_4_0
     public override FixAllProvider GetFixAllProvider()
     {
         return FixAllProvider.Create(async (context, document, diagnostics) => await FixAllAsync(document, diagnostics, context.CancellationToken).ConfigureAwait(false));
@@ -49,6 +50,7 @@ public sealed class RemoveElementInDocumentationCommentCodeFixProvider : BaseCod
             return document;
         }
     }
+#endif
 
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
