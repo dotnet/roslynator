@@ -1,9 +1,9 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -97,7 +97,7 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
                 .GetParent(ascendOutOfTrivia: true)
                 .FirstAncestorOrSelf(f => f is MemberDeclarationSyntax or LocalFunctionStatementSyntax);
 
-            var newNode = SyntaxRefactorings.RemoveSingleLineDocumentationComment(declaration, documentationComment);
+            SyntaxNode newNode = SyntaxRefactorings.RemoveSingleLineDocumentationComment(declaration, documentationComment);
             return document.ReplaceNodeAsync(declaration, newNode, cancellationToken);
         }
 
