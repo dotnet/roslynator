@@ -1,3 +1,5 @@
+// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
 using System;
 using System.Collections.Immutable;
 using System.Composition;
@@ -86,10 +88,10 @@ public sealed class RemoveElementInDocumentationCommentCodeFixProvider : BaseCod
         XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNode);
         string name = elementInfo.LocalName;
 
-        return (ct => RemoveUnusedElementInDocumentationCommentAsync(document, elementInfo, ct), name);
+        return (ct => RemoveElementAsync(document, elementInfo, ct), name);
     }
 
-    private static Task<Document> RemoveUnusedElementInDocumentationCommentAsync(
+    private static Task<Document> RemoveElementAsync(
         Document document,
         in XmlElementInfo elementInfo,
         CancellationToken cancellationToken)
