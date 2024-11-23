@@ -37,6 +37,32 @@ class C
 ");
     }
 
+    public async Task Test_FirstElement_Pragma()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+#pragma warning disable RCS0000
+    /// [|<returns></returns>|]
+    /// <summary>
+    /// </summary>
+    void M()
+    {
+    }
+}
+", @"
+class C
+{
+#pragma warning disable RCS0000
+    /// <summary>
+    /// </summary>
+    void M()
+    {
+    }
+}
+");
+    }
+
     [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
     public async Task Test_LastElement()
     {
@@ -103,6 +129,33 @@ class C
 {
     void M()
     {
+    }
+}
+");
+    }
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task Test_ReturnsIsOnlyElement_LocalFunction()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        /// [|<returns></returns>|]
+        void LF()
+        {
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        void LF()
+        {
+        }
     }
 }
 ");

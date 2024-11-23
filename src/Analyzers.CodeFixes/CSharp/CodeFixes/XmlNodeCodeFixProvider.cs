@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading;
@@ -90,48 +91,56 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
 
         SyntaxList<XmlNodeSyntax> content = documentationComment.Content;
 
-        int count = content.Count;
+        if (content.Count(f => f.IsKind(SyntaxKind.XmlElement, SyntaxKind.XmlEmptyElement)) == 1)
+        {
+            SyntaxNode declaration = documentationComment
+                .GetParent(ascendOutOfTrivia: true)
+                .FirstAncestorOrSelf(f => f is MemberDeclarationSyntax or LocalFunctionStatementSyntax);
+
+            var newNode = SyntaxRefactorings.RemoveSingleLineDocumentationComment(declaration, documentationComment);
+            return document.ReplaceNodeAsync(declaration, newNode, cancellationToken);
+        }
+
+        int start = element.FullSpan.Start;
+        int end = element.FullSpan.End;
+
         int index = content.IndexOf(element);
 
-        if (index == 0)
+        if (index > 0
+            && content[index - 1].IsKind(SyntaxKind.XmlText))
         {
-            if (count == 2
-                && content[1] is XmlTextSyntax xmlText
-                && IsNewLine(xmlText))
-            {
-                return document.RemoveSingleLineDocumentationComment(documentationComment, cancellationToken);
-            }
+            start = content[index - 1].FullSpan.Start;
 
-            if (content[index + 1] is XmlTextSyntax xmlText2
-                && IsXmlTextBetweenLines(xmlText2))
+            if (index == 1)
             {
-                return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(element.FullSpan.Start, xmlText2.FullSpan.End), ""), cancellationToken);
+                SyntaxNode parent = documentationComment.GetParent(ascendOutOfTrivia: true);
+                SyntaxTriviaList leadingTrivia = parent.GetLeadingTrivia();
+
+                index = leadingTrivia.IndexOf(documentationComment.ParentTrivia);
+
+                if (index > 0)
+                {
+                    if (leadingTrivia[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
+                        start = leadingTrivia[index - 1].FullSpan.Start;
+
+                    if (index > 1)
+                    {
+                        if (leadingTrivia[index - 1].IsKind(SyntaxKind.EndOfLineTrivia))
+                            start = leadingTrivia[index - 1].FullSpan.Start;
+                    }
+                    else
+                    {
+                        SyntaxToken token = parent.GetFirstToken().GetPreviousToken();
+                        SyntaxTrivia lastTrivia = token.TrailingTrivia.LastOrDefault();
+
+                        if (lastTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                            start = lastTrivia.FullSpan.Start;
+                    }
+                }
             }
         }
-        else if (index == 1)
-        {
-            if (count == 3
-                && content[0] is XmlTextSyntax xmlText
-                && IsWhitespace(xmlText)
-                && content[2] is XmlTextSyntax xmlText2
-                && IsNewLine(xmlText2))
-            {
-                return document.RemoveSingleLineDocumentationComment(documentationComment, cancellationToken);
-            }
 
-            if (content[2] is XmlTextSyntax xmlText3
-                && IsXmlTextBetweenLines(xmlText3))
-            {
-                return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(element.FullSpan.Start, xmlText3.FullSpan.End), ""), cancellationToken);
-            }
-        }
-        else if (content[index - 1] is XmlTextSyntax xmlText
-            && IsXmlTextBetweenLines(xmlText))
-        {
-            return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(xmlText.FullSpan.Start, element.FullSpan.End), ""), cancellationToken);
-        }
-
-        return document.RemoveNodeAsync(element, cancellationToken);
+        return document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(start, end), ""), cancellationToken);
 
         static bool IsXmlTextBetweenLines(XmlTextSyntax xmlText)
         {
