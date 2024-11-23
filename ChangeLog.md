@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- Update whitespace formatting rules ([PR](https://github.com/dotnet/roslynator/pull/1576))
-
 ### Fixed
 
 - Fix analyzer [RCS1213](https://josefpihrt.github.io/docs/roslynator/analyzers/RCS1213) ([PR](https://github.com/dotnet/roslynator/pull/1586))
+
+### Changed
+
+- Update whitespace formatting rules ([PR](https://github.com/dotnet/roslynator/pull/1576))
 
 ## [4.12.9] - 2024-10-25
 
