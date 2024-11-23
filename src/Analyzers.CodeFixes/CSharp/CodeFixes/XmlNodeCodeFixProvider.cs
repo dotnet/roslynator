@@ -118,23 +118,23 @@ public sealed class XmlNodeCodeFixProvider : BaseCodeFixProvider
 
                 index = leadingTrivia.IndexOf(documentationComment.ParentTrivia);
 
-                if (index > 0)
+                if (index > 0
+                    && leadingTrivia[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
                 {
-                    if (leadingTrivia[index - 1].IsKind(SyntaxKind.WhitespaceTrivia))
-                        start = leadingTrivia[index - 1].FullSpan.Start;
+                    start = leadingTrivia[index - 1].FullSpan.Start;
+                }
 
-                    if (index > 1)
-                    {
-                        if (leadingTrivia[index - 1].IsKind(SyntaxKind.EndOfLineTrivia))
-                            start = leadingTrivia[index - 1].FullSpan.Start;
-                    }
-                    else
-                    {
-                        SyntaxToken token = parent.GetFirstToken().GetPreviousToken();
-                        SyntaxTrivia lastTrivia = token.TrailingTrivia.LastOrDefault();
+                SyntaxToken token = parent.GetFirstToken().GetPreviousToken(includeDirectives: true);
+                parent = parent.FirstAncestorOrSelf(f => f.FullSpan.Contains(token.FullSpan));
 
-                        if (lastTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
-                            start = lastTrivia.FullSpan.Start;
+                if (start > 0)
+                {
+                    SyntaxTrivia trivia = parent.FindTrivia(start - 1, findInsideTrivia: true);
+
+                    if (trivia.IsKind(SyntaxKind.EndOfLineTrivia)
+                        && start == trivia.FullSpan.End)
+                    {
+                        start = trivia.FullSpan.Start;
                     }
                 }
             }
